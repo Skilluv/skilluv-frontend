@@ -1,0 +1,51 @@
+# Dependencies
+node_modules
+
+# SvelteKit
+.svelte-kit
+build
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Vite
+vite.config.ts.timestamp-*
+
+# Tests
+test-results
+playwright-report
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Logs & temp
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.cache
+
+
+# Documentation
+docs/
+*.md
+
+# BMAD workflow
+_bmad/
+_bmad.*
+_bmad-*/
+_bmad-output/
+design-artifacts/
+
+# Claude Code
+.claude/
+.claude.*

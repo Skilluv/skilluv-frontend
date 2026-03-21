@@ -1,0 +1,237 @@
+/* Fonts — self-hosted pour performance connexions africaines */
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/700.css';
+
+/* Tailwind v4 */
+@import 'tailwindcss';
+
+/* ============================================
+   DESIGN SYSTEM SKILLUV — Tokens CSS
+   Architecture 3 niveaux :
+   1. Primitifs (--sk-*) — valeurs brutes par thème
+   2. Sémantiques (@theme) — intégration Tailwind
+   3. Composants — dans chaque composant .svelte
+   ============================================ */
+
+@theme {
+	/* Typography */
+	--font-sans: 'Space Grotesk', system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', monospace;
+
+	/* Colors — résolution dynamique via CSS vars */
+	--color-primary: var(--sk-primary);
+	--color-primary-hover: var(--sk-primary-hover);
+	--color-accent: var(--sk-accent);
+	--color-accent-hover: var(--sk-accent-hover);
+	--color-surface: var(--sk-surface);
+	--color-surface-elevated: var(--sk-surface-elevated);
+	--color-surface-overlay: var(--sk-surface-overlay);
+	--color-text-primary: var(--sk-text);
+	--color-text-muted: var(--sk-text-muted);
+	--color-border: var(--sk-border);
+
+	/* Sémantiques fixes */
+	--color-success: #22c55e;
+	--color-warning: #f59e0b;
+	--color-error: #ef4444;
+	--color-info: #3b82f6;
+
+	/* Radius — arrondis accueillants (UX spec) */
+	--radius-sm: 8px;
+	--radius-md: 12px;
+	--radius-lg: 16px;
+	--radius-xl: 24px;
+	--radius-full: 9999px;
+
+	/* Shadows — teintées par thème */
+	--shadow-sm: 0 1px 2px var(--sk-shadow-color);
+	--shadow-md: 0 4px 6px var(--sk-shadow-color);
+	--shadow-lg: 0 10px 15px var(--sk-shadow-color);
+}
+
+/* ============================================
+   THÈME FORGE (défaut)
+   Bleu Électrique + Orange Brûlé sur gris chaud
+   ============================================ */
+:root,
+[data-theme='forge'] {
+	--sk-primary: #2563eb;
+	--sk-primary-hover: #1d4ed8;
+	--sk-accent: #ea580c;
+	--sk-accent-hover: #c2410c;
+	--sk-surface: #1c1917;
+	--sk-surface-elevated: #292524;
+	--sk-surface-overlay: #44403c;
+	--sk-text: #fafaf9;
+	--sk-text-muted: #a8a29e;
+	--sk-border: #44403c;
+	--sk-shadow-color: rgba(234, 88, 12, 0.1);
+}
+
+/* ============================================
+   THÈME NEON
+   Cyan + Ambre sur bleu sombre — Futuriste
+   ============================================ */
+[data-theme='neon'] {
+	--sk-primary: #06b6d4;
+	--sk-primary-hover: #0891b2;
+	--sk-accent: #f59e0b;
+	--sk-accent-hover: #d97706;
+	--sk-surface: #0c1222;
+	--sk-surface-elevated: #1a2332;
+	--sk-surface-overlay: #2a3342;
+	--sk-text: #e2e8f0;
+	--sk-text-muted: #94a3b8;
+	--sk-border: #2a3342;
+	--sk-shadow-color: rgba(6, 182, 212, 0.1);
+}
+
+/* ============================================
+   THÈME ARENA
+   Rouge Profond + Bleu Acier — Compétition
+   ============================================ */
+[data-theme='arena'] {
+	--sk-primary: #dc2626;
+	--sk-primary-hover: #b91c1c;
+	--sk-accent: #64748b;
+	--sk-accent-hover: #475569;
+	--sk-surface: #1e1e2e;
+	--sk-surface-elevated: #2a2a3e;
+	--sk-surface-overlay: #3a3a4e;
+	--sk-text: #f1f5f9;
+	--sk-text-muted: #94a3b8;
+	--sk-border: #3a3a4e;
+	--sk-shadow-color: rgba(220, 38, 38, 0.1);
+}
+
+/* ============================================
+   THÈME TERMINAL
+   Vert terminal + Ambre — Unix/Hacker
+   Monospace partout (override font-sans)
+   ============================================ */
+[data-theme='terminal'] {
+	--sk-primary: #22c55e;
+	--sk-primary-hover: #16a34a;
+	--sk-accent: #fbbf24;
+	--sk-accent-hover: #f59e0b;
+	--sk-surface: #000000;
+	--sk-surface-elevated: #0a0a0a;
+	--sk-surface-overlay: #1a1a1a;
+	--sk-text: #22c55e;
+	--sk-text-muted: #15803d;
+	--sk-border: #1a1a1a;
+	--sk-shadow-color: transparent;
+}
+
+[data-theme='terminal'] * {
+	font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* ============================================
+   STYLES DE BASE
+   ============================================ */
+body {
+	background-color: var(--sk-surface);
+	color: var(--sk-text);
+	font-family: 'Space Grotesk', system-ui, sans-serif;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--sk-surface);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--sk-border);
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--sk-text-muted);
+}
+
+/* Focus visible — accessibilité */
+:focus-visible {
+	outline: 2px solid var(--sk-accent);
+	outline-offset: 2px;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fragment-burst {
+	0% {
+		transform: scale(0);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(1.2);
+		opacity: 0.8;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+@keyframes pulse-glow {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 var(--sk-primary);
+	}
+	50% {
+		box-shadow: 0 0 20px 4px var(--sk-primary);
+	}
+}
+
+@keyframes slide-up {
+	from {
+		transform: translateY(8px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes skeleton-pulse {
+	0%,
+	100% {
+		opacity: 0.4;
+	}
+	50% {
+		opacity: 0.7;
+	}
+}
+
+/* Reduced motion — accessibilité */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}

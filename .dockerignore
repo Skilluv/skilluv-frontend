@@ -1,0 +1,41 @@
+node_modules
+.svelte-kit
+build
+dist
+.env
+.env.*
+!.env.example
+test-results
+playwright-report
+tests
+.git
+.gitignore
+.idea
+.vscode
+*.md
+_bmad
+_bmad-*
+_bmad-output
+.claude
+.claude.*
+docs
+design-artifacts
+scripts
+Dockerfile
+.dockerignore
+
+
+# Documentation
+docs/
+*.md
+
+# BMAD workflow
+_bmad/
+_bmad.*
+_bmad-*/
+_bmad-output/
+design-artifacts/
+
+# Claude Code
+.claude/
+.claude.*

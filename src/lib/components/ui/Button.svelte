@@ -1,0 +1,58 @@
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+	import type { HTMLButtonAttributes } from 'svelte/elements';
+
+	interface Props extends HTMLButtonAttributes {
+		variant?: 'primary' | 'secondary' | 'ghost' | 'accent' | 'danger';
+		size?: 'sm' | 'md' | 'lg';
+		loading?: boolean;
+		href?: string;
+		children: Snippet;
+	}
+
+	let {
+		variant = 'primary',
+		size = 'md',
+		loading = false,
+		href,
+		children,
+		disabled,
+		class: className = '',
+		...rest
+	}: Props = $props();
+
+	const base =
+		'inline-flex items-center justify-center font-semibold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50 disabled:cursor-not-allowed';
+
+	const variants: Record<string, string> = {
+		primary: 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02] active:scale-[0.98]',
+		secondary: 'border border-border text-text-primary hover:bg-surface-overlay hover:scale-[1.02] active:scale-[0.98]',
+		ghost: 'text-text-muted hover:text-text-primary hover:bg-surface-overlay',
+		accent: 'bg-accent text-white hover:bg-accent-hover hover:scale-[1.02] active:scale-[0.98]',
+		danger: 'bg-error text-white hover:bg-red-700 hover:scale-[1.02] active:scale-[0.98]'
+	};
+
+	const sizes: Record<string, string> = {
+		sm: 'h-8 px-3 text-sm rounded-lg gap-1.5',
+		md: 'h-10 px-5 text-sm rounded-xl gap-2',
+		lg: 'h-12 px-8 text-base rounded-2xl gap-2.5'
+	};
+
+	let classes = $derived(`${base} ${variants[variant]} ${sizes[size]} ${className}`);
+</script>
+
+{#if href && !disabled}
+	<a {href} class={classes}>
+		{@render children()}
+	</a>
+{:else}
+	<button class={classes} disabled={disabled || loading} {...rest}>
+		{#if loading}
+			<svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+			</svg>
+		{/if}
+		{@render children()}
+	</button>
+{/if}
