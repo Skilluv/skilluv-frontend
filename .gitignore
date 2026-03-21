@@ -37,7 +37,6 @@ Thumbs.db
 
 # Documentation
 docs/
-*.md
 
 # BMAD workflow
 _bmad/
