@@ -22,14 +22,14 @@
 	}: Props = $props();
 
 	const base =
-		'inline-flex items-center justify-center font-semibold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50 disabled:cursor-not-allowed';
+		'inline-flex items-center justify-center font-semibold transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]';
 
 	const variants: Record<string, string> = {
-		primary: 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02] active:scale-[0.98]',
-		secondary: 'border border-border text-text-primary hover:bg-surface-overlay hover:scale-[1.02] active:scale-[0.98]',
+		primary: 'bg-primary text-white hover:bg-primary-hover',
+		secondary: 'border border-border text-text-primary hover:bg-surface-overlay hover:border-text-muted',
 		ghost: 'text-text-muted hover:text-text-primary hover:bg-surface-overlay',
-		accent: 'bg-accent text-white hover:bg-accent-hover hover:scale-[1.02] active:scale-[0.98]',
-		danger: 'bg-error text-white hover:bg-red-700 hover:scale-[1.02] active:scale-[0.98]'
+		accent: 'bg-accent text-white hover:bg-accent-hover',
+		danger: 'bg-error text-white hover:bg-red-700'
 	};
 
 	const sizes: Record<string, string> = {

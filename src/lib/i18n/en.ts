@@ -244,7 +244,8 @@ export const en: Translations = {
 			title: 'Theme', forge: 'Forge', forgeDesc: 'Blue + Orange — default',
 			neon: 'Neon', neonDesc: 'Cyan + Amber — futuristic',
 			arena: 'Arena', arenaDesc: 'Red + Steel — competition',
-			terminal: 'Terminal', terminalDesc: 'Green — hacker (monospace)'
+			terminal: 'Terminal', terminalDesc: 'Green — hacker (monospace)',
+			sakura: 'Sakura', sakuraDesc: 'Purple + Pink — creative'
 		},
 		language: { title: 'Language', fr: 'Français', en: 'English' },
 		profileSection: {

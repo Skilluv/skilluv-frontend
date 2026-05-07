@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import type { Challenge } from '$lib/types';
-	import Badge from '$components/ui/Badge.svelte';
 
 	interface Props {
 		challenge: Challenge;
@@ -9,6 +8,10 @@
 	}
 
 	let { challenge, locked = false }: Props = $props();
+
+	const domainDot: Record<string, string> = {
+		code: 'bg-blue-500', design: 'bg-pink-500', game: 'bg-green-500', security: 'bg-red-500'
+	};
 
 	function formatDuration(minutes: number | null): string {
 		if (!minutes) return i18n.t('common.time.noLimit');
@@ -21,59 +24,44 @@
 
 <a
 	href={locked ? undefined : `/challenges/${challenge.id}`}
-	class="group relative flex flex-col rounded-2xl border border-border bg-surface-elevated p-5 transition-all
-		{locked
-		? 'cursor-not-allowed opacity-60'
-		: 'hover:-translate-y-0.5 hover:shadow-md hover:border-primary/30'}"
+	class="group flex flex-col rounded-xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200
+		{locked ? 'cursor-not-allowed opacity-50' : 'hover:border-text-muted/40'}"
 	aria-disabled={locked}
 >
-	{#if locked}
-		<div class="absolute right-3 top-3 text-text-muted" title={i18n.t('challenges.locked')}>
-			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+	<!-- Header bar -->
+	<div class="flex items-center gap-2 border-b border-border px-4 py-2.5">
+		<div class="h-2.5 w-2.5 rounded-sm {domainDot[challenge.skill_domain] ?? 'bg-text-muted'}"></div>
+		<span class="text-xs font-mono text-text-muted capitalize">{i18n.t(`common.domains.${challenge.skill_domain}`)}</span>
+		{#if challenge.language}
+			<span class="text-xs text-text-muted">· {challenge.language}</span>
+		{/if}
+		<span class="ml-auto text-[10px] text-text-muted border border-border rounded px-1.5 py-0.5">
+			{i18n.t(`common.difficulty.${challenge.difficulty}`)}
+		</span>
+		{#if locked}
+			<svg class="h-3.5 w-3.5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 			</svg>
-		</div>
-	{/if}
-
-	<!-- Badges -->
-	<div class="mb-3 flex flex-wrap items-center gap-2">
-		<Badge variant={challenge.skill_domain}>{i18n.t(`common.domains.${challenge.skill_domain}`)}</Badge>
-		<Badge variant={challenge.tone === 'fun' ? 'warning' : 'default'}>{i18n.t(`common.tone.${challenge.tone}`)}</Badge>
-		{#if challenge.mode === 'team'}
-			<Badge variant="primary">{i18n.t('common.team')}</Badge>
 		{/if}
 	</div>
 
-	<!-- Titre -->
-	<h3 class="mb-2 font-semibold leading-snug group-hover:text-accent transition-colors">
-		{challenge.title}
-	</h3>
+	<!-- Content -->
+	<div class="p-4 flex-1 flex flex-col">
+		<h3 class="text-sm font-semibold mb-1 transition-colors duration-200 group-hover:text-accent">{challenge.title}</h3>
+		<p class="text-xs text-text-muted line-clamp-2 mb-4 flex-1">{challenge.description}</p>
 
-	<!-- Description -->
-	<p class="mb-4 flex-1 text-sm text-text-muted line-clamp-2">
-		{challenge.description}
-	</p>
-
-	<!-- Footer -->
-	<div class="flex items-center justify-between text-xs text-text-muted">
-		<!-- Difficulté -->
-		<div class="flex items-center gap-1.5">
-			<span class="flex gap-0.5">
-				{#each Array(5) as _, i}
-					<span
-						class="h-1.5 w-1.5 rounded-full {i < challenge.difficulty
-							? 'bg-accent'
-							: 'bg-surface-overlay'}"
-					></span>
-				{/each}
-			</span>
-			<span>{i18n.t(`common.difficulty.${challenge.difficulty}`)}</span>
-		</div>
-
-		<!-- Durée + Fragments -->
-		<div class="flex items-center gap-3">
-			<span>{formatDuration(challenge.duration_minutes)}</span>
-			<span class="font-medium text-accent">+{challenge.reward_fragments} ◆</span>
+		<!-- Footer -->
+		<div class="flex items-center justify-between">
+			<div class="flex items-center gap-3 text-xs text-text-muted">
+				<span>{formatDuration(challenge.duration_minutes)}</span>
+				{#if challenge.mode === 'team'}
+					<span class="border border-border rounded px-1.5 py-0.5 text-[10px]">{i18n.t('common.team')}</span>
+				{/if}
+				{#if !challenge.ai_allowed}
+					<span class="border border-error/30 text-error rounded px-1.5 py-0.5 text-[10px]">{i18n.t('challenges.detail.noAi')}</span>
+				{/if}
+			</div>
+			<span class="text-sm font-bold text-accent">+{challenge.reward_fragments} ◆</span>
 		</div>
 	</div>
 </a>

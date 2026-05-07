@@ -1,26 +1,51 @@
-import type { Theme } from '$lib/types';
+import type { Theme, ThemeBase, ThemeMode } from '$lib/types';
 
-const STORAGE_KEY = 'skilluv-theme';
-const VALID_THEMES: Theme[] = ['forge', 'neon', 'arena', 'terminal'];
+const THEME_KEY = 'skilluv-theme';
+const MODE_KEY = 'skilluv-mode';
+const VALID_BASES: ThemeBase[] = ['forge', 'neon', 'arena', 'terminal', 'sakura'];
 
 class ThemeState {
-	current = $state<Theme>('forge');
+	base = $state<ThemeBase>('forge');
+	mode = $state<ThemeMode>('dark');
+	current = $derived<Theme>(this.mode === 'dark' ? this.base : `${this.base}-light`);
 
-	/** Initialise le thème depuis localStorage */
+	/** Initialise le theme depuis localStorage */
 	init() {
 		if (typeof window === 'undefined') return;
 
-		const stored = localStorage.getItem(STORAGE_KEY);
-		if (stored && VALID_THEMES.includes(stored as Theme)) {
-			this.current = stored as Theme;
+		const storedBase = localStorage.getItem(THEME_KEY);
+		if (storedBase && VALID_BASES.includes(storedBase as ThemeBase)) {
+			this.base = storedBase as ThemeBase;
 		}
+
+		const storedMode = localStorage.getItem(MODE_KEY);
+		if (storedMode === 'light' || storedMode === 'dark') {
+			this.mode = storedMode;
+		}
+
 		this.apply();
 	}
 
-	set(theme: Theme) {
-		this.current = theme;
+	set(themeBase: ThemeBase) {
+		this.base = themeBase;
 		if (typeof window !== 'undefined') {
-			localStorage.setItem(STORAGE_KEY, theme);
+			localStorage.setItem(THEME_KEY, themeBase);
+			this.apply();
+		}
+	}
+
+	toggleMode() {
+		this.mode = this.mode === 'dark' ? 'light' : 'dark';
+		if (typeof window !== 'undefined') {
+			localStorage.setItem(MODE_KEY, this.mode);
+			this.apply();
+		}
+	}
+
+	setMode(mode: ThemeMode) {
+		this.mode = mode;
+		if (typeof window !== 'undefined') {
+			localStorage.setItem(MODE_KEY, mode);
 			this.apply();
 		}
 	}

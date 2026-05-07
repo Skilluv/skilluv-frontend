@@ -344,6 +344,8 @@ export interface Translations {
 			arenaDesc: string;
 			terminal: string;
 			terminalDesc: string;
+			sakura: string;
+			sakuraDesc: string;
 		};
 		language: {
 			title: string;

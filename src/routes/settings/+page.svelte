@@ -11,7 +11,7 @@
 	import Modal from '$components/ui/Modal.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { Locale } from '$lib/i18n';
-	import type { Theme, SkillDomain, PrivacySettings } from '$types';
+	import type { ThemeBase, SkillDomain, PrivacySettings } from '$types';
 
 	// Profile
 	let bio = $state(auth.user?.bio ?? '');
@@ -41,11 +41,12 @@
 	let deleting = $state(false);
 
 	// Theme
-	const themes: { value: Theme; label: string; descKey: string }[] = [
+	const themes: { value: ThemeBase; label: string; descKey: string }[] = [
 		{ value: 'forge', label: 'forge', descKey: 'settings.theme.forgeDesc' },
 		{ value: 'neon', label: 'neon', descKey: 'settings.theme.neonDesc' },
 		{ value: 'arena', label: 'arena', descKey: 'settings.theme.arenaDesc' },
-		{ value: 'terminal', label: 'terminal', descKey: 'settings.theme.terminalDesc' }
+		{ value: 'terminal', label: 'terminal', descKey: 'settings.theme.terminalDesc' },
+		{ value: 'sakura', label: 'sakura', descKey: 'settings.theme.sakuraDesc' }
 	];
 
 	// Language
@@ -131,7 +132,7 @@
 			{#each themes as t}
 				<button
 					class="rounded-xl border p-3 text-left transition-all
-						{theme.current === t.value ? 'border-accent bg-accent/10' : 'border-border hover:border-text-muted'}"
+						{theme.base === t.value ? 'border-accent bg-accent/10' : 'border-border hover:border-text-muted'}"
 					onclick={() => theme.set(t.value)}
 				>
 					<p class="text-sm font-medium">{i18n.t(`settings.theme.${t.value}`)}</p>
