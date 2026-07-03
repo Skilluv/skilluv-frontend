@@ -1,13 +1,25 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import { scrollReveal } from '$lib/utils/animations';
+	import { domainStyle } from '$lib/utils/domains';
 	import Button from '$components/ui/Button.svelte';
+	import type { SkillDomain } from '$lib/types';
 
-	const challenges = [
-		{ title: 'Reverse a Linked List', domain: 'code', domainColor: 'bg-blue-500', lang: 'Rust', difficulty: 3, fragments: 120, completions: 342, duration: '15 min' },
-		{ title: 'Responsive Dashboard', domain: 'design', domainColor: 'bg-pink-500', lang: 'CSS', difficulty: 2, fragments: 85, completions: 518, duration: '30 min' },
-		{ title: 'Physics Engine Bug', domain: 'game', domainColor: 'bg-green-500', lang: 'C#', difficulty: 4, fragments: 150, completions: 127, duration: '25 min' },
-		{ title: 'SQL Injection Hunt', domain: 'security', domainColor: 'bg-red-500', lang: 'CTF', difficulty: 3, fragments: 200, completions: 203, duration: '20 min' },
+	interface ChallengeItem {
+		title: string;
+		domain: SkillDomain;
+		lang: string;
+		difficulty: number;
+		fragments: number;
+		completions: number;
+		duration: string;
+	}
+
+	const challenges: ChallengeItem[] = [
+		{ title: 'Reverse a Linked List', domain: 'code', lang: 'Rust', difficulty: 3, fragments: 120, completions: 342, duration: '15 min' },
+		{ title: 'Responsive Dashboard', domain: 'design', lang: 'CSS', difficulty: 2, fragments: 85, completions: 518, duration: '30 min' },
+		{ title: 'Physics Engine Bug', domain: 'game', lang: 'C#', difficulty: 4, fragments: 150, completions: 127, duration: '25 min' },
+		{ title: 'SQL Injection Hunt', domain: 'security', lang: 'CTF', difficulty: 3, fragments: 200, completions: 203, duration: '20 min' },
 	];
 
 	const difficultyLabels: Record<number, { fr: string; en: string }> = {
@@ -19,14 +31,14 @@
 	};
 </script>
 
-<section class="py-24 sm:py-32">
+<section class="py-16 sm:py-24 lg:py-32">
 	<div class="mx-auto max-w-7xl px-4">
 		<div use:scrollReveal class="flex items-end justify-between mb-12">
 			<div>
-				<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3">
-					{i18n.locale === 'fr' ? 'Challenges populaires' : 'Trending challenges'}
+				<h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight mb-4">
+					{i18n.locale === 'fr' ? 'Challenges populaires' : 'Trending challenges'}<span class="text-accent">.</span>
 				</h2>
-				<p class="text-text-muted text-lg">
+				<p class="text-text-muted text-base sm:text-lg max-w-2xl">
 					{i18n.locale === 'fr'
 						? 'Les plus relevés cette semaine, tous domaines confondus.'
 						: 'Most attempted this week, across all domains.'}
@@ -39,9 +51,9 @@
 
 		<div use:scrollReveal class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
 			{#each challenges as c}
-				<a href="/challenges" class="group rounded-xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-text-muted/40">
+				<a href="/challenges" class="group rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-text-muted/40">
 					<div class="flex items-center gap-2 border-b border-border px-4 py-2.5">
-						<div class="h-2.5 w-2.5 rounded-sm {c.domainColor}"></div>
+						<div class="h-2.5 w-2.5 rounded-sm {domainStyle(c.domain).dot}"></div>
 						<span class="text-xs font-mono text-text-muted capitalize">{c.domain}</span>
 						<span class="ml-auto text-[10px] text-text-muted border border-border rounded px-1.5 py-0.5">
 							{i18n.locale === 'fr' ? difficultyLabels[c.difficulty].fr : difficultyLabels[c.difficulty].en}

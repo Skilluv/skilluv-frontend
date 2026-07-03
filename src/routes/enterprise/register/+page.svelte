@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
+	import CountrySelect from '$components/ui/CountrySelect.svelte';
 	import { enterpriseApi } from '$api/enterprise';
 	import { auth } from '$stores/auth.svelte';
 	import { SkilluError } from '$api/client';
@@ -17,7 +18,7 @@
 	let website = $state('');
 	let industry = $state('');
 	let companySize = $state<CompanySize>('1-10');
-	let country = $state('');
+	let country = $state<string | null>(null);
 	let loading = $state(false);
 	let error = $state('');
 	let fieldErrors = $state<Record<string, string>>({});
@@ -56,7 +57,7 @@
 				website: website.trim() || undefined,
 				industry: industry.trim() || undefined,
 				company_size: companySize,
-				country: country.trim() || undefined
+				country: country ?? undefined
 			});
 			auth.setUser(res.data.user);
 			goto('/enterprise/dashboard');
@@ -113,7 +114,7 @@
 
 		<Input label={i18n.t('enterprise.register.website')} placeholder="https://entreprise.com" bind:value={website} />
 		<Input label={i18n.t('enterprise.register.industry')} placeholder="Tech, Finance, Santé..." bind:value={industry} />
-		<Input label={i18n.t('enterprise.register.country')} placeholder="BJ, CI, SN..." bind:value={country} />
+		<CountrySelect label={i18n.t('enterprise.register.country')} bind:value={country} clearable />
 
 		<Button variant="accent" size="lg" type="submit" {loading} class="mt-2 w-full">
 			{loading ? i18n.t('enterprise.register.creating') : i18n.t('enterprise.register.createBtn')}

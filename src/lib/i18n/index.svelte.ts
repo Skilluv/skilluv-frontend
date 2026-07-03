@@ -1,33 +1,46 @@
 import { fr } from './fr';
 import { en } from './en';
+import { ar } from './ar';
 import type { Translations } from './types';
 
-export type Locale = 'fr' | 'en';
+export type Locale = 'fr' | 'en' | 'ar';
 
 const STORAGE_KEY = 'skilluv-locale';
-const translations: Record<Locale, Translations> = { fr, en };
+const translations: Record<Locale, Translations> = { fr, en, ar };
+
+const RTL_LOCALES: Locale[] = ['ar'];
 
 class I18nState {
 	locale = $state<Locale>('fr');
 
+	get direction(): 'ltr' | 'rtl' {
+		return RTL_LOCALES.includes(this.locale) ? 'rtl' : 'ltr';
+	}
+
 	init() {
 		if (typeof window === 'undefined') return;
 		const stored = localStorage.getItem(STORAGE_KEY);
-		if (stored === 'fr' || stored === 'en') {
+		if (stored === 'fr' || stored === 'en' || stored === 'ar') {
 			this.locale = stored;
 		} else {
-			const browserLang = navigator.language.slice(0, 2);
-			this.locale = browserLang === 'en' ? 'en' : 'fr';
+			const browserLang = navigator.language.slice(0, 2).toLowerCase();
+			this.locale = browserLang === 'en' ? 'en' : browserLang === 'ar' ? 'ar' : 'fr';
 		}
-		document.documentElement.lang = this.locale;
+		this.applyDom();
 	}
 
 	setLocale(l: Locale) {
 		this.locale = l;
 		if (typeof window !== 'undefined') {
 			localStorage.setItem(STORAGE_KEY, l);
-			document.documentElement.lang = l;
+			this.applyDom();
 		}
+	}
+
+	private applyDom() {
+		if (typeof document === 'undefined') return;
+		document.documentElement.lang = this.locale;
+		document.documentElement.dir = this.direction;
 	}
 
 	/** Traduction avec clé en dot notation. Retourne la clé si non trouvée. */

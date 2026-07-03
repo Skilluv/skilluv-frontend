@@ -24,20 +24,29 @@
 	/* Colors — résolution dynamique via CSS vars */
 	--color-primary: var(--sk-primary);
 	--color-primary-hover: var(--sk-primary-hover);
+	--color-primary-fg: var(--sk-primary-fg);
 	--color-accent: var(--sk-accent);
 	--color-accent-hover: var(--sk-accent-hover);
+	--color-accent-fg: var(--sk-accent-fg);
 	--color-surface: var(--sk-surface);
 	--color-surface-elevated: var(--sk-surface-elevated);
+	--color-surface-elevated-hover: var(--sk-surface-elevated-hover);
 	--color-surface-overlay: var(--sk-surface-overlay);
 	--color-text-primary: var(--sk-text);
 	--color-text-muted: var(--sk-text-muted);
 	--color-border: var(--sk-border);
 
-	/* Sémantiques fixes */
-	--color-success: #22c55e;
-	--color-warning: #f59e0b;
-	--color-error: #ef4444;
-	--color-info: #3b82f6;
+	/* Sémantiques theme-aware — success/warning/error/info sont désaturés
+	   ou virés en sakura/terminal pour ne pas jurer avec la palette. */
+	--color-success: var(--sk-success);
+	--color-success-soft: var(--sk-success-soft);
+	--color-warning: var(--sk-warning);
+	--color-warning-soft: var(--sk-warning-soft);
+	--color-error: var(--sk-error);
+	--color-error-soft: var(--sk-error-soft);
+	--color-error-fg: var(--sk-error-fg);
+	--color-info: var(--sk-info);
+	--color-info-soft: var(--sk-info-soft);
 
 	/* Radius — arrondis accueillants (UX spec) */
 	--radius-sm: 8px;
@@ -64,11 +73,23 @@
 	--sk-accent-hover: #c2410c;
 	--sk-surface: #1c1917;
 	--sk-surface-elevated: #292524;
+	--sk-surface-elevated-hover: #33302c;
 	--sk-surface-overlay: #44403c;
 	--sk-text: #fafaf9;
 	--sk-text-muted: #a8a29e;
-	--sk-border: #44403c;
-	--sk-shadow-color: rgba(234, 88, 12, 0.1);
+	--sk-border: #57534e;
+	--sk-shadow-color: rgba(0, 0, 0, 0.5);
+	--sk-success: #22c55e;
+	--sk-success-soft: rgba(34, 197, 94, 0.15);
+	--sk-warning: #f59e0b;
+	--sk-warning-soft: rgba(245, 158, 11, 0.15);
+	--sk-error: #ef4444;
+	--sk-error-soft: rgba(239, 68, 68, 0.15);
+	--sk-info: #3b82f6;
+	--sk-info-soft: rgba(59, 130, 246, 0.15);
+	--sk-primary-fg: #ffffff;
+	--sk-accent-fg: #ffffff;
+	--sk-error-fg: #ffffff;
 }
 
 /* ============================================
@@ -82,11 +103,23 @@
 	--sk-accent-hover: #d97706;
 	--sk-surface: #0c1222;
 	--sk-surface-elevated: #1a2332;
+	--sk-surface-elevated-hover: #22304a;
 	--sk-surface-overlay: #2a3342;
 	--sk-text: #e2e8f0;
-	--sk-text-muted: #94a3b8;
-	--sk-border: #2a3342;
-	--sk-shadow-color: rgba(6, 182, 212, 0.1);
+	--sk-text-muted: #b0c0d0;
+	--sk-border: #3d4a5f;
+	--sk-shadow-color: rgba(0, 0, 0, 0.55);
+	--sk-success: #22c55e;
+	--sk-success-soft: rgba(34, 197, 94, 0.15);
+	--sk-warning: #f59e0b;
+	--sk-warning-soft: rgba(245, 158, 11, 0.15);
+	--sk-error: #f87171;
+	--sk-error-soft: rgba(248, 113, 113, 0.15);
+	--sk-info: #06b6d4;
+	--sk-info-soft: rgba(6, 182, 212, 0.15);
+	--sk-primary-fg: #0c1222;
+	--sk-accent-fg: #0c1222;
+	--sk-error-fg: #0c1222;
 }
 
 /* ============================================
@@ -100,11 +133,23 @@
 	--sk-accent-hover: #475569;
 	--sk-surface: #1e1e2e;
 	--sk-surface-elevated: #2a2a3e;
+	--sk-surface-elevated-hover: #333349;
 	--sk-surface-overlay: #3a3a4e;
 	--sk-text: #f1f5f9;
-	--sk-text-muted: #94a3b8;
-	--sk-border: #3a3a4e;
-	--sk-shadow-color: rgba(220, 38, 38, 0.1);
+	--sk-text-muted: #b0c0d0;
+	--sk-border: #4a4a5e;
+	--sk-shadow-color: rgba(0, 0, 0, 0.55);
+	--sk-success: #22c55e;
+	--sk-success-soft: rgba(34, 197, 94, 0.15);
+	--sk-warning: #f59e0b;
+	--sk-warning-soft: rgba(245, 158, 11, 0.15);
+	--sk-error: #ef4444;
+	--sk-error-soft: rgba(239, 68, 68, 0.15);
+	--sk-info: #64748b;
+	--sk-info-soft: rgba(100, 116, 139, 0.2);
+	--sk-primary-fg: #ffffff;
+	--sk-accent-fg: #ffffff;
+	--sk-error-fg: #ffffff;
 }
 
 /* ============================================
@@ -119,11 +164,23 @@
 	--sk-accent-hover: #f59e0b;
 	--sk-surface: #000000;
 	--sk-surface-elevated: #0a0a0a;
+	--sk-surface-elevated-hover: #131313;
 	--sk-surface-overlay: #1a1a1a;
 	--sk-text: #22c55e;
 	--sk-text-muted: #15803d;
-	--sk-border: #1a1a1a;
-	--sk-shadow-color: transparent;
+	--sk-border: #2d3a2d;
+	--sk-shadow-color: rgba(0, 0, 0, 0.8);
+	--sk-success: #22c55e;
+	--sk-success-soft: rgba(34, 197, 94, 0.15);
+	--sk-warning: #fbbf24;
+	--sk-warning-soft: rgba(251, 191, 36, 0.15);
+	--sk-error: #ef4444;
+	--sk-error-soft: rgba(239, 68, 68, 0.15);
+	--sk-info: #22c55e;
+	--sk-info-soft: rgba(34, 197, 94, 0.12);
+	--sk-primary-fg: #000000;
+	--sk-accent-fg: #000000;
+	--sk-error-fg: #ffffff;
 }
 
 [data-theme='terminal'] * {
@@ -135,100 +192,178 @@
    Violet + Rose sur fond prune — Creatif
    ============================================ */
 [data-theme='sakura'] {
-	--sk-primary: #a855f7;
-	--sk-primary-hover: #9333ea;
+	--sk-primary: #9333ea;
+	--sk-primary-hover: #7e22ce;
 	--sk-accent: #ec4899;
 	--sk-accent-hover: #db2777;
 	--sk-surface: #1a0a2e;
 	--sk-surface-elevated: #251242;
+	--sk-surface-elevated-hover: #2f1852;
 	--sk-surface-overlay: #3b1f5e;
 	--sk-text: #f5f0ff;
-	--sk-text-muted: #a78bcc;
-	--sk-border: #3b1f5e;
-	--sk-shadow-color: rgba(168, 85, 247, 0.1);
+	--sk-text-muted: #b89dd8;
+	--sk-border: #4d2e73;
+	--sk-shadow-color: rgba(0, 0, 0, 0.55);
+	--sk-success: #34d399;
+	--sk-success-soft: rgba(52, 211, 153, 0.15);
+	--sk-warning: #fbbf24;
+	--sk-warning-soft: rgba(251, 191, 36, 0.15);
+	--sk-error: #f472b6;
+	--sk-error-soft: rgba(244, 114, 182, 0.15);
+	--sk-info: #a855f7;
+	--sk-info-soft: rgba(168, 85, 247, 0.15);
+	--sk-primary-fg: #ffffff;
+	--sk-accent-fg: #ffffff;
+	--sk-error-fg: #ffffff;
 }
 
 /* ============================================
    LIGHT MODES
    ============================================ */
 
-/* FORGE LIGHT */
+/* FORGE LIGHT — Papier ivoire chaud, encre stone.
+   Base warm-neutral (hue kraft/parchemin), elevated ivoire clair,
+   accent orange-800 pour contraste WCAG AA sur crème. */
 [data-theme='forge-light'] {
-	--sk-primary: #2563eb;
-	--sk-primary-hover: #1d4ed8;
-	--sk-accent: #ea580c;
-	--sk-accent-hover: #c2410c;
-	--sk-surface: #fafaf9;
-	--sk-surface-elevated: #ffffff;
-	--sk-surface-overlay: #f5f5f4;
+	--sk-primary: #1e40af;
+	--sk-primary-hover: #1e3a8a;
+	--sk-accent: #9a3412;
+	--sk-accent-hover: #7c2d12;
+	--sk-surface: #ede6d6;
+	--sk-surface-elevated: #f6f0e2;
+	--sk-surface-elevated-hover: #ede5d0;
+	--sk-surface-overlay: #fbf6ea;
 	--sk-text: #1c1917;
-	--sk-text-muted: #78716c;
-	--sk-border: #e7e5e4;
-	--sk-shadow-color: rgba(0, 0, 0, 0.06);
+	--sk-text-muted: #57534e;
+	--sk-border: #c9bfa8;
+	--sk-shadow-color: rgba(120, 53, 15, 0.12);
+	--sk-success: #15803d;
+	--sk-success-soft: rgba(21, 128, 61, 0.12);
+	--sk-warning: #b45309;
+	--sk-warning-soft: rgba(180, 83, 9, 0.12);
+	--sk-error: #b91c1c;
+	--sk-error-soft: rgba(185, 28, 28, 0.1);
+	--sk-info: #1e40af;
+	--sk-info-soft: rgba(30, 64, 175, 0.1);
+	--sk-primary-fg: #ffffff;
+	--sk-accent-fg: #ffffff;
+	--sk-error-fg: #ffffff;
 }
 
-/* NEON LIGHT */
+/* NEON LIGHT — Papier bleu glacier, cyan doux.
+   Base cool-tinted, elevated glacier clair, primary cyan-700 assombri. */
 [data-theme='neon-light'] {
-	--sk-primary: #0891b2;
-	--sk-primary-hover: #0e7490;
-	--sk-accent: #d97706;
-	--sk-accent-hover: #b45309;
-	--sk-surface: #f0f9ff;
-	--sk-surface-elevated: #ffffff;
-	--sk-surface-overlay: #e0f2fe;
+	--sk-primary: #0e7490;
+	--sk-primary-hover: #155e75;
+	--sk-accent: #b45309;
+	--sk-accent-hover: #92400e;
+	--sk-surface: #d4e6f0;
+	--sk-surface-elevated: #e5f0f7;
+	--sk-surface-elevated-hover: #d9e8f2;
+	--sk-surface-overlay: #eff6fb;
 	--sk-text: #0c1222;
-	--sk-text-muted: #64748b;
-	--sk-border: #bae6fd;
-	--sk-shadow-color: rgba(6, 182, 212, 0.08);
+	--sk-text-muted: #475569;
+	--sk-border: #93c5fd;
+	--sk-shadow-color: rgba(6, 78, 118, 0.12);
+	--sk-success: #15803d;
+	--sk-success-soft: rgba(21, 128, 61, 0.12);
+	--sk-warning: #b45309;
+	--sk-warning-soft: rgba(180, 83, 9, 0.12);
+	--sk-error: #b91c1c;
+	--sk-error-soft: rgba(185, 28, 28, 0.1);
+	--sk-info: #0e7490;
+	--sk-info-soft: rgba(14, 116, 144, 0.1);
+	--sk-primary-fg: #ffffff;
+	--sk-accent-fg: #ffffff;
+	--sk-error-fg: #ffffff;
 }
 
-/* ARENA LIGHT */
+/* ARENA LIGHT — Béton gladiateur, teinte steel warm.
+   Base gris-bleu métallique, elevated steel clair, primary red-800. */
 [data-theme='arena-light'] {
-	--sk-primary: #dc2626;
-	--sk-primary-hover: #b91c1c;
-	--sk-accent: #475569;
-	--sk-accent-hover: #334155;
-	--sk-surface: #f8fafc;
-	--sk-surface-elevated: #ffffff;
-	--sk-surface-overlay: #f1f5f9;
+	--sk-primary: #991b1b;
+	--sk-primary-hover: #7f1d1d;
+	--sk-accent: #334155;
+	--sk-accent-hover: #1e293b;
+	--sk-surface: #dbe1e8;
+	--sk-surface-elevated: #e8ecf1;
+	--sk-surface-elevated-hover: #dee4eb;
+	--sk-surface-overlay: #f1f4f8;
 	--sk-text: #1e1e2e;
-	--sk-text-muted: #64748b;
-	--sk-border: #e2e8f0;
-	--sk-shadow-color: rgba(220, 38, 38, 0.06);
+	--sk-text-muted: #475569;
+	--sk-border: #a3b3c4;
+	--sk-shadow-color: rgba(30, 30, 46, 0.12);
+	--sk-success: #15803d;
+	--sk-success-soft: rgba(21, 128, 61, 0.12);
+	--sk-warning: #b45309;
+	--sk-warning-soft: rgba(180, 83, 9, 0.12);
+	--sk-error: #991b1b;
+	--sk-error-soft: rgba(153, 27, 27, 0.1);
+	--sk-info: #334155;
+	--sk-info-soft: rgba(51, 65, 85, 0.1);
+	--sk-primary-fg: #ffffff;
+	--sk-accent-fg: #ffffff;
+	--sk-error-fg: #ffffff;
 }
 
-/* TERMINAL LIGHT */
+/* TERMINAL LIGHT — Papier vert phosphore, vieux CRT en plein jour.
+   Base vert désaturé, elevated plus clair, monospace conservé. */
 [data-theme='terminal-light'] {
-	--sk-primary: #16a34a;
-	--sk-primary-hover: #15803d;
-	--sk-accent: #ca8a04;
-	--sk-accent-hover: #a16207;
-	--sk-surface: #f0fdf4;
-	--sk-surface-elevated: #ffffff;
-	--sk-surface-overlay: #dcfce7;
+	--sk-primary: #15803d;
+	--sk-primary-hover: #166534;
+	--sk-accent: #a16207;
+	--sk-accent-hover: #854d0e;
+	--sk-surface: #cde0c9;
+	--sk-surface-elevated: #dfecdb;
+	--sk-surface-elevated-hover: #d3e4cf;
+	--sk-surface-overlay: #ecf4e8;
 	--sk-text: #052e16;
-	--sk-text-muted: #4d7c0f;
-	--sk-border: #bbf7d0;
-	--sk-shadow-color: transparent;
+	--sk-text-muted: #166534;
+	--sk-border: #86b57e;
+	--sk-shadow-color: rgba(5, 46, 22, 0.12);
+	--sk-success: #15803d;
+	--sk-success-soft: rgba(21, 128, 61, 0.12);
+	--sk-warning: #a16207;
+	--sk-warning-soft: rgba(161, 98, 7, 0.12);
+	--sk-error: #b91c1c;
+	--sk-error-soft: rgba(185, 28, 28, 0.1);
+	--sk-info: #15803d;
+	--sk-info-soft: rgba(21, 128, 61, 0.1);
+	--sk-primary-fg: #ffffff;
+	--sk-accent-fg: #ffffff;
+	--sk-error-fg: #ffffff;
 }
 
 [data-theme='terminal-light'] * {
 	font-family: 'JetBrains Mono', monospace !important;
 }
 
-/* SAKURA LIGHT */
+/* SAKURA LIGHT — Papier washi rose pâle, encre prune.
+   Base lavande/pêche, elevated plus clair, primary purple-700. */
 [data-theme='sakura-light'] {
-	--sk-primary: #9333ea;
-	--sk-primary-hover: #7e22ce;
-	--sk-accent: #db2777;
-	--sk-accent-hover: #be185d;
-	--sk-surface: #fdf4ff;
-	--sk-surface-elevated: #ffffff;
-	--sk-surface-overlay: #fae8ff;
+	--sk-primary: #7e22ce;
+	--sk-primary-hover: #6b21a8;
+	--sk-accent: #be185d;
+	--sk-accent-hover: #9d174d;
+	--sk-surface: #ecd6ee;
+	--sk-surface-elevated: #f4e5f4;
+	--sk-surface-elevated-hover: #ecdaec;
+	--sk-surface-overlay: #faf0fa;
 	--sk-text: #1a0a2e;
-	--sk-text-muted: #7c3aed;
-	--sk-border: #e9d5ff;
-	--sk-shadow-color: rgba(168, 85, 247, 0.06);
+	--sk-text-muted: #6b21a8;
+	--sk-border: #d8b4e8;
+	--sk-shadow-color: rgba(126, 34, 206, 0.12);
+	--sk-success: #15803d;
+	--sk-success-soft: rgba(21, 128, 61, 0.12);
+	--sk-warning: #a16207;
+	--sk-warning-soft: rgba(161, 98, 7, 0.12);
+	--sk-error: #be185d;
+	--sk-error-soft: rgba(190, 24, 93, 0.1);
+	--sk-info: #7e22ce;
+	--sk-info-soft: rgba(126, 34, 206, 0.1);
+	--sk-primary-fg: #ffffff;
+	--sk-accent-fg: #ffffff;
+	--sk-error-fg: #ffffff;
 }
 
 /* ============================================
@@ -262,10 +397,18 @@ body {
 	background: var(--sk-text-muted);
 }
 
-/* Focus visible — accessibilité */
+/* Focus visible — accessibilité (boutons, liens, éléments interactifs sans focus style propre).
+   Exclut les champs de formulaire qui ont leur propre ring/border focus pour éviter le double indicateur. */
 :focus-visible {
 	outline: 2px solid var(--sk-accent);
 	outline-offset: 2px;
+}
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role='combobox']:focus-visible,
+[role='listbox']:focus-visible {
+	outline: none;
 }
 
 /* ============================================

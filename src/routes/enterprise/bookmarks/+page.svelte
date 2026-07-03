@@ -58,9 +58,13 @@
 	{:else if error}
 		<p class="py-8 text-center text-text-muted">{error}</p>
 	{:else if bookmarks.length === 0}
-		<div class="py-12 text-center">
-			<p class="mb-2 text-4xl">★</p>
-			<p class="mb-4 text-text-muted">{i18n.t('enterprise.bookmarks.empty')}</p>
+		<div class="rounded-2xl border border-border bg-surface-elevated p-16 text-center">
+			<div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-overlay text-text-muted">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+					<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+				</svg>
+			</div>
+			<p class="mb-5 text-base text-text-muted">{i18n.t('enterprise.bookmarks.empty')}</p>
 			<Button variant="accent" href="/enterprise/talents">{i18n.t('enterprise.bookmarks.emptyAction')}</Button>
 		</div>
 	{:else}

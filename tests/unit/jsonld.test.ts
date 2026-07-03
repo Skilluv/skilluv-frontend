@@ -10,6 +10,7 @@ describe('JSON-LD generators', () => {
 			golden_stars: 2,
 			skill_domain: 'code' as const,
 			country: 'BJ',
+			city: 'Cotonou',
 			bio: 'Full stack developer',
 			avatar_url: 'https://example.com/avatar.png',
 			github: 'kofi',

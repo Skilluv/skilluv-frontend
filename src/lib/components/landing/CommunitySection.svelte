@@ -1,40 +1,38 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import { scrollReveal, scrollStagger } from '$lib/utils/animations';
+	import { domainStyle } from '$lib/utils/domains';
 	import Button from '$components/ui/Button.svelte';
+	import type { SkillDomain } from '$lib/types';
 
-	const recentActivity = [
+	interface Activity {
+		user: string;
+		domain: SkillDomain;
+		action: 'solved' | 'leveled up';
+		challenge: string;
+		fragments: number;
+		time: string;
+	}
+
+	const recentActivity: Activity[] = [
 		{ user: 'Kira_x42', domain: 'code', action: 'solved', challenge: 'Reverse a Linked List', fragments: 120, time: '2min' },
 		{ user: 'PixelMaestro', domain: 'design', action: 'solved', challenge: 'Responsive Dashboard', fragments: 85, time: '5min' },
 		{ user: 'GhostShell', domain: 'security', action: 'solved', challenge: 'SQL Injection Hunt', fragments: 200, time: '8min' },
 		{ user: 'NeonCraft', domain: 'game', action: 'solved', challenge: 'Physics Engine Bug', fragments: 150, time: '12min' },
 		{ user: 'ByteQueen', domain: 'code', action: 'leveled up', challenge: 'Artisan', fragments: 0, time: '15min' },
 	];
-
-	const domainColors: Record<string, string> = {
-		code: 'text-blue-400',
-		design: 'text-pink-400',
-		game: 'text-green-400',
-		security: 'text-red-400'
-	};
-
-	const domainBg: Record<string, string> = {
-		code: 'bg-blue-500/10',
-		design: 'bg-pink-500/10',
-		game: 'bg-green-500/10',
-		security: 'bg-red-500/10'
-	};
 </script>
 
-<section class="py-24 sm:py-32">
+<section class="py-16 sm:py-24 lg:py-32">
 	<div class="mx-auto max-w-7xl px-4">
 		<div class="grid lg:grid-cols-2 gap-16 items-center">
 			<!-- Left: Text + CTA -->
 			<div>
 				<div use:scrollReveal>
-					<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-						{i18n.locale === 'fr' ? 'Participe. Progresse.' : 'Compete. Progress.'}
-						<span class="text-accent">{i18n.locale === 'fr' ? ' Domine.' : ' Dominate.'}</span>
+					<h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight mb-6">
+						{i18n.locale === 'fr' ? 'Participe.' : 'Compete.'}<br />
+						{i18n.locale === 'fr' ? 'Progresse.' : 'Progress.'}<br />
+						<span class="text-accent">{i18n.locale === 'fr' ? 'Domine.' : 'Dominate.'}</span>
 					</h2>
 					<p class="text-text-muted text-lg mb-4 leading-relaxed">
 						{i18n.locale === 'fr'
@@ -73,10 +71,11 @@
 					<!-- Feed items -->
 					<div use:scrollStagger={{ stagger: 0.1 }} class="divide-y divide-border">
 						{#each recentActivity as activity}
+							{@const ds = domainStyle(activity.domain)}
 							<div class="flex items-center gap-4 px-5 py-4">
 								<!-- Domain badge -->
-								<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {domainBg[activity.domain]}">
-									<span class="text-xs font-bold uppercase {domainColors[activity.domain]}">
+								<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {ds.bgSoft}">
+									<span class="text-xs font-bold uppercase {ds.text}">
 										{activity.domain.slice(0, 2)}
 									</span>
 								</div>

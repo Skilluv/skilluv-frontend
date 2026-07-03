@@ -81,7 +81,7 @@
 				onclick={togglePlay}
 				aria-label="Play"
 			>
-				<div class="flex h-16 w-16 items-center justify-center rounded-full bg-accent/90 text-2xl text-white shadow-lg">
+				<div class="flex h-16 w-16 items-center justify-center rounded-full bg-accent/90 text-2xl text-accent-fg shadow-lg">
 					▶
 				</div>
 			</button>
@@ -122,7 +122,7 @@
 			{#each speeds as s}
 				<button
 					class="rounded px-1.5 py-0.5 text-xs transition-colors
-						{speed === s ? 'bg-accent text-white' : 'text-text-muted hover:text-text-primary'}"
+						{speed === s ? 'bg-accent text-accent-fg' : 'text-text-muted hover:text-text-primary'}"
 					onclick={() => setSpeed(s)}
 				>{s}x</button>
 			{/each}

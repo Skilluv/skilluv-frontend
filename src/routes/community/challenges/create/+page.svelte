@@ -53,10 +53,12 @@
 	<title>{i18n.t('community.create.title')} — Skilluv</title>
 </svelte:head>
 
-<div class="mx-auto max-w-2xl px-4 py-8">
-	<a href="/community/challenges" class="mb-6 inline-block text-sm text-text-muted hover:text-text-primary">{i18n.t('common.actions.back')}</a>
-	<h1 class="mb-2 text-2xl font-bold">{i18n.t('community.create.title')}</h1>
-	<p class="mb-8 text-text-muted">{i18n.t('community.create.subtitle')}</p>
+<div class="mx-auto max-w-2xl px-4 py-12 sm:py-16">
+	<a href="/community/challenges" class="mb-6 inline-block text-sm text-text-muted hover:text-text-primary">← {i18n.t('common.actions.back')}</a>
+	<h1 class="mb-3 text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
+		{i18n.t('community.create.title')}<span class="text-accent">.</span>
+	</h1>
+	<p class="mb-10 text-lg text-text-muted">{i18n.t('community.create.subtitle')}</p>
 
 	<form onsubmit={handleSubmit} class="flex flex-col gap-5">
 		<Input label={i18n.t('community.create.challengeTitle')} placeholder="Un titre accrocheur" bind:value={title} required />

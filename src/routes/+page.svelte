@@ -3,6 +3,7 @@
 	import { i18n } from '$lib/i18n';
 	import JsonLd from '$lib/components/seo/JsonLd.svelte';
 	import { websiteJsonLd } from '$lib/utils/jsonld';
+	import RecommendationsWidget from '$components/ai/RecommendationsWidget.svelte';
 
 	// Landing sections
 	import HeroSection from '$lib/components/landing/HeroSection.svelte';
@@ -13,6 +14,7 @@
 	import LeaderboardPreview from '$lib/components/landing/LeaderboardPreview.svelte';
 	import StatsSection from '$lib/components/landing/StatsSection.svelte';
 	import LevelUpSection from '$lib/components/landing/LevelUpSection.svelte';
+	import OpportunitiesSection from '$lib/components/landing/OpportunitiesSection.svelte';
 	import EnterpriseSection from '$lib/components/landing/EnterpriseSection.svelte';
 	import CtaSection from '$lib/components/landing/CtaSection.svelte';
 </script>
@@ -80,10 +82,38 @@
 				<p class="text-sm text-text-muted">{i18n.t('dashboard.cardLeaderboardsDesc')}</p>
 			</a>
 		</div>
+
+		<!-- Community shortcuts -->
+		<div class="mt-8 grid gap-3 sm:grid-cols-4">
+			{#each [
+				{ href: '/feed', icon: '◎', fr: 'Fil', en: 'Feed' },
+				{ href: '/forum', icon: '◈', fr: 'Forum', en: 'Forum' },
+				{ href: '/guilds', icon: '⬢', fr: 'Guildes', en: 'Guilds' },
+				{ href: '/messages', icon: '◎', fr: 'Messages', en: 'Messages' }
+			] as short}
+				<a href={short.href} class="flex items-center gap-3 rounded-xl border border-border bg-surface-elevated p-4 hover:border-primary/40 hover:-translate-y-0.5 transition-all">
+					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">{short.icon}</div>
+					<span class="font-semibold">{i18n.locale === 'fr' ? short.fr : short.en}</span>
+				</a>
+			{/each}
+		</div>
+
+		<!-- IA Recommendations -->
+		<div class="mt-10">
+			<RecommendationsWidget limit={5} />
+		</div>
 	</div>
 {:else}
 	<!-- Landing page visiteur -->
-	<HeroSection />
+	<div class="relative">
+		<!-- Background grid extending from above the header down through the hero -->
+		<div
+			aria-hidden="true"
+			class="pointer-events-none absolute inset-x-0 -top-20 h-[110vh] opacity-[0.04]"
+			style="background-image: linear-gradient(var(--sk-text) 1px, transparent 1px), linear-gradient(90deg, var(--sk-text) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);"
+		></div>
+		<HeroSection />
+	</div>
 	<DomainsSection />
 	<HowItWorks />
 	<TrendingChallenges />
@@ -91,6 +121,7 @@
 	<LeaderboardPreview />
 	<StatsSection />
 	<LevelUpSection />
+	<OpportunitiesSection />
 	<EnterpriseSection />
 	<CtaSection />
 {/if}

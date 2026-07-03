@@ -2,7 +2,6 @@
 	import { communityApi } from '$api/community';
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
-	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { Challenge } from '$types';
 
@@ -29,17 +28,36 @@
 	<title>{i18n.t('community.mine.title')} — Skilluv</title>
 </svelte:head>
 
-<div class="mx-auto max-w-3xl px-4 py-8">
-	<div class="mb-8 flex items-center justify-between">
+<div class="mx-auto max-w-3xl px-4 py-12 sm:py-16">
+	<div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 		<div>
-			<a href="/community/challenges" class="mb-2 inline-block text-sm text-text-muted hover:text-text-primary">← {i18n.t('common.nav.community')}</a>
-			<h1 class="text-2xl font-bold">{i18n.t('community.mine.title')}</h1>
+			<a href="/community/challenges" class="mb-3 inline-block text-sm text-text-muted hover:text-text-primary">← {i18n.t('common.nav.community')}</a>
+			<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
+				{i18n.t('community.mine.title')}<span class="text-accent">.</span>
+			</h1>
 		</div>
 		<Button variant="accent" href="/community/challenges/create">+ {i18n.t('community.createBtn')}</Button>
 	</div>
 
 	{#if loading}
-		<div class="flex flex-col gap-3">{#each Array(3) as _}<Skeleton class="h-20 w-full" rounded="xl" />{/each}</div>
+		<div class="flex flex-col gap-3" aria-busy="true">
+			{#each Array(3) as _}
+				<div class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4">
+					<div class="flex-1">
+						<div class="mb-2 flex items-center gap-2">
+							<div class="h-4 w-40 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+							<div class="h-5 w-16 rounded-full bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+							<div class="h-5 w-14 rounded-full bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+						</div>
+						<div class="h-3 w-full rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+						<div class="mt-2 flex items-center gap-3">
+							<div class="h-3 w-12 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+							<div class="h-3 w-10 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+						</div>
+					</div>
+				</div>
+			{/each}
+		</div>
 	{:else if challenges.length === 0}
 		<div class="py-12 text-center">
 			<p class="mb-4 text-text-muted">{i18n.t('community.mine.empty')}</p>

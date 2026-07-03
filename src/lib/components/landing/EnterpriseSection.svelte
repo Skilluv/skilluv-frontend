@@ -1,20 +1,38 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import { scrollReveal } from '$lib/utils/animations';
+	import { domainStyle, titleColor } from '$lib/utils/domains';
 	import Button from '$components/ui/Button.svelte';
+	import type { SkillDomain, Title } from '$lib/types';
+
+	interface TalentDemo {
+		name: string;
+		title: string;
+		titleLevel: Title;
+		domain: SkillDomain;
+		fragments: number;
+		skills: string[];
+		challenges: number;
+		streak: number;
+	}
+
+	const demoTalents: TalentDemo[] = [
+		{ name: 'RustLord', title: 'Maître ★★', titleLevel: 'maitre', domain: 'code', fragments: 4821, skills: ['Rust', 'Go', 'TypeScript'], challenges: 142, streak: 45 },
+		{ name: 'ByteQueen', title: 'Artisan ★', titleLevel: 'artisan', domain: 'code', fragments: 1247, skills: ['Python', 'Rust', 'Docker'], challenges: 38, streak: 12 },
+		{ name: 'AsyncPilot', title: 'Artisan ★', titleLevel: 'artisan', domain: 'code', fragments: 891, skills: ['TypeScript', 'React', 'Node'], challenges: 24, streak: 8 }
+	];
+
+	const codeStyle = domainStyle('code');
 </script>
 
-<section class="py-24 sm:py-32">
+<section class="py-16 sm:py-24 lg:py-32">
 	<div class="mx-auto max-w-7xl px-4">
-		<div use:scrollReveal class="mb-16">
-			<span class="inline-block rounded-md bg-primary/10 px-3 py-1 text-xs font-bold text-primary uppercase tracking-wider mb-4">
-				{i18n.locale === 'fr' ? 'Entreprises' : 'Companies'}
-			</span>
-			<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-				{i18n.locale === 'fr' ? 'Le CV est mort.' : 'The resume is dead.'}
-				<span class="text-primary">{i18n.locale === 'fr' ? ' Bienvenue dans la preuve.' : ' Welcome to proof.'}</span>
+		<div use:scrollReveal class="mb-10 sm:mb-16">
+			<h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight mb-5">
+				{i18n.locale === 'fr' ? 'Le CV est mort.' : 'The resume is dead.'}<br />
+				<span class="text-primary">{i18n.locale === 'fr' ? 'Bienvenue dans la preuve.' : 'Welcome to proof.'}</span>
 			</h2>
-			<p class="text-text-muted text-lg max-w-2xl">
+			<p class="text-text-muted text-base sm:text-lg max-w-2xl">
 				{i18n.locale === 'fr'
 					? 'Vos candidats ont déjà prouvé ce qu\'ils savent faire. Cherchez par compétence, pas par diplôme.'
 					: 'Your candidates already proved what they can do. Search by skill, not by degree.'}
@@ -22,13 +40,13 @@
 		</div>
 
 		<!-- Simulated recruiter view — what the product actually looks like -->
-		<div use:scrollReveal class="rounded-xl border border-border bg-surface-elevated overflow-hidden">
+		<div use:scrollReveal class="rounded-2xl border border-border bg-surface-elevated overflow-hidden">
 
 			<!-- Toolbar -->
 			<div class="flex items-center gap-3 border-b border-border px-5 py-3 overflow-x-auto">
 				<span class="text-xs font-semibold shrink-0">{i18n.locale === 'fr' ? 'Recherche' : 'Search'}</span>
 				<div class="flex gap-2 shrink-0">
-					<span class="rounded-md bg-blue-500/10 px-2.5 py-1 text-[11px] font-medium text-blue-400">Code</span>
+					<span class="rounded-md {codeStyle.bgSoft} px-2.5 py-1 text-[11px] font-medium {codeStyle.text}">Code</span>
 					<span class="rounded-md bg-surface-overlay px-2.5 py-1 text-[11px] font-medium text-text-muted">Rust</span>
 					<span class="rounded-md bg-surface-overlay px-2.5 py-1 text-[11px] font-medium text-text-muted">{i18n.locale === 'fr' ? 'Artisan+' : 'Artisan+'}</span>
 				</div>
@@ -37,11 +55,7 @@
 
 			<!-- Talent results -->
 			<div class="divide-y divide-border">
-				{#each [
-					{ name: 'RustLord', title: 'Maître ★★', titleColor: 'text-purple-400', domain: 'code', fragments: 4821, skills: ['Rust', 'Go', 'TypeScript'], challenges: 142, streak: 45 },
-					{ name: 'ByteQueen', title: 'Artisan ★', titleColor: 'text-blue-400', domain: 'code', fragments: 1247, skills: ['Python', 'Rust', 'Docker'], challenges: 38, streak: 12 },
-					{ name: 'AsyncPilot', title: 'Artisan ★', titleColor: 'text-blue-400', domain: 'code', fragments: 891, skills: ['TypeScript', 'React', 'Node'], challenges: 24, streak: 8 }
-				] as talent}
+				{#each demoTalents as talent}
 					<div class="flex items-center gap-4 px-5 py-4">
 						<!-- Avatar -->
 						<div class="shrink-0 h-10 w-10 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-bold text-primary">
@@ -52,7 +66,7 @@
 						<div class="flex-1 min-w-0">
 							<div class="flex items-center gap-2 mb-1">
 								<p class="text-sm font-semibold">{talent.name}</p>
-								<span class="text-xs {talent.titleColor}">{talent.title}</span>
+								<span class="text-xs {titleColor(talent.titleLevel)}">{talent.title}</span>
 							</div>
 							<div class="flex items-center gap-3 text-[11px] text-text-muted">
 								<span>{talent.challenges} challenges</span>
@@ -92,7 +106,7 @@
 		<!-- Comparison: CV vs Skilluv -->
 		<div use:scrollReveal class="mt-8 grid sm:grid-cols-2 gap-4">
 			<!-- Traditional -->
-			<div class="rounded-xl border border-border bg-surface-elevated p-5">
+			<div class="rounded-2xl border border-border bg-surface-elevated p-5">
 				<p class="text-xs text-text-muted uppercase tracking-wider mb-4 line-through decoration-error/50">{i18n.locale === 'fr' ? 'Recrutement classique' : 'Traditional hiring'}</p>
 				<ul class="space-y-2.5 text-sm text-text-muted">
 					<li class="flex items-start gap-2">
@@ -111,7 +125,7 @@
 			</div>
 
 			<!-- Skilluv -->
-			<div class="rounded-xl border border-primary/30 bg-surface-elevated p-5">
+			<div class="rounded-2xl border border-primary/30 bg-surface-elevated p-5">
 				<p class="text-xs text-primary uppercase tracking-wider mb-4 font-bold">Skilluv</p>
 				<ul class="space-y-2.5 text-sm text-text-muted">
 					<li class="flex items-start gap-2">
@@ -130,7 +144,7 @@
 			</div>
 		</div>
 
-		<div use:scrollReveal class="mt-8">
+		<div use:scrollReveal class="mt-8 text-center">
 			<Button variant="primary" href="/enterprise/register">
 				{i18n.locale === 'fr' ? 'Créer mon espace entreprise' : 'Create my enterprise space'}
 			</Button>

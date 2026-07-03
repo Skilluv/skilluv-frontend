@@ -121,6 +121,9 @@
 		<div class="flex flex-wrap gap-3">
 			<Button variant="accent" href="/enterprise/talents">{i18n.t('enterprise.dashboard.searchTalents')}</Button>
 			<Button variant="secondary" href="/enterprise/bookmarks">{i18n.t('enterprise.dashboard.viewBookmarks')}</Button>
+			<Button variant="secondary" href="/enterprise/credits">
+				{i18n.locale === 'fr' ? 'Crédits & facturation' : 'Credits & billing'}
+			</Button>
 		</div>
 	{/if}
 </div>

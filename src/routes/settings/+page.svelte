@@ -9,6 +9,9 @@
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import Modal from '$components/ui/Modal.svelte';
+	import CountrySelect from '$components/ui/CountrySelect.svelte';
+	import CityAutocomplete from '$components/ui/CityAutocomplete.svelte';
+	import PushToggle from '$components/pwa/PushToggle.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { Locale } from '$lib/i18n';
 	import type { ThemeBase, SkillDomain, PrivacySettings } from '$types';
@@ -19,7 +22,8 @@
 	let linkedin = $state(auth.user?.linkedin ?? '');
 	let website = $state(auth.user?.website ?? '');
 	let twitter = $state(auth.user?.twitter ?? '');
-	let country = $state(auth.user?.country ?? '');
+	let country = $state<string | null>(auth.user?.country ?? null);
+	let city = $state<string | null>(auth.user?.city ?? null);
 	let displayName = $state(auth.user?.display_name ?? '');
 	let savingProfile = $state(false);
 
@@ -50,9 +54,10 @@
 	];
 
 	// Language
-	const locales: { value: Locale; labelKey: string }[] = [
+	const locales: { value: Locale; labelKey: string; direct?: string }[] = [
 		{ value: 'fr', labelKey: 'settings.language.fr' },
-		{ value: 'en', labelKey: 'settings.language.en' }
+		{ value: 'en', labelKey: 'settings.language.en' },
+		{ value: 'ar', labelKey: 'settings.language.fr', direct: 'العربية' }
 	];
 
 	// Load privacy on mount
@@ -65,7 +70,15 @@
 	async function saveProfile() {
 		savingProfile = true;
 		try {
-			await profileApi.update({ bio, github, linkedin, website, twitter, country });
+			await profileApi.update({
+				bio,
+				github,
+				linkedin,
+				website,
+				twitter,
+				country: country ?? undefined,
+				city: city ?? undefined
+			});
 			if (displayName !== auth.user?.display_name) {
 				await authApi.me(); // refresh
 			}
@@ -152,10 +165,18 @@
 						{i18n.locale === loc.value ? 'border-accent bg-accent/10' : 'border-border hover:border-text-muted'}"
 					onclick={() => i18n.setLocale(loc.value)}
 				>
-					<p class="text-sm font-medium">{i18n.t(loc.labelKey)}</p>
+					<p class="text-sm font-medium">{loc.direct ?? i18n.t(loc.labelKey)}</p>
 				</button>
 			{/each}
 		</div>
+	</section>
+
+	<!-- Notifications push -->
+	<section class="mb-8">
+		<h2 class="mb-4 text-lg font-semibold">
+			{i18n.locale === 'fr' ? 'Notifications' : 'Notifications'}
+		</h2>
+		<PushToggle />
 	</section>
 
 	<!-- Profil -->
@@ -172,7 +193,18 @@
 				<Input label="X/Twitter" placeholder="@handle" bind:value={twitter} />
 				<Input label={i18n.t('profile.links.website')} placeholder="https://..." bind:value={website} />
 			</div>
-			<Input label={i18n.t('enterprise.register.country')} placeholder="BJ, CI, SN..." bind:value={country} />
+			<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+				<CountrySelect
+					label={i18n.locale === 'fr' ? 'Pays' : 'Country'}
+					bind:value={country}
+					clearable
+				/>
+				<CityAutocomplete
+					label={i18n.locale === 'fr' ? 'Ville' : 'City'}
+					bind:value={city}
+					{country}
+				/>
+			</div>
 			<Button variant="primary" loading={savingProfile} onclick={saveProfile}>{i18n.t('common.actions.save')}</Button>
 		</div>
 	</section>

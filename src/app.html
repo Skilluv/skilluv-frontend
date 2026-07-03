@@ -3,14 +3,13 @@
 	<head>
 		<script>
 			(function() {
+				// Mode terminal désactivé — si quelqu'un avait le flag dans son localStorage, on le purge.
 				if (localStorage.getItem('skilluv-terminal-mode') === 'true') {
-					var s = document.createElement('style');
-					s.id = 'term-hide';
-					s.textContent = 'html,body{background:#000!important}#app{visibility:hidden}';
-					document.head.appendChild(s);
-					return;
+					localStorage.removeItem('skilluv-terminal-mode');
 				}
 				var b = localStorage.getItem('skilluv-theme') || 'forge';
+				// Si l'utilisateur avait le thème "terminal" stocké, on retombe sur forge.
+				if (b === 'terminal') b = 'forge';
 				var m = localStorage.getItem('skilluv-mode') || 'dark';
 				document.documentElement.setAttribute('data-theme', m === 'dark' ? b : b + '-light');
 			})();
@@ -27,7 +26,7 @@
 		<link rel="apple-touch-icon" href="%sveltekit.assets%/icon-192.png" />
 		%sveltekit.head%
 	</head>
-	<body>
+	<body data-sveltekit-preload-data="hover" data-sveltekit-preload-code="viewport">
 		<div id="app">%sveltekit.body%</div>
 	</body>
 </html>

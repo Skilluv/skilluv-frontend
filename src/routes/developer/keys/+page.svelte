@@ -5,6 +5,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import Modal from '$components/ui/Modal.svelte';
+	import Skeleton from '$components/ui/Skeleton.svelte';
 
 	let keys = $state<ApiKeyInfo[]>([]);
 	let loading = $state(true);
@@ -101,7 +102,13 @@
 		</form>
 	{/if}
 
-	{#if keys.length === 0 && !loading}
+	{#if loading}
+		<div class="flex flex-col gap-3">
+			{#each Array(3) as _}
+				<Skeleton class="h-20 w-full" rounded="xl" />
+			{/each}
+		</div>
+	{:else if keys.length === 0}
 		<p class="py-8 text-center text-text-muted">No API keys. Create one to get started.</p>
 	{:else}
 		<div class="flex flex-col gap-3">

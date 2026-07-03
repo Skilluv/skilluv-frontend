@@ -1,14 +1,25 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import { scrollReveal } from '$lib/utils/animations';
+	import { domainStyle } from '$lib/utils/domains';
 	import Button from '$components/ui/Button.svelte';
+	import type { SkillDomain } from '$lib/types';
 
-	const domains = [
+	interface DomainData {
+		key: SkillDomain;
+		topUser: string;
+		topScore: string;
+		activeFr: string;
+		activeEn: string;
+		challengesFr: string;
+		challengesEn: string;
+		stack: string[];
+		snippetLines: string[];
+	}
+
+	const domains: DomainData[] = [
 		{
-			key: 'code' as const,
-			color: 'text-blue-400',
-			dot: 'bg-blue-500',
-			border: 'hover:border-blue-500/40',
+			key: 'code',
 			topUser: 'RustLord',
 			topScore: '4 821',
 			activeFr: '126 actifs cette semaine',
@@ -19,10 +30,7 @@
 			snippetLines: ['fn main() {', '    solve(challenge);', '}']
 		},
 		{
-			key: 'design' as const,
-			color: 'text-pink-400',
-			dot: 'bg-pink-500',
-			border: 'hover:border-pink-500/40',
+			key: 'design',
 			topUser: 'PixelMaestro',
 			topScore: '2 340',
 			activeFr: '89 actifs cette semaine',
@@ -33,10 +41,7 @@
 			snippetLines: ['.hero {', '  display: grid;', '}']
 		},
 		{
-			key: 'game' as const,
-			color: 'text-green-400',
-			dot: 'bg-green-500',
-			border: 'hover:border-green-500/40',
+			key: 'game',
 			topUser: 'NeonCraft',
 			topScore: '1 987',
 			activeFr: '64 actifs cette semaine',
@@ -47,10 +52,7 @@
 			snippetLines: ['func _ready():', '  spawn(enemy)', '  start_wave()']
 		},
 		{
-			key: 'security' as const,
-			color: 'text-red-400',
-			dot: 'bg-red-500',
-			border: 'hover:border-red-500/40',
+			key: 'security',
 			topUser: 'GhostShell',
 			topScore: '2 917',
 			activeFr: '71 actifs cette semaine',
@@ -63,14 +65,14 @@
 	];
 </script>
 
-<section class="py-24 sm:py-32">
+<section class="py-16 sm:py-24 lg:py-32">
 	<div class="mx-auto max-w-7xl px-4">
-		<div use:scrollReveal class="mb-16">
-			<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-				{i18n.locale === 'fr' ? '4 arènes.' : '4 arenas.'}
+		<div use:scrollReveal class="mb-10 sm:mb-16">
+			<h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight mb-5">
+				{i18n.locale === 'fr' ? '4 arènes' : '4 arenas'}<span class="text-accent">.</span><br />
 				<span class="text-accent">{i18n.locale === 'fr' ? 'Laquelle est la tienne ?' : 'Which one is yours?'}</span>
 			</h2>
-			<p class="text-text-muted text-lg max-w-2xl">
+			<p class="text-text-muted text-base sm:text-lg max-w-2xl">
 				{i18n.locale === 'fr'
 					? 'Chaque domaine a sa communauté, ses challenges, son classement. Choisis ton terrain, les autres viendront après.'
 					: 'Each domain has its community, challenges, and leaderboard. Pick your ground, the rest will follow.'}
@@ -79,15 +81,16 @@
 
 		<div class="grid lg:grid-cols-2 gap-4">
 			{#each domains as domain}
+				{@const ds = domainStyle(domain.key)}
 				<a
 					href="/challenges?domain={domain.key}"
 					use:scrollReveal
-					class="group rounded-xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 {domain.border}"
+					class="group rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 {ds.hoverBorder}"
 				>
 					<!-- Domain header bar -->
 					<div class="flex items-center gap-3 border-b border-border px-5 py-3">
-						<div class="h-2.5 w-2.5 rounded-sm {domain.dot}"></div>
-						<span class="text-sm font-semibold {domain.color}">{i18n.t(`common.domains.${domain.key}`)}</span>
+						<div class="h-2.5 w-2.5 rounded-sm {ds.dot}"></div>
+						<span class="text-sm font-semibold {ds.text}">{i18n.t(`common.domains.${domain.key}`)}</span>
 						<span class="ml-auto text-xs text-text-muted">{i18n.locale === 'fr' ? domain.challengesFr : domain.challengesEn}</span>
 					</div>
 
@@ -115,7 +118,7 @@
 							<div class="mb-4">
 								<p class="text-[10px] text-text-muted uppercase tracking-wider mb-2">{i18n.locale === 'fr' ? 'N°1 du domaine' : '#1 in domain'}</p>
 								<div class="flex items-center gap-2">
-									<div class="h-7 w-7 rounded-full bg-surface-overlay flex items-center justify-center text-[10px] font-bold {domain.color}">
+									<div class="h-7 w-7 rounded-full bg-surface-overlay flex items-center justify-center text-[10px] font-bold {ds.text}">
 										{domain.topUser[0]}
 									</div>
 									<div>

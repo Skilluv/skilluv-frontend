@@ -113,7 +113,7 @@
 			{#each domains as d}
 				<button
 					class="rounded-lg px-3 py-1.5 text-xs font-medium transition-colors
-						{filterDomain === d.value ? 'bg-primary text-white' : 'bg-surface-elevated text-text-muted hover:text-text-primary'}"
+						{filterDomain === d.value ? 'bg-primary text-primary-fg' : 'bg-surface-elevated text-text-muted hover:text-text-primary'}"
 					onclick={() => { filterDomain = d.value; applySearch(); }}
 				>{i18n.t(d.key)}</button>
 			{/each}

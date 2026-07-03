@@ -13,6 +13,7 @@ export interface RegisterRequest {
 	last_name: string;
 	skill_domain: SkillDomain;
 	country?: string;
+	city?: string;
 }
 
 export interface LoginRequest {

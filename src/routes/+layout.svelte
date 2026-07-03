@@ -1,9 +1,10 @@
 <script lang="ts">
 	import '../app.css';
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { auth } from '$lib/stores/auth.svelte';
 	import { theme } from '$lib/stores/theme.svelte';
-	import { terminalMode } from '$lib/stores/terminal.svelte';
+	import { tenant } from '$lib/stores/tenant.svelte';
 	import { notifications } from '$lib/stores/notifications.svelte';
 	import { ws } from '$lib/stores/websocket.svelte';
 	import { i18n } from '$lib/i18n';
@@ -12,8 +13,9 @@
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import Toast from '$lib/components/ui/Toast.svelte';
 	import PageTransition from '$lib/components/ui/PageTransition.svelte';
-	import TerminalConfirm from '$lib/components/terminal/TerminalConfirm.svelte';
-	import TerminalEmulator from '$lib/components/terminal/TerminalEmulator.svelte';
+	import InstallPrompt from '$lib/components/pwa/InstallPrompt.svelte';
+	// Terminal mode désactivé pour l'instant — composants conservés sous src/lib/components/terminal/*
+	// pour réactivation future. Voir TerminalEmulator.svelte / TerminalConfirm.svelte / commands.ts.
 
 	let { data, children } = $props();
 
@@ -24,11 +26,17 @@
 		auth.setUser(data.user);
 	});
 
-	// Initialise theme + langue + terminal cote client
+	// Initialise theme + langue côté client
 	$effect(() => {
 		theme.init();
 		i18n.init();
-		terminalMode.init();
+	});
+
+	// Charge le tenant courant UNE SEULE FOIS au mount client, indépendamment
+	// des changements de state réactifs. Si le backend est down, `tenant.load()`
+	// capture l'erreur silencieusement et fallback sur le tenant racine.
+	onMount(() => {
+		void tenant.load();
 	});
 
 	// WebSocket + notifications polling quand connecte
@@ -41,49 +49,28 @@
 			notifications.stopPolling();
 		}
 	});
-
-	function confirmTerminal() {
-		theme.set('terminal');
-		terminalMode.activate();
-	}
-
-	function exitTerminal() {
-		terminalMode.deactivate();
-		theme.set('forge');
-	}
 </script>
 
-<!-- Terminal confirmation dialog -->
-{#if terminalMode.confirming}
-	<TerminalConfirm
-		onConfirm={confirmTerminal}
-		onCancel={() => terminalMode.deactivate()}
-	/>
-{/if}
+<Toast />
 
-<!-- Terminal emulator — replaces entire UI -->
-{#if terminalMode.active}
-	<TerminalEmulator onExit={exitTerminal} />
-{:else}
-	<Toast />
+<div class="flex min-h-screen flex-col bg-surface text-text-primary">
+	{#if !isAuthPage}
+		<Navbar />
+	{/if}
 
-	<div class="flex min-h-screen flex-col bg-surface text-text-primary">
-		{#if !isAuthPage}
-			<Navbar />
-		{/if}
+	<main class="flex-1">
+		<PageTransition>
+			{@render children()}
+		</PageTransition>
+	</main>
 
-		<main class="flex-1">
-			<PageTransition>
-				{@render children()}
-			</PageTransition>
-		</main>
+	{#if !isAuthPage}
+		<Footer />
+	{/if}
 
-		{#if !isAuthPage}
-			<Footer />
-		{/if}
+	{#if !isAuthPage && auth.isAuthenticated}
+		<BottomBar />
+	{/if}
 
-		{#if !isAuthPage && auth.isAuthenticated}
-			<BottomBar />
-		{/if}
-	</div>
-{/if}
+	<InstallPrompt />
+</div>

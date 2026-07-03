@@ -3,7 +3,7 @@
 	import { notifications } from '$stores/notifications.svelte';
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
-	import Skeleton from '$components/ui/Skeleton.svelte';
+	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { Notification } from '$types';
 
@@ -11,16 +11,18 @@
 	let loading = $state(true);
 	let error = $state('');
 	let filterRead = $state<boolean | undefined>(false);
+	let filterValue = $derived(filterRead === false ? 'unread' : 'all');
 
-	const typeIcons: Record<string, string> = {
-		interest_request_received: '💼',
-		interest_accepted: '✅',
-		interest_declined: '↩',
-		new_message: '💬',
-		challenge_approved: '🎯',
-		challenge_rejected: '↻',
-		account_banned: '⛔',
-		account_unbanned: '🔓'
+	/** Couleur accent par type — l'icône est rendue via le composant NotifIcon plus bas. */
+	const typeColor: Record<string, string> = {
+		interest_request_received: 'text-primary',
+		interest_accepted: 'text-success',
+		interest_declined: 'text-text-muted',
+		new_message: 'text-primary',
+		challenge_approved: 'text-success',
+		challenge_rejected: 'text-warning',
+		account_banned: 'text-error',
+		account_unbanned: 'text-success'
 	};
 
 	$effect(() => {
@@ -80,40 +82,58 @@
 	</div>
 
 	<!-- Filtres -->
-	<div class="mb-4 flex gap-2">
-		<button
-			class="rounded-lg px-3 py-1.5 text-xs font-medium {filterRead === false ? 'bg-primary text-white' : 'bg-surface-elevated text-text-muted'}"
-			onclick={() => { filterRead = false; loadNotifications(); }}
-		>{i18n.t('notifications.unread')}</button>
-		<button
-			class="rounded-lg px-3 py-1.5 text-xs font-medium {filterRead === undefined ? 'bg-primary text-white' : 'bg-surface-elevated text-text-muted'}"
-			onclick={() => { filterRead = undefined; loadNotifications(); }}
-		>{i18n.t('notifications.all')}</button>
+	<div class="mb-4">
+		<SegmentedControl
+			items={[
+				{ value: 'unread', label: i18n.t('notifications.unread') },
+				{ value: 'all', label: i18n.t('notifications.all') }
+			]}
+			value={filterValue}
+			onchange={(v) => { filterRead = v === 'unread' ? false : undefined; loadNotifications(); }}
+			size="sm"
+		/>
 	</div>
 
 	{#if loading}
-		<div class="flex flex-col gap-3">
+		<div class="flex flex-col gap-2" aria-busy="true">
 			{#each Array(5) as _}
-				<Skeleton class="h-16 w-full" rounded="xl" />
+				<div class="flex w-full items-start gap-3 rounded-2xl border border-border bg-surface p-4">
+					<!-- type dot placeholder -->
+					<div class="mt-2 h-2 w-2 shrink-0 rounded-full bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+					<div class="flex-1 space-y-2">
+						<!-- title -->
+						<div class="h-4 w-2/3 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+						<!-- body -->
+						<div class="h-3 w-full rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+					</div>
+					<!-- date -->
+					<div class="h-3 w-8 shrink-0 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+				</div>
 			{/each}
 		</div>
 	{:else if error}
 		<p class="py-8 text-center text-text-muted">{error}</p>
 	{:else if items.length === 0}
-		<div class="py-12 text-center">
-			<p class="mb-2 text-4xl">🔔</p>
-			<p class="text-text-muted">{i18n.t('notifications.empty')}</p>
+		<div class="rounded-2xl border border-border bg-surface-elevated p-16 text-center">
+			<div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-overlay text-text-muted">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+					<path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+				</svg>
+			</div>
+			<p class="text-base text-text-muted">{i18n.t('notifications.empty')}</p>
 		</div>
 	{:else}
 		<div class="flex flex-col gap-2">
 			{#each items as notif}
 				<button
 					type="button"
-					class="flex w-full items-start gap-3 rounded-xl border p-4 text-left transition-colors
+					class="flex w-full items-start gap-3 rounded-2xl border p-4 text-left transition-colors
 						{notif.read ? 'border-border bg-surface' : 'border-accent/20 bg-accent/5'}"
 					onclick={() => markRead(notif)}
 				>
-					<span class="mt-0.5 text-lg">{typeIcons[notif.notification_type] ?? '🔔'}</span>
+					<!-- Type indicator dot -->
+					<span class="mt-2 h-2 w-2 shrink-0 rounded-full {typeColor[notif.notification_type] ?? 'text-text-muted'} bg-current"></span>
 					<div class="flex-1">
 						<p class="text-sm font-medium {notif.read ? 'text-text-muted' : 'text-text-primary'}">{notif.title}</p>
 						{#if notif.body}

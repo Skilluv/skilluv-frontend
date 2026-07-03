@@ -25,17 +25,17 @@
 		'inline-flex items-center justify-center font-semibold transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]';
 
 	const variants: Record<string, string> = {
-		primary: 'bg-primary text-white hover:bg-primary-hover',
+		primary: 'bg-primary text-primary-fg hover:bg-primary-hover',
 		secondary: 'border border-border text-text-primary hover:bg-surface-overlay hover:border-text-muted',
 		ghost: 'text-text-muted hover:text-text-primary hover:bg-surface-overlay',
-		accent: 'bg-accent text-white hover:bg-accent-hover',
-		danger: 'bg-error text-white hover:bg-red-700'
+		accent: 'bg-accent text-accent-fg hover:bg-accent-hover',
+		danger: 'bg-error text-error-fg hover:brightness-90'
 	};
 
 	const sizes: Record<string, string> = {
-		sm: 'h-8 px-3 text-sm rounded-lg gap-1.5',
-		md: 'h-10 px-5 text-sm rounded-xl gap-2',
-		lg: 'h-12 px-8 text-base rounded-2xl gap-2.5'
+		sm: 'h-8 px-4 text-xs rounded-full gap-1.5',
+		md: 'h-10 px-5 text-sm rounded-full gap-2',
+		lg: 'h-12 px-7 text-xs rounded-full uppercase tracking-wider gap-2.5'
 	};
 
 	let classes = $derived(`${base} ${variants[variant]} ${sizes[size]} ${className}`);

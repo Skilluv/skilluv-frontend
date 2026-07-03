@@ -5,8 +5,9 @@
 
 <div class="flex min-h-[100vh] flex-col items-center justify-center px-4 py-12">
 	<!-- Logo -->
-	<a href="/" class="mb-8 text-2xl font-bold">
-		<span class="text-accent">Skill</span><span class="text-text-primary">uv</span>
+	<a href="/" class="mb-10 flex items-center gap-2 text-3xl font-black tracking-tight">
+		<img src="/favicon.svg" alt="" class="h-8 w-8" />
+		<span><span class="text-accent">Skill</span><span class="text-text-primary">uv</span></span>
 	</a>
 
 	<div class="w-full max-w-md">

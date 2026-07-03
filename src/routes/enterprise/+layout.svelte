@@ -20,6 +20,10 @@
 	}
 </script>
 
+{#if !auth.isAuthenticated}
+	<!-- Visiteurs non connectés : pas de sidebar dashboard (sinon liens cassés) -->
+	{@render children()}
+{:else}
 <div class="flex min-h-[calc(100vh-4rem)]">
 	<!-- Sidebar desktop -->
 	<aside class="hidden w-56 shrink-0 border-r border-border bg-surface-elevated p-4 lg:block">
@@ -62,3 +66,4 @@
 		{@render children()}
 	</main>
 </div>
+{/if}

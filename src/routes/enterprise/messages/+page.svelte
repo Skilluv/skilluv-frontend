@@ -87,7 +87,7 @@
 
 					<!-- Unread badge -->
 					{#if conv.unread_count > 0}
-						<span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-white">
+						<span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-fg">
 							{conv.unread_count}
 						</span>
 					{/if}

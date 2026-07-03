@@ -2,13 +2,12 @@
 	import { page } from '$app/stores';
 	import { auth } from '$lib/stores/auth.svelte';
 	import { theme } from '$lib/stores/theme.svelte';
-	import { terminalMode } from '$lib/stores/terminal.svelte';
 	import { notifications } from '$lib/stores/notifications.svelte';
+	import { tenant } from '$lib/stores/tenant.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { ThemeBase } from '$lib/types';
-	import { onMount } from 'svelte';
+	import NavDropdown from './NavDropdown.svelte';
 
-	let scrolled = $state(false);
 	let mobileOpen = $state(false);
 	let themeOpen = $state(false);
 
@@ -16,24 +15,12 @@
 		{ key: 'forge', label: 'Forge', accent: '#ea580c', primary: '#2563eb' },
 		{ key: 'neon', label: 'Neon', accent: '#f59e0b', primary: '#06b6d4' },
 		{ key: 'arena', label: 'Arena', accent: '#64748b', primary: '#dc2626' },
-		{ key: 'terminal', label: 'Terminal', accent: '#fbbf24', primary: '#22c55e' },
 		{ key: 'sakura', label: 'Sakura', accent: '#ec4899', primary: '#a855f7' }
 	];
 
-	onMount(() => {
-		const onScroll = () => { scrolled = window.scrollY > 20; };
-		window.addEventListener('scroll', onScroll, { passive: true });
-		return () => window.removeEventListener('scroll', onScroll);
-	});
-
 	function selectTheme(t: ThemeBase) {
 		themeOpen = false;
-		if (t === 'terminal') {
-			terminalMode.requestActivation();
-		} else {
-			terminalMode.deactivate();
-			theme.set(t);
-		}
+		theme.set(t);
 	}
 
 	function handleClickOutside(e: MouseEvent) {
@@ -46,53 +33,203 @@
 		if (href === '/') return path === '/';
 		return path.startsWith(href);
 	}
+
+	// ── Nav groups par persona ────────────────────────────────
+
+	let discoverGroups = $derived([
+		{
+			title: i18n.locale === 'fr' ? 'Apprendre & jouer' : 'Learn & play',
+			items: [
+				{
+					href: '/challenges',
+					icon: '◎',
+					label: i18n.t('common.nav.challenges'),
+					description: i18n.locale === 'fr' ? 'Résous des défis dans 4 domaines' : 'Solve challenges in 4 domains'
+				},
+				{
+					href: '/community/challenges',
+					icon: '✎',
+					label: i18n.locale === 'fr' ? 'Communauté' : 'Community',
+					description: i18n.locale === 'fr' ? 'Challenges créés par la communauté' : 'Community-created challenges'
+				}
+			]
+		},
+		{
+			title: i18n.locale === 'fr' ? 'Grandir' : 'Grow',
+			items: [
+				{
+					href: '/bounties',
+					icon: '⬢',
+					label: 'Bounties',
+					description: i18n.locale === 'fr' ? 'Résous une issue GitHub, gagne des fragments' : 'Solve a GitHub issue, earn fragments'
+				},
+				{
+					href: '/certifications',
+					icon: '◈',
+					label: 'Certifications',
+					description: i18n.locale === 'fr' ? 'Diplômes vérifiables en ligne' : 'Online-verifiable diplomas'
+				},
+				{
+					href: '/mentors',
+					icon: '★',
+					label: 'Mentorship',
+					description: i18n.locale === 'fr' ? 'Sessions 1-on-1 avec un expert' : '1-on-1 sessions with an expert'
+				}
+			]
+		}
+	]);
+
+	let communityGroups = $derived([
+		{
+			items: [
+				{ href: '/forum', icon: '◈', label: 'Forum', description: i18n.locale === 'fr' ? 'Questions, réponses, bounties fragments' : 'Q&A with fragment bounties' },
+				{ href: '/guilds', icon: '▲', label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds', description: i18n.locale === 'fr' ? 'Rejoins une écurie style F1/MMO' : 'Join an F1/MMO-style team' },
+				{ href: '/tournaments', icon: '★', label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments', description: i18n.locale === 'fr' ? 'Compétitions mensuelles chronométrées' : 'Timed monthly competitions' },
+				{ href: '/leaderboards', icon: '↑', label: i18n.t('common.nav.leaderboards'), description: i18n.locale === 'fr' ? 'Top 100 live par domaine' : 'Live Top 100 by domain' }
+			]
+		}
+	]);
+
+	let talentGrowGroups = $derived([
+		{
+			items: [
+				{ href: '/bounties', icon: '⬢', label: 'Bounties OSS', description: i18n.locale === 'fr' ? 'Gagne des fragments sur des issues GitHub' : 'Earn fragments on GitHub issues' },
+				{ href: '/certifications', icon: '◈', label: 'Certifications', description: i18n.locale === 'fr' ? 'Passe une certification, obtiens un diplôme' : 'Take a certification, get a diploma' },
+				{ href: '/diplomas/my', icon: '✓', label: i18n.locale === 'fr' ? 'Mes diplômes' : 'My diplomas' }
+			]
+		},
+		{
+			title: 'Mentorship',
+			items: [
+				{ href: '/mentors', icon: '★', label: i18n.locale === 'fr' ? 'Trouver un mentor' : 'Find a mentor' },
+				{ href: '/mentorship/sessions', icon: '◎', label: i18n.locale === 'fr' ? 'Mes sessions' : 'My sessions' },
+				{ href: '/mentors/me', icon: '✎', label: i18n.locale === 'fr' ? 'Devenir mentor' : 'Become a mentor', badge: '80%' }
+			]
+		}
+	]);
+
+	let talentCommunityGroups = $derived([
+		{
+			items: [
+				{ href: '/feed', icon: '◎', label: i18n.locale === 'fr' ? "Fil d'activité" : 'Activity feed' },
+				{ href: '/forum', icon: '◈', label: 'Forum' },
+				{ href: '/guilds', icon: '▲', label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
+				{ href: '/tournaments', icon: '★', label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments' },
+				{ href: '/messages', icon: '◎', label: 'Messages' },
+				{ href: '/leaderboards', icon: '↑', label: i18n.t('common.nav.leaderboards') }
+			]
+		}
+	]);
+
+	let enterpriseGroupsAnon = $derived([
+		{
+			title: 'Sourcing',
+			items: [
+				{ href: '/find-talents', icon: '◎', label: i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works', description: i18n.locale === 'fr' ? 'Recruter sur la preuve, pas le CV' : 'Hire on proof, not resume' },
+				{ href: '/talent-search', icon: '⬢', label: i18n.locale === 'fr' ? 'Recherche avancée' : 'Advanced search', description: i18n.locale === 'fr' ? '13 filtres croisés' : '13 cross filters' }
+			]
+		},
+		{
+			title: 'Business',
+			items: [
+				{ href: '/bounties', icon: '⬢', label: i18n.locale === 'fr' ? 'Poster une bounty' : 'Post a bounty', description: i18n.locale === 'fr' ? 'Convertis crédits en résolutions PR' : 'Convert credits into PR resolutions' },
+				{ href: '/pricing', icon: '★', label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing', description: i18n.locale === 'fr' ? 'Pay-as-you-go multi-devise' : 'Pay-as-you-go multi-currency' },
+				{ href: '/enterprise/register', icon: '+', label: i18n.locale === 'fr' ? 'Créer mon espace' : 'Create my space', badge: '2 min' }
+			]
+		}
+	]);
+
+	let enterpriseGroupsAuth = $derived([
+		{
+			title: 'Sourcing',
+			items: [
+				{ href: '/talent-search', icon: '⬢', label: i18n.locale === 'fr' ? 'Recherche talents' : 'Search talents', description: i18n.locale === 'fr' ? '13 filtres croisés' : '13 cross filters' },
+				{ href: '/enterprise/bookmarks', icon: '◈', label: 'Bookmarks' },
+				{ href: '/enterprise/lists', icon: '✎', label: i18n.locale === 'fr' ? 'Listes' : 'Lists' },
+				{ href: '/enterprise/messages', icon: '◎', label: 'Messages' }
+			]
+		},
+		{
+			title: 'Business',
+			items: [
+				{ href: '/bounties', icon: '⬢', label: 'Bounties' },
+				{ href: '/enterprise/credits', icon: '★', label: i18n.locale === 'fr' ? 'Crédits' : 'Credits' },
+				{ href: '/invoices', icon: '◎', label: i18n.locale === 'fr' ? 'Factures' : 'Invoices' },
+				{ href: '/pricing', icon: '★', label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing' }
+			]
+		}
+	]);
 </script>
 
 <svelte:window onclick={handleClickOutside} />
 
-<header
-	class="sticky top-0 z-50 transition-all duration-300 {scrolled
-		? 'border-b border-border bg-surface-elevated/90 backdrop-blur-md'
-		: 'bg-transparent'}"
->
-	<nav class="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
-		<!-- Logo -->
-		<a href="/" class="flex items-center gap-2">
-			<img src="/favicon.svg" alt="" class="h-6 w-6" />
-			<span class="text-lg font-bold">
-				<span class="text-accent">Skill</span><span class="text-text-primary">uv</span>
-			</span>
+<header class="relative z-40 bg-transparent">
+	<nav class="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-4">
+		<!-- Logo — tenant-aware -->
+		<a href="/" class="flex items-center gap-2.5">
+			{#if tenant.isWhiteLabel && tenant.logoUrl}
+				<img src={tenant.logoUrl} alt={tenant.name} class="h-8 max-w-[120px] object-contain" />
+				<span class="text-lg font-black tracking-tight text-text-primary truncate max-w-[160px]">
+					{tenant.name}
+				</span>
+			{:else}
+				<img src="/favicon.svg" alt="" class="h-8 w-8" />
+				<span class="text-2xl font-black tracking-tight">
+					<span class="text-accent">Skill</span><span class="text-text-primary">uv</span>
+				</span>
+			{/if}
 		</a>
 
-		<!-- Desktop nav -->
-		<div class="hidden items-center gap-1 md:flex">
-			{#if auth.isAuthenticated}
-				{#each [
-					{ href: '/challenges', label: i18n.t('common.nav.challenges') },
-					{ href: '/community/challenges', label: i18n.t('common.nav.community') },
-					{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards') },
-					{ href: `/profile/${auth.user?.username}`, label: i18n.t('common.nav.profile') }
-				] as link}
+		<!-- Desktop nav — pill container flottant centré -->
+		<div class="hidden md:flex fixed top-5 left-1/2 -translate-x-1/2 z-50">
+			<div class="flex items-center gap-1 rounded-full border border-border bg-surface-elevated p-1 shadow-sm">
+				<a
+					href="/"
+					class="rounded-full px-4 py-1.5 text-sm font-medium transition-colors {isActive('/') ? 'bg-text-primary text-surface' : 'text-text-muted hover:text-text-primary'}"
+				>
+					{i18n.locale === 'fr' ? 'Accueil' : 'Home'}
+				</a>
+
+				{#if auth.isAuthenticated}
 					<a
-						href={link.href}
-						class="rounded-lg px-3 py-1.5 text-sm transition-colors duration-200 {isActive(link.href) ? 'text-text-primary bg-surface-overlay' : 'text-text-muted hover:text-text-primary hover:bg-surface-overlay'}"
+						href="/challenges"
+						class="rounded-full px-4 py-1.5 text-sm font-medium transition-colors {isActive('/challenges') ? 'bg-text-primary text-surface' : 'text-text-muted hover:text-text-primary'}"
 					>
-						{link.label}
+						{i18n.t('common.nav.challenges')}
 					</a>
-				{/each}
-			{:else}
-				{#each [
-					{ href: '/challenges', label: i18n.t('common.nav.challenges') },
-					{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards') }
-				] as link}
-					<a
-						href={link.href}
-						class="rounded-lg px-3 py-1.5 text-sm transition-colors duration-200 {isActive(link.href) ? 'text-text-primary bg-surface-overlay' : 'text-text-muted hover:text-text-primary hover:bg-surface-overlay'}"
-					>
-						{link.label}
-					</a>
-				{/each}
-			{/if}
+					<NavDropdown
+						label={i18n.locale === 'fr' ? 'Grandir' : 'Grow'}
+						groups={talentGrowGroups}
+						matchPaths={['/bounties', '/certifications', '/diplomas', '/mentors', '/mentorship']}
+					/>
+					<NavDropdown
+						label={i18n.locale === 'fr' ? 'Communauté' : 'Community'}
+						groups={talentCommunityGroups}
+						matchPaths={['/feed', '/forum', '/guilds', '/tournaments', '/messages', '/leaderboards', '/community']}
+					/>
+					<NavDropdown
+						label={i18n.locale === 'fr' ? 'Entreprises' : 'Enterprise'}
+						groups={enterpriseGroupsAuth}
+						matchPaths={['/enterprise', '/talent-search', '/bounties', '/pricing']}
+					/>
+				{:else}
+					<NavDropdown
+						label={i18n.locale === 'fr' ? 'Découvrir' : 'Discover'}
+						groups={discoverGroups}
+						matchPaths={['/challenges', '/community', '/bounties', '/certifications', '/mentors']}
+					/>
+					<NavDropdown
+						label={i18n.locale === 'fr' ? 'Communauté' : 'Community'}
+						groups={communityGroups}
+						matchPaths={['/forum', '/guilds', '/tournaments', '/leaderboards']}
+					/>
+					<NavDropdown
+						label={i18n.locale === 'fr' ? 'Entreprises' : 'Enterprise'}
+						groups={enterpriseGroupsAnon}
+						matchPaths={['/for-companies', '/talent-search', '/enterprise', '/bounties', '/pricing']}
+					/>
+				{/if}
+			</div>
 		</div>
 
 		<!-- Right side controls -->
@@ -101,7 +238,7 @@
 			<div class="relative" data-theme-dropdown>
 				<button
 					onclick={() => themeOpen = !themeOpen}
-					class="flex h-8 items-center gap-1.5 rounded-lg px-2 transition-colors duration-200 hover:bg-surface-overlay"
+					class="flex h-9 w-9 items-center justify-center rounded-full transition-colors duration-200 hover:bg-surface-overlay"
 					aria-label="Theme"
 				>
 					<div class="flex gap-0.5">
@@ -111,8 +248,7 @@
 				</button>
 
 				{#if themeOpen}
-					<div class="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-surface-elevated p-1.5 animate-in slide-in-from-top-2">
-						<!-- Themes -->
+					<div class="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-surface-elevated p-1.5 shadow-lg animate-in slide-in-from-top-2">
 						{#each themes as t}
 							<button
 								onclick={() => selectTheme(t.key)}
@@ -128,11 +264,7 @@
 								{/if}
 							</button>
 						{/each}
-
-						<!-- Divider -->
 						<div class="my-1.5 h-px bg-border"></div>
-
-						<!-- Light/Dark -->
 						<button
 							onclick={() => theme.toggleMode()}
 							class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted transition-colors duration-200 hover:bg-surface-overlay"
@@ -156,26 +288,24 @@
 			<!-- Language toggle -->
 			<button
 				onclick={() => i18n.setLocale(i18n.locale === 'fr' ? 'en' : 'fr')}
-				class="flex h-8 items-center rounded-lg px-2 text-xs font-bold text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
+				class="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
 			>
 				{i18n.locale === 'fr' ? 'EN' : 'FR'}
 			</button>
 
 			{#if auth.isAuthenticated}
-				<!-- Notifications -->
-				<a href="/notifications" class="relative flex h-8 w-8 items-center justify-center rounded-lg text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary">
+				<a href="/notifications" class="relative flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary">
 					<svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
 					</svg>
 					{#if notifications.unreadCount > 0}
-						<span class="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-white">
+						<span class="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-accent-fg">
 							{notifications.unreadCount > 9 ? '9+' : notifications.unreadCount}
 						</span>
 					{/if}
 				</a>
 
-				<!-- User -->
-				<a href="/settings" class="ml-1 flex items-center gap-2 rounded-lg border border-border px-2.5 py-1 transition-colors duration-200 hover:bg-surface-overlay hover:border-text-muted">
+				<a href="/settings" class="ml-1 flex items-center gap-2 rounded-full border border-border bg-surface-elevated px-3 py-1 transition-colors duration-200 hover:bg-surface-overlay hover:border-text-muted">
 					<div class="h-6 w-6 rounded-full bg-accent/15 flex items-center justify-center text-[10px] font-bold text-accent">
 						{auth.displayName?.[0] ?? '?'}
 					</div>
@@ -184,10 +314,10 @@
 				</a>
 			{:else}
 				<div class="ml-1 h-5 w-px bg-border"></div>
-				<a href="/auth/login" class="rounded-lg px-3 py-1.5 text-sm font-medium text-text-muted transition-colors duration-200 hover:text-text-primary">
+				<a href="/auth/login" class="rounded-full px-4 py-1.5 text-sm font-medium text-text-muted transition-colors duration-200 hover:text-text-primary">
 					{i18n.t('common.nav.login')}
 				</a>
-				<a href="/auth/register" class="rounded-lg bg-accent px-4 py-1.5 text-sm font-bold text-white transition-colors duration-200 hover:bg-accent-hover">
+				<a href="/auth/register" class="ml-1 rounded-full bg-accent px-5 py-2 text-xs font-bold uppercase tracking-wider text-accent-fg shadow-sm transition-colors duration-200 hover:bg-accent-hover">
 					{i18n.t('common.nav.register')}
 				</a>
 			{/if}
@@ -196,7 +326,7 @@
 		<!-- Mobile burger -->
 		<button
 			onclick={() => mobileOpen = !mobileOpen}
-			class="flex h-9 w-9 items-center justify-center rounded-lg text-text-muted transition-colors duration-200 hover:bg-surface-overlay md:hidden"
+			class="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-elevated text-text-muted transition-colors duration-200 hover:bg-surface-overlay md:hidden"
 			aria-label="Menu"
 		>
 			{#if mobileOpen}
@@ -215,13 +345,22 @@
 	{#if mobileOpen}
 		<div class="border-t border-border bg-surface-elevated/95 backdrop-blur-md md:hidden animate-in slide-in-from-top-2">
 			<div class="mx-auto max-w-7xl px-4 py-3 space-y-0.5">
+				<a href="/" onclick={() => mobileOpen = false} class="block rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 {isActive('/') ? 'text-text-primary bg-surface-overlay' : 'text-text-muted hover:bg-surface-overlay'}">
+					{i18n.locale === 'fr' ? 'Accueil' : 'Home'}
+				</a>
 				{#if auth.isAuthenticated}
 					{#each [
 						{ href: '/challenges', label: i18n.t('common.nav.challenges') },
-						{ href: '/community/challenges', label: i18n.t('common.nav.community') },
+						{ href: '/bounties', label: 'Bounties' },
+						{ href: '/certifications', label: 'Certifications' },
+						{ href: '/mentors', label: 'Mentors' },
+						{ href: '/feed', label: i18n.locale === 'fr' ? 'Fil' : 'Feed' },
+						{ href: '/forum', label: 'Forum' },
+						{ href: '/guilds', label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
+						{ href: '/tournaments', label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments' },
+						{ href: '/messages', label: 'Messages' },
 						{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards') },
 						{ href: `/profile/${auth.user?.username}`, label: i18n.t('common.nav.profile') },
-						{ href: '/notifications', label: i18n.t('common.nav.notifications') },
 						{ href: '/settings', label: i18n.t('common.nav.settings') }
 					] as link}
 						<a
@@ -235,7 +374,13 @@
 				{:else}
 					{#each [
 						{ href: '/challenges', label: i18n.t('common.nav.challenges') },
-						{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards') }
+						{ href: '/bounties', label: 'Bounties' },
+						{ href: '/certifications', label: 'Certifications' },
+						{ href: '/mentors', label: 'Mentors' },
+						{ href: '/forum', label: 'Forum' },
+						{ href: '/guilds', label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
+						{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards') },
+						{ href: '/pricing', label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing' }
 					] as link}
 						<a
 							href={link.href}
@@ -249,7 +394,6 @@
 
 				<!-- Controls row -->
 				<div class="flex items-center gap-2 px-4 py-3 border-t border-border mt-2">
-					<!-- Themes -->
 					{#each themes as t}
 						<button
 							onclick={() => theme.set(t.key)}
@@ -258,11 +402,10 @@
 							aria-label={t.label}
 						></button>
 					{/each}
-
 					<div class="ml-auto flex items-center gap-2">
 						<button
 							onclick={() => theme.toggleMode()}
-							class="rounded-lg border border-border px-2.5 py-1 text-xs font-medium transition-colors duration-200 hover:bg-surface-overlay"
+							class="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
 						>
 							{theme.mode === 'dark' ? '☀' : '☾'}
 						</button>
@@ -275,13 +418,12 @@
 					</div>
 				</div>
 
-				<!-- Auth mobile -->
 				{#if !auth.isAuthenticated}
 					<div class="flex gap-2 px-4 pt-1 pb-2">
 						<a href="/auth/login" onclick={() => mobileOpen = false} class="flex-1 rounded-lg border border-border px-4 py-2.5 text-center text-sm font-medium transition-colors duration-200 hover:bg-surface-overlay">
 							{i18n.t('common.nav.login')}
 						</a>
-						<a href="/auth/register" onclick={() => mobileOpen = false} class="flex-1 rounded-lg bg-accent px-4 py-2.5 text-center text-sm font-bold text-white transition-colors duration-200 hover:bg-accent-hover">
+						<a href="/auth/register" onclick={() => mobileOpen = false} class="flex-1 rounded-lg bg-accent px-4 py-2.5 text-center text-sm font-bold text-accent-fg transition-colors duration-200 hover:bg-accent-hover">
 							{i18n.t('common.nav.register')}
 						</a>
 					</div>

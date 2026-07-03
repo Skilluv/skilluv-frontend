@@ -10,7 +10,13 @@
 	import Button from '$components/ui/Button.svelte';
 	import JsonLd from '$lib/components/seo/JsonLd.svelte';
 	import { profileJsonLd } from '$lib/utils/jsonld';
+	import { geo } from '$stores/geo.svelte';
+	import { onMount } from 'svelte';
 	import type { UserPublic, SkillNode, HeatmapEntry } from '$types';
+
+	onMount(() => {
+		void geo.ensureCountries();
+	});
 
 	let username = $derived($page.params.username ?? '');
 
@@ -148,8 +154,10 @@
 								<div class="h-2 w-2 rounded-full {domainDot[user.skill_domain]}"></div>
 								<span class="text-xs text-text-muted">{i18n.t(`common.domains.${user.skill_domain}`)}</span>
 							</div>
-							{#if user.country}
-								<span class="text-xs text-text-muted">{user.country}</span>
+							{#if user.country || user.city}
+								<span class="text-xs text-text-muted">
+									{#if user.city}{user.city}{/if}{#if user.city && user.country}, {/if}{#if user.country}{geo.label(user.country)}{/if}
+								</span>
 							{/if}
 						</div>
 						{#if user.bio}

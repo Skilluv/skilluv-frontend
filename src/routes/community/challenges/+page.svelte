@@ -3,7 +3,6 @@
 	import { auth } from '$stores/auth.svelte';
 	import ChallengeCard from '$components/challenge/ChallengeCard.svelte';
 	import Button from '$components/ui/Button.svelte';
-	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { Challenge } from '$types';
 
@@ -41,13 +40,15 @@
 	<title>{i18n.t('community.title')} — Skilluv</title>
 </svelte:head>
 
-<div class="mx-auto max-w-6xl px-4 py-8">
-	<div class="mb-8 flex items-center justify-between">
+<div class="mx-auto max-w-6xl px-4 py-12 sm:py-16">
+	<div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 		<div>
-			<h1 class="text-3xl font-bold">{i18n.t('community.title')}</h1>
-			<p class="text-text-muted">{i18n.t('community.subtitle')}</p>
+			<h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-4">
+				{i18n.t('community.title')}<span class="text-accent">.</span>
+			</h1>
+			<p class="text-lg text-text-muted max-w-2xl">{i18n.t('community.subtitle')}</p>
 		</div>
-		<div class="flex gap-3">
+		<div class="flex flex-wrap gap-3">
 			{#if auth.isAuthenticated}
 				<Button variant="secondary" href="/community/challenges/mine">{i18n.t('community.myChallenges')}</Button>
 				<Button variant="accent" href="/community/challenges/create">{i18n.t('community.createBtn')}</Button>
@@ -58,17 +59,17 @@
 	{#if loading}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{#each Array(6) as _}
-				<div class="rounded-2xl border border-border bg-surface-elevated p-5">
-					<Skeleton class="mb-3 h-5 w-20" />
-					<Skeleton class="mb-2 h-5 w-3/4" />
-					<Skeleton class="h-4 w-full" />
-				</div>
+				<ChallengeCard loading />
 			{/each}
 		</div>
 	{:else if challenges.length === 0}
-		<div class="py-12 text-center">
-			<p class="mb-2 text-4xl">🌟</p>
-			<p class="text-text-muted">{i18n.t('community.empty')}</p>
+		<div class="rounded-2xl border border-border bg-surface-elevated p-16 text-center">
+			<div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-overlay text-text-muted">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M12 2v6m0 8v6M4.93 4.93l4.24 4.24m5.66 5.66 4.24 4.24M2 12h6m8 0h6M4.93 19.07l4.24-4.24m5.66-5.66 4.24-4.24" />
+				</svg>
+			</div>
+			<p class="text-base text-text-muted">{i18n.t('community.empty')}</p>
 		</div>
 	{:else}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -77,11 +78,11 @@
 					<ChallengeCard challenge={ch} />
 					<!-- Vote overlay -->
 					<button
-						class="absolute bottom-3 right-3 flex items-center gap-1 rounded-lg bg-surface-overlay px-2 py-1 text-xs transition-colors hover:bg-primary/20"
+						class="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full border border-border bg-surface-elevated px-2.5 py-1 text-xs font-semibold transition-colors hover:border-primary hover:text-primary"
 						onclick={() => toggleVote(ch)}
 					>
 						<span>▲</span>
-						<span class="font-bold">{ch.vote_count}</span>
+						<span>{ch.vote_count}</span>
 					</button>
 				</div>
 			{/each}

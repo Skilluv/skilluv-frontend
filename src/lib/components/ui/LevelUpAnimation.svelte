@@ -20,9 +20,9 @@
 
 	const titleEmojis: Record<Title, string> = {
 		apprenti: '☆',
-		artisan: '⚡',
-		maitre: '🔥',
-		legende: '👑'
+		artisan: '◆',
+		maitre: '★',
+		legende: '✦'
 	};
 
 	$effect(() => {

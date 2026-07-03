@@ -53,9 +53,13 @@
 	{#if loading}
 		<div class="flex flex-col gap-3">{#each Array(3) as _}<Skeleton class="h-24 w-full" rounded="xl" />{/each}</div>
 	{:else if entries.length === 0}
-		<div class="py-12 text-center">
-			<p class="mb-2 text-4xl">✅</p>
-			<p class="text-text-muted">{i18n.t('admin.community.empty')}</p>
+		<div class="rounded-2xl border border-border bg-surface-elevated p-16 text-center">
+			<div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-overlay text-success">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M20 6 9 17l-5-5" />
+				</svg>
+			</div>
+			<p class="text-base text-text-muted">{i18n.t('admin.community.empty')}</p>
 		</div>
 	{:else}
 		<div class="flex flex-col gap-4">

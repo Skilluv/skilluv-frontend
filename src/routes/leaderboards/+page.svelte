@@ -3,7 +3,7 @@
 	import { auth } from '$stores/auth.svelte';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
-	import Skeleton from '$components/ui/Skeleton.svelte';
+	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import type { LeaderboardEntry, LeaderboardDomain, LeaderboardPeriod } from '$types';
 
 	let domain = $state<LeaderboardDomain>('global');
@@ -66,32 +66,34 @@
 	<title>{i18n.t('leaderboard.title')} — Skilluv</title>
 </svelte:head>
 
-<div class="mx-auto max-w-5xl px-4 py-8">
+<div class="mx-auto max-w-5xl px-4 py-12 sm:py-16">
 
 	<!-- Header -->
-	<div class="mb-8">
-		<h1 class="text-3xl sm:text-4xl font-bold mb-2">{i18n.t('leaderboard.title')}</h1>
-		<p class="text-text-muted">{i18n.t('leaderboard.subtitle')}</p>
+	<div class="mb-10">
+		<h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-4">
+			{i18n.t('leaderboard.title')}<span class="text-accent">.</span>
+		</h1>
+		<p class="text-lg text-text-muted max-w-2xl">{i18n.t('leaderboard.subtitle')}</p>
 	</div>
 
 	<!-- My rank — prominent if logged in -->
 	{#if myRank && auth.isAuthenticated}
-		<div class="mb-8 rounded-xl border border-border bg-surface-elevated overflow-hidden">
-			<div class="border-b border-border px-5 py-2.5">
+		<div class="mb-10 rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+			<div class="border-b border-border px-6 py-3">
 				<span class="text-xs font-bold uppercase tracking-wider text-text-muted">{i18n.t('leaderboard.yourRank')}</span>
 			</div>
 			<div class="grid grid-cols-3 divide-x divide-border">
-				<div class="p-5 text-center">
-					<p class="text-3xl font-bold">#{myRank.rank}</p>
-					<p class="text-xs text-text-muted mt-1">{i18n.locale === 'fr' ? 'Rang' : 'Rank'}</p>
+				<div class="p-6 text-center">
+					<p class="text-5xl sm:text-6xl font-black tracking-tight">#{myRank.rank}</p>
+					<p class="text-xs uppercase tracking-wider text-text-muted mt-2">{i18n.locale === 'fr' ? 'Rang' : 'Rank'}</p>
 				</div>
-				<div class="p-5 text-center">
-					<p class="text-3xl font-bold text-accent">{myRank.score.toLocaleString()} <span class="text-lg">◆</span></p>
-					<p class="text-xs text-text-muted mt-1">{i18n.t('leaderboard.score')}</p>
+				<div class="p-6 text-center">
+					<p class="text-5xl sm:text-6xl font-black text-accent tracking-tight">{myRank.score.toLocaleString()} <span class="text-2xl align-middle">◆</span></p>
+					<p class="text-xs uppercase tracking-wider text-text-muted mt-2">{i18n.t('leaderboard.score')}</p>
 				</div>
-				<div class="p-5 text-center">
-					<p class="text-3xl font-bold">{myRank.total_participants.toLocaleString()}</p>
-					<p class="text-xs text-text-muted mt-1">{i18n.t('leaderboard.participants')}</p>
+				<div class="p-6 text-center">
+					<p class="text-5xl sm:text-6xl font-black tracking-tight">{myRank.total_participants.toLocaleString()}</p>
+					<p class="text-xs uppercase tracking-wider text-text-muted mt-2">{i18n.t('leaderboard.participants')}</p>
 				</div>
 			</div>
 		</div>
@@ -99,57 +101,54 @@
 
 	<!-- Filters -->
 	<div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
-		<!-- Domain tabs -->
-		<div class="flex gap-1 rounded-lg border border-border bg-surface-elevated p-1">
-			{#each domains as d}
-				<button
-					type="button"
-					class="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors duration-200
-						{domain === d.value ? 'bg-surface-overlay text-text-primary' : 'text-text-muted hover:text-text-primary'}"
-					onclick={() => switchDomain(d.value)}
-				>
-					{#if d.dot}
-						<div class="h-2 w-2 rounded-full {d.dot}"></div>
-					{/if}
-					{domainLabel(d.value)}
-				</button>
-			{/each}
-		</div>
+		<SegmentedControl
+			items={domains.map((d) => ({
+				value: d.value,
+				label: domainLabel(d.value),
+				dot: d.dot || undefined
+			}))}
+			bind:value={domain}
+			onchange={loadLeaderboard}
+		/>
 
-		<!-- Period tabs -->
-		<div class="flex gap-1 rounded-lg border border-border bg-surface-elevated p-1 sm:ml-auto">
-			{#each periods as p}
-				<button
-					type="button"
-					class="rounded-md px-3 py-1.5 text-xs font-medium transition-colors duration-200
-						{period === p ? 'bg-surface-overlay text-text-primary' : 'text-text-muted hover:text-text-primary'}"
-					onclick={() => switchPeriod(p)}
-				>
-					{i18n.t(`leaderboard.${p}`)}
-				</button>
-			{/each}
-		</div>
+		<SegmentedControl
+			items={periods.map((p) => ({ value: p, label: i18n.t(`leaderboard.${p}`) }))}
+			bind:value={period}
+			onchange={loadLeaderboard}
+			size="sm"
+			class="sm:ml-auto"
+		/>
 	</div>
 
 	<!-- Leaderboard -->
 	{#if loading}
-		<div class="rounded-xl border border-border bg-surface-elevated overflow-hidden">
-			<div class="grid grid-cols-[3rem_1fr_6rem] gap-4 items-center px-5 py-3 border-b border-border">
-				<Skeleton class="h-4 w-6" />
-				<Skeleton class="h-4 w-32" />
-				<Skeleton class="h-4 w-16 ml-auto" />
+		<div class="rounded-2xl border border-border bg-surface-elevated overflow-hidden" aria-busy="true">
+			<!-- Header row : grid identique au tableau réel -->
+			<div class="grid grid-cols-[3rem_1fr_auto_6rem] gap-4 items-center px-5 py-2.5 border-b border-border">
+				<div class="h-3 w-3 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+				<div class="h-3 w-16 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+				<div class="hidden h-3 w-12 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] sm:block"></div>
+				<div class="h-3 w-12 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] justify-self-end"></div>
 			</div>
+
 			{#each Array(10) as _, idx}
-				<div class="grid grid-cols-[3rem_1fr_6rem] gap-4 items-center px-5 py-4 {idx < 9 ? 'border-b border-border' : ''}">
-					<Skeleton class="h-5 w-5" rounded="full" />
-					<div class="flex items-center gap-3">
-						<Skeleton class="h-9 w-9" rounded="full" />
-						<div class="space-y-1.5">
-							<Skeleton class="h-4 w-28" />
-							<Skeleton class="h-3 w-16" />
+				<div class="grid grid-cols-[3rem_1fr_auto_6rem] gap-4 items-center px-5 py-3.5 {idx < 9 ? 'border-b border-border' : ''}">
+					<!-- Rank -->
+					<div class="mx-auto h-5 w-5 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+					<!-- User -->
+					<div class="flex items-center gap-3 min-w-0">
+						<div class="shrink-0 h-9 w-9 rounded-full bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+						<div class="min-w-0 space-y-1.5">
+							<div class="h-4 w-32 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+							<div class="h-3 w-20 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] sm:hidden"></div>
 						</div>
 					</div>
-					<Skeleton class="h-5 w-14 ml-auto" />
+					<!-- Title (desktop only) -->
+					<div class="hidden sm:flex items-center gap-1.5">
+						<div class="h-3 w-16 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+					</div>
+					<!-- Score -->
+					<div class="h-4 w-16 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] justify-self-end"></div>
 				</div>
 			{/each}
 		</div>
@@ -158,7 +157,7 @@
 	{:else if entries.length === 0}
 		<p class="py-12 text-center text-text-muted">{i18n.t('leaderboard.noParticipants')}</p>
 	{:else}
-		<div class="rounded-xl border border-border bg-surface-elevated overflow-hidden">
+		<div class="rounded-2xl border border-border bg-surface-elevated overflow-hidden">
 			<!-- Table header -->
 			<div class="grid grid-cols-[3rem_1fr_auto_6rem] gap-4 items-center px-5 py-2.5 border-b border-border text-xs text-text-muted font-medium">
 				<span>#</span>

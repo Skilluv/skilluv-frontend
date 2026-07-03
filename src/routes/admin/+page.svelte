@@ -101,6 +101,9 @@
 			<Button variant="accent" href="/admin/reports">{i18n.t('admin.dashboard.viewReports')}</Button>
 			<Button variant="secondary" href="/admin/challenges">{i18n.t('admin.dashboard.manageChallenges')}</Button>
 			<Button variant="secondary" href="/admin/community">{i18n.t('admin.dashboard.reviewCommunity')}</Button>
+			<Button variant="secondary" href="/admin/tenants">
+				{i18n.locale === 'fr' ? 'Tenants' : 'Tenants'}
+			</Button>
 		</div>
 	{/if}
 </div>

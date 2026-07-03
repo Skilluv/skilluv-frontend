@@ -48,6 +48,7 @@ export interface UserPrivate {
 	streak_current: number;
 	trust_score: number;
 	country: string | null;
+	city: string | null;
 	bio: string | null;
 	avatar_url: string | null;
 	github: string | null;
@@ -68,6 +69,7 @@ export interface UserPublic {
 	golden_stars: number;
 	skill_domain: SkillDomain;
 	country: string | null;
+	city: string | null;
 	bio: string | null;
 	avatar_url: string | null;
 	github: string | null;

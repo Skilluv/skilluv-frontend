@@ -113,11 +113,11 @@
 						<div
 							class="max-w-[75%] rounded-2xl px-4 py-2 text-sm
 								{isMe
-								? 'bg-primary text-white rounded-br-sm'
+								? 'bg-primary text-primary-fg rounded-br-sm'
 								: 'bg-surface-elevated text-text-primary rounded-bl-sm'}"
 						>
 							<p class="whitespace-pre-wrap">{msg.content}</p>
-							<p class="mt-1 text-[10px] {isMe ? 'text-white/60' : 'text-text-muted'}">
+							<p class="mt-1 text-[10px] {isMe ? 'text-primary-fg/60' : 'text-text-muted'}">
 								{formatTime(msg.created_at)}
 							</p>
 						</div>

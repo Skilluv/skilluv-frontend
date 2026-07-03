@@ -45,7 +45,7 @@ export const profileApi = {
 	},
 
 	/** Modifier son profil */
-	update(data: { bio?: string; github?: string; linkedin?: string; website?: string; twitter?: string; country?: string }) {
+	update(data: { bio?: string; github?: string; linkedin?: string; website?: string; twitter?: string; country?: string; city?: string }) {
 		return api.put<ApiResponse<{ user: UserPublic }>>('/profile/me', data);
 	},
 
