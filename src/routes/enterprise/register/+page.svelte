@@ -61,18 +61,32 @@
 		if (!username.trim()) fieldErrors.username = i18n.t('auth.register.username');
 		if (!email.trim()) fieldErrors.email = i18n.t('auth.register.email');
 
-		if (password.length < 8 || password.length > 128) {
-			fieldErrors.password = i18n.locale === 'fr'
-				? 'Entre 8 et 128 caractères'
-				: 'Between 8 and 128 characters';
+		// Enterprise owners hold billing / invite / SSO / session-revoke
+		// rights — apply the same strict policy as candidates: min 10 chars +
+		// upper + lower + digit + symbol (backend enforces the same rule via
+		// validate_password_pub).
+		if (
+			password.length < 10 ||
+			password.length > 128 ||
+			!/[A-Z]/.test(password) ||
+			!/[a-z]/.test(password) ||
+			!/\d/.test(password) ||
+			!/[^A-Za-z0-9\s]/.test(password)
+		) {
+			fieldErrors.password =
+				i18n.locale === 'fr'
+					? 'Au moins 10 caractères, avec majuscule, minuscule, chiffre et symbole'
+					: 'At least 10 characters, with uppercase, lowercase, digit and symbol';
 		} else if (looksLikeCommonPhrase(password)) {
-			fieldErrors.password = i18n.locale === 'fr'
-				? 'Évitez les mots de passe courants'
-				: 'Avoid common phrases';
+			fieldErrors.password =
+				i18n.locale === 'fr'
+					? 'Évitez les mots de passe courants'
+					: 'Avoid common phrases';
 		} else if (includesIdentity(password)) {
-			fieldErrors.password = i18n.locale === 'fr'
-				? 'Ne doit pas contenir votre nom, identifiant ou email'
-				: 'Must not include your name, username or email';
+			fieldErrors.password =
+				i18n.locale === 'fr'
+					? 'Ne doit pas contenir votre nom, identifiant ou email'
+					: 'Must not include your name, username or email';
 		}
 
 		return Object.keys(fieldErrors).length === 0;
@@ -233,7 +247,8 @@
 							required
 						/>
 						<ul class="mt-2 space-y-0.5 text-xs text-text-muted">
-							<li>{i18n.locale === 'fr' ? 'Entre 8 et 128 caractères' : 'Between 8 and 128 characters'}</li>
+							<li>{i18n.locale === 'fr' ? 'Au moins 10 caractères' : 'At least 10 characters'}</li>
+							<li>{i18n.locale === 'fr' ? '1 majuscule, 1 minuscule, 1 chiffre, 1 symbole' : '1 uppercase, 1 lowercase, 1 digit, 1 symbol'}</li>
 							<li>{i18n.locale === 'fr' ? 'Pas de mots courants (ex : "password")' : 'No common phrases (e.g., "password")'}</li>
 							<li>{i18n.locale === 'fr' ? 'Ne peut inclure votre nom, identifiant ou email' : 'Cannot include your name, username or email'}</li>
 						</ul>
