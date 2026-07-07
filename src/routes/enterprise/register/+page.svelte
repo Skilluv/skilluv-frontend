@@ -23,6 +23,7 @@
 	let email = $state('');
 	let password = $state('');
 	let marketingConsent = $state(false);
+	let termsAccepted = $state(false);
 
 	// Step 2 — company
 	let companyName = $state('');
@@ -110,6 +111,12 @@
 		error = '';
 
 		if (!companyName.trim()) fieldErrors.companyName = i18n.t('enterprise.register.companyName');
+		if (!termsAccepted) {
+			fieldErrors.terms =
+				i18n.locale === 'fr'
+					? 'Vous devez accepter les CGU et la politique de confidentialité'
+					: 'You must accept the Terms of Service and Privacy Policy';
+		}
 		if (Object.keys(fieldErrors).length > 0) return;
 
 		loading = true;
@@ -124,7 +131,8 @@
 				website: website.trim() || undefined,
 				industry: industry.trim() || undefined,
 				company_size: companySize,
-				country: country ?? undefined
+				country: country ?? undefined,
+				terms_accepted: true
 			});
 			auth.setUser(res.data.user);
 			step = 3;
@@ -369,6 +377,30 @@
 						clearable
 					/>
 
+					<label class="mt-2 flex items-start gap-3 text-sm">
+						<input
+							type="checkbox"
+							bind:checked={termsAccepted}
+							class="mt-0.5 h-4 w-4 shrink-0 rounded border-border accent-accent focus:ring-2 focus:ring-accent"
+						/>
+						<span>
+							{#if i18n.locale === 'fr'}
+								J'accepte les
+								<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">CGU</a>
+								et la
+								<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">politique de confidentialité</a>.
+							{:else}
+								I accept the
+								<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">Terms of Use</a>
+								and the
+								<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">Privacy Policy</a>.
+							{/if}
+						</span>
+					</label>
+					{#if fieldErrors.terms}
+						<p class="-mt-2 text-xs text-error">{fieldErrors.terms}</p>
+					{/if}
+
 					<Button variant="accent" size="lg" type="submit" {loading} class="mt-2 w-full">
 						{loading
 							? i18n.t('enterprise.register.creating')
@@ -391,12 +423,24 @@
 				</h1>
 				<p class="mb-3 text-base text-text-muted">
 					{i18n.locale === 'fr'
-						? `${companyName} est créé. Il reste une étape obligatoire.`
-						: `${companyName} is set up. One mandatory step remains.`}
+						? `${companyName} est créé. Deux étapes obligatoires avant l'accès complet.`
+						: `${companyName} is set up. Two mandatory steps remain before full access.`}
 				</p>
+
+				<div class="mb-4 rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 text-left text-sm">
+					<p class="mb-1 font-semibold text-accent">
+						📧 {i18n.locale === 'fr' ? '1. Vérifie ton email' : '1. Verify your email'}
+					</p>
+					<p class="text-text-muted">
+						{i18n.locale === 'fr'
+							? `Un lien de vérification vient d'être envoyé à ${email}. Clique dessus pour activer ton compte — sans ça, l'espace entreprise reste inaccessible.`
+							: `A verification link was sent to ${email}. Click it to activate your account — until you do, the enterprise workspace stays locked.`}
+					</p>
+				</div>
+
 				<div class="mb-8 rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 text-left text-sm">
 					<p class="mb-1 font-semibold text-accent">
-						🔒 {i18n.locale === 'fr' ? '2FA obligatoire' : '2FA required'}
+						🔒 {i18n.locale === 'fr' ? '2. Active ton 2FA' : '2. Set up 2FA'}
 					</p>
 					<p class="text-text-muted">
 						{i18n.locale === 'fr'

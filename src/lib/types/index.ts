@@ -343,6 +343,10 @@ export const ERROR_CODES = {
 	/** Password login refused because the email domain is behind an enforced
 	 * SSO. Redirect to `error.start_url`. */
 	AUTH_SSO_REQUIRED: 'AUTH_SSO_REQUIRED',
+	/** Write endpoints and /enterprise/* refuse the call until the user has
+	 * clicked the verification link in their email. The EmailVerificationBanner
+	 * (mounted in the root layout) is the standing prompt to resend. */
+	AUTH_EMAIL_VERIFY_REQUIRED: 'AUTH_EMAIL_VERIFY_REQUIRED',
 	AUTH_EMAIL_2FA_INVALID: 'AUTH_EMAIL_2FA_INVALID',
 	CHALLENGE_PREREQUISITE_NOT_MET: 'CHALLENGE_PREREQUISITE_NOT_MET',
 	RATE_LIMITED: 'RATE_LIMITED',

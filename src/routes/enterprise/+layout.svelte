@@ -19,7 +19,15 @@
 		if (!auth.isAuthenticated || !auth.user) return;
 		const role = auth.user.role;
 		const needsGate = role === 'enterprise' || role === 'recruiter';
-		if (needsGate && !auth.user.totp_enabled) {
+		if (!needsGate) return;
+		// Verified email first — the backend refuses every /enterprise/* call
+		// until this flag is true, so redirect proactively instead of letting
+		// the whole workspace return 403s.
+		if (!auth.user.email_verified) {
+			goto('/auth/verify-email?next=/enterprise/dashboard');
+			return;
+		}
+		if (!auth.user.totp_enabled) {
 			goto('/settings/security?setup_totp=required');
 		}
 	});

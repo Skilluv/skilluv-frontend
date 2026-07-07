@@ -24,6 +24,9 @@ interface EnterpriseRegisterRequest {
 	industry?: string;
 	company_size: CompanySize;
 	country?: string;
+	/** RGPD: owner must accept the Terms + Privacy Policy at signup. Backend
+	 * refuses the register if false. */
+	terms_accepted: boolean;
 }
 
 interface EnterpriseRegisterResponse {
