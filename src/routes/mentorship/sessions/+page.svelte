@@ -86,7 +86,7 @@
 
 <div class="mx-auto max-w-4xl px-4 py-10 sm:py-14">
 	<div class="mb-10">
-		<p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">Mentorship</p>
+		<p class="mb-2 text-xs font-bold uppercase tracking-widest text-accent">Mentorship</p>
 		<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
 			{i18n.locale === 'fr' ? 'Mes sessions.' : 'My sessions.'}
 		</h1>

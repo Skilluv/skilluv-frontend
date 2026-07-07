@@ -12,6 +12,7 @@
 	import LevelUpAnimation from '$components/ui/LevelUpAnimation.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
+	import Select from '$components/ui/Select.svelte';
 	import type { Challenge, SandboxExecution } from '$types';
 
 	let challengeId = $derived($page.params.id ?? '');
@@ -253,31 +254,32 @@
 					<span class="text-xs text-text-muted">{i18n.t('challenges.sandbox.saved', { time: lastSaved })}</span>
 				{/if}
 
-				<select
+				<Select
+					size="sm"
+					items={[
+						{ value: 'javascript', label: 'JavaScript' },
+						{ value: 'typescript', label: 'TypeScript' },
+						{ value: 'python', label: 'Python' },
+						{ value: 'rust', label: 'Rust' },
+						{ value: 'go', label: 'Go' },
+						{ value: 'java', label: 'Java' },
+						{ value: 'c', label: 'C' },
+						{ value: 'cpp', label: 'C++' },
+						{ value: 'csharp', label: 'C#' },
+						{ value: 'php', label: 'PHP' },
+						{ value: 'ruby', label: 'Ruby' },
+						{ value: 'swift', label: 'Swift' },
+						{ value: 'kotlin', label: 'Kotlin' },
+						{ value: 'html', label: 'HTML' },
+						{ value: 'css', label: 'CSS' },
+						{ value: 'sql', label: 'SQL' },
+						{ value: 'shell', label: 'Shell' },
+						{ value: 'lua', label: 'Lua' },
+						{ value: 'dart', label: 'Dart' },
+						{ value: 'scala', label: 'Scala' }
+					]}
 					bind:value={language}
-					class="rounded-lg border border-border bg-surface px-3 py-1.5 text-sm text-text-primary"
-				>
-					<option value="javascript">JavaScript</option>
-					<option value="typescript">TypeScript</option>
-					<option value="python">Python</option>
-					<option value="rust">Rust</option>
-					<option value="go">Go</option>
-					<option value="java">Java</option>
-					<option value="c">C</option>
-					<option value="cpp">C++</option>
-					<option value="csharp">C#</option>
-					<option value="php">PHP</option>
-					<option value="ruby">Ruby</option>
-					<option value="swift">Swift</option>
-					<option value="kotlin">Kotlin</option>
-					<option value="html">HTML</option>
-					<option value="css">CSS</option>
-					<option value="sql">SQL</option>
-					<option value="shell">Shell</option>
-					<option value="lua">Lua</option>
-					<option value="dart">Dart</option>
-					<option value="scala">Scala</option>
-				</select>
+				/>
 
 				<Button variant="secondary" size="sm" loading={executing} onclick={handleExecute}>
 					{i18n.t('challenges.sandbox.testBtn')}

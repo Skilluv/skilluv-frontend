@@ -123,7 +123,7 @@
 	</nav>
 
 	<div class="mb-10">
-		<p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">Pipeline</p>
+		<p class="mb-2 text-xs font-bold uppercase tracking-widest text-accent">Pipeline</p>
 		<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
 			{i18n.locale === 'fr' ? 'Abonnement mensuel.' : 'Monthly subscription.'}
 		</h1>
@@ -147,9 +147,8 @@
 		<!-- Current subscription -->
 		{#if current}
 			{@const s = statusMeta(current.status)}
-			<div class="mb-8 rounded-2xl border border-primary/30 bg-gradient-to-br from-surface-elevated to-primary/5 p-6 sm:p-8 relative overflow-hidden">
-				<div aria-hidden="true" class="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-				<div class="mb-4 flex items-center gap-2 flex-wrap">
+			<div class="mb-8 rounded-2xl border border-border bg-surface-elevated p-6 sm:p-8">
+					<div class="mb-4 flex items-center gap-2 flex-wrap">
 					<Badge variant={s.variant} size="md">{s.label}</Badge>
 					{#if current.cancel_at_period_end}
 						<Badge variant="warning" size="sm">
@@ -192,7 +191,7 @@
 		{#if plans.length}
 			<div class="mb-6 flex items-end justify-between">
 				<div>
-					<p class="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+					<p class="mb-1 text-xs font-bold uppercase tracking-widest text-accent">
 						{i18n.locale === 'fr' ? 'Plans' : 'Plans'}
 					</p>
 					<h2 class="text-3xl font-black tracking-tight">

@@ -5,6 +5,8 @@
 	import { goto } from '$app/navigation';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
+	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
+	import FilterBar from '$components/ui/FilterBar.svelte';
 	import { invoicesApi, type Invoice } from '$api/invoices';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -119,7 +121,7 @@
 	<!-- Header -->
 	<div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 		<div>
-			<p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+			<p class="mb-2 text-xs font-bold uppercase tracking-widest text-accent">
 				{i18n.locale === 'fr' ? 'Documents' : 'Documents'}
 			</p>
 			<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
@@ -143,24 +145,17 @@
 
 	<!-- Year filter -->
 	{#if availableYears.length > 1}
-		<div class="mb-6 flex flex-wrap gap-2">
-			<button
-				class="rounded-full border border-border px-4 py-1.5 text-sm font-medium transition-colors hover:border-primary hover:text-primary
-				{selectedYear === 'all' ? 'border-primary bg-primary/15 text-primary' : ''}"
-				onclick={() => { selectedYear = 'all'; void load(); }}
-			>
-				{i18n.locale === 'fr' ? 'Toutes' : 'All'}
-			</button>
-			{#each availableYears as y}
-				<button
-					class="rounded-full border border-border px-4 py-1.5 text-sm font-medium transition-colors hover:border-primary hover:text-primary
-					{selectedYear === y ? 'border-primary bg-primary/15 text-primary' : ''}"
-					onclick={() => { selectedYear = y; void load(); }}
-				>
-					{y}
-				</button>
-			{/each}
-		</div>
+		<FilterBar class="mb-6">
+			<SegmentedControl
+				size="sm"
+				items={[
+					{ value: 'all', label: i18n.locale === 'fr' ? 'Toutes' : 'All' },
+					...availableYears.map((y) => ({ value: y, label: String(y) }))
+				]}
+				bind:value={selectedYear}
+				onchange={() => void load()}
+			/>
+		</FilterBar>
 	{/if}
 
 	{#if loading}

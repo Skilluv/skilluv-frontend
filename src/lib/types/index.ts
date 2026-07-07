@@ -18,6 +18,7 @@ export type ReportReason = 'spam' | 'harassment' | 'inappropriate' | 'cheating' 
 export type ReportStatus = 'pending' | 'resolved' | 'dismissed';
 export type InterestStatus = 'pending' | 'accepted' | 'declined';
 export type CompanySize = '1-10' | '11-50' | '51-200' | '201-500' | '501-1000' | '1000+';
+export type UserRole = 'user' | 'recruiter' | 'enterprise' | 'admin';
 export type ThemeBase = 'forge' | 'neon' | 'arena' | 'terminal' | 'sakura';
 export type ThemeMode = 'dark' | 'light';
 export type Theme = ThemeBase | `${ThemeBase}-light`;
@@ -41,7 +42,14 @@ export interface UserPrivate {
 	first_name: string;
 	last_name: string;
 	display_name: string;
-	skill_domain: SkillDomain;
+	/** Global role — 'user' (candidate), 'recruiter', 'enterprise' (workspace
+	 * owner), or 'admin'. Drives the enterprise layout guard client-side. */
+	role: UserRole;
+	/** NULL until the OAuth/magic-link user picks their domain during onboarding. */
+	skill_domain: SkillDomain | null;
+	/** True once the user has picked a skill_domain AND accepted the terms. Drives the
+	 * onboarding gate in `hooks.server.ts`. */
+	profile_completed: boolean;
 	title: Title;
 	golden_stars: number;
 	total_fragments: number;
@@ -295,8 +303,28 @@ export interface ApiErrorBody {
 		code: string;
 		message: string;
 		details?: unknown;
+		/** Present on AUTH_SSO_REQUIRED — points at the enterprise SSO start URL
+		 * the user must redirect to. */
+		start_url?: string;
 	};
 	meta: ApiMeta;
+}
+
+/** How the current session was authenticated. Drives the mandatory-TOTP
+ * bypass for `role in ('enterprise', 'recruiter')` when set to `sso` (the
+ * external IdP is responsible for MFA). */
+export type LoginMethod = 'password' | 'oauth' | 'sso' | 'magic_link' | 'webauthn';
+
+/** Response payload from GET /api/enterprise/sso/discover?email=x@y */
+export interface SsoDiscoverResponse {
+	sso_available: boolean;
+	start_url?: string;
+}
+
+/** Extension to login/register responses: when true, the caller must complete
+ * TOTP setup before accessing `/enterprise/*` endpoints. */
+export interface RequiresTotpSetup {
+	requires_totp_setup?: boolean;
 }
 
 // --- Codes d'erreur connus ---
@@ -309,6 +337,12 @@ export const ERROR_CODES = {
 	VALIDATION_ERROR: 'VALIDATION_ERROR',
 	AUTH_TOTP_REQUIRED: 'AUTH_TOTP_REQUIRED',
 	AUTH_TOTP_INVALID: 'AUTH_TOTP_INVALID',
+	/** Enterprise/recruiter account tried to access `/enterprise/*` without
+	 * having completed TOTP setup. Redirect to /settings/security. */
+	AUTH_TOTP_SETUP_REQUIRED: 'AUTH_TOTP_SETUP_REQUIRED',
+	/** Password login refused because the email domain is behind an enforced
+	 * SSO. Redirect to `error.start_url`. */
+	AUTH_SSO_REQUIRED: 'AUTH_SSO_REQUIRED',
 	AUTH_EMAIL_2FA_INVALID: 'AUTH_EMAIL_2FA_INVALID',
 	CHALLENGE_PREREQUISITE_NOT_MET: 'CHALLENGE_PREREQUISITE_NOT_MET',
 	RATE_LIMITED: 'RATE_LIMITED',

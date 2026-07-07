@@ -11,7 +11,8 @@
 		{ href: '/admin/reports', label: i18n.t('admin.reports.title'), icon: '⚑' },
 		{ href: '/admin/challenges', label: i18n.t('admin.challenges.title'), icon: '{ }' },
 		{ href: '/admin/community', label: i18n.t('common.nav.community'), icon: '★' },
-		{ href: '/admin/audit-log', label: 'Audit', icon: '⏱' }
+		{ href: '/admin/audit-log', label: 'Audit', icon: '⏱' },
+		{ href: '/admin/sso-sessions', label: 'SSO sessions', icon: '🔐' }
 	]);
 
 	function isActive(href: string): boolean {

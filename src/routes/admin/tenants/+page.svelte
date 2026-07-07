@@ -6,6 +6,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import Modal from '$components/ui/Modal.svelte';
+	import Select from '$components/ui/Select.svelte';
 	import { tenantsApi, type TenantSummary, type TenantPlan } from '$api/tenants';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -98,7 +99,7 @@
 
 	<div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 		<div>
-			<p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">White-label</p>
+			<p class="mb-2 text-xs font-bold uppercase tracking-widest text-accent">White-label</p>
 			<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
 				{i18n.locale === 'fr' ? 'Tenants.' : 'Tenants.'}
 			</h1>
@@ -228,15 +229,15 @@
 				<label for="t-plan" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
 					Plan
 				</label>
-				<select
-					id="t-plan"
+				<Select
+					items={[
+						{ value: 'starter', label: 'Starter' },
+						{ value: 'pro', label: 'Pro' },
+						{ value: 'enterprise', label: 'Enterprise' }
+					]}
 					bind:value={plan}
-					class="w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none"
-				>
-					<option value="starter">Starter</option>
-					<option value="pro">Pro</option>
-					<option value="enterprise">Enterprise</option>
-				</select>
+					class="w-full"
+				/>
 			</div>
 			<div>
 				<label for="t-max" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">

@@ -164,5 +164,32 @@ export const adminApi = {
 
 	rejectCommunity(id: string, feedback: string) {
 		return api.post<ApiResponse<{ challenge: Challenge; message: string }>>(`/admin/community/${id}/reject`, { feedback });
+	},
+
+	// --- Enterprise SSO sessions ---
+
+	listSsoSessions(params?: { enterprise_id?: string; page?: number; per_page?: number }) {
+		return api.get<ApiPaginatedResponse<SsoSession>>(
+			'/admin/sso/sessions',
+			params as Record<string, string | number>
+		);
+	},
+
+	revokeSsoSession(id: string) {
+		return api.post<ApiResponse<{ revoked: boolean }>>(`/admin/sso/sessions/${id}/revoke`);
 	}
 };
+
+export interface SsoSession {
+	session_id: string;
+	user_id: string;
+	user_email: string;
+	user_username: string;
+	enterprise_id: string | null;
+	enterprise_slug: string | null;
+	company_name: string | null;
+	ip: string | null;
+	user_agent: string | null;
+	created_at: string;
+	last_used_at: string;
+}

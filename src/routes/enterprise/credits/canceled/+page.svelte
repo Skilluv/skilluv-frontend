@@ -9,11 +9,11 @@
 </svelte:head>
 
 <div class="mx-auto flex min-h-[70vh] max-w-2xl flex-col items-center justify-center px-4 py-16 text-center">
-	<div class="mb-8 flex h-20 w-20 items-center justify-center rounded-full border-2 border-text-muted text-4xl text-text-muted">
+	<div class="mb-8 flex h-20 w-20 items-center justify-center rounded-full border border-text-muted text-4xl text-text-muted">
 		✕
 	</div>
 
-	<p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-text-muted">
+	<p class="mb-4 text-xs font-bold uppercase tracking-widest text-text-muted">
 		{i18n.locale === 'fr' ? 'Paiement annulé' : 'Payment canceled'}
 	</p>
 

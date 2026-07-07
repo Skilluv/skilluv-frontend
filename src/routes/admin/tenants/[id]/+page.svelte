@@ -7,6 +7,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import Modal from '$components/ui/Modal.svelte';
+	import Select from '$components/ui/Select.svelte';
 	import { tenantsApi, type TenantFull, type TenantMember, type TenantCohort, type TenantPlan, type TenantMemberRole } from '$api/tenants';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -191,7 +192,7 @@
 		<header class="mb-8 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
 			<div class="flex items-start gap-4">
 				<div
-					class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border-2 text-3xl font-black"
+					class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-border text-3xl font-black"
 					style={`border-color: ${tenant.primary_color ?? 'var(--sk-primary)'}; color: ${tenant.primary_color ?? 'var(--sk-primary)'}`}
 				>
 					{tenant.slug.charAt(0).toUpperCase()}
@@ -252,11 +253,15 @@
 						<label for="e-plan" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
 							Plan
 						</label>
-						<select id="e-plan" bind:value={editPlan} class="w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none">
-							<option value="starter">Starter</option>
-							<option value="pro">Pro</option>
-							<option value="enterprise">Enterprise</option>
-						</select>
+						<Select
+							items={[
+								{ value: 'starter', label: 'Starter' },
+								{ value: 'pro', label: 'Pro' },
+								{ value: 'enterprise', label: 'Enterprise' }
+							]}
+							bind:value={editPlan}
+							class="w-full"
+						/>
 					</div>
 				</div>
 
@@ -445,12 +450,16 @@
 			<label for="m-role" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
 				{i18n.locale === 'fr' ? 'Rôle' : 'Role'}
 			</label>
-			<select id="m-role" bind:value={newMemberRole} class="w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none">
-				<option value="member">Member</option>
-				<option value="instructor">Instructor</option>
-				<option value="admin">Admin</option>
-				<option value="owner">Owner</option>
-			</select>
+			<Select
+				items={[
+					{ value: 'member', label: 'Member' },
+					{ value: 'instructor', label: 'Instructor' },
+					{ value: 'admin', label: 'Admin' },
+					{ value: 'owner', label: 'Owner' }
+				]}
+				bind:value={newMemberRole}
+				class="w-full"
+			/>
 		</div>
 		<div class="flex justify-end gap-2 pt-2">
 			<Button variant="ghost" onclick={() => (showAddMember = false)}>

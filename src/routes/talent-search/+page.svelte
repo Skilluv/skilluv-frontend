@@ -4,6 +4,8 @@
 	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
+	import Select from '$components/ui/Select.svelte';
+	import Pagination from '$components/ui/Pagination.svelte';
 	import { talentSearchV2Api, type TalentV2, type SortByV2, type LookingFor } from '$api/talent_search_v2';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -90,13 +92,12 @@
 </svelte:head>
 
 <div class="mx-auto max-w-7xl px-4 py-10 sm:py-14">
-	<div class="mb-8">
-		<p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">Sourcing</p>
-		<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
+	<div class="mb-8 sm:mb-12">
+		<h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
 			{i18n.locale === 'fr' ? 'Recherche' : 'Advanced'}<br />
 			<span class="text-primary">{i18n.locale === 'fr' ? '9 dimensions.' : 'search.'}</span>
 		</h1>
-		<p class="mt-3 max-w-xl text-sm text-text-muted">
+		<p class="mt-5 max-w-xl text-base text-text-muted">
 			{i18n.locale === 'fr'
 				? 'Filtres croisés compétence, disponibilité, streak, langue, projets, badges, GitHub, tags, pays.'
 				: 'Cross filters on skill, availability, streak, language, projects, badges, GitHub, tags, country.'}
@@ -118,26 +119,34 @@
 					<label for="sd" class="block mb-1 text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Domaine' : 'Domain'}
 					</label>
-					<select id="sd" bind:value={skillDomain} class="w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none">
-						<option value="">{i18n.locale === 'fr' ? 'Tous' : 'All'}</option>
-						<option value="code">Code</option>
-						<option value="design">Design</option>
-						<option value="game">Game</option>
-						<option value="security">Security</option>
-					</select>
+					<Select
+						items={[
+							{ value: '', label: i18n.locale === 'fr' ? 'Tous' : 'All' },
+							{ value: 'code', label: 'Code' },
+							{ value: 'design', label: 'Design' },
+							{ value: 'game', label: 'Game' },
+							{ value: 'security', label: 'Security' }
+						]}
+						bind:value={skillDomain}
+						class="w-full"
+					/>
 				</div>
 
 				<div>
 					<label for="tt" class="block mb-1 text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Titre min.' : 'Min title'}
 					</label>
-					<select id="tt" bind:value={title} class="w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none">
-						<option value="">{i18n.locale === 'fr' ? 'Peu importe' : 'Any'}</option>
-						<option value="apprenti">Apprenti</option>
-						<option value="artisan">Artisan</option>
-						<option value="maitre">Maître</option>
-						<option value="legende">Légende</option>
-					</select>
+					<Select
+						items={[
+							{ value: '', label: i18n.locale === 'fr' ? 'Peu importe' : 'Any' },
+							{ value: 'apprenti', label: 'Apprenti' },
+							{ value: 'artisan', label: 'Artisan' },
+							{ value: 'maitre', label: 'Maître' },
+							{ value: 'legende', label: 'Légende' }
+						]}
+						bind:value={title}
+						class="w-full"
+					/>
 				</div>
 
 				<div>
@@ -152,13 +161,13 @@
 						<label for="mf" class="block mb-1 text-xs font-bold uppercase tracking-wider text-text-muted">
 							{i18n.locale === 'fr' ? 'Min frag.' : 'Min frag.'}
 						</label>
-						<input id="mf" type="number" bind:value={minFragments} min="0" class="w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none" />
+						<input id="mf" type="number" bind:value={minFragments} min="0" class="no-spinner w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none" />
 					</div>
 					<div>
 						<label for="ms" class="block mb-1 text-xs font-bold uppercase tracking-wider text-text-muted">
 							{i18n.locale === 'fr' ? 'Min streak' : 'Min streak'}
 						</label>
-						<input id="ms" type="number" bind:value={minStreak} min="0" class="w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none" />
+						<input id="ms" type="number" bind:value={minStreak} min="0" class="no-spinner w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none" />
 					</div>
 				</div>
 
@@ -177,14 +186,18 @@
 					<label for="lf" class="block mb-1 text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Cherche' : 'Looking for'}
 					</label>
-					<select id="lf" bind:value={lookingFor} class="w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none">
-						<option value="">{i18n.locale === 'fr' ? 'Peu importe' : 'Any'}</option>
-						<option value="cdi">CDI</option>
-						<option value="cdd">CDD</option>
-						<option value="freelance">Freelance</option>
-						<option value="internship">Stage</option>
-						<option value="contract">Contract</option>
-					</select>
+					<Select
+						items={[
+							{ value: '', label: i18n.locale === 'fr' ? 'Peu importe' : 'Any' },
+							{ value: 'cdi', label: 'CDI' },
+							{ value: 'cdd', label: 'CDD' },
+							{ value: 'freelance', label: 'Freelance' },
+							{ value: 'internship', label: i18n.locale === 'fr' ? 'Stage' : 'Internship' },
+							{ value: 'contract', label: 'Contract' }
+						]}
+						bind:value={lookingFor}
+						class="w-full"
+					/>
 				</div>
 
 				<div>
@@ -198,7 +211,7 @@
 					<label for="mgr" class="block mb-1 text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'GitHub repos min.' : 'Min GitHub repos'}
 					</label>
-					<input id="mgr" type="number" bind:value={minGithubRepos} min="0" class="w-24 rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none" />
+					<input id="mgr" type="number" bind:value={minGithubRepos} min="0" class="no-spinner w-24 rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none" />
 				</div>
 
 				<div class="pt-2 space-y-2 border-t border-border">
@@ -228,12 +241,17 @@
 					<span class="font-bold text-text-primary">{total}</span>
 					{i18n.locale === 'fr' ? 'talents' : 'talents'}
 				</p>
-				<select bind:value={sortBy} onchange={() => void search()} class="rounded-full border border-border bg-surface-elevated px-4 py-1.5 text-sm focus:border-primary focus:outline-none">
-					<option value="fragments">{i18n.locale === 'fr' ? 'Fragments' : 'Fragments'}</option>
-					<option value="recent">{i18n.locale === 'fr' ? 'Récent' : 'Recent'}</option>
-					<option value="most_active_recently">{i18n.locale === 'fr' ? 'Plus actifs' : 'Most active'}</option>
-					<option value="top_in_domain">{i18n.locale === 'fr' ? 'Top domaine' : 'Top in domain'}</option>
-				</select>
+				<Select
+					size="sm"
+					items={[
+						{ value: 'fragments', label: i18n.locale === 'fr' ? 'Fragments' : 'Fragments' },
+						{ value: 'recent', label: i18n.locale === 'fr' ? 'Récent' : 'Recent' },
+						{ value: 'most_active_recently', label: i18n.locale === 'fr' ? 'Plus actifs' : 'Most active' },
+						{ value: 'top_in_domain', label: i18n.locale === 'fr' ? 'Top domaine' : 'Top in domain' }
+					]}
+					bind:value={sortBy}
+					onchange={() => void search()}
+				/>
 			</div>
 
 			{#if loading}
@@ -304,20 +322,11 @@
 					{/each}
 				</div>
 
-				<!-- Pagination minimal -->
-				{#if total > perPage}
-					<div class="mt-8 flex justify-center gap-2">
-						<Button variant="ghost" disabled={page <= 1} onclick={() => { page = page - 1; void search(); }}>
-							← {i18n.locale === 'fr' ? 'Précédent' : 'Previous'}
-						</Button>
-						<span class="flex items-center px-4 text-sm">
-							{page} / {Math.ceil(total / perPage)}
-						</span>
-						<Button variant="ghost" disabled={page * perPage >= total} onclick={() => { page = page + 1; void search(); }}>
-							{i18n.locale === 'fr' ? 'Suivant' : 'Next'} →
-						</Button>
-					</div>
-				{/if}
+				<Pagination
+					current={page}
+					total={Math.ceil(total / perPage)}
+					onchange={(p) => { page = p; void search(); }}
+				/>
 			{/if}
 		</main>
 	</div>

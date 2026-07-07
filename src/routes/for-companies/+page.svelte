@@ -2,6 +2,7 @@
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
+	import CtaSection from '$components/landing/CtaSection.svelte';
 
 	let ctaHref = $derived(auth.isAuthenticated ? '/enterprise/dashboard' : '/enterprise/register');
 	let ctaLabel = $derived(
@@ -75,8 +76,8 @@
 			</p>
 			<div class="mt-8 flex flex-wrap gap-3">
 				<Button variant="accent" size="lg" href={ctaHref}>{ctaLabel}</Button>
-				<Button variant="ghost" size="lg" href="/find-talents">
-					{i18n.locale === 'fr' ? 'Découvrir le sourcing →' : 'Explore sourcing →'}
+				<Button variant="ghost" size="lg" href="/talent-search">
+					{i18n.locale === 'fr' ? 'Découvrir le sourcing' : 'Explore sourcing'}
 				</Button>
 			</div>
 			<p class="mt-4 text-xs text-text-muted">
@@ -88,17 +89,22 @@
 
 <!-- Benefits -->
 <section class="mx-auto max-w-6xl px-4 py-20 sm:py-28">
-	<h2 class="mb-12 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
+	<h2 class="mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
 		{i18n.locale === 'fr' ? 'Ce que vous' : 'What you'}<br />
 		<span class="text-accent">{i18n.locale === 'fr' ? 'obtenez.' : 'get.'}</span>
 	</h2>
-	<div class="grid gap-5 sm:grid-cols-2">
-		{#each benefits as b}
+	<div class="grid gap-4 sm:grid-cols-2">
+		{#each benefits as b, i}
 			{@const t = i18n.locale === 'fr' ? b.fr : b.en}
-			<article class="rounded-2xl border border-border bg-surface-elevated p-6">
-				<div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-xl text-primary">{b.icon}</div>
-				<h3 class="text-base font-semibold text-text-primary">{t.title}</h3>
-				<p class="mt-2 text-sm leading-relaxed text-text-muted">{t.body}</p>
+			<article class="rounded-2xl border border-border bg-surface-elevated overflow-hidden flex flex-col">
+				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
+					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
+					<span class="text-sm font-semibold text-primary">{t.title}</span>
+					<span class="ml-auto font-mono text-xs text-text-muted">0{i + 1}</span>
+				</div>
+				<div class="p-5">
+					<p class="text-sm text-text-muted leading-relaxed">{t.body}</p>
+				</div>
 			</article>
 		{/each}
 	</div>
@@ -107,32 +113,38 @@
 <!-- Comparison block -->
 <section class="border-y border-border bg-surface-elevated/40 py-20 sm:py-24">
 	<div class="mx-auto max-w-6xl px-4">
-		<h2 class="mb-12 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
+		<h2 class="mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
 			{i18n.locale === 'fr' ? 'Classique' : 'Classic'}<br />
 			<span class="text-accent">{i18n.locale === 'fr' ? 'vs Skilluv.' : 'vs Skilluv.'}</span>
 		</h2>
 		<div class="grid gap-4 sm:grid-cols-2">
-			<div class="rounded-2xl border border-border bg-surface-elevated p-6">
-				<p class="mb-4 text-xs font-bold uppercase tracking-wider text-text-muted line-through decoration-error/50">
-					{i18n.locale === 'fr' ? 'Recrutement classique' : 'Classic hiring'}
-				</p>
-				<ul class="space-y-3 text-sm">
+			<div class="rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
+					<div class="h-2.5 w-2.5 rounded-sm bg-text-muted"></div>
+					<span class="text-sm font-semibold text-text-muted">
+						{i18n.locale === 'fr' ? 'Recrutement classique' : 'Classic hiring'}
+					</span>
+				</div>
+				<ul class="p-5 space-y-3 text-sm">
 					{#each [
 						{ fr: 'CV déclaratif, non vérifiable', en: 'Self-declared resume, unverifiable' },
 						{ fr: 'Tests techniques génériques en entretien', en: 'Generic tech tests during interviews' },
 						{ fr: "Aucune visibilité sur l'engagement réel", en: 'No visibility into real engagement' },
 						{ fr: 'Spam et messages froids', en: 'Spam and cold outreach' }
 					] as item}
-						<li class="flex items-start gap-2 text-text-primary opacity-90">
+						<li class="flex items-start gap-2 text-text-muted">
 							<span class="mt-0.5 shrink-0 text-error">×</span>
 							<span>{i18n.locale === 'fr' ? item.fr : item.en}</span>
 						</li>
 					{/each}
 				</ul>
 			</div>
-			<div class="rounded-2xl border border-primary/40 bg-surface-elevated p-6">
-				<p class="mb-4 text-xs font-bold uppercase tracking-wider text-primary">Skilluv</p>
-				<ul class="space-y-3 text-sm">
+			<div class="rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
+					<div class="h-2.5 w-2.5 rounded-sm bg-accent"></div>
+					<span class="text-sm font-semibold text-accent">Skilluv</span>
+				</div>
+				<ul class="p-5 space-y-3 text-sm">
 					{#each [
 						{ fr: 'Compétences prouvées par des challenges évalués', en: 'Skills proven through graded challenges' },
 						{ fr: 'Niveau, streak, badges et progression visibles', en: 'Level, streak, badges and progression visible' },
@@ -152,42 +164,24 @@
 
 <!-- How it works -->
 <section class="mx-auto max-w-6xl px-4 py-20 sm:py-28">
-	<h2 class="mb-12 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
+	<h2 class="mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
 		{i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works'}<span class="text-accent">.</span>
 	</h2>
 	<ol class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 		{#each steps as s}
 			{@const t = i18n.locale === 'fr' ? s.fr : s.en}
-			<li class="rounded-2xl border border-border bg-surface-elevated p-6">
-				<span class="font-mono text-xs text-primary">{s.n}</span>
-				<h3 class="mt-2 text-base font-semibold text-text-primary">{t.t}</h3>
-				<p class="mt-2 text-sm leading-relaxed text-text-muted">{t.d}</p>
+			<li class="rounded-2xl border border-border bg-surface-elevated overflow-hidden flex flex-col">
+				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
+					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
+					<span class="text-sm font-semibold text-primary">{t.t}</span>
+					<span class="ml-auto font-mono text-xs text-text-muted">{s.n}</span>
+				</div>
+				<div class="p-5">
+					<p class="text-sm text-text-muted leading-relaxed">{t.d}</p>
+				</div>
 			</li>
 		{/each}
 	</ol>
-</section>
-
-<!-- CTA final -->
-<section class="py-20 sm:py-28">
-	<div class="mx-auto max-w-6xl px-4">
-		<div class="rounded-3xl border border-border bg-surface-elevated p-12 sm:p-16 lg:p-20 text-center">
-			<h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
-				{i18n.locale === 'fr' ? 'Prêt à recruter' : 'Ready to hire'}<br />
-				<span class="text-accent">{i18n.locale === 'fr' ? 'sur la preuve ?' : 'on proof?'}</span>
-			</h2>
-			<p class="mx-auto mt-5 max-w-xl text-lg text-text-muted">
-				{i18n.locale === 'fr'
-					? "Créez votre espace entreprise gratuitement. Aucune carte bancaire requise."
-					: 'Create your enterprise space for free. No credit card required.'}
-			</p>
-			<div class="mt-8 flex flex-wrap justify-center gap-3">
-				<Button variant="accent" size="lg" href={ctaHref}>{ctaLabel}</Button>
-				<Button variant="ghost" size="lg" href="/legal/terms">
-					{i18n.locale === 'fr' ? 'Lire les CGU' : 'Read terms'}
-				</Button>
-			</div>
-		</div>
-	</div>
 </section>
 
 <!-- =====================================================
@@ -195,114 +189,172 @@
      ===================================================== -->
 <section class="border-t border-border bg-surface-elevated/40 py-20 sm:py-24">
 	<div class="mx-auto max-w-6xl px-4">
-		<div class="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-			<div>
-				<p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
-					{i18n.locale === 'fr' ? 'Suite entreprise' : 'Enterprise suite'}
-				</p>
-				<h2 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
-					{i18n.locale === 'fr' ? 'Tout ce dont' : 'Everything you'}<br />
-					<span class="text-primary">{i18n.locale === 'fr' ? 'vous avez besoin.' : 'need.'}</span>
-				</h2>
-			</div>
+		<div use:scrollReveal class="mb-10 sm:mb-16">
+			<h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight mb-5">
+				{i18n.locale === 'fr' ? 'Tout ce dont' : 'Everything you'}<br />
+				<span class="text-accent">{i18n.locale === 'fr' ? 'vous avez besoin.' : 'need.'}</span>
+			</h2>
 		</div>
 
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			<!-- Sourcing -->
-			<a href="/talent-search" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-				<div class="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-xl text-primary">⬢</div>
-				<h3 class="mb-2 text-lg font-bold group-hover:text-primary transition-colors">
-					{i18n.locale === 'fr' ? 'Recherche avancée' : 'Advanced search'}
-				</h3>
-				<p class="mb-4 flex-1 text-sm text-text-muted">
-					{i18n.locale === 'fr'
-						? '13 filtres croisés : compétence, streak, GitHub, badges, langue, pays, disponibilité.'
-						: '13 cross filters: skill, streak, GitHub, badges, language, country, availability.'}
-				</p>
-				<span class="text-sm font-semibold text-primary group-hover:underline">
-					{i18n.locale === 'fr' ? 'Chercher des talents →' : 'Search talents →'}
-				</span>
+			<!-- Recherche avancée -->
+			<a href="/talent-search" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
+				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
+					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
+					<span class="text-sm font-semibold text-primary">
+						{i18n.locale === 'fr' ? 'Recherche avancée' : 'Advanced search'}
+					</span>
+					<span class="ml-auto text-xs text-text-muted">13 {i18n.locale === 'fr' ? 'filtres' : 'filters'}</span>
+				</div>
+				<div class="p-5 flex-1 flex flex-col">
+					<p class="text-sm text-text-muted leading-relaxed mb-5">
+						{i18n.locale === 'fr'
+							? 'Croise compétence, niveau, streak, badges, langue, pays, disponibilité, GitHub.'
+							: 'Cross skill, level, streak, badges, language, country, availability, GitHub.'}
+					</p>
+					<div class="mt-auto flex flex-wrap gap-1.5">
+						{#each ['skill', 'level', 'streak', 'badges', 'country', 'lang'] as tag}
+							<span class="rounded-md bg-surface-overlay px-2 py-0.5 text-[11px] font-medium text-text-muted">{tag}</span>
+						{/each}
+					</div>
+				</div>
 			</a>
 
-			<!-- Bounties (post) -->
-			<a href="/bounties" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-				<div class="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent/10 text-xl text-accent">⬡</div>
-				<h3 class="mb-2 text-lg font-bold group-hover:text-primary transition-colors">
-					{i18n.locale === 'fr' ? 'Bounties open-source' : 'Open-source bounties'}
-				</h3>
-				<p class="mb-4 flex-1 text-sm text-text-muted">
-					{i18n.locale === 'fr'
-						? 'Poste une bounty sur une issue GitHub. Le talent résout, la PR est mergée, le payout est automatique.'
-						: 'Post a bounty on a GitHub issue. Talent solves, PR gets merged, payout is automatic.'}
-				</p>
-				<span class="text-sm font-semibold text-primary group-hover:underline">
-					{i18n.locale === 'fr' ? 'Voir les bounties →' : 'See bounties →'}
-				</span>
+			<!-- Bounties -->
+			<a href="/for-companies/bounties" id="bounties" class="group flex flex-col scroll-mt-24 rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40">
+				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
+					<div class="h-2.5 w-2.5 rounded-sm bg-accent"></div>
+					<span class="text-sm font-semibold text-accent">
+						{i18n.locale === 'fr' ? 'Bounties open-source' : 'Open-source bounties'}
+					</span>
+					<span class="ml-auto text-xs text-text-muted font-mono">OSS</span>
+				</div>
+				<div class="p-5 flex-1 flex flex-col">
+					<p class="text-sm text-text-muted leading-relaxed mb-5">
+						{i18n.locale === 'fr'
+							? 'Séquestre à la publication, payout automatique au merge. Zéro contrat.'
+							: 'Escrow on publish, automatic payout on merge. Zero contract.'}
+					</p>
+					<div class="mt-auto font-mono text-xs text-text-muted flex items-center gap-2 flex-wrap">
+						<span class="text-accent font-bold">SÉQUESTRE</span>
+						<span>→</span>
+						<span>MERGE</span>
+						<span>→</span>
+						<span class="text-accent font-bold">PAYOUT</span>
+					</div>
+				</div>
 			</a>
 
-			<!-- Pricing -->
-			<a href="/pricing" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-				<div class="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-xl text-primary">★</div>
-				<h3 class="mb-2 text-lg font-bold group-hover:text-primary transition-colors">
-					{i18n.locale === 'fr' ? 'Tarifs multi-devise' : 'Multi-currency pricing'}
-				</h3>
-				<p class="mb-4 flex-1 text-sm text-text-muted">
-					{i18n.locale === 'fr'
-						? 'Pay-as-you-go en EUR, USD, NGN, XOF, MAD… Refund automatique 50% si le talent décline.'
-						: 'Pay-as-you-go in EUR, USD, NGN, XOF, MAD… Automatic 50% refund if talent declines.'}
-				</p>
-				<span class="text-sm font-semibold text-primary group-hover:underline">
-					{i18n.locale === 'fr' ? 'Voir les tarifs →' : 'See pricing →'}
-				</span>
+			<!-- Tarifs multi-devise -->
+			<a href="/pricing" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
+				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
+					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
+					<span class="text-sm font-semibold text-primary">
+						{i18n.locale === 'fr' ? 'Tarifs multi-devise' : 'Multi-currency pricing'}
+					</span>
+					<span class="ml-auto text-xs text-text-muted">Pay-as-you-go</span>
+				</div>
+				<div class="p-5 flex-1 flex flex-col">
+					<p class="text-sm text-text-muted leading-relaxed mb-5">
+						{i18n.locale === 'fr'
+							? "Aucun engagement mensuel. Refund automatique 50% si le talent décline l'intérêt."
+							: 'No monthly commitment. Automatic 50% refund if talent declines the interest.'}
+					</p>
+					<div class="mt-auto flex flex-wrap gap-1.5">
+						{#each ['EUR', 'USD', 'NGN', 'XOF', 'MAD'] as cur}
+							<span class="rounded-md bg-surface-overlay px-2 py-0.5 text-[11px] font-mono font-semibold text-text-muted">{cur}</span>
+						{/each}
+					</div>
+				</div>
 			</a>
 
 			<!-- Certifications -->
-			<a href="/certifications" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-				<div class="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent/10 text-xl text-accent">◈</div>
-				<h3 class="mb-2 text-lg font-bold group-hover:text-primary transition-colors">
-					{i18n.locale === 'fr' ? 'Certifications' : 'Certifications'}
-				</h3>
-				<p class="mb-4 flex-1 text-sm text-text-muted">
-					{i18n.locale === 'fr'
-						? 'Vérifie un diplôme candidat en 1 clic sur son code court. Zéro friction.'
-						: 'Verify a candidate\'s diploma in 1 click via short code. Zero friction.'}
-				</p>
-				<span class="text-sm font-semibold text-primary group-hover:underline">
-					{i18n.locale === 'fr' ? 'Vérifier un diplôme →' : 'Verify a diploma →'}
-				</span>
+			<a href="/certifications" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40">
+				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
+					<div class="h-2.5 w-2.5 rounded-sm bg-accent"></div>
+					<span class="text-sm font-semibold text-accent">
+						Certifications
+					</span>
+					<span class="ml-auto text-xs text-text-muted">4 823 {i18n.locale === 'fr' ? 'signés' : 'signed'}</span>
+				</div>
+				<div class="p-5 flex-1 flex flex-col">
+					<p class="text-sm text-text-muted leading-relaxed mb-5">
+						{i18n.locale === 'fr'
+							? "Vérifie un diplôme candidat en 1 clic sur son code court. Opposable au recruteur."
+							: "Verify a candidate's diploma in 1 click via short code. Recruiter-proof."}
+					</p>
+					<div class="mt-auto rounded-md bg-surface-overlay px-3 py-2">
+						<p class="text-[10px] uppercase tracking-widest text-text-muted mb-0.5">
+							{i18n.locale === 'fr' ? 'Code vérifiable' : 'Verifiable code'}
+						</p>
+						<p class="font-mono text-sm font-bold text-accent">#SLV-2026-R7X4</p>
+					</div>
+				</div>
 			</a>
 
-			<!-- Facturation -->
-			<a href="/enterprise/credits" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-				<div class="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-xl text-primary">◎</div>
-				<h3 class="mb-2 text-lg font-bold group-hover:text-primary transition-colors">
-					{i18n.locale === 'fr' ? 'Crédits & facturation' : 'Credits & billing'}
-				</h3>
-				<p class="mb-4 flex-1 text-sm text-text-muted">
-					{i18n.locale === 'fr'
-						? 'Achète des crédits, redeem des codes promo, télécharge tes factures PDF SKL-YYYY-NNNNN.'
-						: 'Buy credits, redeem promo codes, download SKL-YYYY-NNNNN PDF invoices.'}
-				</p>
-				<span class="text-sm font-semibold text-primary group-hover:underline">
-					{i18n.locale === 'fr' ? 'Mon solde →' : 'My balance →'}
-				</span>
+			<!-- Crédits & facturation -->
+			<a href="/enterprise/credits" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
+				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
+					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
+					<span class="text-sm font-semibold text-primary">
+						{i18n.locale === 'fr' ? 'Crédits & facturation' : 'Credits & billing'}
+					</span>
+					<span class="ml-auto text-xs text-text-muted">PDF</span>
+				</div>
+				<div class="p-5 flex-1 flex flex-col">
+					<p class="text-sm text-text-muted leading-relaxed mb-5">
+						{i18n.locale === 'fr'
+							? 'Achète des crédits, redeem des codes promo, télécharge tes factures PDF.'
+							: 'Buy credits, redeem promo codes, download PDF invoices.'}
+					</p>
+					<div class="mt-auto rounded-md bg-surface-overlay px-3 py-2">
+						<p class="text-[10px] uppercase tracking-widest text-text-muted mb-0.5">
+							{i18n.locale === 'fr' ? 'Numéro facture' : 'Invoice number'}
+						</p>
+						<p class="font-mono text-sm font-bold text-primary">SKL-2026-00042</p>
+					</div>
+				</div>
 			</a>
 
 			<!-- Abonnements Pipeline -->
-			<a href="/enterprise/subscriptions" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-				<div class="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent/10 text-xl text-accent">⧗</div>
-				<h3 class="mb-2 text-lg font-bold group-hover:text-primary transition-colors">
-					{i18n.locale === 'fr' ? 'Abonnements Pipeline' : 'Pipeline subscriptions'}
-				</h3>
-				<p class="mb-4 flex-1 text-sm text-text-muted">
-					{i18n.locale === 'fr'
-						? 'Starter, Growth, Scale. Crédits inclus tous les mois, annulation à tout moment.'
-						: 'Starter, Growth, Scale. Credits included monthly, cancel anytime.'}
-				</p>
-				<span class="text-sm font-semibold text-primary group-hover:underline">
-					{i18n.locale === 'fr' ? 'Voir les plans →' : 'See plans →'}
-				</span>
+			<a href="/enterprise/subscriptions" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40">
+				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
+					<div class="h-2.5 w-2.5 rounded-sm bg-accent"></div>
+					<span class="text-sm font-semibold text-accent">
+						{i18n.locale === 'fr' ? 'Abonnements Pipeline' : 'Pipeline subscriptions'}
+					</span>
+					<span class="ml-auto text-xs text-text-muted">
+						{i18n.locale === 'fr' ? 'mensuel' : 'monthly'}
+					</span>
+				</div>
+				<div class="p-5 flex-1 flex flex-col">
+					<p class="text-sm text-text-muted leading-relaxed mb-5">
+						{i18n.locale === 'fr'
+							? 'Crédits inclus tous les mois. Annulation à tout moment sans frais cachés.'
+							: 'Credits included monthly. Cancel anytime, no hidden fees.'}
+					</p>
+					<div class="mt-auto flex items-center gap-2 flex-wrap">
+						<span class="rounded-md bg-primary/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">Starter</span>
+						<span class="rounded-md bg-accent/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-accent">Growth</span>
+						<span class="rounded-md bg-primary/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">Scale</span>
+					</div>
+				</div>
 			</a>
 		</div>
 	</div>
 </section>
+
+<!-- CTA final — CtaSection component, identique à /accueil sauf le texte -->
+<CtaSection
+	title={i18n.locale === 'fr' ? 'Prêt à recruter' : 'Ready to hire'}
+	accent={i18n.locale === 'fr' ? 'sur la preuve ?' : 'on proof?'}
+	description={i18n.locale === 'fr' ? 'Créez votre espace entreprise gratuitement. Aucune carte bancaire requise.' : 'Create your enterprise space for free. No credit card required.'}
+	ctaHref={ctaHref}
+	ctaLabel={ctaLabel}
+>
+	{#snippet secondary()}
+		<Button variant="ghost" size="lg" href="/legal/terms">
+			{i18n.locale === 'fr' ? 'Lire les CGU' : 'Read terms'}
+		</Button>
+	{/snippet}
+</CtaSection>

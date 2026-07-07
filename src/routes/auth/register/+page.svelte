@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import CountrySelect from '$components/ui/CountrySelect.svelte';
@@ -10,6 +11,14 @@
 	import { i18n } from '$lib/i18n';
 	import { domainStyle } from '$lib/utils/domains';
 	import type { SkillDomain } from '$types';
+
+	// When arriving from an enterprise recruiter invite email, the URL carries
+	// ?invite_token=…  — we propagate it onto the OAuth buttons so the backend
+	// callback can consume the invite atomically with account creation.
+	const inviteToken = $derived(page.url.searchParams.get('invite_token') ?? '');
+	function oauthHref(base: string): string {
+		return inviteToken ? `${base}?invite_token=${encodeURIComponent(inviteToken)}` : base;
+	}
 
 	// --- State ---
 	let step = $state<1 | 2>(1);
@@ -28,6 +37,7 @@
 	let password = $state('');
 	let country = $state<string | null>(null);
 	let city = $state<string | null>(null);
+	let termsAccepted = $state(false);
 
 	const domains: { value: SkillDomain; label: string; desc: string; icon: string }[] = [
 		{ value: 'code', label: i18n.t('common.domains.code'), desc: i18n.t('auth.register.codeDesc'), icon: '{ }' },
@@ -61,8 +71,26 @@
 		if (!email.trim()) fieldErrors.email = i18n.t('auth.register.email');
 		if (!firstName.trim()) fieldErrors.firstName = i18n.t('auth.register.firstName');
 		if (!lastName.trim()) fieldErrors.lastName = i18n.t('auth.register.lastName');
-		if (password.length < 8) fieldErrors.password = i18n.t('auth.register.passwordHint');
+		// Backend policy: min 10 chars + uppercase + lowercase + digit + symbol.
+		if (
+			password.length < 10 ||
+			!/[A-Z]/.test(password) ||
+			!/[a-z]/.test(password) ||
+			!/\d/.test(password) ||
+			!/[^A-Za-z0-9\s]/.test(password)
+		) {
+			fieldErrors.password =
+				i18n.locale === 'fr'
+					? 'Au moins 10 caractères, avec majuscule, minuscule, chiffre et symbole'
+					: 'At least 10 characters, with uppercase, lowercase, digit and symbol';
+		}
 		if (!country) fieldErrors.country = i18n.locale === 'fr' ? 'Sélectionnez un pays' : 'Pick a country';
+		if (!termsAccepted) {
+			fieldErrors.terms =
+				i18n.locale === 'fr'
+					? 'Vous devez accepter les CGU et la politique de confidentialité'
+					: 'You must accept the Terms of Service and Privacy Policy';
+		}
 		if (Object.keys(fieldErrors).length > 0) return;
 
 		loading = true;
@@ -75,7 +103,8 @@
 				last_name: lastName.trim(),
 				skill_domain: selectedDomain,
 				country: country ?? undefined,
-				city: city ?? undefined
+				city: city ?? undefined,
+				terms_accepted: true
 			};
 
 			const res = await authApi.register(body);
@@ -128,6 +157,17 @@
 					</div>
 				</button>
 			{/each}
+		</div>
+
+		<div class="my-6 flex items-center gap-3">
+			<div class="h-px flex-1 bg-border"></div>
+			<span class="text-xs uppercase text-text-muted">{i18n.locale === 'fr' ? 'ou' : 'or'}</span>
+			<div class="h-px flex-1 bg-border"></div>
+		</div>
+		<div class="grid gap-2">
+			<a href={oauthHref('/api/auth/google/start')} class="block w-full rounded-2xl border border-border py-3 text-center text-sm font-medium hover:border-accent">Google</a>
+			<a href={oauthHref('/api/auth/linkedin/start')} class="block w-full rounded-2xl border border-border py-3 text-center text-sm font-medium hover:border-accent">LinkedIn</a>
+			<a href={oauthHref('/api/auth/github/login')} class="block w-full rounded-2xl border border-border py-3 text-center text-sm font-medium hover:border-accent">GitHub</a>
 		</div>
 
 		<p class="mt-8 text-center text-sm text-text-muted">
@@ -219,6 +259,31 @@
 					hint={i18n.locale === 'fr' ? 'Optionnel' : 'Optional'}
 				/>
 			</div>
+
+			<label class="mt-2 flex items-start gap-3 text-sm text-text-muted">
+				<input
+					type="checkbox"
+					bind:checked={termsAccepted}
+					class="mt-0.5 h-4 w-4 shrink-0 rounded border-border accent-accent focus:ring-2 focus:ring-accent"
+					required
+				/>
+				<span>
+					{#if i18n.locale === 'fr'}
+						J'accepte les
+						<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">CGU</a>
+						et la
+						<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">politique de confidentialité</a>.
+					{:else}
+						I accept the
+						<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">Terms of Service</a>
+						and
+						<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">Privacy Policy</a>.
+					{/if}
+				</span>
+			</label>
+			{#if fieldErrors.terms}
+				<p class="-mt-2 text-sm text-error">{fieldErrors.terms}</p>
+			{/if}
 
 			<Button variant="accent" size="lg" type="submit" {loading} class="mt-2 w-full">
 				{loading ? i18n.t('auth.register.creating') : i18n.t('auth.register.createBtn')}

@@ -63,10 +63,10 @@
 </script>
 
 <div class="relative inline-flex items-center gap-1 rounded-full border border-border bg-surface-elevated p-1 {className}">
-	<!-- Sliding indicator -->
+	<!-- Sliding indicator — pill inversée style header -->
 	<span
 		aria-hidden="true"
-		class="pointer-events-none absolute left-0 top-0 rounded-full bg-surface-overlay will-change-transform {ready ? 'transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]' : ''}"
+		class="pointer-events-none absolute left-0 top-0 rounded-full bg-text-primary will-change-transform {ready ? 'transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]' : ''}"
 		style={indicatorStyle}
 	></span>
 
@@ -76,7 +76,7 @@
 			bind:this={buttons[i]}
 			onclick={() => select(item.value)}
 			class="relative z-10 flex items-center {sizeClasses[size].gap} rounded-full {sizeClasses[size].item} font-medium transition-colors duration-300 {value === item.value
-				? 'text-text-primary'
+				? 'text-surface'
 				: 'text-text-muted hover:text-text-primary'}"
 		>
 			{#if item.dot}

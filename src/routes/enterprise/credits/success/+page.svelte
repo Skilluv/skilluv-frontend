@@ -57,7 +57,7 @@
 		✓
 	</div>
 
-	<p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-accent">
+	<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">
 		{i18n.locale === 'fr' ? 'Paiement confirmé' : 'Payment confirmed'}
 	</p>
 

@@ -7,9 +7,70 @@
 	import { i18n } from '$lib/i18n';
 	import type { ThemeBase } from '$lib/types';
 	import NavDropdown from './NavDropdown.svelte';
+	import { onMount } from 'svelte';
 
 	let mobileOpen = $state(false);
 	let themeOpen = $state(false);
+
+	// Sliding indicator pour le pill nav
+	let pillContainer = $state<HTMLDivElement | undefined>();
+	let indicatorStyle = $state('opacity:0;');
+	let indicatorReady = $state(false);
+
+	function updateIndicator() {
+		if (!pillContainer) return;
+		const activeEl = pillContainer.querySelector<HTMLElement>('[data-nav-active="true"]');
+		if (!activeEl) {
+			indicatorStyle = 'opacity:0;';
+			return;
+		}
+		// Si le wrapper contient un NavDropdown button, on suit la vraie taille du button
+		const target = activeEl.querySelector<HTMLElement>('[data-nav-key]') ?? activeEl;
+		const containerRect = pillContainer.getBoundingClientRect();
+		const targetRect = target.getBoundingClientRect();
+		// L'indicator absolute est ancré au padding-box du container ; on compense la border
+		// pour aligner parfaitement avec les enfants (qui sont mesurés en border-box).
+		const left = targetRect.left - containerRect.left - pillContainer.clientLeft;
+		const top = targetRect.top - containerRect.top - pillContainer.clientTop;
+		const width = target.offsetWidth;
+		const height = target.offsetHeight;
+		indicatorStyle = `transform: translate3d(${left}px, ${top}px, 0); width: ${width}px; height: ${height}px; opacity: 1;`;
+	}
+
+	// Détermine quel item de la navbar est actif (recalculé à chaque changement de route)
+	let activeKey = $derived.by(() => {
+		const path = $page.url.pathname;
+		if (path === '/') return 'home';
+		if (auth.isAuthenticated) {
+			if (path.startsWith('/challenges')) return 'challenges';
+			if (['/bounties', '/certifications', '/diplomas', '/mentors', '/mentorship'].some((p) => path === p || path.startsWith(p + '/'))) return 'grow';
+			if (['/feed', '/forum', '/guilds', '/tournaments', '/messages', '/leaderboards', '/community'].some((p) => path === p || path.startsWith(p + '/'))) return 'community';
+			if (['/enterprise', '/talent-search', '/for-companies', '/pricing'].some((p) => path === p || path.startsWith(p + '/'))) return 'enterprise';
+		} else {
+			if (['/challenges', '/community', '/bounties', '/certifications', '/mentors'].some((p) => path === p || path.startsWith(p + '/'))) return 'discover';
+			if (['/forum', '/guilds', '/tournaments', '/leaderboards'].some((p) => path === p || path.startsWith(p + '/'))) return 'community';
+			if (['/for-companies', '/talent-search', '/enterprise', '/pricing'].some((p) => path === p || path.startsWith(p + '/'))) return 'enterprise';
+		}
+		return null;
+	});
+
+	// Recalcule l'indicator quand la route ou la langue change
+	$effect(() => {
+		void activeKey;
+		void i18n.locale;
+		// Deux frames : laisser le DOM re-render les nouveaux labels avant la mesure
+		requestAnimationFrame(() => requestAnimationFrame(updateIndicator));
+	});
+
+	onMount(() => {
+		requestAnimationFrame(() => {
+			updateIndicator();
+			indicatorReady = true;
+		});
+		const onResize = () => updateIndicator();
+		window.addEventListener('resize', onResize);
+		return () => window.removeEventListener('resize', onResize);
+	});
 
 	const themes: { key: ThemeBase; label: string; accent: string; primary: string }[] = [
 		{ key: 'forge', label: 'Forge', accent: '#ea580c', primary: '#2563eb' },
@@ -125,14 +186,14 @@
 		{
 			title: 'Sourcing',
 			items: [
-				{ href: '/find-talents', icon: '◎', label: i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works', description: i18n.locale === 'fr' ? 'Recruter sur la preuve, pas le CV' : 'Hire on proof, not resume' },
+				{ href: '/for-companies', icon: '◎', label: i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works', description: i18n.locale === 'fr' ? 'Recruter sur la preuve, pas le CV' : 'Hire on proof, not resume' },
 				{ href: '/talent-search', icon: '⬢', label: i18n.locale === 'fr' ? 'Recherche avancée' : 'Advanced search', description: i18n.locale === 'fr' ? '13 filtres croisés' : '13 cross filters' }
 			]
 		},
 		{
 			title: 'Business',
 			items: [
-				{ href: '/bounties', icon: '⬢', label: i18n.locale === 'fr' ? 'Poster une bounty' : 'Post a bounty', description: i18n.locale === 'fr' ? 'Convertis crédits en résolutions PR' : 'Convert credits into PR resolutions' },
+				{ href: '/for-companies/bounties', icon: '⬢', label: i18n.locale === 'fr' ? 'Sponsoriser une issue' : 'Sponsor an issue', description: i18n.locale === 'fr' ? 'Bounties open-source, payout au merge' : 'Open-source bounties, payout on merge' },
 				{ href: '/pricing', icon: '★', label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing', description: i18n.locale === 'fr' ? 'Pay-as-you-go multi-devise' : 'Pay-as-you-go multi-currency' },
 				{ href: '/enterprise/register', icon: '+', label: i18n.locale === 'fr' ? 'Créer mon espace' : 'Create my space', badge: '2 min' }
 			]
@@ -150,9 +211,22 @@
 			]
 		},
 		{
+			title: i18n.locale === 'fr' ? 'Espace' : 'Space',
+			items: [
+				{ href: '/enterprise/profile', icon: '◎', label: i18n.locale === 'fr' ? 'Profil entreprise' : 'Enterprise profile', description: i18n.locale === 'fr' ? 'Nom, description, logo, taille' : 'Name, description, logo, size' },
+				{ href: '/enterprise/members', icon: '★', label: i18n.locale === 'fr' ? 'Membres' : 'Members', description: i18n.locale === 'fr' ? 'Inviter des recruteurs, gérer les rôles' : 'Invite recruiters, manage roles' }
+			]
+		},
+		{
+			title: 'Bounties',
+			items: [
+				{ href: '/enterprise/bounties', icon: '⬢', label: i18n.locale === 'fr' ? 'Mes bounties' : 'My bounties', description: i18n.locale === 'fr' ? 'Dashboard de mes issues sponsorisées' : 'Dashboard of my sponsored issues' },
+				{ href: '/enterprise/bounties/new', icon: '+', label: i18n.locale === 'fr' ? 'Poster une bounty' : 'Post a bounty', description: i18n.locale === 'fr' ? 'Sponsoriser une nouvelle issue GitHub' : 'Sponsor a new GitHub issue' }
+			]
+		},
+		{
 			title: 'Business',
 			items: [
-				{ href: '/bounties', icon: '⬢', label: 'Bounties' },
 				{ href: '/enterprise/credits', icon: '★', label: i18n.locale === 'fr' ? 'Crédits' : 'Credits' },
 				{ href: '/invoices', icon: '◎', label: i18n.locale === 'fr' ? 'Factures' : 'Invoices' },
 				{ href: '/pricing', icon: '★', label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing' }
@@ -180,12 +254,21 @@
 			{/if}
 		</a>
 
-		<!-- Desktop nav — pill container flottant centré -->
+		<!-- Desktop nav — pill container flottant centré avec sliding indicator -->
 		<div class="hidden md:flex fixed top-5 left-1/2 -translate-x-1/2 z-50">
-			<div class="flex items-center gap-1 rounded-full border border-border bg-surface-elevated p-1 shadow-sm">
+			<div bind:this={pillContainer} class="relative flex items-center gap-1 rounded-full border border-border bg-surface-elevated p-1 shadow-sm">
+				<!-- Sliding indicator (pill inversée qui glisse) -->
+				<span
+					aria-hidden="true"
+					class="pointer-events-none absolute left-0 top-0 rounded-full bg-text-primary will-change-transform {indicatorReady ? 'transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]' : ''}"
+					style={indicatorStyle}
+				></span>
+
 				<a
 					href="/"
-					class="rounded-full px-4 py-1.5 text-sm font-medium transition-colors {isActive('/') ? 'bg-text-primary text-surface' : 'text-text-muted hover:text-text-primary'}"
+					data-nav-key="home"
+					data-nav-active={activeKey === 'home'}
+					class="relative z-10 inline-flex items-center h-8 rounded-full px-4 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'home' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
 				>
 					{i18n.locale === 'fr' ? 'Accueil' : 'Home'}
 				</a>
@@ -193,41 +276,61 @@
 				{#if auth.isAuthenticated}
 					<a
 						href="/challenges"
-						class="rounded-full px-4 py-1.5 text-sm font-medium transition-colors {isActive('/challenges') ? 'bg-text-primary text-surface' : 'text-text-muted hover:text-text-primary'}"
+						data-nav-key="challenges"
+						data-nav-active={activeKey === 'challenges'}
+						class="relative z-10 inline-flex items-center h-8 rounded-full px-4 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'challenges' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
 					>
 						{i18n.t('common.nav.challenges')}
 					</a>
-					<NavDropdown
-						label={i18n.locale === 'fr' ? 'Grandir' : 'Grow'}
-						groups={talentGrowGroups}
-						matchPaths={['/bounties', '/certifications', '/diplomas', '/mentors', '/mentorship']}
-					/>
-					<NavDropdown
-						label={i18n.locale === 'fr' ? 'Communauté' : 'Community'}
-						groups={talentCommunityGroups}
-						matchPaths={['/feed', '/forum', '/guilds', '/tournaments', '/messages', '/leaderboards', '/community']}
-					/>
-					<NavDropdown
-						label={i18n.locale === 'fr' ? 'Entreprises' : 'Enterprise'}
-						groups={enterpriseGroupsAuth}
-						matchPaths={['/enterprise', '/talent-search', '/bounties', '/pricing']}
-					/>
+					<div data-nav-active={activeKey === 'grow'} class="relative z-10">
+						<NavDropdown
+							navKey="grow"
+							active={activeKey === 'grow'}
+							label={i18n.locale === 'fr' ? 'Grandir' : 'Grow'}
+							groups={talentGrowGroups}
+												/>
+					</div>
+					<div data-nav-active={activeKey === 'community'} class="relative z-10">
+						<NavDropdown
+							navKey="community"
+							active={activeKey === 'community'}
+							label={i18n.locale === 'fr' ? 'Communauté' : 'Community'}
+							groups={talentCommunityGroups}
+												/>
+					</div>
+					<div data-nav-active={activeKey === 'enterprise'} class="relative z-10">
+						<NavDropdown
+							navKey="enterprise"
+							active={activeKey === 'enterprise'}
+							label={i18n.locale === 'fr' ? 'Entreprises' : 'Enterprise'}
+							groups={enterpriseGroupsAuth}
+												/>
+					</div>
 				{:else}
-					<NavDropdown
-						label={i18n.locale === 'fr' ? 'Découvrir' : 'Discover'}
-						groups={discoverGroups}
-						matchPaths={['/challenges', '/community', '/bounties', '/certifications', '/mentors']}
-					/>
-					<NavDropdown
-						label={i18n.locale === 'fr' ? 'Communauté' : 'Community'}
-						groups={communityGroups}
-						matchPaths={['/forum', '/guilds', '/tournaments', '/leaderboards']}
-					/>
-					<NavDropdown
-						label={i18n.locale === 'fr' ? 'Entreprises' : 'Enterprise'}
-						groups={enterpriseGroupsAnon}
-						matchPaths={['/for-companies', '/talent-search', '/enterprise', '/bounties', '/pricing']}
-					/>
+					<div data-nav-active={activeKey === 'discover'} class="relative z-10">
+						<NavDropdown
+							navKey="discover"
+							active={activeKey === 'discover'}
+							label={i18n.locale === 'fr' ? 'Découvrir' : 'Discover'}
+							groups={discoverGroups}
+												/>
+					</div>
+					<div data-nav-active={activeKey === 'community'} class="relative z-10">
+						<NavDropdown
+							navKey="community"
+							active={activeKey === 'community'}
+							label={i18n.locale === 'fr' ? 'Communauté' : 'Community'}
+							groups={communityGroups}
+												/>
+					</div>
+					<div data-nav-active={activeKey === 'enterprise'} class="relative z-10">
+						<NavDropdown
+							navKey="enterprise"
+							active={activeKey === 'enterprise'}
+							label={i18n.locale === 'fr' ? 'Entreprises' : 'Enterprise'}
+							groups={enterpriseGroupsAnon}
+												/>
+					</div>
 				{/if}
 			</div>
 		</div>

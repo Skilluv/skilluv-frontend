@@ -4,6 +4,8 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
+	import FilterBar from '$components/ui/FilterBar.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { ReportStatus, ReportTargetType } from '$types';
 
@@ -54,14 +56,19 @@
 <div class="p-6 lg:p-8">
 	<h1 class="mb-6 text-2xl font-bold">{i18n.t('admin.reports.title')}</h1>
 
-	<div class="mb-4 flex gap-2">
-		{#each [{ v: 'pending', l: i18n.t('admin.reports.pending') }, { v: 'resolved', l: i18n.t('admin.reports.resolvedLabel') }, { v: 'dismissed', l: i18n.t('admin.reports.dismissed') }, { v: '', l: i18n.t('admin.reports.allLabel') }] as f}
-			<button
-				class="rounded-lg px-3 py-1.5 text-xs font-medium {filterStatus === f.v ? 'bg-primary text-primary-fg' : 'bg-surface-elevated text-text-muted'}"
-				onclick={() => { filterStatus = f.v as ReportStatus | ''; currentPage = 1; loadReports(); }}
-			>{f.l}</button>
-		{/each}
-	</div>
+	<FilterBar class="mb-4">
+		<SegmentedControl
+			size="sm"
+			items={[
+				{ value: 'pending', label: i18n.t('admin.reports.pending') },
+				{ value: 'resolved', label: i18n.t('admin.reports.resolvedLabel') },
+				{ value: 'dismissed', label: i18n.t('admin.reports.dismissed') },
+				{ value: '', label: i18n.t('admin.reports.allLabel') }
+			]}
+			bind:value={filterStatus}
+			onchange={() => { currentPage = 1; loadReports(); }}
+		/>
+	</FilterBar>
 
 	{#if loading}
 		<div class="flex flex-col gap-3">

@@ -42,7 +42,7 @@
 </script>
 
 {#if href && !disabled}
-	<a {href} class={classes}>
+	<a {href} class={classes} {...rest}>
 		{@render children()}
 	</a>
 {:else}

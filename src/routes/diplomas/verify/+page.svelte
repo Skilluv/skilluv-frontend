@@ -18,7 +18,7 @@
 </svelte:head>
 
 <div class="mx-auto max-w-2xl px-4 py-20 sm:py-28 text-center">
-	<p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-accent">
+	<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">
 		{i18n.locale === 'fr' ? 'Vérification publique' : 'Public verification'}
 	</p>
 	<h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight">
@@ -39,7 +39,7 @@
 			bind:value={code}
 			maxlength="12"
 			placeholder="ABCD1234"
-			class="w-full max-w-sm rounded-full border-2 border-border bg-surface-elevated px-6 py-4 text-center text-2xl font-mono font-bold tracking-[0.3em] uppercase placeholder:text-text-muted/50 focus:border-primary focus:outline-none"
+			class="w-full max-w-sm rounded-full border-2 border-border bg-surface-elevated px-6 py-4 text-center text-2xl font-mono font-bold tracking-widest uppercase placeholder:text-text-muted/50 focus:border-primary focus:outline-none"
 		/>
 		<Button variant="accent" size="lg" disabled={!code.trim()}>
 			{i18n.locale === 'fr' ? 'Vérifier' : 'Verify'}

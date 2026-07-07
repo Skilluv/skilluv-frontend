@@ -148,7 +148,7 @@
 	<!-- Header -->
 	<div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 		<div>
-			<p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">Skilluv Enterprise</p>
+			<p class="mb-2 text-xs font-bold uppercase tracking-widest text-accent">Skilluv Enterprise</p>
 			<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
 				{i18n.locale === 'fr' ? 'Vos crédits.' : 'Your credits.'}
 			</h1>
@@ -168,11 +168,7 @@
 		<div class="mb-10 h-40 animate-pulse rounded-2xl border border-border bg-surface-elevated"></div>
 	{:else if balance}
 		<div class="mb-10 grid gap-4 sm:grid-cols-3">
-			<div class="sm:col-span-2 rounded-2xl border border-border bg-gradient-to-br from-surface-elevated via-surface-elevated to-primary/5 p-8 relative overflow-hidden">
-				<div
-					aria-hidden="true"
-					class="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-primary/10 blur-3xl"
-				></div>
+			<div class="sm:col-span-2 rounded-2xl border border-border bg-surface-elevated p-8">
 				<p class="mb-2 text-xs font-bold uppercase tracking-wider text-text-muted">
 					{i18n.locale === 'fr' ? 'Solde disponible' : 'Available balance'}
 				</p>
@@ -215,7 +211,7 @@
 		<section class="mb-14">
 			<div class="mb-6 flex items-end justify-between">
 				<div>
-					<p class="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+					<p class="mb-1 text-xs font-bold uppercase tracking-widest text-accent">
 						{i18n.locale === 'fr' ? 'Recharger' : 'Top up'}
 					</p>
 					<h2 class="text-3xl sm:text-4xl font-black tracking-tight">
@@ -312,7 +308,7 @@
 	<section>
 		<div class="mb-6 flex items-end justify-between">
 			<div>
-				<p class="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+				<p class="mb-1 text-xs font-bold uppercase tracking-widest text-accent">
 					{i18n.locale === 'fr' ? 'Historique' : 'History'}
 				</p>
 				<h2 class="text-3xl sm:text-4xl font-black tracking-tight">

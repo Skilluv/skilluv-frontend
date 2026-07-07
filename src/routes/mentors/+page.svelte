@@ -4,6 +4,7 @@
 	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
+	import FilterBar from '$components/ui/FilterBar.svelte';
 	import { mentorshipApi, type MentorSummary } from '$api/mentorship';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -54,7 +55,7 @@
 		style="background-image: linear-gradient(var(--sk-text) 1px, transparent 1px), linear-gradient(90deg, var(--sk-text) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);"
 	></div>
 	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
-		<p class="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-accent">Mentorship</p>
+		<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Mentorship</p>
 		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
 			{#if i18n.locale === 'fr'}
 				1 heure.<br />
@@ -84,29 +85,31 @@
 
 <!-- Filters -->
 <section class="border-b border-border bg-surface-elevated/40">
-	<div class="mx-auto max-w-6xl px-4 py-6 flex flex-wrap items-center gap-3">
-		<input
-			type="text"
-			bind:value={filterExpertise}
-			onblur={load}
-			placeholder={i18n.locale === 'fr' ? 'Expertise (react, ml...)' : 'Expertise (react, ml...)'}
-			class="rounded-full border border-border bg-surface-elevated px-4 py-1.5 text-sm focus:border-primary focus:outline-none"
-		/>
-		<input
-			type="text"
-			bind:value={filterLanguage}
-			onblur={load}
-			placeholder={i18n.locale === 'fr' ? 'Langue parlée' : 'Spoken language'}
-			class="rounded-full border border-border bg-surface-elevated px-4 py-1.5 text-sm focus:border-primary focus:outline-none"
-		/>
-		<input
-			type="number"
-			bind:value={maxRateEur}
-			onblur={load}
-			placeholder={i18n.locale === 'fr' ? 'Max €/h' : 'Max €/h'}
-			min="0"
-			class="w-32 rounded-full border border-border bg-surface-elevated px-4 py-1.5 text-sm focus:border-primary focus:outline-none"
-		/>
+	<div class="mx-auto max-w-6xl px-4 py-6">
+		<FilterBar label={i18n.locale === 'fr' ? 'Filtres :' : 'Filters:'}>
+			<input
+				type="text"
+				bind:value={filterExpertise}
+				onblur={load}
+				placeholder={i18n.locale === 'fr' ? 'Expertise (react, ml...)' : 'Expertise (react, ml...)'}
+				class="h-8 rounded-full border border-border bg-surface-elevated px-4 text-sm focus:border-primary focus:outline-none"
+			/>
+			<input
+				type="text"
+				bind:value={filterLanguage}
+				onblur={load}
+				placeholder={i18n.locale === 'fr' ? 'Langue parlée' : 'Spoken language'}
+				class="h-8 rounded-full border border-border bg-surface-elevated px-4 text-sm focus:border-primary focus:outline-none"
+			/>
+			<input
+				type="number"
+				bind:value={maxRateEur}
+				onblur={load}
+				placeholder={i18n.locale === 'fr' ? 'Max €/h' : 'Max €/h'}
+				min="0"
+				class="h-8 w-32 rounded-full border border-border bg-surface-elevated px-4 text-sm focus:border-primary focus:outline-none"
+			/>
+		</FilterBar>
 	</div>
 </section>
 

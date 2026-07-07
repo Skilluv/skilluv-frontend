@@ -19,19 +19,30 @@
 	interface Props {
 		label: string;
 		groups: NavGroup[];
-		/** href of anchor for underline indicator; if any child matches, dropdown is active */
-		matchPaths?: string[];
+		/** État actif pilote de l'extérieur (source unique de vérité côté Navbar) */
+		active?: boolean;
+		/** Identifiant unique pour le sliding indicator de la Navbar */
+		navKey?: string;
 		children?: Snippet;
 	}
 
-	let { label, groups, matchPaths = [] }: Props = $props();
+	let { label, groups, active = false, navKey }: Props = $props();
 
 	let open = $state(false);
 	let containerEl: HTMLDivElement | undefined = $state();
 
-	let isActive = $derived.by(() => {
+	// Détermine l'unique item actif : celui dont le href est le plus long préfixe du pathname courant.
+	// Évite d'illuminer à la fois "/for-companies" et "/for-companies/bounties" sur /for-companies/bounties.
+	let activeHref = $derived.by(() => {
 		const path = $page.url.pathname;
-		return matchPaths.some((p) => path === p || path.startsWith(p + '/'));
+		let best: string | null = null;
+		for (const g of groups) {
+			for (const it of g.items) {
+				const match = path === it.href || path.startsWith(it.href + '/');
+				if (match && (!best || it.href.length > best.length)) best = it.href;
+			}
+		}
+		return best;
 	});
 
 	function toggle() {
@@ -63,7 +74,8 @@
 <div bind:this={containerEl} class="relative">
 	<button
 		onclick={toggle}
-		class="inline-flex items-center gap-1 rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-200 {isActive || open ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'}"
+		data-nav-key={navKey}
+		class="relative inline-flex items-center h-8 gap-1 rounded-full px-4 text-sm font-medium leading-none transition-colors duration-300 {active ? 'text-surface' : open ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'}"
 		aria-expanded={open}
 		aria-haspopup="menu"
 	>
@@ -87,24 +99,25 @@
 			<div class="p-2">
 				{#each groups as group, gi}
 					{#if group.title}
-						<p class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">
+						<p class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-widest text-text-muted">
 							{group.title}
 						</p>
 					{/if}
 					<div class="space-y-0.5">
 						{#each group.items as item}
+							{@const isCurrentPage = item.href === activeHref}
 							<a
 								href={item.href}
 								onclick={close}
-								class="group/item flex items-start gap-3 rounded-xl p-2.5 hover:bg-surface-overlay transition-colors {$page.url.pathname === item.href || $page.url.pathname.startsWith(item.href + '/') ? 'bg-primary/5' : ''}"
+								class="group/item flex items-start gap-3 rounded-xl p-2.5 transition-colors duration-150 {isCurrentPage ? 'bg-primary/10' : 'hover:bg-primary/10'}"
 								role="menuitem"
 							>
-								<div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-lg text-primary">
+								<div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-lg text-primary transition-colors duration-150 group-hover/item:bg-primary/20">
 									{item.icon}
 								</div>
 								<div class="min-w-0 flex-1">
 									<div class="flex items-center gap-2">
-										<span class="font-semibold text-sm truncate">{item.label}</span>
+										<span class="font-semibold text-sm truncate {isCurrentPage ? 'text-primary' : 'text-text-primary group-hover/item:text-primary'} transition-colors duration-150">{item.label}</span>
 										{#if item.badge}
 											<span class="rounded-full bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent">
 												{item.badge}

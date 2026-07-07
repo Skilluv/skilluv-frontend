@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { adminApi } from '$api/admin';
-	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import Table from '$components/ui/Table.svelte';
+	import Pagination from '$components/ui/Pagination.svelte';
 	import { i18n } from '$lib/i18n';
 
 	interface AuditEntry {
@@ -37,42 +38,30 @@
 
 	{#if loading}
 		<div class="flex flex-col gap-2">{#each Array(10) as _}<Skeleton class="h-10 w-full" rounded="lg" />{/each}</div>
-	{:else if entries.length === 0}
-		<p class="py-8 text-center text-text-muted">{i18n.t('admin.audit.empty')}</p>
 	{:else}
-		<div class="overflow-hidden rounded-2xl border border-border">
-			<table class="w-full text-sm">
-				<thead class="border-b border-border bg-surface-overlay text-left text-xs text-text-muted">
-					<tr>
-						<th class="px-4 py-2">{i18n.t('admin.audit.date')}</th>
-						<th class="px-4 py-2">{i18n.t('admin.audit.admin')}</th>
-						<th class="px-4 py-2">{i18n.t('admin.audit.action')}</th>
-						<th class="px-4 py-2">{i18n.t('admin.audit.target')}</th>
-						<th class="px-4 py-2">{i18n.t('admin.audit.details')}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each entries as entry}
-						<tr class="border-b border-border last:border-0">
-							<td class="whitespace-nowrap px-4 py-2 text-xs text-text-muted">
-								{new Date(entry.created_at).toLocaleString('fr')}
-							</td>
-							<td class="px-4 py-2 font-medium">{entry.admin_username}</td>
-							<td class="px-4 py-2">{entry.action}</td>
-							<td class="px-4 py-2 text-xs text-text-muted">{entry.target_type}:{entry.target_id.slice(0, 8)}</td>
-							<td class="px-4 py-2 text-xs text-text-muted">{entry.details ?? '—'}</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
+		<Table
+			columns={[
+				{ key: 'date', label: i18n.t('admin.audit.date') },
+				{ key: 'admin', label: i18n.t('admin.audit.admin') },
+				{ key: 'action', label: i18n.t('admin.audit.action') },
+				{ key: 'target', label: i18n.t('admin.audit.target') },
+				{ key: 'details', label: i18n.t('admin.audit.details') }
+			]}
+			rows={entries.map((e) => ({
+				date: new Date(e.created_at).toLocaleString('fr'),
+				admin: e.admin_username,
+				action: e.action,
+				target: `${e.target_type}:${e.target_id.slice(0, 8)}`,
+				details: e.details ?? '—'
+			}))}
+			emptyLabel={i18n.t('admin.audit.empty')}
+		/>
 
-		{#if totalPages > 1}
-			<div class="mt-4 flex items-center justify-center gap-4">
-				<Button variant="ghost" size="sm" disabled={currentPage <= 1} onclick={() => { currentPage--; loadAudit(); }}>←</Button>
-				<span class="text-sm text-text-muted">{currentPage}/{totalPages}</span>
-				<Button variant="ghost" size="sm" disabled={currentPage >= totalPages} onclick={() => { currentPage++; loadAudit(); }}>→</Button>
-			</div>
-		{/if}
+		<Pagination
+			current={currentPage}
+			total={totalPages}
+			onchange={(p) => { currentPage = p; loadAudit(); }}
+			compact
+		/>
 	{/if}
 </div>

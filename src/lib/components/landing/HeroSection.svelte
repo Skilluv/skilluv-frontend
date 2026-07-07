@@ -75,7 +75,14 @@
 		<!-- Statement -->
 		<div bind:this={titleRef}>
 			<h1 class="text-4xl sm:text-6xl lg:text-8xl xl:text-9xl font-black leading-[0.95] tracking-[-0.03em] max-w-6xl">
-				{i18n.t('landing.title')}<br />
+				{#if i18n.locale === 'en'}
+					<span>Prove what you</span>
+					<br />
+					<span>can do.</span>
+				{:else}
+					<span>{i18n.t('landing.title')}</span>
+				{/if}
+				<br />
 				<span class="text-accent">{i18n.t('landing.titleAccent')}</span>
 			</h1>
 		</div>

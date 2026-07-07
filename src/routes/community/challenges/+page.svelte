@@ -3,6 +3,7 @@
 	import { auth } from '$stores/auth.svelte';
 	import ChallengeCard from '$components/challenge/ChallengeCard.svelte';
 	import Button from '$components/ui/Button.svelte';
+	import Pagination from '$components/ui/Pagination.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { Challenge } from '$types';
 
@@ -88,12 +89,11 @@
 			{/each}
 		</div>
 
-		{#if totalPages > 1}
-			<div class="mt-8 flex items-center justify-center gap-4">
-				<Button variant="ghost" size="sm" disabled={currentPage <= 1} onclick={() => { currentPage--; loadPopular(); }}>←</Button>
-				<span class="text-sm text-text-muted">{currentPage}/{totalPages}</span>
-				<Button variant="ghost" size="sm" disabled={currentPage >= totalPages} onclick={() => { currentPage++; loadPopular(); }}>→</Button>
-			</div>
-		{/if}
+		<Pagination
+			current={currentPage}
+			total={totalPages}
+			onchange={(p) => { currentPage = p; loadPopular(); }}
+			compact
+		/>
 	{/if}
 </div>

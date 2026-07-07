@@ -52,13 +52,6 @@
 
 <footer class="mt-auto px-4 pb-4">
 	<div class="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-border bg-surface-elevated">
-		<!-- Watermark maximaliste -->
-		<div aria-hidden="true" class="pointer-events-none absolute inset-0 flex items-end justify-center overflow-hidden opacity-[0.035]">
-			<span class="text-[26rem] font-black tracking-tighter leading-none translate-y-32 select-none">
-				SKILLUV
-			</span>
-		</div>
-
 		<div class="relative px-6 py-14 sm:px-12 sm:py-16 lg:px-16 lg:py-20">
 
 			<!-- ▓▓▓ 1. HEADLINE + NEWSLETTER ▓▓▓ -->
@@ -66,9 +59,9 @@
 				<div>
 					<h2 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[0.9] tracking-[-0.03em] text-text-primary">
 						{#if i18n.locale === 'fr'}
-							Prêt à prouver<br />ce que tu <span class="italic text-accent">sais faire</span> ?
+							Prêt à prouver<br />ce que tu sais faire<span class="text-accent"> ?</span>
 						{:else}
-							Ready to prove<br />what you <span class="italic text-accent">can do</span> ?
+							Ready to prove<br />what you can do<span class="text-accent"> ?</span>
 						{/if}
 					</h2>
 
@@ -107,7 +100,7 @@
 						<p class="text-5xl sm:text-6xl font-black leading-none tracking-tighter text-text-primary">
 							Cotonou<span class="text-accent">.</span>
 						</p>
-						<p class="mt-2 text-sm uppercase tracking-[0.3em] font-bold text-text-muted">
+						<p class="mt-2 text-sm uppercase tracking-widest font-bold text-text-muted">
 							Bénin — {i18n.locale === 'fr' ? "Servir l'Afrique tech" : 'Serving Africa tech'}
 						</p>
 					</div>
@@ -133,7 +126,7 @@
 
 				<!-- THEME : label uppercase + pastilles + toggle icon SVG -->
 				<div>
-					<p class="text-xs font-bold uppercase tracking-[0.4em] text-text-muted mb-5">
+					<p class="text-xs font-bold uppercase tracking-widest text-text-muted mb-5">
 						{i18n.locale === 'fr' ? 'Thème' : 'Theme'}
 					</p>
 					<div class="flex items-center gap-3 flex-wrap">
@@ -185,7 +178,7 @@
 
 				<!-- LANGUE : deux blocs FR/EN côte à côte, actif en énorme accent -->
 				<div>
-					<p class="text-xs font-bold uppercase tracking-[0.4em] text-text-muted mb-5">
+					<p class="text-xs font-bold uppercase tracking-widest text-text-muted mb-5">
 						{i18n.locale === 'fr' ? 'Langue' : 'Language'}
 					</p>
 					<div class="flex items-baseline gap-4">
@@ -220,16 +213,16 @@
 				</a>
 
 				<div class="flex flex-wrap items-center gap-2">
-					<a href="https://github.com/skilluv" target="_blank" rel="noopener" class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-text-primary transition-colors duration-200 hover:bg-surface-overlay hover:border-text-primary">
+					<a href="https://github.com/skilluv" target="_blank" rel="noopener" class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-text-primary transition-colors duration-200 hover:bg-surface-overlay hover:border-text-primary">
 						GitHub
 					</a>
-					<a href="https://twitter.com/skilluv" target="_blank" rel="noopener" class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-text-primary transition-colors duration-200 hover:bg-surface-overlay hover:border-text-primary">
+					<a href="https://twitter.com/skilluv" target="_blank" rel="noopener" class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-text-primary transition-colors duration-200 hover:bg-surface-overlay hover:border-text-primary">
 						Twitter
 					</a>
-					<a href="https://discord.gg/skilluv" target="_blank" rel="noopener" class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-text-primary transition-colors duration-200 hover:bg-surface-overlay hover:border-text-primary">
+					<a href="https://discord.gg/skilluv" target="_blank" rel="noopener" class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-text-primary transition-colors duration-200 hover:bg-surface-overlay hover:border-text-primary">
 						Discord
 					</a>
-					<a href="https://linkedin.com/company/skilluv" target="_blank" rel="noopener" class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-text-primary transition-colors duration-200 hover:bg-surface-overlay hover:border-text-primary">
+					<a href="https://linkedin.com/company/skilluv" target="_blank" rel="noopener" class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-text-primary transition-colors duration-200 hover:bg-surface-overlay hover:border-text-primary">
 						LinkedIn
 					</a>
 				</div>

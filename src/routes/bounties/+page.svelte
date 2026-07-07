@@ -7,6 +7,8 @@
 	import { bountiesApi, type Bounty } from '$api/bounties';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
+	import FilterBar from '$components/ui/FilterBar.svelte';
 
 	let bounties = $state<Bounty[]>([]);
 	let loading = $state(true);
@@ -65,7 +67,7 @@
 		style="background-image: linear-gradient(var(--sk-text) 1px, transparent 1px), linear-gradient(90deg, var(--sk-text) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);"
 	></div>
 	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
-		<p class="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-accent">Open Source</p>
+		<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Open Source</p>
 		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
 			{#if i18n.locale === 'fr'}
 				Résous une issue.<br />
@@ -85,38 +87,32 @@
 
 <!-- Filtres -->
 <section class="border-b border-border bg-surface-elevated/40">
-	<div class="mx-auto max-w-6xl px-4 py-6 flex flex-wrap items-center gap-3">
-		<span class="text-xs font-bold uppercase tracking-wider text-text-muted">
-			{i18n.locale === 'fr' ? 'Filtres :' : 'Filters:'}
-		</span>
-		<input
-			type="text"
-			bind:value={filterSkill}
-			onblur={load}
-			placeholder={i18n.locale === 'fr' ? 'Compétence (rust, python...)' : 'Skill (rust, python...)'}
-			class="rounded-full border border-border bg-surface-elevated px-4 py-1.5 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none"
-		/>
-		<input
-			type="text"
-			bind:value={filterTag}
-			onblur={load}
-			placeholder={i18n.locale === 'fr' ? 'Tag' : 'Tag'}
-			class="rounded-full border border-border bg-surface-elevated px-4 py-1.5 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none"
-		/>
-		<div class="flex gap-1">
-			<button
-				onclick={() => { filterStatus = 'open'; void load(); }}
-				class="rounded-full border border-border px-4 py-1.5 text-sm font-medium transition-colors {filterStatus === 'open' ? 'border-primary bg-primary/15 text-primary' : 'hover:border-primary hover:text-primary'}"
-			>
-				{i18n.locale === 'fr' ? 'Ouvertes' : 'Open'}
-			</button>
-			<button
-				onclick={() => { filterStatus = 'all'; void load(); }}
-				class="rounded-full border border-border px-4 py-1.5 text-sm font-medium transition-colors {filterStatus === 'all' ? 'border-primary bg-primary/15 text-primary' : 'hover:border-primary hover:text-primary'}"
-			>
-				{i18n.locale === 'fr' ? 'Toutes' : 'All'}
-			</button>
-		</div>
+	<div class="mx-auto max-w-6xl px-4 py-6">
+		<FilterBar label={i18n.locale === 'fr' ? 'Filtres :' : 'Filters:'}>
+			<input
+				type="text"
+				bind:value={filterSkill}
+				onblur={load}
+				placeholder={i18n.locale === 'fr' ? 'Compétence (rust, python...)' : 'Skill (rust, python...)'}
+				class="h-8 rounded-full border border-border bg-surface-elevated px-4 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none"
+			/>
+			<input
+				type="text"
+				bind:value={filterTag}
+				onblur={load}
+				placeholder={i18n.locale === 'fr' ? 'Tag' : 'Tag'}
+				class="h-8 rounded-full border border-border bg-surface-elevated px-4 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none"
+			/>
+			<SegmentedControl
+				size="sm"
+				items={[
+					{ value: 'open', label: i18n.locale === 'fr' ? 'Ouvertes' : 'Open' },
+					{ value: 'all', label: i18n.locale === 'fr' ? 'Toutes' : 'All' }
+				]}
+				bind:value={filterStatus}
+				onchange={() => void load()}
+			/>
+		</FilterBar>
 	</div>
 </section>
 

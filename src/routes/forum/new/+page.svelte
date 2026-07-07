@@ -4,6 +4,8 @@
 	import { auth } from '$stores/auth.svelte';
 	import { goto } from '$app/navigation';
 	import Button from '$components/ui/Button.svelte';
+	import Select from '$components/ui/Select.svelte';
+	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import { forumApi, type ForumCategory, type PostKind } from '$api/forum';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -68,7 +70,7 @@
 	</nav>
 
 	<div class="mb-8">
-		<p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+		<p class="mb-2 text-xs font-bold uppercase tracking-widest text-accent">
 			{i18n.locale === 'fr' ? 'Partage' : 'Share'}
 		</p>
 		<h1 class="text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">
@@ -82,21 +84,15 @@
 			<span class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
 				{i18n.locale === 'fr' ? 'Type' : 'Type'}
 			</span>
-			<div class="flex flex-wrap gap-2">
-				{#each ['question', 'discussion', 'announcement'] as k}
-					<button
-						type="button"
-						onclick={() => (kind = k as PostKind)}
-						class="rounded-full border border-border px-4 py-1.5 text-sm font-medium transition-colors {kind === k ? 'border-primary bg-primary/15 text-primary' : 'hover:border-primary'}"
-					>
-						{k === 'question'
-							? (i18n.locale === 'fr' ? 'Question' : 'Question')
-							: k === 'discussion'
-								? 'Discussion'
-								: (i18n.locale === 'fr' ? 'Annonce' : 'Announcement')}
-					</button>
-				{/each}
-			</div>
+			<SegmentedControl
+				size="sm"
+				items={[
+					{ value: 'question', label: i18n.locale === 'fr' ? 'Question' : 'Question' },
+					{ value: 'discussion', label: 'Discussion' },
+					{ value: 'announcement', label: i18n.locale === 'fr' ? 'Annonce' : 'Announcement' }
+				]}
+				bind:value={kind}
+			/>
 		</div>
 
 		<!-- Category -->
@@ -104,16 +100,11 @@
 			<label for="cat" class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
 				{i18n.locale === 'fr' ? 'Catégorie' : 'Category'}
 			</label>
-			<select
-				id="cat"
+			<Select
+				items={categories.map((c) => ({ value: c.slug, label: c.name }))}
 				bind:value={categorySlug}
-				required
-				class="w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none"
-			>
-				{#each categories as c}
-					<option value={c.slug}>{c.name}</option>
-				{/each}
-			</select>
+				class="w-full"
+			/>
 		</div>
 
 		<!-- Title -->

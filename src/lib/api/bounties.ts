@@ -32,6 +32,21 @@ export interface BountyClaim {
 
 // --- API ---
 
+export interface CreateBountyPayload {
+	repo_owner: string;
+	repo_name: string;
+	issue_number: number;
+	issue_url: string;
+	title: string;
+	description: string;
+	reward_credits: string;
+	fragments_bonus?: number;
+	required_skills?: string[];
+	difficulty?: number;
+	tags?: string[];
+	expires_in_days?: number;
+}
+
 export const bountiesApi = {
 	list(params?: { status?: BountyStatus; skill?: string; tag?: string; page?: number; per_page?: number }) {
 		return api.get<ApiResponse<{ bounties: Bounty[]; page: number; per_page: number }>>(
@@ -42,6 +57,10 @@ export const bountiesApi = {
 
 	get(id: string) {
 		return api.get<ApiResponse<Bounty>>(`/bounties/${id}`);
+	},
+
+	create(payload: CreateBountyPayload) {
+		return api.post<ApiResponse<{ id: string }>>('/bounties', payload);
 	},
 
 	claim(id: string) {

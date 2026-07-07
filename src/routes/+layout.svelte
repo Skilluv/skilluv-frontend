@@ -14,12 +14,18 @@
 	import Toast from '$lib/components/ui/Toast.svelte';
 	import PageTransition from '$lib/components/ui/PageTransition.svelte';
 	import InstallPrompt from '$lib/components/pwa/InstallPrompt.svelte';
+	import EmailVerificationBanner from '$lib/components/auth/EmailVerificationBanner.svelte';
 	// Terminal mode désactivé pour l'instant — composants conservés sous src/lib/components/terminal/*
 	// pour réactivation future. Voir TerminalEmulator.svelte / TerminalConfirm.svelte / commands.ts.
 
 	let { data, children } = $props();
 
-	let isAuthPage = $derived($page.url.pathname.startsWith('/auth'));
+	// Pages qui n'affichent ni Navbar ni Footer (flux d'inscription/auth focalisés).
+	let isBareLayout = $derived(
+		$page.url.pathname.startsWith('/auth') ||
+			$page.url.pathname.startsWith('/enterprise/register') ||
+			$page.url.pathname.startsWith('/enterprise/invite/accept')
+	);
 
 	// Hydrate auth depuis les donnees SSR
 	$effect(() => {
@@ -54,8 +60,9 @@
 <Toast />
 
 <div class="flex min-h-screen flex-col bg-surface text-text-primary">
-	{#if !isAuthPage}
+	{#if !isBareLayout}
 		<Navbar />
+		<EmailVerificationBanner />
 	{/if}
 
 	<main class="flex-1">
@@ -64,11 +71,11 @@
 		</PageTransition>
 	</main>
 
-	{#if !isAuthPage}
+	{#if !isBareLayout}
 		<Footer />
 	{/if}
 
-	{#if !isAuthPage && auth.isAuthenticated}
+	{#if !isBareLayout && auth.isAuthenticated}
 		<BottomBar />
 	{/if}
 

@@ -123,7 +123,7 @@
 	</nav>
 
 	<div class="mb-10">
-		<p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">Compliance</p>
+		<p class="mb-2 text-xs font-bold uppercase tracking-widest text-accent">Compliance</p>
 		<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
 			{i18n.locale === 'fr' ? 'Vérification KYC.' : 'KYC Verification.'}
 		</h1>

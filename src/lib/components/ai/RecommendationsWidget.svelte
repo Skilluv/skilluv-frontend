@@ -17,7 +17,8 @@
 	let errored = $state(false);
 
 	async function build() {
-		if (!auth.isAuthenticated || !auth.user) return;
+		// Users mid-onboarding have no skill_domain yet — recommendations are meaningless then.
+		if (!auth.isAuthenticated || !auth.user || !auth.user.skill_domain) return;
 		loading = true;
 		errored = false;
 		try {
@@ -80,7 +81,7 @@
 		<div class="flex items-center gap-3 border-b border-border bg-surface-elevated/60 p-5">
 			<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-lg text-accent">★</div>
 			<div class="flex-1">
-				<p class="text-xs font-bold uppercase tracking-[0.2em] text-accent">Skilluv AI</p>
+				<p class="text-xs font-bold uppercase tracking-widest text-accent">Skilluv AI</p>
 				<h3 class="text-base font-semibold">
 					{i18n.locale === 'fr' ? 'Recommandations personnalisées' : 'Personalized recommendations'}
 				</h3>

@@ -3,6 +3,9 @@
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
+	import Select from '$components/ui/Select.svelte';
+	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
+	import FilterBar from '$components/ui/FilterBar.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { i18n } from '$lib/i18n';
@@ -108,39 +111,30 @@
 	</div>
 
 	<!-- Filtres -->
-	<div class="mb-6 flex flex-wrap items-center gap-3">
-		<div class="flex gap-1">
-			{#each domains as d}
-				<button
-					class="rounded-lg px-3 py-1.5 text-xs font-medium transition-colors
-						{filterDomain === d.value ? 'bg-primary text-primary-fg' : 'bg-surface-elevated text-text-muted hover:text-text-primary'}"
-					onclick={() => { filterDomain = d.value; applySearch(); }}
-				>{i18n.t(d.key)}</button>
-			{/each}
-		</div>
-
-		<select
+	<FilterBar class="mb-6">
+		<SegmentedControl
+			size="sm"
+			items={domains.map((d) => ({ value: d.value, label: i18n.t(d.key) }))}
+			bind:value={filterDomain}
+			onchange={applySearch}
+		/>
+		<Select
+			size="sm"
+			items={titles.map((t) => ({ value: t.value, label: i18n.t(t.key) }))}
 			bind:value={filterTitle}
 			onchange={applySearch}
-			class="rounded-lg border border-border bg-surface-elevated px-3 py-1.5 text-xs text-text-primary"
-		>
-			{#each titles as t}
-				<option value={t.value}>{i18n.t(t.key)}</option>
-			{/each}
-		</select>
-
-		<select
+		/>
+		<Select
+			size="sm"
+			items={[
+				{ value: 'fragments', label: i18n.t('enterprise.talents.byFragments') },
+				{ value: 'recent', label: i18n.t('enterprise.talents.byRecent') },
+				...(query ? [{ value: 'relevance', label: i18n.t('enterprise.talents.byRelevance') }] : [])
+			]}
 			bind:value={sortBy}
 			onchange={applySearch}
-			class="rounded-lg border border-border bg-surface-elevated px-3 py-1.5 text-xs text-text-primary"
-		>
-			<option value="fragments">{i18n.t('enterprise.talents.byFragments')}</option>
-			<option value="recent">{i18n.t('enterprise.talents.byRecent')}</option>
-			{#if query}
-				<option value="relevance">{i18n.t('enterprise.talents.byRelevance')}</option>
-			{/if}
-		</select>
-	</div>
+		/>
+	</FilterBar>
 
 	<!-- Résultats -->
 	{#if loading}

@@ -6,6 +6,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import Modal from '$components/ui/Modal.svelte';
+	import Select from '$components/ui/Select.svelte';
 	import { mentorshipApi, type MentorProfile } from '$api/mentorship';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -209,17 +210,13 @@
 			<label for="b-dur" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
 				{i18n.locale === 'fr' ? 'Durée (minutes)' : 'Duration (minutes)'}
 			</label>
-			<select
-				id="b-dur"
+			<Select
+				items={[30, 45, 60, 90, 120]
+					.filter((d) => !mentor || d >= mentor.min_session_minutes)
+					.map((d) => ({ value: d, label: `${d} min` }))}
 				bind:value={bookDuration}
-				class="w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none"
-			>
-				{#each [30, 45, 60, 90, 120] as d}
-					{#if !mentor || d >= mentor.min_session_minutes}
-						<option value={d}>{d} min</option>
-					{/if}
-				{/each}
-			</select>
+				class="w-full"
+			/>
 		</div>
 		<div>
 			<label for="b-notes" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">

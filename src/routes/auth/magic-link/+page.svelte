@@ -35,7 +35,7 @@
 <div class="mx-auto flex min-h-[80vh] max-w-md flex-col items-center justify-center px-4 py-14 text-center">
 	{#if sent}
 		<div class="mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-success/15 text-4xl text-success animate-[fragment-burst_600ms_ease-out]">✓</div>
-		<p class="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-accent">
+		<p class="mb-3 text-xs font-bold uppercase tracking-widest text-accent">
 			{i18n.locale === 'fr' ? 'Email envoyé' : 'Email sent'}
 		</p>
 		<h1 class="text-4xl sm:text-5xl font-black leading-[1.05] tracking-tight">
@@ -53,7 +53,7 @@
 			{i18n.locale === 'fr' ? '← Autre méthode' : '← Other method'}
 		</Button>
 	{:else}
-		<p class="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-accent">
+		<p class="mb-3 text-xs font-bold uppercase tracking-widest text-accent">
 			{i18n.locale === 'fr' ? 'Sans mot de passe' : 'Passwordless'}
 		</p>
 		<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">

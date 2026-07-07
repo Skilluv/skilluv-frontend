@@ -38,7 +38,7 @@
 		style="background-image: linear-gradient(var(--sk-text) 1px, transparent 1px), linear-gradient(90deg, var(--sk-text) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);"
 	></div>
 	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
-		<p class="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-accent">Community</p>
+		<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Community</p>
 		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
 			{#if i18n.locale === 'fr'}
 				Formez<br />
@@ -67,7 +67,7 @@
 <section class="mx-auto max-w-6xl px-4 py-14">
 	<div class="mb-8 flex items-end justify-between">
 		<div>
-			<p class="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-accent">Live</p>
+			<p class="mb-1 text-xs font-bold uppercase tracking-widest text-accent">Live</p>
 			<h2 class="text-3xl sm:text-4xl font-black tracking-tight">
 				{i18n.locale === 'fr' ? 'Classement.' : 'Ranking.'}
 			</h2>
@@ -108,7 +108,7 @@
 
 					<!-- Logo -->
 					<div
-						class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border-2 text-2xl font-black"
+						class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-border text-2xl font-black"
 						style={`border-color: ${g.color_hex ?? 'var(--sk-primary)'}; color: ${g.color_hex ?? 'var(--sk-primary)'}`}
 					>
 						{g.tag}

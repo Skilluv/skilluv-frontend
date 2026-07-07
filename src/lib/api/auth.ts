@@ -14,6 +14,8 @@ export interface RegisterRequest {
 	skill_domain: SkillDomain;
 	country?: string;
 	city?: string;
+	/** Required — backend refuses signup without explicit CGU/Privacy acknowledgement. */
+	terms_accepted: boolean;
 }
 
 export interface LoginRequest {
@@ -21,12 +23,14 @@ export interface LoginRequest {
 	password: string;
 	totp_code?: string;
 	email_2fa_code?: string;
+	/** One-time TOTP backup code, alternative to a live totp_code. */
+	backup_code?: string;
 }
 
 interface AuthResponse {
 	data: {
 		user: UserPrivate;
-		refresh_token: string;
+		csrf_token?: string;
 		message?: string;
 	};
 }
@@ -34,9 +38,13 @@ interface AuthResponse {
 interface LoginResponse {
 	data: {
 		user?: UserPrivate;
-		refresh_token?: string;
+		csrf_token?: string;
 		requires_email_2fa?: boolean;
 		user_id?: string;
+		/** Backend flags this on login when the authenticated user has role
+		 * enterprise/recruiter but `totp_enabled=false`. The front should route
+		 * to /settings/security before letting them into /enterprise/*. */
+		requires_totp_setup?: boolean;
 	};
 }
 
@@ -59,6 +67,38 @@ interface TotpSetupResponse {
 	};
 }
 
+interface TotpEnableResponse {
+	data: {
+		message: string;
+		backup_codes: string[];
+		backup_codes_note?: string;
+	};
+}
+
+interface BackupCodesResponse {
+	data: {
+		backup_codes: string[];
+		message: string;
+	};
+}
+
+export interface SessionRow {
+	id: string;
+	user_id: string;
+	ip: string | null;
+	user_agent: string | null;
+	device_label: string | null;
+	created_at: string;
+	last_used_at: string;
+}
+
+interface SessionsResponse {
+	data: {
+		sessions: SessionRow[];
+		current_session_id: string | null;
+	};
+}
+
 // --- Fonctions API ---
 
 export const authApi = {
@@ -74,8 +114,9 @@ export const authApi = {
 		return api.post<AuthResponse>('/auth/email-2fa/verify', { code, user_id: userId });
 	},
 
-	refresh(refreshToken: string, userId: string) {
-		return api.post<AuthResponse>('/auth/refresh', { refresh_token: refreshToken, user_id: userId });
+	/** Refresh token is read server-side from the httpOnly `refresh_token` cookie — no body needed. */
+	refresh() {
+		return api.post<{ data: { ok: boolean; csrf_token?: string } }>('/auth/refresh');
 	},
 
 	verifyEmail(token: string) {
@@ -114,7 +155,11 @@ export const authApi = {
 	},
 
 	totpEnable(code: string) {
-		return api.post<MessageResponse>('/auth/totp/enable', { code });
+		return api.post<TotpEnableResponse>('/auth/totp/enable', { code });
+	},
+
+	totpRegenerateBackupCodes(code: string) {
+		return api.post<BackupCodesResponse>('/auth/totp/backup-codes/regenerate', { code });
 	},
 
 	totpDisable(code: string) {
@@ -125,14 +170,47 @@ export const authApi = {
 		return api.post<MessageResponse>('/auth/email-2fa/enable');
 	},
 
-	disableEmail2fa(currentPassword: string, newPassword: string) {
+	disableEmail2fa(currentPassword: string) {
+		// Backend reuses ChangePasswordRequest for the body — new_password is required for parsing
+		// but ignored by the handler. Send a filler that still satisfies the min-length check.
 		return api.post<MessageResponse>('/auth/email-2fa/disable', {
 			current_password: currentPassword,
-			new_password: newPassword
+			new_password: currentPassword
 		});
 	},
 
 	deleteAccount(password: string, totpCode?: string) {
 		return api.delete<MessageResponse>('/auth/account', { password, totp_code: totpCode });
+	},
+
+	// ─── Sessions / devices ─────────────────────────────────────────
+	listSessions() {
+		return api.get<SessionsResponse>('/auth/sessions');
+	},
+
+	revokeSession(sessionId: string) {
+		return api.delete<MessageResponse>(`/auth/sessions/${sessionId}`);
+	},
+
+	revokeAllOtherSessions() {
+		return api.post<MessageResponse>('/auth/sessions/revoke-all');
+	},
+
+	// ─── Change email (double confirmation) ────────────────────────
+	requestEmailChange(currentPassword: string, newEmail: string) {
+		return api.post<MessageResponse>('/auth/change-email', {
+			current_password: currentPassword,
+			new_email: newEmail
+		});
+	},
+
+	// ─── Onboarding (Pattern C) ────────────────────────────────────
+	completeProfile(payload: {
+		skill_domain: SkillDomain;
+		terms_accepted: boolean;
+		country?: string;
+		city?: string;
+	}) {
+		return api.post<MessageResponse>('/auth/complete-profile', payload);
 	}
 };

@@ -3,6 +3,8 @@
 	import { i18n } from '$lib/i18n';
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
+	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
+	import FilterBar from '$components/ui/FilterBar.svelte';
 	import { tournamentApi, type Tournament, type Season } from '$api/tournament';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -65,7 +67,7 @@
 		style="background-image: linear-gradient(var(--sk-text) 1px, transparent 1px), linear-gradient(90deg, var(--sk-text) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);"
 	></div>
 	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
-		<p class="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-accent">Compétition</p>
+		<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Compétition</p>
 		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
 			{#if i18n.locale === 'fr'}
 				Tournois<br />
@@ -97,15 +99,17 @@
 <!-- Filters -->
 {#if domains.length > 2}
 	<section class="border-b border-border bg-surface-elevated/40">
-		<div class="mx-auto max-w-6xl px-4 py-6 flex flex-wrap items-center gap-2">
-			{#each domains as d}
-				<button
-					onclick={() => (domainFilter = d)}
-					class="rounded-full border border-border px-4 py-1.5 text-sm font-medium transition-colors capitalize {domainFilter === d ? 'border-primary bg-primary/15 text-primary' : 'hover:border-primary hover:text-primary'}"
-				>
-					{d === 'all' ? (i18n.locale === 'fr' ? 'Tous' : 'All') : d}
-				</button>
-			{/each}
+		<div class="mx-auto max-w-6xl px-4 py-6">
+			<FilterBar label={i18n.locale === 'fr' ? 'Domaine :' : 'Domain:'}>
+				<SegmentedControl
+					size="sm"
+					items={domains.map((d) => ({
+						value: d,
+						label: d === 'all' ? (i18n.locale === 'fr' ? 'Tous' : 'All') : d
+					}))}
+					bind:value={domainFilter}
+				/>
+			</FilterBar>
 		</div>
 	</section>
 {/if}

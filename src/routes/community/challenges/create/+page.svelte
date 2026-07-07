@@ -5,6 +5,7 @@
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
+	import Select from '$components/ui/Select.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { SkillDomain } from '$types';
 
@@ -79,12 +80,16 @@
 		<div class="grid grid-cols-2 gap-4">
 			<div>
 				<label for="domain" class="mb-1.5 block text-sm font-medium">{i18n.t('community.create.domain')}</label>
-				<select id="domain" bind:value={skillDomain} class="h-11 w-full rounded-xl border border-border bg-surface-elevated px-4 text-sm">
-					<option value="code">{i18n.t('common.domains.code')}</option>
-					<option value="design">{i18n.t('common.domains.design')}</option>
-					<option value="game">{i18n.t('common.domains.game')}</option>
-					<option value="security">{i18n.t('common.domains.security')}</option>
-				</select>
+				<Select
+					items={[
+						{ value: 'code', label: i18n.t('common.domains.code') },
+						{ value: 'design', label: i18n.t('common.domains.design') },
+						{ value: 'game', label: i18n.t('common.domains.game') },
+						{ value: 'security', label: i18n.t('common.domains.security') }
+					]}
+					bind:value={skillDomain}
+					class="w-full"
+				/>
 			</div>
 
 			<div>

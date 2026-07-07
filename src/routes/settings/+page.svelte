@@ -244,21 +244,29 @@
 		</div>
 	</section>
 
-	<!-- 2FA -->
+	<!-- Sécurité (link to dedicated page) -->
 	<section class="mb-8">
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.security.title')}</h2>
-		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
-			<div class="flex items-center justify-between">
-				<div>
-					<p class="font-medium">{i18n.t('settings.security.twoFa')}</p>
-					<p class="text-xs text-text-muted">{i18n.t('settings.security.twoFaDesc')}</p>
-				</div>
+		<a
+			href="/settings/security"
+			class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
+		>
+			<div>
+				<p class="font-medium">{i18n.locale === 'fr' ? '2FA, passkeys, sessions, email' : '2FA, passkeys, sessions, email'}</p>
+				<p class="text-xs text-text-muted">
+					{i18n.locale === 'fr'
+						? 'Gère toute la sécurité de ton compte.'
+						: 'Manage all your account security.'}
+				</p>
+			</div>
+			<div class="flex items-center gap-2">
 				<span class="rounded-lg px-3 py-1 text-xs font-medium
 					{auth.user?.totp_enabled ? 'bg-success/15 text-success' : 'bg-surface-overlay text-text-muted'}">
-					{auth.user?.totp_enabled ? i18n.t('settings.security.enabled') : i18n.t('settings.security.disabled')}
+					{auth.user?.totp_enabled ? '2FA ' + i18n.t('settings.security.enabled') : '2FA ' + i18n.t('settings.security.disabled')}
 				</span>
+				<span class="text-text-muted">→</span>
 			</div>
-		</div>
+		</a>
 	</section>
 
 	<!-- Zone danger -->

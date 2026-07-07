@@ -22,7 +22,7 @@
 		style="background-image: linear-gradient(var(--sk-text) 1px, transparent 1px), linear-gradient(90deg, var(--sk-text) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);"
 	></div>
 	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
-		<p class="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+		<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">
 			{i18n.locale === 'fr' ? 'Au-delà des challenges' : 'Beyond challenges'}
 		</p>
 		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">

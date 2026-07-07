@@ -3,16 +3,16 @@
 	import { auth } from '$stores/auth.svelte';
 	import { onMount } from 'svelte';
 	import Button from '$components/ui/Button.svelte';
-	import Badge from '$components/ui/Badge.svelte';
-	import CountrySelect from '$components/ui/CountrySelect.svelte';
+	import CtaSection from '$components/landing/CtaSection.svelte';
+	import FaqSection from '$components/landing/FaqSection.svelte';
+	import Select from '$components/ui/Select.svelte';
 	import { pricingApi, type PricingResponse } from '$api/pricing';
 	import { SkilluError } from '$api/client';
 
 	let data = $state<PricingResponse | null>(null);
 	let loading = $state(true);
 	let error = $state<string | null>(null);
-	let selectedCountry = $state<string | null>(null);
-	let currencyOverride = $state<string | null>(null);
+	let currencyOverride = $state<string>('EUR');
 
 	// Devise → symbole / formattage court
 	const CURRENCY_SYMBOLS: Record<string, string> = {
@@ -22,22 +22,21 @@
 		XOF: 'CFA', XAF: 'FCFA'
 	};
 
-	// Popular country → ISO2 shortcuts pour boutons rapides
-	const QUICK_COUNTRIES: Array<{ iso2: string; label: string; currency: string }> = [
-		{ iso2: 'FR', label: 'France', currency: 'EUR' },
-		{ iso2: 'GB', label: 'United Kingdom', currency: 'GBP' },
-		{ iso2: 'US', label: 'United States', currency: 'USD' },
-		{ iso2: 'NG', label: 'Nigeria', currency: 'NGN' },
-		{ iso2: 'SN', label: 'Sénégal', currency: 'XOF' },
-		{ iso2: 'CI', label: 'Côte d\'Ivoire', currency: 'XOF' },
-		{ iso2: 'CM', label: 'Cameroun', currency: 'XAF' },
-		{ iso2: 'MA', label: 'Maroc', currency: 'MAD' },
-		{ iso2: 'KE', label: 'Kenya', currency: 'KES' }
+	// Devises proposées dans le select
+	const CURRENCY_OPTIONS: Array<{ value: string; label: string }> = [
+		{ value: 'EUR', label: 'EUR — Euro (€)' },
+		{ value: 'USD', label: 'USD — US Dollar ($)' },
+		{ value: 'GBP', label: 'GBP — British Pound (£)' },
+		{ value: 'CHF', label: 'CHF — Swiss Franc' },
+		{ value: 'CAD', label: 'CAD — Canadian Dollar (C$)' },
+		{ value: 'XOF', label: 'XOF — Franc CFA BCEAO' },
+		{ value: 'XAF', label: 'XAF — Franc CFA BEAC' },
+		{ value: 'NGN', label: 'NGN — Nigerian Naira (₦)' },
+		{ value: 'GHS', label: 'GHS — Ghanaian Cedi (₵)' },
+		{ value: 'MAD', label: 'MAD — Moroccan Dirham' },
+		{ value: 'KES', label: 'KES — Kenyan Shilling' },
+		{ value: 'ZAR', label: 'ZAR — South African Rand' }
 	];
-
-	// ISO2 utilisé pour l'API — dérivé du sélecteur pays (ISO3 → ISO2 approximatif)
-	// ou d'un quick button.
-	let countryIso2 = $state<string | null>(null);
 
 	function fmt(amount: number, currency: string): string {
 		const sym = CURRENCY_SYMBOLS[currency] ?? currency;
@@ -60,10 +59,7 @@
 		loading = true;
 		error = null;
 		try {
-			const params: { country?: string; currency?: string } = {};
-			if (countryIso2) params.country = countryIso2;
-			if (currencyOverride) params.currency = currencyOverride;
-			const res = await pricingApi.get(params);
+			const res = await pricingApi.get({ currency: currencyOverride });
 			data = res.data;
 		} catch (e) {
 			error = e instanceof SkilluError ? e.message : 'Erreur inattendue';
@@ -72,17 +68,8 @@
 		}
 	}
 
-	function pickQuick(iso2: string, currency: string) {
-		countryIso2 = iso2;
-		currencyOverride = currency;
-		selectedCountry = null;
-		void load();
-	}
-
-	function resetToDefault() {
-		countryIso2 = null;
-		currencyOverride = null;
-		selectedCountry = null;
+	function onCurrencyChange(v: string) {
+		currencyOverride = v;
 		void load();
 	}
 
@@ -124,9 +111,6 @@
 		style="background-image: linear-gradient(var(--sk-text) 1px, transparent 1px), linear-gradient(90deg, var(--sk-text) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);"
 	></div>
 	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
-		<p class="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-accent">
-			{i18n.locale === 'fr' ? 'Skilluv Enterprise' : 'Skilluv Enterprise'}
-		</p>
 		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
 			{#if i18n.locale === 'fr'}
 				Un crédit.<br />
@@ -145,59 +129,24 @@
 </section>
 
 <!-- ============================================
-     SÉLECTEUR PAYS / DEVISE
+     SÉLECTEUR DEVISE
      ============================================ -->
 <section class="border-b border-border bg-surface-elevated/40">
-	<div class="mx-auto max-w-6xl px-4 py-10">
-		<div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-			<div>
-				<p class="mb-2 text-xs font-bold uppercase tracking-wider text-text-muted">
-					{i18n.locale === 'fr' ? 'Pays de facturation' : 'Billing country'}
-				</p>
-				<h2 class="text-2xl sm:text-3xl font-black tracking-tight">
-					{i18n.locale === 'fr' ? 'Devise adaptée à votre marché.' : 'Currency tuned to your market.'}
-				</h2>
-				<p class="mt-2 max-w-xl text-sm text-text-muted">
-					{i18n.locale === 'fr'
-						? 'Les prix sont convertis en temps réel depuis les taux de la BCE, avec une marge de 3 %.'
-						: 'Prices convert live from ECB rates with a 3% margin.'}
-				</p>
-			</div>
-
-			{#if data}
-				<div class="flex items-center gap-2 rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm">
-					<span class="text-text-muted">{i18n.locale === 'fr' ? 'Devise :' : 'Currency:'}</span>
-					<span class="font-mono font-bold text-primary">{data.currency}</span>
-					{#if data.psp && data.psp !== 'auto'}
-						<span class="text-text-muted">·</span>
-						<span class="text-xs uppercase tracking-wider text-text-muted">{i18n.locale === 'fr' ? 'via' : 'via'}</span>
-						<span class="font-mono text-xs font-bold text-accent">{data.psp}</span>
-					{/if}
-				</div>
-			{/if}
+	<div class="mx-auto max-w-6xl px-4 py-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+		<div>
+			<p class="mb-1 text-xs font-bold uppercase tracking-wider text-text-muted">
+				{i18n.locale === 'fr' ? 'Devise' : 'Currency'}
+			</p>
+			<h2 class="text-xl sm:text-2xl font-black tracking-tight">
+				{i18n.locale === 'fr' ? 'Affichez les prix dans votre devise.' : 'Show prices in your currency.'}
+			</h2>
 		</div>
-
-		<!-- Quick buttons -->
-		<div class="mt-6 flex flex-wrap gap-2">
-			{#each QUICK_COUNTRIES as qc}
-				<button
-					class="inline-flex items-center gap-2 rounded-full border border-border bg-surface-elevated px-4 py-2 text-sm font-medium transition-colors hover:border-primary hover:text-primary
-					{countryIso2 === qc.iso2 ? 'border-primary bg-primary/15 text-primary' : ''}"
-					onclick={() => pickQuick(qc.iso2, qc.currency)}
-				>
-					<span class="font-mono text-xs font-bold {countryIso2 === qc.iso2 ? 'text-primary' : 'text-text-muted'}">{qc.iso2}</span>
-					{qc.label}
-				</button>
-			{/each}
-			{#if countryIso2 || currencyOverride}
-				<button
-					class="rounded-full border border-border px-4 py-2 text-sm text-text-muted hover:text-text-primary"
-					onclick={resetToDefault}
-				>
-					{i18n.locale === 'fr' ? '↺ Réinitialiser' : '↺ Reset'}
-				</button>
-			{/if}
-		</div>
+		<Select
+			items={CURRENCY_OPTIONS}
+			bind:value={currencyOverride}
+			onchange={onCurrencyChange}
+			class="w-full sm:w-auto sm:min-w-[240px]"
+		/>
 	</div>
 </section>
 
@@ -237,11 +186,10 @@
 					{isBest ? 'border-accent bg-surface-elevated' : 'border-border bg-surface-elevated hover:border-primary/40'}"
 				>
 					{#if isBest}
-						<div class="absolute -top-3 left-6">
-							<Badge variant="accent" size="md">
-								{i18n.locale === 'fr' ? '★ Meilleur ratio' : '★ Best value'}
-							</Badge>
-						</div>
+						<span class="absolute -top-3 left-6 inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent-fg shadow-sm ring-4 ring-surface">
+							<span aria-hidden="true">★</span>
+							{i18n.locale === 'fr' ? 'Meilleur ratio' : 'Best value'}
+						</span>
 					{/if}
 
 					<div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary">
@@ -271,7 +219,7 @@
 		{#if data.subscriptions.length}
 			<div class="mt-16">
 				<div class="mb-8">
-					<p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">Pipeline</p>
+					<p class="mb-2 text-xs font-bold uppercase tracking-widest text-accent">Pipeline</p>
 					<h3 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">
 						{i18n.locale === 'fr' ? 'Abonnements récurrents.' : 'Recurring subscriptions.'}
 					</h3>
@@ -313,7 +261,7 @@
 		<div class="mx-auto max-w-6xl px-4">
 			<div class="grid gap-12 lg:grid-cols-2 lg:items-center">
 				<div>
-					<p class="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+					<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">
 						{i18n.locale === 'fr' ? 'Politique de refund' : 'Refund policy'}
 					</p>
 					<h2 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
@@ -393,7 +341,7 @@
 				<li class="flex gap-2"><span class="text-error">✗</span> {i18n.locale === 'fr' ? 'Prix en euros uniquement' : 'Euros-only pricing'}</li>
 			</ul>
 		</div>
-		<div class="rounded-2xl border-2 border-primary bg-surface-elevated p-6">
+		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 			<p class="mb-4 text-xs font-bold uppercase tracking-wider text-primary">Skilluv</p>
 			<ul class="space-y-3 text-sm">
 				<li class="flex gap-2"><span class="text-success">✓</span> {i18n.locale === 'fr' ? 'Pay-as-you-go. Aucun abonnement caché.' : 'Pay-as-you-go. No hidden subscription.'}</li>
@@ -407,76 +355,46 @@
 </section>
 
 <!-- ============================================
-     FAQ minimaliste
+     FAQ — FaqSection réutilisé
      ============================================ -->
-<section class="border-t border-border bg-surface-elevated/40 py-20 sm:py-24">
-	<div class="mx-auto max-w-4xl px-4">
-		<h2 class="mb-12 text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
-			{i18n.locale === 'fr' ? 'Questions' : 'Common'}<br />
-			<span class="text-accent">{i18n.locale === 'fr' ? 'fréquentes.' : 'questions.'}</span>
-		</h2>
-		<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated">
-			{#each [
-				{
-					fr: { q: 'Le prix change selon mon pays. C\'est normal ?', a: 'Oui. Les prix sont convertis en temps réel depuis les taux de la Banque Centrale Européenne, avec une marge fixe de 3 %. C\'est plus juste pour les marchés locaux.' },
-					en: { q: 'The price changes depending on my country. Is that normal?', a: 'Yes. Prices convert live from European Central Bank rates with a fixed 3% margin. It\'s fairer for local markets.' }
-				},
-				{
-					fr: { q: 'Comment se passe le refund ?', a: 'Automatiquement, sur votre solde de crédits. Vous n\'avez rien à faire : dès que le talent décline ou que 30 jours passent sans réponse, 50 % du crédit est recrédité.' },
-					en: { q: 'How does the refund work?', a: 'Automatically, on your credit balance. Nothing to do: as soon as the talent declines or 30 days pass with no reply, 50% of the credit is returned.' }
-				},
-				{
-					fr: { q: 'Puis-je payer en franc CFA ou naira ?', a: 'Oui. Nigeria, Ghana et Égypte via Paystack. Sénégal, Côte d\'Ivoire, Cameroun, Maroc, Kenya via Flutterwave. Europe, US, UK, Canada via Stripe.' },
-					en: { q: 'Can I pay in CFA franc or naira?', a: 'Yes. Nigeria, Ghana and Egypt via Paystack. Senegal, Ivory Coast, Cameroon, Morocco, Kenya via Flutterwave. Europe, US, UK, Canada via Stripe.' }
-				},
-				{
-					fr: { q: 'Les crédits expirent-ils ?', a: 'Non. Un crédit acheté reste utilisable indéfiniment. Seuls les abonnements Pipeline offrent un renouvellement mensuel automatique.' },
-					en: { q: 'Do credits expire?', a: 'No. A purchased credit is usable indefinitely. Only Pipeline subscriptions auto-renew monthly.' }
-				},
-				{
-					fr: { q: 'Facture avec ma TVA ?', a: 'Oui. Chaque paiement génère une facture séquentielle SKL-YYYY-NNNNN téléchargeable en PDF depuis votre espace, avec les mentions légales requises.' },
-					en: { q: 'Invoice with my VAT?', a: 'Yes. Every payment generates a sequential SKL-YYYY-NNNNN invoice, downloadable as PDF from your space with all legal mentions.' }
-				}
-			] as faq}
-				{@const t = i18n.locale === 'fr' ? faq.fr : faq.en}
-				<details class="group px-6 py-5">
-					<summary class="flex cursor-pointer items-center justify-between gap-4 text-left font-semibold marker:hidden [&::-webkit-details-marker]:hidden">
-						<span>{t.q}</span>
-						<span class="text-accent transition-transform group-open:rotate-45 text-xl">+</span>
-					</summary>
-					<p class="mt-3 text-sm leading-relaxed text-text-muted">{t.a}</p>
-				</details>
-			{/each}
-		</div>
-	</div>
-</section>
+<FaqSection
+	items={i18n.locale === 'fr'
+		? [
+			{ q: 'Comment se passe le refund ?', a: 'Automatiquement, sur votre solde de crédits. Vous n\'avez rien à faire : dès que le talent décline ou que 30 jours passent sans réponse, 50 % du crédit est recrédité.' },
+			{ q: 'Puis-je payer en franc CFA ou naira ?', a: 'Oui. Nous acceptons les paiements en EUR, USD, GBP, XOF, XAF, NGN, GHS, MAD, KES et d\'autres devises locales. Sélectionnez la vôtre en haut de la page pour afficher les prix correspondants.' },
+			{ q: 'Les crédits expirent-ils ?', a: 'Non. Un crédit acheté reste utilisable indéfiniment. Seuls les abonnements Pipeline offrent un renouvellement mensuel automatique.' },
+			{ q: 'Facture avec ma TVA ?', a: 'Oui. Chaque paiement génère une facture séquentielle SKL-YYYY-NNNNN téléchargeable en PDF depuis votre espace, avec les mentions légales requises.' }
+		]
+		: [
+			{ q: 'How does the refund work?', a: 'Automatically, on your credit balance. Nothing to do: as soon as the talent declines or 30 days pass with no reply, 50% of the credit is returned.' },
+			{ q: 'Can I pay in CFA franc or naira?', a: 'Yes. We accept payments in EUR, USD, GBP, XOF, XAF, NGN, GHS, MAD, KES and other local currencies. Pick yours at the top of the page to see matching prices.' },
+			{ q: 'Do credits expire?', a: 'No. A purchased credit is usable indefinitely. Only Pipeline subscriptions auto-renew monthly.' },
+			{ q: 'Invoice with my VAT?', a: 'Yes. Every payment generates a sequential SKL-YYYY-NNNNN invoice, downloadable as PDF from your space with all legal mentions.' }
+		]}
+/>
 
 <!-- ============================================
-     FINAL CTA
+     FINAL CTA — CtaSection réutilisé (comme /for-companies)
      ============================================ -->
-<section class="mx-auto max-w-4xl px-4 py-24 text-center">
-	<h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
-		{#if i18n.locale === 'fr'}
-			Prêt à recruter<br />
-			<span class="text-primary">sur la preuve ?</span>
-		{:else}
-			Ready to hire<br />
-			<span class="text-primary">on proof?</span>
-		{/if}
-	</h2>
-	<p class="mx-auto mt-6 max-w-lg text-lg text-text-muted">
-		{i18n.locale === 'fr'
-			? 'Créez votre espace en 2 minutes. Aucune carte requise.'
-			: 'Create your space in 2 minutes. No credit card required.'}
-	</p>
-	<div class="mt-8 flex justify-center gap-3">
-		<Button variant="accent" size="lg" href={buyHref}>
-			{auth.isAuthenticated
-				? (i18n.locale === 'fr' ? 'Voir mes crédits' : 'View my credits')
-				: (i18n.locale === 'fr' ? 'Créer mon espace' : 'Create my space')}
-		</Button>
-		<Button variant="ghost" size="lg" href="/for-companies">
+<CtaSection
+	title={i18n.locale === 'fr' ? 'Prêt à recruter' : 'Ready to hire'}
+	accent={i18n.locale === 'fr' ? 'sur la preuve ?' : 'on proof?'}
+	description={i18n.locale === 'fr'
+		? 'Créez votre espace entreprise gratuitement. Aucune carte bancaire requise.'
+		: 'Create your enterprise space for free. No credit card required.'}
+	ctaHref={buyHref}
+	ctaLabel={auth.isAuthenticated
+		? (i18n.locale === 'fr' ? 'Voir mes crédits' : 'View my credits')
+		: (i18n.locale === 'fr' ? 'Créer mon espace entreprise' : 'Create my enterprise space')}
+>
+	{#snippet secondary()}
+		<Button
+			variant="ghost"
+			size="lg"
+			href="/for-companies"
+			onclick={() => requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'instant' }))}
+		>
 			{i18n.locale === 'fr' ? 'En savoir plus' : 'Learn more'}
 		</Button>
-	</div>
-</section>
+	{/snippet}
+</CtaSection>

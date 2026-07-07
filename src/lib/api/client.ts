@@ -8,14 +8,26 @@ export class SkilluError extends Error {
 	status: number;
 	details?: unknown;
 	requestId?: string;
+	/** Present on AUTH_SSO_REQUIRED — the enterprise SSO start URL the user
+	 * must be redirected to. Extracted from the top-level of the error
+	 * payload (not from `details`). */
+	startUrl?: string;
 
-	constructor(code: string, message: string, status: number, details?: unknown, requestId?: string) {
+	constructor(
+		code: string,
+		message: string,
+		status: number,
+		details?: unknown,
+		requestId?: string,
+		startUrl?: string
+	) {
 		super(message);
 		this.name = 'SkilluError';
 		this.code = code;
 		this.status = status;
 		this.details = details;
 		this.requestId = requestId;
+		this.startUrl = startUrl;
 	}
 }
 
@@ -25,21 +37,88 @@ export class SkilluError extends Error {
  * - Client-side : createApiClient() → utilise /api (proxy Vite/Caddy)
  * - Server-side (SSR) : createApiClient(fetch, 'http://localhost:3001/api')
  */
+/**
+ * Single in-flight refresh promise: parallel 401s all await the same refresh call,
+ * then retry their original request. Retry is disabled for the refresh endpoint itself.
+ */
+let inflightRefresh: Promise<boolean> | null = null;
+
+async function tryRefresh(customFetch: typeof fetch, baseUrl: string): Promise<boolean> {
+	if (!inflightRefresh) {
+		inflightRefresh = (async () => {
+			try {
+				const res = await customFetch(`${baseUrl}/auth/refresh`, {
+					method: 'POST',
+					credentials: 'include',
+					headers: { 'Content-Type': 'application/json' }
+				});
+				return res.ok;
+			} catch {
+				return false;
+			} finally {
+				// Release after tick so the awaiting requests all see the same result.
+				queueMicrotask(() => { inflightRefresh = null; });
+			}
+		})();
+	}
+	return inflightRefresh;
+}
+
+/**
+ * Read a cookie by name from `document.cookie`. Returns undefined on SSR or when absent.
+ * Used to grab the non-httpOnly `csrf_token` cookie and echo it back in the header.
+ */
+function readCookie(name: string): string | undefined {
+	if (typeof document === 'undefined') return undefined;
+	const prefix = `${name}=`;
+	for (const part of document.cookie.split(';')) {
+		const s = part.trim();
+		if (s.startsWith(prefix)) return decodeURIComponent(s.slice(prefix.length));
+	}
+	return undefined;
+}
+
+const CSRF_SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
+
 export function createApiClient(
 	customFetch: typeof fetch = fetch,
 	baseUrl: string = '/api'
 ) {
-	async function request<T>(path: string, options?: RequestInit): Promise<T> {
-		const url = `${baseUrl}${path}`;
-
-		const res = await customFetch(url, {
+	async function fire(url: string, options?: RequestInit): Promise<Response> {
+		// Double-submit CSRF: echo the non-httpOnly `csrf_token` cookie into the header on
+		// state-changing requests. The backend middleware (when enabled) checks that the header
+		// matches the cookie in constant time.
+		const method = (options?.method ?? 'GET').toUpperCase();
+		const csrfHeaders: Record<string, string> = {};
+		if (!CSRF_SAFE_METHODS.has(method)) {
+			const csrf = readCookie('csrf_token');
+			if (csrf) csrfHeaders['X-CSRF-Token'] = csrf;
+		}
+		return customFetch(url, {
 			...options,
 			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json',
+				...csrfHeaders,
 				...options?.headers
 			}
 		});
+	}
+
+	async function request<T>(path: string, options?: RequestInit): Promise<T> {
+		const url = `${baseUrl}${path}`;
+		const isAuthEndpoint = path.startsWith('/auth/refresh') || path.startsWith('/auth/login');
+
+		let res = await fire(url, options);
+
+		// On 401, try to silently refresh once, then retry the original call.
+		// We skip retry on refresh/login themselves so we never loop.
+		if (res.status === 401 && !isAuthEndpoint) {
+			const refreshed = await tryRefresh(customFetch, baseUrl);
+			if (refreshed) {
+				res = await fire(url, options);
+			}
+		}
 
 		if (!res.ok) {
 			let errorBody: ApiErrorBody | null = null;
@@ -54,7 +133,8 @@ export function createApiClient(
 				errorBody?.error?.message ?? `Erreur HTTP ${res.status}`,
 				res.status,
 				errorBody?.error?.details,
-				errorBody?.meta?.request_id
+				errorBody?.meta?.request_id,
+				errorBody?.error?.start_url
 			);
 		}
 
@@ -88,6 +168,13 @@ export function createApiClient(
 		put<T>(path: string, body?: unknown): Promise<T> {
 			return request<T>(path, {
 				method: 'PUT',
+				body: body ? JSON.stringify(body) : undefined
+			});
+		},
+
+		patch<T>(path: string, body?: unknown): Promise<T> {
+			return request<T>(path, {
+				method: 'PATCH',
 				body: body ? JSON.stringify(body) : undefined
 			});
 		},

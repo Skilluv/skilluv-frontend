@@ -4,6 +4,8 @@
 	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
+	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
+	import FilterBar from '$components/ui/FilterBar.svelte';
 	import { forumApi, type ForumCategory, type ForumPost, type PostSort } from '$api/forum';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -64,7 +66,7 @@
 <!-- Hero -->
 <section class="border-b border-border">
 	<div class="mx-auto max-w-6xl px-4 py-14 sm:py-20">
-		<p class="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-accent">Community</p>
+		<p class="mb-3 text-xs font-bold uppercase tracking-widest text-accent">Community</p>
 		<h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight">
 			{#if i18n.locale === 'fr'}
 				Un forum,<br />
@@ -134,21 +136,19 @@
 
 	<!-- Posts list -->
 	<main>
-		<div class="mb-4 flex flex-wrap items-center gap-2">
-			{#each [
-				{ v: 'all' as const, fr: 'Tout', en: 'All' },
-				{ v: 'question' as const, fr: 'Questions', en: 'Questions' },
-				{ v: 'discussion' as const, fr: 'Discussions', en: 'Discussions' },
-				{ v: 'announcement' as const, fr: 'Annonces', en: 'Announcements' }
-			] as k}
-				<button
-					onclick={() => { selectedKind = k.v; void load(); }}
-					class="rounded-full border border-border px-4 py-1.5 text-sm font-medium transition-colors {selectedKind === k.v ? 'border-primary bg-primary/15 text-primary' : 'hover:border-primary hover:text-primary'}"
-				>
-					{i18n.locale === 'fr' ? k.fr : k.en}
-				</button>
-			{/each}
-		</div>
+		<FilterBar class="mb-4">
+			<SegmentedControl
+				size="sm"
+				items={[
+					{ value: 'all', label: i18n.locale === 'fr' ? 'Tout' : 'All' },
+					{ value: 'question', label: i18n.locale === 'fr' ? 'Questions' : 'Questions' },
+					{ value: 'discussion', label: i18n.locale === 'fr' ? 'Discussions' : 'Discussions' },
+					{ value: 'announcement', label: i18n.locale === 'fr' ? 'Annonces' : 'Announcements' }
+				]}
+				bind:value={selectedKind}
+				onchange={() => void load()}
+			/>
+		</FilterBar>
 
 		{#if loading}
 			<div class="space-y-2">

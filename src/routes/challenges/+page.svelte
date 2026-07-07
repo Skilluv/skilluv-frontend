@@ -5,6 +5,7 @@
 	import ChallengeCard from '$components/challenge/ChallengeCard.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
+	import Pagination from '$components/ui/Pagination.svelte';
 	import type { Challenge, SkillDomain } from '$types';
 
 	let challenges = $state<{ challenge: Challenge; locked: boolean }[]>([]);
@@ -119,20 +120,7 @@
 			{/each}
 		</div>
 
-		<!-- Pagination -->
-		{#if totalPages > 1}
-			<div class="mt-8 flex items-center justify-center gap-2 sm:gap-4">
-				<Button variant="ghost" size="sm" disabled={currentPage <= 1} onclick={prevPage}>
-					←<span class="hidden sm:inline ml-1">{i18n.t('common.actions.previous')}</span>
-				</Button>
-				<span class="text-sm text-text-muted font-mono">
-					{currentPage} / {totalPages}
-				</span>
-				<Button variant="ghost" size="sm" disabled={currentPage >= totalPages} onclick={nextPage}>
-					<span class="hidden sm:inline mr-1">{i18n.t('common.actions.next')}</span>→
-				</Button>
-			</div>
-		{/if}
+		<Pagination current={currentPage} total={totalPages} onchange={(p) => { currentPage = p; loadChallenges(); }} />
 	{/if}
 </div>
 

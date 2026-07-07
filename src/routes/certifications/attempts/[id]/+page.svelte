@@ -72,7 +72,7 @@
 		<div class="text-center">
 			{#if result.passed}
 				<div class="mb-6 mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-success/15 text-5xl text-success animate-[fragment-burst_600ms_ease-out]">✓</div>
-				<p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-success">
+				<p class="mb-4 text-xs font-bold uppercase tracking-widest text-success">
 					{i18n.locale === 'fr' ? 'Certification obtenue' : 'Certification passed'}
 				</p>
 				<h1 class="text-5xl sm:text-6xl font-black leading-[1.05] tracking-tight">
@@ -111,7 +111,7 @@
 						<p class="mb-2 text-xs font-bold uppercase tracking-wider text-text-muted">
 							{i18n.locale === 'fr' ? 'Code de vérification' : 'Verification code'}
 						</p>
-						<div class="rounded-lg border border-border bg-surface-overlay px-6 py-4 text-center font-mono text-2xl font-bold tracking-[0.3em]">
+						<div class="rounded-lg border border-border bg-surface-overlay px-6 py-4 text-center font-mono text-2xl font-bold tracking-widest">
 							{result.verification_code}
 						</div>
 					</div>
@@ -136,7 +136,7 @@
 	{:else if !started}
 		<!-- Ready to start -->
 		<div class="text-center">
-			<p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-accent">
+			<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">
 				{i18n.locale === 'fr' ? 'Paiement confirmé' : 'Payment confirmed'}
 			</p>
 			<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
@@ -160,7 +160,7 @@
 	{:else}
 		<!-- In progress -->
 		<div>
-			<div class="mb-8 rounded-2xl border-2 {overtime ? 'border-error/30' : remaining < 300 ? 'border-warning/30' : 'border-primary/30'} bg-surface-elevated p-8">
+			<div class="mb-8 rounded-2xl border {overtime ? 'border-error/40' : remaining < 300 ? 'border-warning/40' : 'border-primary/30'} bg-surface-elevated p-8">
 				<div class="flex items-center justify-between gap-4">
 					<div>
 						<p class="text-xs font-bold uppercase tracking-wider text-text-muted">

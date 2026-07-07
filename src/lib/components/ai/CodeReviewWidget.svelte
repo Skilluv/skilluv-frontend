@@ -76,7 +76,7 @@
 		<div class="flex items-center gap-3">
 			<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary">◎</div>
 			<div>
-				<p class="text-xs font-bold uppercase tracking-[0.2em] text-accent">Skilluv AI</p>
+				<p class="text-xs font-bold uppercase tracking-widest text-accent">Skilluv AI</p>
 				<h3 class="text-base font-semibold">
 					{i18n.locale === 'fr' ? 'Code review pédagogique' : 'Pedagogical code review'}
 				</h3>

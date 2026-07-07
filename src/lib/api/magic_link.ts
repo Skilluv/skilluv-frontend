@@ -10,7 +10,6 @@ export interface MagicLinkRequestResponse {
 
 export interface MagicLinkConsumeResponse {
 	user_id: string;
-	refresh_token: string;
 	user?: UserPrivate;
 }
 

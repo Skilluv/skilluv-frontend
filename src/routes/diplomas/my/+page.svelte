@@ -56,7 +56,7 @@
 
 <div class="mx-auto max-w-5xl px-4 py-10 sm:py-14">
 	<div class="mb-10">
-		<p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+		<p class="mb-2 text-xs font-bold uppercase tracking-widest text-accent">
 			{i18n.locale === 'fr' ? 'Mes documents' : 'My documents'}
 		</p>
 		<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">

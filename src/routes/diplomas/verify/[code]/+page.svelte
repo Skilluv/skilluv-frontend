@@ -66,7 +66,7 @@
 			<div class="h-48 rounded-2xl bg-surface-elevated"></div>
 		</div>
 	{:else if notFound}
-		<div class="rounded-2xl border border-error/30 bg-error/5 p-10 text-center">
+		<div class="rounded-2xl border border-error/40 bg-error/5 p-10 text-center">
 			<div class="mb-4 text-5xl text-error">✕</div>
 			<h1 class="mb-3 text-3xl font-black tracking-tight">
 				{i18n.locale === 'fr' ? 'Diplôme introuvable' : 'Diploma not found'}
@@ -82,10 +82,10 @@
 		</div>
 	{:else if diploma}
 		<!-- Big verification card -->
-		<div class="mb-6 rounded-2xl border-2 {diploma.status === 'valid' ? 'border-success/30' : diploma.status === 'expired' ? 'border-warning/30' : 'border-error/30'} bg-surface-elevated p-8 sm:p-10">
+		<div class="mb-6 rounded-2xl border {diploma.status === 'valid' ? 'border-success/40' : diploma.status === 'expired' ? 'border-warning/40' : 'border-error/40'} bg-surface-elevated p-8 sm:p-10">
 			<div class="mb-6 flex items-center justify-between">
 				<div>
-					<p class="text-xs font-bold uppercase tracking-[0.2em] text-text-muted">
+					<p class="text-xs font-bold uppercase tracking-widest text-text-muted">
 						{i18n.locale === 'fr' ? 'Vérification' : 'Verification'}
 					</p>
 					<div class="mt-2 text-4xl font-black tracking-tight {statusColor(diploma.status)}">
@@ -134,7 +134,7 @@
 			</div>
 
 			{#if diploma.status === 'revoked' && diploma.revoke_reason}
-				<div class="mt-6 rounded-xl border border-error/30 bg-error/5 p-4">
+				<div class="mt-6 rounded-xl border border-error/40 bg-error/5 p-4">
 					<p class="text-xs font-bold uppercase tracking-wider text-error mb-1">
 						{i18n.locale === 'fr' ? 'Motif de révocation' : 'Revoke reason'}
 					</p>
