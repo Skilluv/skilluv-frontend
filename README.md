@@ -284,3 +284,18 @@ L'adaptateur `adapter-node` genere un serveur Node.js autonome dans le dossier `
 ## Documentation complementaire
 
 - [Documentation des routes API](docs/API-ROUTES.md) -- description exhaustive de tous les endpoints backend consommes par le frontend.
+
+---
+
+## Licence
+
+Ce projet est distribue sous licence [GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0).
+
+## Contribuer
+
+Voir [CONTRIBUTING.md](CONTRIBUTING.md) pour les modalites de contribution.
+Voir [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) pour les regles de la communaute.
+
+## Securite
+
+Pour signaler une vulnerabilite, voir [SECURITY.md](SECURITY.md).
