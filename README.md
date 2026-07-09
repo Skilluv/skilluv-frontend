@@ -23,12 +23,12 @@ Learn more in the [backend repository](https://github.com/jeremie0342/skilluv-ba
 
 This is the **web application** used by talents (and companies) to interact with Skilluv. Built with **SvelteKit 2, Svelte 5, Tailwind CSS 4, TypeScript, and Vite**.
 
-It provides:
+It covers a large surface of the product already:
 
-- **Talent-facing UX** — profile, portfolio of artifacts, challenge discovery, submission flow, real-time leaderboards
-- **Live challenge experience** — Monaco Editor for code, Figma embeds for design, playable builds for game dev, structured writeups for security
-- **Community surfaces** — feed, forum, guilds, direct messages, notifications, real-time WebSocket updates
-- **Enterprise surfaces** — company dashboards, talent search, sponsored challenges, subscription management
+- **Talent journey** — onboarding, profile, portfolio, challenge discovery and submission, sandbox editor (Monaco), certifications, diplomas, mentorship, opportunities board, real-time leaderboards
+- **Community surfaces** — feed, forum, guilds, direct messages, notifications, mentor listings, tournaments, bounties
+- **Enterprise surfaces** — dedicated landing (`for-companies`), pricing, subscription management, talent search, sponsored challenges
+- **Public and legal surfaces** — landing pages, developer/API section, legal pages
 - **Theming and i18n** — dark/light modes, French/English bundled
 
 ## Companion repositories
