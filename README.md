@@ -1,301 +1,93 @@
 # Skilluv Frontend
 
-Skilluv est une plateforme competitive de challenges techniques couvrant quatre domaines : code, design, game et security. Ce depot contient le frontend de l'application, construit avec SvelteKit 2, Svelte 5, Tailwind CSS 4 et TypeScript.
+> **Where the African OSS generation shows what they can build.**
+
+> 🇬🇧 English (this page) · 🇫🇷 [Version française](README.fr.md)
+
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
+[![SvelteKit](https://img.shields.io/badge/SvelteKit-2-ff3e00.svg)](https://kit.svelte.dev/)
+[![Svelte](https://img.shields.io/badge/Svelte-5-ff3e00.svg)](https://svelte.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 
 ---
 
-## Table des matieres
+## What is Skilluv?
 
-- [Prerequis](#prerequis)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Scripts disponibles](#scripts-disponibles)
-- [Architecture du projet](#architecture-du-projet)
-- [Routing](#routing)
-- [Systeme de themes](#systeme-de-themes)
-- [Internationalisation](#internationalisation)
-- [Tests](#tests)
-- [Deploiement](#deploiement)
-- [Stack technique](#stack-technique)
+Skilluv is a community platform training talents in **code, design, security, and game development** through real contributions to real open source projects. Every completed challenge produces a verifiable artifact that lives on the contributor's public portfolio and is exportable to recruiters.
 
----
+**Talents never pay for access.** Companies do, because they benefit when African contributors become excellent.
 
-## Prerequis
+Learn more in the [backend repository](https://github.com/jeremie0342/skilluv-backend) which hosts the full product vision.
 
-- Node.js 22 ou superieur
-- npm 10 ou superieur
-- Un backend Skilluv en cours d'execution sur le port 3001 (pour le developpement local)
+## What this repo contains
 
----
+This is the **web application** used by talents (and companies) to interact with Skilluv. Built with **SvelteKit 2, Svelte 5, Tailwind CSS 4, TypeScript, and Vite**.
 
-## Installation
+It provides:
+
+- **Talent-facing UX** — profile, portfolio of artifacts, challenge discovery, submission flow, real-time leaderboards
+- **Live challenge experience** — Monaco Editor for code, Figma embeds for design, playable builds for game dev, structured writeups for security
+- **Community surfaces** — feed, forum, guilds, direct messages, notifications, real-time WebSocket updates
+- **Enterprise surfaces** — company dashboards, talent search, sponsored challenges, subscription management
+- **Theming and i18n** — dark/light modes, French/English bundled
+
+## Companion repositories
+
+- [`skilluv-backend`](https://github.com/jeremie0342/skilluv-backend) — Rust + Axum API (auth, data, business logic)
+- [`skilluv-admin`](https://github.com/jeremie0342/skilluv-admin) — SvelteKit admin panel for platform operators
+- [`skilluv-ia`](https://github.com/jeremie0342/skilluv-ia) — Python AI microservice
+
+## Quick start
+
+**Prerequisites**: Node.js 22+, npm 10+, and a running Skilluv backend on port 3001.
 
 ```bash
-git clone <url-du-depot>
+git clone https://github.com/jeremie0342/skilluv-frontend.git
 cd skilluv-frontend
-npm ci
-```
-
----
-
-## Configuration
-
-Copier le fichier d'exemple et ajuster les valeurs si necessaire :
-
-```bash
+npm install
 cp .env.example .env
+# edit .env to point PUBLIC_API_URL at your backend
+
+npm run dev
 ```
 
-Variables d'environnement :
+The app opens on `http://localhost:5173`.
 
-| Variable    | Description                              | Valeur par defaut            |
-|-------------|------------------------------------------|------------------------------|
-| `API_URL`   | URL interne du backend (server-side only) | `http://localhost:3001/api` |
+Detailed instructions (routing, themes, i18n, testing, deployment) are in [`README.fr.md`](README.fr.md) — English translation in progress.
 
-En production, les variables suivantes sont egalement utilisees (voir le Dockerfile) :
+## Stack summary
 
-| Variable    | Description               | Valeur par defaut       |
-|-------------|---------------------------|-------------------------|
-| `NODE_ENV`  | Environnement d'execution | `production`            |
-| `PORT`      | Port d'ecoute du serveur  | `3000`                  |
-| `HOST`      | Adresse d'ecoute          | `0.0.0.0`              |
-| `ORIGIN`    | Origine publique du site  | `https://skilluv.com`  |
+| Layer              | Technology                        |
+|--------------------|-----------------------------------|
+| Framework          | SvelteKit 2.30                    |
+| UI runtime         | Svelte 5.54 (runes)               |
+| Language           | TypeScript 5.9                    |
+| CSS                | Tailwind CSS 4.2                  |
+| Code editor        | Monaco Editor 0.55                |
+| Build              | Vite 8                            |
+| Unit tests         | Vitest 4.1                        |
+| E2E tests          | Playwright 1.58                   |
+| Runtime            | Node.js 22 (Alpine)               |
+| Typography         | Space Grotesk, JetBrains Mono     |
 
-En developpement, Vite proxifie automatiquement les requetes `/api` et `/ws` vers `http://localhost:3001`.
+## Contributing
 
----
+We welcome contributors — Svelte devs, designers, UX writers, translators, accessibility experts, community builders. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community rules.
 
-## Scripts disponibles
+**AI-assisted contributions are welcome.** Please disclose the assistance level in your pull request description.
 
-| Commande              | Description                                          |
-|-----------------------|------------------------------------------------------|
-| `npm run dev`         | Lance le serveur de developpement Vite               |
-| `npm run build`       | Compile l'application pour la production             |
-| `npm run preview`     | Previsualise le build de production localement       |
-| `npm run check`       | Verifie les types TypeScript et la syntaxe Svelte    |
-| `npm run check:watch` | Idem en mode watch                                   |
-| `npm test`            | Execute les tests end-to-end (Playwright)            |
-| `npm run test:unit`   | Execute les tests unitaires (Vitest)                 |
-| `npm run test:unit:watch` | Execute les tests unitaires en mode watch        |
+## Security
 
----
+For security disclosures, see [SECURITY.md](SECURITY.md). Do not open public issues for vulnerabilities.
 
-## Architecture du projet
+## Community
 
-```
-src/
-├── routes/                     Routing SvelteKit (file-based)
-│
-├── lib/
-│   ├── api/                    Modules client HTTP
-│   │   ├── client.ts           Client de base avec gestion d'erreurs
-│   │   ├── auth.ts             Authentification
-│   │   ├── challenges.ts       Challenges
-│   │   ├── profile.ts          Profils utilisateurs
-│   │   ├── enterprise.ts       Fonctionnalites entreprise
-│   │   └── ...                 Autres modules API
-│   │
-│   ├── stores/                 Stores reactifs (Svelte 5 runes)
-│   │   ├── auth.svelte.ts      Etat d'authentification
-│   │   ├── theme.svelte.ts     Gestion des themes
-│   │   ├── notifications.svelte.ts
-│   │   ├── websocket.svelte.ts Evenements temps reel
-│   │   └── toast.svelte.ts     Notifications toast
-│   │
-│   ├── components/             Composants reutilisables
-│   │   ├── layout/             Navbar, BottomBar
-│   │   ├── ui/                 Button, Input, Modal, Badge, etc.
-│   │   ├── challenge/          ChallengeCard
-│   │   ├── sandbox/            Editeur Monaco
-│   │   ├── profile/            RankBadge, SkillTree, Heatmap
-│   │   ├── leaderboard/        Classements
-│   │   └── seo/                JsonLd, Analytics
-│   │
-│   ├── types/                  Definitions TypeScript
-│   │   └── index.ts            Types Challenge, User, Submission, etc.
-│   │
-│   ├── i18n/                   Internationalisation
-│   │   ├── index.ts            Classe i18n avec changement de locale
-│   │   ├── fr.ts               Traductions francaises
-│   │   ├── en.ts               Traductions anglaises
-│   │   └── types.ts            Cles typees
-│   │
-│   └── utils/                  Utilitaires
-│       └── jsonld.ts           Generation de schemas JSON-LD
-│
-├── app.html                    Template HTML racine
-├── app.css                     Styles globaux et definitions de themes
-├── app.d.ts                    Declarations de types globaux
-└── hooks.server.ts             Validation d'authentification server-side
+Community channels are being set up. Follow the maintainer on GitHub for launch announcements.
 
-tests/
-├── unit/                       Tests unitaires (Vitest)
-│   ├── setup.ts
-│   ├── api-client.test.ts
-│   ├── i18n.test.ts
-│   ├── jsonld.test.ts
-│   └── toast.test.ts
-│
-└── e2e/                        Tests end-to-end (Playwright)
-    ├── auth.test.ts
-    ├── challenges.test.ts
-    ├── i18n.test.ts
-    └── landing.test.ts
-```
+## License
 
-### Alias de chemins
+Distributed under the [GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0).
 
-Le projet configure les alias suivants dans `svelte.config.js` :
+## Origin
 
-- `$components` -> `src/lib/components`
-- `$stores` -> `src/lib/stores`
-- `$api` -> `src/lib/api`
-- `$types` -> `src/lib/types`
-
----
-
-## Routing
-
-Le routing est base sur le systeme de fichiers de SvelteKit. Voici les sections principales :
-
-| Route                     | Description                                |
-|---------------------------|--------------------------------------------|
-| `/`                       | Page d'accueil / Dashboard                 |
-| `/auth/*`                 | Authentification (login, register, etc.)   |
-| `/challenges`             | Liste et detail des challenges             |
-| `/challenges/[id]/sandbox`| Editeur de code (sandbox Monaco)           |
-| `/challenges/onboarding`  | Challenges d'integration                   |
-| `/community/*`            | Challenges communautaires                  |
-| `/enterprise/*`           | Espace entreprise (dashboard, talents)     |
-| `/admin/*`                | Administration (challenges, users, audit)  |
-| `/developer/*`            | Outils developpeur (cles API, webhooks)    |
-| `/profile/[username]`     | Profil public                              |
-| `/leaderboards`           | Classements                                |
-| `/notifications`          | Centre de notifications                    |
-| `/settings`               | Parametres utilisateur                     |
-
----
-
-## Systeme de themes
-
-L'application propose quatre themes sombres, definis dans `app.css` via des variables CSS :
-
-| Theme      | Description                              |
-|------------|------------------------------------------|
-| `forge`    | Theme par defaut, tons chauds            |
-| `neon`     | Esthetique cyberpunk, accents neon       |
-| `arena`    | Ambiance competitive, tons vifs          |
-| `terminal` | Style terminal, vert sur fond sombre     |
-
-Le theme actif est gere par le store `theme.svelte.ts` et applique via un attribut `data-theme` sur l'element racine.
-
----
-
-## Internationalisation
-
-Le projet utilise un systeme i18n maison (pas de bibliotheque tierce). Deux locales sont supportees :
-
-- **fr** (francais) -- locale par defaut
-- **en** (anglais)
-
-Les traductions sont stockees dans `src/lib/i18n/fr.ts` et `en.ts` sous forme d'objets plats avec des cles en notation pointee. L'interpolation de parametres est supportee.
-
-Exemple d'utilisation :
-
-```svelte
-<script>
-  import { t } from '$lib/i18n';
-</script>
-
-<p>{t('challenges.title')}</p>
-```
-
----
-
-## Tests
-
-### Tests unitaires
-
-Les tests unitaires utilisent Vitest avec jsdom comme environnement DOM et `@testing-library/svelte` pour le rendu des composants.
-
-```bash
-npm run test:unit
-npm run test:unit:watch
-```
-
-### Tests end-to-end
-
-Les tests E2E utilisent Playwright. Ils lancent automatiquement un build de production et le servent sur le port 4173.
-
-```bash
-npm test
-```
-
-Configuration Playwright :
-- Retries : 0 en local, 2 en CI
-- Reporter : `list` en local, `github` en CI
-
----
-
-## Deploiement
-
-### Docker
-
-Le projet inclut un Dockerfile multi-stage optimise produisant une image d'environ 50 Mo :
-
-```bash
-docker build -t skilluv-frontend .
-docker run -p 3000:3000 \
-  -e API_URL=https://api.skilluv.com \
-  -e ORIGIN=https://skilluv.com \
-  skilluv-frontend
-```
-
-Le conteneur s'execute avec un utilisateur non-root (`skilluv`) et inclut un healthcheck sur `/`.
-
-### Build manuel
-
-```bash
-npm run build
-node build/index.js
-```
-
-L'adaptateur `adapter-node` genere un serveur Node.js autonome dans le dossier `build/`.
-
----
-
-## Stack technique
-
-| Categorie          | Technologie                          |
-|--------------------|--------------------------------------|
-| Framework          | SvelteKit 2.55                       |
-| UI                 | Svelte 5.54 (runes)                  |
-| Langage            | TypeScript 5.9                       |
-| CSS                | Tailwind CSS 4.2                     |
-| Editeur de code    | Monaco Editor 0.55                   |
-| Build              | Vite 8                               |
-| Tests unitaires    | Vitest 4.1                           |
-| Tests E2E          | Playwright 1.58                      |
-| Runtime            | Node.js 22 (Alpine)                  |
-| Polices            | Space Grotesk, JetBrains Mono        |
-
----
-
-## Documentation complementaire
-
-- [Documentation des routes API](docs/API-ROUTES.md) -- description exhaustive de tous les endpoints backend consommes par le frontend.
-
----
-
-## Licence
-
-Ce projet est distribue sous licence [GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0).
-
-## Contribuer
-
-Voir [CONTRIBUTING.md](CONTRIBUTING.md) pour les modalites de contribution.
-Voir [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) pour les regles de la communaute.
-
-## Securite
-
-Pour signaler une vulnerabilite, voir [SECURITY.md](SECURITY.md).
+Skilluv is built solo by [Jeremie Zitti](https://github.com/jeremie0342), a Beninese engineer. Public launch: **January 2027**. Private beta: **autumn 2026**.
