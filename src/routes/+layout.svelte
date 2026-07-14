@@ -39,16 +39,13 @@
 
 	let showCandidateChrome = $derived(!isBareLayout && !isWorkspace);
 
-	/** Extrait la 1re section de la route → drive `data-route` sur <body>
-	 * pour appliquer une couleur catégorielle globale par page (voir app.css) */
+	/** Extrait la 1re section de la route → drive `data-route` sur <main>
+	 * pour appliquer une couleur catégorielle scoped au CONTENU de la page.
+	 * Sur <main> et pas <body> pour que navbar/footer (hors main) restent
+	 * neutres et ancrent visuellement l'utilisateur. Voir app.css. */
 	let routeSection = $derived.by(() => {
 		const seg = $page.url.pathname.split('/').filter(Boolean)[0];
 		return seg ?? 'home';
-	});
-
-	$effect(() => {
-		if (typeof document === 'undefined') return;
-		document.body.setAttribute('data-route', routeSection);
 	});
 
 	// Hydrate auth depuis les donnees SSR — includes the `hasPasskey` flag so
@@ -94,7 +91,7 @@
 		<EmailVerificationBanner />
 	{/if}
 
-	<main class="flex-1">
+	<main class="flex-1" data-route={routeSection}>
 		<PageTransition>
 			{@render children()}
 		</PageTransition>

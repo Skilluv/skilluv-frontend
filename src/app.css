@@ -569,55 +569,55 @@
    catégorielle de la page. Zéro fichier composant à toucher — les 275+
    usages de bg-surface-elevated changent automatiquement.
    ============================================ */
-body[data-route='challenges'],
-body[data-route='bounties'],
-body[data-route='onboarding'] {
+main[data-route='challenges'],
+main[data-route='bounties'],
+main[data-route='onboarding'] {
 	--sk-surface-elevated: var(--sk-surface-craft);
 	--sk-surface-elevated-hover: color-mix(in oklab, var(--sk-surface-craft) 88%, white);
 }
 
-body[data-route='tournaments'] {
+main[data-route='tournaments'] {
 	--sk-surface-elevated: var(--sk-surface-create);
 	--sk-surface-elevated-hover: color-mix(in oklab, var(--sk-surface-create) 88%, white);
 }
 
-body[data-route='leaderboards'],
-body[data-route='talent-search'],
-body[data-route='enterprise'],
-body[data-route='for-companies'] {
+main[data-route='leaderboards'],
+main[data-route='talent-search'],
+main[data-route='enterprise'],
+main[data-route='for-companies'] {
 	--sk-surface-elevated: var(--sk-surface-understand);
 	--sk-surface-elevated-hover: color-mix(in oklab, var(--sk-surface-understand) 88%, white);
 }
 
-body[data-route='mentors'],
-body[data-route='mentorship'],
-body[data-route='forum'],
-body[data-route='guilds'],
-body[data-route='community'],
-body[data-route='feed'],
-body[data-route='messages'],
-body[data-route='notifications'],
-body[data-route='profile'] {
+main[data-route='mentors'],
+main[data-route='mentorship'],
+main[data-route='forum'],
+main[data-route='guilds'],
+main[data-route='community'],
+main[data-route='feed'],
+main[data-route='messages'],
+main[data-route='notifications'],
+main[data-route='profile'] {
 	--sk-surface-elevated: var(--sk-surface-share);
 	--sk-surface-elevated-hover: color-mix(in oklab, var(--sk-surface-share) 88%, white);
 }
 
-body[data-route='certifications'],
-body[data-route='diplomas'],
-body[data-route='opportunities'],
-body[data-route='pricing'] {
+main[data-route='certifications'],
+main[data-route='diplomas'],
+main[data-route='opportunities'],
+main[data-route='pricing'] {
 	--sk-surface-elevated: var(--sk-surface-meta);
 	--sk-surface-elevated-hover: color-mix(in oklab, var(--sk-surface-meta) 88%, white);
 }
 
-body[data-route='developer'],
-body[data-route='settings'] {
+main[data-route='developer'],
+main[data-route='settings'] {
 	--sk-surface-elevated: var(--sk-surface-operate);
 	--sk-surface-elevated-hover: color-mix(in oklab, var(--sk-surface-operate) 88%, white);
 }
 
 /* /admin garde neutre (surfaces alt) — c'est un espace de travail */
-body[data-route='admin'] {
+main[data-route='admin'] {
 	--sk-surface-elevated: var(--sk-surface-alt);
 }
 
