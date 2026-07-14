@@ -100,18 +100,6 @@
 }
 
 /* ============================================
-   OVERRIDE FONT TOKENS — force nos fonts contre les défauts Tailwind v4
-   (Tailwind v4 pousse --font-sans par défaut en preflight ; on l'écrase ici)
-   ============================================ */
-:root {
-	--font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
-	--font-sans: 'Bricolage Grotesque Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-	--font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Consolas, monospace;
-	--default-font-family: var(--font-sans);
-	--default-mono-font-family: var(--font-mono);
-}
-
-/* ============================================
    TOKENS GLOBAUX (constants brand, indépendants du thème)
    ============================================ */
 :root {
@@ -583,14 +571,10 @@
    STYLES DE BASE
    Fraunces = display / Bricolage = body / JBM = code
    ============================================ */
-html,
-body {
-	font-family: 'Bricolage Grotesque Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
 body {
 	background-color: var(--sk-surface);
 	color: var(--sk-text);
+	font-family: var(--font-sans);
 	font-optical-sizing: auto;
 	font-variation-settings: 'wdth' 100;
 	line-height: 1.6;
@@ -609,7 +593,7 @@ button {
 h1,
 h2,
 h3 {
-	font-family: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+	font-family: var(--font-display);
 	font-optical-sizing: auto;
 	font-variation-settings: 'opsz' 48, 'SOFT' 30, 'WONK' 0;
 	letter-spacing: -0.02em;
@@ -617,12 +601,12 @@ h3 {
 }
 
 .font-wonk {
-	font-family: 'Fraunces Variable', Georgia, serif;
+	font-family: var(--font-display);
 	font-variation-settings: 'opsz' 48, 'SOFT' 40, 'WONK' 0.5;
 }
 
 .font-hero {
-	font-family: 'Fraunces Variable', Georgia, serif;
+	font-family: var(--font-display);
 	font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 1;
 	letter-spacing: -0.03em;
 	line-height: 0.95;
@@ -632,7 +616,7 @@ code,
 pre,
 kbd,
 samp {
-	font-family: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Consolas, monospace;
+	font-family: var(--font-mono);
 }
 
 /* Scrollbar — teinté selon thème */
@@ -672,7 +656,7 @@ select:focus-visible,
    WORDMARK Skilluv — sKIL·LUV
    ============================================ */
 .wordmark {
-	font-family: 'Fraunces Variable', Georgia, serif;
+	font-family: var(--font-display);
 	font-weight: 800;
 	font-variation-settings: 'opsz' 96, 'SOFT' 50, 'WONK' 1;
 	letter-spacing: -0.025em;
