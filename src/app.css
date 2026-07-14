@@ -18,9 +18,11 @@
    Voir : _bmad-output/planning-artifacts/ux-designs/*/DESIGN.md
    ============================================ */
 
-/* @theme STANDARD — valeurs littérales uniquement (pas de var()).
-   Ces variables sont "gelées" à la compilation Tailwind. */
-@theme {
+/* @theme INLINE — bloc unique consolidé.
+   - `inline` est requis pour les var() (colors theme-aware)
+   - `inline` ne casse pas les valeurs littérales (fonts, radius, scale)
+   - Un seul bloc par fichier : Tailwind v4 ne processe pas plusieurs @theme correctement */
+@theme inline {
 	/* Typography */
 	--font-display: 'Fraunces Variable', Georgia, serif;
 	--font-sans: 'Bricolage Grotesque Variable', -apple-system, system-ui, sans-serif;
@@ -45,13 +47,7 @@
 	--radius-lg: 16px;
 	--radius-xl: 24px;
 	--radius-full: 9999px;
-}
 
-/* @theme INLINE — pour les tokens qui référencent d'autres CSS variables.
-   `inline` dit à Tailwind: "ne fige pas la valeur, garde le var()
-   au runtime pour que les thèmes dynamiques puissent le surcharger."
-   Sans `inline`, Tailwind rejette silencieusement tout le bloc. */
-@theme inline {
 	/* Colors — thème-aware via --sk-* */
 	--color-primary: var(--sk-primary);
 	--color-primary-hover: var(--sk-primary-hover);
