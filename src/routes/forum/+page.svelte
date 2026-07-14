@@ -6,6 +6,7 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import FilterBar from '$components/ui/FilterBar.svelte';
+	import EmptyState from '$components/ui/EmptyState.svelte';
 	import { forumApi, type ForumCategory, type ForumPost, type PostSort } from '$api/forum';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -157,12 +158,13 @@
 				{/each}
 			</div>
 		{:else if posts.length === 0}
-			<div class="rounded-2xl border border-border bg-surface-elevated p-10 text-center">
-				<div class="mb-3 text-4xl text-text-muted">◈</div>
-				<p class="text-text-muted">
-					{i18n.locale === 'fr' ? 'Aucun post pour ces critères.' : 'No posts matching these criteria.'}
-				</p>
-			</div>
+			<EmptyState
+				variant="search"
+				title={i18n.locale === 'fr' ? 'Rien à ce filtre.' : 'Nothing at this filter.'}
+				body={i18n.locale === 'fr'
+					? 'Essaie d\'autres tags — ou lance la discussion.'
+					: 'Try other tags — or start the conversation.'}
+			/>
 		{:else}
 			<div class="space-y-2">
 				{#each posts as p}

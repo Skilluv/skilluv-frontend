@@ -338,12 +338,12 @@ export interface Translations {
 			title: string;
 			forge: string;
 			forgeDesc: string;
-			neon: string;
-			neonDesc: string;
+			vesperal: string;
+			vesperalDesc: string;
 			arena: string;
 			arenaDesc: string;
-			terminal: string;
-			terminalDesc: string;
+			scriptorium: string;
+			scriptoriumDesc: string;
 			sakura: string;
 			sakuraDesc: string;
 		};

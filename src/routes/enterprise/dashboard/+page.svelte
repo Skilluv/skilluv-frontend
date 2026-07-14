@@ -137,8 +137,11 @@
 </svelte:head>
 
 <div class="p-6 lg:p-8">
-	<h1 class="mb-2 text-2xl font-bold">{i18n.t('enterprise.dashboard.title')}</h1>
-	<p class="mb-8 text-text-muted">{i18n.t('enterprise.dashboard.subtitle')}</p>
+	<div class="mb-2 text-xs font-mono uppercase tracking-widest text-primary">
+		{i18n.locale === 'fr' ? 'Vue d\'ensemble' : 'Overview'}
+	</div>
+	<h1 class="mb-2 font-hero text-4xl sm:text-5xl">{i18n.t('enterprise.dashboard.title')}</h1>
+	<p class="mb-8 text-lg text-text-muted max-w-2xl">{i18n.t('enterprise.dashboard.subtitle')}</p>
 
 	{#if loading}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

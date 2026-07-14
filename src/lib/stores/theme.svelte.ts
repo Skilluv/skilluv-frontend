@@ -2,20 +2,31 @@ import type { Theme, ThemeBase, ThemeMode } from '$lib/types';
 
 const THEME_KEY = 'skilluv-theme';
 const MODE_KEY = 'skilluv-mode';
-const VALID_BASES: ThemeBase[] = ['forge', 'neon', 'arena', 'terminal', 'sakura'];
+const VALID_BASES: ThemeBase[] = ['forge', 'vesperal', 'arena', 'scriptorium', 'sakura'];
+
+/** Migration table for legacy theme names. */
+const LEGACY_MIGRATIONS: Record<string, ThemeBase> = {
+	neon: 'vesperal',
+	terminal: 'scriptorium'
+};
 
 class ThemeState {
 	base = $state<ThemeBase>('forge');
 	mode = $state<ThemeMode>('dark');
 	current = $derived<Theme>(this.mode === 'dark' ? this.base : `${this.base}-light`);
 
-	/** Initialise le theme depuis localStorage */
+	/** Initialise le theme depuis localStorage — migre les anciens noms si besoin. */
 	init() {
 		if (typeof window === 'undefined') return;
 
 		const storedBase = localStorage.getItem(THEME_KEY);
-		if (storedBase && VALID_BASES.includes(storedBase as ThemeBase)) {
-			this.base = storedBase as ThemeBase;
+		if (storedBase) {
+			if (LEGACY_MIGRATIONS[storedBase]) {
+				this.base = LEGACY_MIGRATIONS[storedBase];
+				localStorage.setItem(THEME_KEY, this.base);
+			} else if (VALID_BASES.includes(storedBase as ThemeBase)) {
+				this.base = storedBase as ThemeBase;
+			}
 		}
 
 		const storedMode = localStorage.getItem(MODE_KEY);

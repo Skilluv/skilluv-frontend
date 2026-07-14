@@ -6,10 +6,11 @@
 	const year = new Date().getFullYear();
 
 	const themes: { key: ThemeBase; label: string; color: string }[] = [
-		{ key: 'forge', label: 'Forge', color: '#ea580c' },
-		{ key: 'neon', label: 'Neon', color: '#06b6d4' },
-		{ key: 'arena', label: 'Arena', color: '#dc2626' },
-		{ key: 'sakura', label: 'Sakura', color: '#a855f7' }
+		{ key: 'forge', label: 'Forge', color: '#c47a2e' },
+		{ key: 'vesperal', label: 'Vespéral', color: '#f4a261' },
+		{ key: 'arena', label: 'Arena', color: '#e63946' },
+		{ key: 'scriptorium', label: 'Scriptorium', color: '#83a598' },
+		{ key: 'sakura', label: 'Sakura', color: '#e8a5c1' }
 	];
 
 	const navLinks = [

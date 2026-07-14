@@ -15,6 +15,7 @@
 	import PageTransition from '$lib/components/ui/PageTransition.svelte';
 	import InstallPrompt from '$lib/components/pwa/InstallPrompt.svelte';
 	import EmailVerificationBanner from '$lib/components/auth/EmailVerificationBanner.svelte';
+	import KeysSprite from '$lib/components/badges/primitives/keys-sprite.svelte';
 	// Terminal mode désactivé pour l'instant — composants conservés sous src/lib/components/terminal/*
 	// pour réactivation future. Voir TerminalEmulator.svelte / TerminalConfirm.svelte / commands.ts.
 
@@ -37,6 +38,15 @@
 	);
 
 	let showCandidateChrome = $derived(!isBareLayout && !isWorkspace);
+
+	/** Extrait la 1re section de la route → drive `data-route` sur <main>
+	 * pour appliquer une couleur catégorielle scoped au CONTENU de la page.
+	 * Sur <main> et pas <body> pour que navbar/footer (hors main) restent
+	 * neutres et ancrent visuellement l'utilisateur. Voir app.css. */
+	let routeSection = $derived.by(() => {
+		const seg = $page.url.pathname.split('/').filter(Boolean)[0];
+		return seg ?? 'home';
+	});
 
 	// Hydrate auth depuis les donnees SSR — includes the `hasPasskey` flag so
 	// the enterprise layout guard can honour "TOTP OR passkey" as satisfying
@@ -72,6 +82,7 @@
 	});
 </script>
 
+<KeysSprite />
 <Toast />
 
 <div class="flex min-h-screen flex-col bg-surface text-text-primary">
@@ -80,7 +91,7 @@
 		<EmailVerificationBanner />
 	{/if}
 
-	<main class="flex-1">
+	<main class="flex-1" data-route={routeSection}>
 		<PageTransition>
 			{@render children()}
 		</PageTransition>

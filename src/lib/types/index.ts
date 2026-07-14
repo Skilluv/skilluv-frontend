@@ -19,7 +19,7 @@ export type ReportStatus = 'pending' | 'resolved' | 'dismissed';
 export type InterestStatus = 'pending' | 'accepted' | 'declined';
 export type CompanySize = '1-10' | '11-50' | '51-200' | '201-500' | '501-1000' | '1000+';
 export type UserRole = 'user' | 'recruiter' | 'enterprise' | 'admin';
-export type ThemeBase = 'forge' | 'neon' | 'arena' | 'terminal' | 'sakura';
+export type ThemeBase = 'forge' | 'vesperal' | 'arena' | 'scriptorium' | 'sakura';
 export type ThemeMode = 'dark' | 'light';
 export type Theme = ThemeBase | `${ThemeBase}-light`;
 

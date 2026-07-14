@@ -113,10 +113,11 @@
 	});
 
 	const themes: { key: ThemeBase; label: string; accent: string; primary: string }[] = [
-		{ key: 'forge', label: 'Forge', accent: '#ea580c', primary: '#2563eb' },
-		{ key: 'neon', label: 'Neon', accent: '#f59e0b', primary: '#06b6d4' },
-		{ key: 'arena', label: 'Arena', accent: '#64748b', primary: '#dc2626' },
-		{ key: 'sakura', label: 'Sakura', accent: '#ec4899', primary: '#a855f7' }
+		{ key: 'forge', label: 'Forge', accent: '#c47a2e', primary: '#457b9d' },
+		{ key: 'vesperal', label: 'Vespéral', accent: '#f4a261', primary: '#e9c46a' },
+		{ key: 'arena', label: 'Arena', accent: '#e63946', primary: '#e9c46a' },
+		{ key: 'scriptorium', label: 'Scriptorium', accent: '#c47a2e', primary: '#83a598' },
+		{ key: 'sakura', label: 'Sakura', accent: '#e8a5c1', primary: '#c47a2e' }
 	];
 
 	function selectTheme(t: ThemeBase) {
@@ -280,17 +281,27 @@
 
 <header class="relative z-40 bg-transparent">
 	<nav class="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-4">
-		<!-- Logo — tenant-aware -->
-		<a href="/" class="flex items-center gap-2.5">
+		<!-- Logo — tenant-aware. Skilluv canonique = wordmark bicolore sKIL·LUV
+		     (Fraunces WONK, easter egg: le LUV rouge se révèle au 2e regard) -->
+		<a href="/" class="flex items-center gap-2.5" aria-label="Skilluv accueil">
 			{#if tenant.isWhiteLabel && tenant.logoUrl}
 				<img src={tenant.logoUrl} alt={tenant.name} class="h-8 max-w-[120px] object-contain" />
 				<span class="text-lg font-black tracking-tight text-text-primary truncate max-w-[160px]">
 					{tenant.name}
 				</span>
 			{:else}
-				<img src="/favicon.svg" alt="" class="h-8 w-8" />
-				<span class="text-2xl font-black tracking-tight">
-					<span class="text-accent">Skill</span><span class="text-text-primary">uv</span>
+				<!-- Placeholder trousseau icon en attendant les SVG Recraft -->
+				<svg viewBox="0 0 40 40" class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+					<circle cx="20" cy="10" r="6" />
+					<line x1="16" y1="16" x2="13" y2="34" />
+					<line x1="20" y1="16" x2="20" y2="36" />
+					<line x1="24" y1="16" x2="27" y2="34" />
+					<rect x="11" y="30" width="4" height="2" fill="currentColor" stroke="none" />
+					<rect x="18" y="32" width="5" height="2" fill="currentColor" stroke="none" />
+					<rect x="25" y="30" width="4" height="2" fill="currentColor" stroke="none" />
+				</svg>
+				<span class="wordmark text-2xl leading-none">
+					<span class="wordmark-skil">sKIL</span><span class="wordmark-luv">LUV</span>
 				</span>
 			{/if}
 		</a>

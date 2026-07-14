@@ -3,13 +3,15 @@
 	<head>
 		<script>
 			(function() {
-				// Mode terminal désactivé — si quelqu'un avait le flag dans son localStorage, on le purge.
 				if (localStorage.getItem('skilluv-terminal-mode') === 'true') {
 					localStorage.removeItem('skilluv-terminal-mode');
 				}
 				var b = localStorage.getItem('skilluv-theme') || 'forge';
-				// Si l'utilisateur avait le thème "terminal" stocké, on retombe sur forge.
-				if (b === 'terminal') b = 'forge';
+				// Migration ex-noms → nouveaux noms alignés direction warm/scout
+				if (b === 'neon') b = 'vesperal';
+				if (b === 'terminal') b = 'scriptorium';
+				if (['forge','vesperal','arena','scriptorium','sakura'].indexOf(b) === -1) b = 'forge';
+				localStorage.setItem('skilluv-theme', b);
 				var m = localStorage.getItem('skilluv-mode') || 'dark';
 				document.documentElement.setAttribute('data-theme', m === 'dark' ? b : b + '-light');
 			})();

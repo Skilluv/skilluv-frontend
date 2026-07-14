@@ -52,7 +52,7 @@
 		</div>
 
 		<!-- Progression as a journey: vertical stack on mobile, 4-column table on desktop -->
-		<div use:scrollReveal class="rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+		<div use:scrollReveal class="rounded-2xl border-2 border-cat-meta bg-surface-meta overflow-hidden">
 
 			<!-- Mobile: 1 card per level, stacked vertically -->
 			<div class="flex flex-col divide-y divide-border sm:hidden">
@@ -127,7 +127,7 @@
 		<!-- Bottom: a simulated profile showing the journey -->
 		<div use:scrollReveal class="mt-8 grid sm:grid-cols-2 gap-4">
 			<!-- Before -->
-			<div class="rounded-2xl border border-border bg-surface-elevated p-5">
+			<div class="rounded-2xl border-2 border-border bg-surface-alt p-5">
 				<p class="text-[10px] text-text-muted uppercase tracking-wider mb-3">{i18n.locale === 'fr' ? 'Jour 1' : 'Day 1'}</p>
 				<div class="flex items-center gap-3 mb-3">
 					<div class="h-9 w-9 rounded-full bg-surface-overlay flex items-center justify-center text-xs font-bold text-text-muted">?</div>
@@ -143,7 +143,7 @@
 			</div>
 
 			<!-- After -->
-			<div class="rounded-2xl border border-amber-500/30 bg-surface-elevated p-5">
+			<div class="rounded-2xl border-2 border-cat-craft bg-surface-craft p-5">
 				<p class="text-[10px] text-amber-400 uppercase tracking-wider mb-3">{i18n.locale === 'fr' ? '6 mois plus tard' : '6 months later'}</p>
 				<div class="flex items-center gap-3 mb-3">
 					<div class="h-9 w-9 rounded-full bg-amber-500/15 flex items-center justify-center text-xs font-bold text-amber-400">R</div>

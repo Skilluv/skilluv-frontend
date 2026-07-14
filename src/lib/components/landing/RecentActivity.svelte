@@ -42,7 +42,7 @@
 			</Button>
 		</div>
 
-		<div use:scrollReveal class="rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+		<div use:scrollReveal class="rounded-2xl border-2 border-cat-share bg-surface-share overflow-hidden">
 			{#each activity as item, idx}
 				{@const ds = domainStyle(item.domain)}
 				<div class="flex items-center gap-4 px-5 py-4 {idx < activity.length - 1 ? 'border-b border-border' : ''}">

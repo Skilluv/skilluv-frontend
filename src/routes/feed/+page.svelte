@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
+	import EmptyState from '$components/ui/EmptyState.svelte';
 	import { feedApi, type FeedEvent } from '$api/feed';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -122,32 +123,34 @@
 			{/each}
 		</div>
 	{:else if events.length === 0}
-		<div class="rounded-2xl border border-border bg-surface-elevated p-10 text-center">
-			<div class="mb-3 text-4xl text-text-muted">◎</div>
-			<p class="mb-4 text-text-muted">
-				{i18n.locale === 'fr'
-					? 'Ton fil est encore vide. Suis des créateurs, rejoins une guilde, complète un challenge.'
-					: 'Your feed is empty. Follow creators, join a guild, complete a challenge.'}
-			</p>
-			<div class="flex justify-center gap-2">
-				<Button variant="accent" href="/challenges">
-					{i18n.locale === 'fr' ? 'Explorer' : 'Explore'}
-				</Button>
-				<Button variant="ghost" href="/guilds">
-					{i18n.locale === 'fr' ? 'Guildes' : 'Guilds'}
-				</Button>
-			</div>
-		</div>
+		<EmptyState
+			variant="scroll"
+			title={i18n.locale === 'fr' ? 'Tout est calme ce matin.' : 'All quiet this morning.'}
+			body={i18n.locale === 'fr'
+				? 'Suis des skilluvers ou rejoins une guilde pour voir de la vie ici.'
+				: 'Follow skilluvers or join a guild to see life happen here.'}
+		>
+			{#snippet action()}
+				<div class="flex justify-center gap-2">
+					<Button variant="accent" href="/challenges">
+						{i18n.locale === 'fr' ? 'Explorer' : 'Explore'}
+					</Button>
+					<Button variant="ghost" href="/guilds">
+						{i18n.locale === 'fr' ? 'Guildes' : 'Guilds'}
+					</Button>
+				</div>
+			{/snippet}
+		</EmptyState>
 	{:else}
 		<div class="space-y-2">
 			{#each events as ev}
 				{@const href = targetLink(ev)}
+				{@const KindIcon = iconForKind(ev.kind)}
 				<svelte:element
 					this={href ? 'a' : 'div'}
 					{...href ? { href } : {}}
 					class="block rounded-2xl border border-border bg-surface-elevated p-4 {href ? 'hover:border-primary/40 hover:bg-surface-overlay transition-colors' : ''}"
 				>
-					{@const KindIcon = iconForKind(ev.kind)}
 					<div class="flex items-start gap-3">
 						<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
 							<KindIcon size={18} strokeWidth={2} />

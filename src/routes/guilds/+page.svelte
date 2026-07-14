@@ -4,6 +4,7 @@
 	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
+	import EmptyState from '$components/ui/EmptyState.svelte';
 	import { guildApi, type Guild } from '$api/guild';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -81,17 +82,21 @@
 			{/each}
 		</div>
 	{:else if guilds.length === 0}
-		<div class="rounded-2xl border border-border bg-surface-elevated p-10 text-center">
-			<div class="mb-3 text-4xl text-text-muted">⬢</div>
-			<p class="mb-4 text-text-muted">
-				{i18n.locale === 'fr' ? 'Aucune guilde pour l\'instant. Sois le·la premier·e !' : 'No guild yet. Be the first!'}
-			</p>
-			{#if auth.isAuthenticated}
-				<Button variant="accent" href="/guilds/new">
-					{i18n.locale === 'fr' ? 'Créer une guilde' : 'Create a guild'}
-				</Button>
-			{/if}
-		</div>
+		<EmptyState
+			variant="scroll"
+			title={i18n.locale === 'fr' ? 'Aucune guilde encore.' : 'No guild yet.'}
+			body={i18n.locale === 'fr'
+				? 'Sois le premier à fonder une guilde — invite tes compagnons et choisissez ensemble vos clés.'
+				: 'Be the first to found a guild — invite your fellows and pick your keys together.'}
+		>
+			{#snippet action()}
+				{#if auth.isAuthenticated}
+					<Button variant="accent" href="/guilds/new">
+						{i18n.locale === 'fr' ? 'Fonder une guilde' : 'Found a guild'}
+					</Button>
+				{/if}
+			{/snippet}
+		</EmptyState>
 	{:else}
 		<div class="space-y-2">
 			{#each guilds as g, i}

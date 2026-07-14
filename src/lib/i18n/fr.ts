@@ -241,11 +241,11 @@ export const fr: Translations = {
 	settings: {
 		title: 'Paramètres',
 		theme: {
-			title: 'Thème', forge: 'Forge', forgeDesc: 'Bleu + Orange — par défaut',
-			neon: 'Neon', neonDesc: 'Cyan + Ambre — futuriste',
-			arena: 'Arena', arenaDesc: 'Rouge + Acier — compétition',
-			terminal: 'Terminal', terminalDesc: 'Vert — hacker (monospace)',
-			sakura: 'Sakura', sakuraDesc: 'Violet + Rose — creatif'
+			title: 'Thème', forge: 'Forge', forgeDesc: 'Ocre + terracotta — l\'atelier de l\'artisan',
+			vesperal: 'Vespéral', vesperalDesc: 'Bleu nuit + orange braise — la nuit à la lanterne',
+			arena: 'Arena', arenaDesc: 'Rouge héraldique + or — le tournoi médiéval',
+			scriptorium: 'Scriptorium', scriptoriumDesc: 'Parchemin + encre — le moine copiste',
+			sakura: 'Sakura', sakuraDesc: 'Prune + fleur de cerisier — saison des cerisiers'
 		},
 		language: { title: 'Langue', fr: 'Français', en: 'English' },
 		profileSection: {

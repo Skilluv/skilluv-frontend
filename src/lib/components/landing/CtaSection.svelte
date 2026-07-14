@@ -33,7 +33,7 @@
 
 <section class="py-16 sm:py-24 lg:py-32">
 	<div class="mx-auto max-w-7xl px-4">
-		<div use:scrollReveal class="rounded-3xl border border-border bg-surface-elevated p-12 sm:p-16 lg:p-20 text-center">
+		<div use:scrollReveal class="rounded-3xl border-2 border-cat-craft bg-surface-craft p-12 sm:p-16 lg:p-20 text-center">
 			<h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight mb-5">
 				{title}<br />
 				<span class="text-accent">{accent}</span>

@@ -40,7 +40,7 @@
 		</div>
 
 		<!-- Simulated recruiter view — what the product actually looks like -->
-		<div use:scrollReveal class="rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+		<div use:scrollReveal class="rounded-2xl border-2 border-cat-understand bg-surface-understand overflow-hidden">
 
 			<!-- Toolbar -->
 			<div class="flex items-center gap-3 border-b border-border px-5 py-3 overflow-x-auto">
@@ -106,7 +106,7 @@
 		<!-- Comparison: CV vs Skilluv -->
 		<div use:scrollReveal class="mt-8 grid sm:grid-cols-2 gap-4">
 			<!-- Traditional -->
-			<div class="rounded-2xl border border-border bg-surface-elevated p-5">
+			<div class="rounded-2xl border-2 border-border bg-surface-alt p-5">
 				<p class="text-xs text-text-muted uppercase tracking-wider mb-4 line-through decoration-error/50">{i18n.locale === 'fr' ? 'Recrutement classique' : 'Traditional hiring'}</p>
 				<ul class="space-y-2.5 text-sm text-text-muted">
 					<li class="flex items-start gap-2">
@@ -125,7 +125,7 @@
 			</div>
 
 			<!-- Skilluv -->
-			<div class="rounded-2xl border border-primary/30 bg-surface-elevated p-5">
+			<div class="rounded-2xl border-2 border-cat-meta bg-surface-meta p-5">
 				<p class="text-xs text-primary uppercase tracking-wider mb-4 font-bold">Skilluv</p>
 				<ul class="space-y-2.5 text-sm text-text-muted">
 					<li class="flex items-start gap-2">

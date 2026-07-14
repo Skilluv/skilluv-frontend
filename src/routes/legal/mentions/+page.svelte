@@ -84,7 +84,7 @@
 
 	<h2>8. Crédits</h2>
 	<ul>
-		<li>Polices&nbsp;: Space Grotesk et JetBrains Mono (SIL Open Font License).</li>
+		<li>Polices&nbsp;: Fraunces, Bricolage Grotesque et JetBrains Mono (SIL Open Font License).</li>
 		<li>Icônes et illustrations&nbsp;: créations originales et bibliothèques open source.</li>
 		<li>Pile technique&nbsp;: SvelteKit, Tailwind CSS, Vite.</li>
 	</ul>
@@ -168,7 +168,7 @@
 
 	<h2>8. Credits</h2>
 	<ul>
-		<li>Fonts: Space Grotesk and JetBrains Mono (SIL Open Font License).</li>
+		<li>Fonts: Fraunces, Bricolage Grotesque and JetBrains Mono (SIL Open Font License).</li>
 		<li>Icons and illustrations: original work and open-source libraries.</li>
 		<li>Tech stack: SvelteKit, Tailwind CSS, Vite.</li>
 	</ul>

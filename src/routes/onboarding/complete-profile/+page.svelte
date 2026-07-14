@@ -77,21 +77,25 @@
 
 <div class="mx-auto max-w-lg px-4 py-10">
 	{#if step === 1}
-		<h1 class="mb-3 text-3xl font-black tracking-tight sm:text-4xl">
-			{i18n.locale === 'fr' ? 'Choisis ton terrain de jeu' : 'Pick your playground'}<span class="text-accent">.</span>
+		<div class="mb-2 text-xs font-mono uppercase tracking-widest text-text-muted">
+			{i18n.locale === 'fr' ? 'Étape 1 sur 2 · Ta première clé' : 'Step 1 of 2 · Your first key'}
+		</div>
+		<h1 class="mb-3 font-hero text-4xl sm:text-5xl">
+			{i18n.locale === 'fr' ? 'Choisis ton terrain' : 'Pick your ground'}<span class="text-accent">.</span>
 		</h1>
-		<p class="mb-8 text-sm text-text-muted">
+		<p class="mb-8 text-base text-text-muted leading-relaxed">
 			{i18n.locale === 'fr'
-				? "Une dernière étape avant de commencer — on veut savoir ce que tu fais."
-				: 'One last step before you start — tell us what you do.'}
+				? "Une dernière étape avant de commencer — dis-nous ce que tu fais. Ton trousseau se remplira avec ce que tu prouveras."
+				: "One last step before you start — tell us what you do. Your keyring will fill up as you prove things."}
 		</p>
 
 		<div class="grid gap-3">
-			{#each domains as domain}
+			{#each domains as domain, i}
 				{@const ds = domainStyle(domain.value)}
+				{@const catBg = ['bg-surface-craft border-cat-craft', 'bg-surface-create border-cat-create', 'bg-surface-meta border-cat-meta', 'bg-surface-operate border-cat-operate'][i]}
 				<button
 					type="button"
-					class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4 text-left transition-colors duration-200 {ds.hoverBorder}"
+					class="flex items-center gap-4 rounded-2xl border-2 {catBg} p-4 text-left transition-transform duration-200 hover:-translate-y-0.5 {ds.hoverBorder}"
 					onclick={() => pickDomain(domain.value)}
 				>
 					<span class="flex h-12 w-12 items-center justify-center rounded-2xl {ds.bgSoft} {ds.text}">
@@ -109,7 +113,10 @@
 			← {i18n.locale === 'fr' ? 'Changer de domaine' : 'Change domain'}
 		</button>
 
-		<h1 class="mb-3 text-3xl font-black tracking-tight sm:text-4xl">
+		<div class="mb-2 text-xs font-mono uppercase tracking-widest text-text-muted">
+			{i18n.locale === 'fr' ? 'Étape 2 sur 2' : 'Step 2 of 2'}
+		</div>
+		<h1 class="mb-3 font-hero text-4xl sm:text-5xl">
 			{i18n.locale === 'fr' ? 'Presque prêt' : 'Almost ready'}<span class="text-accent">.</span>
 		</h1>
 		<p class="mb-6 text-sm text-text-muted">

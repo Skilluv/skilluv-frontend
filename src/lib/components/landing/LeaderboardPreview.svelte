@@ -47,7 +47,7 @@
 			</Button>
 		</div>
 
-		<div use:scrollReveal class="rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+		<div use:scrollReveal class="rounded-2xl border-2 border-cat-understand bg-surface-understand overflow-hidden">
 			<!-- Header -->
 			<div class="grid grid-cols-[3rem_1fr_auto_6rem] gap-4 items-center px-5 py-3 border-b border-border text-xs text-text-muted font-medium">
 				<span>#</span>
