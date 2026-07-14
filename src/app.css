@@ -18,6 +18,8 @@
    Voir : _bmad-output/planning-artifacts/ux-designs/*/DESIGN.md
    ============================================ */
 
+/* @theme STANDARD — valeurs littérales uniquement (pas de var()).
+   Ces variables sont "gelées" à la compilation Tailwind. */
 @theme {
 	/* Typography */
 	--font-display: 'Fraunces Variable', Georgia, serif;
@@ -37,7 +39,20 @@
 	--text-5xl: clamp(3.25rem, 2.7rem + 2.75vw, 5rem);
 	--text-hero: clamp(4rem, 3rem + 5vw, 7.5rem);
 
-	/* Colors — résolution dynamique via CSS vars */
+	/* Radius */
+	--radius-sm: 8px;
+	--radius-md: 12px;
+	--radius-lg: 16px;
+	--radius-xl: 24px;
+	--radius-full: 9999px;
+}
+
+/* @theme INLINE — pour les tokens qui référencent d'autres CSS variables.
+   `inline` dit à Tailwind: "ne fige pas la valeur, garde le var()
+   au runtime pour que les thèmes dynamiques puissent le surcharger."
+   Sans `inline`, Tailwind rejette silencieusement tout le bloc. */
+@theme inline {
+	/* Colors — thème-aware via --sk-* */
 	--color-primary: var(--sk-primary);
 	--color-primary-hover: var(--sk-primary-hover);
 	--color-primary-fg: var(--sk-primary-fg);
@@ -53,7 +68,7 @@
 	--color-surface-elevated-hover: var(--sk-surface-elevated-hover);
 	--color-surface-overlay: var(--sk-surface-overlay);
 
-	/* Surfaces catégorielles — pour ZONES chromatiques audacieuses */
+	/* Surfaces catégorielles — zones chromatiques audacieuses */
 	--color-surface-craft: var(--sk-surface-craft);
 	--color-surface-create: var(--sk-surface-create);
 	--color-surface-understand: var(--sk-surface-understand);
@@ -84,13 +99,6 @@
 	--color-cat-operate: var(--sk-cat-operate);
 	--color-cat-share: var(--sk-cat-share);
 	--color-cat-meta: var(--sk-cat-meta);
-
-	/* Radius */
-	--radius-sm: 8px;
-	--radius-md: 12px;
-	--radius-lg: 16px;
-	--radius-xl: 24px;
-	--radius-full: 9999px;
 
 	/* Shadows — teintées par thème */
 	--shadow-sm: 0 1px 2px var(--sk-shadow-color);
