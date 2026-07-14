@@ -9,6 +9,7 @@
 	import { SkilluError } from '$api/client';
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import FilterBar from '$components/ui/FilterBar.svelte';
+	import EmptyState from '$components/ui/EmptyState.svelte';
 
 	let bounties = $state<Bounty[]>([]);
 	let loading = $state(true);
@@ -125,17 +126,13 @@
 			{/each}
 		</div>
 	{:else if bounties.length === 0}
-		<div class="rounded-2xl border border-border bg-surface-elevated p-12 text-center">
-			<div class="mb-4 text-5xl text-text-muted">⬢</div>
-			<p class="text-lg font-semibold mb-2">
-				{i18n.locale === 'fr' ? 'Aucune bounty trouvée' : 'No bounty found'}
-			</p>
-			<p class="text-sm text-text-muted">
-				{i18n.locale === 'fr'
-					? 'Essaie de retirer les filtres ou reviens plus tard.'
-					: 'Try removing filters or come back later.'}
-			</p>
-		</div>
+		<EmptyState
+			variant="scroll"
+			title={i18n.locale === 'fr' ? 'Aucune bounty pour l\'instant.' : 'No bounty right now.'}
+			body={i18n.locale === 'fr'
+				? 'Retire des filtres, ou reviens dans quelques jours — les entreprises en publient chaque semaine.'
+				: 'Try removing filters or come back in a few days — companies post new ones weekly.'}
+		/>
 	{:else}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{#each bounties as b}

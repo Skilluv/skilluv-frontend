@@ -4,6 +4,7 @@
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
+	import EmptyState from '$components/ui/EmptyState.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { Notification } from '$types';
 
@@ -114,15 +115,13 @@
 	{:else if error}
 		<p class="py-8 text-center text-text-muted">{error}</p>
 	{:else if items.length === 0}
-		<div class="rounded-2xl border border-border bg-surface-elevated p-16 text-center">
-			<div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-overlay text-text-muted">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-					<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-					<path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-				</svg>
-			</div>
-			<p class="text-base text-text-muted">{i18n.t('notifications.empty')}</p>
-		</div>
+		<EmptyState
+			variant="seal-intact"
+			title={i18n.locale === 'fr' ? 'Boîte vide.' : 'Inbox is quiet.'}
+			body={i18n.locale === 'fr'
+				? 'Quand quelqu\'un t\'aidera ou qu\'un challenge sera validé, tu recevras un sceau ici.'
+				: 'When someone helps you or a challenge is validated, a seal will land here.'}
+		/>
 	{:else}
 		<div class="flex flex-col gap-2">
 			{#each items as notif}

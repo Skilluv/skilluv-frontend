@@ -6,6 +6,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import Pagination from '$components/ui/Pagination.svelte';
+	import EmptyState from '$components/ui/EmptyState.svelte';
 	import type { Challenge, SkillDomain } from '$types';
 
 	let challenges = $state<{ challenge: Challenge; locked: boolean }[]>([]);
@@ -110,9 +111,19 @@
 			<Button variant="secondary" onclick={loadChallenges}>{i18n.t('common.actions.retry')}</Button>
 		</div>
 	{:else if challenges.length === 0}
-		<div class="rounded-2xl border border-border bg-surface-elevated p-8 sm:p-12 text-center">
-			<p class="text-sm text-text-muted">{i18n.t('challenges.noneFound')}</p>
-		</div>
+		<EmptyState
+			variant="search"
+			title={i18n.locale === 'fr' ? 'Rien à trouver ici.' : 'Nothing to find here.'}
+			body={i18n.locale === 'fr'
+				? 'Essaie d\'autres mots ou d\'autres filtres — ou propose ce challenge à la commu.'
+				: 'Try different words or filters — or propose this challenge to the community.'}
+		>
+			{#snippet action()}
+				<Button variant="secondary" href="/community/challenges/create">
+					{i18n.locale === 'fr' ? 'Proposer un challenge' : 'Propose a challenge'}
+				</Button>
+			{/snippet}
+		</EmptyState>
 	{:else}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{#each challenges as { challenge, locked }}

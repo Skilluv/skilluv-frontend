@@ -5,6 +5,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import FilterBar from '$components/ui/FilterBar.svelte';
+	import EmptyState from '$components/ui/EmptyState.svelte';
 	import { mentorshipApi, type MentorSummary } from '$api/mentorship';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -122,12 +123,13 @@
 			{/each}
 		</div>
 	{:else if mentors.length === 0}
-		<div class="rounded-2xl border border-border bg-surface-elevated p-12 text-center">
-			<div class="mb-4 text-5xl text-text-muted">◈</div>
-			<p class="text-text-muted">
-				{i18n.locale === 'fr' ? 'Aucun mentor ne correspond à ces critères.' : 'No mentor matches these criteria.'}
-			</p>
-		</div>
+		<EmptyState
+			variant="search"
+			title={i18n.locale === 'fr' ? 'Aucun mentor à ces critères.' : 'No mentor for these filters.'}
+			body={i18n.locale === 'fr'
+				? 'Essaie d\'autres skills ou d\'autres domaines — la commu grandit chaque semaine.'
+				: 'Try different skills or domains — the community grows every week.'}
+		/>
 	{:else}
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 			{#each mentors as m}
