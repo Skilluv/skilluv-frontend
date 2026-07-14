@@ -249,11 +249,11 @@ export const ar: Translations = {
 	settings: {
 		title: 'الإعدادات',
 		theme: {
-			title: 'المظهر', forge: 'Forge', forgeDesc: 'أزرق + برتقالي — افتراضي',
-			neon: 'Neon', neonDesc: 'سماوي + كهرماني — مستقبلي',
-			arena: 'Arena', arenaDesc: 'أحمر + فولاذي — تنافسي',
-			terminal: 'Terminal', terminalDesc: 'أخضر — هاكر',
-			sakura: 'Sakura', sakuraDesc: 'بنفسجي + وردي — إبداعي'
+			title: 'المظهر', forge: 'Forge', forgeDesc: 'مغرة + طين — ورشة الحرفي',
+			vesperal: 'Vespéral', vesperalDesc: 'أزرق ليلي + برتقالي جمر — ليلة الفانوس',
+			arena: 'Arena', arenaDesc: 'أحمر شعاري + ذهبي — بطولة قروسطية',
+			scriptorium: 'Scriptorium', scriptoriumDesc: 'رقّ + حبر — الناسخ الراهب',
+			sakura: 'Sakura', sakuraDesc: 'خوخي + زهر الكرز — موسم الكرز'
 		},
 		language: { title: 'اللغة', fr: 'Français', en: 'English' },
 		profileSection: {

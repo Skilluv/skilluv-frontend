@@ -113,10 +113,11 @@
 	});
 
 	const themes: { key: ThemeBase; label: string; accent: string; primary: string }[] = [
-		{ key: 'forge', label: 'Forge', accent: '#ea580c', primary: '#2563eb' },
-		{ key: 'neon', label: 'Neon', accent: '#f59e0b', primary: '#06b6d4' },
-		{ key: 'arena', label: 'Arena', accent: '#64748b', primary: '#dc2626' },
-		{ key: 'sakura', label: 'Sakura', accent: '#ec4899', primary: '#a855f7' }
+		{ key: 'forge', label: 'Forge', accent: '#c47a2e', primary: '#457b9d' },
+		{ key: 'vesperal', label: 'Vespéral', accent: '#f4a261', primary: '#e9c46a' },
+		{ key: 'arena', label: 'Arena', accent: '#e63946', primary: '#e9c46a' },
+		{ key: 'scriptorium', label: 'Scriptorium', accent: '#c47a2e', primary: '#83a598' },
+		{ key: 'sakura', label: 'Sakura', accent: '#e8a5c1', primary: '#c47a2e' }
 	];
 
 	function selectTheme(t: ThemeBase) {

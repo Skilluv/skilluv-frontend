@@ -1,9 +1,10 @@
-/* Fonts — self-hosted pour performance connexions africaines */
-@import '@fontsource/space-grotesk/400.css';
-@import '@fontsource/space-grotesk/500.css';
-@import '@fontsource/space-grotesk/700.css';
-@import '@fontsource/jetbrains-mono/400.css';
-@import '@fontsource/jetbrains-mono/700.css';
+/* ============================================
+   Fonts — self-hosted via @fontsource-variable
+   Direction: Éditorial chaleureux (voir DESIGN.md)
+   ============================================ */
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/jetbrains-mono';
 
 /* Tailwind v4 */
 @import 'tailwindcss';
@@ -14,12 +15,27 @@
    1. Primitifs (--sk-*) — valeurs brutes par thème
    2. Sémantiques (@theme) — intégration Tailwind
    3. Composants — dans chaque composant .svelte
+   Voir aussi : _bmad-output/planning-artifacts/ux-designs/*/DESIGN.md
    ============================================ */
 
 @theme {
 	/* Typography */
-	--font-sans: 'Space Grotesk', system-ui, sans-serif;
-	--font-mono: 'JetBrains Mono', monospace;
+	--font-display: 'Fraunces Variable', Georgia, serif;
+	--font-sans: 'Bricolage Grotesque Variable', -apple-system, system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+	/* Fluid type scale — clamp(min, mid, max) */
+	--text-2xs: clamp(0.6875rem, 0.65rem + 0.15vw, 0.75rem);
+	--text-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.8125rem);
+	--text-sm: clamp(0.875rem, 0.82rem + 0.25vw, 0.9375rem);
+	--text-base: clamp(1rem, 0.95rem + 0.3vw, 1.0625rem);
+	--text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);
+	--text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+	--text-2xl: clamp(1.5rem, 1.35rem + 0.75vw, 1.875rem);
+	--text-3xl: clamp(1.875rem, 1.65rem + 1.1vw, 2.5rem);
+	--text-4xl: clamp(2.5rem, 2.15rem + 1.75vw, 3.5rem);
+	--text-5xl: clamp(3.25rem, 2.7rem + 2.75vw, 5rem);
+	--text-hero: clamp(4rem, 3rem + 5vw, 7.5rem);
 
 	/* Colors — résolution dynamique via CSS vars */
 	--color-primary: var(--sk-primary);
@@ -28,6 +44,7 @@
 	--color-accent: var(--sk-accent);
 	--color-accent-hover: var(--sk-accent-hover);
 	--color-accent-fg: var(--sk-accent-fg);
+	--color-luv: var(--sk-luv);
 	--color-surface: var(--sk-surface);
 	--color-surface-elevated: var(--sk-surface-elevated);
 	--color-surface-elevated-hover: var(--sk-surface-elevated-hover);
@@ -36,8 +53,7 @@
 	--color-text-muted: var(--sk-text-muted);
 	--color-border: var(--sk-border);
 
-	/* Sémantiques theme-aware — success/warning/error/info sont désaturés
-	   ou virés en sakura/terminal pour ne pas jurer avec la palette. */
+	/* Sémantiques */
 	--color-success: var(--sk-success);
 	--color-success-soft: var(--sk-success-soft);
 	--color-warning: var(--sk-warning);
@@ -48,7 +64,15 @@
 	--color-info: var(--sk-info);
 	--color-info-soft: var(--sk-info-soft);
 
-	/* Radius — arrondis accueillants (UX spec) */
+	/* Skill categories (6) */
+	--color-cat-craft: var(--sk-cat-craft);
+	--color-cat-create: var(--sk-cat-create);
+	--color-cat-understand: var(--sk-cat-understand);
+	--color-cat-operate: var(--sk-cat-operate);
+	--color-cat-share: var(--sk-cat-share);
+	--color-cat-meta: var(--sk-cat-meta);
+
+	/* Radius */
 	--radius-sm: 8px;
 	--radius-md: 12px;
 	--radius-lg: 16px;
@@ -57,328 +81,403 @@
 
 	/* Shadows — teintées par thème */
 	--shadow-sm: 0 1px 2px var(--sk-shadow-color);
-	--shadow-md: 0 4px 6px var(--sk-shadow-color);
-	--shadow-lg: 0 10px 15px var(--sk-shadow-color);
+	--shadow-md: 0 4px 12px var(--sk-shadow-color);
+	--shadow-lg: 0 8px 24px var(--sk-shadow-color);
+	--shadow-xl: 0 20px 48px var(--sk-shadow-color);
 }
 
 /* ============================================
-   THÈME FORGE (défaut)
-   Bleu Électrique + Orange Brûlé sur gris chaud
+   TOKENS GLOBAUX BADGES SYSTEM
+   Constants across themes (couleurs signature marque)
+   ============================================ */
+:root {
+	/* Skill categories — colors (constantes brand) */
+	--sk-cat-craft: #c47a2e; /* ocre */
+	--sk-cat-create: #e63946; /* rouge coquelicot */
+	--sk-cat-understand: #457b9d; /* bleu profond */
+	--sk-cat-operate: #2a9d8f; /* sarcelle */
+	--sk-cat-share: #c47a7d; /* rose ancien */
+	--sk-cat-meta: #e9c46a; /* safran */
+
+	/* Signature LUV — réservé wordmark + clé cœur */
+	--sk-luv: #e63946;
+
+	/* Ranks (5) */
+	--sk-rank-1-fill: #457b9d;
+	--sk-rank-1-ink: #f4ede0;
+	--sk-rank-1-accent: #a8dadc;
+	--sk-rank-2-fill: #2a9d8f;
+	--sk-rank-2-ink: #f4ede0;
+	--sk-rank-2-accent: #83c5be;
+	--sk-rank-3-fill: #c47a2e;
+	--sk-rank-3-ink: #f4ede0;
+	--sk-rank-3-accent: #e9c46a;
+	--sk-rank-4-fill: #a04520;
+	--sk-rank-4-ink: #f4ede0;
+	--sk-rank-4-accent: #e9c46a;
+	--sk-rank-5-fill: #1c1a17;
+	--sk-rank-5-ink: #e9c46a;
+	--sk-rank-5-accent: #c47a2e;
+
+	/* Rarities (4) */
+	--sk-rarity-common-width: 1px;
+	--sk-rarity-common-glow: none;
+	--sk-rarity-rare-border: #c0c0c0;
+	--sk-rarity-rare-width: 2px;
+	--sk-rarity-rare-glow: 0 0 12px rgba(192, 192, 192, 0.35);
+	--sk-rarity-epic-border: #b87333;
+	--sk-rarity-epic-width: 2.5px;
+	--sk-rarity-epic-glow: 0 0 16px rgba(184, 115, 51, 0.45);
+	--sk-rarity-legendary-border: #e9c46a;
+	--sk-rarity-legendary-width: 3px;
+	--sk-rarity-legendary-glow: 0 0 24px rgba(233, 196, 106, 0.55);
+
+	/* Motion tokens */
+	--sk-anim-instant: 80ms;
+	--sk-anim-fast: 160ms;
+	--sk-anim-medium: 320ms;
+	--sk-anim-slow: 640ms;
+	--sk-anim-unlock: 1200ms;
+	--sk-ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+	--sk-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+	--sk-ease-out: cubic-bezier(0, 0, 0.2, 1);
+	--sk-ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+	/* Spacing tokens (semantic) */
+	--sk-spacing-section: 5rem;
+	--sk-spacing-content: 3rem;
+	--sk-spacing-card: 1.5rem;
+	--sk-spacing-gutter: 1rem;
+}
+
+/* ============================================
+   THÈME FORGE (défaut) — l'atelier de l'artisan
+   Ocre + terracotta sur charbon chaud
    ============================================ */
 :root,
 [data-theme='forge'] {
-	--sk-primary: #2563eb;
-	--sk-primary-hover: #1d4ed8;
-	--sk-accent: #ea580c;
-	--sk-accent-hover: #c2410c;
-	--sk-surface: #1c1917;
-	--sk-surface-elevated: #292524;
-	--sk-surface-elevated-hover: #33302c;
-	--sk-surface-overlay: #44403c;
-	--sk-text: #fafaf9;
-	--sk-text-muted: #a8a29e;
-	--sk-border: #57534e;
-	--sk-shadow-color: rgba(0, 0, 0, 0.5);
-	--sk-success: #22c55e;
-	--sk-success-soft: rgba(34, 197, 94, 0.15);
-	--sk-warning: #f59e0b;
-	--sk-warning-soft: rgba(245, 158, 11, 0.15);
-	--sk-error: #ef4444;
-	--sk-error-soft: rgba(239, 68, 68, 0.15);
-	--sk-info: #3b82f6;
-	--sk-info-soft: rgba(59, 130, 246, 0.15);
-	--sk-primary-fg: #ffffff;
-	--sk-accent-fg: #ffffff;
+	--sk-primary: #457b9d; /* bleu terreux (retuné du #2563eb tech) */
+	--sk-primary-hover: #375f7a;
+	--sk-primary-fg: #f4ede0;
+	--sk-accent: #c47a2e; /* SIGNATURE OCRE */
+	--sk-accent-hover: #a04520;
+	--sk-accent-fg: #f4ede0;
+	--sk-surface: #1c1a17; /* charbon chaud */
+	--sk-surface-elevated: #2d1810; /* brun profond */
+	--sk-surface-elevated-hover: #3a2a1a;
+	--sk-surface-overlay: #4a3520;
+	--sk-text: #f4ede0; /* crème patinée */
+	--sk-text-muted: #c9b98e;
+	--sk-border: #5a3a20;
+	--sk-shadow-color: rgba(45, 24, 16, 0.45);
+	--sk-success: #2a9d8f;
+	--sk-success-soft: rgba(42, 157, 143, 0.15);
+	--sk-warning: #e9c46a;
+	--sk-warning-soft: rgba(233, 196, 106, 0.15);
+	--sk-error: #e63946;
+	--sk-error-soft: rgba(230, 57, 70, 0.15);
 	--sk-error-fg: #ffffff;
+	--sk-info: #457b9d;
+	--sk-info-soft: rgba(69, 123, 157, 0.15);
+}
+
+/* FORGE LIGHT — parchemin crème */
+[data-theme='forge-light'] {
+	--sk-primary: #375f7a;
+	--sk-primary-hover: #2a4a5f;
+	--sk-primary-fg: #ffffff;
+	--sk-accent: #c47a2e; /* signature conservée */
+	--sk-accent-hover: #a04520;
+	--sk-accent-fg: #ffffff;
+	--sk-surface: #f4ede0; /* crème */
+	--sk-surface-elevated: #ecdfc3;
+	--sk-surface-elevated-hover: #e0d3b3;
+	--sk-surface-overlay: #fbf6ea;
+	--sk-text: #2d1810;
+	--sk-text-muted: #6b5b3f;
+	--sk-border: #c9b98e;
+	--sk-shadow-color: rgba(45, 24, 16, 0.15);
+	--sk-success: #1e7268;
+	--sk-success-soft: rgba(30, 114, 104, 0.12);
+	--sk-warning: #a17825;
+	--sk-warning-soft: rgba(161, 120, 37, 0.12);
+	--sk-error: #b91c1c;
+	--sk-error-soft: rgba(185, 28, 28, 0.1);
+	--sk-error-fg: #ffffff;
+	--sk-info: #375f7a;
+	--sk-info-soft: rgba(55, 95, 122, 0.1);
 }
 
 /* ============================================
-   THÈME NEON
-   Cyan + Ambre sur bleu sombre — Futuriste
+   THÈME VESPÉRAL (ex-Neon) — la nuit à la lanterne
+   Bleu nuit + orange braise
    ============================================ */
-[data-theme='neon'] {
-	--sk-primary: #06b6d4;
-	--sk-primary-hover: #0891b2;
-	--sk-accent: #f59e0b;
-	--sk-accent-hover: #d97706;
-	--sk-surface: #0c1222;
-	--sk-surface-elevated: #1a2332;
+[data-theme='vesperal'] {
+	--sk-primary: #e9c46a; /* safran chandelle */
+	--sk-primary-hover: #d4a94a;
+	--sk-primary-fg: #0f1420;
+	--sk-accent: #f4a261; /* orange braise SIGNATURE */
+	--sk-accent-hover: #e76f51;
+	--sk-accent-fg: #0f1420;
+	--sk-surface: #0f1420; /* bleu nuit profond */
+	--sk-surface-elevated: #1a2340;
 	--sk-surface-elevated-hover: #22304a;
-	--sk-surface-overlay: #2a3342;
-	--sk-text: #e2e8f0;
-	--sk-text-muted: #b0c0d0;
-	--sk-border: #3d4a5f;
-	--sk-shadow-color: rgba(0, 0, 0, 0.55);
-	--sk-success: #22c55e;
-	--sk-success-soft: rgba(34, 197, 94, 0.15);
-	--sk-warning: #f59e0b;
-	--sk-warning-soft: rgba(245, 158, 11, 0.15);
-	--sk-error: #f87171;
-	--sk-error-soft: rgba(248, 113, 113, 0.15);
-	--sk-info: #06b6d4;
-	--sk-info-soft: rgba(6, 182, 212, 0.15);
-	--sk-primary-fg: #0c1222;
-	--sk-accent-fg: #0c1222;
-	--sk-error-fg: #0c1222;
+	--sk-surface-overlay: #2a3854;
+	--sk-text: #f4e8c8; /* crème doré parchemin */
+	--sk-text-muted: #a08960;
+	--sk-border: #3a4560;
+	--sk-shadow-color: rgba(15, 20, 32, 0.6);
+	--sk-success: #83c5be;
+	--sk-success-soft: rgba(131, 197, 190, 0.15);
+	--sk-warning: #f4a261;
+	--sk-warning-soft: rgba(244, 162, 97, 0.15);
+	--sk-error: #e63946;
+	--sk-error-soft: rgba(230, 57, 70, 0.15);
+	--sk-error-fg: #ffffff;
+	--sk-info: #83c5be;
+	--sk-info-soft: rgba(131, 197, 190, 0.15);
+}
+
+[data-theme='vesperal-light'] {
+	--sk-primary: #b87333;
+	--sk-primary-hover: #8b5522;
+	--sk-primary-fg: #ffffff;
+	--sk-accent: #e76f51;
+	--sk-accent-hover: #c14e33;
+	--sk-accent-fg: #ffffff;
+	--sk-surface: #f0e6d2; /* parchemin doré */
+	--sk-surface-elevated: #e8dcbf;
+	--sk-surface-elevated-hover: #dcd0ae;
+	--sk-surface-overlay: #f6eddb;
+	--sk-text: #1a2340;
+	--sk-text-muted: #6b5b3f;
+	--sk-border: #b8a880;
+	--sk-shadow-color: rgba(26, 35, 64, 0.15);
+	--sk-success: #1e7268;
+	--sk-success-soft: rgba(30, 114, 104, 0.12);
+	--sk-warning: #a04520;
+	--sk-warning-soft: rgba(160, 69, 32, 0.12);
+	--sk-error: #b91c1c;
+	--sk-error-soft: rgba(185, 28, 28, 0.1);
+	--sk-error-fg: #ffffff;
+	--sk-info: #375f7a;
+	--sk-info-soft: rgba(55, 95, 122, 0.1);
 }
 
 /* ============================================
-   THÈME ARENA
-   Rouge Profond + Bleu Acier — Compétition
+   THÈME ARENA — le tournoi médiéval
+   Rouge héraldique + or bannière sur drap sombre
    ============================================ */
 [data-theme='arena'] {
-	--sk-primary: #dc2626;
-	--sk-primary-hover: #b91c1c;
-	--sk-accent: #64748b;
-	--sk-accent-hover: #475569;
-	--sk-surface: #1e1e2e;
-	--sk-surface-elevated: #2a2a3e;
-	--sk-surface-elevated-hover: #333349;
-	--sk-surface-overlay: #3a3a4e;
-	--sk-text: #f1f5f9;
-	--sk-text-muted: #b0c0d0;
-	--sk-border: #4a4a5e;
-	--sk-shadow-color: rgba(0, 0, 0, 0.55);
-	--sk-success: #22c55e;
-	--sk-success-soft: rgba(34, 197, 94, 0.15);
-	--sk-warning: #f59e0b;
-	--sk-warning-soft: rgba(245, 158, 11, 0.15);
-	--sk-error: #ef4444;
-	--sk-error-soft: rgba(239, 68, 68, 0.15);
-	--sk-info: #64748b;
-	--sk-info-soft: rgba(100, 116, 139, 0.2);
+	--sk-primary: #e9c46a; /* or de bannière */
+	--sk-primary-hover: #d4a94a;
+	--sk-primary-fg: #1a0a0a;
+	--sk-accent: #e63946; /* rouge héraldique SIGNATURE */
+	--sk-accent-hover: #a04520;
+	--sk-accent-fg: #f4ede0;
+	--sk-surface: #1a0a0a; /* drap de tournoi */
+	--sk-surface-elevated: #2d0f0f;
+	--sk-surface-elevated-hover: #3a1414;
+	--sk-surface-overlay: #451a1a;
+	--sk-text: #f4ede0;
+	--sk-text-muted: #c9a89a;
+	--sk-border: #6b2820;
+	--sk-shadow-color: rgba(26, 10, 10, 0.65);
+	--sk-success: #2a9d8f;
+	--sk-success-soft: rgba(42, 157, 143, 0.15);
+	--sk-warning: #e9c46a;
+	--sk-warning-soft: rgba(233, 196, 106, 0.15);
+	--sk-error: #ea580c;
+	--sk-error-soft: rgba(234, 88, 12, 0.15);
+	--sk-error-fg: #ffffff;
+	--sk-info: #c47a2e;
+	--sk-info-soft: rgba(196, 122, 46, 0.15);
+}
+
+[data-theme='arena-light'] {
+	--sk-primary: #a17825;
+	--sk-primary-hover: #85601c;
 	--sk-primary-fg: #ffffff;
+	--sk-accent: #b91c1c;
+	--sk-accent-hover: #7f1d1d;
 	--sk-accent-fg: #ffffff;
+	--sk-surface: #ebd9d4; /* pierre lice claire */
+	--sk-surface-elevated: #e0cac3;
+	--sk-surface-elevated-hover: #d4bab1;
+	--sk-surface-overlay: #f1e2dd;
+	--sk-text: #2d0f0f;
+	--sk-text-muted: #7a4a3f;
+	--sk-border: #b89890;
+	--sk-shadow-color: rgba(45, 15, 15, 0.15);
+	--sk-success: #1e7268;
+	--sk-success-soft: rgba(30, 114, 104, 0.12);
+	--sk-warning: #a17825;
+	--sk-warning-soft: rgba(161, 120, 37, 0.12);
+	--sk-error: #b91c1c;
+	--sk-error-soft: rgba(185, 28, 28, 0.1);
 	--sk-error-fg: #ffffff;
+	--sk-info: #7a4a3f;
+	--sk-info-soft: rgba(122, 74, 63, 0.1);
 }
 
 /* ============================================
-   THÈME TERMINAL
-   Vert terminal + Ambre — Unix/Hacker
-   Monospace partout (override font-sans)
+   THÈME SCRIPTORIUM (ex-Terminal) — le moine copiste
+   Parchemin encre à la bougie
+   PLUS de mono !important global — mono uniquement en code
    ============================================ */
-[data-theme='terminal'] {
-	--sk-primary: #22c55e;
-	--sk-primary-hover: #16a34a;
-	--sk-accent: #fbbf24;
-	--sk-accent-hover: #f59e0b;
-	--sk-surface: #000000;
-	--sk-surface-elevated: #0a0a0a;
-	--sk-surface-elevated-hover: #131313;
-	--sk-surface-overlay: #1a1a1a;
-	--sk-text: #22c55e;
-	--sk-text-muted: #15803d;
-	--sk-border: #2d3a2d;
-	--sk-shadow-color: rgba(0, 0, 0, 0.8);
-	--sk-success: #22c55e;
-	--sk-success-soft: rgba(34, 197, 94, 0.15);
-	--sk-warning: #fbbf24;
-	--sk-warning-soft: rgba(251, 191, 36, 0.15);
-	--sk-error: #ef4444;
-	--sk-error-soft: rgba(239, 68, 68, 0.15);
-	--sk-info: #22c55e;
-	--sk-info-soft: rgba(34, 197, 94, 0.12);
-	--sk-primary-fg: #000000;
-	--sk-accent-fg: #000000;
+[data-theme='scriptorium'] {
+	--sk-primary: #83a598; /* vert-de-gris manuscrit */
+	--sk-primary-hover: #6b8878;
+	--sk-primary-fg: #1a1410;
+	--sk-accent: #c47a2e; /* ocre encre à plume */
+	--sk-accent-hover: #a04520;
+	--sk-accent-fg: #e6d5b0;
+	--sk-surface: #1a1410; /* encre sur parchemin sombre */
+	--sk-surface-elevated: #24180f;
+	--sk-surface-elevated-hover: #2f2015;
+	--sk-surface-overlay: #3a2915;
+	--sk-text: #e6d5b0; /* parchemin */
+	--sk-text-muted: #8b7355;
+	--sk-border: #4a3520;
+	--sk-shadow-color: rgba(26, 20, 16, 0.6);
+	--sk-success: #2a9d8f;
+	--sk-success-soft: rgba(42, 157, 143, 0.15);
+	--sk-warning: #e9c46a;
+	--sk-warning-soft: rgba(233, 196, 106, 0.15);
+	--sk-error: #cc6666;
+	--sk-error-soft: rgba(204, 102, 102, 0.15);
 	--sk-error-fg: #ffffff;
+	--sk-info: #83a598;
+	--sk-info-soft: rgba(131, 165, 152, 0.15);
 }
 
-[data-theme='terminal'] * {
-	font-family: 'JetBrains Mono', monospace !important;
+[data-theme='scriptorium-light'] {
+	--sk-primary: #4a6b5c;
+	--sk-primary-hover: #38534a;
+	--sk-primary-fg: #ffffff;
+	--sk-accent: #a04520;
+	--sk-accent-hover: #7a3418;
+	--sk-accent-fg: #ffffff;
+	--sk-surface: #e8dcbf; /* parchemin clair */
+	--sk-surface-elevated: #dfd0a8;
+	--sk-surface-elevated-hover: #d3c396;
+	--sk-surface-overlay: #ede2c8;
+	--sk-text: #24180f;
+	--sk-text-muted: #6b5638;
+	--sk-border: #b39d70;
+	--sk-shadow-color: rgba(36, 24, 15, 0.15);
+	--sk-success: #1e7268;
+	--sk-success-soft: rgba(30, 114, 104, 0.12);
+	--sk-warning: #a17825;
+	--sk-warning-soft: rgba(161, 120, 37, 0.12);
+	--sk-error: #b91c1c;
+	--sk-error-soft: rgba(185, 28, 28, 0.1);
+	--sk-error-fg: #ffffff;
+	--sk-info: #4a6b5c;
+	--sk-info-soft: rgba(74, 107, 92, 0.1);
 }
 
 /* ============================================
-   THEME SAKURA
-   Violet + Rose sur fond prune — Creatif
+   THÈME SAKURA — la saison des cerisiers
+   Prune + fleur de cerisier — campagne annuelle avril-mai
    ============================================ */
 [data-theme='sakura'] {
-	--sk-primary: #9333ea;
-	--sk-primary-hover: #7e22ce;
-	--sk-accent: #ec4899;
-	--sk-accent-hover: #db2777;
-	--sk-surface: #1a0a2e;
-	--sk-surface-elevated: #251242;
-	--sk-surface-elevated-hover: #2f1852;
-	--sk-surface-overlay: #3b1f5e;
-	--sk-text: #f5f0ff;
-	--sk-text-muted: #b89dd8;
-	--sk-border: #4d2e73;
-	--sk-shadow-color: rgba(0, 0, 0, 0.55);
-	--sk-success: #34d399;
-	--sk-success-soft: rgba(52, 211, 153, 0.15);
-	--sk-warning: #fbbf24;
-	--sk-warning-soft: rgba(251, 191, 36, 0.15);
-	--sk-error: #f472b6;
-	--sk-error-soft: rgba(244, 114, 182, 0.15);
-	--sk-info: #a855f7;
-	--sk-info-soft: rgba(168, 85, 247, 0.15);
-	--sk-primary-fg: #ffffff;
-	--sk-accent-fg: #ffffff;
+	--sk-primary: #c47a2e; /* rappel ocre Forge — pont visuel */
+	--sk-primary-hover: #a04520;
+	--sk-primary-fg: #fce7ea;
+	--sk-accent: #e8a5c1; /* rose fleur de cerisier SIGNATURE */
+	--sk-accent-hover: #d4739c;
+	--sk-accent-fg: #1f1622;
+	--sk-surface: #1f1622; /* prune profonde nocturne */
+	--sk-surface-elevated: #2f1e35;
+	--sk-surface-elevated-hover: #3d2a45;
+	--sk-surface-overlay: #4a3550;
+	--sk-text: #fce7ea; /* rose crème */
+	--sk-text-muted: #b898c0;
+	--sk-border: #5a3a60;
+	--sk-shadow-color: rgba(31, 22, 34, 0.55);
+	--sk-success: #83c5be;
+	--sk-success-soft: rgba(131, 197, 190, 0.15);
+	--sk-warning: #e9c46a;
+	--sk-warning-soft: rgba(233, 196, 106, 0.15);
+	--sk-error: #e63946;
+	--sk-error-soft: rgba(230, 57, 70, 0.15);
 	--sk-error-fg: #ffffff;
+	--sk-info: #b898c0;
+	--sk-info-soft: rgba(184, 152, 192, 0.15);
 }
 
-/* ============================================
-   LIGHT MODES
-   ============================================ */
-
-/* FORGE LIGHT — Papier ivoire chaud, encre stone.
-   Base warm-neutral (hue kraft/parchemin), elevated ivoire clair,
-   accent orange-800 pour contraste WCAG AA sur crème. */
-[data-theme='forge-light'] {
-	--sk-primary: #1e40af;
-	--sk-primary-hover: #1e3a8a;
-	--sk-accent: #9a3412;
-	--sk-accent-hover: #7c2d12;
-	--sk-surface: #ede6d6;
-	--sk-surface-elevated: #f6f0e2;
-	--sk-surface-elevated-hover: #ede5d0;
-	--sk-surface-overlay: #fbf6ea;
-	--sk-text: #1c1917;
-	--sk-text-muted: #57534e;
-	--sk-border: #c9bfa8;
-	--sk-shadow-color: rgba(120, 53, 15, 0.12);
-	--sk-success: #15803d;
-	--sk-success-soft: rgba(21, 128, 61, 0.12);
-	--sk-warning: #b45309;
-	--sk-warning-soft: rgba(180, 83, 9, 0.12);
-	--sk-error: #b91c1c;
-	--sk-error-soft: rgba(185, 28, 28, 0.1);
-	--sk-info: #1e40af;
-	--sk-info-soft: rgba(30, 64, 175, 0.1);
-	--sk-primary-fg: #ffffff;
-	--sk-accent-fg: #ffffff;
-	--sk-error-fg: #ffffff;
-}
-
-/* NEON LIGHT — Papier bleu glacier, cyan doux.
-   Base cool-tinted, elevated glacier clair, primary cyan-700 assombri. */
-[data-theme='neon-light'] {
-	--sk-primary: #0e7490;
-	--sk-primary-hover: #155e75;
-	--sk-accent: #b45309;
-	--sk-accent-hover: #92400e;
-	--sk-surface: #d4e6f0;
-	--sk-surface-elevated: #e5f0f7;
-	--sk-surface-elevated-hover: #d9e8f2;
-	--sk-surface-overlay: #eff6fb;
-	--sk-text: #0c1222;
-	--sk-text-muted: #475569;
-	--sk-border: #93c5fd;
-	--sk-shadow-color: rgba(6, 78, 118, 0.12);
-	--sk-success: #15803d;
-	--sk-success-soft: rgba(21, 128, 61, 0.12);
-	--sk-warning: #b45309;
-	--sk-warning-soft: rgba(180, 83, 9, 0.12);
-	--sk-error: #b91c1c;
-	--sk-error-soft: rgba(185, 28, 28, 0.1);
-	--sk-info: #0e7490;
-	--sk-info-soft: rgba(14, 116, 144, 0.1);
-	--sk-primary-fg: #ffffff;
-	--sk-accent-fg: #ffffff;
-	--sk-error-fg: #ffffff;
-}
-
-/* ARENA LIGHT — Béton gladiateur, teinte steel warm.
-   Base gris-bleu métallique, elevated steel clair, primary red-800. */
-[data-theme='arena-light'] {
-	--sk-primary: #991b1b;
-	--sk-primary-hover: #7f1d1d;
-	--sk-accent: #334155;
-	--sk-accent-hover: #1e293b;
-	--sk-surface: #dbe1e8;
-	--sk-surface-elevated: #e8ecf1;
-	--sk-surface-elevated-hover: #dee4eb;
-	--sk-surface-overlay: #f1f4f8;
-	--sk-text: #1e1e2e;
-	--sk-text-muted: #475569;
-	--sk-border: #a3b3c4;
-	--sk-shadow-color: rgba(30, 30, 46, 0.12);
-	--sk-success: #15803d;
-	--sk-success-soft: rgba(21, 128, 61, 0.12);
-	--sk-warning: #b45309;
-	--sk-warning-soft: rgba(180, 83, 9, 0.12);
-	--sk-error: #991b1b;
-	--sk-error-soft: rgba(153, 27, 27, 0.1);
-	--sk-info: #334155;
-	--sk-info-soft: rgba(51, 65, 85, 0.1);
-	--sk-primary-fg: #ffffff;
-	--sk-accent-fg: #ffffff;
-	--sk-error-fg: #ffffff;
-}
-
-/* TERMINAL LIGHT — Papier vert phosphore, vieux CRT en plein jour.
-   Base vert désaturé, elevated plus clair, monospace conservé. */
-[data-theme='terminal-light'] {
-	--sk-primary: #15803d;
-	--sk-primary-hover: #166534;
-	--sk-accent: #a16207;
-	--sk-accent-hover: #854d0e;
-	--sk-surface: #cde0c9;
-	--sk-surface-elevated: #dfecdb;
-	--sk-surface-elevated-hover: #d3e4cf;
-	--sk-surface-overlay: #ecf4e8;
-	--sk-text: #052e16;
-	--sk-text-muted: #166534;
-	--sk-border: #86b57e;
-	--sk-shadow-color: rgba(5, 46, 22, 0.12);
-	--sk-success: #15803d;
-	--sk-success-soft: rgba(21, 128, 61, 0.12);
-	--sk-warning: #a16207;
-	--sk-warning-soft: rgba(161, 98, 7, 0.12);
-	--sk-error: #b91c1c;
-	--sk-error-soft: rgba(185, 28, 28, 0.1);
-	--sk-info: #15803d;
-	--sk-info-soft: rgba(21, 128, 61, 0.1);
-	--sk-primary-fg: #ffffff;
-	--sk-accent-fg: #ffffff;
-	--sk-error-fg: #ffffff;
-}
-
-[data-theme='terminal-light'] * {
-	font-family: 'JetBrains Mono', monospace !important;
-}
-
-/* SAKURA LIGHT — Papier washi rose pâle, encre prune.
-   Base lavande/pêche, elevated plus clair, primary purple-700. */
 [data-theme='sakura-light'] {
-	--sk-primary: #7e22ce;
-	--sk-primary-hover: #6b21a8;
-	--sk-accent: #be185d;
-	--sk-accent-hover: #9d174d;
-	--sk-surface: #ecd6ee;
-	--sk-surface-elevated: #f4e5f4;
-	--sk-surface-elevated-hover: #ecdaec;
-	--sk-surface-overlay: #faf0fa;
-	--sk-text: #1a0a2e;
-	--sk-text-muted: #6b21a8;
-	--sk-border: #d8b4e8;
-	--sk-shadow-color: rgba(126, 34, 206, 0.12);
-	--sk-success: #15803d;
-	--sk-success-soft: rgba(21, 128, 61, 0.12);
-	--sk-warning: #a16207;
-	--sk-warning-soft: rgba(161, 98, 7, 0.12);
-	--sk-error: #be185d;
-	--sk-error-soft: rgba(190, 24, 93, 0.1);
-	--sk-info: #7e22ce;
-	--sk-info-soft: rgba(126, 34, 206, 0.1);
+	--sk-primary: #a04520;
+	--sk-primary-hover: #7a3418;
 	--sk-primary-fg: #ffffff;
+	--sk-accent: #d4739c;
+	--sk-accent-hover: #b04870;
 	--sk-accent-fg: #ffffff;
+	--sk-surface: #fce7ea; /* washi rose pâle */
+	--sk-surface-elevated: #f5d4dd;
+	--sk-surface-elevated-hover: #ecc2ce;
+	--sk-surface-overlay: #ffeef2;
+	--sk-text: #1f1622;
+	--sk-text-muted: #6b3a5c;
+	--sk-border: #d8b4c8;
+	--sk-shadow-color: rgba(31, 22, 34, 0.12);
+	--sk-success: #1e7268;
+	--sk-success-soft: rgba(30, 114, 104, 0.12);
+	--sk-warning: #a17825;
+	--sk-warning-soft: rgba(161, 120, 37, 0.12);
+	--sk-error: #b91c1c;
+	--sk-error-soft: rgba(185, 28, 28, 0.1);
 	--sk-error-fg: #ffffff;
+	--sk-info: #6b3a5c;
+	--sk-info-soft: rgba(107, 58, 92, 0.1);
 }
 
 /* ============================================
    STYLES DE BASE
+   Fraunces = display / Bricolage = body / JBM = code
    ============================================ */
 body {
 	background-color: var(--sk-surface);
 	color: var(--sk-text);
-	font-family: 'Space Grotesk', system-ui, sans-serif;
+	font-family: var(--font-sans);
+	font-optical-sizing: auto;
+	font-variation-settings: 'wdth' 100;
 	line-height: 1.6;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
 }
 
-/* Scrollbar */
+h1,
+h2,
+h3 {
+	font-family: var(--font-display);
+	font-optical-sizing: auto;
+	font-variation-settings: 'opsz' 48, 'SOFT' 30, 'WONK' 0;
+	letter-spacing: -0.02em;
+	line-height: 1.05;
+}
+
+.font-wonk {
+	font-variation-settings: 'opsz' 48, 'SOFT' 40, 'WONK' 0.5;
+}
+
+.font-hero {
+	font-family: var(--font-display);
+	font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 1;
+	letter-spacing: -0.03em;
+	line-height: 0.95;
+}
+
+code,
+pre,
+kbd,
+samp {
+	font-family: var(--font-mono);
+}
+
+/* Scrollbar — teinté selon thème */
 ::-webkit-scrollbar {
 	width: 8px;
 	height: 8px;
@@ -397,12 +496,12 @@ body {
 	background: var(--sk-text-muted);
 }
 
-/* Focus visible — accessibilité (boutons, liens, éléments interactifs sans focus style propre).
-   Exclut les champs de formulaire qui ont leur propre ring/border focus pour éviter le double indicateur. */
+/* Focus visible — ring ocre partout (jamais bleu générique) */
 :focus-visible {
 	outline: 2px solid var(--sk-accent);
 	outline-offset: 2px;
 }
+
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
@@ -412,8 +511,28 @@ select:focus-visible,
 }
 
 /* ============================================
-   ANIMATIONS
+   WORDMARK Skilluv — sKIL·LUV
    ============================================ */
+.wordmark {
+	font-family: var(--font-display);
+	font-weight: 800;
+	font-variation-settings: 'opsz' 96, 'SOFT' 50, 'WONK' 1;
+	letter-spacing: -0.025em;
+}
+
+.wordmark-skil {
+	color: var(--sk-text);
+}
+
+.wordmark-luv {
+	color: var(--sk-luv);
+}
+
+/* ============================================
+   ANIMATIONS — legacy + nouvelles (scout)
+   ============================================ */
+
+/* Legacy conservées */
 @keyframes fragment-burst {
 	0% {
 		transform: scale(0);
@@ -469,10 +588,24 @@ select:focus-visible,
 	}
 }
 
-/* Utility animations for Svelte components */
 @keyframes in {
-	from { opacity: 0; }
-	to { opacity: 1; }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes slide-in-from-top {
+	from {
+		opacity: 0;
+		transform: translateY(-0.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 .animate-in {
@@ -488,9 +621,110 @@ select:focus-visible,
 	animation: slide-in-from-top 0.2s ease-out;
 }
 
-@keyframes slide-in-from-top {
-	from { opacity: 0; transform: translateY(-0.5rem); }
-	to { opacity: 1; transform: translateY(0); }
+/* Nouvelles — vocabulaire scout */
+
+/* Sway — trousseau qui balance doucement */
+@keyframes sway {
+	0%,
+	100% {
+		transform: rotate(-1.5deg);
+	}
+	50% {
+		transform: rotate(1.5deg);
+	}
+}
+
+.animate-sway {
+	animation: sway 4.5s var(--sk-ease-standard) infinite;
+	transform-origin: 50% 12%;
+}
+
+/* Key drop — clé qui tombe et s'accroche */
+@keyframes key-drop {
+	0% {
+		transform: translateY(-40px) rotate(-20deg);
+		opacity: 0;
+	}
+	60% {
+		transform: translateY(4px) rotate(6deg);
+		opacity: 1;
+	}
+	80% {
+		transform: translateY(-2px) rotate(-3deg);
+	}
+	100% {
+		transform: translateY(0) rotate(0);
+	}
+}
+
+.animate-key-drop {
+	animation: key-drop var(--sk-anim-unlock) var(--sk-ease-spring);
+}
+
+/* Wax press — sceau qui s'imprime */
+@keyframes wax-press {
+	0% {
+		transform: scale(1.4);
+		opacity: 0;
+	}
+	60% {
+		transform: scale(0.92);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.animate-wax-press {
+	animation: wax-press var(--sk-anim-medium) var(--sk-ease-spring);
+}
+
+/* Tilt hover — patch qui se soulève */
+@keyframes tilt-hover {
+	0% {
+		transform: rotate(0deg) translateY(0);
+	}
+	100% {
+		transform: rotate(-2deg) translateY(-2px);
+	}
+}
+
+/* Codex open — modal narratif */
+@keyframes codex-open {
+	0% {
+		opacity: 0;
+		transform: scale(0.94) rotateX(-8deg) translateY(12px);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) rotateX(0) translateY(0);
+	}
+}
+
+.animate-codex-open {
+	animation: codex-open var(--sk-anim-medium) var(--sk-ease-standard);
+	transform-origin: center top;
+}
+
+/* Laurel flash — pour moments prestige */
+@keyframes laurel-flash {
+	0% {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+	30% {
+		opacity: 1;
+		transform: scale(1.05);
+	}
+	100% {
+		opacity: 0.9;
+		transform: scale(1);
+	}
+}
+
+.animate-laurel-flash {
+	animation: laurel-flash 1.6s var(--sk-ease-out);
 }
 
 /* Reduced motion — accessibilité */
@@ -504,7 +738,7 @@ select:focus-visible,
 	}
 }
 
-/* Hide native number spinners — utilité globale */
+/* Hide native number spinners */
 .no-spinner::-webkit-inner-spin-button,
 .no-spinner::-webkit-outer-spin-button {
 	-webkit-appearance: none;

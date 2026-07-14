@@ -47,9 +47,9 @@
 	// Theme
 	const themes: { value: ThemeBase; label: string; descKey: string }[] = [
 		{ value: 'forge', label: 'forge', descKey: 'settings.theme.forgeDesc' },
-		{ value: 'neon', label: 'neon', descKey: 'settings.theme.neonDesc' },
+		{ value: 'vesperal', label: 'vespéral', descKey: 'settings.theme.vesperalDesc' },
 		{ value: 'arena', label: 'arena', descKey: 'settings.theme.arenaDesc' },
-		{ value: 'terminal', label: 'terminal', descKey: 'settings.theme.terminalDesc' },
+		{ value: 'scriptorium', label: 'scriptorium', descKey: 'settings.theme.scriptoriumDesc' },
 		{ value: 'sakura', label: 'sakura', descKey: 'settings.theme.sakuraDesc' }
 	];
 
