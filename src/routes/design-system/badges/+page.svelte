@@ -52,6 +52,70 @@
 		</p>
 	</header>
 
+	<!-- SECTION 0a — Paliers de surface (démontrer la hiérarchie) -->
+	<section class="ds-section">
+		<h2 class="ds-section-title font-wonk">0. Paliers de surface — luminance claire</h2>
+		<p class="ds-note">Chaque niveau doit se distinguer sans effort. Cards en top de pages, modals en top de cards.</p>
+		<div class="ds-surface-ladder">
+			<div class="ds-surface-box" style="background: var(--color-surface)">
+				<span>surface</span><small>fond page</small>
+			</div>
+			<div class="ds-surface-box" style="background: var(--color-surface-alt)">
+				<span>surface-alt</span><small>sections alternées</small>
+			</div>
+			<div class="ds-surface-box" style="background: var(--color-surface-elevated)">
+				<span>surface-elevated</span><small>cards</small>
+			</div>
+			<div class="ds-surface-box" style="background: var(--color-surface-elevated-hover)">
+				<span>elevated-hover</span><small>hover cards</small>
+			</div>
+			<div class="ds-surface-box" style="background: var(--color-surface-overlay)">
+				<span>surface-overlay</span><small>modals · popovers</small>
+			</div>
+		</div>
+	</section>
+
+	<!-- SECTION 0b — Zones catégorielles (couleurs audacieuses) -->
+	<section class="ds-section">
+		<h2 class="ds-section-title font-wonk">0b. Surfaces catégorielles — zones chromatiques audacieuses</h2>
+		<p class="ds-note">
+			Persona × Melchior Leroux : marier des couleurs vives. Chaque zone du produit (challenges craft,
+			guildes create, mentorship share…) peut porter sa propre ambiance chromatique.
+		</p>
+		<div class="ds-zone-grid">
+			<article class="ds-zone" style="background: var(--color-surface-craft); border-color: var(--color-cat-craft)">
+				<div class="ds-zone-tag" style="background: var(--color-cat-craft)">CRAFT</div>
+				<h3 class="font-wonk">L'atelier des bâtisseurs</h3>
+				<p>Ambre sombre. Zone dev, build, ship. Cards défis code.</p>
+			</article>
+			<article class="ds-zone" style="background: var(--color-surface-create); border-color: var(--color-cat-create)">
+				<div class="ds-zone-tag" style="background: var(--color-cat-create)">CREATE</div>
+				<h3 class="font-wonk">La forge créative</h3>
+				<p>Rouge poppy. Zone design, motion, illustration. Cards challenges créatifs.</p>
+			</article>
+			<article class="ds-zone" style="background: var(--color-surface-understand); border-color: var(--color-cat-understand)">
+				<div class="ds-zone-tag" style="background: var(--color-cat-understand)">UNDERSTAND</div>
+				<h3 class="font-wonk">Le cabinet d'analyse</h3>
+				<p>Bleu de Prusse. Zone data, ML, research. Dashboards, insights.</p>
+			</article>
+			<article class="ds-zone" style="background: var(--color-surface-operate); border-color: var(--color-cat-operate)">
+				<div class="ds-zone-tag" style="background: var(--color-cat-operate)">OPERATE</div>
+				<h3 class="font-wonk">La salle des machines</h3>
+				<p>Sarcelle profonde. Zone devops, cloud, sécurité. Métriques, monitoring.</p>
+			</article>
+			<article class="ds-zone" style="background: var(--color-surface-share); border-color: var(--color-cat-share)">
+				<div class="ds-zone-tag" style="background: var(--color-cat-share)">SHARE</div>
+				<h3 class="font-wonk">Le foyer de la commu</h3>
+				<p>Bordeaux rose. Zone mentorship, entraide, guilde. Cœurs, sessions.</p>
+			</article>
+			<article class="ds-zone" style="background: var(--color-surface-meta); border-color: var(--color-cat-meta)">
+				<div class="ds-zone-tag" style="background: var(--color-cat-meta)">META</div>
+				<h3 class="font-wonk">La table du stratège</h3>
+				<p>Safran sombre. Zone product, growth, open source. Roadmap, initiatives.</p>
+			</article>
+		</div>
+	</section>
+
 	<!-- SECTION 1 — Les 5 clés canoniques -->
 	<section class="ds-section">
 		<h2 class="ds-section-title font-wonk">1. Les 5 clés canoniques</h2>
@@ -227,8 +291,75 @@
 	.ds-section-title {
 		font-size: var(--text-2xl);
 		font-weight: 700;
-		margin-bottom: 1.5rem;
+		margin-bottom: 0.5rem;
 		color: var(--color-accent);
+	}
+	.ds-note {
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+		margin-bottom: 1.5rem;
+		max-width: 70ch;
+	}
+
+	.ds-surface-ladder {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+		gap: 12px;
+	}
+	.ds-surface-box {
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		padding: 1.5rem 1rem;
+		color: var(--color-text-primary);
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+	.ds-surface-box span {
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		letter-spacing: 0.1em;
+	}
+	.ds-surface-box small {
+		color: var(--color-text-muted);
+		font-size: 0.6875rem;
+	}
+
+	.ds-zone-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: 1.25rem;
+	}
+	.ds-zone {
+		border: 2px solid;
+		border-radius: var(--radius-lg);
+		padding: 1.75rem 1.5rem;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		box-shadow: var(--shadow-md);
+	}
+	.ds-zone-tag {
+		display: inline-block;
+		width: fit-content;
+		padding: 4px 12px;
+		border-radius: var(--radius-sm);
+		font-family: var(--font-sans);
+		font-weight: 700;
+		font-size: 0.6875rem;
+		letter-spacing: 0.15em;
+		color: #fff;
+	}
+	.ds-zone h3 {
+		font-size: var(--text-xl);
+		color: var(--color-text-primary);
+		margin: 0;
+	}
+	.ds-zone p {
+		font-size: var(--text-sm);
+		color: var(--color-text-muted);
+		margin: 0;
 	}
 
 	.ds-row {
