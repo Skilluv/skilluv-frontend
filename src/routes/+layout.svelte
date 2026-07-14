@@ -15,6 +15,7 @@
 	import PageTransition from '$lib/components/ui/PageTransition.svelte';
 	import InstallPrompt from '$lib/components/pwa/InstallPrompt.svelte';
 	import EmailVerificationBanner from '$lib/components/auth/EmailVerificationBanner.svelte';
+	import KeysSprite from '$lib/components/badges/primitives/keys-sprite.svelte';
 	// Terminal mode désactivé pour l'instant — composants conservés sous src/lib/components/terminal/*
 	// pour réactivation future. Voir TerminalEmulator.svelte / TerminalConfirm.svelte / commands.ts.
 
@@ -72,6 +73,7 @@
 	});
 </script>
 
+<KeysSprite />
 <Toast />
 
 <div class="flex min-h-screen flex-col bg-surface text-text-primary">
