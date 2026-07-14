@@ -65,8 +65,10 @@
 		try {
 			// Résolution pseudo → talent_id via le profil public (même
 			// pattern que la page Pipeline, cohérent en workspace).
+			// Le backend renseigne systématiquement `id` en contexte
+			// enterprise/recruiter (voir UserPublic.id dans types/index.ts).
 			const prof = await profileApi.getPublic(username);
-			const talentId = prof.data.user.id;
+			const talentId = prof.data.user.id!;
 			const res = await enterpriseApi.sponsorCertification({
 				certification_slug: selectedCert.slug,
 				talent_id: talentId,

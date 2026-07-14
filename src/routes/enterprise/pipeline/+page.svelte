@@ -213,8 +213,10 @@
 		addBusy = true;
 		try {
 			// Étape 1 : résoudre le pseudo en talent_id via le profil public.
+			// Le backend renseigne systématiquement `id` en contexte
+			// enterprise/recruiter (voir UserPublic.id dans types/index.ts).
 			const prof = await profileApi.getPublic(username);
-			const talentId = prof.data.user.id;
+			const talentId = prof.data.user.id!;
 			// Étape 2 : upsert dans le pipeline. Backend gère ON CONFLICT donc
 			// re-soumettre un talent existant ne casse rien mais on relance load
 			// pour récupérer l'état canonique (position peut avoir changé).

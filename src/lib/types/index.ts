@@ -68,9 +68,20 @@ export interface UserPrivate {
 	email_2fa_enabled: boolean;
 	profile_active: boolean;
 	created_at: string;
+	/** Present on recruiter/enterprise accounts — the tenant the user
+	 * belongs to. NULL for regular candidates. Populated by the backend
+	 * on /auth/me and consumed by enterprise pages that scope resources
+	 * to the current company (e.g. bounties list filter). */
+	enterprise_name?: string | null;
 }
 
 export interface UserPublic {
+	/** User id — surfaced so enterprise flows can reference the target
+	 * user (add to a list, open messaging, promote to pipeline, etc.).
+	 * Backend returns it in the public projection for authenticated
+	 * enterprise/recruiter callers; kept optional to preserve backward
+	 * compatibility with candidate-facing consumers. */
+	id?: string;
 	username: string;
 	display_name: string;
 	title: Title;

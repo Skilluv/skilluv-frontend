@@ -169,8 +169,8 @@
 					</p>
 					<div class="space-y-2">
 						{#each result.findings as f (f.title)}
+							{@const CatIcon = categoryIcon(f.category)}
 							<details class="group rounded-xl border border-border bg-surface-overlay">
-								{@const CatIcon = categoryIcon(f.category)}
 								<summary class="flex cursor-pointer items-center gap-3 p-3 marker:hidden [&::-webkit-details-marker]:hidden">
 									<CatIcon size={16} strokeWidth={2} class="text-text-muted" />
 									<Badge variant={severityVariant(f.severity)} size="sm">{f.severity}</Badge>

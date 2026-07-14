@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
+	import { scrollReveal } from '$lib/utils/animations';
 	import Button from '$components/ui/Button.svelte';
 	import CtaSection from '$components/landing/CtaSection.svelte';
 

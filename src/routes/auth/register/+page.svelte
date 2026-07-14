@@ -42,7 +42,7 @@
 	let city = $state<string | null>(null);
 	let termsAccepted = $state(false);
 
-	const domains: { value: SkillDomain; label: string; desc: string; icon: string }[] = [
+	const domains: { value: SkillDomain; label: string; desc: string; icon: Component }[] = [
 		{ value: 'code', label: i18n.t('common.domains.code'), desc: i18n.t('auth.register.codeDesc'), icon: Code2 as Component },
 		{ value: 'design', label: i18n.t('common.domains.design'), desc: i18n.t('auth.register.designDesc'), icon: Palette as Component },
 		{ value: 'game', label: i18n.t('common.domains.game'), desc: i18n.t('auth.register.gameDesc'), icon: Gamepad2 as Component },
