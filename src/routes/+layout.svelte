@@ -39,6 +39,18 @@
 
 	let showCandidateChrome = $derived(!isBareLayout && !isWorkspace);
 
+	/** Extrait la 1re section de la route → drive `data-route` sur <body>
+	 * pour appliquer une couleur catégorielle globale par page (voir app.css) */
+	let routeSection = $derived.by(() => {
+		const seg = $page.url.pathname.split('/').filter(Boolean)[0];
+		return seg ?? 'home';
+	});
+
+	$effect(() => {
+		if (typeof document === 'undefined') return;
+		document.body.setAttribute('data-route', routeSection);
+	});
+
 	// Hydrate auth depuis les donnees SSR — includes the `hasPasskey` flag so
 	// the enterprise layout guard can honour "TOTP OR passkey" as satisfying
 	// the 2FA gate on the very first client render (no /auth/me round-trip

@@ -563,6 +563,65 @@
 }
 
 /* ============================================
+   COLORATION PAR ROUTE — chromatique globale
+   `data-route` est posé sur <body> par +layout.svelte selon la 1re section URL.
+   Chaque route remap --sk-surface-elevated (et hover) vers la couleur
+   catégorielle de la page. Zéro fichier composant à toucher — les 275+
+   usages de bg-surface-elevated changent automatiquement.
+   ============================================ */
+body[data-route='challenges'],
+body[data-route='bounties'],
+body[data-route='onboarding'] {
+	--sk-surface-elevated: var(--sk-surface-craft);
+	--sk-surface-elevated-hover: color-mix(in oklab, var(--sk-surface-craft) 88%, white);
+}
+
+body[data-route='tournaments'] {
+	--sk-surface-elevated: var(--sk-surface-create);
+	--sk-surface-elevated-hover: color-mix(in oklab, var(--sk-surface-create) 88%, white);
+}
+
+body[data-route='leaderboards'],
+body[data-route='talent-search'],
+body[data-route='enterprise'],
+body[data-route='for-companies'] {
+	--sk-surface-elevated: var(--sk-surface-understand);
+	--sk-surface-elevated-hover: color-mix(in oklab, var(--sk-surface-understand) 88%, white);
+}
+
+body[data-route='mentors'],
+body[data-route='mentorship'],
+body[data-route='forum'],
+body[data-route='guilds'],
+body[data-route='community'],
+body[data-route='feed'],
+body[data-route='messages'],
+body[data-route='notifications'],
+body[data-route='profile'] {
+	--sk-surface-elevated: var(--sk-surface-share);
+	--sk-surface-elevated-hover: color-mix(in oklab, var(--sk-surface-share) 88%, white);
+}
+
+body[data-route='certifications'],
+body[data-route='diplomas'],
+body[data-route='opportunities'],
+body[data-route='pricing'] {
+	--sk-surface-elevated: var(--sk-surface-meta);
+	--sk-surface-elevated-hover: color-mix(in oklab, var(--sk-surface-meta) 88%, white);
+}
+
+body[data-route='developer'],
+body[data-route='settings'] {
+	--sk-surface-elevated: var(--sk-surface-operate);
+	--sk-surface-elevated-hover: color-mix(in oklab, var(--sk-surface-operate) 88%, white);
+}
+
+/* /admin garde neutre (surfaces alt) — c'est un espace de travail */
+body[data-route='admin'] {
+	--sk-surface-elevated: var(--sk-surface-alt);
+}
+
+/* ============================================
    STYLES DE BASE
    Fraunces = display / Bricolage = body / JBM = code
    ============================================ */
