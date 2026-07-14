@@ -566,10 +566,20 @@
    STYLES DE BASE
    Fraunces = display / Bricolage = body / JBM = code
    ============================================ */
+/* IMPORTANT — les font-family sont hardcodées en littéral (pas var(--font-*))
+   parce que Tailwind v4 impose sa --font-sans via @layer theme et notre
+   override unlayered ne suffit pas (comportement encore non expliqué).
+   Écrire le nom de la font directement bypass complètement le problème.
+   Voir doc DESIGN.md pour les 3 rôles typo. */
+
+html,
+body {
+	font-family: 'Bricolage Grotesque Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
 body {
 	background-color: var(--sk-surface);
 	color: var(--sk-text);
-	font-family: var(--font-sans);
 	font-optical-sizing: auto;
 	font-variation-settings: 'wdth' 100;
 	line-height: 1.6;
@@ -588,7 +598,7 @@ button {
 h1,
 h2,
 h3 {
-	font-family: var(--font-display);
+	font-family: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
 	font-optical-sizing: auto;
 	font-variation-settings: 'opsz' 48, 'SOFT' 30, 'WONK' 0;
 	letter-spacing: -0.02em;
@@ -596,12 +606,12 @@ h3 {
 }
 
 .font-wonk {
-	font-family: var(--font-display);
+	font-family: 'Fraunces Variable', Georgia, serif;
 	font-variation-settings: 'opsz' 48, 'SOFT' 40, 'WONK' 0.5;
 }
 
 .font-hero {
-	font-family: var(--font-display);
+	font-family: 'Fraunces Variable', Georgia, serif;
 	font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 1;
 	letter-spacing: -0.03em;
 	line-height: 0.95;
@@ -611,7 +621,7 @@ code,
 pre,
 kbd,
 samp {
-	font-family: var(--font-mono);
+	font-family: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Consolas, monospace;
 }
 
 /* Scrollbar — teinté selon thème */
@@ -651,7 +661,7 @@ select:focus-visible,
    WORDMARK Skilluv — sKIL·LUV
    ============================================ */
 .wordmark {
-	font-family: var(--font-display);
+	font-family: 'Fraunces Variable', Georgia, serif;
 	font-weight: 800;
 	font-variation-settings: 'opsz' 96, 'SOFT' 50, 'WONK' 1;
 	letter-spacing: -0.025em;
