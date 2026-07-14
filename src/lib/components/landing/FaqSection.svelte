@@ -22,13 +22,13 @@
 	}: Props = $props();
 </script>
 
-<section class="border-t border-border bg-surface-elevated/40 py-20 sm:py-24">
+<section class="border-t border-border bg-surface-alt py-20 sm:py-24">
 	<div class="mx-auto max-w-4xl px-4">
 		<h2 class="mb-12 text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
 			{title}<br />
 			<span class="text-accent">{accent}</span>
 		</h2>
-		<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated">
+		<div class="divide-y divide-border rounded-2xl border-2 border-cat-understand bg-surface-understand">
 			{#each items as item}
 				<details class="group px-6 py-5">
 					<summary class="flex cursor-pointer items-center justify-between gap-4 text-left font-semibold marker:hidden [&::-webkit-details-marker]:hidden">

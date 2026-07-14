@@ -40,7 +40,7 @@
 			<a
 				href="/bounties"
 				use:scrollReveal
-				class="group rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40 flex flex-col"
+				class="group rounded-2xl border-2 border-cat-craft bg-surface-craft overflow-hidden transition-colors duration-200 hover:border-primary/40 flex flex-col"
 			>
 				<!-- Header bar : dot + label + right meta -->
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
@@ -94,7 +94,7 @@
 			<a
 				href="/certifications"
 				use:scrollReveal
-				class="group rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40 flex flex-col"
+				class="group rounded-2xl border-2 border-cat-meta bg-surface-meta overflow-hidden transition-colors duration-200 hover:border-accent/40 flex flex-col"
 			>
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-accent"></div>
@@ -139,7 +139,7 @@
 			<a
 				href="/mentors"
 				use:scrollReveal
-				class="group rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40 flex flex-col"
+				class="group rounded-2xl border-2 border-cat-share bg-surface-share overflow-hidden transition-colors duration-200 hover:border-primary/40 flex flex-col"
 			>
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>

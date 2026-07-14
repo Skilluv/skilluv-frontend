@@ -23,7 +23,7 @@
 
 		<div class="grid sm:grid-cols-2 lg:grid-cols-4 rounded-2xl overflow-hidden border border-border">
 			<!-- Domaines -->
-			<div use:scrollReveal class="bg-surface-elevated p-8 flex flex-col min-h-[280px]">
+			<div use:scrollReveal class="bg-surface-craft p-8 flex flex-col min-h-[280px]">
 				<div class="flex items-center gap-3">
 					{#each allDomains as d}
 						<div class="h-3 w-3 rounded-sm {domainStyle(d).dot}"></div>
@@ -37,7 +37,7 @@
 			</div>
 
 			<!-- Langages -->
-			<div use:scrollReveal={{ delay: 0.1 }} class="bg-surface-elevated p-8 flex flex-col min-h-[280px] border-t border-border sm:border-t-0 sm:border-l">
+			<div use:scrollReveal={{ delay: 0.1 }} class="bg-surface-understand p-8 flex flex-col min-h-[280px] border-t border-border sm:border-t-0 sm:border-l">
 				<div class="font-mono text-xs text-text-muted leading-relaxed">
 					<p>.rs .ts .py .go</p>
 					<p>.cpp .css .gdscript</p>
@@ -54,7 +54,7 @@
 			</div>
 
 			<!-- Niveaux -->
-			<div use:scrollReveal={{ delay: 0.2 }} class="bg-surface-elevated p-8 flex flex-col min-h-[280px] border-t border-border lg:border-t-0 lg:border-l">
+			<div use:scrollReveal={{ delay: 0.2 }} class="bg-surface-create p-8 flex flex-col min-h-[280px] border-t border-border lg:border-t-0 lg:border-l">
 				<div class="flex items-end gap-1.5 h-10">
 					<div class="w-3 h-2 rounded-sm bg-text-muted/30"></div>
 					<div class="w-3 h-3 rounded-sm bg-text-muted/40"></div>
@@ -70,7 +70,7 @@
 			</div>
 
 			<!-- Gratuit -->
-			<div use:scrollReveal={{ delay: 0.3 }} class="bg-surface-elevated p-8 flex flex-col min-h-[280px] border-t border-border sm:border-l lg:border-t-0">
+			<div use:scrollReveal={{ delay: 0.3 }} class="bg-surface-operate p-8 flex flex-col min-h-[280px] border-t border-border sm:border-l lg:border-t-0">
 				<div class="text-xs text-text-muted space-y-1">
 					<p class="line-through decoration-error/50">paywall</p>
 					<p class="line-through decoration-error/50">freemium</p>

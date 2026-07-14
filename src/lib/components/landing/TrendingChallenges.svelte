@@ -51,7 +51,8 @@
 
 		<div use:scrollReveal class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
 			{#each challenges as c}
-				<a href="/challenges" class="group rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-text-muted/40">
+				{@const catBg = c.domain === 'code' ? 'bg-surface-craft border-cat-craft' : c.domain === 'design' ? 'bg-surface-create border-cat-create' : c.domain === 'game' ? 'bg-surface-meta border-cat-meta' : 'bg-surface-operate border-cat-operate'}
+				<a href="/challenges" class="group rounded-2xl border-2 {catBg} overflow-hidden transition-colors duration-200 hover:border-text-muted/40">
 					<div class="flex items-center gap-2 border-b border-border px-4 py-2.5">
 						<div class="h-2.5 w-2.5 rounded-sm {domainStyle(c.domain).dot}"></div>
 						<span class="text-xs font-mono text-text-muted capitalize">{c.domain}</span>

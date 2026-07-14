@@ -51,9 +51,10 @@
 				</div>
 				<!-- Mini domain picker -->
 				<div class="grid grid-cols-2 gap-3">
-					{#each stepDomains as d}
+					{#each stepDomains as d, i}
 						{@const ds = domainStyle(d.key)}
-						<div class="rounded-2xl border border-border bg-surface-elevated p-5 transition-colors duration-200 {ds.hoverBorder}">
+						{@const cats = ['bg-surface-craft border-cat-craft', 'bg-surface-create border-cat-create', 'bg-surface-meta border-cat-meta', 'bg-surface-operate border-cat-operate']}
+						<div class="rounded-2xl border-2 {cats[i]} p-5 transition-colors duration-200 {ds.hoverBorder}">
 							<div class="h-3 w-3 rounded-sm {ds.dot} mb-3"></div>
 							<p class="text-sm font-semibold">{i18n.locale === 'fr' ? d.labelFr : d.labelEn}</p>
 							<p class="text-xs text-text-muted mt-1">{d.stack}</p>
@@ -65,7 +66,7 @@
 			<!-- Step 2 : Releve les challenges -->
 			<div use:scrollReveal class="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
 				<!-- Mini sandbox (left on desktop for alternating) -->
-				<div class="order-2 lg:order-1 rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+				<div class="order-2 lg:order-1 rounded-2xl border-2 border-cat-craft bg-surface-craft overflow-hidden">
 					<div class="flex items-center gap-2 border-b border-border px-4 py-2.5">
 						<div class="h-2.5 w-2.5 rounded-full bg-error/60"></div>
 						<div class="h-2.5 w-2.5 rounded-full bg-warning/60"></div>
@@ -110,9 +111,10 @@
 				</div>
 				<!-- Mini progression -->
 				<div class="space-y-3">
-					{#each progressionLevels as level}
+					{#each progressionLevels as level, i}
 						{@const colorClass = titleColor(level.title)}
-						<div class="rounded-2xl border border-border bg-surface-elevated p-4">
+						{@const cats = ['bg-surface-understand border-cat-understand', 'bg-surface-craft border-cat-craft', 'bg-surface-create border-cat-create', 'bg-surface-meta border-cat-meta']}
+						<div class="rounded-2xl border-2 {cats[i]} p-4">
 							<div class="flex items-center justify-between mb-2">
 								<span class="text-sm font-semibold {colorClass}">{i18n.locale === 'fr' ? level.titleFr : level.titleEn}</span>
 								<span class="text-xs text-text-muted">{level.fragments} fragments</span>
@@ -128,7 +130,7 @@
 			<!-- Step 4 : Prouve. Pour de vrai. -->
 			<div use:scrollReveal class="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
 				<!-- Mini profile card -->
-				<div class="order-2 lg:order-1 rounded-2xl border border-border bg-surface-elevated p-6">
+				<div class="order-2 lg:order-1 rounded-2xl border-2 border-cat-share bg-surface-share p-6">
 					<div class="flex items-center gap-4 mb-4">
 						<div class="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-lg">K</div>
 						<div>

@@ -58,7 +58,7 @@
 
 			<!-- Right: Live activity feed -->
 			<div use:scrollReveal={{ x: 40, y: 0 }}>
-				<div class="rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+				<div class="rounded-2xl border-2 border-cat-share bg-surface-share overflow-hidden">
 					<!-- Feed header -->
 					<div class="flex items-center justify-between border-b border-border px-5 py-3">
 						<div class="flex items-center gap-2">
