@@ -4,6 +4,7 @@
 	import { authApi } from '$api/auth';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
+	import { Check, X } from '@lucide/svelte';
 
 	let status = $state<'loading' | 'success' | 'error'>('loading');
 	let message = $state('');
@@ -44,15 +45,15 @@
 		<div class="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-border border-t-primary"></div>
 		<h1 class="mb-2 text-2xl font-bold">{i18n.t('auth.verify.verifying')}</h1>
 	{:else if status === 'success'}
-		<div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success/10 text-3xl text-success">
-			✓
+		<div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success/10 text-success">
+			<Check size={32} strokeWidth={2.5} />
 		</div>
 		<h1 class="mb-2 text-2xl font-bold">{i18n.t('auth.verify.successTitle')}</h1>
 		<p class="mb-6 text-sm text-text-muted">{message}</p>
 		<Button variant="accent" href="/auth/login">{i18n.t('auth.verify.loginBtn')}</Button>
 	{:else}
-		<div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-error/10 text-3xl text-error">
-			✕
+		<div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-error/10 text-error">
+			<X size={32} strokeWidth={2.5} />
 		</div>
 		<h1 class="mb-2 text-2xl font-bold">{i18n.t('auth.verify.errorTitle')}</h1>
 		<p class="mb-6 text-sm text-text-muted">{message}</p>

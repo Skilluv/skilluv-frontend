@@ -8,6 +8,18 @@
 	import { feedApi, type FeedEvent } from '$api/feed';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import type { Component } from 'svelte';
+	import {
+		Target,
+		TrendingUp,
+		Award,
+		Pencil,
+		Shield,
+		Trophy,
+		MessageSquare,
+		UserPlus,
+		Dot
+	} from '@lucide/svelte';
 
 	let events = $state<FeedEvent[]>([]);
 	let loading = $state(true);
@@ -34,17 +46,19 @@
 		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', { day: '2-digit', month: 'short' }).format(d);
 	}
 
-	function iconForKind(k: string): string {
-		return k === 'submission_evaluated' ? '◎'
-			: k === 'level_up' ? '★'
-			: k === 'badge_earned' ? '◆'
-			: k === 'challenge_created' ? '✎'
-			: k === 'guild_joined' ? '⬢'
-			: k === 'guild_war_won' ? '▲'
-			: k === 'forum_post_created' ? '◈'
-			: k === 'tournament_registered' ? '★'
-			: k === 'follow_started' ? '●'
-			: '·';
+	function iconForKind(k: string): Component {
+		switch (k) {
+			case 'submission_evaluated': return Target;
+			case 'level_up': return TrendingUp;
+			case 'badge_earned': return Award;
+			case 'challenge_created': return Pencil;
+			case 'guild_joined': return Shield;
+			case 'guild_war_won': return Shield;
+			case 'forum_post_created': return MessageSquare;
+			case 'tournament_registered': return Trophy;
+			case 'follow_started': return UserPlus;
+			default: return Dot;
+		}
 	}
 
 	function labelForKind(k: string): string {
@@ -133,9 +147,10 @@
 					{...href ? { href } : {}}
 					class="block rounded-2xl border border-border bg-surface-elevated p-4 {href ? 'hover:border-primary/40 hover:bg-surface-overlay transition-colors' : ''}"
 				>
+					{@const KindIcon = iconForKind(ev.kind)}
 					<div class="flex items-start gap-3">
-						<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary">
-							{iconForKind(ev.kind)}
+						<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+							<KindIcon size={18} strokeWidth={2} />
 						</div>
 						<div class="min-w-0 flex-1">
 							<div class="flex items-center gap-2 flex-wrap">

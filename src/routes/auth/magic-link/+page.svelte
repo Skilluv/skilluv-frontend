@@ -4,6 +4,7 @@
 	import { magicLinkApi } from '$api/magic_link';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import { Check } from '@lucide/svelte';
 
 	let email = $state('');
 	let intent = $state<'login' | 'signup'>('login');
@@ -34,7 +35,7 @@
 
 <div class="mx-auto flex min-h-[80vh] max-w-md flex-col items-center justify-center px-4 py-14 text-center">
 	{#if sent}
-		<div class="mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-success/15 text-4xl text-success animate-[fragment-burst_600ms_ease-out]">✓</div>
+		<div class="mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-success/15 text-success animate-[fragment-burst_600ms_ease-out]"><Check size={40} strokeWidth={2.5} /></div>
 		<p class="mb-3 text-xs font-bold uppercase tracking-widest text-accent">
 			{i18n.locale === 'fr' ? 'Email envoyé' : 'Email sent'}
 		</p>

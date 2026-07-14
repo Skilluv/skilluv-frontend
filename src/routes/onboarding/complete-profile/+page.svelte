@@ -9,6 +9,8 @@
 	import CountrySelect from '$components/ui/CountrySelect.svelte';
 	import CityAutocomplete from '$components/ui/CityAutocomplete.svelte';
 	import type { SkillDomain } from '$types';
+	import type { Component } from 'svelte';
+	import { Code2, Palette, Gamepad2, Shield } from '@lucide/svelte';
 
 	let step = $state<1 | 2>(1);
 	let loading = $state(false);
@@ -20,11 +22,11 @@
 	let city = $state<string | null>(auth.user?.city ?? null);
 	let termsAccepted = $state(false);
 
-	const domains: { value: SkillDomain; label: string; desc: string; icon: string }[] = [
-		{ value: 'code', label: i18n.t('common.domains.code'), desc: i18n.t('auth.register.codeDesc'), icon: '{ }' },
-		{ value: 'design', label: i18n.t('common.domains.design'), desc: i18n.t('auth.register.designDesc'), icon: '◆' },
-		{ value: 'game', label: i18n.t('common.domains.game'), desc: i18n.t('auth.register.gameDesc'), icon: '▶' },
-		{ value: 'security', label: i18n.t('common.domains.security'), desc: i18n.t('auth.register.securityDesc'), icon: '⛨' }
+	const domains: { value: SkillDomain; label: string; desc: string; icon: Component }[] = [
+		{ value: 'code', label: i18n.t('common.domains.code'), desc: i18n.t('auth.register.codeDesc'), icon: Code2 },
+		{ value: 'design', label: i18n.t('common.domains.design'), desc: i18n.t('auth.register.designDesc'), icon: Palette },
+		{ value: 'game', label: i18n.t('common.domains.game'), desc: i18n.t('auth.register.gameDesc'), icon: Gamepad2 },
+		{ value: 'security', label: i18n.t('common.domains.security'), desc: i18n.t('auth.register.securityDesc'), icon: Shield }
 	];
 
 	function pickDomain(d: SkillDomain) {
@@ -92,8 +94,8 @@
 					class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4 text-left transition-colors duration-200 {ds.hoverBorder}"
 					onclick={() => pickDomain(domain.value)}
 				>
-					<span class="flex h-12 w-12 items-center justify-center rounded-2xl {ds.bgSoft} {ds.text} text-xl font-bold">
-						{domain.icon}
+					<span class="flex h-12 w-12 items-center justify-center rounded-2xl {ds.bgSoft} {ds.text}">
+						<domain.icon size={22} strokeWidth={2} />
 					</span>
 					<div class="min-w-0">
 						<p class="font-semibold text-text-primary">{domain.label}</p>

@@ -5,6 +5,8 @@
 	import { aiApi, type CodeReviewResult, type CodeReviewFinding } from '$api/ai';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import type { Component } from 'svelte';
+	import { Bug, Sparkles, Zap, Shield, GraduationCap, Info, Check, BookOpen } from '@lucide/svelte';
 
 	interface Props {
 		submissionId: string;
@@ -53,13 +55,15 @@
 			: 'default';
 	}
 
-	function categoryIcon(cat: string): string {
-		return cat === 'bug' ? '△'
-			: cat === 'style' ? '❋'
-			: cat === 'perf' ? '▲'
-			: cat === 'security' ? '⬢'
-			: cat === 'pedagogy' ? '★'
-			: '◎';
+	function categoryIcon(cat: string): Component {
+		switch (cat) {
+			case 'bug': return Bug;
+			case 'style': return Sparkles;
+			case 'perf': return Zap;
+			case 'security': return Shield;
+			case 'pedagogy': return GraduationCap;
+			default: return Info;
+		}
 	}
 
 	function scoreColor(score: number): string {
@@ -74,7 +78,7 @@
 	<!-- Header -->
 	<div class="flex items-center justify-between gap-4 border-b border-border bg-surface-elevated/60 p-5">
 		<div class="flex items-center gap-3">
-			<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary">◎</div>
+			<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary"><Sparkles size={18} strokeWidth={2} /></div>
 			<div>
 				<p class="text-xs font-bold uppercase tracking-widest text-accent">Skilluv AI</p>
 				<h3 class="text-base font-semibold">
@@ -144,7 +148,7 @@
 			{#if result.strengths.length}
 				<div class="mb-6">
 					<p class="mb-2 text-xs font-bold uppercase tracking-wider text-success">
-						✓ {i18n.locale === 'fr' ? 'Points forts' : 'Strengths'}
+						<Check size={12} strokeWidth={2.5} class="inline align-middle" /> {i18n.locale === 'fr' ? 'Points forts' : 'Strengths'}
 					</p>
 					<ul class="space-y-1 text-sm">
 						{#each result.strengths as s}
@@ -166,8 +170,9 @@
 					<div class="space-y-2">
 						{#each result.findings as f (f.title)}
 							<details class="group rounded-xl border border-border bg-surface-overlay">
+								{@const CatIcon = categoryIcon(f.category)}
 								<summary class="flex cursor-pointer items-center gap-3 p-3 marker:hidden [&::-webkit-details-marker]:hidden">
-									<span class="text-lg">{categoryIcon(f.category)}</span>
+									<CatIcon size={16} strokeWidth={2} class="text-text-muted" />
 									<Badge variant={severityVariant(f.severity)} size="sm">{f.severity}</Badge>
 									<Badge variant="default" size="sm">{f.category}</Badge>
 									<span class="flex-1 truncate font-medium">{f.title}</span>
@@ -197,7 +202,7 @@
 			{#if result.learning_resources.length}
 				<div>
 					<p class="mb-2 text-xs font-bold uppercase tracking-wider text-primary">
-						★ {i18n.locale === 'fr' ? 'Pour aller plus loin' : 'Go further'}
+						<BookOpen size={12} strokeWidth={2.5} class="inline align-middle" /> {i18n.locale === 'fr' ? 'Pour aller plus loin' : 'Go further'}
 					</p>
 					<ul class="space-y-1 text-sm">
 						{#each result.learning_resources as r}

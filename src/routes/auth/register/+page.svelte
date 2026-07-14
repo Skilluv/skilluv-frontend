@@ -11,6 +11,9 @@
 	import { i18n } from '$lib/i18n';
 	import { domainStyle } from '$lib/utils/domains';
 	import type { SkillDomain } from '$types';
+	import SsoButton from '$components/ui/SsoButton.svelte';
+	import type { Component } from 'svelte';
+	import { Code2, Palette, Gamepad2, Shield } from '@lucide/svelte';
 
 	// When arriving from an enterprise recruiter invite email, the URL carries
 	// ?invite_token=…  — we propagate it onto the OAuth buttons so the backend
@@ -40,10 +43,10 @@
 	let termsAccepted = $state(false);
 
 	const domains: { value: SkillDomain; label: string; desc: string; icon: string }[] = [
-		{ value: 'code', label: i18n.t('common.domains.code'), desc: i18n.t('auth.register.codeDesc'), icon: '{ }' },
-		{ value: 'design', label: i18n.t('common.domains.design'), desc: i18n.t('auth.register.designDesc'), icon: '◆' },
-		{ value: 'game', label: i18n.t('common.domains.game'), desc: i18n.t('auth.register.gameDesc'), icon: '▶' },
-		{ value: 'security', label: i18n.t('common.domains.security'), desc: i18n.t('auth.register.securityDesc'), icon: '⛨' }
+		{ value: 'code', label: i18n.t('common.domains.code'), desc: i18n.t('auth.register.codeDesc'), icon: Code2 as Component },
+		{ value: 'design', label: i18n.t('common.domains.design'), desc: i18n.t('auth.register.designDesc'), icon: Palette as Component },
+		{ value: 'game', label: i18n.t('common.domains.game'), desc: i18n.t('auth.register.gameDesc'), icon: Gamepad2 as Component },
+		{ value: 'security', label: i18n.t('common.domains.security'), desc: i18n.t('auth.register.securityDesc'), icon: Shield as Component }
 	];
 
 	function selectDomain(domain: SkillDomain) {
@@ -148,8 +151,8 @@
 					class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4 text-left transition-colors duration-200 {ds.hoverBorder}"
 					onclick={() => selectDomain(domain.value)}
 				>
-					<span class="flex h-12 w-12 items-center justify-center rounded-2xl {ds.bgSoft} {ds.text} text-xl font-bold">
-						{domain.icon}
+					<span class="flex h-12 w-12 items-center justify-center rounded-2xl {ds.bgSoft} {ds.text}">
+						<domain.icon size={22} strokeWidth={2} />
 					</span>
 					<div class="min-w-0">
 						<p class="font-semibold text-text-primary">{domain.label}</p>
@@ -165,9 +168,9 @@
 			<div class="h-px flex-1 bg-border"></div>
 		</div>
 		<div class="grid gap-2">
-			<a href={oauthHref('/api/auth/google/start')} class="block w-full rounded-2xl border border-border py-3 text-center text-sm font-medium hover:border-accent">Google</a>
-			<a href={oauthHref('/api/auth/linkedin/start')} class="block w-full rounded-2xl border border-border py-3 text-center text-sm font-medium hover:border-accent">LinkedIn</a>
-			<a href={oauthHref('/api/auth/github/login')} class="block w-full rounded-2xl border border-border py-3 text-center text-sm font-medium hover:border-accent">GitHub</a>
+			<SsoButton provider="google" href={oauthHref('/api/auth/google/start')} />
+			<SsoButton provider="linkedin" href={oauthHref('/api/auth/linkedin/start')} />
+			<SsoButton provider="github" href={oauthHref('/api/auth/github/login')} />
 		</div>
 
 		<p class="mt-8 text-center text-sm text-text-muted">

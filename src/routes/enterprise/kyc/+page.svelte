@@ -5,12 +5,23 @@
 	import { goto } from '$app/navigation';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
+	import Modal from '$components/ui/Modal.svelte';
 	import { kycApi, type KycStatusResponse } from '$api/kyc';
 	import { toast } from '$stores/toast.svelte';
+	import { type Component } from 'svelte';
+	import { Check, Timer, X, Circle, RefreshCw } from '@lucide/svelte';
 
 	let status = $state<KycStatusResponse | null>(null);
 	let loading = $state(true);
 	let uploading = $state<string | null>(null);
+
+	// Sur KYC il n'y a pas de formulaire à sauvegarder — chaque upload est
+	// immédiatement persisté. Le pattern dirty-tracking du profil ne
+	// s'applique donc pas tel quel. En revanche, remplacer un document déjà
+	// envoyé est une action destructive : la version précédente est écrasée
+	// côté backend et il faut confirmer avant. On stocke {kind, file} le
+	// temps de la confirmation → puis on lance l'upload réel.
+	let replaceCandidate = $state<{ kind: string; kindLabel: string; file: File } | null>(null);
 
 	const DOC_KINDS: Array<{ slug: string; fr: string; en: string; hint: { fr: string; en: string } }> = [
 		{
@@ -58,31 +69,68 @@
 	}
 
 	async function uploadFor(kind: string, e: Event) {
-		const file = (e.target as HTMLInputElement).files?.[0];
+		const input = e.target as HTMLInputElement;
+		const file = input.files?.[0];
 		if (!file) return;
 		if (file.size > 10 * 1024 * 1024) {
 			toast.error(i18n.locale === 'fr' ? 'Fichier > 10 Mo' : 'File > 10 MB');
+			input.value = '';
 			return;
 		}
+
+		// Si un document du même type est déjà envoyé, on demande confirmation
+		// avant d'écraser. Le fichier est stocké dans `replaceCandidate` en
+		// attendant la validation utilisateur.
+		const existing = status?.documents.find((d) => d.kind === kind);
+		if (existing) {
+			const dk = DOC_KINDS.find((d) => d.slug === kind);
+			replaceCandidate = {
+				kind,
+				kindLabel: dk ? (i18n.locale === 'fr' ? dk.fr : dk.en) : kind,
+				file
+			};
+			// Reset l'input pour permettre de re-choisir le même fichier si
+			// on annule puis reclique.
+			input.value = '';
+			return;
+		}
+
+		await performUpload(kind, file);
+		input.value = '';
+	}
+
+	async function performUpload(kind: string, file: File) {
 		uploading = kind;
 		try {
 			await kycApi.uploadDocument(kind, file);
 			toast.success(i18n.locale === 'fr' ? 'Document uploadé' : 'Document uploaded');
 			await load();
 		} catch (e) {
-			toast.error(e instanceof Error ? e.message : 'Erreur');
+			toast.error(e instanceof Error ? e.message : i18n.t('errors.generic'));
 		} finally {
 			uploading = null;
-			(e.target as HTMLInputElement).value = '';
 		}
 	}
 
-	function statusMeta(s: string): { icon: string; label: string; variant: 'default' | 'success' | 'warning' | 'error' | 'accent' } {
+	// ── Replace confirm modal ──────────────────────────────────
+	function cancelReplace() {
+		if (uploading !== null) return;
+		replaceCandidate = null;
+	}
+
+	async function confirmReplace() {
+		if (!replaceCandidate) return;
+		const { kind, file } = replaceCandidate;
+		await performUpload(kind, file);
+		replaceCandidate = null;
+	}
+
+	function statusMeta(s: string): { icon: Component; label: string; variant: 'default' | 'success' | 'warning' | 'error' | 'accent' } {
 		switch (s) {
-			case 'approved': return { icon: '✓', label: i18n.locale === 'fr' ? 'Validé' : 'Approved', variant: 'success' };
-			case 'pending': return { icon: '⧗', label: i18n.locale === 'fr' ? 'En cours de review' : 'Under review', variant: 'warning' };
-			case 'rejected': return { icon: '✕', label: i18n.locale === 'fr' ? 'Refusé' : 'Rejected', variant: 'error' };
-			default: return { icon: '◎', label: i18n.locale === 'fr' ? 'À compléter' : 'To do', variant: 'default' };
+			case 'approved': return { icon: Check, label: i18n.locale === 'fr' ? 'Validé' : 'Approved', variant: 'success' };
+			case 'pending': return { icon: Timer, label: i18n.locale === 'fr' ? 'En cours de review' : 'Under review', variant: 'warning' };
+			case 'rejected': return { icon: X, label: i18n.locale === 'fr' ? 'Refusé' : 'Rejected', variant: 'error' };
+			default: return { icon: Circle, label: i18n.locale === 'fr' ? 'À compléter' : 'To do', variant: 'default' };
 		}
 	}
 
@@ -157,7 +205,8 @@
 						{i18n.locale === 'fr' ? 'Statut' : 'Status'}
 					</p>
 					<Badge variant={meta.variant} size="md">
-						{meta.icon} {meta.label}
+						<meta.icon size={14} strokeWidth={2.5} />
+						{meta.label}
 					</Badge>
 					{#if status.status === 'rejected' && status.rejection_reason}
 						<p class="mt-2 text-sm text-error">{status.rejection_reason}</p>
@@ -199,7 +248,7 @@
 								<div class="flex items-center gap-2 flex-wrap">
 									<span class="font-semibold">{i18n.locale === 'fr' ? dk.fr : dk.en}</span>
 									{#if existing}
-										<Badge variant="success" size="sm">✓ {i18n.locale === 'fr' ? 'Envoyé' : 'Sent'}</Badge>
+										<Badge variant="success" size="sm"><Check size={12} strokeWidth={2.5} /> {i18n.locale === 'fr' ? 'Envoyé' : 'Sent'}</Badge>
 									{/if}
 								</div>
 								<p class="mt-1 text-xs text-text-muted">
@@ -242,3 +291,38 @@
 		</section>
 	{/if}
 </div>
+
+<!-- ═══════════ Replace confirm modal ═══════════ -->
+<Modal
+	open={replaceCandidate !== null}
+	title={i18n.locale === 'fr' ? 'Remplacer le document ?' : 'Replace document?'}
+	onclose={cancelReplace}
+>
+	{#if replaceCandidate}
+		<div class="flex gap-4">
+			<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-warning/10 text-warning">
+				<RefreshCw size={20} strokeWidth={2} />
+			</div>
+			<div class="flex-1 text-sm">
+				<p class="mb-1 font-semibold">{replaceCandidate.kindLabel}</p>
+				<p class="text-text-muted leading-relaxed">
+					{i18n.locale === 'fr'
+						? 'Le document précédemment envoyé sera écrasé et devra être re-validé par l\'équipe compliance. Les documents validés perdent leur statut approuvé et repassent en review.'
+						: 'The previously sent document will be overwritten and re-reviewed by the compliance team. Approved documents lose their approved status and go back to review.'}
+				</p>
+				<p class="mt-3 font-mono text-xs text-text-muted">
+					{replaceCandidate.file.name} · {Math.round(replaceCandidate.file.size / 1024)} Ko
+				</p>
+			</div>
+		</div>
+	{/if}
+
+	{#snippet actions()}
+		<Button variant="ghost" onclick={cancelReplace} disabled={uploading !== null}>
+			{i18n.locale === 'fr' ? 'Garder l\'actuel' : 'Keep current'}
+		</Button>
+		<Button variant="danger" onclick={confirmReplace} loading={uploading !== null}>
+			{i18n.locale === 'fr' ? 'Remplacer' : 'Replace'}
+		</Button>
+	{/snippet}
+</Modal>

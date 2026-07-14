@@ -103,6 +103,16 @@ export const enterpriseApi = {
 		return api.put<ApiResponse<{ enterprise: Enterprise }>>('/enterprise/profile', data);
 	},
 
+	uploadLogo(file: File) {
+		const formData = new FormData();
+		formData.append('logo', file);
+		return api.upload<ApiResponse<{ logo_url: string; enterprise: Enterprise }>>('/enterprise/logo', formData);
+	},
+
+	deleteLogo() {
+		return api.delete<ApiResponse<{ enterprise: Enterprise }>>('/enterprise/logo');
+	},
+
 	// --- Team ---
 
 	invite(email: string) {
@@ -113,12 +123,63 @@ export const enterpriseApi = {
 		return api.post<ApiResponse<{ message: string }>>('/enterprise/invite/accept', { token });
 	},
 
+	invitePreview(token: string) {
+		return api.get<
+			ApiResponse<{ email: string; company_name: string; account_exists: boolean }>
+		>(`/enterprise/invite/preview?token=${encodeURIComponent(token)}`);
+	},
+
+	inviteRegisterAndAccept(payload: {
+		token: string;
+		first_name: string;
+		last_name: string;
+		password: string;
+		terms_accepted: boolean;
+	}) {
+		return api.post<
+			ApiResponse<{
+				user: import('$lib/types').UserPrivate;
+				enterprise_id: string;
+				csrf_token: string;
+				login_method: string;
+				requires_totp_setup: boolean;
+				message: string;
+			}>
+		>('/enterprise/invite/register-and-accept', payload);
+	},
+
 	members() {
 		return api.get<ApiResponse<{ members: EnterpriseMember[] }>>('/enterprise/members');
 	},
 
 	removeMember(userId: string) {
 		return api.delete<ApiResponse<{ message: string }>>(`/enterprise/members/${userId}`);
+	},
+
+	// --- Multi-workspace ---
+
+	memberships() {
+		return api.get<
+			ApiResponse<{
+				memberships: {
+					enterprise_id: string;
+					company_name: string;
+					slug: string | null;
+					logo_url: string | null;
+					role: 'owner' | 'recruiter' | 'enterprise';
+					accepted_at: string | null;
+					is_active: boolean;
+				}[];
+				active_enterprise_id: string | null;
+			}>
+		>('/enterprise/memberships');
+	},
+
+	switchEnterprise(enterpriseId: string) {
+		return api.post<ApiResponse<{ active_enterprise_id: string }>>(
+			`/enterprise/switch/${enterpriseId}`,
+			undefined
+		);
 	},
 
 	// --- Talent Search ---
@@ -192,5 +253,16 @@ export const enterpriseApi = {
 
 	myStats() {
 		return api.get<ApiResponse<MyStats>>('/enterprise/dashboard/my-stats');
+	},
+
+	// --- Certifications sponsorship (Section 15 du doc). L'entreprise couvre
+	// les frais d'inscription d'un talent invité. Payment: soit crédits, soit
+	// Stripe Checkout selon la config backend. --------------------------------
+
+	sponsorCertification(payload: { certification_slug: string; talent_id: string; message?: string }) {
+		return api.post<ApiResponse<{ attempt_id?: string; message: string; checkout_url?: string }>>(
+			'/enterprise/certifications/sponsor',
+			payload
+		);
 	}
 };

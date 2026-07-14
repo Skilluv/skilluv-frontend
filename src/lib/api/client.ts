@@ -94,11 +94,18 @@ export function createApiClient(
 			const csrf = readCookie('csrf_token');
 			if (csrf) csrfHeaders['X-CSRF-Token'] = csrf;
 		}
+		// Skip our JSON default when the body is FormData — the browser needs to
+		// set `multipart/form-data; boundary=...` itself, and any explicit
+		// Content-Type here would clobber the auto-generated boundary.
+		const isMultipart = typeof FormData !== 'undefined' && options?.body instanceof FormData;
+		const baseHeaders: Record<string, string> = isMultipart
+			? {}
+			: { 'Content-Type': 'application/json' };
 		return customFetch(url, {
 			...options,
 			credentials: 'include',
 			headers: {
-				'Content-Type': 'application/json',
+				...baseHeaders,
 				...csrfHeaders,
 				...options?.headers
 			}
@@ -126,6 +133,53 @@ export function createApiClient(
 				errorBody = await res.json();
 			} catch {
 				// Réponse non-JSON
+			}
+
+			// Global auth-gate handlers — the enterprise layout guard tries to
+			// redirect proactively based on `auth.user.*_enabled`, but if the
+			// user hits an API endpoint before the effect fires (or the store
+			// is stale), the backend will refuse with these specific codes.
+			// Handling them here guarantees the user is routed to the fix-up
+			// page instead of eating an opaque 403 in a data widget.
+			//
+			// CRITICAL: we NEVER redirect when the user is already on the
+			// target page. The onboarding wizard itself pre-fetches the
+			// enterprise profile to pre-fill the form — that fetch returns
+			// AUTH_TOTP_SETUP_REQUIRED, and redirecting to onboarding again
+			// with the current URL as `next=` would build an unbounded chain
+			// of `?next=…?next=…?next=…` on every request.
+			const code = errorBody?.error?.code;
+			if (typeof window !== 'undefined') {
+				const currentPath = window.location.pathname;
+				const next = encodeURIComponent(currentPath + window.location.search);
+				const isEnterpriseContext =
+					currentPath.startsWith('/enterprise/') || currentPath === '/enterprise';
+				const alreadyOnOnboarding = currentPath.startsWith('/enterprise/onboarding');
+				const alreadyOnSecurity =
+					currentPath.startsWith('/enterprise/settings/security') ||
+					currentPath.startsWith('/settings/security');
+				const alreadyOnVerify = currentPath.startsWith('/auth/verify-email');
+
+				if (code === 'AUTH_TOTP_SETUP_REQUIRED') {
+					// Enterprise users go through the onboarding wizard (offers
+					// both TOTP and Passkey). Candidates keep the direct route
+					// to the security page.
+					if (isEnterpriseContext) {
+						if (!alreadyOnOnboarding && !alreadyOnSecurity) {
+							window.location.replace(`/enterprise/onboarding?next=${next}`);
+						}
+					} else if (!alreadyOnSecurity) {
+						window.location.replace(
+							`/settings/security?setup_totp=required&next=${next}`
+						);
+					}
+				} else if (code === 'AUTH_EMAIL_VERIFY_REQUIRED') {
+					if (!alreadyOnVerify) {
+						window.location.replace(`/auth/verify-email?next=${next}`);
+					}
+				} else if (code === 'AUTH_SSO_REQUIRED' && errorBody?.error?.start_url) {
+					window.location.href = errorBody.error.start_url;
+				}
 			}
 
 			throw new SkilluError(

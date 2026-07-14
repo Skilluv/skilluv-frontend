@@ -514,3 +514,40 @@ select:focus-visible,
 	-moz-appearance: textfield;
 	appearance: textfield;
 }
+
+/* Auto-hide scrollbar — la piste garde toujours la même largeur (6px) pour
+   éviter tout layout shift, mais le thumb est transparent au repos.
+   Il apparaît au survol du conteneur OU quand on est en train de scroller
+   (classe `.is-scrolling` posée dynamiquement via une action Svelte).
+
+   Firefox reçoit la même logique via `scrollbar-color` transitionnable.
+   Le thumb devient légèrement plus sombre au hover pour un feedback discret. */
+.auto-hide-scrollbar {
+	scrollbar-width: thin;
+	scrollbar-color: transparent transparent;
+	transition: scrollbar-color 200ms ease;
+}
+.auto-hide-scrollbar:hover,
+.auto-hide-scrollbar.is-scrolling {
+	scrollbar-color: var(--sk-border) transparent;
+}
+
+.auto-hide-scrollbar::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+.auto-hide-scrollbar::-webkit-scrollbar-track {
+	background: transparent;
+}
+.auto-hide-scrollbar::-webkit-scrollbar-thumb {
+	background: transparent;
+	border-radius: 3px;
+	transition: background 200ms ease;
+}
+.auto-hide-scrollbar:hover::-webkit-scrollbar-thumb,
+.auto-hide-scrollbar.is-scrolling::-webkit-scrollbar-thumb {
+	background: var(--sk-border);
+}
+.auto-hide-scrollbar:hover::-webkit-scrollbar-thumb:hover {
+	background: var(--sk-text-muted);
+}

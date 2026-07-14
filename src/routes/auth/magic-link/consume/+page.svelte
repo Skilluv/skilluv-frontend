@@ -7,6 +7,8 @@
 	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import { SkilluError } from '$api/client';
+	import { postLoginDestination } from '$lib/utils/post_login';
+	import { Check, X } from '@lucide/svelte';
 
 	let token = $derived(page.url.searchParams.get('token') ?? '');
 	let intent = $derived(page.url.searchParams.get('intent') ?? 'login');
@@ -23,10 +25,17 @@
 		try {
 			await magicLinkApi.consume(token);
 			phase = 'success';
-			// Refresh auth state
+			// Refresh auth state so we know the role before deciding where to
+			// send the user (enterprise → /enterprise/dashboard, admin →
+			// /admin, else the candidate homepage / onboarding).
 			await auth.init();
 			setTimeout(() => {
-				goto(intent === 'signup' ? '/challenges/onboarding' : '/');
+				const target = auth.user
+					? postLoginDestination(auth.user)
+					: intent === 'signup'
+						? '/challenges/onboarding'
+						: '/';
+				goto(target);
 			}, 1200);
 		} catch (e) {
 			phase = 'error';
@@ -49,7 +58,7 @@
 			{i18n.locale === 'fr' ? 'Connexion en cours...' : 'Signing you in...'}
 		</h1>
 	{:else if phase === 'success'}
-		<div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success/15 text-4xl text-success animate-[fragment-burst_600ms_ease-out]">✓</div>
+		<div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success/15 text-success animate-[fragment-burst_600ms_ease-out]"><Check size={40} strokeWidth={2.5} /></div>
 		<h1 class="text-4xl font-black leading-[1.05] tracking-tight">
 			{i18n.locale === 'fr' ? 'Bienvenue.' : 'Welcome.'}
 		</h1>
@@ -57,7 +66,7 @@
 			{i18n.locale === 'fr' ? 'On te redirige...' : 'Redirecting...'}
 		</p>
 	{:else}
-		<div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-error/15 text-4xl text-error">✕</div>
+		<div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-error/15 text-error"><X size={40} strokeWidth={2.5} /></div>
 		<h1 class="text-4xl font-black leading-[1.05] tracking-tight">
 			{i18n.locale === 'fr' ? 'Lien invalide.' : 'Invalid link.'}
 		</h1>

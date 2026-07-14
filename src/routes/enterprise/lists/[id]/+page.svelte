@@ -7,6 +7,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { TalentCard } from '$types';
+	import { X } from '@lucide/svelte';
 
 	let listId = $derived($page.params.id ?? '');
 	let listName = $state('');
@@ -86,7 +87,9 @@
 								<span class="text-accent">{talent.total_fragments} ◆</span>
 							</div>
 						</a>
-						<button class="text-sm text-text-muted hover:text-error" onclick={() => removeTalent(talent.id)}>✕</button>
+						<button class="text-text-muted hover:text-error" onclick={() => removeTalent(talent.id)} aria-label={i18n.locale === 'fr' ? 'Retirer' : 'Remove'}>
+							<X size={16} strokeWidth={2} />
+						</button>
 					</div>
 				{/each}
 			</div>

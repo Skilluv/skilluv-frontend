@@ -17,22 +17,18 @@
 
 	const benefits = [
 		{
-			icon: '◎',
 			fr: { title: 'Sourcing par compétence prouvée', body: 'Filtrez par domaine (code, design, game, security), niveau (apprenti → légende), pays, langage, badges. Tous les profils sont alimentés par des soumissions évaluées, pas par des déclarations.' },
 			en: { title: 'Source by proven skill', body: 'Filter by domain (code, design, game, security), level (apprentice → legend), country, language, badges. Every profile is fed by graded submissions, not self-declared claims.' }
 		},
 		{
-			icon: '★',
 			fr: { title: 'Bookmarks et listes', body: 'Organisez vos talents par projet ou par poste. Partagez les listes avec votre équipe RH ou technique.' },
 			en: { title: 'Bookmarks and lists', body: 'Organise talents by project or role. Share lists with your HR or tech team.' }
 		},
 		{
-			icon: '◆',
 			fr: { title: 'Messagerie respectueuse', body: 'Aucun spam : vous manifestez un intérêt, le talent accepte ou refuse. Une conversation directe ne s\'ouvre qu\'après accord mutuel.' },
 			en: { title: 'Respectful messaging', body: 'No spam: you express interest, the talent accepts or declines. A direct conversation opens only after mutual agreement.' }
 		},
 		{
-			icon: '⬢',
 			fr: { title: 'Données fiables', body: 'Fragments, séries, badges, profondeur dans l\'arbre de compétences. Vous voyez l\'engagement réel, pas un CV embelli.' },
 			en: { title: 'Reliable data', body: 'Fragments, streaks, badges, depth in the skill tree. You see real engagement, not a polished resume.' }
 		}
@@ -76,7 +72,7 @@
 			</p>
 			<div class="mt-8 flex flex-wrap gap-3">
 				<Button variant="accent" size="lg" href={ctaHref}>{ctaLabel}</Button>
-				<Button variant="ghost" size="lg" href="/talent-search">
+				<Button variant="ghost" size="lg" href="/enterprise/register">
 					{i18n.locale === 'fr' ? 'Découvrir le sourcing' : 'Explore sourcing'}
 				</Button>
 			</div>
@@ -198,7 +194,7 @@
 
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			<!-- Recherche avancée -->
-			<a href="/talent-search" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
+			<a href="/enterprise/register" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
 					<span class="text-sm font-semibold text-primary">

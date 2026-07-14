@@ -32,13 +32,19 @@
 
 	onMount(() => {
 		void geo.ensureCountries();
+		// Outside-click : on écoute `click` au document. Le handler de toggle
+		// sur le trigger a déjà fait son travail (Svelte fire onclick avant
+		// que le click bulle au document), donc si l'user reclique le trigger
+		// pour fermer, `open` est déjà repassé à false ici → rien à faire.
 		const handleClick = (e: MouseEvent) => {
-			if (containerEl && !containerEl.contains(e.target as Node)) {
+			if (!containerEl) return;
+			if (!containerEl.contains(e.target as Node)) {
 				open = false;
+				query = '';
 			}
 		};
-		document.addEventListener('mousedown', handleClick);
-		return () => document.removeEventListener('mousedown', handleClick);
+		document.addEventListener('click', handleClick);
+		return () => document.removeEventListener('click', handleClick);
 	});
 
 	let selected = $derived(geo.find(value));
@@ -70,9 +76,20 @@
 		onchange?.(null, null);
 	}
 
-	function openDropdown() {
-		open = true;
-		setTimeout(() => inputEl?.focus(), 0);
+	function toggleDropdown(e: MouseEvent) {
+		// stopPropagation() garantit que le click ne remonte pas au document,
+		// donc le handler outside-click n'a aucune chance d'interférer avec
+		// le toggle. Sans ça, sur certains navigateurs (Safari macOS
+		// notamment), la propagation pouvait causer une reset immédiat.
+		e.stopPropagation();
+		open = !open;
+		if (open) {
+			// Focus l'input de recherche à l'ouverture ; à la fermeture on
+			// laisse le blur naturel se faire.
+			setTimeout(() => inputEl?.focus(), 0);
+		} else {
+			query = '';
+		}
 	}
 
 	function onKey(e: KeyboardEvent) {
@@ -100,7 +117,7 @@
 	<div class="relative">
 		<button
 			type="button"
-			onclick={openDropdown}
+			onclick={toggleDropdown}
 			class="flex h-11 w-full items-center justify-between rounded-xl border bg-surface-elevated px-4 text-left text-sm text-text-primary transition-colors
 				{error ? 'border-error' : 'border-border hover:border-text-muted'}
 				{open ? 'border-primary ring-1 ring-primary' : ''}"

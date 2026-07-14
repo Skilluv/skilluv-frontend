@@ -5,6 +5,7 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import { pushApi, urlBase64ToUint8Array, arrayBufferToBase64Url } from '$api/push';
 	import { toast } from '$stores/toast.svelte';
+	import { Check, X } from '@lucide/svelte';
 
 	let supported = $state(false);
 	let permission = $state<NotificationPermission>('default');
@@ -125,9 +126,15 @@
 				</h3>
 			</div>
 			{#if subscribed}
-				<Badge variant="success" size="sm">✓ {i18n.locale === 'fr' ? 'Activées' : 'On'}</Badge>
+				<Badge variant="success" size="sm">
+					<Check size={12} strokeWidth={2.5} />
+					{i18n.locale === 'fr' ? 'Activées' : 'On'}
+				</Badge>
 			{:else if permission === 'denied'}
-				<Badge variant="error" size="sm">✕ {i18n.locale === 'fr' ? 'Bloquées' : 'Blocked'}</Badge>
+				<Badge variant="error" size="sm">
+					<X size={12} strokeWidth={2.5} />
+					{i18n.locale === 'fr' ? 'Bloquées' : 'Blocked'}
+				</Badge>
 			{:else}
 				<Badge variant="default" size="sm">
 					{i18n.locale === 'fr' ? 'Inactives' : 'Off'}

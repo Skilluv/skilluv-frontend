@@ -13,6 +13,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import Select from '$components/ui/Select.svelte';
+	import { Clock, MemoryStick } from '@lucide/svelte';
 	import type { Challenge, SandboxExecution } from '$types';
 
 	let challengeId = $derived($page.params.id ?? '');
@@ -330,10 +331,10 @@
 					{#if executionResult}
 						<div class="mt-3 flex items-center gap-2 text-xs text-text-muted">
 							{#if executionResult.execution.time}
-								<span>⏱ {executionResult.execution.time}s</span>
+								<span class="inline-flex items-center gap-1"><Clock size={12} strokeWidth={2} /> {executionResult.execution.time}s</span>
 							{/if}
 							{#if executionResult.execution.memory}
-								<span>💾 {(executionResult.execution.memory / 1024).toFixed(0)} KB</span>
+								<span class="inline-flex items-center gap-1"><MemoryStick size={12} strokeWidth={2} /> {(executionResult.execution.memory / 1024).toFixed(0)} KB</span>
 							{/if}
 							<span class="font-medium {executionResult.success ? 'text-success' : 'text-accent'}">
 								{executionResult.verdict}

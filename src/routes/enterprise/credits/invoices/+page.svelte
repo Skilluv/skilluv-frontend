@@ -10,6 +10,7 @@
 	import { invoicesApi, type Invoice } from '$api/invoices';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import { FileText } from '@lucide/svelte';
 
 	let invoices = $state<Invoice[]>([]);
 	let loading = $state(true);
@@ -166,7 +167,7 @@
 		</div>
 	{:else if invoices.length === 0}
 		<div class="rounded-2xl border border-border bg-surface-elevated p-12 text-center">
-			<div class="mb-4 text-5xl text-text-muted">◈</div>
+			<div class="mb-4 inline-flex justify-center text-text-muted"><FileText size={48} strokeWidth={1.5} /></div>
 			<p class="mb-2 text-lg font-semibold">
 				{i18n.locale === 'fr' ? 'Aucune facture pour l\'instant' : 'No invoices yet'}
 			</p>

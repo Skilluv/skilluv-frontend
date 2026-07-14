@@ -23,7 +23,7 @@
 		{ href: '/mentors', fr: 'Mentors', en: 'Mentors' },
 		{ href: '/enterprise/register', fr: 'Entreprises', en: 'Enterprise' },
 		{ href: '/pricing', fr: 'Tarifs', en: 'Pricing' },
-		{ href: '/talent-search', fr: 'Talents', en: 'Talents' },
+		{ href: '/for-companies', fr: 'Talents', en: 'Talents' },
 		{ href: '/community/challenges', fr: 'Communauté', en: 'Community' }
 	];
 

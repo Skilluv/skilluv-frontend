@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
+	import { Monitor } from '@lucide/svelte';
 
 	let dismissed = $state(false);
 	let isMobile = $state(false);
@@ -17,7 +18,7 @@
 
 {#if isMobile && !dismissed}
 	<div class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-surface p-6 text-center">
-		<div class="mb-6 text-6xl">💻</div>
+		<div class="mb-6 inline-flex text-text-muted"><Monitor size={64} strokeWidth={1.5} /></div>
 		<h2 class="mb-3 text-xl font-bold">
 			{i18n.locale === 'fr' ? 'Sandbox disponible sur desktop' : 'Sandbox available on desktop'}
 		</h2>

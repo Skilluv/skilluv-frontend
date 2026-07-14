@@ -27,9 +27,24 @@
 			$page.url.pathname.startsWith('/enterprise/invite/accept')
 	);
 
-	// Hydrate auth depuis les donnees SSR
+	// Espace de travail dédié (entreprise) : le shell candidat
+	// (Navbar / EmailVerificationBanner / Footer / BottomBar) est masqué —
+	// l'espace entreprise apporte son propre header + sidebar. On garde la
+	// Toast / PWA / auth store logic qui restent globaux. L'admin a son
+	// propre frontend sur admin.skilluv.com, plus rien à gérer ici.
+	let isWorkspace = $derived(
+		$page.url.pathname.startsWith('/enterprise/') && !isBareLayout
+	);
+
+	let showCandidateChrome = $derived(!isBareLayout && !isWorkspace);
+
+	// Hydrate auth depuis les donnees SSR — includes the `hasPasskey` flag so
+	// the enterprise layout guard can honour "TOTP OR passkey" as satisfying
+	// the 2FA gate on the very first client render (no /auth/me round-trip
+	// needed).
 	$effect(() => {
 		auth.setUser(data.user);
+		auth.hasPasskey = data.hasPasskey ?? false;
 	});
 
 	// Initialise theme + langue côté client
@@ -60,7 +75,7 @@
 <Toast />
 
 <div class="flex min-h-screen flex-col bg-surface text-text-primary">
-	{#if !isBareLayout}
+	{#if showCandidateChrome}
 		<Navbar />
 		<EmailVerificationBanner />
 	{/if}
@@ -71,11 +86,11 @@
 		</PageTransition>
 	</main>
 
-	{#if !isBareLayout}
+	{#if showCandidateChrome}
 		<Footer />
 	{/if}
 
-	{#if !isBareLayout && auth.isAuthenticated}
+	{#if showCandidateChrome && auth.isAuthenticated}
 		<BottomBar />
 	{/if}
 

@@ -45,6 +45,15 @@ interface LoginResponse {
 		 * enterprise/recruiter but `totp_enabled=false`. The front should route
 		 * to /settings/security before letting them into /enterprise/*. */
 		requires_totp_setup?: boolean;
+		/** How this session was authenticated. Read by the enterprise layout
+		 * guard to decide whether to skip the mandatory-TOTP redirect
+		 * (sso / webauthn bypass, everything else must set up TOTP). */
+		login_method?: import('$lib/types').LoginMethod;
+		/** True when the user has at least one WebAuthn credential enrolled.
+		 * Hydrated into `auth.hasPasskey` on the client so the enterprise 2FA
+		 * gate accepts the strong factor without waiting for the next
+		 * /auth/me round-trip. */
+		has_passkey?: boolean;
 	};
 }
 
@@ -111,7 +120,10 @@ export const authApi = {
 	},
 
 	verifyEmail2fa(code: string, userId?: string) {
-		return api.post<AuthResponse>('/auth/email-2fa/verify', { code, user_id: userId });
+		// Same envelope shape as /auth/login — the backend echoes `has_passkey`
+		// so the client can hydrate `auth.hasPasskey` and close the race
+		// window on the enterprise 2FA gate.
+		return api.post<LoginResponse>('/auth/email-2fa/verify', { code, user_id: userId });
 	},
 
 	/** Refresh token is read server-side from the httpOnly `refresh_token` cookie — no body needed. */

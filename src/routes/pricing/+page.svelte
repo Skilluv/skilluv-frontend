@@ -8,6 +8,7 @@
 	import Select from '$components/ui/Select.svelte';
 	import { pricingApi, type PricingResponse } from '$api/pricing';
 	import { SkilluError } from '$api/client';
+	import { Sparkles, Coins, Package, Boxes, Gem, ThumbsDown, Timer, Check, X } from '@lucide/svelte';
 
 	let data = $state<PricingResponse | null>(null);
 	let loading = $state(true);
@@ -187,13 +188,21 @@
 				>
 					{#if isBest}
 						<span class="absolute -top-3 left-6 inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent-fg shadow-sm ring-4 ring-surface">
-							<span aria-hidden="true">★</span>
+							<Sparkles size={14} strokeWidth={2.5} />
 							{i18n.locale === 'fr' ? 'Meilleur ratio' : 'Best value'}
 						</span>
 					{/if}
 
-					<div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary">
-						{pack.credits === 1 ? '◎' : pack.credits <= 5 ? '◈' : pack.credits <= 20 ? '⬢' : '★'}
+					<div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+						{#if pack.credits === 1}
+							<Coins size={20} strokeWidth={2} />
+						{:else if pack.credits <= 5}
+							<Package size={20} strokeWidth={2} />
+						{:else if pack.credits <= 20}
+							<Boxes size={20} strokeWidth={2} />
+						{:else}
+							<Gem size={20} strokeWidth={2} />
+						{/if}
 					</div>
 
 					<div class="mb-1 font-mono text-xs uppercase tracking-wider text-text-muted">
@@ -276,7 +285,7 @@
 				</div>
 				<div class="space-y-3">
 					<div class="flex items-start gap-4 rounded-2xl border border-border bg-surface-elevated p-5">
-						<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">◎</div>
+						<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"><ThumbsDown size={16} strokeWidth={2} /></div>
 						<div>
 							<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 								{i18n.locale === 'fr' ? 'Talent décline' : 'Talent declines'}
@@ -288,7 +297,7 @@
 						</div>
 					</div>
 					<div class="flex items-start gap-4 rounded-2xl border border-border bg-surface-elevated p-5">
-						<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">⧗</div>
+						<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent"><Timer size={16} strokeWidth={2} /></div>
 						<div>
 							<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 								{i18n.locale === 'fr'
@@ -302,7 +311,7 @@
 						</div>
 					</div>
 					<div class="flex items-start gap-4 rounded-2xl border border-border bg-surface-elevated p-5">
-						<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success">✓</div>
+						<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success"><Check size={16} strokeWidth={2.5} /></div>
 						<div>
 							<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 								{i18n.locale === 'fr' ? 'Le talent accepte' : 'Talent accepts'}
@@ -334,21 +343,21 @@
 				{i18n.locale === 'fr' ? 'Sites de recrutement classiques' : 'Classic recruiting platforms'}
 			</p>
 			<ul class="space-y-3 text-sm">
-				<li class="flex gap-2"><span class="text-error">✗</span> {i18n.locale === 'fr' ? 'Abonnement mensuel obligatoire (500€+/mois)' : 'Mandatory monthly subscription (€500+/month)'}</li>
-				<li class="flex gap-2"><span class="text-error">✗</span> {i18n.locale === 'fr' ? 'Payer même sans candidat contacté' : 'Pay even without contacting anyone'}</li>
-				<li class="flex gap-2"><span class="text-error">✗</span> {i18n.locale === 'fr' ? 'Aucun refund si le candidat ignore' : 'No refund if candidate ignores you'}</li>
-				<li class="flex gap-2"><span class="text-error">✗</span> {i18n.locale === 'fr' ? 'CVs autodéclarés, non prouvés' : 'Self-declared, unproven resumes'}</li>
-				<li class="flex gap-2"><span class="text-error">✗</span> {i18n.locale === 'fr' ? 'Prix en euros uniquement' : 'Euros-only pricing'}</li>
+				<li class="flex gap-2 items-start"><X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Abonnement mensuel obligatoire (500€+/mois)' : 'Mandatory monthly subscription (€500+/month)'}</li>
+				<li class="flex gap-2 items-start"><X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Payer même sans candidat contacté' : 'Pay even without contacting anyone'}</li>
+				<li class="flex gap-2 items-start"><X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Aucun refund si le candidat ignore' : 'No refund if candidate ignores you'}</li>
+				<li class="flex gap-2 items-start"><X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'CVs autodéclarés, non prouvés' : 'Self-declared, unproven resumes'}</li>
+				<li class="flex gap-2 items-start"><X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Prix en euros uniquement' : 'Euros-only pricing'}</li>
 			</ul>
 		</div>
 		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 			<p class="mb-4 text-xs font-bold uppercase tracking-wider text-primary">Skilluv</p>
 			<ul class="space-y-3 text-sm">
-				<li class="flex gap-2"><span class="text-success">✓</span> {i18n.locale === 'fr' ? 'Pay-as-you-go. Aucun abonnement caché.' : 'Pay-as-you-go. No hidden subscription.'}</li>
-				<li class="flex gap-2"><span class="text-success">✓</span> {i18n.locale === 'fr' ? 'Vous ne payez que les tentatives réelles' : 'You only pay for real attempts'}</li>
-				<li class="flex gap-2"><span class="text-success">✓</span> {i18n.locale === 'fr' ? 'Refund automatique 50 % si décline ou timeout' : 'Automatic 50% refund on decline or timeout'}</li>
-				<li class="flex gap-2"><span class="text-success">✓</span> {i18n.locale === 'fr' ? 'Profils alimentés par des soumissions évaluées' : 'Profiles fed by graded submissions'}</li>
-				<li class="flex gap-2"><span class="text-success">✓</span> {i18n.locale === 'fr' ? 'Prix locaux : EUR, USD, NGN, XOF, MAD…' : 'Local prices: EUR, USD, NGN, XOF, MAD…'}</li>
+				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Pay-as-you-go. Aucun abonnement caché.' : 'Pay-as-you-go. No hidden subscription.'}</li>
+				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Vous ne payez que les tentatives réelles' : 'You only pay for real attempts'}</li>
+				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Refund automatique 50 % si décline ou timeout' : 'Automatic 50% refund on decline or timeout'}</li>
+				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Profils alimentés par des soumissions évaluées' : 'Profiles fed by graded submissions'}</li>
+				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Prix locaux : EUR, USD, NGN, XOF, MAD…' : 'Local prices: EUR, USD, NGN, XOF, MAD…'}</li>
 			</ul>
 		</div>
 	</div>

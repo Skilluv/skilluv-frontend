@@ -102,7 +102,7 @@
 						Certifications
 					</span>
 					<span class="ml-auto">
-						<Badge variant="accent" size="sm">★ {i18n.locale === 'fr' ? 'Nouveau' : 'New'}</Badge>
+						<Badge variant="accent" size="sm">{i18n.locale === 'fr' ? 'Nouveau' : 'New'}</Badge>
 					</span>
 				</div>
 

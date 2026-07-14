@@ -9,6 +9,9 @@
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import type { SsoDiscoverResponse } from '$lib/types';
+	import { postLoginDestination } from '$lib/utils/post_login';
+	import { KeyRound, Building2 } from '@lucide/svelte';
+	import SsoButton from '$components/ui/SsoButton.svelte';
 
 	let identifier = $state('');
 	let password = $state('');
@@ -36,6 +39,19 @@
 	const inviteToken = $derived(page.url.searchParams.get('invite_token') ?? '');
 
 	const passkeySupported = isPasskeySupported();
+
+	// Surface the "wrong frontend" error that the SSR redirect emits when an
+	// admin lands on the public shell. Kept as a $derived initial value so a
+	// subsequent manual login attempt clears it naturally.
+	$effect(() => {
+		const urlError = page.url.searchParams.get('error');
+		if (urlError === 'admin_wrong_frontend' && !error) {
+			error =
+				i18n.locale === 'fr'
+					? 'Ce compte est administrateur. Connectez-vous sur admin.skilluv.com.'
+					: 'This account is an administrator. Sign in on admin.skilluv.com.';
+		}
+	});
 
 	function scheduleSsoDiscovery() {
 		if (ssoDiscoverTimer) clearTimeout(ssoDiscoverTimer);
@@ -66,7 +82,8 @@
 			if (requiresEmail2fa) {
 				const res = await authApi.verifyEmail2fa(email2faCode, pendingUserId);
 				if (res.data.user) {
-					auth.setUser(res.data.user);
+					auth.setUser(res.data.user, 'password');
+					auth.hasPasskey = res.data.has_passkey ?? false;
 					goto('/');
 				}
 				return;
@@ -86,14 +103,44 @@
 			}
 
 			if (res.data.user) {
-				auth.setUser(res.data.user);
-				// Enterprise/recruiter accounts must complete TOTP setup before
-				// their /enterprise/* routes will accept them.
-				if (res.data.requires_totp_setup) {
-					goto('/settings/security?setup_totp=required');
+				// Admins have their own frontend (admin.skilluv.com) and must
+				// not carry an authenticated session on the public shell.
+				// Revoke the session we just created and surface a clear
+				// message before hydrating anything client-side.
+				if (res.data.user.role === 'admin') {
+					try {
+						await auth.logout();
+					} catch {
+						// best-effort — the cookies will be cleared by /auth/logout
+					}
+					error =
+						i18n.locale === 'fr'
+							? 'Ce compte est administrateur. Connectez-vous sur admin.skilluv.com.'
+							: 'This account is an administrator. Sign in on admin.skilluv.com.';
 					return;
 				}
-				goto(res.data.user.profile_active ? '/' : '/challenges/onboarding');
+				auth.setUser(res.data.user, res.data.login_method ?? 'password');
+				// Hydrate hasPasskey from the login response so the enterprise
+				// layout's client-side 2FA gate sees the strong factor
+				// immediately — without this, there's a race window where the
+				// gate fires before the root layout's $effect hydrates from
+				// SSR data, and users get bounced back into onboarding.
+				auth.hasPasskey = res.data.has_passkey ?? false;
+				// Enterprise/recruiter accounts must complete 2FA (TOTP or
+				// passkey) before entering the workspace. The onboarding
+				// wizard walks them through the pick + setup and also nudges
+				// on company profile + first invite. Candidates keep the old
+				// direct redirect to the security page.
+				if (res.data.requires_totp_setup) {
+					const role = res.data.user.role;
+					const target =
+						role === 'enterprise' || role === 'recruiter'
+							? '/enterprise/onboarding'
+							: '/settings/security?setup_totp=required';
+					goto(target);
+					return;
+				}
+				goto(postLoginDestination(res.data.user));
 			}
 		} catch (err) {
 			if (err instanceof SkilluError) {
@@ -126,8 +173,13 @@
 		passkeyBusy = true;
 		try {
 			const user = await webauthnApi.login(identifier.trim());
-			auth.setUser(user);
-			goto(user.profile_active ? '/' : '/challenges/onboarding');
+			// WebAuthn is the strong-factor method — flag it so the enterprise
+			// layout guard skips the mandatory-TOTP redirect. The passkey they
+			// just used to sign in is trivially still enrolled, so mirror it in
+			// the store to close the race window on the very next navigation.
+			auth.setUser(user, 'webauthn');
+			auth.hasPasskey = true;
+			goto(postLoginDestination(user));
 		} catch (err) {
 			if (err instanceof SkilluError && err.code === 'WEBAUTHN_CEREMONY_CANCELLED') {
 				// Silent — user cancelled the browser prompt
@@ -191,7 +243,8 @@
 					href={ssoStartUrl}
 					class="flex items-center justify-center gap-2 rounded-xl border border-accent/40 bg-accent/10 px-4 py-2 text-sm font-medium text-accent hover:bg-accent/20"
 				>
-					🔐 {i18n.locale === 'fr'
+					<Building2 size={16} strokeWidth={2} />
+					{i18n.locale === 'fr'
 						? 'Se connecter via le SSO de ton entreprise'
 						: 'Sign in with your company SSO'}
 				</a>
@@ -253,21 +306,15 @@
 		<!-- Passkey -->
 		{#if passkeySupported}
 			<Button variant="ghost" size="lg" class="mb-3 w-full" loading={passkeyBusy} onclick={handlePasskeyLogin}>
-				🔑 {i18n.locale === 'fr' ? 'Se connecter avec une passkey' : 'Sign in with a passkey'}
+				<KeyRound size={16} strokeWidth={2} /> {i18n.locale === 'fr' ? 'Se connecter avec une passkey' : 'Sign in with a passkey'}
 			</Button>
 		{/if}
 
 		<!-- OAuth -->
 		<div class="grid gap-2">
-			<Button variant="ghost" class="w-full" onclick={() => oauth('google')}>
-				<span class="inline-block w-4">G</span>&nbsp;&nbsp;Google
-			</Button>
-			<Button variant="ghost" class="w-full" onclick={() => oauth('linkedin')}>
-				<span class="inline-block w-4">in</span>&nbsp;&nbsp;LinkedIn
-			</Button>
-			<Button variant="ghost" class="w-full" onclick={() => oauth('github')}>
-				<span class="inline-block w-4">◎</span>&nbsp;&nbsp;GitHub
-			</Button>
+			<SsoButton provider="google" onclick={() => oauth('google')} />
+			<SsoButton provider="linkedin" onclick={() => oauth('linkedin')} />
+			<SsoButton provider="github" onclick={() => oauth('github')} />
 		</div>
 
 		<p class="mt-4 text-center text-sm text-text-muted">

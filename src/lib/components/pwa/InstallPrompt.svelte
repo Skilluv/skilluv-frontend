@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
+	import { X } from '@lucide/svelte';
 
 	interface BeforeInstallPromptEvent extends Event {
 		prompt: () => Promise<void>;
@@ -77,7 +78,7 @@
 				aria-label="Fermer"
 				class="text-text-muted hover:text-text-primary shrink-0"
 			>
-				✕
+				<X size={16} strokeWidth={2} />
 			</button>
 		</div>
 		<div class="mt-3 flex gap-2 justify-end">

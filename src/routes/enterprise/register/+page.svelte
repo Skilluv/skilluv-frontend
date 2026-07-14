@@ -5,10 +5,14 @@
 	import CountrySelect from '$components/ui/CountrySelect.svelte';
 	import Select from '$components/ui/Select.svelte';
 	import { enterpriseApi } from '$api/enterprise';
+	import { webauthnApi, isPasskeySupported } from '$api/webauthn';
 	import { auth } from '$stores/auth.svelte';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import type { CompanySize } from '$types';
+	import { industryItems } from '$lib/data/industries';
+	import { Check, KeyRound, Mail, ShieldCheck } from '@lucide/svelte';
+	import SsoButton from '$components/ui/SsoButton.svelte';
 
 	// --- State ---
 	let step = $state<1 | 2 | 3>(1);
@@ -25,6 +29,37 @@
 	let marketingConsent = $state(false);
 	let termsAccepted = $state(false);
 
+	// Optional passkey enrolment offered on step 3. Never blocks the flow —
+	// the owner can skip and rely on TOTP alone if they want.
+	let passkeyBusy = $state(false);
+	let passkeyAdded = $state(false);
+	let passkeyError = $state('');
+	const passkeySupported = isPasskeySupported();
+
+	async function enrollPasskey() {
+		passkeyError = '';
+		passkeyBusy = true;
+		try {
+			// Default label mirrors what the browser typically calls the local
+			// authenticator (Face ID / Windows Hello / …). The owner can rename
+			// it later from /enterprise/settings/security.
+			await webauthnApi.register(
+				i18n.locale === 'fr' ? 'Ce navigateur' : 'This browser'
+			);
+			passkeyAdded = true;
+		} catch (err) {
+			if (err instanceof SkilluError && err.code === 'WEBAUTHN_CEREMONY_CANCELLED') {
+				// Silent — user closed the biometric prompt.
+			} else if (err instanceof SkilluError) {
+				passkeyError = err.message;
+			} else {
+				passkeyError = i18n.locale === 'fr' ? 'Échec de la création.' : 'Enrolment failed.';
+			}
+		} finally {
+			passkeyBusy = false;
+		}
+	}
+
 	// Step 2 — company
 	let companyName = $state('');
 	let website = $state('');
@@ -40,6 +75,11 @@
 		{ value: '501-1000', label: '501-1000' },
 		{ value: '1000+', label: '1000+' }
 	];
+
+	// Liste de secteurs partagée avec /enterprise/profile via $lib/data/industries.
+	// Le placeholder "— Sélectionnez un secteur —" est fourni par le Select
+	// lui-même (prop `placeholder`) puisque la valeur initiale est `''`.
+	let industrySelectItems = $derived(industryItems(i18n.locale === 'fr' ? 'fr' : 'en'));
 
 	// --- Validation helpers ---
 	function looksLikeCommonPhrase(pwd: string): boolean {
@@ -134,7 +174,7 @@
 				country: country ?? undefined,
 				terms_accepted: true
 			});
-			auth.setUser(res.data.user);
+			auth.setUser(res.data.user, 'password');
 			step = 3;
 		} catch (err) {
 			if (err instanceof SkilluError) error = err.message;
@@ -172,7 +212,11 @@
 					class="flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors
 					{done ? 'bg-primary text-primary-fg' : current ? 'bg-accent text-accent-fg' : 'bg-surface-overlay text-text-muted'}"
 				>
-					{done ? '✓' : n}
+					{#if done}
+						<Check size={14} strokeWidth={2.5} />
+					{:else}
+						{n}
+					{/if}
 				</span>
 				<span class="hidden sm:inline text-xs font-medium {current ? 'text-text-primary' : 'text-text-muted'}">
 					{label}
@@ -275,24 +319,6 @@
 						</span>
 					</label>
 
-					<p class="text-xs text-text-muted leading-relaxed">
-						{#if i18n.locale === 'fr'}
-							En cliquant sur Continuer ou en vous inscrivant via un tiers, vous acceptez les
-							<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">CGU</a>
-							de Skilluv et reconnaissez la
-							<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">politique de confidentialité</a>
-							et la
-							<a href="/legal/cookies" target="_blank" rel="noopener" class="text-accent hover:underline">politique de cookies</a>.
-						{:else}
-							By clicking Continue or registering through a third party you accept the Skilluv
-							<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">Terms of Use</a>
-							and acknowledge the
-							<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">Privacy Statement</a>
-							and
-							<a href="/legal/cookies" target="_blank" rel="noopener" class="text-accent hover:underline">Cookie Policy</a>.
-						{/if}
-					</p>
-
 					<Button variant="accent" size="lg" type="submit" class="mt-2 w-full">
 						{i18n.locale === 'fr' ? 'Continuer' : 'Continue'}
 					</Button>
@@ -307,9 +333,9 @@
 				</div>
 
 				<div class="grid gap-2">
-					<a href="/api/auth/google/start" class="block w-full rounded-2xl border border-border py-3 text-center text-sm font-medium transition-colors hover:border-accent">Google</a>
-					<a href="/api/auth/linkedin/start" class="block w-full rounded-2xl border border-border py-3 text-center text-sm font-medium transition-colors hover:border-accent">LinkedIn</a>
-					<a href="/api/auth/github/login" class="block w-full rounded-2xl border border-border py-3 text-center text-sm font-medium transition-colors hover:border-accent">GitHub</a>
+					<SsoButton provider="google" href="/api/auth/google/start" />
+					<SsoButton provider="linkedin" href="/api/auth/linkedin/start" />
+					<SsoButton provider="github" href="/api/auth/github/login" />
 				</div>
 
 				<p class="mt-8 text-center text-sm text-text-muted">
@@ -353,6 +379,8 @@
 							{i18n.t('enterprise.register.companySize')}
 						</label>
 						<Select
+							size="lg"
+							shape="rounded"
 							items={companySizes.map((s) => ({ value: s.value, label: s.label }))}
 							bind:value={companySize}
 							class="w-full"
@@ -365,11 +393,21 @@
 						bind:value={website}
 					/>
 
-					<Input
-						label={i18n.t('enterprise.register.industry')}
-						placeholder={i18n.locale === 'fr' ? 'Tech, Finance, Santé...' : 'Tech, Finance, Health...'}
-						bind:value={industry}
-					/>
+					<div>
+						<label class="mb-1.5 block text-sm font-medium">
+							{i18n.t('enterprise.register.industry')}
+						</label>
+						<Select
+							size="lg"
+							shape="rounded"
+							searchable
+							searchPlaceholder={i18n.locale === 'fr' ? 'Rechercher un secteur…' : 'Search an industry…'}
+							placeholder={i18n.locale === 'fr' ? '— Sélectionnez un secteur —' : '— Select an industry —'}
+							items={industrySelectItems}
+							bind:value={industry}
+							class="w-full"
+						/>
+					</div>
 
 					<CountrySelect
 						label={i18n.t('enterprise.register.country')}
@@ -415,8 +453,8 @@
 			     through the security page first, then the user can pick their
 			     destination once 2FA is armed. -->
 			<div class="animate-[fade-in_300ms_ease-out] text-center">
-				<div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-success/15 text-3xl text-success">
-					✓
+				<div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-success/15 text-success">
+					<Check size={32} strokeWidth={2.5} />
 				</div>
 				<h1 class="mb-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">
 					{i18n.locale === 'fr' ? 'Presque prêt' : 'Almost ready'}<span class="text-accent">.</span>
@@ -428,9 +466,10 @@
 				</p>
 
 				<div class="mb-4 rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 text-left text-sm">
-					<p class="mb-1 font-semibold text-accent">
-						📧 {i18n.locale === 'fr' ? '1. Vérifie ton email' : '1. Verify your email'}
-					</p>
+					<div class="mb-1 flex items-center gap-2 font-semibold text-accent">
+						<Mail size={16} strokeWidth={2.5} />
+						{i18n.locale === 'fr' ? '1. Vérifie ton email' : '1. Verify your email'}
+					</div>
 					<p class="text-text-muted">
 						{i18n.locale === 'fr'
 							? `Un lien de vérification vient d'être envoyé à ${email}. Clique dessus pour activer ton compte — sans ça, l'espace entreprise reste inaccessible.`
@@ -438,10 +477,11 @@
 					</p>
 				</div>
 
-				<div class="mb-8 rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 text-left text-sm">
-					<p class="mb-1 font-semibold text-accent">
-						🔒 {i18n.locale === 'fr' ? '2. Active ton 2FA' : '2. Set up 2FA'}
-					</p>
+				<div class="mb-4 rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 text-left text-sm">
+					<div class="mb-1 flex items-center gap-2 font-semibold text-accent">
+						<ShieldCheck size={16} strokeWidth={2.5} />
+						{i18n.locale === 'fr' ? '2. Active ton 2FA' : '2. Set up 2FA'}
+					</div>
 					<p class="text-text-muted">
 						{i18n.locale === 'fr'
 							? "Les comptes entreprise doivent activer un code à 6 chiffres (TOTP) via une app d'authentification avant d'accéder à l'espace recruteur."
@@ -449,11 +489,54 @@
 					</p>
 				</div>
 
+				<!-- Optional passkey enrolment — only shown when the browser
+				     supports WebAuthn. Never blocks the flow: if the owner
+				     skips (or the ceremony fails), TOTP still covers the 2FA
+				     requirement on this account. -->
+				{#if passkeySupported}
+					<div class="mb-8 rounded-2xl border border-primary/30 bg-primary/5 px-4 py-3 text-left text-sm">
+						<div class="mb-1 flex items-center gap-2 font-semibold text-primary">
+							<KeyRound size={16} strokeWidth={2.5} />
+							{i18n.locale === 'fr'
+								? '3. Passkey (recommandé, optionnel)'
+								: '3. Passkey (recommended, optional)'}
+						</div>
+						<p class="mb-3 text-text-muted">
+							{i18n.locale === 'fr'
+								? 'Ajoute une passkey (Face ID, Touch ID, Windows Hello, YubiKey…) sur ce navigateur : tes prochains logins seront instantanés, sans mot de passe ni code TOTP. Ça remplace pas le 2FA obligatoire ci-dessus, mais tu ne feras jamais les deux à la fois.'
+								: 'Add a passkey (Face ID, Touch ID, Windows Hello, YubiKey…) on this browser: your future logins become instant — no password, no TOTP code. It doesn\'t replace the mandatory 2FA above, but you\'ll never do both at once.'}
+						</p>
+						{#if passkeyAdded}
+							<div class="flex items-center gap-2 rounded-lg bg-success/15 px-3 py-2 text-success">
+								<Check size={16} strokeWidth={2.5} />
+								<span class="text-xs font-medium">
+									{i18n.locale === 'fr'
+										? 'Passkey ajoutée sur ce navigateur.'
+										: 'Passkey added on this browser.'}
+								</span>
+							</div>
+						{:else}
+							<Button
+								variant="ghost"
+								size="sm"
+								loading={passkeyBusy}
+								onclick={enrollPasskey}
+								class="w-full"
+							>
+								{i18n.locale === 'fr' ? 'Ajouter une passkey' : 'Add a passkey'}
+							</Button>
+							{#if passkeyError}
+								<p class="mt-2 text-xs text-error">{passkeyError}</p>
+							{/if}
+						{/if}
+					</div>
+				{/if}
+
 				<div class="flex flex-col gap-3">
 					<Button
 						variant="accent"
 						size="lg"
-						href="/settings/security?setup_totp=required&next=/enterprise/dashboard"
+						href="/enterprise/onboarding"
 						class="w-full"
 					>
 						{i18n.locale === 'fr' ? 'Configurer mon 2FA' : 'Set up 2FA now'}

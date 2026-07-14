@@ -177,7 +177,7 @@
 					<div class="h-2.5 w-2.5 rounded-sm bg-accent"></div>
 					<span class="text-sm font-semibold text-accent">Skilluv Bounty</span>
 					<span class="ml-auto">
-						<Badge variant="accent" size="sm">★ {i18n.locale === 'fr' ? 'Recommandé' : 'Recommended'}</Badge>
+						<Badge variant="accent" size="sm">{i18n.locale === 'fr' ? 'Recommandé' : 'Recommended'}</Badge>
 					</span>
 				</div>
 				<div class="p-5 space-y-2 text-sm">

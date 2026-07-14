@@ -6,6 +6,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import { creditsApi, type CreditBalance } from '$api/credits';
 	import ParticleBurst from '$components/ui/ParticleBurst.svelte';
+	import { Check } from '@lucide/svelte';
 
 	let sessionId = $derived(page.url.searchParams.get('session_id') ?? null);
 	let balance = $state<CreditBalance | null>(null);
@@ -53,8 +54,8 @@
 	{/if}
 
 	<!-- Big check icon -->
-	<div class="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-success/15 text-5xl text-success animate-[fragment-burst_600ms_ease-out]">
-		✓
+	<div class="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-success/15 text-success animate-[fragment-burst_600ms_ease-out]">
+		<Check size={48} strokeWidth={2.5} />
 	</div>
 
 	<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">
@@ -106,7 +107,7 @@
 
 	{#if sessionId}
 		<p class="mt-8 font-mono text-xs text-text-muted">
-			{i18n.locale === 'fr' ? 'Référence Stripe :' : 'Stripe reference:'} {sessionId.slice(0, 24)}…
+			{i18n.locale === 'fr' ? 'Référence transaction :' : 'Transaction reference:'} {sessionId.slice(0, 24)}…
 		</p>
 	{/if}
 </div>

@@ -7,10 +7,50 @@
 	import { i18n } from '$lib/i18n';
 	import type { ThemeBase } from '$lib/types';
 	import NavDropdown from './NavDropdown.svelte';
+	import LogoutConfirmModal from './LogoutConfirmModal.svelte';
 	import { onMount } from 'svelte';
+	import {
+		Target,
+		Pencil,
+		Hexagon,
+		BadgeCheck,
+		Star,
+		Shield,
+		Trophy,
+		TrendingUp,
+		MessageSquare,
+		Users,
+		Rss,
+		Search,
+		Bookmark,
+		List,
+		Building2,
+		FileText,
+		Plus,
+		Check,
+		GraduationCap,
+		Compass,
+		Bell,
+		Sun,
+		Moon,
+		Menu,
+		X,
+		LogOut,
+		Settings as SettingsIcon,
+		User as UserIcon,
+		ChevronDown
+	} from '@lucide/svelte';
 
 	let mobileOpen = $state(false);
 	let themeOpen = $state(false);
+	let userMenuOpen = $state(false);
+	let logoutModalOpen = $state(false);
+
+	function askLogout() {
+		userMenuOpen = false;
+		mobileOpen = false;
+		logoutModalOpen = true;
+	}
 
 	// Sliding indicator pour le pill nav
 	let pillContainer = $state<HTMLDivElement | undefined>();
@@ -45,11 +85,11 @@
 			if (path.startsWith('/challenges')) return 'challenges';
 			if (['/bounties', '/certifications', '/diplomas', '/mentors', '/mentorship'].some((p) => path === p || path.startsWith(p + '/'))) return 'grow';
 			if (['/feed', '/forum', '/guilds', '/tournaments', '/messages', '/leaderboards', '/community'].some((p) => path === p || path.startsWith(p + '/'))) return 'community';
-			if (['/enterprise', '/talent-search', '/for-companies', '/pricing'].some((p) => path === p || path.startsWith(p + '/'))) return 'enterprise';
+			if (['/enterprise', '/for-companies', '/pricing'].some((p) => path === p || path.startsWith(p + '/'))) return 'enterprise';
 		} else {
 			if (['/challenges', '/community', '/bounties', '/certifications', '/mentors'].some((p) => path === p || path.startsWith(p + '/'))) return 'discover';
 			if (['/forum', '/guilds', '/tournaments', '/leaderboards'].some((p) => path === p || path.startsWith(p + '/'))) return 'community';
-			if (['/for-companies', '/talent-search', '/enterprise', '/pricing'].some((p) => path === p || path.startsWith(p + '/'))) return 'enterprise';
+			if (['/for-companies', '/enterprise', '/pricing'].some((p) => path === p || path.startsWith(p + '/'))) return 'enterprise';
 		}
 		return null;
 	});
@@ -87,6 +127,7 @@
 	function handleClickOutside(e: MouseEvent) {
 		const target = e.target as HTMLElement;
 		if (!target.closest('[data-theme-dropdown]')) themeOpen = false;
+		if (!target.closest('[data-user-dropdown]')) userMenuOpen = false;
 	}
 
 	function isActive(href: string): boolean {
@@ -103,13 +144,13 @@
 			items: [
 				{
 					href: '/challenges',
-					icon: '◎',
+					icon: Target,
 					label: i18n.t('common.nav.challenges'),
 					description: i18n.locale === 'fr' ? 'Résous des défis dans 4 domaines' : 'Solve challenges in 4 domains'
 				},
 				{
 					href: '/community/challenges',
-					icon: '✎',
+					icon: Pencil,
 					label: i18n.locale === 'fr' ? 'Communauté' : 'Community',
 					description: i18n.locale === 'fr' ? 'Challenges créés par la communauté' : 'Community-created challenges'
 				}
@@ -120,19 +161,19 @@
 			items: [
 				{
 					href: '/bounties',
-					icon: '⬢',
+					icon: Hexagon,
 					label: 'Bounties',
 					description: i18n.locale === 'fr' ? 'Résous une issue GitHub, gagne des fragments' : 'Solve a GitHub issue, earn fragments'
 				},
 				{
 					href: '/certifications',
-					icon: '◈',
+					icon: BadgeCheck,
 					label: 'Certifications',
 					description: i18n.locale === 'fr' ? 'Diplômes vérifiables en ligne' : 'Online-verifiable diplomas'
 				},
 				{
 					href: '/mentors',
-					icon: '★',
+					icon: Star,
 					label: 'Mentorship',
 					description: i18n.locale === 'fr' ? 'Sessions 1-on-1 avec un expert' : '1-on-1 sessions with an expert'
 				}
@@ -143,10 +184,10 @@
 	let communityGroups = $derived([
 		{
 			items: [
-				{ href: '/forum', icon: '◈', label: 'Forum', description: i18n.locale === 'fr' ? 'Questions, réponses, bounties fragments' : 'Q&A with fragment bounties' },
-				{ href: '/guilds', icon: '▲', label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds', description: i18n.locale === 'fr' ? 'Rejoins une écurie style F1/MMO' : 'Join an F1/MMO-style team' },
-				{ href: '/tournaments', icon: '★', label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments', description: i18n.locale === 'fr' ? 'Compétitions mensuelles chronométrées' : 'Timed monthly competitions' },
-				{ href: '/leaderboards', icon: '↑', label: i18n.t('common.nav.leaderboards'), description: i18n.locale === 'fr' ? 'Top 100 live par domaine' : 'Live Top 100 by domain' }
+				{ href: '/forum', icon: MessageSquare, label: 'Forum', description: i18n.locale === 'fr' ? 'Questions, réponses, bounties fragments' : 'Q&A with fragment bounties' },
+				{ href: '/guilds', icon: Shield, label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds', description: i18n.locale === 'fr' ? 'Rejoins une écurie style F1/MMO' : 'Join an F1/MMO-style team' },
+				{ href: '/tournaments', icon: Trophy, label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments', description: i18n.locale === 'fr' ? 'Compétitions mensuelles chronométrées' : 'Timed monthly competitions' },
+				{ href: '/leaderboards', icon: TrendingUp, label: i18n.t('common.nav.leaderboards'), description: i18n.locale === 'fr' ? 'Top 100 live par domaine' : 'Live Top 100 by domain' }
 			]
 		}
 	]);
@@ -154,17 +195,17 @@
 	let talentGrowGroups = $derived([
 		{
 			items: [
-				{ href: '/bounties', icon: '⬢', label: 'Bounties OSS', description: i18n.locale === 'fr' ? 'Gagne des fragments sur des issues GitHub' : 'Earn fragments on GitHub issues' },
-				{ href: '/certifications', icon: '◈', label: 'Certifications', description: i18n.locale === 'fr' ? 'Passe une certification, obtiens un diplôme' : 'Take a certification, get a diploma' },
-				{ href: '/diplomas/my', icon: '✓', label: i18n.locale === 'fr' ? 'Mes diplômes' : 'My diplomas' }
+				{ href: '/bounties', icon: Hexagon, label: 'Bounties OSS', description: i18n.locale === 'fr' ? 'Gagne des fragments sur des issues GitHub' : 'Earn fragments on GitHub issues' },
+				{ href: '/certifications', icon: BadgeCheck, label: 'Certifications', description: i18n.locale === 'fr' ? 'Passe une certification, obtiens un diplôme' : 'Take a certification, get a diploma' },
+				{ href: '/diplomas/my', icon: GraduationCap, label: i18n.locale === 'fr' ? 'Mes diplômes' : 'My diplomas' }
 			]
 		},
 		{
 			title: 'Mentorship',
 			items: [
-				{ href: '/mentors', icon: '★', label: i18n.locale === 'fr' ? 'Trouver un mentor' : 'Find a mentor' },
-				{ href: '/mentorship/sessions', icon: '◎', label: i18n.locale === 'fr' ? 'Mes sessions' : 'My sessions' },
-				{ href: '/mentors/me', icon: '✎', label: i18n.locale === 'fr' ? 'Devenir mentor' : 'Become a mentor', badge: '80%' }
+				{ href: '/mentors', icon: Star, label: i18n.locale === 'fr' ? 'Trouver un mentor' : 'Find a mentor' },
+				{ href: '/mentorship/sessions', icon: Target, label: i18n.locale === 'fr' ? 'Mes sessions' : 'My sessions' },
+				{ href: '/mentors/me', icon: Pencil, label: i18n.locale === 'fr' ? 'Devenir mentor' : 'Become a mentor', badge: '80%' }
 			]
 		}
 	]);
@@ -172,12 +213,12 @@
 	let talentCommunityGroups = $derived([
 		{
 			items: [
-				{ href: '/feed', icon: '◎', label: i18n.locale === 'fr' ? "Fil d'activité" : 'Activity feed' },
-				{ href: '/forum', icon: '◈', label: 'Forum' },
-				{ href: '/guilds', icon: '▲', label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
-				{ href: '/tournaments', icon: '★', label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments' },
-				{ href: '/messages', icon: '◎', label: 'Messages' },
-				{ href: '/leaderboards', icon: '↑', label: i18n.t('common.nav.leaderboards') }
+				{ href: '/feed', icon: Rss, label: i18n.locale === 'fr' ? "Fil d'activité" : 'Activity feed' },
+				{ href: '/forum', icon: MessageSquare, label: 'Forum' },
+				{ href: '/guilds', icon: Shield, label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
+				{ href: '/tournaments', icon: Trophy, label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments' },
+				{ href: '/messages', icon: MessageSquare, label: 'Messages' },
+				{ href: '/leaderboards', icon: TrendingUp, label: i18n.t('common.nav.leaderboards') }
 			]
 		}
 	]);
@@ -186,16 +227,16 @@
 		{
 			title: 'Sourcing',
 			items: [
-				{ href: '/for-companies', icon: '◎', label: i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works', description: i18n.locale === 'fr' ? 'Recruter sur la preuve, pas le CV' : 'Hire on proof, not resume' },
-				{ href: '/talent-search', icon: '⬢', label: i18n.locale === 'fr' ? 'Recherche avancée' : 'Advanced search', description: i18n.locale === 'fr' ? '13 filtres croisés' : '13 cross filters' }
+				{ href: '/for-companies', icon: Compass, label: i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works', description: i18n.locale === 'fr' ? 'Recruter sur la preuve, pas le CV' : 'Hire on proof, not resume' },
+				{ href: '/enterprise/register', icon: Plus, label: i18n.locale === 'fr' ? 'Recruteur ? Créer un espace' : 'Recruiter? Create a space', description: i18n.locale === 'fr' ? 'Accès aux 13 filtres de sourcing' : 'Access to the 13 sourcing filters' }
 			]
 		},
 		{
 			title: 'Business',
 			items: [
-				{ href: '/for-companies/bounties', icon: '⬢', label: i18n.locale === 'fr' ? 'Sponsoriser une issue' : 'Sponsor an issue', description: i18n.locale === 'fr' ? 'Bounties open-source, payout au merge' : 'Open-source bounties, payout on merge' },
-				{ href: '/pricing', icon: '★', label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing', description: i18n.locale === 'fr' ? 'Pay-as-you-go multi-devise' : 'Pay-as-you-go multi-currency' },
-				{ href: '/enterprise/register', icon: '+', label: i18n.locale === 'fr' ? 'Créer mon espace' : 'Create my space', badge: '2 min' }
+				{ href: '/for-companies/bounties', icon: Hexagon, label: i18n.locale === 'fr' ? 'Sponsoriser une issue' : 'Sponsor an issue', description: i18n.locale === 'fr' ? 'Bounties open-source, payout au merge' : 'Open-source bounties, payout on merge' },
+				{ href: '/pricing', icon: Star, label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing', description: i18n.locale === 'fr' ? 'Pay-as-you-go multi-devise' : 'Pay-as-you-go multi-currency' },
+				{ href: '/enterprise/register', icon: Plus, label: i18n.locale === 'fr' ? 'Créer mon espace' : 'Create my space', badge: '2 min' }
 			]
 		}
 	]);
@@ -204,32 +245,32 @@
 		{
 			title: 'Sourcing',
 			items: [
-				{ href: '/talent-search', icon: '⬢', label: i18n.locale === 'fr' ? 'Recherche talents' : 'Search talents', description: i18n.locale === 'fr' ? '13 filtres croisés' : '13 cross filters' },
-				{ href: '/enterprise/bookmarks', icon: '◈', label: 'Bookmarks' },
-				{ href: '/enterprise/lists', icon: '✎', label: i18n.locale === 'fr' ? 'Listes' : 'Lists' },
-				{ href: '/enterprise/messages', icon: '◎', label: 'Messages' }
+				{ href: '/enterprise/talents', icon: Search, label: i18n.locale === 'fr' ? 'Recherche talents' : 'Search talents', description: i18n.locale === 'fr' ? '13 filtres croisés' : '13 cross filters' },
+				{ href: '/enterprise/bookmarks', icon: Bookmark, label: 'Bookmarks' },
+				{ href: '/enterprise/lists', icon: List, label: i18n.locale === 'fr' ? 'Listes' : 'Lists' },
+				{ href: '/enterprise/messages', icon: MessageSquare, label: 'Messages' }
 			]
 		},
 		{
 			title: i18n.locale === 'fr' ? 'Espace' : 'Space',
 			items: [
-				{ href: '/enterprise/profile', icon: '◎', label: i18n.locale === 'fr' ? 'Profil entreprise' : 'Enterprise profile', description: i18n.locale === 'fr' ? 'Nom, description, logo, taille' : 'Name, description, logo, size' },
-				{ href: '/enterprise/members', icon: '★', label: i18n.locale === 'fr' ? 'Membres' : 'Members', description: i18n.locale === 'fr' ? 'Inviter des recruteurs, gérer les rôles' : 'Invite recruiters, manage roles' }
+				{ href: '/enterprise/profile', icon: Building2, label: i18n.locale === 'fr' ? 'Profil entreprise' : 'Enterprise profile', description: i18n.locale === 'fr' ? 'Nom, description, logo, taille' : 'Name, description, logo, size' },
+				{ href: '/enterprise/members', icon: Users, label: i18n.locale === 'fr' ? 'Membres' : 'Members', description: i18n.locale === 'fr' ? 'Inviter des recruteurs, gérer les rôles' : 'Invite recruiters, manage roles' }
 			]
 		},
 		{
 			title: 'Bounties',
 			items: [
-				{ href: '/enterprise/bounties', icon: '⬢', label: i18n.locale === 'fr' ? 'Mes bounties' : 'My bounties', description: i18n.locale === 'fr' ? 'Dashboard de mes issues sponsorisées' : 'Dashboard of my sponsored issues' },
-				{ href: '/enterprise/bounties/new', icon: '+', label: i18n.locale === 'fr' ? 'Poster une bounty' : 'Post a bounty', description: i18n.locale === 'fr' ? 'Sponsoriser une nouvelle issue GitHub' : 'Sponsor a new GitHub issue' }
+				{ href: '/enterprise/bounties', icon: Hexagon, label: i18n.locale === 'fr' ? 'Mes bounties' : 'My bounties', description: i18n.locale === 'fr' ? 'Dashboard de mes issues sponsorisées' : 'Dashboard of my sponsored issues' },
+				{ href: '/enterprise/bounties/new', icon: Plus, label: i18n.locale === 'fr' ? 'Poster une bounty' : 'Post a bounty', description: i18n.locale === 'fr' ? 'Sponsoriser une nouvelle issue GitHub' : 'Sponsor a new GitHub issue' }
 			]
 		},
 		{
 			title: 'Business',
 			items: [
-				{ href: '/enterprise/credits', icon: '★', label: i18n.locale === 'fr' ? 'Crédits' : 'Credits' },
-				{ href: '/invoices', icon: '◎', label: i18n.locale === 'fr' ? 'Factures' : 'Invoices' },
-				{ href: '/pricing', icon: '★', label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing' }
+				{ href: '/enterprise/credits', icon: Star, label: i18n.locale === 'fr' ? 'Crédits' : 'Credits' },
+				{ href: '/invoices', icon: FileText, label: i18n.locale === 'fr' ? 'Factures' : 'Invoices' },
+				{ href: '/pricing', icon: Star, label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing' }
 			]
 		}
 	]);
@@ -363,7 +404,7 @@
 								</div>
 								<span class="flex-1 text-left">{t.label}</span>
 								{#if theme.base === t.key}
-									<span class="text-accent text-xs">&#10003;</span>
+									<Check size={14} strokeWidth={2.5} class="text-accent" />
 								{/if}
 							</button>
 						{/each}
@@ -408,13 +449,62 @@
 					{/if}
 				</a>
 
-				<a href="/settings" class="ml-1 flex items-center gap-2 rounded-full border border-border bg-surface-elevated px-3 py-1 transition-colors duration-200 hover:bg-surface-overlay hover:border-text-muted">
-					<div class="h-6 w-6 rounded-full bg-accent/15 flex items-center justify-center text-[10px] font-bold text-accent">
-						{auth.displayName?.[0] ?? '?'}
-					</div>
-					<span class="text-sm font-medium max-w-[100px] truncate">{auth.displayName}</span>
-					<span class="rounded bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold text-accent uppercase">{auth.title}</span>
-				</a>
+				<div class="relative ml-1" data-user-dropdown>
+					<button
+						type="button"
+						onclick={() => (userMenuOpen = !userMenuOpen)}
+						aria-expanded={userMenuOpen}
+						aria-haspopup="menu"
+						class="flex items-center gap-2 rounded-full border border-border bg-surface-elevated px-3 py-1 transition-colors duration-200 hover:bg-surface-overlay hover:border-text-muted"
+					>
+						<div class="h-6 w-6 rounded-full bg-accent/15 flex items-center justify-center text-[10px] font-bold text-accent">
+							{auth.displayName?.[0] ?? '?'}
+						</div>
+						<span class="text-sm font-medium max-w-[100px] truncate">{auth.displayName}</span>
+						{#if auth.user?.role !== 'enterprise' && auth.user?.role !== 'recruiter' && auth.user?.role !== 'admin'}
+							<!-- Gamification title is a candidate-progression tier. It's
+							     meaningless (and confusing) for enterprise / recruiter /
+							     admin roles, so we hide the badge for them. -->
+							<span class="rounded bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold text-accent uppercase">{auth.title}</span>
+						{/if}
+						<ChevronDown size={14} strokeWidth={2} class="text-text-muted {userMenuOpen ? 'rotate-180' : ''} transition-transform" />
+					</button>
+
+					{#if userMenuOpen}
+						<div
+							role="menu"
+							class="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-surface-elevated p-1.5 shadow-lg z-50"
+						>
+							{#if auth.user?.username}
+								<a
+									href="/profile/{auth.user.username}"
+									onclick={() => (userMenuOpen = false)}
+									class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
+								>
+									<UserIcon size={14} strokeWidth={2} />
+									<span>{i18n.locale === 'fr' ? 'Mon profil' : 'My profile'}</span>
+								</a>
+							{/if}
+							<a
+								href="/settings"
+								onclick={() => (userMenuOpen = false)}
+								class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
+							>
+								<SettingsIcon size={14} strokeWidth={2} />
+								<span>{i18n.locale === 'fr' ? 'Paramètres' : 'Settings'}</span>
+							</a>
+							<div class="my-1.5 h-px bg-border"></div>
+							<button
+								type="button"
+								onclick={askLogout}
+								class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted transition-colors duration-200 hover:bg-error/10 hover:text-error"
+							>
+								<LogOut size={14} strokeWidth={2} />
+								<span>{i18n.locale === 'fr' ? 'Se déconnecter' : 'Sign out'}</span>
+							</button>
+						</div>
+					{/if}
+				</div>
 			{:else}
 				<div class="ml-1 h-5 w-px bg-border"></div>
 				<a href="/auth/login" class="rounded-full px-4 py-1.5 text-sm font-medium text-text-muted transition-colors duration-200 hover:text-text-primary">
@@ -474,6 +564,14 @@
 							{link.label}
 						</a>
 					{/each}
+					<button
+						type="button"
+						onclick={askLogout}
+						class="mt-1 flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-sm text-text-muted transition-colors duration-200 hover:bg-error/10 hover:text-error"
+					>
+						<LogOut size={14} strokeWidth={2} />
+						{i18n.locale === 'fr' ? 'Se déconnecter' : 'Sign out'}
+					</button>
 				{:else}
 					{#each [
 						{ href: '/challenges', label: i18n.t('common.nav.challenges') },
@@ -510,7 +608,11 @@
 							onclick={() => theme.toggleMode()}
 							class="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
 						>
-							{theme.mode === 'dark' ? '☀' : '☾'}
+							{#if theme.mode === 'dark'}
+								<Sun size={16} strokeWidth={2} />
+							{:else}
+								<Moon size={16} strokeWidth={2} />
+							{/if}
 						</button>
 						<button
 							onclick={() => i18n.setLocale(i18n.locale === 'fr' ? 'en' : 'fr')}
@@ -535,3 +637,5 @@
 		</div>
 	{/if}
 </header>
+
+<LogoutConfirmModal bind:open={logoutModalOpen} />

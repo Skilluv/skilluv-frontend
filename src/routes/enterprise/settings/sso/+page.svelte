@@ -5,6 +5,7 @@
 	import Modal from '$components/ui/Modal.svelte';
 	import Select from '$components/ui/Select.svelte';
 	import Badge from '$components/ui/Badge.svelte';
+	import { AlertTriangle, ArrowRight } from '@lucide/svelte';
 	import {
 		enterpriseSsoApi,
 		type SsoConfig,
@@ -454,8 +455,10 @@
 			<!-- ─── Group role mapping ─── -->
 			<div class="mt-8">
 				<div class="mb-3 flex items-center justify-between">
-					<h3 class="font-bold">
-						{i18n.locale === 'fr' ? 'Mapping groupes → rôle' : 'Group → role mapping'}
+					<h3 class="font-bold inline-flex items-center gap-1.5">
+						{i18n.locale === 'fr' ? 'Mapping groupes' : 'Group'}
+						<ArrowRight size={14} strokeWidth={2} class="text-text-muted" />
+						{i18n.locale === 'fr' ? 'rôle' : 'role mapping'}
 					</h3>
 					<Button variant="ghost" size="sm" onclick={listGroups} loading={listingGroups}>
 						{i18n.locale === 'fr' ? 'Rafraîchir' : 'Refresh'}
@@ -548,10 +551,13 @@
 	onclose={() => (showScimTokenModal = false)}
 >
 	<div class="flex flex-col gap-4 text-sm">
-		<div class="rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-warning">
-			{i18n.locale === 'fr'
-				? '⚠ Ce token ne sera plus jamais affiché. Copie-le maintenant et stocke-le dans ton coffre-fort (ou colle-le directement dans ton IdP).'
-				: '⚠ This token will never be shown again. Copy it now and store it in your secret vault (or paste it directly into your IdP).'}
+		<div class="flex items-start gap-2 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-warning">
+			<AlertTriangle size={18} strokeWidth={2} class="mt-0.5 shrink-0" />
+			<span>
+				{i18n.locale === 'fr'
+					? 'Ce token ne sera plus jamais affiché. Copie-le maintenant et stocke-le dans ton coffre-fort (ou colle-le directement dans ton IdP).'
+					: 'This token will never be shown again. Copy it now and store it in your secret vault (or paste it directly into your IdP).'}
+			</span>
 		</div>
 
 		<div>

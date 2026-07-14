@@ -9,6 +9,7 @@
 	import { pricingApi, type PricingSubscription } from '$api/pricing';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import { ArrowRight } from '@lucide/svelte';
 
 	let current = $state<EnterpriseSubscription | null>(null);
 	let plans = $state<PricingSubscription[]>([]);
@@ -170,10 +171,10 @@
 						<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 							{i18n.locale === 'fr' ? 'Période en cours' : 'Current period'}
 						</p>
-						<p class="mt-1 text-sm">
+						<p class="mt-1 flex items-center gap-1.5 text-sm">
 							{fmtDate(current.current_period_start)}
-							<br />
-							→ {fmtDate(current.current_period_end)}
+							<ArrowRight size={12} strokeWidth={2} class="text-text-muted" />
+							{fmtDate(current.current_period_end)}
 						</p>
 					</div>
 					<div class="sm:text-right">
@@ -200,8 +201,9 @@
 							: (i18n.locale === 'fr' ? 'Choisir un plan.' : 'Choose a plan.')}
 					</h2>
 				</div>
-				<a href="/pricing" class="text-sm underline hover:text-primary">
-					{i18n.locale === 'fr' ? 'Comparer avec crédits →' : 'Compare with credits →'}
+				<a href="/pricing" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+					{i18n.locale === 'fr' ? 'Comparer avec crédits' : 'Compare with credits'}
+					<ArrowRight size={14} strokeWidth={2} />
 				</a>
 			</div>
 
@@ -212,7 +214,7 @@
 					<article class="flex flex-col rounded-2xl border {isBest ? 'border-accent' : isCurrent ? 'border-primary' : 'border-border'} bg-surface-elevated p-6 relative">
 						{#if isBest && !isCurrent}
 							<div class="absolute -top-3 left-6">
-								<Badge variant="accent" size="md">★ {i18n.locale === 'fr' ? 'Recommandé' : 'Recommended'}</Badge>
+								<Badge variant="accent" size="md">{i18n.locale === 'fr' ? 'Recommandé' : 'Recommended'}</Badge>
 							</div>
 						{/if}
 						{#if isCurrent}

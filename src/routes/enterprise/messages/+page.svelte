@@ -4,6 +4,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { Conversation } from '$types';
+	import { MessageSquare } from '@lucide/svelte';
 
 	let conversations = $state<Conversation[]>([]);
 	let loading = $state(true);
@@ -54,7 +55,7 @@
 		<p class="py-8 text-center text-text-muted">{error}</p>
 	{:else if conversations.length === 0}
 		<div class="py-12 text-center">
-			<p class="mb-2 text-4xl">&#x1F4AC;</p>
+			<div class="mb-3 inline-flex justify-center text-text-muted"><MessageSquare size={40} strokeWidth={1.5} /></div>
 			<p class="text-text-muted">{i18n.t('enterprise.messages.empty')}</p>
 		</div>
 	{:else}

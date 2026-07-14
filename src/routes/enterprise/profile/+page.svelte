@@ -8,12 +8,17 @@
 	import Input from '$components/ui/Input.svelte';
 	import Select from '$components/ui/Select.svelte';
 	import Badge from '$components/ui/Badge.svelte';
+	import Modal from '$components/ui/Modal.svelte';
 	import type { CompanySize, Enterprise } from '$types';
+	import { INDUSTRIES, industryItems } from '$lib/data/industries';
+	import { Undo2 } from '@lucide/svelte';
 
 	let enterprise = $state<Enterprise | null>(null);
 	let memberCount = $state(0);
 	let loading = $state(true);
 	let saving = $state(false);
+	let uploadingLogo = $state(false);
+	let logoInput: HTMLInputElement | undefined = $state();
 	let error = $state('');
 
 	// Form fields
@@ -33,6 +38,55 @@
 		{ value: '1000+', label: '1000+' }
 	];
 
+	// Items du Select secteur — dérivé pour rester réactif au changement
+	// de locale. Le label affiché sur l'aperçu talent (Badge) est aussi
+	// converti FR/EN pour rester cohérent avec la sélection.
+	let industryOptions = $derived(industryItems(i18n.locale === 'fr' ? 'fr' : 'en'));
+	let industryDisplayLabel = $derived(
+		INDUSTRIES.find((it) => it.value === industry)?.[i18n.locale === 'fr' ? 'fr' : 'en']
+			?? industry
+	);
+
+	// Snapshot des valeurs à l'arrivée du profil, mis à jour après chaque
+	// save réussi. On compare ce snapshot au state courant pour détecter
+	// les modifs non enregistrées → affichage conditionnel des boutons +
+	// warning à la sortie de page si "dirty".
+	let initialSnapshot = $state({
+		companyName: '',
+		description: '',
+		website: '',
+		industry: '',
+		companySize: '1-10' as CompanySize
+	});
+
+	// Note : le logo est géré séparément (upload/delete direct via API) donc
+	// il n'entre PAS dans le dirty-tracking du formulaire — les changements
+	// de logo sont déjà persistés au moment où l'utilisateur clique.
+	let isDirty = $derived(
+		companyName !== initialSnapshot.companyName ||
+			description !== initialSnapshot.description ||
+			website !== initialSnapshot.website ||
+			industry !== initialSnapshot.industry ||
+			companySize !== initialSnapshot.companySize
+	);
+
+	// Modale de confirmation "abandonner les modifications ?"
+	let discardModalOpen = $state(false);
+
+	function askDiscard() {
+		discardModalOpen = true;
+	}
+
+	function confirmDiscard() {
+		// Restaure les valeurs du snapshot — pas de re-fetch réseau inutile.
+		companyName = initialSnapshot.companyName;
+		description = initialSnapshot.description;
+		website = initialSnapshot.website;
+		industry = initialSnapshot.industry;
+		companySize = initialSnapshot.companySize;
+		discardModalOpen = false;
+	}
+
 	async function load() {
 		loading = true;
 		try {
@@ -46,6 +100,14 @@
 			logoUrl = enterprise.logo_url ?? '';
 			industry = enterprise.industry ?? '';
 			companySize = enterprise.company_size;
+			// Snapshot pristine → dirty-tracking repart à zéro après un load.
+			initialSnapshot = {
+				companyName,
+				description,
+				website,
+				industry,
+				companySize
+			};
 		} catch (e) {
 			toast.error(e instanceof SkilluError ? e.message : 'Erreur');
 		} finally {
@@ -66,7 +128,6 @@
 				company_name: companyName.trim(),
 				description: description.trim() || undefined,
 				website: website.trim() || undefined,
-				logo_url: logoUrl.trim() || undefined,
 				industry: industry.trim() || undefined,
 				company_size: companySize
 			});
@@ -76,6 +137,55 @@
 			error = e instanceof SkilluError ? e.message : 'Erreur';
 		} finally {
 			saving = false;
+		}
+	}
+
+	async function handleLogoUpload(e: Event) {
+		const input = e.target as HTMLInputElement;
+		const file = input.files?.[0];
+		if (!file) return;
+
+		if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+			toast.error(
+				i18n.locale === 'fr'
+					? 'Format non supporté. Utilisez JPEG, PNG ou WebP.'
+					: 'Unsupported format. Use JPEG, PNG or WebP.'
+			);
+			input.value = '';
+			return;
+		}
+
+		if (file.size > 2 * 1024 * 1024) {
+			toast.error(i18n.locale === 'fr' ? 'Fichier trop volumineux (max 2 Mo).' : 'File too large (max 2MB).');
+			input.value = '';
+			return;
+		}
+
+		uploadingLogo = true;
+		try {
+			const res = await enterpriseApi.uploadLogo(file);
+			logoUrl = res.data.logo_url;
+			enterprise = res.data.enterprise;
+			toast.success(i18n.locale === 'fr' ? 'Logo mis à jour' : 'Logo updated');
+		} catch (e) {
+			toast.error(e instanceof SkilluError ? e.message : 'Erreur');
+		} finally {
+			uploadingLogo = false;
+			input.value = '';
+		}
+	}
+
+	async function removeLogo() {
+		uploadingLogo = true;
+		try {
+			const res = await enterpriseApi.deleteLogo();
+			logoUrl = '';
+			enterprise = res.data.enterprise;
+			toast.success(i18n.locale === 'fr' ? 'Logo supprimé' : 'Logo removed');
+		} catch (e) {
+			toast.error(e instanceof SkilluError ? e.message : 'Erreur');
+		} finally {
+			uploadingLogo = false;
 		}
 	}
 
@@ -125,7 +235,7 @@
 					<h3 class="text-xl font-black tracking-tight mb-1">{companyName || '—'}</h3>
 					<div class="flex flex-wrap gap-1.5 mb-2">
 						{#if industry}
-							<Badge variant="default" size="sm">{industry}</Badge>
+							<Badge variant="default" size="sm">{industryDisplayLabel}</Badge>
 						{/if}
 						<Badge variant="default" size="sm">{companySize}</Badge>
 						{#if website}
@@ -189,21 +299,74 @@
 						placeholder="https://entreprise.com"
 						bind:value={website}
 					/>
-					<Input
-						label={i18n.locale === 'fr' ? 'Secteur' : 'Industry'}
-						placeholder="Tech, Finance, Santé..."
-						bind:value={industry}
-					/>
+					<div>
+						<label for="industry" class="mb-1.5 block text-sm font-medium">
+							{i18n.locale === 'fr' ? 'Secteur' : 'Industry'}
+						</label>
+						<Select
+							size="lg"
+							shape="rounded"
+							searchable
+							searchPlaceholder={i18n.locale === 'fr' ? 'Rechercher un secteur…' : 'Search an industry…'}
+							placeholder={i18n.locale === 'fr' ? '— Sélectionnez un secteur —' : '— Select an industry —'}
+							items={industryOptions}
+							bind:value={industry}
+							class="w-full"
+						/>
+					</div>
 				</div>
 
-				<Input
-					label={i18n.locale === 'fr' ? 'URL du logo' : 'Logo URL'}
-					placeholder="https://cdn.entreprise.com/logo.png"
-					bind:value={logoUrl}
-					hint={i18n.locale === 'fr'
-						? 'Upload à venir. Pour l\'instant, hébergez votre logo ailleurs et collez l\'URL.'
-						: 'Upload coming soon. For now, host your logo elsewhere and paste the URL.'}
-				/>
+				<div>
+					<label for="logo-file" class="mb-1.5 block text-sm font-medium">
+						{i18n.locale === 'fr' ? 'Logo' : 'Logo'}
+					</label>
+					<div class="flex items-center gap-4">
+						<div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-surface-overlay text-2xl font-black text-primary overflow-hidden border border-border">
+							{#if logoUrl}
+								<img src={logoUrl} alt="" class="h-full w-full object-cover" />
+							{:else}
+								{companyName?.[0]?.toUpperCase() ?? '?'}
+							{/if}
+						</div>
+						<div class="flex flex-wrap gap-2">
+							<input
+								id="logo-file"
+								bind:this={logoInput}
+								type="file"
+								accept="image/jpeg,image/png,image/webp"
+								class="hidden"
+								onchange={handleLogoUpload}
+							/>
+							<Button
+								variant="ghost"
+								size="md"
+								type="button"
+								loading={uploadingLogo}
+								onclick={() => logoInput?.click()}
+							>
+								{logoUrl
+									? (i18n.locale === 'fr' ? 'Remplacer' : 'Replace')
+									: (i18n.locale === 'fr' ? 'Uploader' : 'Upload')}
+							</Button>
+							{#if logoUrl}
+								<Button
+									variant="ghost"
+									size="md"
+									type="button"
+									loading={uploadingLogo}
+									onclick={removeLogo}
+								>
+									{i18n.locale === 'fr' ? 'Supprimer' : 'Remove'}
+								</Button>
+							{/if}
+						</div>
+					</div>
+					<p class="mt-1.5 text-[11px] text-text-muted">
+						{i18n.locale === 'fr'
+							? 'JPEG, PNG ou WebP. 2 Mo max.'
+							: 'JPEG, PNG or WebP. 2MB max.'}
+					</p>
+				</div>
 
 				<div>
 					<label for="size" class="mb-1.5 block text-sm font-medium">
@@ -217,14 +380,49 @@
 				</div>
 			</div>
 
-			<div class="mt-8 flex justify-end gap-3">
-				<Button variant="ghost" size="lg" onclick={load} type="button">
-					{i18n.locale === 'fr' ? 'Annuler' : 'Cancel'}
-				</Button>
-				<Button variant="accent" size="lg" type="submit" loading={saving}>
-					{i18n.locale === 'fr' ? 'Enregistrer' : 'Save'}
-				</Button>
-			</div>
+			<!-- Footer actions : n'apparaissent que si l'utilisateur a modifié
+			     au moins un champ. Sinon le formulaire est en mode "lecture
+			     seule visuellement" — pas de bruit dans l'UI. -->
+			{#if isDirty}
+				<div class="mt-8 flex items-center justify-end gap-3">
+					<span class="mr-auto text-xs text-text-muted">
+						{i18n.locale === 'fr' ? 'Modifications non enregistrées' : 'Unsaved changes'}
+					</span>
+					<Button variant="ghost" size="lg" onclick={askDiscard} type="button">
+						{i18n.locale === 'fr' ? 'Annuler' : 'Cancel'}
+					</Button>
+					<Button variant="accent" size="lg" type="submit" loading={saving}>
+						{i18n.locale === 'fr' ? 'Enregistrer' : 'Save'}
+					</Button>
+				</div>
+			{/if}
 		</form>
 	{/if}
 </div>
+
+<!-- ═══════════ Discard confirm modal ═══════════ -->
+<Modal
+	open={discardModalOpen}
+	title={i18n.locale === 'fr' ? 'Annuler les modifications ?' : 'Discard changes?'}
+	onclose={() => (discardModalOpen = false)}
+>
+	<div class="flex gap-4">
+		<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-warning/10 text-warning">
+			<Undo2 size={20} strokeWidth={2} />
+		</div>
+		<p class="text-sm leading-relaxed text-text-muted">
+			{i18n.locale === 'fr'
+				? 'Toutes vos modifications non enregistrées seront perdues. Les valeurs d\'origine seront restaurées.'
+				: 'All your unsaved changes will be lost. Original values will be restored.'}
+		</p>
+	</div>
+
+	{#snippet actions()}
+		<Button variant="ghost" onclick={() => (discardModalOpen = false)}>
+			{i18n.locale === 'fr' ? 'Continuer l\'édition' : 'Keep editing'}
+		</Button>
+		<Button variant="danger" onclick={confirmDiscard}>
+			{i18n.locale === 'fr' ? 'Annuler les modifications' : 'Discard changes'}
+		</Button>
+	{/snippet}
+</Modal>

@@ -4,6 +4,7 @@
 	import { authApi } from '$api/auth';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
+	import { X } from '@lucide/svelte';
 
 	let sending = $state(false);
 	let dismissed = $state(false);
@@ -57,7 +58,7 @@
 					aria-label="Dismiss"
 					onclick={() => (dismissed = true)}
 				>
-					✕
+					<X size={16} strokeWidth={2} />
 				</button>
 			</div>
 		</div>

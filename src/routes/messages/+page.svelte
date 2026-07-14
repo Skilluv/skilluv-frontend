@@ -67,8 +67,8 @@
 			<p class="mb-4 text-text-muted">
 				{i18n.locale === 'fr' ? 'Aucune conversation pour l\'instant.' : 'No conversation yet.'}
 			</p>
-			<Button variant="ghost" href="/find-talents">
-				{i18n.locale === 'fr' ? 'Découvrir des talents' : 'Discover talents'}
+			<Button variant="ghost" href="/mentors">
+				{i18n.locale === 'fr' ? 'Trouver un mentor' : 'Find a mentor'}
 			</Button>
 		</div>
 	{:else}

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, type Component } from 'svelte';
 	import type { Snippet } from 'svelte';
 	import { page } from '$app/stores';
 
 	interface NavItem {
 		href: string;
-		icon: string;
+		icon: Component;
 		label: string;
 		description?: string;
 		badge?: string;
@@ -112,8 +112,8 @@
 								class="group/item flex items-start gap-3 rounded-xl p-2.5 transition-colors duration-150 {isCurrentPage ? 'bg-primary/10' : 'hover:bg-primary/10'}"
 								role="menuitem"
 							>
-								<div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-lg text-primary transition-colors duration-150 group-hover/item:bg-primary/20">
-									{item.icon}
+								<div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors duration-150 group-hover/item:bg-primary/20">
+									<item.icon size={18} strokeWidth={2} />
 								</div>
 								<div class="min-w-0 flex-1">
 									<div class="flex items-center gap-2">

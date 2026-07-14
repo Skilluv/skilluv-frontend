@@ -5,6 +5,7 @@
 	import Input from '$components/ui/Input.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { i18n } from '$lib/i18n';
+	import { X } from '@lucide/svelte';
 
 	let lists = $state<{ id: string; name: string; description: string | null; talent_count: number; created_at: string }[]>([]);
 	let loading = $state(true);
@@ -112,7 +113,9 @@
 							{/if}
 						</div>
 					</a>
-					<button class="text-sm text-text-muted hover:text-error" onclick={() => deleteList(list.id)} title={i18n.t('common.actions.delete')}>✕</button>
+					<button class="text-text-muted hover:text-error" onclick={() => deleteList(list.id)} title={i18n.t('common.actions.delete')} aria-label={i18n.t('common.actions.delete')}>
+						<X size={16} strokeWidth={2} />
+					</button>
 				</div>
 			{/each}
 		</div>

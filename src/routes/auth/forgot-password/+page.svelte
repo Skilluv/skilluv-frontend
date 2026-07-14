@@ -3,6 +3,7 @@
 	import Input from '$components/ui/Input.svelte';
 	import { authApi } from '$api/auth';
 	import { i18n } from '$lib/i18n';
+	import { Check } from '@lucide/svelte';
 
 	let email = $state('');
 	let loading = $state(false);
@@ -32,8 +33,8 @@
 <div class="animate-[fade-in_300ms_ease-out]">
 	{#if sent}
 		<div class="text-center">
-			<div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success/10 text-3xl text-success">
-				✓
+			<div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success/10 text-success">
+				<Check size={32} strokeWidth={2.5} />
 			</div>
 			<h1 class="mb-2 text-2xl font-bold">{i18n.t('auth.forgot.sentTitle')}</h1>
 			<p class="mb-6 text-sm text-text-muted">

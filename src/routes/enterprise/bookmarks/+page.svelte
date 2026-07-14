@@ -5,6 +5,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import { i18n } from '$lib/i18n';
+	import { X } from '@lucide/svelte';
 
 	let bookmarks = $state<{
 		id: string; username: string; display_name: string; skill_domain: string;
@@ -82,7 +83,9 @@
 							<span class="text-accent">{bk.total_fragments} ◆</span>
 						</div>
 					</a>
-					<button class="text-sm text-text-muted hover:text-error" onclick={() => removeBookmark(bk.id)} title={i18n.t('enterprise.bookmarks.remove')}>✕</button>
+					<button class="text-text-muted hover:text-error" onclick={() => removeBookmark(bk.id)} title={i18n.t('enterprise.bookmarks.remove')} aria-label={i18n.t('enterprise.bookmarks.remove')}>
+						<X size={16} strokeWidth={2} />
+					</button>
 				</div>
 			{/each}
 		</div>

@@ -9,6 +9,11 @@
 	import { pricingApi, type PricingResponse } from '$api/pricing';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import { type Component } from 'svelte';
+	import {
+		ArrowUp, ArrowDown, ArrowRight, RotateCcw, Sparkles, Hexagon,
+		Coins, Package, Boxes, Gem, Star, BadgeCheck, Inbox
+	} from '@lucide/svelte';
 
 	let balance = $state<CreditBalance | null>(null);
 	let transactions = $state<CreditTransaction[]>([]);
@@ -18,20 +23,27 @@
 	let promoCode = $state('');
 	let promoBusy = $state(false);
 
+	// Recruteurs voient le solde + historique + code promo, mais pas les CTA
+	// qui engagent la CB de l'entreprise (achat de crédits, portail Stripe).
+	// Le backend enforce déjà via require_enterprise_owner_pub sur les
+	// endpoints correspondants — le gate UI évite juste des erreurs 403 en
+	// clic direct + garde une lecture claire de qui contrôle quoi.
+	let isOwner = $derived(auth.user?.role === 'enterprise');
+
 	// Reason → label + icône + variant Badge
-	const REASON_META: Record<string, { icon: string; variant: 'success' | 'error' | 'accent' | 'primary' | 'default'; fr: string; en: string }> = {
-		purchase: { icon: '↑', variant: 'success', fr: 'Achat', en: 'Purchase' },
-		spend_interest_request: { icon: '↓', variant: 'default', fr: 'Contact talent', en: 'Talent contact' },
-		refund_refused: { icon: '↺', variant: 'accent', fr: 'Refund (décliné)', en: 'Refund (declined)' },
-		refund_timeout: { icon: '↺', variant: 'accent', fr: 'Refund (timeout)', en: 'Refund (timeout)' },
-		refund_admin: { icon: '↺', variant: 'accent', fr: 'Refund admin', en: 'Admin refund' },
-		admin_grant: { icon: '★', variant: 'primary', fr: 'Bonus admin', en: 'Admin grant' },
-		signup_bonus: { icon: '★', variant: 'primary', fr: 'Bonus inscription', en: 'Signup bonus' },
-		promo_code: { icon: '★', variant: 'primary', fr: 'Code promo', en: 'Promo code' },
-		subscription_grant: { icon: '↑', variant: 'success', fr: 'Abonnement mensuel', en: 'Monthly subscription' },
-		spend_bounty_escrow: { icon: '⬢', variant: 'default', fr: 'Bounty séquestre', en: 'Bounty escrow' },
-		spend_bounty_payout: { icon: '⬢', variant: 'default', fr: 'Bounty payée', en: 'Bounty payout' },
-		refund_bounty_cancelled: { icon: '↺', variant: 'accent', fr: 'Bounty annulée', en: 'Bounty cancelled' }
+	const REASON_META: Record<string, { icon: Component; variant: 'success' | 'error' | 'accent' | 'primary' | 'default'; fr: string; en: string }> = {
+		purchase: { icon: ArrowUp, variant: 'success', fr: 'Achat', en: 'Purchase' },
+		spend_interest_request: { icon: ArrowDown, variant: 'default', fr: 'Contact talent', en: 'Talent contact' },
+		refund_refused: { icon: RotateCcw, variant: 'accent', fr: 'Refund (décliné)', en: 'Refund (declined)' },
+		refund_timeout: { icon: RotateCcw, variant: 'accent', fr: 'Refund (timeout)', en: 'Refund (timeout)' },
+		refund_admin: { icon: RotateCcw, variant: 'accent', fr: 'Refund admin', en: 'Admin refund' },
+		admin_grant: { icon: Sparkles, variant: 'primary', fr: 'Bonus admin', en: 'Admin grant' },
+		signup_bonus: { icon: Sparkles, variant: 'primary', fr: 'Bonus inscription', en: 'Signup bonus' },
+		promo_code: { icon: Sparkles, variant: 'primary', fr: 'Code promo', en: 'Promo code' },
+		subscription_grant: { icon: ArrowUp, variant: 'success', fr: 'Abonnement mensuel', en: 'Monthly subscription' },
+		spend_bounty_escrow: { icon: Hexagon, variant: 'default', fr: 'Bounty séquestre', en: 'Bounty escrow' },
+		spend_bounty_payout: { icon: Hexagon, variant: 'default', fr: 'Bounty payée', en: 'Bounty payout' },
+		refund_bounty_cancelled: { icon: RotateCcw, variant: 'accent', fr: 'Bounty annulée', en: 'Bounty cancelled' }
 	};
 
 	async function loadAll() {
@@ -94,8 +106,10 @@
 		}
 	}
 
-	function fmtDate(iso: string): string {
+	function fmtDate(iso: string | null | undefined): string {
+		if (!iso) return '—';
 		const d = new Date(iso);
+		if (Number.isNaN(d.getTime())) return '—';
 		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
 			day: '2-digit',
 			month: 'short',
@@ -114,6 +128,15 @@
 				en: reason
 			}
 		);
+	}
+
+	// Fallback à 0 pour les champs numériques : sur un compte fraîchement créé
+	// le backend peut renvoyer `null`/`undefined` pour les cumuls (jamais dépensé,
+	// jamais remboursé). Afficher un vide donne une carte cassée — on affiche 0.
+	function fmtNum(v: number | string | null | undefined): string {
+		if (v === null || v === undefined || v === '') return '0';
+		const n = typeof v === 'number' ? v : parseFloat(v);
+		return Number.isFinite(n) ? String(n) : '0';
 	}
 
 	function fmtDelta(delta: string): string {
@@ -158,8 +181,9 @@
 					: 'Each credit = one talent reached. Automatic 50% refund if declined or no reply after 30 days.'}
 			</p>
 		</div>
-		<a href="/enterprise/credits/invoices" class="text-sm underline hover:text-primary">
-			{i18n.locale === 'fr' ? 'Factures →' : 'Invoices →'}
+		<a href="/enterprise/credits/invoices" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+			{i18n.locale === 'fr' ? 'Factures' : 'Invoices'}
+			<ArrowRight size={14} strokeWidth={2} />
 		</a>
 	</div>
 
@@ -173,7 +197,7 @@
 					{i18n.locale === 'fr' ? 'Solde disponible' : 'Available balance'}
 				</p>
 				<div class="flex items-baseline gap-3">
-					<span class="text-6xl sm:text-7xl font-black tracking-tight text-primary">{balance.balance}</span>
+					<span class="text-6xl sm:text-7xl font-black tracking-tight text-primary">{fmtNum(balance.balance)}</span>
 					<span class="text-lg text-text-muted">
 						{i18n.locale === 'fr' ? 'crédits' : 'credits'}
 					</span>
@@ -188,26 +212,26 @@
 					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Total acheté' : 'Total purchased'}
 					</p>
-					<p class="text-2xl font-black">{balance.total_purchased}</p>
+					<p class="text-2xl font-black">{fmtNum(balance.total_purchased)}</p>
 				</div>
 				<div class="mb-4">
 					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Total dépensé' : 'Total spent'}
 					</p>
-					<p class="text-2xl font-black">{balance.total_used}</p>
+					<p class="text-2xl font-black">{fmtNum(balance.total_used)}</p>
 				</div>
 				<div>
 					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Total remboursé' : 'Total refunded'}
 					</p>
-					<p class="text-2xl font-black text-accent">{balance.total_refunded}</p>
+					<p class="text-2xl font-black text-accent">{fmtNum(balance.total_refunded)}</p>
 				</div>
 			</div>
 		</div>
 	{/if}
 
-	<!-- Quick buy packs -->
-	{#if pricing && pricing.packs.length}
+	<!-- Quick buy packs — owner only, engages the enterprise's card -->
+	{#if isOwner && pricing && pricing.packs.length}
 		<section class="mb-14">
 			<div class="mb-6 flex items-end justify-between">
 				<div>
@@ -218,8 +242,9 @@
 						{i18n.locale === 'fr' ? 'Ajoutez des crédits.' : 'Add credits.'}
 					</h2>
 				</div>
-				<a href="/pricing" class="text-sm underline hover:text-primary">
-					{i18n.locale === 'fr' ? 'Voir tous les tarifs →' : 'See all pricing →'}
+				<a href="/pricing" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+					{i18n.locale === 'fr' ? 'Voir tous les tarifs' : 'See all pricing'}
+					<ArrowRight size={14} strokeWidth={2} />
 				</a>
 			</div>
 
@@ -228,8 +253,16 @@
 					<article
 						class="rounded-2xl border border-border bg-surface-elevated p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
 					>
-						<div class="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-lg text-primary">
-							{pack.credits === 1 ? '◎' : pack.credits <= 5 ? '◈' : pack.credits <= 20 ? '⬢' : '★'}
+						<div class="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+							{#if pack.credits === 1}
+								<Coins size={18} strokeWidth={2} />
+							{:else if pack.credits <= 5}
+								<Package size={18} strokeWidth={2} />
+							{:else if pack.credits <= 20}
+								<Boxes size={18} strokeWidth={2} />
+							{:else}
+								<Gem size={18} strokeWidth={2} />
+							{/if}
 						</div>
 						<div class="mb-1 font-mono text-xs uppercase tracking-wider text-text-muted">
 							{pack.credits} {i18n.locale === 'fr' ? 'crédit' : 'credit'}{pack.credits > 1 ? 's' : ''}
@@ -253,11 +286,12 @@
 		</section>
 	{/if}
 
-	<!-- Promo code + Billing portal side by side -->
-	<div class="mb-14 grid gap-6 lg:grid-cols-2">
+	<!-- Promo code + Billing portal side by side. The billing portal card
+	     is owner-only (see isOwner), so recruiters see just the promo card. -->
+	<div class="mb-14 grid gap-6 {isOwner ? 'lg:grid-cols-2' : ''}">
 		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 			<div class="mb-4 flex items-center gap-3">
-				<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-lg text-accent">★</div>
+				<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent"><Star size={20} strokeWidth={2} /></div>
 				<div>
 					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Code promo' : 'Promo code'}
@@ -281,27 +315,29 @@
 			</form>
 		</div>
 
-		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
-			<div class="mb-4 flex items-center gap-3">
-				<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary">◈</div>
-				<div>
-					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
-						{i18n.locale === 'fr' ? 'Facturation' : 'Billing'}
-					</p>
-					<h3 class="text-base font-semibold">
-						{i18n.locale === 'fr' ? 'Gérer paiement & abo' : 'Manage payment & sub'}
-					</h3>
+		{#if isOwner}
+			<div class="rounded-2xl border border-border bg-surface-elevated p-6">
+				<div class="mb-4 flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary"><BadgeCheck size={20} strokeWidth={2} /></div>
+					<div>
+						<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
+							{i18n.locale === 'fr' ? 'Facturation' : 'Billing'}
+						</p>
+						<h3 class="text-base font-semibold">
+							{i18n.locale === 'fr' ? 'Gérer paiement & abo' : 'Manage payment & sub'}
+						</h3>
+					</div>
 				</div>
+				<p class="mb-4 text-sm text-text-muted">
+					{i18n.locale === 'fr'
+						? 'Mettre à jour votre carte, télécharger vos reçus, résilier votre abonnement.'
+						: 'Update card, download receipts, cancel your subscription.'}
+				</p>
+				<Button variant="secondary" onclick={openPortal}>
+					{i18n.locale === 'fr' ? 'Ouvrir le portail de facturation' : 'Open billing portal'}
+				</Button>
 			</div>
-			<p class="mb-4 text-sm text-text-muted">
-				{i18n.locale === 'fr'
-					? 'Mettre à jour votre carte, télécharger vos reçus Stripe, résilier votre abonnement.'
-					: 'Update card, download Stripe receipts, cancel your subscription.'}
-			</p>
-			<Button variant="secondary" onclick={openPortal}>
-				{i18n.locale === 'fr' ? 'Ouvrir le portail Stripe' : 'Open Stripe portal'}
-			</Button>
-		</div>
+		{/if}
 	</div>
 
 	<!-- Transactions -->
@@ -315,8 +351,9 @@
 					{i18n.locale === 'fr' ? 'Vos mouvements.' : 'Your movements.'}
 				</h2>
 			</div>
-			<a href="/enterprise/credits/invoices" class="text-sm underline hover:text-primary">
-				{i18n.locale === 'fr' ? 'Voir les factures →' : 'See invoices →'}
+			<a href="/enterprise/credits/invoices" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+				{i18n.locale === 'fr' ? 'Voir les factures' : 'See invoices'}
+				<ArrowRight size={14} strokeWidth={2} />
 			</a>
 		</div>
 
@@ -328,7 +365,7 @@
 			</div>
 		{:else if transactions.length === 0}
 			<div class="rounded-2xl border border-border bg-surface-elevated p-12 text-center">
-				<div class="mb-3 text-4xl text-text-muted">◎</div>
+				<div class="mb-3 inline-flex justify-center text-text-muted"><Inbox size={40} strokeWidth={1.5} /></div>
 				<p class="text-text-muted">
 					{i18n.locale === 'fr' ? 'Aucun mouvement pour l\'instant.' : 'No movements yet.'}
 				</p>
@@ -339,8 +376,8 @@
 					{@const meta = reasonMeta(tx.reason)}
 					{@const delta = parseFloat(tx.delta)}
 					<div class="flex items-center gap-4 p-4">
-						<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface-overlay text-lg">
-							{meta.icon}
+						<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface-overlay text-text-primary">
+							<meta.icon size={18} strokeWidth={2} />
 						</div>
 						<div class="min-w-0 flex-1">
 							<div class="flex items-center gap-2">
