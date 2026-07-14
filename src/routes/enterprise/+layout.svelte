@@ -247,11 +247,10 @@
 <EmailVerificationBanner />
 <div class="flex min-h-[calc(100vh-3.5rem)]">
 	<!-- Sidebar desktop — sticky sous l'EnterpriseHeader (h-14 = 3.5rem).
-	     La sidebar elle-même ne bouge pas ; seul son contenu scrolle si les
-	     items dépassent la hauteur du viewport. `overscroll-contain` évite
-	     que la molette "traverse" vers la page derrière quand on atteint le
-	     bas de la nav interne. -->
-	<aside class="hidden w-56 shrink-0 border-r border-border bg-surface-elevated lg:block">
+	     Bordure droite 2px cat-understand : signal chromatique du workspace
+	     enterprise (bleu Prusse). La sidebar elle-même ne bouge pas ; seul
+	     son contenu scrolle si les items dépassent la hauteur du viewport. -->
+	<aside class="hidden w-56 shrink-0 border-r-2 border-cat-understand bg-surface-elevated lg:block">
 		<div
 			use:autoHideScrollbar
 			class="auto-hide-scrollbar sticky top-14 flex h-[calc(100vh-3.5rem)] flex-col overflow-y-auto overscroll-contain p-4"
