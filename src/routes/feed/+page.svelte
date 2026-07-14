@@ -145,12 +145,12 @@
 		<div class="space-y-2">
 			{#each events as ev}
 				{@const href = targetLink(ev)}
+				{@const KindIcon = iconForKind(ev.kind)}
 				<svelte:element
 					this={href ? 'a' : 'div'}
 					{...href ? { href } : {}}
 					class="block rounded-2xl border border-border bg-surface-elevated p-4 {href ? 'hover:border-primary/40 hover:bg-surface-overlay transition-colors' : ''}"
 				>
-					{@const KindIcon = iconForKind(ev.kind)}
 					<div class="flex items-start gap-3">
 						<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
 							<KindIcon size={18} strokeWidth={2} />
