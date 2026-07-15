@@ -23,6 +23,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Navbar user dropdown — 5 conditional links (forum moderation, curator queue, plagiarism review, mentor zone, tournament jury) driven by `auth.can(...)`.
 - i18n FR/EN/AR — 14 capability labels + descriptions + navigation entries.
 
+**FE-M2 — Onboarding orientations**
+- `<OrientationCard>` — reusable visual card (domain dot, name, description, tags, selection state, disabled state, link/button dual mode).
+- `<OrientationSelector>` — grid + domain filter + cap-3 enforcement + primary radio + mode toggle (learning/active) + working languages + timezone inputs + submit with validation.
+- `<OrientationPromptBanner>` — sticky non-blocking banner in root layout for authenticated candidates with zero orientations (soft-block, per MVP §0.7 — no interstitial modal).
+- `<OrientationSoftBlock>` — full-screen prompt for pages that require an orientation, drop-in reusable.
+- New pages `/onboarding/orientations` (catalog + selector + confirmation) and `/onboarding/orientations/[slug]` (detail + playlist preview with graceful fallback).
+- `AuthState.refreshOrientations()` + orientations loaded in parallel with capabilities during `init()`.
+- Post-signup flow updated: `complete-profile` now routes to `/onboarding/orientations` instead of `/challenges/onboarding`.
+- Hooks server allowlist extended so unfinished users can reach the orientations picker.
+- i18n FR/EN/AR — full parity for selector, banner, soft-block, catalog, detail (playlist labels included).
+- 4 unit tests on orientations lifecycle + 4 Playwright e2e covering catalog render / domain filter / 3-orientation cap / submit confirmation.
+
 **FE-M3 — Badges profile display**
 - `<BadgesWall>` — rank chevron + skill patches wall + medals + guild crests + seals/stamps counters + empty state, all connected to `UserBadgesResponse`.
 - `<OrientationList>` — user orientations chip list (primary + secondary + working languages + timezone).

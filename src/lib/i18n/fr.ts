@@ -361,6 +361,7 @@ export const fr: Translations = {
 		primary: 'Principale',
 		workingLanguages: 'Langues de travail',
 		timezone: 'Fuseau',
+		selectionOrder: 'Sélection numéro {n}',
 		mode: {
 			learning: 'En apprentissage',
 			active: 'En exercice'
@@ -368,6 +369,52 @@ export const fr: Translations = {
 		empty: {
 			own: 'Aucune orientation choisie. Ta playlist sera générique tant que tu n\'en choisis pas.',
 			public: 'Aucune orientation renseignée.'
+		},
+		selector: {
+			title: 'Choisis tes orientations',
+			subtitle: 'Sélectionne jusqu\'à {max} orientations. Ta playlist et ta communauté suivront tes choix.',
+			filterLabel: 'Filtrer par domaine',
+			allDomains: 'Tous les domaines',
+			emptyFilter: 'Aucune orientation dans ce domaine. Change le filtre.',
+			summary: 'Ta sélection',
+			setPrimary: 'Principale',
+			remove: 'Retirer {name}',
+			workingLanguagesLabel: 'Langues de travail',
+			workingLanguagesHint: 'Codes ISO séparés par des virgules (ex. fr,en,ar).',
+			timezoneLabel: 'Fuseau horaire',
+			timezoneHint: 'Format IANA (ex. Africa/Porto-Novo). Optionnel.',
+			tooMany: 'Maximum {max} orientations. Retire-en une avant d\'en ajouter une autre.',
+			mustPickOne: 'Choisis au moins une orientation.',
+			submit: 'Valider mes orientations'
+		},
+		banner: {
+			title: 'Choisis tes orientations métier',
+			subtitle: 'Ta playlist et tes recommandations Skilluv seront génériques tant que ce n\'est pas fait.',
+			cta: 'Choisir'
+		},
+		softBlock: {
+			title: 'Cette section a besoin de tes orientations',
+			defaultReason: 'Skilluv personnalise cette page selon les orientations métier que tu choisis. Ça prend 30 secondes.',
+			ctaPrimary: 'Choisir maintenant',
+			ctaLater: 'Plus tard'
+		},
+		catalog: {
+			title: 'Ton parcours Skilluv',
+			subtitle: 'Choisis 1 à 3 orientations. Skilluv construira ta playlist, tes team slots et tes badges autour.',
+			loadError: 'Impossible de charger le catalogue des orientations. Réessaie plus tard.',
+			savedTitle: 'Orientations enregistrées.',
+			savedSubtitle: 'Ta playlist personnalisée est prête sur ton dashboard.',
+			continueCta: 'Continuer vers le dashboard'
+		},
+		detail: {
+			backToCatalog: 'Retour au catalogue',
+			primaryDomain: 'Domaine principal',
+			secondaryDomains: 'Domaines secondaires',
+			tags: 'Compétences clés',
+			playlistTitle: 'Aperçu de ta playlist',
+			playlistSubtitle: 'Voici les 5 premiers items que Skilluv te proposerait si tu choisis cette orientation.',
+			playlistEmpty: 'Playlist personnalisée disponible une fois l\'orientation choisie.',
+			pickCta: 'Ajouter à ma sélection'
 		}
 	},
 	capabilities: {

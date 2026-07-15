@@ -361,6 +361,7 @@ export const en: Translations = {
 		primary: 'Primary',
 		workingLanguages: 'Working languages',
 		timezone: 'Timezone',
+		selectionOrder: 'Selection number {n}',
 		mode: {
 			learning: 'Learning',
 			active: 'Active'
@@ -368,6 +369,52 @@ export const en: Translations = {
 		empty: {
 			own: 'No orientation selected. Your playlist will stay generic until you pick one.',
 			public: 'No orientation set.'
+		},
+		selector: {
+			title: 'Pick your orientations',
+			subtitle: 'Select up to {max} orientations. Your playlist and community will follow.',
+			filterLabel: 'Filter by domain',
+			allDomains: 'All domains',
+			emptyFilter: 'No orientation in this domain. Change the filter.',
+			summary: 'Your selection',
+			setPrimary: 'Primary',
+			remove: 'Remove {name}',
+			workingLanguagesLabel: 'Working languages',
+			workingLanguagesHint: 'ISO codes separated by commas (e.g. en,fr,ar).',
+			timezoneLabel: 'Timezone',
+			timezoneHint: 'IANA format (e.g. Africa/Porto-Novo). Optional.',
+			tooMany: 'Maximum {max} orientations. Remove one before adding another.',
+			mustPickOne: 'Pick at least one orientation.',
+			submit: 'Save my orientations'
+		},
+		banner: {
+			title: 'Pick your career orientations',
+			subtitle: 'Your Skilluv playlist and recommendations stay generic until you do.',
+			cta: 'Pick now'
+		},
+		softBlock: {
+			title: 'This section needs your orientations',
+			defaultReason: 'Skilluv tailors this page to the career orientations you pick. Takes 30 seconds.',
+			ctaPrimary: 'Pick now',
+			ctaLater: 'Later'
+		},
+		catalog: {
+			title: 'Your Skilluv path',
+			subtitle: 'Pick 1 to 3 orientations. Skilluv will build your playlist, team slots and badges around them.',
+			loadError: 'Could not load the orientation catalog. Try again later.',
+			savedTitle: 'Orientations saved.',
+			savedSubtitle: 'Your personalized playlist is ready on your dashboard.',
+			continueCta: 'Continue to dashboard'
+		},
+		detail: {
+			backToCatalog: 'Back to catalog',
+			primaryDomain: 'Primary domain',
+			secondaryDomains: 'Secondary domains',
+			tags: 'Key skills',
+			playlistTitle: 'Playlist preview',
+			playlistSubtitle: 'The first 5 items Skilluv would suggest if you pick this orientation.',
+			playlistEmpty: 'Personalized playlist unlocks once you pick this orientation.',
+			pickCta: 'Add to my selection'
 		}
 	},
 	capabilities: {

@@ -62,7 +62,9 @@
 			// Re-fetch /me so the store carries `profile_completed = true`.
 			const me = await authApi.me();
 			auth.setUser(me.data.user);
-			goto('/challenges/onboarding');
+			// New onboarding step: pick 1-3 orientations (P16). Users can skip
+			// via the soft-block CTA if they want to explore first — see MVP §0.7.
+			goto('/onboarding/orientations');
 		} catch (err) {
 			error = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
 		} finally {

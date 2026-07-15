@@ -369,6 +369,7 @@ export const ar: Translations = {
 		primary: 'رئيسية',
 		workingLanguages: 'لغات العمل',
 		timezone: 'المنطقة الزمنية',
+		selectionOrder: 'الاختيار رقم {n}',
 		mode: {
 			learning: 'قيد التعلم',
 			active: 'نشط'
@@ -376,6 +377,52 @@ export const ar: Translations = {
 		empty: {
 			own: 'لم يتم اختيار توجه. ستبقى قائمتك عامة حتى تختار واحداً.',
 			public: 'لا توجد توجهات مسجلة.'
+		},
+		selector: {
+			title: 'اختر توجهاتك',
+			subtitle: 'اختر حتى {max} توجهات. ستتبع قائمتك ومجتمعك اختياراتك.',
+			filterLabel: 'تصفية حسب المجال',
+			allDomains: 'كل المجالات',
+			emptyFilter: 'لا يوجد توجه في هذا المجال. غيّر التصفية.',
+			summary: 'اختيارك',
+			setPrimary: 'رئيسي',
+			remove: 'إزالة {name}',
+			workingLanguagesLabel: 'لغات العمل',
+			workingLanguagesHint: 'رموز ISO مفصولة بفواصل (مثل ar,fr,en).',
+			timezoneLabel: 'المنطقة الزمنية',
+			timezoneHint: 'صيغة IANA (مثل Africa/Porto-Novo). اختياري.',
+			tooMany: 'الحد الأقصى {max} توجهات. أزل واحداً قبل إضافة آخر.',
+			mustPickOne: 'اختر توجهاً واحداً على الأقل.',
+			submit: 'حفظ توجهاتي'
+		},
+		banner: {
+			title: 'اختر توجهاتك المهنية',
+			subtitle: 'ستبقى قائمتك وتوصيات Skilluv عامة حتى تفعل ذلك.',
+			cta: 'اختر الآن'
+		},
+		softBlock: {
+			title: 'هذا القسم يحتاج توجهاتك',
+			defaultReason: 'يخصص Skilluv هذه الصفحة حسب التوجهات المهنية التي تختارها. يستغرق 30 ثانية.',
+			ctaPrimary: 'اختر الآن',
+			ctaLater: 'لاحقاً'
+		},
+		catalog: {
+			title: 'مسارك في Skilluv',
+			subtitle: 'اختر من 1 إلى 3 توجهات. سيبني Skilluv قائمتك ومواقع فرقك وشاراتك حولها.',
+			loadError: 'تعذر تحميل قائمة التوجهات. حاول لاحقاً.',
+			savedTitle: 'تم حفظ التوجهات.',
+			savedSubtitle: 'قائمتك المخصصة جاهزة على لوحة التحكم.',
+			continueCta: 'الاستمرار إلى لوحة التحكم'
+		},
+		detail: {
+			backToCatalog: 'العودة إلى القائمة',
+			primaryDomain: 'المجال الرئيسي',
+			secondaryDomains: 'المجالات الثانوية',
+			tags: 'المهارات الأساسية',
+			playlistTitle: 'معاينة القائمة',
+			playlistSubtitle: 'أول 5 عناصر سيقترحها Skilluv إذا اخترت هذا التوجه.',
+			playlistEmpty: 'القائمة المخصصة تفتح فور اختيار التوجه.',
+			pickCta: 'إضافة إلى اختياري'
 		}
 	},
 	capabilities: {

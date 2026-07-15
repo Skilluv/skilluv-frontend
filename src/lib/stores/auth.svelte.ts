@@ -1,6 +1,7 @@
-import type { UserPrivate, LoginMethod, Capability, UserCapability } from '$lib/types';
+import type { UserPrivate, LoginMethod, Capability, UserCapability, UserOrientation } from '$lib/types';
 import { api } from '$lib/api/client';
 import { capabilitiesApi, hasCapability } from '$lib/api/capabilities';
+import { orientationsApi } from '$lib/api/orientations';
 
 class AuthState {
 	user = $state<UserPrivate | null>(null);
@@ -62,7 +63,7 @@ class AuthState {
 		this.loading = false;
 	}
 
-	/** Initialise l'état auth côté client via /auth/me + charge capabilities. */
+	/** Initialise l'état auth côté client via /auth/me + charge capabilities + orientations. */
 	async init() {
 		this.loading = true;
 		try {
@@ -72,7 +73,11 @@ class AuthState {
 			this.user = res.data.user;
 			this.loginMethod = res.data.login_method ?? null;
 			this.hasPasskey = res.data.has_passkey ?? false;
-			await this.refreshCapabilities();
+			// Load capabilities and orientations in parallel — both are enrichments
+			// that don't gate the primary /auth/me success signal. Failures are
+			// swallowed silently: missing endpoints or transient errors leave the
+			// arrays empty which UI treats as "not yet loaded / none".
+			await Promise.allSettled([this.refreshCapabilities(), this.refreshOrientations()]);
 		} catch {
 			this.user = null;
 			this.loginMethod = null;
@@ -95,6 +100,21 @@ class AuthState {
 			this.capabilities = res.data;
 		} catch {
 			this.capabilities = [];
+		}
+	}
+
+	/** Rafraîchit les orientations et les propage dans user.orientations —
+	 * consommé par OrientationPromptBanner + OrientationSoftBlock pour décider
+	 * du soft-block. Appelable après un save orientation sans re-init complet. */
+	async refreshOrientations() {
+		if (!this.user) return;
+		try {
+			const res = await orientationsApi.myOrientations();
+			const orientations: UserOrientation[] = res.data;
+			this.user = { ...this.user, orientations };
+		} catch {
+			// Endpoint may not exist yet — treat as empty rather than crashing.
+			this.user = { ...this.user, orientations: [] };
 		}
 	}
 

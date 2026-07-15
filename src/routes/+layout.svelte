@@ -15,6 +15,7 @@
 	import PageTransition from '$lib/components/ui/PageTransition.svelte';
 	import InstallPrompt from '$lib/components/pwa/InstallPrompt.svelte';
 	import EmailVerificationBanner from '$lib/components/auth/EmailVerificationBanner.svelte';
+	import OrientationPromptBanner from '$lib/components/orientations/OrientationPromptBanner.svelte';
 	import KeysSprite from '$lib/components/badges/primitives/keys-sprite.svelte';
 	// Terminal mode désactivé pour l'instant — composants conservés sous src/lib/components/terminal/*
 	// pour réactivation future. Voir TerminalEmulator.svelte / TerminalConfirm.svelte / commands.ts.
@@ -89,6 +90,9 @@
 	{#if showCandidateChrome}
 		<Navbar />
 		<EmailVerificationBanner />
+		{#if !$page.url.pathname.startsWith('/onboarding/orientations')}
+			<OrientationPromptBanner />
+		{/if}
 	{/if}
 
 	<main class="flex-1" data-route={routeSection}>

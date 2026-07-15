@@ -536,6 +536,7 @@ export interface Translations {
 		primary: string;
 		workingLanguages: string;
 		timezone: string;
+		selectionOrder: string;
 		mode: {
 			learning: string;
 			active: string;
@@ -543,6 +544,52 @@ export interface Translations {
 		empty: {
 			own: string;
 			public: string;
+		};
+		selector: {
+			title: string;
+			subtitle: string;
+			filterLabel: string;
+			allDomains: string;
+			emptyFilter: string;
+			summary: string;
+			setPrimary: string;
+			remove: string;
+			workingLanguagesLabel: string;
+			workingLanguagesHint: string;
+			timezoneLabel: string;
+			timezoneHint: string;
+			tooMany: string;
+			mustPickOne: string;
+			submit: string;
+		};
+		banner: {
+			title: string;
+			subtitle: string;
+			cta: string;
+		};
+		softBlock: {
+			title: string;
+			defaultReason: string;
+			ctaPrimary: string;
+			ctaLater: string;
+		};
+		catalog: {
+			title: string;
+			subtitle: string;
+			loadError: string;
+			savedTitle: string;
+			savedSubtitle: string;
+			continueCta: string;
+		};
+		detail: {
+			backToCatalog: string;
+			primaryDomain: string;
+			secondaryDomains: string;
+			tags: string;
+			playlistTitle: string;
+			playlistSubtitle: string;
+			playlistEmpty: string;
+			pickCta: string;
 		};
 	};
 	capabilities: {

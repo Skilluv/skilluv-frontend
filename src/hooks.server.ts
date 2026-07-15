@@ -9,6 +9,7 @@ import type { UserPrivate } from '$lib/types';
  */
 const ONBOARDING_ALLOWLIST = [
 	'/onboarding/complete-profile',
+	'/onboarding/orientations',
 	'/auth/', // login, logout, register, magic-link, verify-email, change-email/confirm
 	'/legal/',
 	'/api/'
