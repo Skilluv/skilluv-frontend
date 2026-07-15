@@ -1,11 +1,29 @@
 // ============================================
-// Types Skilluv — basés sur API-ROUTES.md
+// Types Skilluv — basés sur API-ROUTES.md + MVP.md P16-P25
 // ============================================
+
+// Réutilisation source de vérité unique pour les types badge/rang.
+// Voir src/lib/components/badges/types.ts pour les définitions primitives.
+import type {
+	Rarity,
+	RankLevel,
+	BadgeFamily,
+	SkillCategory,
+	KeyType,
+	BadgeSize
+} from '$lib/components/badges/types';
+export type { Rarity, RankLevel, BadgeFamily, SkillCategory, KeyType, BadgeSize };
+export { RANK_NAMES } from '$lib/components/badges/types';
 
 // --- Enums ---
 
 export type SkillDomain = 'code' | 'design' | 'game' | 'security';
+
+/** @deprecated Remplacé par Rank (5 valeurs) — voir MVP §0.7. Reste supporté 6 mois pour portfolios historiques. */
 export type Title = 'apprenti' | 'artisan' | 'maitre' | 'legende';
+
+/** Rang canonique P17 — 5 paliers Apprenti → Doyen. */
+export type Rank = 'apprenti' | 'ranger' | 'artisan' | 'maitre' | 'doyen';
 export type ChallengeDifficulty = 1 | 2 | 3 | 4 | 5;
 export type ChallengeMode = 'solo' | 'team';
 export type ChallengeTone = 'serious' | 'fun' | 'educational';
@@ -31,7 +49,40 @@ export type NotificationType =
 	| 'challenge_approved'
 	| 'challenge_rejected'
 	| 'account_banned'
-	| 'account_unbanned';
+	| 'account_unbanned'
+	| 'rank_promotion'
+	| 'badge_earned'
+	| 'team_slot_match'
+	| 'payout_status_change';
+
+/** Capabilities P18.4 — sources de permissions user (mentor, curator, etc.). */
+export type Capability =
+	| 'challenger'
+	| 'mentor'
+	| 'project_steward'
+	| 'pr_reviewer'
+	| 'bounty_funder'
+	| 'issue_proposer'
+	| 'jury_tournament'
+	| 'admin'
+	| 'enterprise_recruiter'
+	| 'community_moderator'
+	| 'forum_moderator'
+	| 'plagiarism_reviewer'
+	| 'kyc_reviewer'
+	| 'community_curator';
+
+/** Type d'entreprise P24 — drive les sections conditionnelles dashboard/register. */
+export type EnterpriseType = 'direct_hire' | 'staffing_agency' | 'remote_international';
+
+/** Mode d'engagement d'un user sur une orientation. */
+export type OrientationMode = 'learning' | 'active';
+
+/** Statut d'une demande de payout wallet. */
+export type PayoutStatus = 'pending' | 'processing' | 'paid' | 'failed' | 'cancelled';
+
+/** Méthode de payout supportée (Stripe Connect ou Mobile Money Afrique). */
+export type PayoutMethod = 'stripe' | 'mobile_money';
 
 // --- Modèles principaux ---
 
@@ -73,6 +124,14 @@ export interface UserPrivate {
 	 * on /auth/me and consumed by enterprise pages that scope resources
 	 * to the current company (e.g. bounties list filter). */
 	enterprise_name?: string | null;
+	/** P18.4 — capabilities de contribution actives. Peuplé par /users/me/capabilities. */
+	capabilities?: Capability[];
+	/** P16 — orientations métier choisies (1-3). Cap enforced côté UI. */
+	orientations?: UserOrientation[];
+	/** P17 — rang canonique 5 paliers. Remplace progressivement `title`. */
+	rank?: Rank;
+	/** P24 — type d'entreprise pour comptes enterprise/recruiter. */
+	enterprise_type?: EnterpriseType;
 }
 
 export interface UserPublic {
@@ -282,6 +341,217 @@ export interface SandboxExecution {
 export interface SandboxLanguage {
 	id: number;
 	name: string;
+}
+
+// --- P16 : Orientations métier ---
+
+/** Catalogue orientation (public). 31 orientations curated côté backend. */
+export interface Orientation {
+	id: string;
+	slug: string;
+	name: string;
+	description: string;
+	primary_domain: SkillDomain;
+	secondary_domains: SkillDomain[];
+	tags: string[];
+	is_curated: boolean;
+	is_archived: boolean;
+}
+
+/** Orientation user (relation many-to-many enrichie). */
+export interface UserOrientation {
+	orientation_slug: string;
+	orientation_name: string;
+	mode: OrientationMode;
+	is_primary: boolean;
+	started_at: string;
+	ended_at?: string | null;
+	working_languages: string[];
+	timezone?: string;
+	notes?: string;
+}
+
+/** Item playlist onboarding orientation (challenges + team slots recommandés). */
+export interface OrientationPlaylistItem {
+	type: 'challenge' | 'team_slot';
+	id: string;
+	title: string;
+	description?: string;
+	difficulty?: ChallengeDifficulty;
+	reward_fragments?: number;
+	role_slug?: string;
+	team_id?: string;
+	challenge_id?: string;
+}
+
+// --- P18.4 : Capabilities ---
+
+export interface UserCapability {
+	capability: Capability;
+	granted_at: string;
+	granted_reason: string;
+	expires_at?: string | null;
+}
+
+// --- P17 : Badges Proof Engine ---
+
+/** Item badge polymorphique (utilisé dans UserBadgesResponse). */
+export interface BadgeItem {
+	rule_slug?: string;
+	output_type?: BadgeFamily;
+	output_variant?: string;
+	display_name?: string;
+	rarity: Rarity;
+	earned_at: string;
+	source_proofs_count: number;
+}
+
+/** Sous-structure rang dans UserBadgesResponse. */
+export interface RankStatus {
+	rank: Rank;
+	achieved_at: string;
+	previous_rank?: Rank;
+}
+
+/** Réponse GET /api/users/{id}/badges — projection polymorphique. */
+export interface UserBadgesResponse {
+	user_id: string;
+	rank: RankStatus;
+	skill_patches: BadgeItem[];
+	medals: BadgeItem[];
+	challenge_seals_count: number;
+	event_stamps_count: number;
+	guild_crests: BadgeItem[];
+	total_badges: number;
+}
+
+/** Règle catalogue (GET /api/badge-rules). */
+export interface BadgeRule {
+	slug: string;
+	output_type: BadgeFamily;
+	output_variant?: string;
+	display_name: string;
+	description: string;
+	rarity: Rarity;
+	criteria: Record<string, unknown>;
+}
+
+// --- P17.6 : Events + participation ---
+
+export interface BadgeEvent {
+	id: string;
+	slug: string;
+	name: string;
+	description: string;
+	starts_at: string;
+	ends_at?: string;
+	visual_theme: Record<string, unknown>;
+	is_partner: boolean;
+}
+
+export interface UserBadgeEvent {
+	event: BadgeEvent;
+	joined_at: string;
+	stamp_earned: boolean;
+}
+
+// --- P24 : Enterprise types + agency clients ---
+
+export interface TypeConfigStaffing {
+	commission_rate?: number;
+	brand_white_label?: boolean;
+	default_client_id?: string;
+}
+
+export interface TypeConfigRemoteIntl {
+	eor_provider?: 'deel' | 'remote' | 'oyster';
+	preferred_currency?: string;
+	timezone_requirement?: string;
+	tax_withholding_country?: string;
+}
+
+export type EnterpriseTypeConfig = TypeConfigStaffing | TypeConfigRemoteIntl | Record<string, never>;
+
+export interface AgencyClient {
+	id: string;
+	client_name: string;
+	client_contact_email?: string;
+	notes?: string;
+	active: boolean;
+	created_at: string;
+}
+
+// --- P10 + P15.3 : Team marketplace + role slots ---
+
+export interface TeamRoleSlot {
+	slot_id: string;
+	role_slug: string;
+	role_display_name?: string;
+	min_proficiency_level: number;
+	required_skill_slug?: string;
+	filled_by?: string | null;
+	created_at: string;
+}
+
+export interface TeamMarketplaceSlot extends TeamRoleSlot {
+	team_id: string;
+	team_name: string;
+	challenge_id: string;
+	challenge_title: string;
+}
+
+// --- P13 : Talent wallet + payouts ---
+
+export interface WalletBalance {
+	fragments: number;
+	eur_equivalent: number;
+	last_updated: string;
+}
+
+export interface WalletTransaction {
+	id: string;
+	kind: 'earn' | 'payout' | 'adjustment';
+	fragments_delta: number;
+	description: string;
+	prev_hash?: string;
+	entry_hash: string;
+	created_at: string;
+}
+
+export interface PayoutRequest {
+	id: string;
+	method: PayoutMethod;
+	amount_fragments: number;
+	amount_currency: number;
+	currency: string;
+	status: PayoutStatus;
+	failure_reason?: string;
+	requested_at: string;
+	settled_at?: string | null;
+}
+
+// --- P25 : Moderation inline ---
+
+export interface ModerationAction {
+	action: 'delete' | 'mute_author' | 'mark_spam' | 'approve' | 'reject' | 'mark_valid' | 'revoke';
+	reason?: string;
+	duration_hours?: number;
+}
+
+// --- Utilitaires migration Title ↔ Rank ---
+
+/** Migration douce Title (legacy P5) → Rank (P17). Voir MVP §0.7. */
+export function rankFromTitle(title: Title): Rank {
+	switch (title) {
+		case 'apprenti':
+			return 'apprenti';
+		case 'artisan':
+			return 'artisan';
+		case 'maitre':
+			return 'maitre';
+		case 'legende':
+			return 'doyen';
+	}
 }
 
 // --- Réponses API ---
