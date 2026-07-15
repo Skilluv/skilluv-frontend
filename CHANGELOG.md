@@ -1,59 +1,59 @@
 # Changelog
 
-Toutes les modifications notables du frontend Skilluv sont documentées dans ce fichier.
+All notable changes to the Skilluv frontend are documented in this file.
 
-Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
-et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
 ### Added
-- _(à compléter au fil des prochaines implémentations)_
+- _(to be filled as new implementations land)_
 
 ### Changed
-- _(à compléter)_
+- _(to be filled)_
 
 ### Fixed
-- _(à compléter)_
+- _(to be filled)_
 
 ### Removed
-- _(à compléter)_
+- _(to be filled)_
 
 ---
 
 ## [0.2.0] — 2026-07-15 — Design System v2
 
 ### Added
-- **Design System v2** : refonte typographique (Fraunces + Bricolage Grotesque) et réalignement des 5 thèmes.
-- **Système de badges** : composants scout badges + playground design-system.
-- **Coloration catégorielle par route** : application globale via `data-route`, scoping propre sur `<main>`.
-- **Empty States** : composant `EmptyState` scout appliqué à 7 pages clés.
-- **Wordmark sKIL·LUV** : intégration dans la navbar, la page profil (Keyring) et l'onboarding.
-- **Refonte enterprise workspace** : wordmark + Fraunces + ambiance « understand ».
-- **Première impression auth/onboarding** : wordmark, ambiance craft, Fraunces.
+- **Design System v2**: typography overhaul (Fraunces + Bricolage Grotesque) and realignment of the 5 themes.
+- **Badge system**: scout badge components + design-system playground.
+- **Per-route categorical coloring**: applied globally via `data-route`, properly scoped to `<main>`.
+- **Empty states**: scout `EmptyState` component applied to 7 key pages.
+- **sKIL·LUV wordmark**: integrated in the navbar, profile page (Keyring), and onboarding.
+- **Enterprise workspace redesign**: wordmark + Fraunces + "understand" ambiance.
+- **Auth/onboarding first impression**: wordmark, craft ambiance, Fraunces.
 
 ### Changed
-- Palettes reconstruites avec échelle de luminance claire et surfaces chromatiques affirmées.
-- Tokens de surface catégoriels appliqués sur les composants landing.
-- Sync `neon` → `vesperal` dans `EnterpriseHeader`.
+- Palettes rebuilt with a clear luminance ladder and bold chromatic surfaces.
+- Categorical surface tokens applied across landing components.
+- Sync `neon` → `vesperal` in `EnterpriseHeader`.
 
 ### Fixed
-- 11 erreurs `svelte-check` résolues.
-- Chargement des polices : override direct de `--font-sans` dans `:root` unlayered, littéraux hardcodés en fallback final.
-- Découpage `@theme` conforme à la spec Tailwind v4 (standard + inline).
-- Move `@const` en tête de bloc dans le feed.
+- 11 `svelte-check` errors resolved.
+- Font loading: direct `--font-sans` override in unlayered `:root`, hardcoded literals as final fallback.
+- `@theme` split compliant with Tailwind v4 spec (standard + inline).
+- Moved `@const` to top of block in the feed.
 
 ---
 
-## Guide de contribution au changelog
+## Changelog contribution guide
 
-À chaque nouvelle implémentation, ajouter une ligne dans la section `[Unreleased]` sous la catégorie appropriée :
+For every new implementation, add a line under the `[Unreleased]` section in the appropriate category:
 
-- **Added** — nouvelle fonctionnalité
-- **Changed** — modification d'une fonctionnalité existante
-- **Deprecated** — fonctionnalité bientôt supprimée
-- **Removed** — fonctionnalité supprimée
-- **Fixed** — correction de bug
-- **Security** — correctif de sécurité
+- **Added** — new feature
+- **Changed** — change to an existing feature
+- **Deprecated** — feature soon to be removed
+- **Removed** — feature removed
+- **Fixed** — bug fix
+- **Security** — security fix
 
-Au moment d'une release, renommer `[Unreleased]` en `[X.Y.Z] — YYYY-MM-DD` et recréer une section `[Unreleased]` vide au-dessus.
+At release time, rename `[Unreleased]` to `[X.Y.Z] — YYYY-MM-DD` and create a fresh empty `[Unreleased]` section above it.
