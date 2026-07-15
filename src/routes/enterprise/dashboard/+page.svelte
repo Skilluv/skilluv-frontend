@@ -4,6 +4,8 @@
 	import { subscriptionsApi, type EnterpriseSubscription } from '$api/subscriptions';
 	import { kycApi, type KycStatusResponse } from '$api/kyc';
 	import { notificationsApi } from '$api/notifications';
+	import { enterpriseTypesApi } from '$lib/api/enterprise_types';
+	import type { EnterpriseType, EnterpriseTypeConfig } from '$lib/types';
 	import { auth } from '$stores/auth.svelte';
 	import { SkilluError } from '$api/client';
 	import Skeleton from '$components/ui/Skeleton.svelte';
@@ -51,6 +53,8 @@
 	let subscription = $state<EnterpriseSubscription | null>(null);
 	let kyc = $state<KycStatusResponse | null>(null);
 	let recentNotifs = $state<Notification[]>([]);
+	let enterpriseType = $state<EnterpriseType>('direct_hire');
+	let typeConfig = $state<EnterpriseTypeConfig>({});
 
 	let loading = $state(true);
 	let error = $state('');
@@ -69,13 +73,14 @@
 		// Chaque call est catch séparément : si l'endpoint credits renvoie
 		// une erreur (compte trop récent, KYC absent…), on continue de
 		// rendre le reste du dashboard plutôt que de tout casser.
-		const [pRes, mRes, cRes, sRes, kRes, nRes] = await Promise.all([
+		const [pRes, mRes, cRes, sRes, kRes, nRes, tRes] = await Promise.all([
 			enterpriseApi.platformStats().catch(() => null),
 			enterpriseApi.myStats().catch(() => null),
 			creditsApi.getBalance().catch(() => null),
 			subscriptionsApi.current().catch(() => null),
 			isOwner ? kycApi.getStatus().catch(() => null) : Promise.resolve(null),
-			notificationsApi.list({ read: false, per_page: 3 }).catch(() => null)
+			notificationsApi.list({ read: false, per_page: 3 }).catch(() => null),
+			enterpriseTypesApi.get().catch(() => null)
 		]);
 
 		if (pRes) platformStats = pRes.data;
@@ -84,6 +89,10 @@
 		if (sRes) subscription = sRes.data.subscription;
 		if (kRes) kyc = kRes.data;
 		if (nRes) recentNotifs = nRes.data.slice(0, 3);
+		if (tRes) {
+			enterpriseType = tRes.data.enterprise_type;
+			typeConfig = tRes.data.type_config;
+		}
 
 		if (!pRes && !mRes) {
 			error = i18n.t('errors.generic');
@@ -495,6 +504,79 @@
 						{/each}
 					</div>
 				</div>
+			</div>
+		{/if}
+
+		{#if enterpriseType === 'staffing_agency'}
+			<h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">
+				{i18n.t('enterprise.types.staffing_agency.label')}
+			</h2>
+			<div class="mb-8 grid gap-4 sm:grid-cols-2">
+				<a
+					href="/enterprise/agency-clients"
+					class="group rounded-2xl border border-border bg-surface-elevated p-5 transition-colors hover:border-accent"
+				>
+					<div class="mb-3 flex items-center gap-3">
+						<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+							<UsersIcon size={18} strokeWidth={2} />
+						</div>
+						<h3 class="text-base font-bold text-text-primary">
+							{i18n.t('enterprise.dashboardCards.agencyClients')}
+						</h3>
+					</div>
+					<p class="text-sm text-text-muted">
+						{i18n.t('enterprise.dashboardCards.agencyClientsDesc')}
+					</p>
+					<span class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-accent">
+						{i18n.locale === 'fr' ? 'Ouvrir' : 'Open'}
+						<ArrowRight size={14} strokeWidth={2.5} class="transition-transform group-hover:translate-x-0.5" />
+					</span>
+				</a>
+			</div>
+		{:else if enterpriseType === 'remote_international'}
+			<h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">
+				{i18n.t('enterprise.types.remote_international.label')}
+			</h2>
+			<div class="mb-8 rounded-2xl border border-border bg-surface-elevated p-5">
+				<div class="mb-3 flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+						<Building2 size={18} strokeWidth={2} />
+					</div>
+					<div>
+						<h3 class="text-base font-bold text-text-primary">
+							{i18n.t('enterprise.dashboardCards.eorConfig')}
+						</h3>
+						<p class="text-xs text-text-muted">
+							{i18n.t('enterprise.dashboardCards.eorConfigDesc')}
+						</p>
+					</div>
+				</div>
+				<dl class="grid gap-2 text-sm sm:grid-cols-2">
+					{#if 'eor_provider' in typeConfig && typeConfig.eor_provider}
+						<div>
+							<dt class="text-xs uppercase text-text-muted">{i18n.t('enterprise.eor.providerLabel')}</dt>
+							<dd class="font-medium text-text-primary">{typeConfig.eor_provider}</dd>
+						</div>
+					{/if}
+					{#if 'preferred_currency' in typeConfig && typeConfig.preferred_currency}
+						<div>
+							<dt class="text-xs uppercase text-text-muted">{i18n.t('enterprise.eor.currencyLabel')}</dt>
+							<dd class="font-medium text-text-primary">{typeConfig.preferred_currency}</dd>
+						</div>
+					{/if}
+					{#if 'timezone_requirement' in typeConfig && typeConfig.timezone_requirement}
+						<div>
+							<dt class="text-xs uppercase text-text-muted">{i18n.t('enterprise.eor.timezoneLabel')}</dt>
+							<dd class="font-medium text-text-primary">{typeConfig.timezone_requirement}</dd>
+						</div>
+					{/if}
+					{#if 'tax_withholding_country' in typeConfig && typeConfig.tax_withholding_country}
+						<div>
+							<dt class="text-xs uppercase text-text-muted">{i18n.t('enterprise.eor.taxCountryLabel')}</dt>
+							<dd class="font-medium text-text-primary">{typeConfig.tax_withholding_country}</dd>
+						</div>
+					{/if}
+				</dl>
 			</div>
 		{/if}
 

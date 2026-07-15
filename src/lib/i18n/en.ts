@@ -222,6 +222,72 @@ export const en: Translations = {
 			empty: 'No conversations. Contact a talent to get started.',
 			emptyAction: 'Search talents',
 			closed: 'Conversation closed', inputPlaceholder: 'Write a message...', sendBtn: 'Send'
+		},
+		types: {
+			legend: 'Pick the enterprise type',
+			stepTitle: 'What type of enterprise are you?',
+			stepSubtitle: 'Skilluv tailors your workspace, pipeline and payment options to your type. Editable later.',
+			stepSubmit: 'Save type',
+			stepSkip: 'Skip for now',
+			direct_hire: {
+				label: 'Direct hire',
+				description: 'You recruit for your own teams.',
+				benefit1: 'Simple candidate pipeline',
+				benefit2: 'Bookmarks, lists, direct DMs',
+				benefit3: 'No third-party commission'
+			},
+			staffing_agency: {
+				label: 'Staffing agency',
+				description: 'You place talents at your own clients.',
+				benefit1: 'Multi-client management',
+				benefit2: 'Talent → client assignment',
+				benefit3: 'Optional white-label'
+			},
+			remote_international: {
+				label: 'Remote international',
+				description: 'You hire remotely via an EOR (Deel, Remote, Oyster).',
+				benefit1: 'Integrated EOR config',
+				benefit2: 'Multi-currency + timezone',
+				benefit3: 'Country-based tax withholding'
+			}
+		},
+		agencyClients: {
+			title: 'My clients',
+			subtitle: 'Manage your client list to assign talents in the pipeline.',
+			addBtn: 'Add a client',
+			edit: 'Edit',
+			empty: 'No clients yet.',
+			emptyAction: 'Create my first client',
+			nameLabel: 'Client name',
+			nameError: 'Client name is required',
+			emailLabel: 'Contact email',
+			notesLabel: 'Internal notes',
+			activeLabel: 'Active client',
+			saveBtn: 'Save',
+			cancelBtn: 'Cancel',
+			deleteBtn: 'Archive',
+			deleteConfirm: 'Archive this client? Historical assignments stay visible.',
+			restoreBtn: 'Restore',
+			archivedBadge: 'Archived',
+			createdOn: 'Created {date}',
+			ownerOnly: 'Reserved to agency accounts (staffing_agency).'
+		},
+		eor: {
+			title: 'EOR configuration',
+			subtitle: 'Employer of Record — sets the provider handling contract, payroll and tax withholding.',
+			providerLabel: 'EOR provider',
+			currencyLabel: 'Payment currency',
+			timezoneLabel: 'Required timezone',
+			timezoneHint: 'IANA format (e.g. Africa/Porto-Novo, Europe/Paris).',
+			taxCountryLabel: 'Tax withholding country',
+			saveBtn: 'Save config'
+		},
+		dashboardCards: {
+			agencyClients: 'Agency clients',
+			agencyClientsDesc: 'Manage your client portfolio and assignments.',
+			eorConfig: 'EOR config',
+			eorConfigDesc: 'Provider, currency, timezone, tax withholding.',
+			manageType: 'Edit enterprise type'
 		}
 	},
 	notifications: {

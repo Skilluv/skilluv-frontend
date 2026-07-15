@@ -316,6 +316,72 @@ export interface Translations {
 			inputPlaceholder: string;
 			sendBtn: string;
 		};
+		types: {
+			legend: string;
+			stepTitle: string;
+			stepSubtitle: string;
+			stepSubmit: string;
+			stepSkip: string;
+			direct_hire: {
+				label: string;
+				description: string;
+				benefit1: string;
+				benefit2: string;
+				benefit3: string;
+			};
+			staffing_agency: {
+				label: string;
+				description: string;
+				benefit1: string;
+				benefit2: string;
+				benefit3: string;
+			};
+			remote_international: {
+				label: string;
+				description: string;
+				benefit1: string;
+				benefit2: string;
+				benefit3: string;
+			};
+		};
+		agencyClients: {
+			title: string;
+			subtitle: string;
+			addBtn: string;
+			edit: string;
+			empty: string;
+			emptyAction: string;
+			nameLabel: string;
+			nameError: string;
+			emailLabel: string;
+			notesLabel: string;
+			activeLabel: string;
+			saveBtn: string;
+			cancelBtn: string;
+			deleteBtn: string;
+			deleteConfirm: string;
+			restoreBtn: string;
+			archivedBadge: string;
+			createdOn: string;
+			ownerOnly: string;
+		};
+		eor: {
+			title: string;
+			subtitle: string;
+			providerLabel: string;
+			currencyLabel: string;
+			timezoneLabel: string;
+			timezoneHint: string;
+			taxCountryLabel: string;
+			saveBtn: string;
+		};
+		dashboardCards: {
+			agencyClients: string;
+			agencyClientsDesc: string;
+			eorConfig: string;
+			eorConfigDesc: string;
+			manageType: string;
+		};
 	};
 	notifications: {
 		title: string;

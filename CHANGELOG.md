@@ -23,6 +23,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Navbar user dropdown — 5 conditional links (forum moderation, curator queue, plagiarism review, mentor zone, tournament jury) driven by `auth.can(...)`.
 - i18n FR/EN/AR — 14 capability labels + descriptions + navigation entries.
 
+**FE-M6 — Enterprise types + agency clients**
+- `<EnterpriseTypeCard>` — 3 visual cards (direct_hire, staffing_agency, remote_international) with icon + label + description + 3 benefits, aria-pressed state.
+- `<EnterpriseTypeSelector>` — fieldset wrapper with grid of cards + bindable value + onchange callback.
+- `/enterprise/register` — new step 3 inserted between company and TOTP setup, PATCHes `/enterprises/me/type-config` on submit, skippable (keeps backend default direct_hire).
+- New page `/enterprise/agency-clients` — full CRUD (list + create + edit + archive + restore) for staffing_agency accounts, with owner-only guard message for other enterprise types.
+- `/enterprise/dashboard` — conditional cards: link to agency-clients management for staffing_agency, EOR configuration summary (provider / currency / timezone / tax country) for remote_international.
+- i18n FR/EN/AR — full parity for types (labels + 3 benefits each), agency clients CRUD, EOR configuration, dashboard cards, register step 3.
+- 4 unit tests (enterpriseTypesApi get/patch payload, agencyClientsApi CRUD lifecycle) + 2 Playwright e2e (add client + owner-only guard).
+
 **FE-M2 — Onboarding orientations**
 - `<OrientationCard>` — reusable visual card (domain dot, name, description, tags, selection state, disabled state, link/button dual mode).
 - `<OrientationSelector>` — grid + domain filter + cap-3 enforcement + primary radio + mode toggle (learning/active) + working languages + timezone inputs + submit with validation.

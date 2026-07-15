@@ -230,6 +230,72 @@ export const ar: Translations = {
 			empty: 'لا توجد محادثات. تواصل مع موهبة للبدء.',
 			emptyAction: 'بحث',
 			closed: 'المحادثة مغلقة', inputPlaceholder: 'اكتب رسالة...', sendBtn: 'إرسال'
+		},
+		types: {
+			legend: 'اختر نوع المؤسسة',
+			stepTitle: 'ما نوع مؤسستك؟',
+			stepSubtitle: 'يخصص Skilluv مساحتك وقناتك وخيارات الدفع حسب نوعك. يمكن تعديله لاحقاً.',
+			stepSubmit: 'حفظ النوع',
+			stepSkip: 'تخطي الآن',
+			direct_hire: {
+				label: 'توظيف مباشر',
+				description: 'أنت توظف لفرقك الخاصة.',
+				benefit1: 'قناة مرشحين بسيطة',
+				benefit2: 'إشارات مرجعية وقوائم ومحادثات مباشرة',
+				benefit3: 'بدون عمولات وسيطة'
+			},
+			staffing_agency: {
+				label: 'وكالة توظيف',
+				description: 'أنت تُلحق مواهب بعملائك.',
+				benefit1: 'إدارة عملاء متعددين',
+				benefit2: 'إسناد الموهبة إلى العميل',
+				benefit3: 'علامة تجارية بيضاء اختيارية'
+			},
+			remote_international: {
+				label: 'عمل عن بُعد دولي',
+				description: 'أنت توظف عن بُعد عبر EOR (Deel, Remote, Oyster).',
+				benefit1: 'تكوين EOR مدمج',
+				benefit2: 'عملات متعددة + منطقة زمنية',
+				benefit3: 'اقتطاعات ضريبية حسب الدولة'
+			}
+		},
+		agencyClients: {
+			title: 'عملائي',
+			subtitle: 'أدر قائمة عملائك لإسناد المواهب في القناة.',
+			addBtn: 'إضافة عميل',
+			edit: 'تعديل',
+			empty: 'لا عملاء بعد.',
+			emptyAction: 'أنشئ عميلي الأول',
+			nameLabel: 'اسم العميل',
+			nameError: 'اسم العميل مطلوب',
+			emailLabel: 'بريد التواصل',
+			notesLabel: 'ملاحظات داخلية',
+			activeLabel: 'عميل نشط',
+			saveBtn: 'حفظ',
+			cancelBtn: 'إلغاء',
+			deleteBtn: 'أرشفة',
+			deleteConfirm: 'أرشفة هذا العميل؟ تبقى الإسنادات التاريخية مرئية.',
+			restoreBtn: 'استعادة',
+			archivedBadge: 'مؤرشف',
+			createdOn: 'أُنشئ في {date}',
+			ownerOnly: 'مخصص لحسابات الوكالات (staffing_agency).'
+		},
+		eor: {
+			title: 'تكوين EOR',
+			subtitle: 'صاحب العمل المسجل — يحدد المزود الذي يدير العقد والرواتب والاقتطاعات الضريبية.',
+			providerLabel: 'مزود EOR',
+			currencyLabel: 'عملة الدفع',
+			timezoneLabel: 'المنطقة الزمنية المطلوبة',
+			timezoneHint: 'صيغة IANA (مثل Africa/Porto-Novo, Europe/Paris).',
+			taxCountryLabel: 'دولة الاقتطاع الضريبي',
+			saveBtn: 'حفظ التكوين'
+		},
+		dashboardCards: {
+			agencyClients: 'عملاء الوكالة',
+			agencyClientsDesc: 'أدر محفظة عملائك والإسنادات.',
+			eorConfig: 'تكوين EOR',
+			eorConfigDesc: 'المزود، العملة، المنطقة الزمنية، الاقتطاع الضريبي.',
+			manageType: 'تعديل نوع المؤسسة'
 		}
 	},
 	notifications: {

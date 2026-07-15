@@ -5,20 +5,28 @@
 	import CountrySelect from '$components/ui/CountrySelect.svelte';
 	import Select from '$components/ui/Select.svelte';
 	import { enterpriseApi } from '$api/enterprise';
+	import { enterpriseTypesApi } from '$lib/api/enterprise_types';
 	import { webauthnApi, isPasskeySupported } from '$api/webauthn';
 	import { auth } from '$stores/auth.svelte';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
-	import type { CompanySize } from '$types';
+	import type { CompanySize, EnterpriseType } from '$types';
+	import { EnterpriseTypeSelector } from '$lib/components/enterprise';
 	import { industryItems } from '$lib/data/industries';
 	import { Check, KeyRound, Mail, ShieldCheck } from '@lucide/svelte';
 	import SsoButton from '$components/ui/SsoButton.svelte';
 
 	// --- State ---
-	let step = $state<1 | 2 | 3>(1);
+	// Steps: 1 personal → 2 company → 3 enterprise type → 4 done
+	let step = $state<1 | 2 | 3 | 4>(1);
 	let loading = $state(false);
 	let error = $state('');
 	let fieldErrors = $state<Record<string, string>>({});
+
+	// Step 3 — enterprise type (default direct_hire preselected)
+	let enterpriseType = $state<EnterpriseType | null>('direct_hire');
+	let typeSubmitting = $state(false);
+	let typeError = $state('');
 
 	// Step 1 — personal
 	let firstName = $state('');
@@ -184,9 +192,32 @@
 		}
 	}
 
+	async function submitType() {
+		typeError = '';
+		if (!enterpriseType) {
+			typeError = i18n.t('enterprise.types.legend');
+			return;
+		}
+		typeSubmitting = true;
+		try {
+			await enterpriseTypesApi.patch({ enterprise_type: enterpriseType });
+			step = 4;
+		} catch (err) {
+			typeError = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
+		} finally {
+			typeSubmitting = false;
+		}
+	}
+
+	function skipType() {
+		// Keep the backend default (direct_hire) — no PATCH needed.
+		step = 4;
+	}
+
 	const stepLabels = $derived([
 		i18n.locale === 'fr' ? 'Vos infos' : 'Your info',
 		i18n.locale === 'fr' ? 'Votre entreprise' : 'Your company',
+		i18n.t('enterprise.types.stepTitle'),
 		i18n.locale === 'fr' ? 'C\'est parti' : 'All set'
 	]);
 </script>
@@ -204,7 +235,7 @@
 	<!-- Step indicator -->
 	<div class="mb-8 flex items-center gap-2" aria-hidden="true">
 		{#each stepLabels as label, i}
-			{@const n = (i + 1) as 1 | 2 | 3}
+			{@const n = (i + 1) as 1 | 2 | 3 | 4}
 			{@const done = step > n}
 			{@const current = step === n}
 			<div class="flex items-center gap-2">
@@ -446,8 +477,43 @@
 					</Button>
 				</form>
 			</div>
+		{:else if step === 3}
+			<!-- ═══════════ STEP 3 — Enterprise type ═══════════ -->
+			<div class="animate-[fade-in_300ms_ease-out]">
+				<div class="mb-6 text-center">
+					<h1 class="mb-3 text-3xl sm:text-4xl font-black tracking-tight leading-[1.05]">
+						{i18n.t('enterprise.types.stepTitle')}
+					</h1>
+					<p class="text-sm text-text-muted">
+						{i18n.t('enterprise.types.stepSubtitle')}
+					</p>
+				</div>
+
+				<EnterpriseTypeSelector bind:value={enterpriseType} disabled={typeSubmitting} />
+
+				{#if typeError}
+					<p class="mt-4 rounded-lg bg-error/10 px-4 py-3 text-sm text-error" role="alert">
+						{typeError}
+					</p>
+				{/if}
+
+				<div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+					<Button variant="ghost" size="lg" onclick={skipType} disabled={typeSubmitting}>
+						{i18n.t('enterprise.types.stepSkip')}
+					</Button>
+					<Button
+						variant="accent"
+						size="lg"
+						onclick={submitType}
+						loading={typeSubmitting}
+						disabled={!enterpriseType}
+					>
+						{i18n.t('enterprise.types.stepSubmit')}
+					</Button>
+				</div>
+			</div>
 		{:else}
-			<!-- ═══════════ STEP 3 — TOTP setup gate ═══════════ -->
+			<!-- ═══════════ STEP 4 — TOTP setup gate ═══════════ -->
 			<!-- Mandatory: enterprise/recruiter accounts cannot access
 			     /enterprise/* until they've completed TOTP setup. We route
 			     through the security page first, then the user can pick their

@@ -222,6 +222,72 @@ export const fr: Translations = {
 			empty: 'Aucune conversation. Contactez un talent pour commencer.',
 			emptyAction: 'Rechercher des talents',
 			closed: 'Conversation fermée', inputPlaceholder: 'Écrire un message...', sendBtn: 'Envoyer'
+		},
+		types: {
+			legend: 'Choisissez le type d\'entreprise',
+			stepTitle: 'Quel type d\'entreprise êtes-vous ?',
+			stepSubtitle: 'Skilluv adapte votre workspace, votre pipeline et vos options de paiement selon votre type. Modifiable plus tard.',
+			stepSubmit: 'Valider le type',
+			stepSkip: 'Passer pour l\'instant',
+			direct_hire: {
+				label: 'Recrutement direct',
+				description: 'Vous recrutez pour vos propres équipes.',
+				benefit1: 'Pipeline candidats simple',
+				benefit2: 'Bookmarks, listes, DM directs',
+				benefit3: 'Aucune commission tierce'
+			},
+			staffing_agency: {
+				label: 'Agence de placement',
+				description: 'Vous placez des talents chez vos propres clients.',
+				benefit1: 'Gestion multi-clients',
+				benefit2: 'Attribution talent → client',
+				benefit3: 'White-label optionnel'
+			},
+			remote_international: {
+				label: 'Remote international',
+				description: 'Vous embauchez à distance via un EOR (Deel, Remote, Oyster).',
+				benefit1: 'Config EOR intégrée',
+				benefit2: 'Multi-devises + fuseau',
+				benefit3: 'Retenues fiscales par pays'
+			}
+		},
+		agencyClients: {
+			title: 'Mes clients',
+			subtitle: 'Gérez la liste de vos clients pour attribuer les talents en pipeline.',
+			addBtn: 'Ajouter un client',
+			edit: 'Modifier',
+			empty: 'Aucun client pour l\'instant.',
+			emptyAction: 'Créer mon premier client',
+			nameLabel: 'Nom du client',
+			nameError: 'Le nom du client est requis',
+			emailLabel: 'Email de contact',
+			notesLabel: 'Notes internes',
+			activeLabel: 'Client actif',
+			saveBtn: 'Enregistrer',
+			cancelBtn: 'Annuler',
+			deleteBtn: 'Archiver',
+			deleteConfirm: 'Archiver ce client ? Les attributions historiques restent visibles.',
+			restoreBtn: 'Restaurer',
+			archivedBadge: 'Archivé',
+			createdOn: 'Créé le {date}',
+			ownerOnly: 'Réservé aux comptes agency (staffing_agency).'
+		},
+		eor: {
+			title: 'Configuration EOR',
+			subtitle: 'Employer of Record — définit le fournisseur qui gère le contrat, la paie et les retenues fiscales.',
+			providerLabel: 'Fournisseur EOR',
+			currencyLabel: 'Devise de paiement',
+			timezoneLabel: 'Fuseau horaire requis',
+			timezoneHint: 'Format IANA (ex. Africa/Porto-Novo, Europe/Paris).',
+			taxCountryLabel: 'Pays de retenue fiscale',
+			saveBtn: 'Enregistrer la config'
+		},
+		dashboardCards: {
+			agencyClients: 'Clients agence',
+			agencyClientsDesc: 'Gérer votre portefeuille clients et les attributions.',
+			eorConfig: 'Config EOR',
+			eorConfigDesc: 'Fournisseur, devise, fuseau, retenue fiscale.',
+			manageType: 'Modifier le type d\'entreprise'
 		}
 	},
 	notifications: {
