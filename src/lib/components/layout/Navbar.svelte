@@ -38,8 +38,47 @@
 		LogOut,
 		Settings as SettingsIcon,
 		User as UserIcon,
-		ChevronDown
+		ChevronDown,
+		FileSearch,
+		BookOpenCheck
 	} from '@lucide/svelte';
+
+	// Conditional user-menu links driven by P18.4 capabilities.
+	// Each link only renders when the current session holds the required capability.
+	let capabilityLinks = $derived(
+		[
+			{
+				href: '/forum/moderation',
+				icon: MessageSquare,
+				label: i18n.t('capabilities.nav.forumModeration'),
+				show: auth.can('forum_moderator')
+			},
+			{
+				href: '/community/curator',
+				icon: BookOpenCheck,
+				label: i18n.t('capabilities.nav.pendingCurator'),
+				show: auth.can('community_curator')
+			},
+			{
+				href: '/moderation/plagiarism',
+				icon: FileSearch,
+				label: i18n.t('capabilities.nav.plagiarismQueue'),
+				show: auth.can('plagiarism_reviewer')
+			},
+			{
+				href: '/mentors/me',
+				icon: Star,
+				label: i18n.t('capabilities.nav.mentorZone'),
+				show: auth.can('mentor')
+			},
+			{
+				href: '/tournaments/jury',
+				icon: Trophy,
+				label: i18n.t('capabilities.nav.juryTournament'),
+				show: auth.can('jury_tournament')
+			}
+		].filter((l) => l.show)
+	);
 
 	let mobileOpen = $state(false);
 	let themeOpen = $state(false);
@@ -504,6 +543,22 @@
 								<SettingsIcon size={14} strokeWidth={2} />
 								<span>{i18n.locale === 'fr' ? 'Paramètres' : 'Settings'}</span>
 							</a>
+
+							{#if capabilityLinks.length > 0}
+								<div class="my-1.5 h-px bg-border"></div>
+								{#each capabilityLinks as link (link.href)}
+									{@const IconEl = link.icon}
+									<a
+										href={link.href}
+										onclick={() => (userMenuOpen = false)}
+										class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
+									>
+										<IconEl size={14} strokeWidth={2} />
+										<span>{link.label}</span>
+									</a>
+								{/each}
+							{/if}
+
 							<div class="my-1.5 h-px bg-border"></div>
 							<button
 								type="button"

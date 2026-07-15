@@ -509,4 +509,36 @@ export interface Translations {
 		retryBtn: string;
 		generic: string;
 	};
+	capabilities: {
+		sectionOwnTitle: string;
+		sectionOwnSubtitle: string;
+		sectionPublicTitle: string;
+		sectionPublicSubtitle: string;
+		empty: string;
+		expiresOn: string;
+		grantedOn: string;
+		items: {
+			challenger: { label: string; description: string };
+			mentor: { label: string; description: string };
+			project_steward: { label: string; description: string };
+			pr_reviewer: { label: string; description: string };
+			bounty_funder: { label: string; description: string };
+			issue_proposer: { label: string; description: string };
+			jury_tournament: { label: string; description: string };
+			admin: { label: string; description: string };
+			enterprise_recruiter: { label: string; description: string };
+			community_moderator: { label: string; description: string };
+			forum_moderator: { label: string; description: string };
+			plagiarism_reviewer: { label: string; description: string };
+			kyc_reviewer: { label: string; description: string };
+			community_curator: { label: string; description: string };
+		};
+		nav: {
+			forumModeration: string;
+			pendingCurator: string;
+			plagiarismQueue: string;
+			mentorZone: string;
+			juryTournament: string;
+		};
+	};
 }

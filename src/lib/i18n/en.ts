@@ -335,5 +335,37 @@ export const en: Translations = {
 		backHome: 'Back to home',
 		retryBtn: 'Retry',
 		generic: 'An error occurred. Please try again.'
+	},
+	capabilities: {
+		sectionOwnTitle: 'How I contribute',
+		sectionOwnSubtitle: 'Your active roles on Skilluv. You can mentor, curate, moderate depending on what you\'ve earned.',
+		sectionPublicTitle: 'How this person contributes',
+		sectionPublicSubtitle: 'Active roles on Skilluv, earned through proofs.',
+		empty: 'No active roles yet. Keep contributing, they\'ll come.',
+		expiresOn: 'Expires on {date}',
+		grantedOn: 'Granted on {date}',
+		items: {
+			challenger: { label: 'Challenger', description: 'Solves published challenges and earns fragments.' },
+			mentor: { label: 'Mentor', description: 'Runs 1-on-1 sessions with talents.' },
+			project_steward: { label: 'Project steward', description: 'Coordinates a community project, arbitrates slots.' },
+			pr_reviewer: { label: 'PR reviewer', description: 'Validates pull requests on open-source bounties.' },
+			bounty_funder: { label: 'Bounty funder', description: 'Sponsors GitHub issues for the community.' },
+			issue_proposer: { label: 'Issue proposer', description: 'Suggests issues to become bounties.' },
+			jury_tournament: { label: 'Tournament jury', description: 'Grades submissions during a tournament.' },
+			admin: { label: 'Administrator', description: 'Full platform access.' },
+			enterprise_recruiter: { label: 'Enterprise recruiter', description: 'Talent sourcing for an enterprise account.' },
+			community_moderator: { label: 'Community moderator', description: 'Moderates cross-cutting community spaces.' },
+			forum_moderator: { label: 'Forum moderator', description: 'Removes spam and abuse on the forum.' },
+			plagiarism_reviewer: { label: 'Plagiarism reviewer', description: 'Decides validity of flagged deliverables.' },
+			kyc_reviewer: { label: 'KYC reviewer', description: 'Validates identity documents for payouts.' },
+			community_curator: { label: 'Community curator', description: 'Approves or rejects community challenges under review.' }
+		},
+		nav: {
+			forumModeration: 'Forum moderation',
+			pendingCurator: 'Curator queue',
+			plagiarismQueue: 'Plagiarism review',
+			mentorZone: 'Mentor zone',
+			juryTournament: 'Tournament jury'
+		}
 	}
 };

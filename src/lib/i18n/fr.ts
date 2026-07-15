@@ -335,5 +335,37 @@ export const fr: Translations = {
 		backHome: 'Retour à l\'accueil',
 		retryBtn: 'Réessayer',
 		generic: 'Une erreur est survenue. Réessaie.'
+	},
+	capabilities: {
+		sectionOwnTitle: 'Comment je contribue',
+		sectionOwnSubtitle: 'Tes rôles actifs sur Skilluv. Tu peux mentorer, curer, modérer selon ce que tu as gagné.',
+		sectionPublicTitle: 'Comment cette personne contribue',
+		sectionPublicSubtitle: 'Rôles actifs sur Skilluv, gagnés par les preuves.',
+		empty: 'Aucun rôle actif pour l\'instant. Continue à contribuer, ils viendront.',
+		expiresOn: 'Expire le {date}',
+		grantedOn: 'Obtenu le {date}',
+		items: {
+			challenger: { label: 'Challenger', description: 'Résout des challenges publiés et gagne des fragments.' },
+			mentor: { label: 'Mentor', description: 'Anime des sessions 1-on-1 avec les talents.' },
+			project_steward: { label: 'Steward projet', description: 'Coordonne un projet communautaire, arbitre les slots.' },
+			pr_reviewer: { label: 'Reviewer PR', description: 'Valide les pull requests des bounties open-source.' },
+			bounty_funder: { label: 'Sponsor bounty', description: 'Finance des issues GitHub pour la communauté.' },
+			issue_proposer: { label: 'Proposeur d\'issues', description: 'Suggère des issues à transformer en bounties.' },
+			jury_tournament: { label: 'Juré tournoi', description: 'Note les rendus lors d\'un tournoi.' },
+			admin: { label: 'Administrateur', description: 'Accès plateforme complet.' },
+			enterprise_recruiter: { label: 'Recruteur entreprise', description: 'Sourcing talents pour un compte entreprise.' },
+			community_moderator: { label: 'Modérateur communauté', description: 'Modère les espaces communautaires transverses.' },
+			forum_moderator: { label: 'Modérateur forum', description: 'Supprime spam et abus sur le forum.' },
+			plagiarism_reviewer: { label: 'Reviewer plagiat', description: 'Décide de la validité des deliverables flaggés.' },
+			kyc_reviewer: { label: 'Reviewer KYC', description: 'Valide les documents d\'identité des payouts.' },
+			community_curator: { label: 'Curator communauté', description: 'Approuve ou rejette les challenges communautaires en revue.' }
+		},
+		nav: {
+			forumModeration: 'Modération forum',
+			pendingCurator: 'File curator',
+			plagiarismQueue: 'Review plagiat',
+			mentorZone: 'Espace mentor',
+			juryTournament: 'Jury tournoi'
+		}
 	}
 };

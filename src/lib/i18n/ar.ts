@@ -343,5 +343,37 @@ export const ar: Translations = {
 		backHome: 'رجوع للرئيسية',
 		retryBtn: 'إعادة المحاولة',
 		generic: 'حدث خطأ. حاول مرة أخرى.'
+	},
+	capabilities: {
+		sectionOwnTitle: 'كيف أساهم',
+		sectionOwnSubtitle: 'أدوارك النشطة على Skilluv. يمكنك التوجيه، والتنسيق، والإشراف بناءً على ما اكتسبته.',
+		sectionPublicTitle: 'كيف يساهم هذا الشخص',
+		sectionPublicSubtitle: 'أدوار نشطة على Skilluv، تم اكتسابها من خلال الإثباتات.',
+		empty: 'لا توجد أدوار نشطة بعد. تابع المساهمة، ستأتي.',
+		expiresOn: 'ينتهي في {date}',
+		grantedOn: 'مُنح في {date}',
+		items: {
+			challenger: { label: 'متسابق', description: 'يحل التحديات المنشورة ويكسب الشظايا.' },
+			mentor: { label: 'موجّه', description: 'يقود جلسات فردية مع المواهب.' },
+			project_steward: { label: 'قائد مشروع', description: 'ينسق مشروعاً مجتمعياً ويحكم بين المواقع.' },
+			pr_reviewer: { label: 'مراجع طلبات السحب', description: 'يعتمد طلبات السحب على مكافآت المصادر المفتوحة.' },
+			bounty_funder: { label: 'ممول المكافآت', description: 'يمول قضايا GitHub للمجتمع.' },
+			issue_proposer: { label: 'مقترح قضايا', description: 'يقترح قضايا لتحويلها إلى مكافآت.' },
+			jury_tournament: { label: 'حَكَم بطولة', description: 'يقيّم التسليمات خلال بطولة.' },
+			admin: { label: 'مدير', description: 'وصول كامل للمنصة.' },
+			enterprise_recruiter: { label: 'موظف مؤسسة', description: 'استقطاب المواهب لحساب مؤسسة.' },
+			community_moderator: { label: 'مشرف مجتمع', description: 'يشرف على مساحات المجتمع المشتركة.' },
+			forum_moderator: { label: 'مشرف منتدى', description: 'يزيل الرسائل غير المرغوب فيها والإساءات في المنتدى.' },
+			plagiarism_reviewer: { label: 'مراجع الانتحال', description: 'يقرر صحة التسليمات المشبوهة.' },
+			kyc_reviewer: { label: 'مراجع KYC', description: 'يعتمد وثائق الهوية للمدفوعات.' },
+			community_curator: { label: 'منسق المجتمع', description: 'يوافق أو يرفض التحديات المجتمعية قيد المراجعة.' }
+		},
+		nav: {
+			forumModeration: 'إشراف المنتدى',
+			pendingCurator: 'قائمة المنسق',
+			plagiarismQueue: 'مراجعة الانتحال',
+			mentorZone: 'منطقة الموجّه',
+			juryTournament: 'حَكَم البطولة'
+		}
 	}
 };
