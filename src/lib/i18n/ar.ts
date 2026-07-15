@@ -22,7 +22,7 @@ export const ar: Translations = {
 			login: 'تسجيل الدخول', register: 'ابدأ', logout: 'تسجيل الخروج', community: 'المجتمع'
 		},
 		domains: { code: 'برمجة', design: 'تصميم', game: 'ألعاب', security: 'أمن سيبراني' },
-		titles: { apprenti: 'متدرب', artisan: 'حرفي', maitre: 'معلم', legende: 'أسطورة' },
+		titles: { apprenti: 'متدرب', ranger: 'كشّاف', artisan: 'حرفي', maitre: 'معلم', doyen: 'شيخ', legende: 'أسطورة' },
 		difficulty: { 1: 'مبتدئ', 2: 'سهل', 3: 'متوسط', 4: 'متقدم', 5: 'خبير' },
 		tone: { serious: 'جاد', fun: 'ممتع', educational: 'تعليمي' },
 		time: { minutes: '{n} د', hours: '{n}س', noLimit: 'بدون حد', ago: 'منذ' },
@@ -343,6 +343,40 @@ export const ar: Translations = {
 		backHome: 'رجوع للرئيسية',
 		retryBtn: 'إعادة المحاولة',
 		generic: 'حدث خطأ. حاول مرة أخرى.'
+	},
+	badges: {
+		sections: {
+			rank: 'الرتبة',
+			patches: 'المهارات المُثبَتة',
+			medals: 'الميداليات',
+			crests: 'شعارات النقابة',
+			seal: 'ختم',
+			sealsCount: 'ختوم التحديات',
+			stampsCount: 'طوابع الأحداث',
+			countersLabel: 'الختوم والطوابع'
+		},
+		rank: {
+			achievedOn: 'منذ {date}',
+			previous: 'سابقاً {previous}'
+		},
+		empty: {
+			own: 'لا شارات بعد. أنهِ أول تحدٍ لكسب واحدة.',
+			public: 'لا يمتلك هذا الشخص أي شارات بعد. ادعُه للمساهمة.'
+		}
+	},
+	orientations: {
+		sectionTitle: 'التوجهات المهنية',
+		primary: 'رئيسية',
+		workingLanguages: 'لغات العمل',
+		timezone: 'المنطقة الزمنية',
+		mode: {
+			learning: 'قيد التعلم',
+			active: 'نشط'
+		},
+		empty: {
+			own: 'لم يتم اختيار توجه. ستبقى قائمتك عامة حتى تختار واحداً.',
+			public: 'لا توجد توجهات مسجلة.'
+		}
 	},
 	capabilities: {
 		sectionOwnTitle: 'كيف أساهم',

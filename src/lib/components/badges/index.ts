@@ -14,6 +14,7 @@ export { default as ChallengeSeal } from './ChallengeSeal.svelte';
 export { default as EventStamp } from './EventStamp.svelte';
 export { default as AwardMedal } from './AwardMedal.svelte';
 export { default as Badge } from './Badge.svelte';
+export { default as BadgesWall } from './BadgesWall.svelte';
 
 export type {
 	KeyType,

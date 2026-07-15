@@ -14,7 +14,7 @@ export const en: Translations = {
 			login: 'Log in', register: 'Get started', logout: 'Log out', community: 'Community'
 		},
 		domains: { code: 'Code', design: 'Design', game: 'Game Dev', security: 'Cybersecurity' },
-		titles: { apprenti: 'Apprentice', artisan: 'Artisan', maitre: 'Master', legende: 'Legend' },
+		titles: { apprenti: 'Apprentice', ranger: 'Ranger', artisan: 'Artisan', maitre: 'Master', doyen: 'Elder', legende: 'Legend' },
 		difficulty: { 1: 'Beginner', 2: 'Easy', 3: 'Intermediate', 4: 'Advanced', 5: 'Expert' },
 		tone: { serious: 'Serious', fun: 'Fun', educational: 'Educational' },
 		time: { minutes: '{n} min', hours: '{n}h', noLimit: 'No limit', ago: 'ago' },
@@ -335,6 +335,40 @@ export const en: Translations = {
 		backHome: 'Back to home',
 		retryBtn: 'Retry',
 		generic: 'An error occurred. Please try again.'
+	},
+	badges: {
+		sections: {
+			rank: 'Rank',
+			patches: 'Proven skills',
+			medals: 'Medals',
+			crests: 'Guild crests',
+			seal: 'Seal',
+			sealsCount: 'challenge seals',
+			stampsCount: 'event stamps',
+			countersLabel: 'Seals and stamps'
+		},
+		rank: {
+			achievedOn: 'Since {date}',
+			previous: 'Formerly {previous}'
+		},
+		empty: {
+			own: 'No badges yet. Finish your first challenge to earn one.',
+			public: 'This person has no badges yet. Invite them to contribute.'
+		}
+	},
+	orientations: {
+		sectionTitle: 'Career orientations',
+		primary: 'Primary',
+		workingLanguages: 'Working languages',
+		timezone: 'Timezone',
+		mode: {
+			learning: 'Learning',
+			active: 'Active'
+		},
+		empty: {
+			own: 'No orientation selected. Your playlist will stay generic until you pick one.',
+			public: 'No orientation set.'
+		}
 	},
 	capabilities: {
 		sectionOwnTitle: 'How I contribute',

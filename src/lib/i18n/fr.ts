@@ -14,7 +14,7 @@ export const fr: Translations = {
 			login: 'Connexion', register: 'Commencer', logout: 'Déconnexion', community: 'Communauté'
 		},
 		domains: { code: 'Code', design: 'Design', game: 'Jeux Vidéo', security: 'Cybersécurité' },
-		titles: { apprenti: 'Apprenti', artisan: 'Artisan', maitre: 'Maître', legende: 'Légende' },
+		titles: { apprenti: 'Apprenti', ranger: 'Ranger', artisan: 'Artisan', maitre: 'Maître', doyen: 'Doyen', legende: 'Légende' },
 		difficulty: { 1: 'Débutant', 2: 'Facile', 3: 'Intermédiaire', 4: 'Avancé', 5: 'Expert' },
 		tone: { serious: 'Sérieux', fun: 'Loufoque', educational: 'Éducatif' },
 		time: { minutes: '{n} min', hours: '{n}h', noLimit: 'Libre', ago: 'il y a' },
@@ -335,6 +335,40 @@ export const fr: Translations = {
 		backHome: 'Retour à l\'accueil',
 		retryBtn: 'Réessayer',
 		generic: 'Une erreur est survenue. Réessaie.'
+	},
+	badges: {
+		sections: {
+			rank: 'Rang',
+			patches: 'Compétences prouvées',
+			medals: 'Médailles',
+			crests: 'Écussons de guilde',
+			seal: 'Sceau',
+			sealsCount: 'sceaux de challenges',
+			stampsCount: 'timbres d\'événements',
+			countersLabel: 'Sceaux et timbres'
+		},
+		rank: {
+			achievedOn: 'Depuis le {date}',
+			previous: 'Anciennement {previous}'
+		},
+		empty: {
+			own: 'Aucun badge pour l\'instant. Termine ton premier challenge pour en gagner.',
+			public: 'Cette personne n\'a pas encore de badges. Invite-la à contribuer.'
+		}
+	},
+	orientations: {
+		sectionTitle: 'Orientations métier',
+		primary: 'Principale',
+		workingLanguages: 'Langues de travail',
+		timezone: 'Fuseau',
+		mode: {
+			learning: 'En apprentissage',
+			active: 'En exercice'
+		},
+		empty: {
+			own: 'Aucune orientation choisie. Ta playlist sera générique tant que tu n\'en choisis pas.',
+			public: 'Aucune orientation renseignée.'
+		}
 	},
 	capabilities: {
 		sectionOwnTitle: 'Comment je contribue',

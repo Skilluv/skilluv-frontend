@@ -37,8 +37,10 @@ export interface Translations {
 		};
 		titles: {
 			apprenti: string;
+			ranger: string;
 			artisan: string;
 			maitre: string;
+			doyen: string;
 			legende: string;
 		};
 		difficulty: {
@@ -508,6 +510,40 @@ export interface Translations {
 		backHome: string;
 		retryBtn: string;
 		generic: string;
+	};
+	badges: {
+		sections: {
+			rank: string;
+			patches: string;
+			medals: string;
+			crests: string;
+			seal: string;
+			sealsCount: string;
+			stampsCount: string;
+			countersLabel: string;
+		};
+		rank: {
+			achievedOn: string;
+			previous: string;
+		};
+		empty: {
+			own: string;
+			public: string;
+		};
+	};
+	orientations: {
+		sectionTitle: string;
+		primary: string;
+		workingLanguages: string;
+		timezone: string;
+		mode: {
+			learning: string;
+			active: string;
+		};
+		empty: {
+			own: string;
+			public: string;
+		};
 	};
 	capabilities: {
 		sectionOwnTitle: string;

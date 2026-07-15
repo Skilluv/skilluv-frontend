@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { profileApi } from '$api/profile';
+	import { badgesApi } from '$lib/api/badges';
+	import { orientationsApi } from '$lib/api/orientations';
+	import { capabilitiesApi } from '$lib/api/capabilities';
 	import { auth } from '$stores/auth.svelte';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
@@ -12,11 +15,19 @@
 	import { profileJsonLd } from '$lib/utils/jsonld';
 	import { geo } from '$stores/geo.svelte';
 	import { onMount } from 'svelte';
-	import type { UserPublic, SkillNode, HeatmapEntry } from '$types';
+	import type {
+		UserPublic,
+		SkillNode,
+		HeatmapEntry,
+		UserBadgesResponse,
+		UserOrientation,
+		UserCapability,
+		KeyType
+	} from '$types';
 	import Keyring from '$lib/components/badges/primitives/Keyring.svelte';
-	import SkillPatch from '$lib/components/badges/SkillPatch.svelte';
-	import RankChevron from '$lib/components/badges/RankChevron.svelte';
-	import type { KeyType, SkillCategory, Rarity, RankLevel } from '$lib/components/badges';
+	import BadgesWall from '$lib/components/badges/BadgesWall.svelte';
+	import { OrientationList } from '$lib/components/orientations';
+	import { ContributionSection } from '$lib/components/capabilities';
 
 	onMount(() => {
 		void geo.ensureCountries();
@@ -29,6 +40,9 @@
 	let skillTree = $state<SkillNode[]>([]);
 	let heatmap = $state<HeatmapEntry[]>([]);
 	let badges = $state<{ slug: string; name: string; icon: string; category: string; earned_at: string }[]>([]);
+	let badgesData = $state<UserBadgesResponse | null>(null);
+	let orientations = $state<UserOrientation[]>([]);
+	let publicCapabilities = $state<UserCapability[]>([]);
 	let loading = $state(true);
 	let error = $state('');
 
@@ -48,38 +62,18 @@
 		security: 'bg-red-500'
 	};
 
-	/** Dérive les clés du trousseau depuis les stats.
-	 * (En attendant le backend proof engine — cf. HANDOFF-backend-proof-engine.md
-	 * pour la vraie source de vérité côté serveur.) */
+	/** Trousseau P5 fallback : dérive quelques clés visibles quand le backend
+	 * P17 n'a pas encore renvoyé un `UserBadgesResponse` complet. Une fois
+	 * badgesData chargé, le trousseau est remplacé par le rendu réel. */
 	let derivedKeys = $derived.by<KeyType[]>(() => {
 		if (!user || !stats) return [];
 		const keys: KeyType[] = [];
-		if (stats.total_fragments > 0) keys.push('circle');                // Preuve
-		if (stats.streak_current >= 7) keys.push('trefle');                // Craft
-		if ((badges?.length ?? 0) >= 3) keys.push('rosace');               // Création
-		if (user.golden_stars >= 1) keys.push('star');                     // Impact
-		if (user.title === 'maitre' || user.title === 'legende') keys.push('heart'); // Luv
+		if (stats.total_fragments > 0) keys.push('circle');
+		if (stats.streak_current >= 7) keys.push('trefle');
+		if ((badges?.length ?? 0) >= 3) keys.push('rosace');
+		if (user.golden_stars >= 1) keys.push('star');
+		if (user.title === 'maitre' || user.title === 'legende') keys.push('heart');
 		return keys;
-	});
-
-	/** Mappe title (apprenti/artisan/maitre/legende) vers rang chevron 1..5 */
-	let rankLevel = $derived.by<RankLevel>(() => {
-		if (!user) return 1;
-		const m: Record<string, RankLevel> = { apprenti: 1, artisan: 3, maitre: 4, legende: 5 };
-		return m[user.title] ?? 1;
-	});
-
-	/** Convertit les badges backend en SkillPatch. Cycle catégories/keyTypes. */
-	const patchCategories: SkillCategory[] = ['craft', 'create', 'understand', 'operate', 'share', 'meta'];
-	const patchKeys: KeyType[] = ['circle', 'trefle', 'rosace', 'star', 'heart'];
-	let patchList = $derived.by(() => {
-		return (badges ?? []).map((b, i) => ({
-			skill: b.name,
-			category: patchCategories[i % patchCategories.length],
-			keyType: patchKeys[i % patchKeys.length],
-			rarity: (['common', 'common', 'rare', 'epic'][i % 4]) as Rarity,
-			subLabel: b.category?.toUpperCase() ?? ''
-		}));
 	});
 
 	$effect(() => {
@@ -89,6 +83,9 @@
 	async function loadProfile(name: string) {
 		loading = true;
 		error = '';
+		badgesData = null;
+		orientations = [];
+		publicCapabilities = [];
 		try {
 			const res = await profileApi.getPublic(name);
 			user = res.data.user;
@@ -96,6 +93,19 @@
 			skillTree = res.data.skill_tree ?? [];
 			heatmap = res.data.heatmap_summary ?? [];
 			badges = res.data.badges ?? [];
+
+			// P17/P16/P18.4 — chargements enrichis, tolérants aux 404 tant que le
+			// backend n'a pas encore les endpoints publics correspondants.
+			if (user?.id) {
+				const [badgesRes, orientationsRes, capabilitiesRes] = await Promise.allSettled([
+					badgesApi.forUser(user.id),
+					orientationsApi.forUser(user.id),
+					capabilitiesApi.forUser(user.id)
+				]);
+				if (badgesRes.status === 'fulfilled') badgesData = badgesRes.value.data;
+				if (orientationsRes.status === 'fulfilled') orientations = orientationsRes.value.data;
+				if (capabilitiesRes.status === 'fulfilled') publicCapabilities = capabilitiesRes.value.data;
+			}
 		} catch (err) {
 			if (err instanceof SkilluError) {
 				error = err.code === 'RESOURCE_NOT_FOUND' ? i18n.t('profile.notFound') : err.message;
@@ -333,38 +343,22 @@
 
 			<!-- Sidebar -->
 			<div class="space-y-6">
-				<!-- Skill patches (wall) -->
-				{#if patchList.length > 0}
-					<div class="rounded-xl border border-border bg-surface-elevated overflow-hidden">
-						<div class="px-5 py-3 border-b border-border">
-							<span class="text-xs font-bold uppercase tracking-wider text-text-muted">
-								{i18n.locale === 'fr' ? 'Ses preuves' : 'Their proofs'}
-							</span>
-						</div>
-						<div class="p-4">
-							<div class="flex flex-wrap gap-3 justify-center">
-								{#each patchList as p}
-									<SkillPatch
-										skill={p.skill}
-										category={p.category}
-										keyType={p.keyType}
-										rarity={p.rarity}
-										size="sm"
-										subLabel={p.subLabel}
-										interactive
-									/>
-								{/each}
-							</div>
-						</div>
-					</div>
-				{/if}
+				<OrientationList {orientations} viewer={isOwnProfile ? 'own' : 'public'} />
 
-				<!-- Member since -->
+				<ContributionSection
+					capabilities={publicCapabilities}
+					viewer={isOwnProfile ? 'own' : 'public'}
+				/>
+
 				<div class="rounded-xl border border-border bg-surface-elevated p-5">
 					<p class="text-xs text-text-muted mb-1">{i18n.locale === 'fr' ? 'Membre depuis' : 'Member since'}</p>
 					<p class="text-sm font-medium">{new Date(user.member_since).toLocaleDateString(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', { month: 'long', year: 'numeric' })}</p>
 				</div>
 			</div>
+		</div>
+
+		<div class="mt-6">
+			<BadgesWall badges={badgesData} isOwn={isOwnProfile} />
 		</div>
 	{/if}
 </div>
