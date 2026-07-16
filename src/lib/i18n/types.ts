@@ -577,6 +577,64 @@ export interface Translations {
 		retryBtn: string;
 		generic: string;
 	};
+	wallet: {
+		title: string;
+		subtitle: string;
+		balanceLabel: string;
+		balanceFragments: string;
+		balanceEur: string;
+		lastUpdated: string;
+		requestPayoutCta: string;
+		historyTitle: string;
+		historyEmpty: string;
+		payoutsTitle: string;
+		payoutsEmpty: string;
+		loadError: string;
+		tx: {
+			earn: string;
+			payout: string;
+			adjustment: string;
+			entryHash: string;
+		};
+		payoutStatus: {
+			pending: string;
+			processing: string;
+			paid: string;
+			failed: string;
+			cancelled: string;
+		};
+		payoutModal: {
+			title: string;
+			amountLabel: string;
+			amountHint: string;
+			amountBelowMin: string;
+			methodLabel: string;
+			methodStripeLabel: string;
+			methodStripeDesc: string;
+			methodMomoLabel: string;
+			methodMomoDesc: string;
+			stripe: {
+				notConnected: string;
+				connectCta: string;
+				connectingLabel: string;
+				readyLabel: string;
+				accountLabel: string;
+			};
+			momo: {
+				providerLabel: string;
+				providerOrange: string;
+				providerMtn: string;
+				numberLabel: string;
+				numberHint: string;
+				numberRequired: string;
+				registerCta: string;
+				verifiedLabel: string;
+			};
+			submit: string;
+			cancel: string;
+			submitted: string;
+		};
+	};
 	moderation: {
 		buttonLabel: string;
 		reasonLabel: string;

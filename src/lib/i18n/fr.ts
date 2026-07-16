@@ -402,6 +402,64 @@ export const fr: Translations = {
 		retryBtn: 'Réessayer',
 		generic: 'Une erreur est survenue. Réessaie.'
 	},
+	wallet: {
+		title: 'Mon wallet',
+		subtitle: 'Convertis tes fragments en euros ou francs CFA. Historique hash-chainé pour audit.',
+		balanceLabel: 'Solde',
+		balanceFragments: '{n} fragments',
+		balanceEur: '≈ {n} €',
+		lastUpdated: 'Mis à jour {date}',
+		requestPayoutCta: 'Demander un payout',
+		historyTitle: 'Historique',
+		historyEmpty: 'Aucune transaction pour l\'instant.',
+		payoutsTitle: 'Mes payouts',
+		payoutsEmpty: 'Aucun payout demandé.',
+		loadError: 'Impossible de charger le wallet. Réessaie plus tard.',
+		tx: {
+			earn: 'Gain',
+			payout: 'Payout',
+			adjustment: 'Ajustement',
+			entryHash: 'Hash entrée'
+		},
+		payoutStatus: {
+			pending: 'En attente',
+			processing: 'En cours',
+			paid: 'Payé',
+			failed: 'Échoué',
+			cancelled: 'Annulé'
+		},
+		payoutModal: {
+			title: 'Demander un payout',
+			amountLabel: 'Montant (fragments)',
+			amountHint: 'Ton solde disponible : {balance} fragments',
+			amountBelowMin: 'Le montant minimum est 100 fragments.',
+			methodLabel: 'Méthode de paiement',
+			methodStripeLabel: 'Stripe Connect',
+			methodStripeDesc: 'Virement bancaire international via ton compte Stripe.',
+			methodMomoLabel: 'Mobile Money',
+			methodMomoDesc: 'Orange Money / MTN — cap 100 000 XOF par payout.',
+			stripe: {
+				notConnected: 'Ton compte Stripe n\'est pas encore connecté.',
+				connectCta: 'Connecter Stripe',
+				connectingLabel: 'Redirection…',
+				readyLabel: 'Stripe connecté',
+				accountLabel: 'Compte {id}'
+			},
+			momo: {
+				providerLabel: 'Opérateur',
+				providerOrange: 'Orange Money',
+				providerMtn: 'MTN Mobile Money',
+				numberLabel: 'Numéro Mobile Money',
+				numberHint: 'Format international, ex. +22990000000',
+				numberRequired: 'Le numéro Mobile Money est requis.',
+				registerCta: 'Enregistrer le numéro',
+				verifiedLabel: 'Numéro vérifié'
+			},
+			submit: 'Confirmer le payout',
+			cancel: 'Annuler',
+			submitted: 'Demande de payout enregistrée.'
+		}
+	},
 	moderation: {
 		buttonLabel: 'Modérer',
 		reasonLabel: 'Raison',

@@ -23,6 +23,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Navbar user dropdown — 5 conditional links (forum moderation, curator queue, plagiarism review, mentor zone, tournament jury) driven by `auth.can(...)`.
 - i18n FR/EN/AR — 14 capability labels + descriptions + navigation entries.
 
+**FE-M8 — Talent wallet + payouts**
+- `<WalletBalanceCard>` — fragments balance + EUR equivalent + last-updated timestamp + "Request payout" CTA (disabled below the 100-fragment minimum).
+- `<TransactionRow>` — history row with type icon (earn / payout / adjustment), amount, description, truncated `entry_hash` display (hash-chained audit).
+- `<PayoutRow>` — payout row with status badge (5 states) + settled_at + failure_reason + currency-formatted amount + fragment count.
+- `<PayoutRequestModal>` — full flow: amount input with minimum validation, method radio (Stripe / Mobile Money), Stripe status/connect-onboarding sub-flow, Mobile Money provider (Orange/MTN) + number registration + verification.
+- New page `/wallet` — balance + history + payouts sections with `Promise.allSettled` guards + open-modal + refresh-after-submit.
+- New pages `/wallet/stripe/return` (post-onboarding success with auto-redirect) and `/wallet/stripe/refresh` (expired-link recovery hitting `stripeOnboarding` again).
+- i18n FR/EN/AR — `wallet.*` namespace: title/subtitle, balance labels with interpolation, history/payouts empty states, 3 transaction kinds, 5 payout statuses, full modal (amount, method cards, Stripe sub-flow, Momo sub-flow, submit/cancel, submitted toast).
+- 8 unit tests covering read routes (balance / history pagination / payouts pagination), Stripe flow (status / onboarding URL / requestPayout with account_id), Mobile Money flow (register / requestPayout with provider+number).
+- 3 Playwright e2e — balance + history render, payout modal + Stripe status, Mobile Money method switch reveals operator + number fields.
+
 **FE-M9 — Community moderation inline**
 - `<ConfirmDangerousDialog>` — reusable modal with required-reason input, danger CTA, cancel guard while submitting.
 - `<InlineModerateButton>` — capability-gated dropdown menu (only renders when `auth.can(capability)` is true) with role="menu" a11y wiring.

@@ -402,6 +402,64 @@ export const en: Translations = {
 		retryBtn: 'Retry',
 		generic: 'An error occurred. Please try again.'
 	},
+	wallet: {
+		title: 'My wallet',
+		subtitle: 'Cash out your fragments to euros or CFA francs. Hash-chained history for audit.',
+		balanceLabel: 'Balance',
+		balanceFragments: '{n} fragments',
+		balanceEur: '≈ €{n}',
+		lastUpdated: 'Updated {date}',
+		requestPayoutCta: 'Request payout',
+		historyTitle: 'History',
+		historyEmpty: 'No transactions yet.',
+		payoutsTitle: 'My payouts',
+		payoutsEmpty: 'No payout requested.',
+		loadError: 'Could not load the wallet. Try again later.',
+		tx: {
+			earn: 'Earn',
+			payout: 'Payout',
+			adjustment: 'Adjustment',
+			entryHash: 'Entry hash'
+		},
+		payoutStatus: {
+			pending: 'Pending',
+			processing: 'Processing',
+			paid: 'Paid',
+			failed: 'Failed',
+			cancelled: 'Cancelled'
+		},
+		payoutModal: {
+			title: 'Request a payout',
+			amountLabel: 'Amount (fragments)',
+			amountHint: 'Available balance: {balance} fragments',
+			amountBelowMin: 'Minimum amount is 100 fragments.',
+			methodLabel: 'Payment method',
+			methodStripeLabel: 'Stripe Connect',
+			methodStripeDesc: 'International bank transfer via your Stripe account.',
+			methodMomoLabel: 'Mobile Money',
+			methodMomoDesc: 'Orange Money / MTN — capped at 100,000 XOF per payout.',
+			stripe: {
+				notConnected: 'Your Stripe account is not connected yet.',
+				connectCta: 'Connect Stripe',
+				connectingLabel: 'Redirecting…',
+				readyLabel: 'Stripe connected',
+				accountLabel: 'Account {id}'
+			},
+			momo: {
+				providerLabel: 'Operator',
+				providerOrange: 'Orange Money',
+				providerMtn: 'MTN Mobile Money',
+				numberLabel: 'Mobile Money number',
+				numberHint: 'International format, e.g. +22990000000',
+				numberRequired: 'Mobile Money number is required.',
+				registerCta: 'Register number',
+				verifiedLabel: 'Number verified'
+			},
+			submit: 'Confirm payout',
+			cancel: 'Cancel',
+			submitted: 'Payout request saved.'
+		}
+	},
 	moderation: {
 		buttonLabel: 'Moderate',
 		reasonLabel: 'Reason',

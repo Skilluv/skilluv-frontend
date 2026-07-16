@@ -410,6 +410,64 @@ export const ar: Translations = {
 		retryBtn: 'إعادة المحاولة',
 		generic: 'حدث خطأ. حاول مرة أخرى.'
 	},
+	wallet: {
+		title: 'محفظتي',
+		subtitle: 'حوّل شظاياك إلى يورو أو فرنك CFA. سجل مسلسل بالتجزئة للتدقيق.',
+		balanceLabel: 'الرصيد',
+		balanceFragments: '{n} شظية',
+		balanceEur: '≈ {n} €',
+		lastUpdated: 'حُدّث {date}',
+		requestPayoutCta: 'طلب دفع',
+		historyTitle: 'السجل',
+		historyEmpty: 'لا معاملات بعد.',
+		payoutsTitle: 'مدفوعاتي',
+		payoutsEmpty: 'لم يُطلب أي دفع.',
+		loadError: 'تعذر تحميل المحفظة. حاول لاحقاً.',
+		tx: {
+			earn: 'كسب',
+			payout: 'دفع',
+			adjustment: 'تعديل',
+			entryHash: 'تجزئة الإدخال'
+		},
+		payoutStatus: {
+			pending: 'قيد الانتظار',
+			processing: 'قيد المعالجة',
+			paid: 'مدفوع',
+			failed: 'فشل',
+			cancelled: 'ملغى'
+		},
+		payoutModal: {
+			title: 'طلب دفع',
+			amountLabel: 'المبلغ (شظايا)',
+			amountHint: 'رصيدك المتاح: {balance} شظية',
+			amountBelowMin: 'الحد الأدنى للمبلغ 100 شظية.',
+			methodLabel: 'طريقة الدفع',
+			methodStripeLabel: 'Stripe Connect',
+			methodStripeDesc: 'تحويل بنكي دولي عبر حسابك في Stripe.',
+			methodMomoLabel: 'Mobile Money',
+			methodMomoDesc: 'Orange Money / MTN — بحد أقصى 100000 XOF لكل دفعة.',
+			stripe: {
+				notConnected: 'حسابك في Stripe غير متصل بعد.',
+				connectCta: 'ربط Stripe',
+				connectingLabel: 'إعادة توجيه…',
+				readyLabel: 'Stripe متصل',
+				accountLabel: 'الحساب {id}'
+			},
+			momo: {
+				providerLabel: 'المشغل',
+				providerOrange: 'Orange Money',
+				providerMtn: 'MTN Mobile Money',
+				numberLabel: 'رقم Mobile Money',
+				numberHint: 'صيغة دولية، مثلاً +22990000000',
+				numberRequired: 'رقم Mobile Money مطلوب.',
+				registerCta: 'تسجيل الرقم',
+				verifiedLabel: 'الرقم متحقق'
+			},
+			submit: 'تأكيد الدفع',
+			cancel: 'إلغاء',
+			submitted: 'تم حفظ طلب الدفع.'
+		}
+	},
 	moderation: {
 		buttonLabel: 'إشراف',
 		reasonLabel: 'السبب',
