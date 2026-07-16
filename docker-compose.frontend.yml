@@ -1,0 +1,37 @@
+# Skilluv frontend — isolated compose file.
+#
+# Usage:
+#   docker compose -f docker-compose.frontend.yml up --build
+#
+# The backend API is expected on ${API_URL} (default http://host.docker.internal:3001)
+# so devs can run the front containerized while the backend runs on the host
+# via `cargo run`. In production the compose is stacked with the backend one.
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: skilluv/frontend:latest
+    container_name: skilluv-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOST: 0.0.0.0
+      ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000}
+      API_URL: ${API_URL:-http://host.docker.internal:3001/api}
+      PUBLIC_SENTRY_DSN: ${PUBLIC_SENTRY_DSN:-}
+      PUBLIC_POSTHOG_KEY: ${PUBLIC_POSTHOG_KEY:-}
+      PUBLIC_POSTHOG_HOST: ${PUBLIC_POSTHOG_HOST:-https://eu.i.posthog.com}
+      PUBLIC_APP_VERSION: ${PUBLIC_APP_VERSION:-dev}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

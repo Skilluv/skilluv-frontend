@@ -1,6 +1,6 @@
 {
 	"name": "skilluv-frontend",
-	"version": "0.1.0",
+	"version": "0.3.0",
 	"private": true,
 	"type": "module",
 	"scripts": {
@@ -11,7 +11,8 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test": "playwright test",
 		"test:unit": "vitest run",
-		"test:unit:watch": "vitest"
+		"test:unit:watch": "vitest",
+		"i18n:check": "node scripts/i18n-check.mjs"
 	},
 	"devDependencies": {
 		"@fontsource-variable/bricolage-grotesque": "^5.2.10",

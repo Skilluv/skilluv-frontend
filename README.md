@@ -8,6 +8,7 @@
 [![SvelteKit](https://img.shields.io/badge/SvelteKit-2-ff3e00.svg)](https://kit.svelte.dev/)
 [![Svelte](https://img.shields.io/badge/Svelte-5-ff3e00.svg)](https://svelte.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![MVP status: ready](https://img.shields.io/badge/MVP-ready-brightgreen.svg)](FEATURE-MATRIX.md)
 
 ---
 
@@ -25,11 +26,16 @@ This is the **web application** used by talents (and companies) to interact with
 
 It covers a large surface of the product already:
 
-- **Talent journey** — onboarding, profile, portfolio, challenge discovery and submission, sandbox editor (Monaco), certifications, diplomas, mentorship, opportunities board, real-time leaderboards
-- **Community surfaces** — feed, forum, guilds, direct messages, notifications, mentor listings, tournaments, bounties
-- **Enterprise surfaces** — dedicated landing (`for-companies`), pricing, subscription management, talent search, sponsored challenges
+- **Talent journey** — onboarding with career orientations picker, profile with badges wall (rank chevron, skill patches, medals, guild crests, event stamps), challenge discovery and submission, sandbox editor (Monaco), certifications, diplomas, mentorship, opportunities board, real-time leaderboards with season indicator, wallet with Stripe Connect and Mobile Money payouts
+- **Community surfaces** — feed, forum with inline moderation for `forum_moderator`, guilds, direct messages, notifications, mentor listings, tournaments, bounties, team marketplace (join open role slots), Skilluv events (join and earn stamps)
+- **Enterprise surfaces** — dedicated landing (`for-companies`), pricing, subscription management, talent search, sponsored challenges, enterprise-type wizard (direct hire / staffing agency / remote international) with agency-clients CRUD and EOR configuration
+- **Moderation surfaces** — capability-gated inline forum moderation, community curator queue (`community_curator`), plagiarism reviewer queue (`plagiarism_reviewer`)
+- **Privacy and compliance** — GDPR export, product data export, consent management (marketing / analytics), account deletion with 30-day soft-delete window
 - **Public and legal surfaces** — landing pages, developer/API section, legal pages
-- **Theming and i18n** — dark/light modes, French/English bundled
+- **Theming and i18n** — dark/light modes, three languages bundled (French, English, Arabic with RTL)
+- **PWA** — service worker, install prompt, Web Push (VAPID) with foreground-notification in-app toast forwarding
+
+See [FEATURE-MATRIX.md](FEATURE-MATRIX.md) for a per-phase breakdown mapping backend phases (P4→P25) to frontend implementation status.
 
 ## Companion repositories
 
@@ -55,11 +61,32 @@ The app opens on `http://localhost:5173`.
 
 Detailed instructions (routing, themes, i18n, testing, deployment) are in [`README.fr.md`](README.fr.md) — English translation in progress.
 
+## Docker
+
+Run a standalone containerized frontend against a local backend:
+
+```bash
+docker compose -f docker-compose.frontend.yml up --build
+```
+
+The service exposes port 3000 and reaches the backend at `${API_URL}` (default `http://host.docker.internal:3001/api`). All observability keys (`PUBLIC_SENTRY_DSN`, `PUBLIC_POSTHOG_KEY`) are optional environment variables — the app runs cleanly without them (no-op mode).
+
+## Testing
+
+```bash
+npm run check       # svelte-check + tsc
+npm run test:unit   # Vitest unit + logic tests
+npm run test        # Playwright end-to-end
+npm run i18n:check  # FR/EN/AR key parity + orphan-key hunt
+```
+
+CI runs all four on every push to `main`. See [.github/workflows/ci.yml](.github/workflows/ci.yml).
+
 ## Stack summary
 
 | Layer              | Technology                        |
 |--------------------|-----------------------------------|
-| Framework          | SvelteKit 2.30                    |
+| Framework          | SvelteKit 2.55                    |
 | UI runtime         | Svelte 5.54 (runes)               |
 | Language           | TypeScript 5.9                    |
 | CSS                | Tailwind CSS 4.2                  |
@@ -68,7 +95,8 @@ Detailed instructions (routing, themes, i18n, testing, deployment) are in [`READ
 | Unit tests         | Vitest 4.1                        |
 | E2E tests          | Playwright 1.58                   |
 | Runtime            | Node.js 22 (Alpine)               |
-| Typography         | Space Grotesk, JetBrains Mono     |
+| Typography         | Fraunces (display), Bricolage Grotesque (UI), JetBrains Mono (mono) |
+| Observability      | Sentry (errors, opt-in) + PostHog (analytics, opt-in) |
 
 ## Contributing
 

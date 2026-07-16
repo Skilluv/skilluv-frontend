@@ -1,5 +1,16 @@
 # Ce qu'une entreprise peut faire — inventaire complet
 
+> **Addendum MVP frontend — 2026-07-16.** Ce document décrit les routes backend consommées à date. Depuis la livraison de FE-M1 → FE-M11 (voir [CHANGELOG.md](CHANGELOG.md) et [FEATURE-MATRIX.md](FEATURE-MATRIX.md)), le frontend expose en plus :
+>
+> - **Type d'entreprise (P24)** — wizard 3 cards à `/enterprise/register` (step 3) : `direct_hire`, `staffing_agency`, `remote_international`. Persisté via `PATCH /api/enterprises/me/type-config`.
+> - **Agency clients (P24)** — CRUD complet à `/enterprise/agency-clients` (owner-only côté agence). Routes `/api/enterprises/me/agency-clients{,/{id}}`.
+> - **Dashboard conditionnel** — le dashboard affiche des cards spécifiques selon `enterprise_type` : lien "Clients agence" pour `staffing_agency`, résumé "Config EOR" pour `remote_international`.
+> - **Capabilities recruteur (P18.4)** — un compte enterprise ou recruiter porte automatiquement la capability `enterprise_recruiter`. Les capabilities orthogonales (mentor, community_curator, forum_moderator, etc.) sont accessibles à un compte enterprise si les critères sont remplis — la navbar affiche les liens correspondants via `auth.can(capability)`.
+>
+> Les routes backend référencées dans ce document restent la source de vérité contractuelle. Les 5 endpoints P24 attendus sont listés dans [BACKEND-GAPS.md](docs/BACKEND-GAPS.md).
+>
+> ---
+
 Version au **2026-07-07**. Toutes les routes sont préfixées par `/api` côté backend. La colonne "Auth" indique l'exigence :
 
 - **Public** — accessible sans session.

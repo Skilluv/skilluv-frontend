@@ -5,7 +5,9 @@ All notable changes to the Skilluv frontend are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.3.0] — 2026-07-16 — MVP-ready
+
+Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase notes below. 120 unit + e2e tests green, 0 svelte-check errors, FR/EN/AR at parity (537 referenced keys against 736 per locale), Docker + CI pipeline in place, observability + retry hardening on top of the existing app.
 
 ### Added
 
@@ -22,6 +24,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `<ContributionSection>` — public/own profile section listing active capabilities, filtering expired.
 - Navbar user dropdown — 5 conditional links (forum moderation, curator queue, plagiarism review, mentor zone, tournament jury) driven by `auth.can(...)`.
 - i18n FR/EN/AR — 14 capability labels + descriptions + navigation entries.
+
+**FE-M11 — Tests + docs + deploy + hardening**
+- `client.ts` — safe-methods (GET/HEAD) auto-retry on network throw only (backoff 1s / 3s / 9s, 3 retries). Writes never auto-retry — user-driven for explicit intent. Server-side errors (5xx) surface immediately (MVP §0.11).
+- `src/lib/observability.ts` — Sentry + PostHog opt-in via `PUBLIC_SENTRY_DSN` / `PUBLIC_POSTHOG_KEY` env vars, graceful no-op in dev/without SDKs installed. Wired at app boot from root layout (MVP §0.9).
+- CI (`.github/workflows/ci.yml`) — new `e2e` job running Playwright with Chromium + failure report upload, plus `i18n:check` step on the main check job.
+- `scripts/i18n-check.mjs` — CLI verifying FR/EN/AR parity + hunting orphan and missing keys (fails CI on any violation). Currently reports 537 referenced keys with 736 keys per locale.
+- `docker-compose.frontend.yml` — standalone service compose with healthcheck, `host.docker.internal` bridge, all `PUBLIC_*` env vars wired.
+- `README.md` — MVP-ready badge, expanded feature list (badges wall, moderation surfaces, wallet flows, events, privacy, Web Push VAPID, 3 languages), Docker + testing quick-start sections.
+- `FEATURE-MATRIX.md` (new) — per-phase mapping of backend phases (P4→P25) to frontend implementation status + cross-cutting quality checklist.
+- `ENTERPRISE-CAPABILITIES.md` — MVP addendum block covering P24 enterprise types + P18.4 capabilities frontend surfaces.
+- 4 unit tests on the retry policy (retry-then-succeed, exhaustion, POST no-retry, 5xx no-retry).
 
 **FE-M8 — Talent wallet + payouts**
 - `<WalletBalanceCard>` — fragments balance + EUR equivalent + last-updated timestamp + "Request payout" CTA (disabled below the 100-fragment minimum).

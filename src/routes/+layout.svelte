@@ -17,6 +17,7 @@
 	import PushForegroundListener from '$lib/components/pwa/PushForegroundListener.svelte';
 	import EmailVerificationBanner from '$lib/components/auth/EmailVerificationBanner.svelte';
 	import OrientationPromptBanner from '$lib/components/orientations/OrientationPromptBanner.svelte';
+	import { observability } from '$lib/observability';
 	import KeysSprite from '$lib/components/badges/primitives/keys-sprite.svelte';
 	// Terminal mode désactivé pour l'instant — composants conservés sous src/lib/components/terminal/*
 	// pour réactivation future. Voir TerminalEmulator.svelte / TerminalConfirm.svelte / commands.ts.
@@ -70,6 +71,7 @@
 	// capture l'erreur silencieusement et fallback sur le tenant racine.
 	onMount(() => {
 		void tenant.load();
+		void observability.init();
 	});
 
 	// WebSocket + notifications polling quand connecte

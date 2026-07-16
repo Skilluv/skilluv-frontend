@@ -80,6 +80,24 @@ function readCookie(name: string): string | undefined {
 
 const CSRF_SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 
+/**
+ * Retry policy for idempotent reads under flaky networks (Africa/Bénin
+ * connectivity target — MVP §0.11). We only retry safe methods (GET/HEAD)
+ * on network-level failures (fetch throw) or HTTP 5xx, with a backoff of
+ * 1s / 3s / 9s. Writes are never auto-retried — they must be user-driven
+ * to keep intent explicit.
+ */
+const RETRY_DELAYS_MS = [1_000, 3_000, 9_000];
+
+function isRetryableMethod(method: string): boolean {
+	const m = method.toUpperCase();
+	return m === 'GET' || m === 'HEAD';
+}
+
+async function sleep(ms: number): Promise<void> {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export function createApiClient(
 	customFetch: typeof fetch = fetch,
 	baseUrl: string = '/api'
@@ -112,18 +130,41 @@ export function createApiClient(
 		});
 	}
 
+	async function fireWithRetry(url: string, options?: RequestInit): Promise<Response> {
+		const method = (options?.method ?? 'GET').toUpperCase();
+		// Only retry safe reads on network-level errors (fetch throws). Server
+		// errors (5xx) are surfaced immediately so the UI can react — the user
+		// re-triggers manually via retry button. Rationale: silently looping on
+		// 5xx masks incidents and multiplies load on a struggling backend.
+		if (!isRetryableMethod(method)) return fire(url, options);
+		let lastErr: unknown;
+		for (let attempt = 0; attempt <= RETRY_DELAYS_MS.length; attempt++) {
+			try {
+				return await fire(url, options);
+			} catch (err) {
+				lastErr = err;
+				if (attempt < RETRY_DELAYS_MS.length) {
+					await sleep(RETRY_DELAYS_MS[attempt]);
+					continue;
+				}
+				throw err;
+			}
+		}
+		throw lastErr instanceof Error ? lastErr : new Error('Network exhausted');
+	}
+
 	async function request<T>(path: string, options?: RequestInit): Promise<T> {
 		const url = `${baseUrl}${path}`;
 		const isAuthEndpoint = path.startsWith('/auth/refresh') || path.startsWith('/auth/login');
 
-		let res = await fire(url, options);
+		let res = await fireWithRetry(url, options);
 
 		// On 401, try to silently refresh once, then retry the original call.
 		// We skip retry on refresh/login themselves so we never loop.
 		if (res.status === 401 && !isAuthEndpoint) {
 			const refreshed = await tryRefresh(customFetch, baseUrl);
 			if (refreshed) {
-				res = await fire(url, options);
+				res = await fireWithRetry(url, options);
 			}
 		}
 
