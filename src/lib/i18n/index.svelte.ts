@@ -1,30 +1,27 @@
 import { fr } from './fr';
 import { en } from './en';
-import { ar } from './ar';
 import type { Translations } from './types';
 
-export type Locale = 'fr' | 'en' | 'ar';
+export type Locale = 'fr' | 'en';
 
 const STORAGE_KEY = 'skilluv-locale';
-const translations: Record<Locale, Translations> = { fr, en, ar };
-
-const RTL_LOCALES: Locale[] = ['ar'];
+const translations: Record<Locale, Translations> = { fr, en };
 
 class I18nState {
 	locale = $state<Locale>('fr');
 
 	get direction(): 'ltr' | 'rtl' {
-		return RTL_LOCALES.includes(this.locale) ? 'rtl' : 'ltr';
+		return 'ltr';
 	}
 
 	init() {
 		if (typeof window === 'undefined') return;
 		const stored = localStorage.getItem(STORAGE_KEY);
-		if (stored === 'fr' || stored === 'en' || stored === 'ar') {
+		if (stored === 'fr' || stored === 'en') {
 			this.locale = stored;
 		} else {
 			const browserLang = navigator.language.slice(0, 2).toLowerCase();
-			this.locale = browserLang === 'en' ? 'en' : browserLang === 'ar' ? 'ar' : 'fr';
+			this.locale = browserLang === 'en' ? 'en' : 'fr';
 		}
 		this.applyDom();
 	}

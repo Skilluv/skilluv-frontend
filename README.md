@@ -32,7 +32,7 @@ It covers a large surface of the product already:
 - **Moderation surfaces** — capability-gated inline forum moderation, community curator queue (`community_curator`), plagiarism reviewer queue (`plagiarism_reviewer`)
 - **Privacy and compliance** — GDPR export, product data export, consent management (marketing / analytics), account deletion with 30-day soft-delete window
 - **Public and legal surfaces** — landing pages, developer/API section, legal pages
-- **Theming and i18n** — dark/light modes, three languages bundled (French, English, Arabic with RTL)
+- **Theming and i18n** — dark/light modes, two languages bundled (French, English)
 - **PWA** — service worker, install prompt, Web Push (VAPID) with foreground-notification in-app toast forwarding
 
 See [FEATURE-MATRIX.md](FEATURE-MATRIX.md) for a per-phase breakdown mapping backend phases (P4→P25) to frontend implementation status.

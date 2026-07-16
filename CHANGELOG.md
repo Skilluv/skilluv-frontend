@@ -5,9 +5,16 @@ All notable changes to the Skilluv frontend are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Removed
+- Arabic locale (`ar.ts`) and RTL support — maintenance cost was outweighing the audience benefit for the current MVP scope. `ar` is no longer offered in the settings language picker, dropped from `Locale`, removed from `RTL_LOCALES` (direction is now always `ltr`), and removed from the `i18n:check` script. The `ar` value in the enterprise talents' spoken-languages catalog is data, not UI locale, and stays untouched.
+
+---
+
 ## [0.3.0] — 2026-07-16 — MVP-ready
 
-Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase notes below. 120 unit + e2e tests green, 0 svelte-check errors, FR/EN/AR at parity (537 referenced keys against 736 per locale), Docker + CI pipeline in place, observability + retry hardening on top of the existing app.
+Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase notes below. 120 unit + e2e tests green, 0 svelte-check errors, FR/EN at parity (537 referenced keys against 736 per locale), Docker + CI pipeline in place, observability + retry hardening on top of the existing app.
 
 ### Added
 

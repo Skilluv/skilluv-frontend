@@ -34,7 +34,7 @@ Legend:
 | Concern            | Implementation                                                                                         | Status  |
 |--------------------|--------------------------------------------------------------------------------------------------------|---------|
 | Types              | `src/lib/types/index.ts` — 100 % typed against backend contracts (P16-P25 additions)                   | Livré   |
-| i18n               | FR + EN + AR (RTL) at parity, verified by `npm run i18n:check` in CI                                   | Livré   |
+| i18n               | FR + EN at parity, verified by `npm run i18n:check` in CI                                              | Livré   |
 | Retries / offline  | GET/HEAD auto-retry on network throw (1s / 3s / 9s), writes fail fast for user-driven retry (§0.11)   | Livré   |
 | Observability      | Sentry + PostHog opt-in via env, graceful no-op mode (§0.9)                                            | Livré   |
 | Accessibility      | Native `<label>`, `role="menu"`/`aria-*` on custom dropdowns, focus trap via `Modal` component         | Livré   |

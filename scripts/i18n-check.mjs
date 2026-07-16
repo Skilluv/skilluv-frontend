@@ -15,7 +15,7 @@ import { dirname } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const SRC = join(ROOT, 'src');
-const LANG_FILES = ['fr', 'en', 'ar'].map((l) => ({
+const LANG_FILES = ['fr', 'en'].map((l) => ({
 	locale: l,
 	path: join(SRC, 'lib', 'i18n', `${l}.ts`)
 }));

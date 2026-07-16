@@ -56,8 +56,7 @@
 	// Language
 	const locales: { value: Locale; labelKey: string; direct?: string }[] = [
 		{ value: 'fr', labelKey: 'settings.language.fr' },
-		{ value: 'en', labelKey: 'settings.language.en' },
-		{ value: 'ar', labelKey: 'settings.language.fr', direct: 'العربية' }
+		{ value: 'en', labelKey: 'settings.language.en' }
 	];
 
 	// Load privacy on mount
