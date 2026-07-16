@@ -402,6 +402,69 @@ export const fr: Translations = {
 		retryBtn: 'Réessayer',
 		generic: 'Une erreur est survenue. Réessaie.'
 	},
+	events: {
+		title: 'Événements Skilluv',
+		subtitle: 'Rejoins un hackathon, un fest ou une saison thématique. Chaque événement rejoint donne un timbre à ta collection.',
+		active: 'En cours',
+		upcoming: 'Bientôt',
+		ended: 'Terminé',
+		partner: 'Partenaire',
+		empty: 'Aucun événement actif pour l\'instant. Reviens bientôt.',
+		loadError: 'Impossible de charger les événements. Réessaie plus tard.',
+		joinCta: 'Rejoindre l\'événement',
+		joinedCta: 'Déjà rejoint',
+		alreadyJoined: 'Tu as rejoint cet événement.',
+		backToList: 'Retour aux événements',
+		myEventsTitle: 'Mes événements',
+		myEventsEmpty: 'Tu n\'as pas encore rejoint d\'événement.',
+		startsOn: 'Démarre le {date}',
+		endsOn: 'Se termine le {date}',
+		stampEarned: 'Timbre gagné'
+	},
+	privacyPage: {
+		title: 'Confidentialité & données',
+		subtitle: 'Contrôle ce qu\'on collecte, ce qu\'on t\'envoie, et récupère tes données quand tu veux.',
+		consents: {
+			title: 'Consentements',
+			subtitle: 'Tu peux les changer à tout moment. Le nécessaire (auth, sécurité, facturation) ne dépend pas de ces choix.',
+			marketingLabel: 'Communications marketing',
+			marketingHint: 'Emails sur les nouveautés, launches, offres. Zéro spam commercial tiers.',
+			analyticsLabel: 'Analytics produit',
+			analyticsHint: 'Statistiques anonymes pour comprendre comment tu utilises Skilluv et l\'améliorer.',
+			saved: 'Consentements enregistrés.'
+		},
+		gdpr: {
+			title: 'Export RGPD',
+			subtitle: 'Dump machine-readable de toutes tes données personnelles, format légal RGPD.',
+			requestCta: 'Demander mon export',
+			pending: 'Export en préparation…',
+			ready: 'Export prêt.',
+			downloadCta: 'Télécharger',
+			failed: 'L\'export a échoué. Contacte le support.'
+		},
+		dataExport: {
+			title: 'Export produit',
+			subtitle: 'Bundle lisible : ton portfolio, tes challenges terminés, tes badges.',
+			requestCta: 'Demander mon bundle'
+		},
+		delete: {
+			title: 'Supprimer mon compte',
+			subtitle: 'Le compte entre en soft-delete pendant 30 jours. Après, tout est effacé définitivement.',
+			requestCta: 'Supprimer',
+			modalTitle: 'Confirmer la suppression',
+			modalBody: 'Ton compte sera désactivé immédiatement et supprimé définitivement dans 30 jours. Tu peux annuler pendant cette fenêtre en te reconnectant.',
+			reasonLabel: 'Raison (optionnel)',
+			cancelCta: 'Annuler',
+			confirmCta: 'Confirmer la suppression',
+			scheduled: 'Suppression programmée pour le {date}.'
+		}
+	},
+	seasons: {
+		currentLabel: 'Saison en cours',
+		endsOn: 'Se clôture le {date}',
+		selectorLabel: 'Saison',
+		allTime: 'Toutes saisons'
+	},
 	push: {
 		title: 'Notifications navigateur',
 		category: 'Push',

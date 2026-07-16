@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { leaderboardApi } from '$api/leaderboard';
+	import { tournamentApi, type Season } from '$api/tournament';
 	import { auth } from '$stores/auth.svelte';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import type { LeaderboardEntry, LeaderboardDomain, LeaderboardPeriod } from '$types';
+	import { onMount } from 'svelte';
+	import { Trophy } from '@lucide/svelte';
 
 	let domain = $state<LeaderboardDomain>('global');
 	let period = $state<LeaderboardPeriod>('alltime');
@@ -12,6 +15,24 @@
 	let myRank = $state<{ rank: number; score: number; total_participants: number } | null>(null);
 	let loading = $state(true);
 	let error = $state('');
+	let currentSeason = $state<Season | null>(null);
+
+	onMount(async () => {
+		try {
+			const res = await tournamentApi.currentSeason();
+			currentSeason = res.data;
+		} catch {
+			currentSeason = null;
+		}
+	});
+
+	function fmtSeasonDate(iso: string): string {
+		return new Date(iso).toLocaleDateString(i18n.locale, {
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric'
+		});
+	}
 
 	const domains: { value: LeaderboardDomain; dot: string }[] = [
 		{ value: 'global', dot: '' },
@@ -75,6 +96,26 @@
 		</h1>
 		<p class="text-lg text-text-muted max-w-2xl">{i18n.t('leaderboard.subtitle')}</p>
 	</div>
+
+	{#if currentSeason}
+		<a
+			href="/tournaments"
+			class="group mb-8 flex items-center gap-3 rounded-2xl border border-accent/30 bg-accent/5 px-5 py-4 transition-colors hover:border-accent"
+		>
+			<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-accent">
+				<Trophy size={18} strokeWidth={2} />
+			</div>
+			<div class="flex-1 min-w-0">
+				<p class="text-xs font-bold uppercase tracking-wider text-accent">
+					{i18n.t('seasons.currentLabel')}
+				</p>
+				<p class="text-base font-semibold text-text-primary">{currentSeason.name}</p>
+				<p class="text-xs text-text-muted">
+					{i18n.t('seasons.endsOn', { date: fmtSeasonDate(currentSeason.ends_at) })}
+				</p>
+			</div>
+		</a>
+	{/if}
 
 	<!-- My rank — prominent if logged in -->
 	{#if myRank && auth.isAuthenticated}

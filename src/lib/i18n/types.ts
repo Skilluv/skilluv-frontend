@@ -577,6 +577,69 @@ export interface Translations {
 		retryBtn: string;
 		generic: string;
 	};
+	events: {
+		title: string;
+		subtitle: string;
+		active: string;
+		upcoming: string;
+		ended: string;
+		partner: string;
+		empty: string;
+		loadError: string;
+		joinCta: string;
+		joinedCta: string;
+		alreadyJoined: string;
+		backToList: string;
+		myEventsTitle: string;
+		myEventsEmpty: string;
+		startsOn: string;
+		endsOn: string;
+		stampEarned: string;
+	};
+	privacyPage: {
+		title: string;
+		subtitle: string;
+		consents: {
+			title: string;
+			subtitle: string;
+			marketingLabel: string;
+			marketingHint: string;
+			analyticsLabel: string;
+			analyticsHint: string;
+			saved: string;
+		};
+		gdpr: {
+			title: string;
+			subtitle: string;
+			requestCta: string;
+			pending: string;
+			ready: string;
+			downloadCta: string;
+			failed: string;
+		};
+		dataExport: {
+			title: string;
+			subtitle: string;
+			requestCta: string;
+		};
+		delete: {
+			title: string;
+			subtitle: string;
+			requestCta: string;
+			modalTitle: string;
+			modalBody: string;
+			reasonLabel: string;
+			cancelCta: string;
+			confirmCta: string;
+			scheduled: string;
+		};
+	};
+	seasons: {
+		currentLabel: string;
+		endsOn: string;
+		selectorLabel: string;
+		allTime: string;
+	};
 	push: {
 		title: string;
 		category: string;

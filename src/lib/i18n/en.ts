@@ -402,6 +402,69 @@ export const en: Translations = {
 		retryBtn: 'Retry',
 		generic: 'An error occurred. Please try again.'
 	},
+	events: {
+		title: 'Skilluv events',
+		subtitle: 'Join a hackathon, a fest or a themed season. Every event you join earns a stamp in your collection.',
+		active: 'Live',
+		upcoming: 'Upcoming',
+		ended: 'Ended',
+		partner: 'Partner',
+		empty: 'No active events yet. Check back soon.',
+		loadError: 'Could not load events. Try again later.',
+		joinCta: 'Join event',
+		joinedCta: 'Already joined',
+		alreadyJoined: 'You have joined this event.',
+		backToList: 'Back to events',
+		myEventsTitle: 'My events',
+		myEventsEmpty: 'You have not joined any event yet.',
+		startsOn: 'Starts {date}',
+		endsOn: 'Ends {date}',
+		stampEarned: 'Stamp earned'
+	},
+	privacyPage: {
+		title: 'Privacy & data',
+		subtitle: 'Control what we collect, what we send, and export your data whenever.',
+		consents: {
+			title: 'Consents',
+			subtitle: 'Changeable anytime. Essentials (auth, security, billing) do not depend on these choices.',
+			marketingLabel: 'Marketing communications',
+			marketingHint: 'Emails about launches, updates, offers. Zero third-party commercial spam.',
+			analyticsLabel: 'Product analytics',
+			analyticsHint: 'Anonymous stats to understand how you use Skilluv and improve it.',
+			saved: 'Consents saved.'
+		},
+		gdpr: {
+			title: 'GDPR export',
+			subtitle: 'Machine-readable dump of all your personal data, GDPR legal format.',
+			requestCta: 'Request my export',
+			pending: 'Export in progress…',
+			ready: 'Export ready.',
+			downloadCta: 'Download',
+			failed: 'Export failed. Contact support.'
+		},
+		dataExport: {
+			title: 'Product export',
+			subtitle: 'Readable bundle: your portfolio, completed challenges, badges.',
+			requestCta: 'Request my bundle'
+		},
+		delete: {
+			title: 'Delete my account',
+			subtitle: 'The account enters soft-delete for 30 days. After, everything is permanently erased.',
+			requestCta: 'Delete',
+			modalTitle: 'Confirm deletion',
+			modalBody: 'Your account will be deactivated immediately and permanently erased in 30 days. You can undo it during that window by logging back in.',
+			reasonLabel: 'Reason (optional)',
+			cancelCta: 'Cancel',
+			confirmCta: 'Confirm deletion',
+			scheduled: 'Deletion scheduled for {date}.'
+		}
+	},
+	seasons: {
+		currentLabel: 'Current season',
+		endsOn: 'Ends {date}',
+		selectorLabel: 'Season',
+		allTime: 'All-time'
+	},
 	push: {
 		title: 'Browser notifications',
 		category: 'Push',

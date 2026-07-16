@@ -23,6 +23,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Navbar user dropdown — 5 conditional links (forum moderation, curator queue, plagiarism review, mentor zone, tournament jury) driven by `auth.can(...)`.
 - i18n FR/EN/AR — 14 capability labels + descriptions + navigation entries.
 
+**FE-M10 — Events + privacy/GDPR + season indicator**
+- New `privacyApi` module — GET/PATCH `/users/me/consents` (marketing + analytics), POST `/users/me/gdpr-export` (RGPD legal dump), POST `/users/me/data-export` (product bundle), GET `/users/me/exports/{jobId}` (poll), POST `/users/me/delete` (30-day soft delete).
+- `<EventCard>` — reusable card with status derivation (active/upcoming/ended) + partner badge + start/end dates.
+- New pages `/events` (list + "My events" section with earned-stamp badges) and `/events/[slug]` (detail + join lifecycle with authenticated gate).
+- New page `/settings/privacy` — consent toggles (marketing + analytics), GDPR export request/poll/download, product data export, account deletion with confirmation modal and reason field.
+- `/leaderboards` — current season banner (link to /tournaments) with name + end date, loaded from `tournamentApi.currentSeason` with silent fallback.
+- i18n FR/EN/AR — `events.*` (16 keys), `privacyPage.*` (nested consents/gdpr/dataExport/delete), `seasons.*` namespace.
+- 7 unit tests (privacyApi 5 routes + badgeEventsApi 4 routes + currentSeason) + 2 Playwright e2e (events list render + join lifecycle).
+
 **FE-M7 — Web Push VAPID polish**
 - Service worker `/service-worker.js` now forwards push payloads to a focused client via `postMessage` instead of firing a redundant OS-level notification; background pushes still surface as native notifications.
 - New `<PushForegroundListener>` component mounted in the root layout — listens for `serviceWorker` message events, shows an in-app toast, and refreshes the notifications badge count.
