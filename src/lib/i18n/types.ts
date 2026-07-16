@@ -577,6 +577,55 @@ export interface Translations {
 		retryBtn: string;
 		generic: string;
 	};
+	moderation: {
+		buttonLabel: string;
+		reasonLabel: string;
+		reasonRequired: string;
+		reasonPlaceholder: string;
+		confirmDanger: string;
+		cancel: string;
+		durationHours: string;
+		toast: {
+			done: string;
+			failed: string;
+		};
+		forum: {
+			actionDelete: string;
+			actionMuteAuthor: string;
+			actionMarkSpam: string;
+			menuLabel: string;
+			menuOpen: string;
+			confirmDeleteBody: string;
+			confirmMuteBody: string;
+			confirmSpamBody: string;
+			muteDuration24: string;
+			muteDuration72: string;
+			muteDuration168: string;
+		};
+		community: {
+			approveCta: string;
+			rejectCta: string;
+			confirmApproveTitle: string;
+			confirmApproveBody: string;
+			confirmRejectTitle: string;
+			confirmRejectBody: string;
+		};
+		plagiarism: {
+			title: string;
+			subtitle: string;
+			queueEmpty: string;
+			scoreLabel: string;
+			flaggedOn: string;
+			viewDeliverable: string;
+			markValidCta: string;
+			revokeCta: string;
+			confirmValidTitle: string;
+			confirmValidBody: string;
+			confirmRevokeTitle: string;
+			confirmRevokeBody: string;
+			noAccess: string;
+		};
+	};
 	events: {
 		title: string;
 		subtitle: string;

@@ -402,6 +402,55 @@ export const en: Translations = {
 		retryBtn: 'Retry',
 		generic: 'An error occurred. Please try again.'
 	},
+	moderation: {
+		buttonLabel: 'Moderate',
+		reasonLabel: 'Reason',
+		reasonRequired: 'A reason is required for this action.',
+		reasonPlaceholder: 'Briefly explain the decision (visible in the audit log)',
+		confirmDanger: 'Confirm',
+		cancel: 'Cancel',
+		durationHours: 'Duration',
+		toast: {
+			done: 'Moderation action recorded.',
+			failed: 'Action failed. Check your permissions or try again.'
+		},
+		forum: {
+			actionDelete: 'Delete post',
+			actionMuteAuthor: 'Mute author',
+			actionMarkSpam: 'Mark as spam',
+			menuLabel: 'Moderation actions',
+			menuOpen: 'Open moderation menu',
+			confirmDeleteBody: 'The post is removed from public view. The author is notified.',
+			confirmMuteBody: 'The author cannot post during the chosen duration. They stay logged in.',
+			confirmSpamBody: 'The post is hidden and the author is flagged for audit.',
+			muteDuration24: '24 hours',
+			muteDuration72: '3 days',
+			muteDuration168: '7 days'
+		},
+		community: {
+			approveCta: 'Approve',
+			rejectCta: 'Reject',
+			confirmApproveTitle: 'Approve this challenge?',
+			confirmApproveBody: 'The challenge becomes public and eligible for fragments.',
+			confirmRejectTitle: 'Reject this challenge?',
+			confirmRejectBody: 'The author receives your reason. They can submit a fixed version.'
+		},
+		plagiarism: {
+			title: 'Plagiarism queue',
+			subtitle: 'Deliverables flagged by the backend. Decide if the submission stays valid or is revoked.',
+			queueEmpty: 'No deliverable to review.',
+			scoreLabel: 'Plagiarism score',
+			flaggedOn: 'Flagged {date}',
+			viewDeliverable: 'View deliverable',
+			markValidCta: 'Mark valid',
+			revokeCta: 'Revoke',
+			confirmValidTitle: 'Mark this deliverable as valid?',
+			confirmValidBody: 'The plagiarism score is cleared and the author keeps their fragments.',
+			confirmRevokeTitle: 'Revoke this deliverable?',
+			confirmRevokeBody: 'Fragments are removed and the author loses the associated badge.',
+			noAccess: 'This page is reserved to plagiarism_reviewer capability holders.'
+		}
+	},
 	events: {
 		title: 'Skilluv events',
 		subtitle: 'Join a hackathon, a fest or a themed season. Every event you join earns a stamp in your collection.',

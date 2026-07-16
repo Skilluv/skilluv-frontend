@@ -410,6 +410,55 @@ export const ar: Translations = {
 		retryBtn: 'إعادة المحاولة',
 		generic: 'حدث خطأ. حاول مرة أخرى.'
 	},
+	moderation: {
+		buttonLabel: 'إشراف',
+		reasonLabel: 'السبب',
+		reasonRequired: 'السبب مطلوب لهذا الإجراء.',
+		reasonPlaceholder: 'اشرح القرار باختصار (يظهر في سجل التدقيق)',
+		confirmDanger: 'تأكيد',
+		cancel: 'إلغاء',
+		durationHours: 'المدة',
+		toast: {
+			done: 'تم تسجيل إجراء الإشراف.',
+			failed: 'فشل الإجراء. تحقق من صلاحياتك أو حاول مجدداً.'
+		},
+		forum: {
+			actionDelete: 'حذف المنشور',
+			actionMuteAuthor: 'كتم الكاتب',
+			actionMarkSpam: 'وسم كرسالة عشوائية',
+			menuLabel: 'إجراءات الإشراف',
+			menuOpen: 'فتح قائمة الإشراف',
+			confirmDeleteBody: 'يُحذف المنشور من العرض العام. يُبلَّغ الكاتب.',
+			confirmMuteBody: 'لن يستطيع الكاتب النشر خلال المدة المختارة. يبقى مسجّلاً.',
+			confirmSpamBody: 'يُخفى المنشور ويُبلَّغ الكاتب للتدقيق.',
+			muteDuration24: '24 ساعة',
+			muteDuration72: '3 أيام',
+			muteDuration168: '7 أيام'
+		},
+		community: {
+			approveCta: 'اعتماد',
+			rejectCta: 'رفض',
+			confirmApproveTitle: 'اعتماد هذا التحدي؟',
+			confirmApproveBody: 'يصبح التحدي عاماً ومؤهلاً للشظايا.',
+			confirmRejectTitle: 'رفض هذا التحدي؟',
+			confirmRejectBody: 'يتلقى الكاتب سببك. يمكنه إعادة إرسال نسخة مصححة.'
+		},
+		plagiarism: {
+			title: 'قائمة الانتحال',
+			subtitle: 'التسليمات التي أشار إليها الخادم. قرر ما إذا كان التسليم يظل صالحاً أم يُلغى.',
+			queueEmpty: 'لا تسليمات للمراجعة.',
+			scoreLabel: 'درجة الانتحال',
+			flaggedOn: 'وُسم في {date}',
+			viewDeliverable: 'عرض التسليم',
+			markValidCta: 'وسم صالح',
+			revokeCta: 'إلغاء',
+			confirmValidTitle: 'وسم هذا التسليم صالحاً؟',
+			confirmValidBody: 'تُلغى درجة الانتحال ويحتفظ الكاتب بشظاياه.',
+			confirmRevokeTitle: 'إلغاء هذا التسليم؟',
+			confirmRevokeBody: 'تُزال الشظايا ويفقد الكاتب الشارة المرتبطة.',
+			noAccess: 'هذه الصفحة مخصصة لحاملي صلاحية plagiarism_reviewer.'
+		}
+	},
 	events: {
 		title: 'فعاليات Skilluv',
 		subtitle: 'انضم إلى هاكاثون أو مهرجان أو موسم موضوعي. كل فعالية تنضم إليها تكسبك طابعاً لمجموعتك.',

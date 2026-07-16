@@ -7,8 +7,11 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import { forumApi, type ForumPost } from '$api/forum';
 	import { socialApi, type SocialComment } from '$api/social';
+	import { moderationApi, type ForumModerateBody } from '$lib/api/moderation';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import { InlineModerateButton, ConfirmDangerousDialog } from '$lib/components/moderation';
+	import { Trash2, Flag, VolumeX } from '@lucide/svelte';
 
 	let postId = $derived(page.params.id ?? '');
 	let post = $state<ForumPost | null>(null);
@@ -76,6 +79,64 @@
 	let isAuthor = $derived(auth.isAuthenticated && post !== null && post.author_id === auth.user?.id);
 	let isQuestion = $derived(post?.kind === 'question');
 
+	// --- Moderation state ---
+	let modDialogOpen = $state(false);
+	let modDialogAction = $state<'delete' | 'mute_author' | 'mark_spam' | null>(null);
+	let modSubmitting = $state(false);
+	let muteDurationHours = $state(24);
+
+	function openModAction(action: 'delete' | 'mute_author' | 'mark_spam', close: () => void) {
+		modDialogAction = action;
+		modDialogOpen = true;
+		close();
+	}
+
+	function closeModDialog() {
+		if (modSubmitting) return;
+		modDialogOpen = false;
+		modDialogAction = null;
+	}
+
+	async function submitModAction(reason: string) {
+		if (!post || !modDialogAction) return;
+		modSubmitting = true;
+		try {
+			if (modDialogAction === 'mute_author' && post.author_id) {
+				await moderationApi.forum.muteAuthor(post.author_id, muteDurationHours, reason);
+			} else {
+				const body: ForumModerateBody = {
+					action: modDialogAction,
+					reason
+				};
+				await moderationApi.forum.moderatePost(post.id, body);
+			}
+			toast.success(i18n.t('moderation.toast.done'));
+			modDialogOpen = false;
+			modDialogAction = null;
+			if (modDialogAction === 'delete' || modDialogAction === 'mark_spam') {
+				await load();
+			}
+		} catch (err) {
+			toast.error(err instanceof SkilluError ? err.message : i18n.t('moderation.toast.failed'));
+		} finally {
+			modSubmitting = false;
+		}
+	}
+
+	let modDialogTitle = $derived.by(() => {
+		if (modDialogAction === 'delete') return i18n.t('moderation.forum.actionDelete');
+		if (modDialogAction === 'mute_author') return i18n.t('moderation.forum.actionMuteAuthor');
+		if (modDialogAction === 'mark_spam') return i18n.t('moderation.forum.actionMarkSpam');
+		return '';
+	});
+
+	let modDialogBody = $derived.by(() => {
+		if (modDialogAction === 'delete') return i18n.t('moderation.forum.confirmDeleteBody');
+		if (modDialogAction === 'mute_author') return i18n.t('moderation.forum.confirmMuteBody');
+		if (modDialogAction === 'mark_spam') return i18n.t('moderation.forum.confirmSpamBody');
+		return '';
+	});
+
 	onMount(() => void load());
 </script>
 
@@ -114,7 +175,40 @@
 					</Badge>
 				{/if}
 			</div>
-			<h1 class="text-3xl sm:text-4xl font-black leading-tight tracking-tight">{post.title}</h1>
+			<div class="flex items-start justify-between gap-3">
+				<h1 class="text-3xl sm:text-4xl font-black leading-tight tracking-tight">{post.title}</h1>
+				<InlineModerateButton capability="forum_moderator" size="md">
+					{#snippet children({ close })}
+						<button
+							type="button"
+							role="menuitem"
+							onclick={() => openModAction('delete', close)}
+							class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-primary transition-colors hover:bg-error/10 hover:text-error"
+						>
+							<Trash2 size={14} strokeWidth={2} />
+							{i18n.t('moderation.forum.actionDelete')}
+						</button>
+						<button
+							type="button"
+							role="menuitem"
+							onclick={() => openModAction('mark_spam', close)}
+							class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-primary transition-colors hover:bg-warning/10 hover:text-warning"
+						>
+							<Flag size={14} strokeWidth={2} />
+							{i18n.t('moderation.forum.actionMarkSpam')}
+						</button>
+						<button
+							type="button"
+							role="menuitem"
+							onclick={() => openModAction('mute_author', close)}
+							class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-primary transition-colors hover:bg-surface-overlay"
+						>
+							<VolumeX size={14} strokeWidth={2} />
+							{i18n.t('moderation.forum.actionMuteAuthor')}
+						</button>
+					{/snippet}
+				</InlineModerateButton>
+			</div>
 			<div class="mt-2 flex items-center gap-2 text-sm text-text-muted">
 				<span>@{post.author_username ?? '?'}</span>
 				<span>·</span>
@@ -208,3 +302,29 @@
 		</section>
 	{/if}
 </div>
+
+<ConfirmDangerousDialog
+	open={modDialogOpen}
+	title={modDialogTitle}
+	body={modDialogBody}
+	submitting={modSubmitting}
+	onConfirm={submitModAction}
+	onClose={closeModDialog}
+/>
+
+{#if modDialogOpen && modDialogAction === 'mute_author'}
+	<div class="fixed bottom-4 right-4 z-[91] flex items-center gap-2 rounded-xl border border-border bg-surface-elevated px-4 py-3 shadow-lg">
+		<label for="mute_duration" class="text-xs font-semibold text-text-muted">
+			{i18n.t('moderation.durationHours')}
+		</label>
+		<select
+			id="mute_duration"
+			bind:value={muteDurationHours}
+			class="rounded-lg border border-border bg-surface-overlay px-2 py-1 text-xs text-text-primary"
+		>
+			<option value={24}>{i18n.t('moderation.forum.muteDuration24')}</option>
+			<option value={72}>{i18n.t('moderation.forum.muteDuration72')}</option>
+			<option value={168}>{i18n.t('moderation.forum.muteDuration168')}</option>
+		</select>
+	</div>
+{/if}

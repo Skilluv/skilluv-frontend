@@ -402,6 +402,55 @@ export const fr: Translations = {
 		retryBtn: 'Réessayer',
 		generic: 'Une erreur est survenue. Réessaie.'
 	},
+	moderation: {
+		buttonLabel: 'Modérer',
+		reasonLabel: 'Raison',
+		reasonRequired: 'Une raison est requise pour cette action.',
+		reasonPlaceholder: 'Explique brièvement la décision (visible dans l\'audit log)',
+		confirmDanger: 'Confirmer',
+		cancel: 'Annuler',
+		durationHours: 'Durée',
+		toast: {
+			done: 'Action de modération enregistrée.',
+			failed: 'L\'action a échoué. Vérifie tes permissions ou réessaie.'
+		},
+		forum: {
+			actionDelete: 'Supprimer le post',
+			actionMuteAuthor: 'Mettre l\'auteur en silence',
+			actionMarkSpam: 'Marquer comme spam',
+			menuLabel: 'Actions modération',
+			menuOpen: 'Ouvrir le menu modération',
+			confirmDeleteBody: 'Le post sera supprimé de la vue publique. L\'auteur en est notifié.',
+			confirmMuteBody: 'L\'auteur ne pourra plus poster pendant la durée choisie. Il reste connecté.',
+			confirmSpamBody: 'Le post sera masqué et l\'auteur signalé pour audit.',
+			muteDuration24: '24 heures',
+			muteDuration72: '3 jours',
+			muteDuration168: '7 jours'
+		},
+		community: {
+			approveCta: 'Approuver',
+			rejectCta: 'Rejeter',
+			confirmApproveTitle: 'Approuver ce challenge ?',
+			confirmApproveBody: 'Le challenge devient public et éligible aux fragments.',
+			confirmRejectTitle: 'Rejeter ce challenge ?',
+			confirmRejectBody: 'L\'auteur recevra ta raison. Il pourra soumettre une version corrigée.'
+		},
+		plagiarism: {
+			title: 'File plagiat',
+			subtitle: 'Deliverables flaggés par le backend. Décide si le rendu reste valide ou est révoqué.',
+			queueEmpty: 'Aucun deliverable à examiner.',
+			scoreLabel: 'Score plagiat',
+			flaggedOn: 'Flaggé le {date}',
+			viewDeliverable: 'Voir le rendu',
+			markValidCta: 'Marquer valide',
+			revokeCta: 'Révoquer',
+			confirmValidTitle: 'Marquer ce rendu comme valide ?',
+			confirmValidBody: 'Le score de plagiat sera annulé et l\'auteur récupère ses fragments.',
+			confirmRevokeTitle: 'Révoquer ce rendu ?',
+			confirmRevokeBody: 'Les fragments sont retirés et l\'auteur perd le badge associé.',
+			noAccess: 'Cette page est réservée aux plagiarism_reviewer.'
+		}
+	},
 	events: {
 		title: 'Événements Skilluv',
 		subtitle: 'Rejoins un hackathon, un fest ou une saison thématique. Chaque événement rejoint donne un timbre à ta collection.',

@@ -23,6 +23,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Navbar user dropdown — 5 conditional links (forum moderation, curator queue, plagiarism review, mentor zone, tournament jury) driven by `auth.can(...)`.
 - i18n FR/EN/AR — 14 capability labels + descriptions + navigation entries.
 
+**FE-M9 — Community moderation inline**
+- `<ConfirmDangerousDialog>` — reusable modal with required-reason input, danger CTA, cancel guard while submitting.
+- `<InlineModerateButton>` — capability-gated dropdown menu (only renders when `auth.can(capability)` is true) with role="menu" a11y wiring.
+- Forum post moderation — inline dropdown on `/forum/[id]` with 3 actions (delete, mark spam, mute author) + mute-duration selector overlay (24h / 3d / 7d).
+- New curator queue `/community/curator` — lists pending community challenges, approve (optional reason) / reject (required reason) actions gated on `community_curator` or `admin`.
+- New reviewer queue `/moderation/plagiarism` — flagged deliverables (with backend-computed score), mark-valid / revoke actions with required reason, gated on `plagiarism_reviewer` or `admin`.
+- Extended `communityApi` with `pendingReview()` reading `/community/challenges/review`.
+- i18n FR/EN/AR — `moderation.*` namespace covering shared labels (reason, cancel, confirm, toasts), forum actions + mute durations, community approve/reject dialogs, plagiarism queue labels + confirm dialogs.
+- 8 unit tests covering all `moderationApi` routes (forum × 2, community × 2, plagiarism × 3) and `communityApi.pendingReview` + 2 Playwright e2e (curator approve happy path, non-curator forbidden guard).
+
 **FE-M10 — Events + privacy/GDPR + season indicator**
 - New `privacyApi` module — GET/PATCH `/users/me/consents` (marketing + analytics), POST `/users/me/gdpr-export` (RGPD legal dump), POST `/users/me/data-export` (product bundle), GET `/users/me/exports/{jobId}` (poll), POST `/users/me/delete` (30-day soft delete).
 - `<EventCard>` — reusable card with status derivation (active/upcoming/ended) + partner badge + start/end dates.

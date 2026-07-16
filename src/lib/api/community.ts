@@ -41,5 +41,15 @@ export const communityApi = {
 
 	popular(page?: number, perPage?: number) {
 		return api.get<ApiPaginatedResponse<Challenge>>('/community/challenges/popular', { page, per_page: perPage });
+	},
+
+	/** Curator queue — community challenges awaiting review. Backend gates on
+	 * `community_curator` OR `admin` capability. See moderationApi.community
+	 * for the approve/reject actions on each item. */
+	pendingReview(page?: number, perPage?: number) {
+		return api.get<ApiPaginatedResponse<Challenge>>('/community/challenges/review', {
+			page,
+			per_page: perPage
+		});
 	}
 };
