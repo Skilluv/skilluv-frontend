@@ -23,6 +23,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Navbar user dropdown — 5 conditional links (forum moderation, curator queue, plagiarism review, mentor zone, tournament jury) driven by `auth.can(...)`.
 - i18n FR/EN/AR — 14 capability labels + descriptions + navigation entries.
 
+**FE-M5 — Team marketplace + role slots**
+- `<RoleBadge>` — reusable role indicator built on top of `ui/Badge`.
+- `<SlotCard>` — marketplace slot card with team name, challenge link, role badge, min-level, required skill, join CTA + view-team link.
+- `<FillSlotDialog>` — confirmation modal with slot summary, skill-check row, and low-level warning shown when user proficiency is below `min_proficiency_level`.
+- New page `/teams/marketplace` — paginated list of open slots with filters (role, skill, min/max difficulty) + reset + soft-block for users without orientation + empty states (filtered vs no filters).
+- New page `/teams/[team_id]` — open vs filled slot sections + fill/leave lifecycle with per-slot loading indicator.
+- i18n FR/EN/AR — marketplace title/subtitle, filter labels, empty states, dialog copy (fill + leave), detail labels (min level, skill required, filled badge).
+- 5 unit tests (filter serialization, slot lifecycle, createSlot payload) + 3 Playwright e2e (marketplace render, join flow, orientation soft-block).
+
 **FE-M6 — Enterprise types + agency clients**
 - `<EnterpriseTypeCard>` — 3 visual cards (direct_hire, staffing_agency, remote_international) with icon + label + description + 3 benefits, aria-pressed state.
 - `<EnterpriseTypeSelector>` — fieldset wrapper with grid of cards + bindable value + onchange callback.

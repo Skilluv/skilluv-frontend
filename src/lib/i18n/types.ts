@@ -577,6 +577,57 @@ export interface Translations {
 		retryBtn: string;
 		generic: string;
 	};
+	teams: {
+		marketplace: {
+			title: string;
+			subtitle: string;
+			filters: {
+				role: string;
+				skill: string;
+				minDifficulty: string;
+				maxDifficulty: string;
+				anyRole: string;
+				anySkill: string;
+				anyDifficulty: string;
+				apply: string;
+				reset: string;
+			};
+			empty: {
+				title: string;
+				body: string;
+				noFilters: string;
+			};
+			loadError: string;
+			joinCta: string;
+			viewTeam: string;
+			pageInfo: string;
+		};
+		detail: {
+			backToMarketplace: string;
+			membersLabel: string;
+			slotsLabel: string;
+			slotsEmpty: string;
+			leaveCta: string;
+			slotFilled: string;
+			openSlots: string;
+			minLevel: string;
+			skillRequired: string;
+			teamNotFound: string;
+		};
+		fillDialog: {
+			title: string;
+			body: string;
+			confirmCta: string;
+			cancelCta: string;
+			skillCheckLabel: string;
+			warnLowLevel: string;
+		};
+		leaveDialog: {
+			title: string;
+			body: string;
+			confirmCta: string;
+		};
+	};
 	badges: {
 		sections: {
 			rank: string;

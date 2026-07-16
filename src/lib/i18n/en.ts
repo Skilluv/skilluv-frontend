@@ -402,6 +402,57 @@ export const en: Translations = {
 		retryBtn: 'Retry',
 		generic: 'An error occurred. Please try again.'
 	},
+	teams: {
+		marketplace: {
+			title: 'Team marketplace',
+			subtitle: 'Join an open slot on a team challenge. Skilluv matches you against your orientations and proven skills.',
+			filters: {
+				role: 'Role',
+				skill: 'Skill',
+				minDifficulty: 'Min difficulty',
+				maxDifficulty: 'Max difficulty',
+				anyRole: 'Any role',
+				anySkill: 'Any skill',
+				anyDifficulty: 'Any',
+				apply: 'Filter',
+				reset: 'Reset'
+			},
+			empty: {
+				title: 'No open slots.',
+				body: 'Come back later or adjust your filters.',
+				noFilters: 'No team is looking for talent right now.'
+			},
+			loadError: 'Could not load the marketplace. Try again later.',
+			joinCta: 'Join',
+			viewTeam: 'View team',
+			pageInfo: 'Page {page} of {total}'
+		},
+		detail: {
+			backToMarketplace: 'Back to marketplace',
+			membersLabel: 'Members',
+			slotsLabel: 'Slots',
+			slotsEmpty: 'This team is full.',
+			leaveCta: 'Leave slot',
+			slotFilled: 'Filled',
+			openSlots: 'Open slots',
+			minLevel: 'Min level {n}',
+			skillRequired: 'Skill required: {skill}',
+			teamNotFound: 'Team not found.'
+		},
+		fillDialog: {
+			title: 'Join this slot?',
+			body: 'Once you join, you commit to delivering your part. You can leave until the challenge starts.',
+			confirmCta: 'I join',
+			cancelCta: 'Cancel',
+			skillCheckLabel: 'Skill check',
+			warnLowLevel: 'Your level on this skill is below the required minimum. You can still join — the team decides.'
+		},
+		leaveDialog: {
+			title: 'Leave this slot?',
+			body: 'Your slot will reopen and another talent can take it.',
+			confirmCta: 'Leave'
+		}
+	},
 	badges: {
 		sections: {
 			rank: 'Rank',

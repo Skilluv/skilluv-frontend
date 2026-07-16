@@ -410,6 +410,57 @@ export const ar: Translations = {
 		retryBtn: 'إعادة المحاولة',
 		generic: 'حدث خطأ. حاول مرة أخرى.'
 	},
+	teams: {
+		marketplace: {
+			title: 'سوق الفرق',
+			subtitle: 'انضم إلى موقع مفتوح في تحدي جماعي. يوفقك Skilluv وفق توجهاتك ومهاراتك المُثبَتة.',
+			filters: {
+				role: 'الدور',
+				skill: 'المهارة',
+				minDifficulty: 'أدنى صعوبة',
+				maxDifficulty: 'أقصى صعوبة',
+				anyRole: 'كل الأدوار',
+				anySkill: 'كل المهارات',
+				anyDifficulty: 'الكل',
+				apply: 'تصفية',
+				reset: 'إعادة تعيين'
+			},
+			empty: {
+				title: 'لا مواقع مفتوحة.',
+				body: 'عد لاحقاً أو عدّل تصفياتك.',
+				noFilters: 'لا يبحث فريق عن موهبة حالياً.'
+			},
+			loadError: 'تعذر تحميل السوق. حاول لاحقاً.',
+			joinCta: 'انضم',
+			viewTeam: 'عرض الفريق',
+			pageInfo: 'الصفحة {page} من {total}'
+		},
+		detail: {
+			backToMarketplace: 'العودة إلى السوق',
+			membersLabel: 'الأعضاء',
+			slotsLabel: 'المواقع',
+			slotsEmpty: 'هذا الفريق مكتمل.',
+			leaveCta: 'مغادرة الموقع',
+			slotFilled: 'مشغول',
+			openSlots: 'مواقع مفتوحة',
+			minLevel: 'أدنى مستوى {n}',
+			skillRequired: 'المهارة المطلوبة: {skill}',
+			teamNotFound: 'لم يُعثر على الفريق.'
+		},
+		fillDialog: {
+			title: 'الانضمام إلى هذا الموقع؟',
+			body: 'بمجرد الانضمام، تلتزم بتسليم حصتك. يمكنك المغادرة قبل بدء التحدي.',
+			confirmCta: 'أنضم',
+			cancelCta: 'إلغاء',
+			skillCheckLabel: 'فحص المهارة',
+			warnLowLevel: 'مستواك في هذه المهارة أدنى من الحد الأدنى المطلوب. يمكنك الانضمام رغم ذلك — الفريق يقرر.'
+		},
+		leaveDialog: {
+			title: 'مغادرة هذا الموقع؟',
+			body: 'سيُفتح موقعك مجدداً لموهبة أخرى.',
+			confirmCta: 'أغادر'
+		}
+	},
 	badges: {
 		sections: {
 			rank: 'الرتبة',

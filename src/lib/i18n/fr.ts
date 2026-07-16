@@ -402,6 +402,57 @@ export const fr: Translations = {
 		retryBtn: 'Réessayer',
 		generic: 'Une erreur est survenue. Réessaie.'
 	},
+	teams: {
+		marketplace: {
+			title: 'Marché des équipes',
+			subtitle: 'Rejoins un slot ouvert sur un challenge team. Skilluv te matche selon tes orientations et tes compétences prouvées.',
+			filters: {
+				role: 'Rôle',
+				skill: 'Compétence',
+				minDifficulty: 'Difficulté min',
+				maxDifficulty: 'Difficulté max',
+				anyRole: 'Tous les rôles',
+				anySkill: 'Toutes les compétences',
+				anyDifficulty: 'Toutes',
+				apply: 'Filtrer',
+				reset: 'Réinitialiser'
+			},
+			empty: {
+				title: 'Aucun slot ouvert.',
+				body: 'Reviens plus tard ou ajuste tes filtres.',
+				noFilters: 'Aucune équipe ne cherche de talent pour le moment.'
+			},
+			loadError: 'Impossible de charger le marché. Réessaie plus tard.',
+			joinCta: 'Rejoindre',
+			viewTeam: 'Voir l\'équipe',
+			pageInfo: 'Page {page} sur {total}'
+		},
+		detail: {
+			backToMarketplace: 'Retour au marché',
+			membersLabel: 'Membres',
+			slotsLabel: 'Slots',
+			slotsEmpty: 'Cette équipe est complète.',
+			leaveCta: 'Quitter le slot',
+			slotFilled: 'Occupé',
+			openSlots: 'Slots ouverts',
+			minLevel: 'Niveau min {n}',
+			skillRequired: 'Compétence requise : {skill}',
+			teamNotFound: 'Équipe introuvable.'
+		},
+		fillDialog: {
+			title: 'Rejoindre ce slot ?',
+			body: 'Une fois rejoint, tu t\'engages à livrer ta part. Tu pourras quitter tant que le challenge n\'a pas démarré.',
+			confirmCta: 'Je rejoins',
+			cancelCta: 'Annuler',
+			skillCheckLabel: 'Vérification compétence',
+			warnLowLevel: 'Ton niveau sur cette compétence est en dessous du minimum requis. Tu peux quand même rejoindre — la team décide.'
+		},
+		leaveDialog: {
+			title: 'Quitter ce slot ?',
+			body: 'Ton slot redeviendra ouvert et un autre talent pourra le prendre.',
+			confirmCta: 'Je quitte'
+		}
+	},
 	badges: {
 		sections: {
 			rank: 'Rang',
