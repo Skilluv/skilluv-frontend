@@ -28,12 +28,24 @@ self.addEventListener('push', (event) => {
 		if (event.data) data.body = event.data.text();
 	}
 	event.waitUntil(
-		self.registration.showNotification(data.title, {
-			body: data.body,
-			icon: data.icon || '/icon-192.png',
-			badge: '/icon-192.png',
-			data: { url: data.url || '/' }
-		})
+		(async () => {
+			// If a client window is currently focused, hand the payload over
+			// via postMessage so the app can update its in-memory state
+			// (notifications store, toast) instead of showing an OS-level
+			// notification the user would find redundant.
+			const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+			const focused = clients.find((c) => c.focused);
+			if (focused) {
+				focused.postMessage({ type: 'skilluv-push', payload: data });
+				return;
+			}
+			await self.registration.showNotification(data.title, {
+				body: data.body,
+				icon: data.icon || '/icon-192.png',
+				badge: '/icon-192.png',
+				data: { url: data.url || '/' }
+			});
+		})()
 	);
 });
 

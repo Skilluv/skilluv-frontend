@@ -45,7 +45,7 @@
 			if (permission !== 'granted') {
 				permission = await Notification.requestPermission();
 				if (permission !== 'granted') {
-					toast.error(i18n.locale === 'fr' ? 'Permission refusée' : 'Permission denied');
+					toast.error(i18n.t('push.toast.permissionDenied'));
 					return;
 				}
 			}
@@ -75,7 +75,7 @@
 				// noop
 			}
 			subscribed = true;
-			toast.success(i18n.locale === 'fr' ? 'Notifications activées' : 'Notifications enabled');
+			toast.success(i18n.t('push.toast.enabled'));
 		} catch (e) {
 			toast.error(e instanceof Error ? e.message : 'Erreur');
 		} finally {
@@ -102,7 +102,7 @@
 				localSubId = null;
 			}
 			subscribed = false;
-			toast.success(i18n.locale === 'fr' ? 'Notifications désactivées' : 'Notifications disabled');
+			toast.success(i18n.t('push.toast.disabled'));
 		} catch (e) {
 			toast.error(e instanceof Error ? e.message : 'Erreur');
 		} finally {
@@ -120,52 +120,46 @@
 				</svg>
 			</div>
 			<div class="flex-1">
-				<p class="text-xs font-bold uppercase tracking-wider text-text-muted">Push</p>
+				<p class="text-xs font-bold uppercase tracking-wider text-text-muted">{i18n.t('push.category')}</p>
 				<h3 class="text-base font-semibold">
-					{i18n.locale === 'fr' ? 'Notifications navigateur' : 'Browser notifications'}
+					{i18n.t('push.title')}
 				</h3>
 			</div>
 			{#if subscribed}
 				<Badge variant="success" size="sm">
 					<Check size={12} strokeWidth={2.5} />
-					{i18n.locale === 'fr' ? 'Activées' : 'On'}
+					{i18n.t('push.statusOn')}
 				</Badge>
 			{:else if permission === 'denied'}
 				<Badge variant="error" size="sm">
 					<X size={12} strokeWidth={2.5} />
-					{i18n.locale === 'fr' ? 'Bloquées' : 'Blocked'}
+					{i18n.t('push.statusBlocked')}
 				</Badge>
 			{:else}
 				<Badge variant="default" size="sm">
-					{i18n.locale === 'fr' ? 'Inactives' : 'Off'}
+					{i18n.t('push.statusOff')}
 				</Badge>
 			{/if}
 		</div>
 		<p class="mb-4 text-sm text-text-muted">
-			{i18n.locale === 'fr'
-				? 'Reçois une notif quand un talent te répond, un mentor accepte une session, ta bounty est payée…'
-				: 'Get notified when a talent replies, a mentor accepts a session, your bounty is paid…'}
+			{i18n.t('push.description')}
 		</p>
 		{#if permission === 'denied'}
 			<p class="text-xs text-error">
-				{i18n.locale === 'fr'
-					? 'Notifications bloquées dans le navigateur. Change les paramètres du site pour les réactiver.'
-					: 'Notifications blocked by browser. Change site settings to re-enable.'}
+				{i18n.t('push.blockedHint')}
 			</p>
 		{:else if subscribed}
 			<Button variant="ghost" loading={busy} onclick={unsubscribe}>
-				{i18n.locale === 'fr' ? 'Désactiver' : 'Turn off'}
+				{i18n.t('push.disableBtn')}
 			</Button>
 		{:else}
 			<Button variant="accent" loading={busy} onclick={subscribe}>
-				{i18n.locale === 'fr' ? 'Activer les notifications' : 'Enable notifications'}
+				{i18n.t('push.enableBtn')}
 			</Button>
 		{/if}
 	</div>
 {:else}
 	<div class="rounded-2xl border border-border bg-surface-elevated p-6 text-sm text-text-muted">
-		{i18n.locale === 'fr'
-			? 'Ce navigateur ne supporte pas les notifications push.'
-			: 'This browser does not support push notifications.'}
+		{i18n.t('push.unsupported')}
 	</div>
 {/if}

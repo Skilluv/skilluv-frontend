@@ -577,6 +577,24 @@ export interface Translations {
 		retryBtn: string;
 		generic: string;
 	};
+	push: {
+		title: string;
+		category: string;
+		description: string;
+		statusOn: string;
+		statusOff: string;
+		statusBlocked: string;
+		enableBtn: string;
+		disableBtn: string;
+		unsupported: string;
+		blockedHint: string;
+		toast: {
+			enabled: string;
+			disabled: string;
+			permissionDenied: string;
+			receivedFallback: string;
+		};
+	};
 	teams: {
 		marketplace: {
 			title: string;

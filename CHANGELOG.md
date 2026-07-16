@@ -23,6 +23,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Navbar user dropdown — 5 conditional links (forum moderation, curator queue, plagiarism review, mentor zone, tournament jury) driven by `auth.can(...)`.
 - i18n FR/EN/AR — 14 capability labels + descriptions + navigation entries.
 
+**FE-M7 — Web Push VAPID polish**
+- Service worker `/service-worker.js` now forwards push payloads to a focused client via `postMessage` instead of firing a redundant OS-level notification; background pushes still surface as native notifications.
+- New `<PushForegroundListener>` component mounted in the root layout — listens for `serviceWorker` message events, shows an in-app toast, and refreshes the notifications badge count.
+- `<PushToggle>` migrated from hardcoded FR/EN string ternaries to `i18n.t()` keys covering all states (on / off / blocked / unsupported / toasts).
+- i18n FR/EN/AR — new `push.*` namespace with title, category, description, status badges, buttons, block hint, unsupported message, and 4 toast keys.
+- 9 unit tests: `urlBase64ToUint8Array` decode / URL-safe / padding, `arrayBufferToBase64Url` round-trip / null handling / padding stripping, `pushApi` VAPID / subscribe / unsubscribe route verification. Playwright coverage deferred to FE-M11 CI hardening — the SW + Notification API pair does not mock reliably in headless browsers.
+
 **FE-M5 — Team marketplace + role slots**
 - `<RoleBadge>` — reusable role indicator built on top of `ui/Badge`.
 - `<SlotCard>` — marketplace slot card with team name, challenge link, role badge, min-level, required skill, join CTA + view-team link.

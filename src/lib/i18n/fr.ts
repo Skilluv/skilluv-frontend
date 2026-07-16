@@ -402,6 +402,24 @@ export const fr: Translations = {
 		retryBtn: 'Réessayer',
 		generic: 'Une erreur est survenue. Réessaie.'
 	},
+	push: {
+		title: 'Notifications navigateur',
+		category: 'Push',
+		description: 'Reçois une notif quand un talent te répond, un mentor accepte une session, ta bounty est payée…',
+		statusOn: 'Activées',
+		statusOff: 'Inactives',
+		statusBlocked: 'Bloquées',
+		enableBtn: 'Activer les notifications',
+		disableBtn: 'Désactiver',
+		unsupported: 'Ce navigateur ne supporte pas les notifications push.',
+		blockedHint: 'Notifications bloquées dans le navigateur. Change les paramètres du site pour les réactiver.',
+		toast: {
+			enabled: 'Notifications activées',
+			disabled: 'Notifications désactivées',
+			permissionDenied: 'Permission refusée',
+			receivedFallback: 'Nouvelle notification'
+		}
+	},
 	teams: {
 		marketplace: {
 			title: 'Marché des équipes',

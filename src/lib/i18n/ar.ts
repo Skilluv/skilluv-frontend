@@ -410,6 +410,24 @@ export const ar: Translations = {
 		retryBtn: 'إعادة المحاولة',
 		generic: 'حدث خطأ. حاول مرة أخرى.'
 	},
+	push: {
+		title: 'إشعارات المتصفح',
+		category: 'Push',
+		description: 'تلقّ إشعاراً عند رد موهبة، قبول موجه لجلسة، دفع مكافأتك…',
+		statusOn: 'مفعّل',
+		statusOff: 'معطّل',
+		statusBlocked: 'محظور',
+		enableBtn: 'تفعيل الإشعارات',
+		disableBtn: 'إيقاف',
+		unsupported: 'لا يدعم هذا المتصفح إشعارات push.',
+		blockedHint: 'الإشعارات محظورة في المتصفح. غيّر إعدادات الموقع لإعادة تفعيلها.',
+		toast: {
+			enabled: 'الإشعارات مفعّلة',
+			disabled: 'الإشعارات معطّلة',
+			permissionDenied: 'الإذن مرفوض',
+			receivedFallback: 'إشعار جديد'
+		}
+	},
 	teams: {
 		marketplace: {
 			title: 'سوق الفرق',

@@ -14,6 +14,7 @@
 	import Toast from '$lib/components/ui/Toast.svelte';
 	import PageTransition from '$lib/components/ui/PageTransition.svelte';
 	import InstallPrompt from '$lib/components/pwa/InstallPrompt.svelte';
+	import PushForegroundListener from '$lib/components/pwa/PushForegroundListener.svelte';
 	import EmailVerificationBanner from '$lib/components/auth/EmailVerificationBanner.svelte';
 	import OrientationPromptBanner from '$lib/components/orientations/OrientationPromptBanner.svelte';
 	import KeysSprite from '$lib/components/badges/primitives/keys-sprite.svelte';
@@ -110,4 +111,5 @@
 	{/if}
 
 	<InstallPrompt />
+	<PushForegroundListener />
 </div>
