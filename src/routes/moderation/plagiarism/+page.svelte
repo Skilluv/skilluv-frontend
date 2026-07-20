@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { moderationApi, type PlagiarismFlaggedDeliverable } from '$lib/api/moderation';
+	import { moderationApi, type FlaggedDeliverable } from '$lib/api/moderation';
 	import { SkilluError } from '$lib/api/client';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$lib/stores/auth.svelte';
@@ -11,14 +11,30 @@
 	import { ConfirmDangerousDialog } from '$lib/components/moderation';
 	import { toast } from '$lib/stores/toast.svelte';
 
-	let queue = $state<PlagiarismFlaggedDeliverable[]>([]);
+	let queue = $state<FlaggedDeliverable[]>([]);
 	let loading = $state(true);
 	let loadError = $state('');
 
 	let dialogOpen = $state(false);
 	let dialogAction = $state<'valid' | 'revoke' | null>(null);
-	let dialogItem = $state<PlagiarismFlaggedDeliverable | null>(null);
+	let dialogItem = $state<FlaggedDeliverable | null>(null);
 	let dialogSubmitting = $state(false);
+
+	/** Le backend loge le score plagiat dans verification_signal.plagiarism_score
+	 * (float 0..1) et l'id de la copie source dans verification_signal.similar_to. */
+	function extractScore(item: FlaggedDeliverable): number | null {
+		const signal = item.verification_signal;
+		if (!signal || typeof signal !== 'object') return null;
+		const raw = (signal as Record<string, unknown>).plagiarism_score;
+		return typeof raw === 'number' ? raw : null;
+	}
+
+	function extractSimilarId(item: FlaggedDeliverable): string | null {
+		const signal = item.verification_signal;
+		if (!signal || typeof signal !== 'object') return null;
+		const raw = (signal as Record<string, unknown>).similar_to;
+		return typeof raw === 'string' ? raw : null;
+	}
 
 	let allowed = $derived(auth.can('plagiarism_reviewer') || auth.can('admin'));
 
@@ -43,7 +59,7 @@
 		}
 	}
 
-	function openAction(action: 'valid' | 'revoke', item: PlagiarismFlaggedDeliverable) {
+	function openAction(action: 'valid' | 'revoke', item: FlaggedDeliverable) {
 		dialogAction = action;
 		dialogItem = item;
 		dialogOpen = true;
@@ -61,11 +77,11 @@
 		dialogSubmitting = true;
 		try {
 			if (dialogAction === 'valid') {
-				await moderationApi.plagiarism.markValid(dialogItem.deliverable_id, { reason });
+				await moderationApi.plagiarism.markValid(dialogItem.id, { reason });
 			} else {
-				await moderationApi.plagiarism.revoke(dialogItem.deliverable_id, { reason });
+				await moderationApi.plagiarism.revoke(dialogItem.id, { reason });
 			}
-			queue = queue.filter((q) => q.deliverable_id !== dialogItem?.deliverable_id);
+			queue = queue.filter((q) => q.id !== dialogItem?.id);
 			toast.success(i18n.t('moderation.toast.done'));
 			dialogOpen = false;
 			dialogAction = null;
@@ -128,32 +144,37 @@
 		<EmptyState variant="seal-intact" title={i18n.t('moderation.plagiarism.queueEmpty')} />
 	{:else}
 		<ul class="space-y-3" role="list">
-			{#each queue as item (item.deliverable_id)}
+			{#each queue as item (item.id)}
+				{@const score = extractScore(item)}
+				{@const similarId = extractSimilarId(item)}
 				<li class="rounded-2xl border border-border bg-surface-elevated p-5">
 					<div class="mb-3 flex items-start justify-between gap-3 flex-wrap">
 						<div class="min-w-0 flex-1">
 							<div class="mb-2 flex items-center gap-2 flex-wrap">
-								<Badge variant="warning" size="sm">
-									{i18n.t('moderation.plagiarism.scoreLabel')}: {(item.plagiarism_score * 100).toFixed(0)}%
-								</Badge>
+								{#if score !== null}
+									<Badge variant="warning" size="sm">
+										{i18n.t('moderation.plagiarism.scoreLabel')}: {(score * 100).toFixed(0)}%
+									</Badge>
+								{/if}
+								<Badge variant="default" size="sm">{item.verification_status}</Badge>
 								<span class="text-xs text-text-muted">
-									{i18n.t('moderation.plagiarism.flaggedOn', { date: fmtDate(item.flagged_at) })}
+									{i18n.t('moderation.plagiarism.flaggedOn', { date: fmtDate(item.submitted_at) })}
 								</span>
 							</div>
 							<p class="text-sm">
-								<a href="/profile/{item.username}" class="font-medium text-text-primary hover:text-accent">
-									@{item.username}
+								<a href="/profile/{item.user_id}" class="font-medium text-text-primary hover:text-accent font-mono text-xs">
+									{item.user_id.slice(0, 8)}…
 								</a>
 							</p>
-							{#if item.similar_to_deliverable_id}
-								<p class="mt-1 text-xs text-text-muted">
-									{item.similar_to_deliverable_id}
+							{#if similarId}
+								<p class="mt-1 text-xs text-text-muted font-mono">
+									≈ {similarId.slice(0, 12)}…
 								</p>
 							{/if}
 						</div>
 					</div>
 					<div class="flex items-center justify-end gap-2">
-						<Button variant="ghost" size="sm" href="/deliverables/{item.deliverable_id}">
+						<Button variant="ghost" size="sm" href="/deliverables/{item.id}">
 							{i18n.t('moderation.plagiarism.viewDeliverable')}
 						</Button>
 						<Button variant="secondary" size="sm" onclick={() => openAction('valid', item)}>

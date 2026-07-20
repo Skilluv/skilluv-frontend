@@ -1,25 +1,22 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { communityApi } from '$lib/api/community';
-	import { moderationApi } from '$lib/api/moderation';
+	import { moderationApi, type CommunityReviewItem } from '$lib/api/moderation';
 	import { SkilluError } from '$lib/api/client';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$lib/stores/auth.svelte';
-	import type { Challenge } from '$lib/types';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
-	import Badge from '$lib/components/ui/Badge.svelte';
 	import EmptyState from '$lib/components/ui/EmptyState.svelte';
 	import { ConfirmDangerousDialog } from '$lib/components/moderation';
 	import { toast } from '$lib/stores/toast.svelte';
 
-	let challenges = $state<Challenge[]>([]);
+	let challenges = $state<CommunityReviewItem[]>([]);
 	let loading = $state(true);
 	let loadError = $state('');
 
 	let dialogOpen = $state(false);
 	let dialogAction = $state<'approve' | 'reject' | null>(null);
-	let dialogChallenge = $state<Challenge | null>(null);
+	let dialogChallenge = $state<CommunityReviewItem | null>(null);
 	let dialogSubmitting = $state(false);
 
 	let allowed = $derived(auth.can('community_curator') || auth.can('admin'));
@@ -36,7 +33,7 @@
 		loading = true;
 		loadError = '';
 		try {
-			const res = await communityApi.pendingReview(1, 50);
+			const res = await moderationApi.community.reviewQueue({ page: 1, per_page: 50 });
 			challenges = res.data;
 		} catch (err) {
 			loadError = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
@@ -45,7 +42,7 @@
 		}
 	}
 
-	function openAction(action: 'approve' | 'reject', challenge: Challenge) {
+	function openAction(action: 'approve' | 'reject', challenge: CommunityReviewItem) {
 		dialogAction = action;
 		dialogChallenge = challenge;
 		dialogOpen = true;
@@ -63,9 +60,9 @@
 		dialogSubmitting = true;
 		try {
 			if (dialogAction === 'approve') {
-				await moderationApi.community.approveChallenge(dialogChallenge.id, { reason });
+				await moderationApi.community.approveChallenge(dialogChallenge.id);
 			} else {
-				await moderationApi.community.rejectChallenge(dialogChallenge.id, { reason });
+				await moderationApi.community.rejectChallenge(dialogChallenge.id, { feedback: reason });
 			}
 			challenges = challenges.filter((c) => c.id !== dialogChallenge?.id);
 			toast.success(i18n.t('moderation.toast.done'));
@@ -128,17 +125,20 @@
 				<li class="rounded-2xl border border-border bg-surface-elevated p-5">
 					<div class="mb-3 flex items-start justify-between gap-3">
 						<div class="min-w-0 flex-1">
-							<div class="mb-2 flex items-center gap-2 flex-wrap">
-								<Badge variant="primary" size="sm">{i18n.t(`common.domains.${ch.skill_domain}`)}</Badge>
-								<Badge variant="default" size="sm">
-									{i18n.t(`common.difficulty.${ch.difficulty}`)}
-								</Badge>
-								{#if ch.created_by}
-									<span class="text-xs text-text-muted">@{ch.created_by}</span>
-								{/if}
-							</div>
-							<h3 class="text-lg font-bold text-text-primary">{ch.title}</h3>
+							{#if ch.created_by}
+								<span class="text-xs text-text-muted">
+									@{ch.created_by}
+									<span aria-hidden="true">·</span>
+									{new Date(ch.created_at).toLocaleDateString(i18n.locale)}
+								</span>
+							{/if}
+							<h3 class="mt-1 text-lg font-bold text-text-primary">{ch.title}</h3>
 							<p class="mt-1 text-sm text-text-muted line-clamp-3">{ch.description}</p>
+							{#if ch.review_feedback}
+								<p class="mt-2 rounded-lg bg-warning/10 px-3 py-2 text-xs text-warning">
+									{ch.review_feedback}
+								</p>
+							{/if}
 						</div>
 					</div>
 					<div class="flex items-center justify-end gap-2">

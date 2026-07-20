@@ -31,6 +31,9 @@ export interface ForumPost {
 	accepted_answer_id: string | null;
 	pinned: boolean;
 	locked: boolean;
+	/** Renseigné quand un modérateur a masqué le post (soft-delete). Le post
+	 * reste servi aux modérateurs mais est caché pour le reste. */
+	deleted_at?: string | null;
 	comment_count: number;
 	reaction_count?: number;
 	created_at: string;

@@ -8,18 +8,18 @@
 	import { CheckCircle, AlertTriangle } from '@lucide/svelte';
 
 	let loading = $state(true);
-	let connected = $state(false);
+	let verified = $state(false);
 
 	onMount(async () => {
 		try {
-			const res = await walletApi.stripeStatus();
-			connected = res.data.connected;
+			const res = await walletApi.get();
+			verified = res.data.wallet.stripe_kyc_status === 'verified';
 		} catch {
-			connected = false;
+			verified = false;
 		} finally {
 			loading = false;
 		}
-		if (connected) {
+		if (verified) {
 			setTimeout(() => goto('/wallet'), 2000);
 		}
 	});
@@ -32,7 +32,7 @@
 <div class="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-4 py-10 text-center">
 	{#if loading}
 		<Skeleton class="h-32 w-full" rounded="xl" />
-	{:else if connected}
+	{:else if verified}
 		<CheckCircle size={48} strokeWidth={1.5} class="mb-4 text-success" aria-hidden="true" />
 		<h1 class="mb-2 text-2xl font-bold text-text-primary">
 			{i18n.t('wallet.payoutModal.stripe.readyLabel')}

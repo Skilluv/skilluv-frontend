@@ -3,18 +3,32 @@ import { createApiClient } from './client';
 
 const api = createApiClient();
 
-export interface UserConsents {
-	marketing: boolean;
+/** Version courante du texte de consentement + URLs des pages légales. */
+export interface ConsentVersion {
+	version: number;
+	pages: {
+		terms: string;
+		privacy: string;
+		cookies: string;
+	};
+}
+
+/** Payload de POST /legal/consent — enregistre la décision du user (banner). */
+export interface RecordConsentBody {
 	analytics: boolean;
-	updated_at: string;
+	marketing: boolean;
 }
 
-export interface PatchConsentsBody {
-	marketing?: boolean;
-	analytics?: boolean;
+export interface RecordConsentResponse {
+	version: number;
+	analytics: boolean;
+	marketing: boolean;
+	essential: true;
+	stored: boolean;
 }
 
-export interface ExportJobStatus {
+/** Réponse de POST /auth/me/data-export (RGPD + produit dans un même bundle). */
+export interface DataExportResponse {
 	job_id: string;
 	status: 'pending' | 'ready' | 'failed';
 	download_url?: string;
@@ -23,31 +37,25 @@ export interface ExportJobStatus {
 }
 
 export const privacyApi = {
-	getConsents() {
-		return api.get<ApiResponse<UserConsents>>('/users/me/consents');
+	/** GET /legal/consent-version — version courante + URLs pages légales. */
+	consentVersion() {
+		return api.get<ApiResponse<ConsentVersion>>('/legal/consent-version');
 	},
 
-	patchConsents(body: PatchConsentsBody) {
-		return api.patch<ApiResponse<UserConsents>>('/users/me/consents', body);
+	/** POST /legal/consent — enregistre les choix analytics + marketing.
+	 * Utilisé par le cookie banner ET par la page /settings/privacy. */
+	recordConsent(body: RecordConsentBody) {
+		return api.post<ApiResponse<RecordConsentResponse>>('/legal/consent', body);
 	},
 
-	/** GDPR right-to-portability — machine-readable dump of all personal data. */
-	requestGdprExport() {
-		return api.post<ApiResponse<ExportJobStatus>>('/users/me/gdpr-export');
-	},
-
-	/** Non-legal data export (portfolio, submissions, badges) — user-friendly bundle. */
+	/** POST /auth/me/data-export — dump machine-readable RGPD + produit
+	 * (rate-limited 1/24h côté serveur). */
 	requestDataExport() {
-		return api.post<ApiResponse<ExportJobStatus>>('/users/me/data-export');
+		return api.post<ApiResponse<DataExportResponse>>('/auth/me/data-export');
 	},
 
-	/** Poll a previously requested export job. */
-	getExportStatus(jobId: string) {
-		return api.get<ApiResponse<ExportJobStatus>>(`/users/me/exports/${jobId}`);
-	},
-
-	/** Hard delete request (starts the 30-day soft-delete window on the backend). */
-	requestAccountDeletion(reason?: string) {
-		return api.post<ApiResponse<{ scheduled_for: string }>>('/users/me/delete', { reason });
+	/** DELETE /auth/account — suppression compte (soft-delete 30 jours). */
+	deleteAccount(reason?: string) {
+		return api.delete<ApiResponse<{ scheduled_for: string }>>('/auth/account', { reason });
 	}
 };

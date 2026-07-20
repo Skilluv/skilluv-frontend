@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { PayoutMethod, WalletBalance } from '$lib/types';
-	import { walletApi, type RequestPayoutBody } from '$lib/api/wallet';
+	import type { Wallet } from '$lib/types';
+	import { walletApi } from '$lib/api/wallet';
 	import { SkilluError } from '$lib/api/client';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
@@ -12,122 +12,115 @@
 
 	interface Props {
 		open: boolean;
-		balance: WalletBalance | null;
+		wallet: Wallet | null;
 		onClose: () => void;
 		onSubmitted: () => void;
 	}
 
-	let { open, balance, onClose, onSubmitted }: Props = $props();
+	let { open, wallet, onClose, onSubmitted }: Props = $props();
 
-	const MIN_FRAGMENTS = 100;
+	type Method = 'stripe' | 'momo';
 
-	let method = $state<PayoutMethod>('stripe');
+	let method = $state<Method>('stripe');
 	let amountStr = $state('');
 	let amountError = $state('');
 
-	// Stripe state
-	let stripeStatus = $state<{ connected: boolean; account_id?: string } | null>(null);
-	let stripeBusy = $state(false);
+	// Stripe onboarding
+	let stripeCountry = $state('FR');
+	let stripeOnboardBusy = $state(false);
 
-	// Momo state
-	let momoProvider = $state<'orange' | 'mtn'>('orange');
-	let momoNumber = $state('');
-	let momoVerified = $state(false);
-	let momoRegistering = $state(false);
+	// Momo phone
+	let momoPhone = $state('');
+	let momoProvider = $state<'orange' | 'mtn' | 'wave'>('orange');
+	let momoRegisterBusy = $state(false);
 	let momoError = $state('');
 
 	let submitting = $state(false);
 
 	$effect(() => {
-		if (open) {
-			refreshStripeStatus();
-		} else {
+		if (!open) {
 			amountStr = '';
 			amountError = '';
-			momoNumber = '';
-			momoVerified = false;
+			momoPhone = '';
 			momoError = '';
+		} else if (wallet?.momo_phone && !momoPhone) {
+			momoPhone = wallet.momo_phone;
 		}
 	});
 
-	async function refreshStripeStatus() {
-		try {
-			const res = await walletApi.stripeStatus();
-			stripeStatus = res.data;
-		} catch {
-			stripeStatus = { connected: false };
-		}
-	}
+	let stripeReady = $derived(wallet?.stripe_kyc_status === 'verified');
+	let momoReady = $derived(wallet?.momo_phone_verified ?? false);
+	let currentBalance = $derived.by(() => {
+		if (!wallet) return 0;
+		return method === 'stripe' ? Number(wallet.balance_eur) : Number(wallet.balance_xof);
+	});
+	let currencyLabel = $derived(method === 'stripe' ? 'EUR' : 'XOF');
+	let minAmount = $derived(method === 'stripe' ? 1 : 500);
 
 	async function connectStripe() {
-		stripeBusy = true;
+		stripeOnboardBusy = true;
 		try {
-			const res = await walletApi.stripeOnboarding();
-			window.location.href = res.data.url;
+			const res = await walletApi.stripeOnboard(stripeCountry);
+			window.location.href = res.data.onboarding_url;
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
 		} finally {
-			stripeBusy = false;
+			stripeOnboardBusy = false;
 		}
 	}
 
 	async function registerMomo() {
 		momoError = '';
-		if (!momoNumber.trim()) {
+		if (!momoPhone.trim()) {
 			momoError = i18n.t('wallet.payoutModal.momo.numberRequired');
 			return;
 		}
-		momoRegistering = true;
+		momoRegisterBusy = true;
 		try {
-			const res = await walletApi.momoRegister({
-				provider: momoProvider,
-				number: momoNumber.trim()
-			});
-			momoVerified = res.data.verified;
-			if (!momoVerified) {
-				momoError = i18n.t('wallet.payoutModal.momo.numberRequired');
-			}
+			await walletApi.momoRegister({ phone: momoPhone.trim(), provider: momoProvider });
+			// Refresh via parent after registration completes
+			onSubmitted();
 		} catch (err) {
 			momoError = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
 		} finally {
-			momoRegistering = false;
+			momoRegisterBusy = false;
 		}
 	}
 
-	function validateAmount(): number | null {
+	function validateAmount(): string | null {
 		amountError = '';
 		const n = Number(amountStr);
-		if (!Number.isFinite(n) || n < MIN_FRAGMENTS) {
-			amountError = i18n.t('wallet.payoutModal.amountBelowMin');
+		if (!Number.isFinite(n) || n < minAmount) {
+			amountError = i18n.t('wallet.payoutModal.amountBelowMin', { min: String(minAmount) });
 			return null;
 		}
-		return Math.floor(n);
+		if (n > currentBalance) {
+			amountError = i18n.t('wallet.payoutModal.amountAboveBalance');
+			return null;
+		}
+		return n.toFixed(2);
 	}
 
 	async function submit() {
 		const amount = validateAmount();
 		if (amount === null) return;
 
-		if (method === 'stripe' && !stripeStatus?.connected) {
+		if (method === 'stripe' && !stripeReady) {
 			toast.error(i18n.t('wallet.payoutModal.stripe.notConnected'));
 			return;
 		}
-		if (method === 'mobile_money' && !momoVerified) {
+		if (method === 'momo' && !momoReady) {
 			toast.error(i18n.t('wallet.payoutModal.momo.numberRequired'));
 			return;
 		}
 
 		submitting = true;
 		try {
-			const body: RequestPayoutBody = { method, amount_fragments: amount };
-			if (method === 'stripe' && stripeStatus?.account_id) {
-				body.stripe_account_id = stripeStatus.account_id;
+			if (method === 'stripe') {
+				await walletApi.stripeWithdraw({ amount, currency: 'EUR' });
+			} else {
+				await walletApi.momoWithdraw({ amount, currency: 'XOF' });
 			}
-			if (method === 'mobile_money') {
-				body.momo_provider = momoProvider;
-				body.momo_number = momoNumber.trim();
-			}
-			await walletApi.requestPayout(body);
 			toast.success(i18n.t('wallet.payoutModal.submitted'));
 			onSubmitted();
 		} catch (err) {
@@ -145,23 +138,6 @@
 	size="lg"
 >
 	<div class="space-y-6">
-		<div>
-			<Input
-				name="payout_amount"
-				type="number"
-				min={MIN_FRAGMENTS}
-				step="1"
-				label={i18n.t('wallet.payoutModal.amountLabel')}
-				bind:value={amountStr}
-				error={amountError}
-				hint={balance
-					? i18n.t('wallet.payoutModal.amountHint', {
-							balance: balance.fragments.toLocaleString()
-						})
-					: ''}
-			/>
-		</div>
-
 		<fieldset>
 			<legend class="mb-2 text-sm font-medium text-text-primary">
 				{i18n.t('wallet.payoutModal.methodLabel')}
@@ -192,16 +168,16 @@
 
 				<label
 					class="flex cursor-pointer flex-col gap-2 rounded-xl border-2 p-4 transition-colors {method ===
-					'mobile_money'
+					'momo'
 						? 'border-accent bg-accent/5'
 						: 'border-border hover:border-text-muted'}"
 				>
 					<input
 						type="radio"
 						name="payout_method"
-						value="mobile_money"
-						checked={method === 'mobile_money'}
-						onchange={() => (method = 'mobile_money')}
+						value="momo"
+						checked={method === 'momo'}
+						onchange={() => (method = 'momo')}
 						class="sr-only"
 					/>
 					<div class="flex items-center gap-2">
@@ -217,22 +193,35 @@
 
 		{#if method === 'stripe'}
 			<div class="rounded-xl border border-border bg-surface-overlay p-4">
-				{#if stripeStatus?.connected}
+				{#if stripeReady}
 					<Badge variant="success" size="md">{i18n.t('wallet.payoutModal.stripe.readyLabel')}</Badge>
-					{#if stripeStatus.account_id}
+					{#if wallet?.stripe_account_id}
 						<p class="mt-2 text-xs font-mono text-text-muted">
-							{i18n.t('wallet.payoutModal.stripe.accountLabel', { id: stripeStatus.account_id })}
+							{i18n.t('wallet.payoutModal.stripe.accountLabel', { id: wallet.stripe_account_id })}
 						</p>
 					{/if}
 				{:else}
 					<p class="mb-3 text-sm text-text-muted">
 						{i18n.t('wallet.payoutModal.stripe.notConnected')}
 					</p>
-					<Button variant="secondary" onclick={connectStripe} loading={stripeBusy}>
-						{stripeBusy
-							? i18n.t('wallet.payoutModal.stripe.connectingLabel')
-							: i18n.t('wallet.payoutModal.stripe.connectCta')}
-					</Button>
+					<div class="mb-3 flex items-end gap-3">
+						<label class="flex-1">
+							<span class="mb-1 block text-xs font-medium text-text-primary">
+								{i18n.t('wallet.payoutModal.stripe.countryLabel')}
+							</span>
+							<input
+								type="text"
+								bind:value={stripeCountry}
+								maxlength="2"
+								class="h-10 w-full rounded-lg border border-border bg-surface-elevated px-3 text-sm uppercase"
+							/>
+						</label>
+						<Button variant="secondary" onclick={connectStripe} loading={stripeOnboardBusy}>
+							{stripeOnboardBusy
+								? i18n.t('wallet.payoutModal.stripe.connectingLabel')
+								: i18n.t('wallet.payoutModal.stripe.connectCta')}
+						</Button>
+					</div>
 				{/if}
 			</div>
 		{:else}
@@ -241,7 +230,7 @@
 					<legend class="mb-2 text-sm font-medium text-text-primary">
 						{i18n.t('wallet.payoutModal.momo.providerLabel')}
 					</legend>
-					<div class="flex gap-4 text-sm">
+					<div class="flex flex-wrap gap-4 text-sm">
 						<label class="flex items-center gap-2">
 							<input
 								type="radio"
@@ -264,33 +253,65 @@
 							/>
 							{i18n.t('wallet.payoutModal.momo.providerMtn')}
 						</label>
+						<label class="flex items-center gap-2">
+							<input
+								type="radio"
+								name="momo_provider"
+								value="wave"
+								checked={momoProvider === 'wave'}
+								onchange={() => (momoProvider = 'wave')}
+								class="h-4 w-4 accent-accent"
+							/>
+							{i18n.t('wallet.payoutModal.momo.providerWave')}
+						</label>
 					</div>
 				</fieldset>
 				<Input
-					name="momo_number"
+					name="momo_phone"
 					type="tel"
 					label={i18n.t('wallet.payoutModal.momo.numberLabel')}
 					hint={i18n.t('wallet.payoutModal.momo.numberHint')}
-					bind:value={momoNumber}
+					bind:value={momoPhone}
 					error={momoError}
-					disabled={momoVerified}
+					disabled={momoReady}
 				/>
-				{#if momoVerified}
+				{#if momoReady}
 					<Badge variant="success" size="sm">{i18n.t('wallet.payoutModal.momo.verifiedLabel')}</Badge>
 				{:else}
-					<Button variant="secondary" onclick={registerMomo} loading={momoRegistering}>
+					<Button variant="secondary" onclick={registerMomo} loading={momoRegisterBusy}>
 						{i18n.t('wallet.payoutModal.momo.registerCta')}
 					</Button>
 				{/if}
 			</div>
 		{/if}
+
+		<div>
+			<Input
+				name="payout_amount"
+				type="number"
+				min={minAmount}
+				step="0.01"
+				label={i18n.t('wallet.payoutModal.amountLabel', { currency: currencyLabel })}
+				bind:value={amountStr}
+				error={amountError}
+				hint={i18n.t('wallet.payoutModal.amountHint', {
+					balance: currentBalance.toLocaleString(),
+					currency: currencyLabel
+				})}
+			/>
+		</div>
 	</div>
 
 	{#snippet actions()}
 		<Button variant="ghost" onclick={onClose} disabled={submitting}>
 			{i18n.t('wallet.payoutModal.cancel')}
 		</Button>
-		<Button variant="primary" onclick={submit} loading={submitting}>
+		<Button
+			variant="primary"
+			onclick={submit}
+			loading={submitting}
+			disabled={(method === 'stripe' && !stripeReady) || (method === 'momo' && !momoReady)}
+		>
 			{i18n.t('wallet.payoutModal.submit')}
 		</Button>
 	{/snippet}

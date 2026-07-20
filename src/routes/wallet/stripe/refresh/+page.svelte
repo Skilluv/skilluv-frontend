@@ -12,9 +12,12 @@
 	onMount(async () => {
 		try {
 			// Stripe hit us on the refresh URL — it means the previous onboarding
-			// link expired. Ask the backend for a fresh URL and bounce there.
-			const res = await walletApi.stripeOnboarding();
-			window.location.href = res.data.url;
+			// link expired. Fetch the current wallet to know the residency country
+			// (required by the onboard endpoint), then request a fresh URL.
+			const walletRes = await walletApi.get();
+			const country = walletRes.data.wallet.residency_country ?? 'FR';
+			const res = await walletApi.stripeOnboard(country);
+			window.location.href = res.data.onboarding_url;
 		} catch (err) {
 			redirecting = false;
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));

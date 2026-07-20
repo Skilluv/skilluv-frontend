@@ -8,19 +8,6 @@ function ok(data: unknown) {
 	};
 }
 
-function paginated(items: unknown[]) {
-	return {
-		ok: true,
-		status: 200,
-		json: () =>
-			Promise.resolve({
-				data: items,
-				pagination: { page: 1, per_page: 20, total: items.length, total_pages: 1 },
-				meta: { request_id: 'r', timestamp: '2026-07-16' }
-			})
-	};
-}
-
 let fetchMock: ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
@@ -34,95 +21,103 @@ afterEach(() => {
 });
 
 describe('walletApi read routes', () => {
-	it('balance() hits /talent/wallet/balance', async () => {
+	it('get() hits /users/me/wallet and returns the wallet payload', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ fragments: 3400, eur_equivalent: 34, last_updated: '2026-07-16' })
+			ok({
+				wallet: {
+					user_id: 'u1',
+					balance_eur: '34.00',
+					balance_xof: '17000',
+					residency_country: 'FR',
+					stripe_account_id: null,
+					stripe_kyc_status: 'pending',
+					momo_phone: null,
+					momo_phone_verified: false,
+					created_at: '2026-07-16',
+					updated_at: '2026-07-16'
+				}
+			})
 		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		const res = await walletApi.balance();
-		expect(fetchMock).toHaveBeenCalledWith('/api/talent/wallet/balance', expect.anything());
-		expect(res.data.fragments).toBe(3400);
+		const res = await walletApi.get();
+		expect(fetchMock).toHaveBeenCalledWith('/api/users/me/wallet', expect.anything());
+		expect(res.data.wallet.balance_eur).toBe('34.00');
 	});
 
-	it('history() serializes pagination', async () => {
-		fetchMock.mockResolvedValue(paginated([]));
+	it('transactions() forwards limit query param', async () => {
+		fetchMock.mockResolvedValue(ok({ transactions: [] }));
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.history({ page: 2, per_page: 50 });
+		await walletApi.transactions({ limit: 50 });
 		const url = fetchMock.mock.calls[0][0] as string;
-		expect(url).toBe('/api/talent/wallet/history?page=2&per_page=50');
+		expect(url).toBe('/api/users/me/wallet/transactions?limit=50');
 	});
 
-	it('payouts() serializes pagination', async () => {
-		fetchMock.mockResolvedValue(paginated([]));
+	it('setResidency() POSTs the ISO-2 country', async () => {
+		fetchMock.mockResolvedValue(ok({ wallet: {} }));
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.payouts({ page: 3 });
-		const url = fetchMock.mock.calls[0][0] as string;
-		expect(url).toBe('/api/talent/wallet/payouts?page=3');
+		await walletApi.setResidency('CI');
+		const [url, init] = fetchMock.mock.calls[0];
+		expect(url).toBe('/api/users/me/wallet/residency');
+		expect(JSON.parse(init.body).country).toBe('CI');
 	});
 });
 
 describe('walletApi Stripe flow', () => {
-	it('stripeStatus() reports connected state', async () => {
-		fetchMock.mockResolvedValue(ok({ connected: true, account_id: 'acct_123' }));
-		const { walletApi } = await import('../../src/lib/api/wallet');
-		const res = await walletApi.stripeStatus();
-		expect(fetchMock).toHaveBeenCalledWith('/api/talent/wallet/stripe/status', expect.anything());
-		expect(res.data.connected).toBe(true);
-		expect(res.data.account_id).toBe('acct_123');
-	});
-
-	it('stripeOnboarding() returns a hosted URL', async () => {
+	it('stripeOnboard() posts uppercased country + returns hosted URL', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ url: 'https://connect.stripe.com/x', account_id: 'acct_x', expires_at: '2026-07-17' })
+			ok({
+				account_id: 'acct_x',
+				onboarding_url: 'https://connect.stripe.com/x',
+				expires_at: '2026-07-17'
+			})
 		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		const res = await walletApi.stripeOnboarding();
-		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/talent/wallet/stripe/onboarding',
-			expect.objectContaining({ method: 'POST' })
-		);
-		expect(res.data.url).toContain('stripe.com');
+		const res = await walletApi.stripeOnboard('fr');
+		const [url, init] = fetchMock.mock.calls[0];
+		expect(url).toBe('/api/users/me/wallet/stripe/onboard');
+		expect(init.method).toBe('POST');
+		expect(JSON.parse(init.body).country).toBe('FR');
+		expect(res.data.onboarding_url).toContain('stripe.com');
 	});
 
-	it('requestPayout() with stripe includes stripe_account_id when provided', async () => {
-		fetchMock.mockResolvedValue(ok({ id: 'p1', status: 'pending' }));
+	it('stripeWithdraw() POSTs the amount body', async () => {
+		fetchMock.mockResolvedValue(
+			ok({ transaction_id: 't1', stripe_transfer_id: 'tr_1', amount_cents: 1500 })
+		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.requestPayout({
-			method: 'stripe',
-			amount_fragments: 1500,
-			stripe_account_id: 'acct_1'
-		});
-		const body = JSON.parse(fetchMock.mock.calls[0][1].body);
-		expect(body.method).toBe('stripe');
-		expect(body.stripe_account_id).toBe('acct_1');
-		expect(body.amount_fragments).toBe(1500);
+		await walletApi.stripeWithdraw({ amount: '15.00', currency: 'EUR' });
+		const [url, init] = fetchMock.mock.calls[0];
+		expect(url).toBe('/api/users/me/wallet/withdraw/stripe');
+		expect(init.method).toBe('POST');
+		const body = JSON.parse(init.body);
+		expect(body.amount).toBe('15.00');
+		expect(body.currency).toBe('EUR');
 	});
 });
 
 describe('walletApi Mobile Money flow', () => {
-	it('momoRegister() sends provider + number', async () => {
-		fetchMock.mockResolvedValue(ok({ verified: true }));
+	it('momoRegister() POSTs phone + provider', async () => {
+		fetchMock.mockResolvedValue(ok({ wallet: { momo_phone_verified: true } }));
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.momoRegister({ provider: 'orange', number: '+22990000000' });
+		await walletApi.momoRegister({ phone: '+22990000000', provider: 'orange' });
 		const [url, init] = fetchMock.mock.calls[0];
-		expect(url).toBe('/api/talent/wallet/mobile-money/register');
+		expect(url).toBe('/api/users/me/wallet/momo/phone');
 		const body = JSON.parse(init.body);
+		expect(body.phone).toBe('+22990000000');
 		expect(body.provider).toBe('orange');
-		expect(body.number).toBe('+22990000000');
 	});
 
-	it('requestPayout() with mobile_money carries provider + number', async () => {
-		fetchMock.mockResolvedValue(ok({ id: 'p2', status: 'pending' }));
+	it('momoWithdraw() POSTs the amount', async () => {
+		fetchMock.mockResolvedValue(
+			ok({ transaction_id: 't2', momo_reference: 'ref_1' })
+		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.requestPayout({
-			method: 'mobile_money',
-			amount_fragments: 300,
-			momo_provider: 'mtn',
-			momo_number: '+22997000000'
-		});
-		const body = JSON.parse(fetchMock.mock.calls[0][1].body);
-		expect(body.method).toBe('mobile_money');
-		expect(body.momo_provider).toBe('mtn');
-		expect(body.momo_number).toBe('+22997000000');
+		await walletApi.momoWithdraw({ amount: '10000', currency: 'XOF' });
+		const [url, init] = fetchMock.mock.calls[0];
+		expect(url).toBe('/api/users/me/wallet/withdraw/momo');
+		expect(init.method).toBe('POST');
+		const body = JSON.parse(init.body);
+		expect(body.amount).toBe('10000');
+		expect(body.currency).toBe('XOF');
 	});
 });

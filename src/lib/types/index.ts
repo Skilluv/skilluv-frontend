@@ -500,40 +500,51 @@ export interface TeamMarketplaceSlot extends TeamRoleSlot {
 	challenge_title: string;
 }
 
-// --- P13 : Talent wallet + payouts ---
+// --- P13 : Talent wallet + payouts (aligné backend) ---
 
-export interface WalletBalance {
-	fragments: number;
-	eur_equivalent: number;
-	last_updated: string;
+/** Statut KYC Stripe Connect côté wallet backend. */
+export type StripeKycStatus = 'pending' | 'verified' | 'rejected' | 'restricted';
+
+/** Wallet complet retourné par GET /users/me/wallet — balances dual devise
+ * (EUR pour Stripe, XOF pour Mobile Money) + statuts providers embarqués. */
+export interface Wallet {
+	user_id: string;
+	balance_eur: string;
+	balance_xof: string;
+	residency_country: string | null;
+	stripe_account_id: string | null;
+	stripe_kyc_status: StripeKycStatus;
+	momo_phone: string | null;
+	momo_phone_verified: boolean;
+	created_at: string;
+	updated_at: string;
 }
 
+/** Ligne du ledger — inclut hash-chain audit trail. */
 export interface WalletTransaction {
 	id: string;
-	kind: 'earn' | 'payout' | 'adjustment';
-	fragments_delta: number;
-	description: string;
-	prev_hash?: string;
-	entry_hash: string;
+	user_id: string;
+	delta: string;
+	currency: 'EUR' | 'XOF';
+	reason: string;
+	related_slice_id?: string | null;
+	related_provider_txn_id?: string | null;
+	notes?: string | null;
+	ledger_hash: string;
+	prev_ledger_hash?: string | null;
 	created_at: string;
 }
 
-export interface PayoutRequest {
-	id: string;
-	method: PayoutMethod;
-	amount_fragments: number;
-	amount_currency: number;
-	currency: string;
-	status: PayoutStatus;
-	failure_reason?: string;
-	requested_at: string;
-	settled_at?: string | null;
-}
+// --- P25 : Moderation inline (aligné backend) ---
 
-// --- P25 : Moderation inline ---
+/** Actions supportées par POST /forum/posts/{id}/moderate. */
+export type ForumModerateAction = 'hide' | 'unhide' | 'lock' | 'unlock';
+
+/** Scope d'un mute forum : réduit à un espace ou étendu. */
+export type MuteScope = 'forum' | 'community' | 'all';
 
 export interface ModerationAction {
-	action: 'delete' | 'mute_author' | 'mark_spam' | 'approve' | 'reject' | 'mark_valid' | 'revoke';
+	action: ForumModerateAction | 'approve' | 'reject' | 'mark_valid' | 'revoke';
 	reason?: string;
 	duration_hours?: number;
 }

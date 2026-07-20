@@ -22,50 +22,56 @@ afterEach(() => {
 
 // --- privacyApi ---
 
-describe('privacyApi consents + GDPR', () => {
-	it('getConsents() reads /users/me/consents', async () => {
-		fetchMock.mockResolvedValue(ok({ marketing: false, analytics: true, updated_at: '2026-07-16' }));
+describe('privacyApi consents + GDPR (aligned backend)', () => {
+	it('consentVersion() reads /legal/consent-version', async () => {
+		fetchMock.mockResolvedValue(
+			ok({
+				version: 1,
+				pages: {
+					terms: 'https://x/terms',
+					privacy: 'https://x/privacy',
+					cookies: 'https://x/cookies'
+				}
+			})
+		);
 		const { privacyApi } = await import('../../src/lib/api/privacy');
-		const res = await privacyApi.getConsents();
-		expect(fetchMock).toHaveBeenCalledWith('/api/users/me/consents', expect.anything());
-		expect(res.data.analytics).toBe(true);
+		const res = await privacyApi.consentVersion();
+		expect(fetchMock).toHaveBeenCalledWith('/api/legal/consent-version', expect.anything());
+		expect(res.data.version).toBe(1);
 	});
 
-	it('patchConsents() PATCHes with body', async () => {
-		fetchMock.mockResolvedValue(ok({ marketing: true, analytics: true, updated_at: '2026-07-16' }));
+	it('recordConsent() POSTs /legal/consent with both flags', async () => {
+		fetchMock.mockResolvedValue(
+			ok({ version: 1, analytics: true, marketing: false, essential: true, stored: true })
+		);
 		const { privacyApi } = await import('../../src/lib/api/privacy');
-		await privacyApi.patchConsents({ marketing: true });
+		await privacyApi.recordConsent({ analytics: true, marketing: false });
 		const [url, init] = fetchMock.mock.calls[0];
-		expect(url).toBe('/api/users/me/consents');
-		expect(init.method).toBe('PATCH');
-		const body = JSON.parse(init.body);
-		expect(body.marketing).toBe(true);
-	});
-
-	it('requestGdprExport() POSTs /users/me/gdpr-export', async () => {
-		fetchMock.mockResolvedValue(ok({ job_id: 'j1', status: 'pending', requested_at: '2026-07-16' }));
-		const { privacyApi } = await import('../../src/lib/api/privacy');
-		await privacyApi.requestGdprExport();
-		const [url, init] = fetchMock.mock.calls[0];
-		expect(url).toBe('/api/users/me/gdpr-export');
+		expect(url).toBe('/api/legal/consent');
 		expect(init.method).toBe('POST');
+		const body = JSON.parse(init.body);
+		expect(body.analytics).toBe(true);
+		expect(body.marketing).toBe(false);
 	});
 
-	it('requestDataExport() POSTs /users/me/data-export', async () => {
-		fetchMock.mockResolvedValue(ok({ job_id: 'j2', status: 'pending', requested_at: '2026-07-16' }));
+	it('requestDataExport() POSTs /auth/me/data-export', async () => {
+		fetchMock.mockResolvedValue(
+			ok({ job_id: 'j2', status: 'pending', requested_at: '2026-07-16' })
+		);
 		const { privacyApi } = await import('../../src/lib/api/privacy');
 		await privacyApi.requestDataExport();
 		const [url, init] = fetchMock.mock.calls[0];
-		expect(url).toBe('/api/users/me/data-export');
+		expect(url).toBe('/api/auth/me/data-export');
 		expect(init.method).toBe('POST');
 	});
 
-	it('requestAccountDeletion() POSTs with reason', async () => {
+	it('deleteAccount() DELETEs /auth/account with optional reason', async () => {
 		fetchMock.mockResolvedValue(ok({ scheduled_for: '2026-08-15' }));
 		const { privacyApi } = await import('../../src/lib/api/privacy');
-		await privacyApi.requestAccountDeletion('too many emails');
+		await privacyApi.deleteAccount('too many emails');
 		const [url, init] = fetchMock.mock.calls[0];
-		expect(url).toBe('/api/users/me/delete');
+		expect(url).toBe('/api/auth/account');
+		expect(init.method).toBe('DELETE');
 		const body = JSON.parse(init.body);
 		expect(body.reason).toBe('too many emails');
 	});

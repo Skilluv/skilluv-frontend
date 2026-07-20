@@ -585,6 +585,7 @@ export interface Translations {
 		balanceEur: string;
 		lastUpdated: string;
 		requestPayoutCta: string;
+		downloadStatement: string;
 		historyTitle: string;
 		historyEmpty: string;
 		payoutsTitle: string;
@@ -608,6 +609,7 @@ export interface Translations {
 			amountLabel: string;
 			amountHint: string;
 			amountBelowMin: string;
+			amountAboveBalance: string;
 			methodLabel: string;
 			methodStripeLabel: string;
 			methodStripeDesc: string;
@@ -619,11 +621,13 @@ export interface Translations {
 				connectingLabel: string;
 				readyLabel: string;
 				accountLabel: string;
+				countryLabel: string;
 			};
 			momo: {
 				providerLabel: string;
 				providerOrange: string;
 				providerMtn: string;
+				providerWave: string;
 				numberLabel: string;
 				numberHint: string;
 				numberRequired: string;
@@ -648,14 +652,18 @@ export interface Translations {
 			failed: string;
 		};
 		forum: {
-			actionDelete: string;
+			actionHide: string;
+			actionUnhide: string;
+			actionLock: string;
+			actionUnlock: string;
 			actionMuteAuthor: string;
-			actionMarkSpam: string;
 			menuLabel: string;
 			menuOpen: string;
-			confirmDeleteBody: string;
+			confirmHideBody: string;
+			confirmUnhideBody: string;
+			confirmLockBody: string;
+			confirmUnlockBody: string;
 			confirmMuteBody: string;
-			confirmSpamBody: string;
 			muteDuration24: string;
 			muteDuration72: string;
 			muteDuration168: string;

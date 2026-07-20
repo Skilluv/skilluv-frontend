@@ -7,11 +7,12 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import { forumApi, type ForumPost } from '$api/forum';
 	import { socialApi, type SocialComment } from '$api/social';
-	import { moderationApi, type ForumModerateBody } from '$lib/api/moderation';
+	import { moderationApi, type ForumModerateBody, type ForumMuteBody } from '$lib/api/moderation';
+	import type { ForumModerateAction } from '$lib/types';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
 	import { InlineModerateButton, ConfirmDangerousDialog } from '$lib/components/moderation';
-	import { Trash2, Flag, VolumeX } from '@lucide/svelte';
+	import { EyeOff, Eye, Lock, Unlock, VolumeX } from '@lucide/svelte';
 
 	let postId = $derived(page.params.id ?? '');
 	let post = $state<ForumPost | null>(null);
@@ -80,12 +81,14 @@
 	let isQuestion = $derived(post?.kind === 'question');
 
 	// --- Moderation state ---
+	type ModPostAction = ForumModerateAction;
+	type ModAction = ModPostAction | 'mute_user';
 	let modDialogOpen = $state(false);
-	let modDialogAction = $state<'delete' | 'mute_author' | 'mark_spam' | null>(null);
+	let modDialogAction = $state<ModAction | null>(null);
 	let modSubmitting = $state(false);
 	let muteDurationHours = $state(24);
 
-	function openModAction(action: 'delete' | 'mute_author' | 'mark_spam', close: () => void) {
+	function openModAction(action: ModAction, close: () => void) {
 		modDialogAction = action;
 		modDialogOpen = true;
 		close();
@@ -101,9 +104,14 @@
 		if (!post || !modDialogAction) return;
 		modSubmitting = true;
 		try {
-			if (modDialogAction === 'mute_author' && post.author_id) {
-				await moderationApi.forum.muteAuthor(post.author_id, muteDurationHours, reason);
-			} else {
+			if (modDialogAction === 'mute_user' && post.author_id) {
+				const body: ForumMuteBody = {
+					reason,
+					duration_hours: muteDurationHours,
+					scope: 'forum'
+				};
+				await moderationApi.forum.muteUser(post.author_id, body);
+			} else if (modDialogAction !== 'mute_user') {
 				const body: ForumModerateBody = {
 					action: modDialogAction,
 					reason
@@ -112,8 +120,9 @@
 			}
 			toast.success(i18n.t('moderation.toast.done'));
 			modDialogOpen = false;
+			const prevAction = modDialogAction;
 			modDialogAction = null;
-			if (modDialogAction === 'delete' || modDialogAction === 'mark_spam') {
+			if (prevAction === 'hide' || prevAction === 'unhide' || prevAction === 'lock' || prevAction === 'unlock') {
 				await load();
 			}
 		} catch (err) {
@@ -124,16 +133,20 @@
 	}
 
 	let modDialogTitle = $derived.by(() => {
-		if (modDialogAction === 'delete') return i18n.t('moderation.forum.actionDelete');
-		if (modDialogAction === 'mute_author') return i18n.t('moderation.forum.actionMuteAuthor');
-		if (modDialogAction === 'mark_spam') return i18n.t('moderation.forum.actionMarkSpam');
+		if (modDialogAction === 'hide') return i18n.t('moderation.forum.actionHide');
+		if (modDialogAction === 'unhide') return i18n.t('moderation.forum.actionUnhide');
+		if (modDialogAction === 'lock') return i18n.t('moderation.forum.actionLock');
+		if (modDialogAction === 'unlock') return i18n.t('moderation.forum.actionUnlock');
+		if (modDialogAction === 'mute_user') return i18n.t('moderation.forum.actionMuteAuthor');
 		return '';
 	});
 
 	let modDialogBody = $derived.by(() => {
-		if (modDialogAction === 'delete') return i18n.t('moderation.forum.confirmDeleteBody');
-		if (modDialogAction === 'mute_author') return i18n.t('moderation.forum.confirmMuteBody');
-		if (modDialogAction === 'mark_spam') return i18n.t('moderation.forum.confirmSpamBody');
+		if (modDialogAction === 'hide') return i18n.t('moderation.forum.confirmHideBody');
+		if (modDialogAction === 'unhide') return i18n.t('moderation.forum.confirmUnhideBody');
+		if (modDialogAction === 'lock') return i18n.t('moderation.forum.confirmLockBody');
+		if (modDialogAction === 'unlock') return i18n.t('moderation.forum.confirmUnlockBody');
+		if (modDialogAction === 'mute_user') return i18n.t('moderation.forum.confirmMuteBody');
 		return '';
 	});
 
@@ -179,28 +192,52 @@
 				<h1 class="text-3xl sm:text-4xl font-black leading-tight tracking-tight">{post.title}</h1>
 				<InlineModerateButton capability="forum_moderator" size="md">
 					{#snippet children({ close })}
+						{#if post?.deleted_at}
+							<button
+								type="button"
+								role="menuitem"
+								onclick={() => openModAction('unhide', close)}
+								class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-primary transition-colors hover:bg-success/10 hover:text-success"
+							>
+								<Eye size={14} strokeWidth={2} />
+								{i18n.t('moderation.forum.actionUnhide')}
+							</button>
+						{:else}
+							<button
+								type="button"
+								role="menuitem"
+								onclick={() => openModAction('hide', close)}
+								class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-primary transition-colors hover:bg-error/10 hover:text-error"
+							>
+								<EyeOff size={14} strokeWidth={2} />
+								{i18n.t('moderation.forum.actionHide')}
+							</button>
+						{/if}
+						{#if post?.locked}
+							<button
+								type="button"
+								role="menuitem"
+								onclick={() => openModAction('unlock', close)}
+								class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-primary transition-colors hover:bg-surface-overlay"
+							>
+								<Unlock size={14} strokeWidth={2} />
+								{i18n.t('moderation.forum.actionUnlock')}
+							</button>
+						{:else}
+							<button
+								type="button"
+								role="menuitem"
+								onclick={() => openModAction('lock', close)}
+								class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-primary transition-colors hover:bg-warning/10 hover:text-warning"
+							>
+								<Lock size={14} strokeWidth={2} />
+								{i18n.t('moderation.forum.actionLock')}
+							</button>
+						{/if}
 						<button
 							type="button"
 							role="menuitem"
-							onclick={() => openModAction('delete', close)}
-							class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-primary transition-colors hover:bg-error/10 hover:text-error"
-						>
-							<Trash2 size={14} strokeWidth={2} />
-							{i18n.t('moderation.forum.actionDelete')}
-						</button>
-						<button
-							type="button"
-							role="menuitem"
-							onclick={() => openModAction('mark_spam', close)}
-							class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-primary transition-colors hover:bg-warning/10 hover:text-warning"
-						>
-							<Flag size={14} strokeWidth={2} />
-							{i18n.t('moderation.forum.actionMarkSpam')}
-						</button>
-						<button
-							type="button"
-							role="menuitem"
-							onclick={() => openModAction('mute_author', close)}
+							onclick={() => openModAction('mute_user', close)}
 							class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-primary transition-colors hover:bg-surface-overlay"
 						>
 							<VolumeX size={14} strokeWidth={2} />
@@ -312,7 +349,7 @@
 	onClose={closeModDialog}
 />
 
-{#if modDialogOpen && modDialogAction === 'mute_author'}
+{#if modDialogOpen && modDialogAction === 'mute_user'}
 	<div class="fixed bottom-4 right-4 z-[91] flex items-center gap-2 rounded-xl border border-border bg-surface-elevated px-4 py-3 shadow-lg">
 		<label for="mute_duration" class="text-xs font-semibold text-text-muted">
 			{i18n.t('moderation.durationHours')}

@@ -178,45 +178,42 @@ describe('badgesApi', () => {
 	});
 });
 
-// --- P13 wallet ---
+// --- P13 wallet (aligned backend) ---
 
 describe('walletApi', () => {
-	it('history() serializes pagination params', async () => {
-		fetchMock.mockResolvedValue(paginated([]));
+	it('transactions() serializes limit param', async () => {
+		fetchMock.mockResolvedValue(ok({ transactions: [] }));
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.history({ page: 2, per_page: 50 });
+		await walletApi.transactions({ limit: 50 });
 		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/talent/wallet/history?page=2&per_page=50',
+			'/api/users/me/wallet/transactions?limit=50',
 			expect.anything()
 		);
 	});
 
-	it('requestPayout() POSTs stripe method', async () => {
-		fetchMock.mockResolvedValue(ok({ id: 'p1', status: 'pending' }));
+	it('stripeWithdraw() posts amount + currency', async () => {
+		fetchMock.mockResolvedValue(
+			ok({ transaction_id: 't1', stripe_transfer_id: 'tr_1', amount_cents: 1000 })
+		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.requestPayout({ method: 'stripe', amount_fragments: 1000 });
+		await walletApi.stripeWithdraw({ amount: '10.00', currency: 'EUR' });
 		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/talent/wallet/payouts',
+			'/api/users/me/wallet/withdraw/stripe',
 			expect.objectContaining({
 				method: 'POST',
-				body: expect.stringContaining('"method":"stripe"')
+				body: expect.stringContaining('"amount":"10.00"')
 			})
 		);
 	});
 
-	it('requestPayout() POSTs mobile_money method with provider', async () => {
-		fetchMock.mockResolvedValue(ok({}));
+	it('momoWithdraw() posts amount in XOF', async () => {
+		fetchMock.mockResolvedValue(ok({ transaction_id: 't2', momo_reference: 'ref_1' }));
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.requestPayout({
-			method: 'mobile_money',
-			amount_fragments: 500,
-			momo_provider: 'mtn',
-			momo_number: '+22990000000'
-		});
+		await walletApi.momoWithdraw({ amount: '5000', currency: 'XOF' });
 		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/talent/wallet/payouts',
+			'/api/users/me/wallet/withdraw/momo',
 			expect.objectContaining({
-				body: expect.stringContaining('"momo_provider":"mtn"')
+				body: expect.stringContaining('"amount":"5000"')
 			})
 		);
 	});
@@ -332,24 +329,27 @@ describe('badgeEventsApi', () => {
 	});
 });
 
-// --- P25 moderation ---
+// --- P25 moderation (aligned backend) ---
 
 describe('moderationApi', () => {
-	it('forum.moderatePost() posts a delete action', async () => {
-		fetchMock.mockResolvedValue(ok({ moderated: true }));
+	it('forum.moderatePost() posts a hide action', async () => {
+		fetchMock.mockResolvedValue(ok({ moderated: true, id: 'post-1', action: 'hide' }));
 		const { moderationApi } = await import('../../src/lib/api/moderation');
-		await moderationApi.forum.moderatePost('post-1', { action: 'delete', reason: 'spam' });
+		await moderationApi.forum.moderatePost('post-1', {
+			action: 'hide',
+			reason: 'clear spam'
+		});
 		expect(fetchMock).toHaveBeenCalledWith(
 			'/api/forum/posts/post-1/moderate',
 			expect.objectContaining({
 				method: 'POST',
-				body: expect.stringContaining('"action":"delete"')
+				body: expect.stringContaining('"action":"hide"')
 			})
 		);
 	});
 
-	it('community.approveChallenge() posts empty body by default', async () => {
-		fetchMock.mockResolvedValue(ok({ approved: true }));
+	it('community.approveChallenge() posts empty body', async () => {
+		fetchMock.mockResolvedValue(ok({ approved: true, id: 'ch-1', title: 'x' }));
 		const { moderationApi } = await import('../../src/lib/api/moderation');
 		await moderationApi.community.approveChallenge('ch-1');
 		expect(fetchMock).toHaveBeenCalledWith(
@@ -358,13 +358,15 @@ describe('moderationApi', () => {
 		);
 	});
 
-	it('community.rejectChallenge() requires a reason', async () => {
+	it('community.rejectChallenge() sends `feedback` key', async () => {
 		fetchMock.mockResolvedValue(ok({}));
 		const { moderationApi } = await import('../../src/lib/api/moderation');
-		await moderationApi.community.rejectChallenge('ch-1', { reason: 'off-topic' });
+		await moderationApi.community.rejectChallenge('ch-1', {
+			feedback: 'off-topic — align to the code domain'
+		});
 		expect(fetchMock).toHaveBeenCalledWith(
 			'/api/community/challenges/ch-1/reject',
-			expect.objectContaining({ body: expect.stringContaining('off-topic') })
+			expect.objectContaining({ body: expect.stringContaining('feedback') })
 		);
 	});
 

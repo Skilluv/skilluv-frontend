@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { privacyApi } from '$lib/api/privacy';
-	import type { UserConsents, ExportJobStatus } from '$lib/api/privacy';
+	import type { DataExportResponse } from '$lib/api/privacy';
 	import { SkilluError } from '$lib/api/client';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$lib/stores/auth.svelte';
@@ -13,72 +13,58 @@
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
 
-	let consents = $state<UserConsents | null>(null);
+	// The backend stores consents on the user record (`consent_analytics`,
+	// `consent_marketing`) and returns them via /auth/me. We seed local state
+	// from the current auth user and re-post via /legal/consent on toggle.
+	let marketing = $state<boolean>(false);
+	let analytics = $state<boolean>(false);
 	let loading = $state(true);
 	let saving = $state(false);
 
-	let gdprJob = $state<ExportJobStatus | null>(null);
-	let gdprBusy = $state(false);
-
-	let dataJob = $state<ExportJobStatus | null>(null);
+	let dataJob = $state<DataExportResponse | null>(null);
 	let dataBusy = $state(false);
 
 	let deleteModalOpen = $state(false);
 	let deleteReason = $state('');
 	let deleting = $state(false);
 
-	onMount(async () => {
-		try {
-			const res = await privacyApi.getConsents();
-			consents = res.data;
-		} catch {
-			consents = { marketing: false, analytics: false, updated_at: '' };
-		} finally {
-			loading = false;
+	onMount(() => {
+		// Consent state is available on auth.user as soon as /auth/me resolves.
+		// We do not have a dedicated GET; local state hydrates from the store.
+		const u = auth.user as unknown as {
+			consent_analytics?: boolean;
+			consent_marketing?: boolean;
+		} | null;
+		if (u) {
+			analytics = u.consent_analytics ?? false;
+			marketing = u.consent_marketing ?? false;
 		}
+		loading = false;
 	});
 
-	async function toggleMarketing(v: boolean) {
-		if (!consents) return;
+	async function saveConsent() {
 		saving = true;
 		try {
-			const res = await privacyApi.patchConsents({ marketing: v });
-			consents = res.data;
+			await privacyApi.recordConsent({ analytics, marketing });
 			toast.success(i18n.t('privacyPage.consents.saved'));
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
 		} finally {
 			saving = false;
 		}
+	}
+
+	async function toggleMarketing(v: boolean) {
+		marketing = v;
+		await saveConsent();
 	}
 
 	async function toggleAnalytics(v: boolean) {
-		if (!consents) return;
-		saving = true;
-		try {
-			const res = await privacyApi.patchConsents({ analytics: v });
-			consents = res.data;
-			toast.success(i18n.t('privacyPage.consents.saved'));
-		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
-		} finally {
-			saving = false;
-		}
+		analytics = v;
+		await saveConsent();
 	}
 
-	async function requestGdpr() {
-		gdprBusy = true;
-		try {
-			const res = await privacyApi.requestGdprExport();
-			gdprJob = res.data;
-		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
-		} finally {
-			gdprBusy = false;
-		}
-	}
-
-	async function requestData() {
+	async function requestExport() {
 		dataBusy = true;
 		try {
 			const res = await privacyApi.requestDataExport();
@@ -93,7 +79,7 @@
 	async function confirmDelete() {
 		deleting = true;
 		try {
-			const res = await privacyApi.requestAccountDeletion(deleteReason.trim() || undefined);
+			const res = await privacyApi.deleteAccount(deleteReason.trim() || undefined);
 			toast.success(
 				i18n.t('privacyPage.delete.scheduled', {
 					date: new Date(res.data.scheduled_for).toLocaleDateString(i18n.locale)
@@ -124,7 +110,7 @@
 		<Skeleton class="mb-4 h-32 w-full" rounded="xl" />
 		<Skeleton class="mb-4 h-32 w-full" rounded="xl" />
 		<Skeleton class="h-32 w-full" rounded="xl" />
-	{:else if consents}
+	{:else}
 		<section
 			class="mb-6 rounded-2xl border border-border bg-surface-elevated p-6"
 			aria-labelledby="consents-title"
@@ -138,7 +124,7 @@
 				<label class="flex items-start gap-3">
 					<input
 						type="checkbox"
-						checked={consents.marketing}
+						checked={marketing}
 						onchange={(e) => toggleMarketing((e.currentTarget as HTMLInputElement).checked)}
 						disabled={saving}
 						class="mt-1 h-4 w-4 rounded border-border accent-accent focus:ring-2 focus:ring-accent"
@@ -152,7 +138,7 @@
 				<label class="flex items-start gap-3">
 					<input
 						type="checkbox"
-						checked={consents.analytics}
+						checked={analytics}
 						onchange={(e) => toggleAnalytics((e.currentTarget as HTMLInputElement).checked)}
 						disabled={saving}
 						class="mt-1 h-4 w-4 rounded border-border accent-accent focus:ring-2 focus:ring-accent"
@@ -167,43 +153,16 @@
 
 		<section
 			class="mb-6 rounded-2xl border border-border bg-surface-elevated p-6"
-			aria-labelledby="gdpr-title"
+			aria-labelledby="export-title"
 		>
-			<h2 id="gdpr-title" class="text-lg font-bold text-text-primary">
+			<h2 id="export-title" class="text-lg font-bold text-text-primary">
 				{i18n.t('privacyPage.gdpr.title')}
 			</h2>
 			<p class="mt-1 mb-4 text-sm text-text-muted">{i18n.t('privacyPage.gdpr.subtitle')}</p>
 
-			{#if !gdprJob}
-				<Button variant="secondary" onclick={requestGdpr} loading={gdprBusy}>
-					{i18n.t('privacyPage.gdpr.requestCta')}
-				</Button>
-			{:else if gdprJob.status === 'pending'}
-				<Badge variant="warning" size="md">{i18n.t('privacyPage.gdpr.pending')}</Badge>
-			{:else if gdprJob.status === 'ready' && gdprJob.download_url}
-				<div class="flex items-center gap-3">
-					<Badge variant="success" size="md">{i18n.t('privacyPage.gdpr.ready')}</Badge>
-					<Button variant="primary" href={gdprJob.download_url}>
-						{i18n.t('privacyPage.gdpr.downloadCta')}
-					</Button>
-				</div>
-			{:else}
-				<Badge variant="error" size="md">{i18n.t('privacyPage.gdpr.failed')}</Badge>
-			{/if}
-		</section>
-
-		<section
-			class="mb-6 rounded-2xl border border-border bg-surface-elevated p-6"
-			aria-labelledby="data-title"
-		>
-			<h2 id="data-title" class="text-lg font-bold text-text-primary">
-				{i18n.t('privacyPage.dataExport.title')}
-			</h2>
-			<p class="mt-1 mb-4 text-sm text-text-muted">{i18n.t('privacyPage.dataExport.subtitle')}</p>
-
 			{#if !dataJob}
-				<Button variant="secondary" onclick={requestData} loading={dataBusy}>
-					{i18n.t('privacyPage.dataExport.requestCta')}
+				<Button variant="secondary" onclick={requestExport} loading={dataBusy}>
+					{i18n.t('privacyPage.gdpr.requestCta')}
 				</Button>
 			{:else if dataJob.status === 'pending'}
 				<Badge variant="warning" size="md">{i18n.t('privacyPage.gdpr.pending')}</Badge>
