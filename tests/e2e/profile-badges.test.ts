@@ -1,4 +1,5 @@
 import { test, expect, type Page, type Route } from '@playwright/test';
+import { expectNoSeriousA11yViolations } from './utils/a11y';
 
 test.beforeEach(async ({ page }) => {
 	await page.addInitScript(() => {
@@ -180,6 +181,7 @@ test.describe('Profile page — badges wall', () => {
 	test('renders identity header, rank chevron and skill patches', async ({ page }) => {
 		await page.goto('/profile/kofi');
 		await expect(page.getByRole('heading', { name: 'Kofi Adjovi' })).toBeVisible();
+		await expectNoSeriousA11yViolations(page);
 		await expect(page.getByRole('heading', { name: 'Rang' })).toBeVisible();
 		await expect(page.getByLabel('Rang Artisan')).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Compétences prouvées' })).toBeVisible();

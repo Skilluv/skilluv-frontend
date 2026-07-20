@@ -473,9 +473,9 @@
 		     `equal` pour forcer les 5 niveaux à tenir sur une seule ligne
 		     avec truncate + tooltip si un libellé déborde. -->
 		<div>
-			<label class="mb-1.5 block text-sm font-medium">
+			<p class="mb-1.5 block text-sm font-medium">
 				{i18n.locale === 'fr' ? 'Difficulté' : 'Difficulty'}
-			</label>
+			</p>
 			<SegmentedControl
 				size="sm"
 				equal

@@ -402,9 +402,9 @@
 					<!-- Groupe : Localisation & langue -->
 					<div class="flex flex-col gap-3">
 						<div>
-							<label class="mb-1 block text-[11px] font-semibold text-text-muted">
+							<p class="mb-1 block text-[11px] font-semibold text-text-muted">
 								{i18n.locale === 'fr' ? 'Pays' : 'Country'}
-							</label>
+							</p>
 							<CountrySelect
 								bind:value={countryIso3}
 								placeholder={i18n.locale === 'fr' ? 'Tous les pays' : 'All countries'}
@@ -412,9 +412,9 @@
 							/>
 						</div>
 						<div>
-							<label class="mb-1 block text-[11px] font-semibold text-text-muted">
+							<p class="mb-1 block text-[11px] font-semibold text-text-muted">
 								{i18n.locale === 'fr' ? 'Langues (min B2)' : 'Languages (min B2)'}
-							</label>
+							</p>
 							<MultiSelect
 								size="md"
 								shape="rounded"

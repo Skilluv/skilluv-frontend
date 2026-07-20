@@ -145,14 +145,16 @@
 				{#each visibleChips as v (v)}
 					<span class="inline-flex items-center gap-1 rounded-md bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary">
 						{labelMap.get(v) ?? v}
-						<button
-							type="button"
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
+						<span
+							role="button"
+							tabindex="0"
 							onclick={(e) => removeChip(e, v)}
 							aria-label={i18n.locale === 'fr' ? 'Retirer' : 'Remove'}
-							class="rounded hover:bg-primary/20"
+							class="cursor-pointer rounded hover:bg-primary/20"
 						>
 							<X size={10} strokeWidth={2.5} />
-						</button>
+						</span>
 					</span>
 				{/each}
 				{#if overflowCount > 0}
@@ -164,14 +166,16 @@
 		{/if}
 
 		{#if value.length > 0}
-			<button
-				type="button"
+			<!-- svelte-ignore a11y_click_events_have_key_events -->
+			<span
+				role="button"
+				tabindex="0"
 				onclick={clearAll}
 				aria-label={i18n.locale === 'fr' ? 'Tout retirer' : 'Clear all'}
-				class="shrink-0 rounded-full p-0.5 text-text-muted hover:bg-surface-overlay hover:text-text-primary"
+				class="shrink-0 cursor-pointer rounded-full p-0.5 text-text-muted hover:bg-surface-overlay hover:text-text-primary"
 			>
 				<X size={12} strokeWidth={2} />
-			</button>
+			</span>
 		{/if}
 
 		<svg

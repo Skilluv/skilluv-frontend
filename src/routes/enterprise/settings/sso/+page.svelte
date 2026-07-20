@@ -467,10 +467,11 @@
 
 				{#if !scimTokenForListing}
 					<div class="mb-3 rounded-xl border border-border bg-surface-overlay p-3">
-						<label class="mb-1 block text-xs font-medium">
+						<label for="scim-token-listing" class="mb-1 block text-xs font-medium">
 							{i18n.locale === 'fr' ? 'Token SCIM (pour lister)' : 'SCIM token (for listing)'}
 						</label>
 						<input
+							id="scim-token-listing"
 							type="password"
 							bind:value={scimTokenForListing}
 							placeholder="scim_…"

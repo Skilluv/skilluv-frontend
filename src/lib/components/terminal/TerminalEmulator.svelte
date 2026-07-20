@@ -293,10 +293,12 @@
 	}
 </script>
 
-<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_noninteractive_element_interactions -->
 <div
 	class="term-root"
 	style="color: {termColor};"
+	role="application"
+	aria-label="Terminal"
 	onclick={focusInput}
 >
 	<input
@@ -397,9 +399,7 @@
 		font-weight: bold;
 	}
 
-	.term-prompt {
-		/* inherits color from root */
-	}
+	/* .term-prompt inherits color from :root — no ruleset needed. */
 
 	.term-cursor {
 		color: #000;

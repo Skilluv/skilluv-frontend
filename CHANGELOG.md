@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **A11y hardening** — 10 of 12 preexisting `svelte-check` warnings resolved (labels without controls converted to `<p>` on non-form contexts, SCIM token input wired to its label via `id`/`for`, MultiSelect chip remove-button lifted out of the outer button as `<span role="button">`). 2 remaining warnings live on the deactivated terminal module (`TerminalConfirm`, `TerminalEmulator`) which is dead code slated for later reactivation — documented in FEATURE-MATRIX cross-cutting quality row.
+- **axe-core in Playwright** — new `@axe-core/playwright` dev-dep + `tests/e2e/utils/a11y.ts` helper `expectNoSeriousA11yViolations()` that fails on any WCAG 2 A/AA critical or serious violation. Wired into the profile-badges e2e as the first coverage point; other suites can adopt it via a one-line import.
+- **Lighthouse CI mobile** — new job in `.github/workflows/ci.yml` running `@lhci/cli` against 3 representative URLs (`/`, `/challenges`, `/pricing`) with mobile emulation. Assertions: accessibility ≥ 0.9 (error), performance/best-practices/SEO warnings at 0.7 / 0.85 / 0.85. Config in `lighthouserc.json`, results uploaded to LHCI temporary public storage.
+- **Sentry sourcemaps CI step** — conditional on `SENTRY_AUTH_TOKEN` secret. Injects sourcemaps into the build, creates the release keyed on the short SHA, uploads sourcemaps, finalizes. No-op when the secret is absent (opt-in, matches the runtime observability shell in `src/lib/observability.ts`).
+- **README.fr.md MVP block** — top-level status block mirroring the English README (11 phases livrées, feature bullets, link to CHANGELOG + FEATURE-MATRIX, i18n scope narrowed to FR + EN).
+
 ### Removed
 - Arabic locale (`ar.ts`) and RTL support — maintenance cost was outweighing the audience benefit for the current MVP scope. `ar` is no longer offered in the settings language picker, dropped from `Locale`, removed from `RTL_LOCALES` (direction is now always `ltr`), and removed from the `i18n:check` script. The `ar` value in the enterprise talents' spoken-languages catalog is data, not UI locale, and stays untouched.
 

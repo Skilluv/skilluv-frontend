@@ -9,9 +9,16 @@
 	let { onConfirm, onCancel }: Props = $props();
 </script>
 
-<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-<div class="term-overlay" onclick={onCancel}>
-	<div class="term-dialog" onclick={(e) => e.stopPropagation()}>
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<div
+	role="dialog"
+	aria-modal="true"
+	tabindex="-1"
+	class="term-overlay"
+	onclick={onCancel}
+>
+	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_noninteractive_element_interactions -->
+	<div role="document" class="term-dialog" onclick={(e) => e.stopPropagation()}>
 		<pre class="term-text">
 WARNING
 

@@ -15,6 +15,7 @@
 		"i18n:check": "node scripts/i18n-check.mjs"
 	},
 	"devDependencies": {
+		"@axe-core/playwright": "^4.12.1",
 		"@fontsource-variable/bricolage-grotesque": "^5.2.10",
 		"@fontsource-variable/fraunces": "^5.2.9",
 		"@fontsource-variable/jetbrains-mono": "^5.2.8",

@@ -406,9 +406,9 @@
 					/>
 
 					<div>
-						<label class="mb-1.5 block text-sm font-medium">
+						<p class="mb-1.5 block text-sm font-medium">
 							{i18n.t('enterprise.register.companySize')}
-						</label>
+						</p>
 						<Select
 							size="lg"
 							shape="rounded"
@@ -425,9 +425,9 @@
 					/>
 
 					<div>
-						<label class="mb-1.5 block text-sm font-medium">
+						<p class="mb-1.5 block text-sm font-medium">
 							{i18n.t('enterprise.register.industry')}
-						</label>
+						</p>
 						<Select
 							size="lg"
 							shape="rounded"
