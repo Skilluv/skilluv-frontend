@@ -62,13 +62,14 @@ export const creditsApi = {
 		});
 	},
 
-	/** Session Stripe Billing Portal (mise à jour moyen de paiement / résiliation). */
+	/** Session Stripe Billing Portal (mise à jour moyen de paiement / résiliation).
+	 * Backend l'expose sous /enterprise/billing/portal (owner-only). */
 	openBillingPortal() {
-		return api.post<ApiResponse<{ portal_url: string }>>('/enterprise/credits/portal');
+		return api.post<ApiResponse<{ portal_url: string }>>('/enterprise/billing/portal');
 	},
 
 	/** Redeem d'un code promo. */
 	redeemPromo(code: string) {
-		return api.post<ApiResponse<PromoRedeemResult>>('/enterprise/credits/promo/redeem', { code });
+		return api.post<ApiResponse<PromoRedeemResult>>('/enterprise/credits/redeem', { code });
 	}
 };
