@@ -53,7 +53,17 @@
 	// the enterprise layout guard can honour "TOTP OR passkey" as satisfying
 	// the 2FA gate on the very first client render (no /auth/me round-trip
 	// needed).
+	//
+	// SKI-102 : quand `authProbe === 'unknown'` (backend a repondu 5xx ou
+	// timeout au SSR fetch /auth/me), on NE DOIT PAS reset l'auth store. Le
+	// cookie access_token est encore la, la session est probablement valide,
+	// et un vrai reset ferait disparaitre navbar+sidebar d'un user pourtant
+	// legitime. Un vrai logout serveur passe par authProbe === 'unauthenticated'.
 	$effect(() => {
+		if (data.authProbe === 'unknown' && auth.user) {
+			// Backend flake : garder l'etat client existant.
+			return;
+		}
 		auth.setUser(data.user);
 		auth.hasPasskey = data.hasPasskey ?? false;
 	});

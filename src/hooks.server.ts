@@ -1,43 +1,5 @@
 import type { Handle, HandleServerError } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
-
-/**
- * Interceptor cote serveur. Sanitize le message qui sera passe a
- * `$page.error.message` — en prod on ne veut PAS exposer les messages Rust /
- * TypeScript / stack traces qui peuvent leak la structure interne.
- * Le vrai message est log cote serveur avec un errorId de correlation.
- */
-export const handleError: HandleServerError = ({ error, event, status, message }) => {
-	const errorId = crypto.randomUUID();
-	const isProd = import.meta.env.PROD;
-
-	if (isProd) {
-		// En prod le log part vers stdout, capture par la stack observabilite
-		// (Coolify -> Sentry si configure via DSN).
-		console.error(
-			JSON.stringify({
-				level: 'error',
-				errorId,
-				source: 'server',
-				pathname: event.url.pathname,
-				status,
-				message,
-				error: error instanceof Error ? { name: error.name, message: error.message } : String(error)
-			})
-		);
-	} else {
-		console.error(`[server error ${errorId}]`, error);
-	}
-
-	const safeMessage = isProd
-		? 'Une erreur inattendue est survenue. Reessaie ou reviens plus tard.'
-		: (error instanceof Error ? error.message : String(error));
-
-	return {
-		message: safeMessage,
-		errorId
-	};
-};
 import { env } from '$env/dynamic/private';
 import type { UserPrivate } from '$lib/types';
 
@@ -74,7 +36,11 @@ const ENTERPRISE_PREFIXES = ['/enterprise/'];
 function matchesAny(pathname: string, prefixes: string[]): boolean {
 	return prefixes.some((prefix) => {
 		const normalised = prefix.replace(/\/$/, '');
-		return pathname === normalised || pathname.startsWith(prefix.endsWith('/') ? prefix : prefix + '/') || pathname === prefix;
+		return (
+			pathname === normalised ||
+			pathname.startsWith(prefix.endsWith('/') ? prefix : prefix + '/') ||
+			pathname === prefix
+		);
 	});
 }
 
@@ -106,17 +72,30 @@ export const handle: Handle = async ({ event, resolve }) => {
 				};
 				event.locals.user = body.data.user;
 				event.locals.hasPasskey = body.data.has_passkey ?? false;
-			} else {
+				event.locals.authProbe = 'authenticated';
+			} else if (response.status === 401) {
+				// Session invalide (cookie expire, revoked cote back). Vrai logout.
 				event.locals.user = null;
 				event.locals.hasPasskey = false;
+				event.locals.authProbe = 'unauthenticated';
+			} else {
+				// 5xx / autre : incertain. On rend user=null pour ne pas leaker
+				// une session possiblement invalide, mais le layout client ne
+				// doit PAS reset son store sur `unknown` — voir SKI-102.
+				event.locals.user = null;
+				event.locals.hasPasskey = false;
+				event.locals.authProbe = 'unknown';
 			}
 		} catch {
+			// Network error / timeout : incertain.
 			event.locals.user = null;
 			event.locals.hasPasskey = false;
+			event.locals.authProbe = 'unknown';
 		}
 	} else {
 		event.locals.user = null;
 		event.locals.hasPasskey = false;
+		event.locals.authProbe = 'unauthenticated';
 	}
 
 	const pathname = event.url.pathname;
@@ -129,7 +108,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (
 		event.locals.user &&
 		!event.locals.user.profile_completed &&
-		!ONBOARDING_ALLOWLIST.some((prefix) => pathname === prefix.replace(/\/$/, '') || pathname.startsWith(prefix))
+		!ONBOARDING_ALLOWLIST.some(
+			(prefix) => pathname === prefix.replace(/\/$/, '') || pathname.startsWith(prefix)
+		)
 	) {
 		throw redirect(303, '/onboarding/complete-profile');
 	}
@@ -174,9 +155,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 				// Preserve the setup_totp / next / any other query params so
 				// the enterprise-side redirect from a TOTP gate keeps working.
 				const suffix = pathname.slice('/settings'.length); // '' or '/security' or '/x/y'
-				const target = suffix
-					? `/enterprise/settings${suffix}`
-					: '/enterprise/settings';
+				const target = suffix ? `/enterprise/settings${suffix}` : '/enterprise/settings';
 				const query = event.url.search;
 				throw redirect(303, target + query);
 			}
@@ -193,12 +172,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 				if (!event.locals.user.email_verified) {
 					throw redirect(303, '/auth/verify-email?next=/enterprise/dashboard');
 				}
-				// The client-side layout guard also honours the login_method
-				// (webauthn / sso bypass TOTP). At the SSR layer we err on the
-				// safe side and always require totp_enabled — if the session
-				// was minted with a strong factor, the backend still 200s the
-				// downstream API calls, but sending an SSR user through the
-				// setup once cements the TOTP fallback for them.
 				// Enterprise 2FA gate: satisfied by EITHER TOTP or an enrolled
 				// passkey — either strong factor covers future logins. Only
 				// redirect to the wizard when neither is armed.
@@ -225,4 +198,47 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	return resolve(event);
+};
+
+/**
+ * Interceptor cote serveur pour toute erreur non catch au SSR.
+ * En prod on ne veut PAS exposer les messages Rust / TypeScript / stack traces
+ * qui peuvent leak la structure interne. Le vrai message est log cote serveur
+ * avec un errorId de correlation (retourne au client pour reference support).
+ */
+export const handleError: HandleServerError = ({ error, event, status, message }) => {
+	const errorId = crypto.randomUUID();
+	const isProd = import.meta.env.PROD;
+
+	if (isProd) {
+		// En prod le log part vers stdout, capture par la stack observabilite
+		// (Coolify -> Sentry si configure via DSN).
+		console.error(
+			JSON.stringify({
+				level: 'error',
+				errorId,
+				source: 'server',
+				pathname: event.url.pathname,
+				status,
+				message,
+				error:
+					error instanceof Error
+						? { name: error.name, message: error.message }
+						: String(error)
+			})
+		);
+	} else {
+		console.error(`[server error ${errorId}]`, error);
+	}
+
+	const safeMessage = isProd
+		? 'Une erreur inattendue est survenue. Reessaie ou reviens plus tard.'
+		: error instanceof Error
+			? error.message
+			: String(error);
+
+	return {
+		message: safeMessage,
+		errorId
+	};
 };

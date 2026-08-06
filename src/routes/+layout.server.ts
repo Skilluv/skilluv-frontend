@@ -3,6 +3,7 @@ import type { LayoutServerLoad } from './$types';
 export const load: LayoutServerLoad = async ({ locals }) => {
 	return {
 		user: locals.user,
-		hasPasskey: locals.hasPasskey
+		hasPasskey: locals.hasPasskey,
+		authProbe: locals.authProbe
 	};
 };
