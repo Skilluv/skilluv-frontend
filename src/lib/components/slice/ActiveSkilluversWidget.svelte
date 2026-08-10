@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { slicesApi, type ActiveSkilluver } from '$api/slices';
 	import { SkilluError } from '$api/client';
+	import { i18n } from '$lib/i18n';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 
 	interface Props {
@@ -27,7 +28,7 @@
 			count = res.data.count;
 			users = res.data.users;
 		} catch (err) {
-			error = err instanceof SkilluError ? err.message : 'Erreur';
+			error = err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastError');
 		} finally {
 			loading = false;
 		}
@@ -43,16 +44,20 @@
 </script>
 
 <div class="rounded-2xl border border-border bg-surface-elevated p-4">
-	<h3 class="text-sm font-semibold text-text-primary mb-3">Actifs cette semaine</h3>
+	<h3 class="text-sm font-semibold text-text-primary mb-3">{i18n.t('p26.slice.widgets.activeTitle')}</h3>
 	{#if loading}
 		<Skeleton class="h-10 w-full" rounded="lg" />
 	{:else if error}
 		<p class="text-xs text-text-muted">{error}</p>
 	{:else if count === 0}
-		<p class="text-xs text-text-muted">Aucun Skilluver actif recemment.</p>
+		<p class="text-xs text-text-muted">{i18n.t('p26.slice.widgets.activeEmpty')}</p>
 	{:else}
 		<p class="text-sm text-text-primary mb-3">
-			<span class="font-semibold">{count}</span> Skilluver{count > 1 ? 's' : ''} actif{count > 1 ? 's' : ''}
+			{#if count > 1}
+				{i18n.t('p26.slice.widgets.activeCountPlural', { n: count })}
+			{:else}
+				{i18n.t('p26.slice.widgets.activeCountSingular', { n: count })}
+			{/if}
 		</p>
 		<div class="flex -space-x-2">
 			{#each users.slice(0, 5) as u (u.user_id)}

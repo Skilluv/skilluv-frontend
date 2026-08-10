@@ -26,4 +26,8 @@
 		<Button variant="accent" href="/">{i18n.t('errors.backHome')}</Button>
 		<Button variant="secondary" onclick={() => window.location.reload()}>{i18n.t('errors.retryBtn')}</Button>
 	</div>
+
+	{#if $page.error?.errorId}
+		<p class="mt-8 font-mono text-xs text-text-subtle">Reference support : {$page.error.errorId}</p>
+	{/if}
 </div>

@@ -2,6 +2,7 @@
 	import { slicesApi, type DiaryEntry } from '$api/slices';
 	import { SkilluError } from '$api/client';
 	import { toast } from '$stores/toast.svelte';
+	import { i18n } from '$lib/i18n';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
@@ -33,7 +34,7 @@
 			const res = await slicesApi.diary(sliceId);
 			entries = res.data.entries;
 		} catch (err) {
-			error = err instanceof SkilluError ? err.message : 'Erreur';
+			error = err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastError');
 		} finally {
 			loading = false;
 		}
@@ -50,9 +51,9 @@
 			});
 			entries = [res.data, ...entries];
 			body = '';
-			toast.success('Entree publiee');
+			toast.success(i18n.t('p26.slice.widgets.diaryToastPublished'));
 		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : 'Publication impossible');
+			toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.slice.widgets.diaryToastError'));
 		} finally {
 			posting = false;
 		}
@@ -77,20 +78,20 @@
 </script>
 
 <section class="rounded-2xl border border-border bg-surface-elevated p-5">
-	<h2 class="text-lg font-semibold text-text-primary mb-4">Carnet de bord</h2>
+	<h2 class="text-lg font-semibold text-text-primary mb-4">{i18n.t('p26.slice.widgets.diaryTitle')}</h2>
 
 	{#if canPost}
 		<form onsubmit={submit} class="mb-6 space-y-3">
 			<textarea
 				bind:value={body}
 				rows="3"
-				placeholder="Ou en es-tu ? Blocages, decouvertes, prochaine etape..."
+				placeholder={i18n.t('p26.slice.widgets.diaryTextareaPh')}
 				class="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-primary focus:ring-1 focus:ring-primary resize-y"
 			></textarea>
 			<div class="flex items-center justify-between gap-3 flex-wrap">
 				<label class="inline-flex items-center gap-2 text-xs text-text-muted cursor-pointer">
 					<input type="checkbox" bind:checked={isPublic} class="rounded border-border" />
-					<span>Public (visible par tous)</span>
+					<span>{i18n.t('p26.slice.widgets.diaryPublicLabel')}</span>
 				</label>
 				<Button
 					type="submit"
@@ -99,7 +100,7 @@
 					disabled={!body.trim() || posting}
 					loading={posting}
 				>
-					Publier
+					{i18n.t('p26.slice.widgets.diaryPublishBtn')}
 				</Button>
 			</div>
 		</form>
@@ -113,7 +114,7 @@
 	{:else if error}
 		<p class="text-sm text-text-muted">{error}</p>
 	{:else if entries.length === 0}
-		<p class="text-sm text-text-muted">Aucune entree pour l'instant.</p>
+		<p class="text-sm text-text-muted">{i18n.t('p26.slice.widgets.diaryEmpty')}</p>
 	{:else}
 		<ul class="space-y-4">
 			{#each entries as e (e.id)}
@@ -135,9 +136,9 @@
 							<span class="text-xs text-text-muted shrink-0">{fmtDate(e.created_at)}</span>
 						</div>
 						{#if e.is_public}
-							<Badge variant="default">Public</Badge>
+							<Badge variant="default">{i18n.t('p26.slice.widgets.diaryPublicBadge')}</Badge>
 						{:else}
-							<Badge variant="warning">Prive</Badge>
+							<Badge variant="warning">{i18n.t('p26.slice.widgets.diaryPrivateBadge')}</Badge>
 						{/if}
 					</div>
 					<div class="text-sm text-text-primary whitespace-pre-wrap leading-relaxed">

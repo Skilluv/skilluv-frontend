@@ -3,6 +3,7 @@
 	import { attestationApi } from '$api/attestation';
 	import { SkilluError } from '$api/client';
 	import { toast } from '$stores/toast.svelte';
+	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import Badge from '$components/ui/Badge.svelte';
@@ -33,9 +34,9 @@
 	async function copyBadge() {
 		try {
 			await navigator.clipboard.writeText(badgeMarkdown);
-			toast.success('Snippet copie');
+			toast.success(i18n.t('p26.forMaintainers.copyToast'));
 		} catch {
-			window.prompt('Copiez ce snippet :', badgeMarkdown);
+			window.prompt(i18n.t('p26.forMaintainers.copyPrompt'), badgeMarkdown);
 		}
 	}
 
@@ -59,28 +60,28 @@
 		submitError = null;
 
 		if (!/^[a-zA-Z0-9-]+$/.test(githubLogin.trim())) {
-			submitError = 'Login GitHub invalide.';
+			submitError = i18n.t('p26.forMaintainers.errInvalidGithub');
 			return;
 		}
 		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-			submitError = 'Email invalide.';
+			submitError = i18n.t('p26.forMaintainers.errInvalidEmail');
 			return;
 		}
 		const { valid, invalid } = parseRepos(reposText);
 		if (valid.length === 0) {
-			submitError = 'Renseignez au moins un repo au format owner/name.';
+			submitError = i18n.t('p26.forMaintainers.errReposMin');
 			return;
 		}
 		if (invalid.length > 0) {
-			submitError = `Format invalide pour : ${invalid.join(', ')}`;
+			submitError = i18n.t('p26.forMaintainers.errReposFormat', { list: invalid.join(', ') });
 			return;
 		}
 		if (valid.length > 50) {
-			submitError = 'Maximum 50 repos.';
+			submitError = i18n.t('p26.forMaintainers.errReposMax');
 			return;
 		}
 		if (!optIn) {
-			submitError = 'Vous devez accepter de recevoir le digest.';
+			submitError = i18n.t('p26.forMaintainers.errOptIn');
 			return;
 		}
 
@@ -94,39 +95,24 @@
 			submitSuccess = { email: email.trim() };
 		} catch (err) {
 			submitError =
-				err instanceof SkilluError ? err.message : 'Une erreur est survenue.';
+				err instanceof SkilluError ? err.message : i18n.t('p26.forMaintainers.errGeneric');
 		} finally {
 			submitting = false;
 		}
 	}
 
-	const faqs: Array<{ q: string; a: string }> = [
-		{
-			q: 'Comment Skilluv sait sur quels repos je bosse ?',
-			a: 'Vous les listez a l’inscription. Vous pouvez modifier votre liste a tout moment.'
-		},
-		{
-			q: 'Puis-je m’abonner sans avoir de repo Skilluv-labelise ?',
-			a: 'Oui — le digest sera vide en attendant que vous ajoutiez le label skilluv-challenge sur vos issues.'
-		},
-		{
-			q: 'Comment se desabonner ?',
-			a: 'Un lien dans chaque email, ou l’URL /maintainer-digest/unsubscribe/{token} recue a l’inscription.'
-		}
-	];
+	const faqs = $derived([
+		{ q: i18n.t('p26.forMaintainers.faqQ1'), a: i18n.t('p26.forMaintainers.faqA1') },
+		{ q: i18n.t('p26.forMaintainers.faqQ2'), a: i18n.t('p26.forMaintainers.faqA2') },
+		{ q: i18n.t('p26.forMaintainers.faqQ3'), a: i18n.t('p26.forMaintainers.faqA3') }
+	]);
 </script>
 
 <svelte:head>
-	<title>Skilluv — Digest hebdo pour maintainers OSS</title>
-	<meta
-		name="description"
-		content="Recevez chaque semaine un resume des contributions Skilluv sur vos repos open-source. Zero spam, unsubscribe en un clic."
-	/>
-	<meta property="og:title" content="Skilluv — Digest hebdo pour maintainers OSS" />
-	<meta
-		property="og:description"
-		content="Un email hebdomadaire, les contributions Skilluv sur vos repos. Zero spam."
-	/>
+	<title>{i18n.t('p26.forMaintainers.seoTitle')}</title>
+	<meta name="description" content={i18n.t('p26.forMaintainers.seoDesc')} />
+	<meta property="og:title" content={i18n.t('p26.forMaintainers.seoTitle')} />
+	<meta property="og:description" content={i18n.t('p26.forMaintainers.ogDesc')} />
 	<meta property="og:type" content="website" />
 	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
@@ -135,30 +121,29 @@
 	<!-- Header -->
 	<header class="space-y-4 text-center sm:text-left">
 		<h1 class="font-heading text-3xl sm:text-5xl text-text-primary leading-tight">
-			Vos contributeurs Skilluv, resumes une fois par semaine
+			{i18n.t('p26.forMaintainers.title')}
 		</h1>
 		<p class="text-lg text-text-muted">
-			Un digest hebdo, zero spam, unsubscribe en un clic.
+			{i18n.t('p26.forMaintainers.subtitle')}
 		</p>
 	</header>
 
 	<!-- Ce que fait Skilluv -->
 	<section class="space-y-4">
-		<h2 class="font-heading text-2xl text-text-primary">Ce que fait Skilluv</h2>
+		<h2 class="font-heading text-2xl text-text-primary">{i18n.t('p26.forMaintainers.whatSkilluvTitle')}</h2>
 		<ul class="space-y-3">
 			<li class="flex gap-3">
 				<Users class="text-primary shrink-0 mt-0.5" size={20} />
 				<span class="text-text-primary">
-					Notre communaute (afro-francophone, autodidactes, reconvertis) contribue a des OSS
-					externes.
+					{i18n.t('p26.forMaintainers.whatSkilluvBullet1')}
 				</span>
 			</li>
 			<li class="flex gap-3">
 				<Check class="text-primary shrink-0 mt-0.5" size={20} />
 				<span class="text-text-primary">
-					Sur les issues que vous labellisez <code class="font-mono text-sm text-accent"
+					{i18n.t('p26.forMaintainers.whatSkilluvBullet2Prefix')} <code class="font-mono text-sm text-accent"
 						>skilluv-challenge</code
-					> (ou celles publiques comme <code class="font-mono text-sm text-accent"
+					> {i18n.t('p26.forMaintainers.whatSkilluvBullet2Suffix')} <code class="font-mono text-sm text-accent"
 						>good first issue</code
 					>).
 				</span>
@@ -166,7 +151,7 @@
 			<li class="flex gap-3">
 				<ShieldCheck class="text-primary shrink-0 mt-0.5" size={20} />
 				<span class="text-text-primary">
-					On valide leur travail avant merge — la validation Skilluv est un pre-filtre qualite.
+					{i18n.t('p26.forMaintainers.whatSkilluvBullet3')}
 				</span>
 			</li>
 		</ul>
@@ -174,25 +159,24 @@
 
 	<!-- Ce que vous recevez -->
 	<section class="space-y-4">
-		<h2 class="font-heading text-2xl text-text-primary">Ce que vous recevez</h2>
+		<h2 class="font-heading text-2xl text-text-primary">{i18n.t('p26.forMaintainers.whatReceiveTitle')}</h2>
 		<ul class="space-y-3">
 			<li class="flex gap-3">
 				<Mail class="text-accent shrink-0 mt-0.5" size={20} />
 				<span class="text-text-primary">
-					Digest hebdomadaire des PRs Skilluv sur vos repos (nb claims, PRs submit, PRs
-					validated).
+					{i18n.t('p26.forMaintainers.whatReceiveBullet1')}
 				</span>
 			</li>
 			<li class="flex gap-3">
 				<Check class="text-accent shrink-0 mt-0.5" size={20} />
 				<span class="text-text-primary">
-					Zero spam : un email/semaine, avec unsubscribe en 1 clic.
+					{i18n.t('p26.forMaintainers.whatReceiveBullet2')}
 				</span>
 			</li>
 			<li class="flex gap-3">
 				<ShieldCheck class="text-accent shrink-0 mt-0.5" size={20} />
 				<span class="text-text-primary">
-					Confidentialite : votre email n’est jamais partage.
+					{i18n.t('p26.forMaintainers.whatReceiveBullet3')}
 				</span>
 			</li>
 		</ul>
@@ -201,16 +185,15 @@
 	<!-- Badge -->
 	<section class="space-y-4">
 		<div class="flex flex-wrap items-center gap-3">
-			<h2 class="font-heading text-2xl text-text-primary">Notre badge Skilluv</h2>
-			<Badge variant="accent">nouveau</Badge>
+			<h2 class="font-heading text-2xl text-text-primary">{i18n.t('p26.forMaintainers.badgeTitle')}</h2>
+			<Badge variant="accent">{i18n.t('p26.forMaintainers.badgeNew')}</Badge>
 		</div>
 		<p class="text-text-muted">
-			Ajoutez ce badge a votre README pour signaler que votre projet accueille les contributions
-			Skilluv.
+			{i18n.t('p26.forMaintainers.badgeDesc')}
 		</p>
 		<div class="rounded-2xl bg-surface-elevated p-6 space-y-4">
 			<div class="flex justify-center">
-				<img src={badgeUrl} alt="Badge Skilluv validated" class="h-8" />
+				<img src={badgeUrl} alt={i18n.t('p26.forMaintainers.badgeAlt')} class="h-8" />
 			</div>
 			<div class="relative">
 				<pre
@@ -221,10 +204,10 @@
 					type="button"
 					onclick={copyBadge}
 					class="absolute top-2 right-2 inline-flex items-center gap-1.5 rounded-lg bg-primary text-primary-fg px-3 py-1.5 text-xs font-semibold hover:bg-primary-hover"
-					aria-label="Copier le snippet"
+					aria-label={i18n.t('p26.forMaintainers.copyAria')}
 				>
 					<Copy size={14} />
-					Copier
+					{i18n.t('p26.forMaintainers.copyBtn')}
 				</button>
 			</div>
 		</div>
@@ -232,7 +215,7 @@
 
 	<!-- FAQ -->
 	<section class="space-y-4">
-		<h2 class="font-heading text-2xl text-text-primary">FAQ</h2>
+		<h2 class="font-heading text-2xl text-text-primary">{i18n.t('p26.forMaintainers.faqTitle')}</h2>
 		<div class="space-y-2">
 			{#each faqs as faq, i}
 				<div class="rounded-xl border border-border bg-surface-elevated">
@@ -255,7 +238,7 @@
 
 	<!-- Form subscribe -->
 	<section class="space-y-4">
-		<h2 class="font-heading text-2xl text-text-primary">S’abonner</h2>
+		<h2 class="font-heading text-2xl text-text-primary">{i18n.t('p26.forMaintainers.formTitle')}</h2>
 		{#if submitSuccess}
 			<div
 				class="rounded-2xl border border-success/30 bg-success/10 p-6 space-y-3"
@@ -263,11 +246,10 @@
 			>
 				<div class="flex items-center gap-2 text-success font-semibold">
 					<Check size={20} />
-					Confirmation demandee
+					{i18n.t('p26.forMaintainers.successTitle')}
 				</div>
 				<p class="text-text-primary">
-					Email de confirmation envoye a <span class="font-mono">{submitSuccess.email}</span>.
-					Cliquez sur le lien dans l’email pour activer votre abonnement.
+					{i18n.t('p26.forMaintainers.successMessage', { email: submitSuccess.email })}
 				</p>
 			</div>
 		{:else}
@@ -277,25 +259,25 @@
 				novalidate
 			>
 				<Input
-					label="Login GitHub"
+					label={i18n.t('p26.forMaintainers.githubLabel')}
 					bind:value={githubLogin}
 					required
 					autocomplete="username"
-					placeholder="ex. torvalds"
+					placeholder={i18n.t('p26.forMaintainers.githubPh')}
 				/>
 				<Input
-					label="Email"
+					label={i18n.t('p26.forMaintainers.emailLabel')}
 					type="email"
 					bind:value={email}
 					required
 					autocomplete="email"
-					placeholder="you@example.com"
+					placeholder={i18n.t('p26.forMaintainers.emailPh')}
 				/>
 				<Input
-					label="Repos"
-					hint="Format : owner/name — separer par virgules (max 50)"
+					label={i18n.t('p26.forMaintainers.reposLabel')}
+					hint={i18n.t('p26.forMaintainers.reposHint')}
 					bind:value={reposText}
-					placeholder="skilluv/skilluv-backend, skilluv/skilluv-frontend"
+					placeholder={i18n.t('p26.forMaintainers.reposPh')}
 					required
 				/>
 				<label class="flex items-start gap-2 text-sm text-text-primary">
@@ -304,13 +286,13 @@
 						bind:checked={optIn}
 						class="mt-0.5 h-4 w-4 rounded border-border accent-primary"
 					/>
-					<span>J’accepte de recevoir le digest hebdomadaire.</span>
+					<span>{i18n.t('p26.forMaintainers.optInLabel')}</span>
 				</label>
 				{#if submitError}
 					<p class="text-sm text-error" role="alert">{submitError}</p>
 				{/if}
 				<Button variant="primary" type="submit" loading={submitting}>
-					Recevoir le digest hebdomadaire
+					{i18n.t('p26.forMaintainers.submitBtn')}
 				</Button>
 			</form>
 		{/if}

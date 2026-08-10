@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import { maintainerDigestApi } from '$api/maintainerDigest';
 	import { SkilluError } from '$api/client';
+	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import { CheckCircle2, XCircle, Loader2 } from '@lucide/svelte';
 
@@ -19,19 +20,19 @@
 			if (res.data.unsubscribed) {
 				state = { status: 'success', email: res.data.email };
 			} else {
-				state = { status: 'error', message: 'Desabonnement echoue.' };
+				state = { status: 'error', message: i18n.t('p26.maintainerDigest.unsubFailed') };
 			}
 		} catch (err) {
 			state = {
 				status: 'error',
-				message: err instanceof SkilluError ? err.message : 'Ce lien est invalide.'
+				message: err instanceof SkilluError ? err.message : i18n.t('p26.maintainerDigest.unsubInvalidFallback')
 			};
 		}
 	});
 </script>
 
 <svelte:head>
-	<title>Desabonnement — Skilluv</title>
+	<title>{i18n.t('p26.maintainerDigest.unsubSeoTitle')}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
@@ -39,23 +40,23 @@
 	<div class="rounded-2xl bg-surface-elevated p-8 text-center space-y-4">
 		{#if state.status === 'loading'}
 			<Loader2 class="mx-auto animate-spin text-primary" size={40} />
-			<p class="text-text-muted">Desabonnement en cours...</p>
+			<p class="text-text-muted">{i18n.t('p26.maintainerDigest.unsubLoading')}</p>
 		{:else if state.status === 'success'}
 			<CheckCircle2 class="mx-auto text-success" size={48} />
 			<h1 class="font-heading text-2xl text-text-primary">
-				Desabonne. Nous ne vous enverrons plus de digest.
+				{i18n.t('p26.maintainerDigest.unsubSuccessTitle')}
 			</h1>
 			<p class="text-text-muted">
-				Vous ne recevrez plus d’emails du digest hebdomadaire ({state.email}).
+				{i18n.t('p26.maintainerDigest.unsubSuccessBody', { email: state.email })}
 			</p>
-			<Button variant="primary" href="/">Retour a l’accueil</Button>
+			<Button variant="primary" href="/">{i18n.t('p26.maintainerDigest.unsubBackHome')}</Button>
 		{:else}
 			<XCircle class="mx-auto text-error" size={48} />
 			<h1 class="font-heading text-2xl text-text-primary">
-				Ce lien est invalide.
+				{i18n.t('p26.maintainerDigest.unsubInvalidTitle')}
 			</h1>
 			<p class="text-text-muted">{state.message}</p>
-			<Button variant="primary" href="/">Retour a l’accueil</Button>
+			<Button variant="primary" href="/">{i18n.t('p26.maintainerDigest.unsubBackHome')}</Button>
 		{/if}
 	</div>
 </div>

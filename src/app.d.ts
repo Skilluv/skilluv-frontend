@@ -2,6 +2,11 @@ import type { UserPrivate } from '$lib/types';
 
 declare global {
 	namespace App {
+		interface Error {
+			message: string;
+			/** UUID de correlation, permet au support de retrouver le log exact. */
+			errorId?: string;
+		}
 		interface Locals {
 			user: UserPrivate | null;
 			/** True when the user has at least one WebAuthn credential enrolled.

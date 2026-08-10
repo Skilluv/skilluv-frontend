@@ -6,6 +6,7 @@
 	// des repos qu'il maintient.
 	import { attestationApi } from '$api/attestation';
 	import { toast } from '$stores/toast.svelte';
+	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import { Copy } from '@lucide/svelte';
 
@@ -67,35 +68,35 @@
 
 	async function handleCopy(text: string) {
 		const ok = await copyToClipboard(text);
-		if (ok) toast.success('Copie');
-		else toast.error('Impossible de copier');
+		if (ok) toast.success(i18n.t('p26.badges.copyToastSuccess'));
+		else toast.error(i18n.t('p26.badges.copyToastError'));
 	}
 </script>
 
 <section
 	class="rounded-xl border border-border bg-surface-elevated overflow-hidden"
 	data-testid="profile-badges-section"
-	aria-label="Badges Skilluv"
+	aria-label={i18n.t('p26.badges.ariaLabel')}
 >
 	<div class="px-5 py-3 border-b border-border">
-		<span class="text-xs font-bold uppercase tracking-wider text-text-muted">Badges Skilluv</span>
+		<span class="text-xs font-bold uppercase tracking-wider text-text-muted">{i18n.t('p26.badges.sectionLabel')}</span>
 	</div>
 
 	<div class="p-5 space-y-6">
 		<!-- Section 1 : badge personnel -->
 		<div>
-			<h2 class="font-heading text-lg font-semibold mb-1">Badge Skilluv</h2>
+			<h2 class="font-heading text-lg font-semibold mb-1">{i18n.t('p26.badges.personalTitle')}</h2>
 			<p class="text-xs text-text-muted mb-4">
-				Colle ce badge dans ton profil GitHub, ton CV ou LinkedIn pour montrer ta communaute Skilluv.
+				{i18n.t('p26.badges.personalDesc')}
 			</p>
 
 			<div class="mb-4 flex items-center justify-center rounded-lg border border-border bg-surface-overlay p-4">
 				{#if badgeUserFailed}
-					<span class="text-xs text-text-muted">Badge pas encore genere</span>
+					<span class="text-xs text-text-muted">{i18n.t('p26.badges.notGenerated')}</span>
 				{:else}
 					<img
 						src={badgeUserSrc}
-						alt="Skilluv badge {username}"
+						alt={i18n.t('p26.badges.personalAlt', { username })}
 						class="h-8"
 						onerror={() => (badgeUserFailed = true)}
 					/>
@@ -105,10 +106,10 @@
 			<!-- Markdown snippet -->
 			<div class="mb-3">
 				<div class="flex items-center justify-between mb-1">
-					<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">Markdown</span>
+					<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">{i18n.t('p26.badges.markdownLabel')}</span>
 					<Button variant="ghost" size="sm" onclick={() => handleCopy(userMarkdown)}>
 						<Copy size={12} strokeWidth={2} />
-						Copier
+						{i18n.t('p26.badges.copyBtn')}
 					</Button>
 				</div>
 				<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs"><code>{userMarkdown}</code></pre>
@@ -117,10 +118,10 @@
 			<!-- HTML snippet -->
 			<div>
 				<div class="flex items-center justify-between mb-1">
-					<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">HTML</span>
+					<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">{i18n.t('p26.badges.htmlLabel')}</span>
 					<Button variant="ghost" size="sm" onclick={() => handleCopy(userHtml)}>
 						<Copy size={12} strokeWidth={2} />
-						Copier
+						{i18n.t('p26.badges.copyBtn')}
 					</Button>
 				</div>
 				<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs"><code>{userHtml}</code></pre>
@@ -130,9 +131,9 @@
 		<!-- Section 2 : badges des repos maintenus (owner uniquement) -->
 		{#if isOwner && ownedProjects && ownedProjects.length > 0}
 			<div class="pt-6 border-t border-border">
-				<h2 class="font-heading text-lg font-semibold mb-1">Badges Skilluv pour tes repos</h2>
+				<h2 class="font-heading text-lg font-semibold mb-1">{i18n.t('p26.badges.reposTitle')}</h2>
 				<p class="text-xs text-text-muted mb-4">
-					Ajoute ces badges au README de tes repos pour montrer la communaute Skilluv active.
+					{i18n.t('p26.badges.reposDesc')}
 				</p>
 
 				<div class="space-y-6">
@@ -150,17 +151,17 @@
 							<div class="mb-3 flex items-center justify-center rounded-lg border border-border bg-surface-overlay p-4">
 								<img
 									src={attestationApi.badgeRepoUrl(project.github_repo_owner, project.github_repo_name)}
-									alt="Skilluv badge {project.github_repo_owner}/{project.github_repo_name}"
+									alt={i18n.t('p26.badges.repoBadgeAlt', { repo: `${project.github_repo_owner}/${project.github_repo_name}` })}
 									class="h-8"
 								/>
 							</div>
 
 							<div class="mb-3">
 								<div class="flex items-center justify-between mb-1">
-									<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">Markdown</span>
+									<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">{i18n.t('p26.badges.markdownLabel')}</span>
 									<Button variant="ghost" size="sm" onclick={() => handleCopy(md)}>
 										<Copy size={12} strokeWidth={2} />
-										Copier
+										{i18n.t('p26.badges.copyBtn')}
 									</Button>
 								</div>
 								<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs"><code>{md}</code></pre>
@@ -168,10 +169,10 @@
 
 							<div>
 								<div class="flex items-center justify-between mb-1">
-									<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">HTML</span>
+									<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">{i18n.t('p26.badges.htmlLabel')}</span>
 									<Button variant="ghost" size="sm" onclick={() => handleCopy(html)}>
 										<Copy size={12} strokeWidth={2} />
-										Copier
+										{i18n.t('p26.badges.copyBtn')}
 									</Button>
 								</div>
 								<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs"><code>{html}</code></pre>

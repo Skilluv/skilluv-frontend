@@ -10,6 +10,7 @@
 	import { SkilluError } from '$api/client';
 	import { auth } from '$stores/auth.svelte';
 	import { toast } from '$stores/toast.svelte';
+	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
@@ -38,12 +39,14 @@
 		withdrawn: 'default'
 	};
 
-	const STATUS_LABEL: Record<ValidatorApplicationStatus, string> = {
-		pending: 'En attente',
-		accepted: 'Acceptee',
-		rejected: 'Refusee',
-		withdrawn: 'Retiree'
-	};
+	function statusLabel(s: ValidatorApplicationStatus): string {
+		switch (s) {
+			case 'pending': return i18n.t('p26.validatorApplication.statusPending');
+			case 'accepted': return i18n.t('p26.validatorApplication.statusAccepted');
+			case 'rejected': return i18n.t('p26.validatorApplication.statusRejected');
+			case 'withdrawn': return i18n.t('p26.validatorApplication.statusWithdrawn');
+		}
+	}
 
 	const DOMAIN_BADGE: Record<string, 'code' | 'design' | 'game' | 'security' | 'default'> = {
 		code: 'code',
@@ -79,7 +82,7 @@
 		} catch (err) {
 			view = {
 				status: 'error',
-				message: err instanceof SkilluError ? err.message : 'Impossible de charger.'
+				message: err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.listLoadError')
 			};
 		}
 	}
@@ -96,10 +99,10 @@
 		actingId = app.id;
 		try {
 			await validatorApplicationsApi.withdraw(app.id);
-			toast.success('Candidature retiree.');
+			toast.success(i18n.t('p26.validatorApplication.toastWithdrawn'));
 			await load();
 		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : 'Erreur.');
+			toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastError'));
 		} finally {
 			actingId = null;
 		}
@@ -109,10 +112,10 @@
 		actingId = app.id;
 		try {
 			await validatorApplicationsApi.accept(app.id);
-			toast.success('Invitation acceptee.');
+			toast.success(i18n.t('p26.validatorApplication.toastAccepted'));
 			await load();
 		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : 'Erreur.');
+			toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastError'));
 		} finally {
 			actingId = null;
 		}
@@ -120,7 +123,7 @@
 </script>
 
 <svelte:head>
-	<title>Mes candidatures validateur — Skilluv</title>
+	<title>{i18n.t('p26.validatorApplication.listSeoTitle')}</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-8">
@@ -129,10 +132,10 @@
 			class="font-heading text-3xl font-bold"
 			style:font-family="'Fraunces Variable', Georgia, serif"
 		>
-			Mes candidatures validateur
+			{i18n.t('p26.validatorApplication.listTitle')}
 		</h1>
 		<Button variant="primary" size="sm" href="/settings/validator-application/new">
-			Nouvelle candidature
+			{i18n.t('p26.validatorApplication.listNewBtn')}
 		</Button>
 	</header>
 
@@ -140,11 +143,11 @@
 		<div class="mb-6">
 			<SegmentedControl
 				items={[
-					{ value: 'all', label: 'Toutes' },
-					{ value: 'pending', label: 'En attente' },
-					{ value: 'accepted', label: 'Acceptees' },
-					{ value: 'rejected', label: 'Refusees' },
-					{ value: 'withdrawn', label: 'Retirees' }
+					{ value: 'all', label: i18n.t('p26.validatorApplication.listFilterAll') },
+					{ value: 'pending', label: i18n.t('p26.validatorApplication.listFilterPending') },
+					{ value: 'accepted', label: i18n.t('p26.validatorApplication.listFilterAccepted') },
+					{ value: 'rejected', label: i18n.t('p26.validatorApplication.listFilterRejected') },
+					{ value: 'withdrawn', label: i18n.t('p26.validatorApplication.listFilterWithdrawn') }
 				]}
 				bind:value={filter}
 				size="sm"
@@ -162,21 +165,21 @@
 		<div class="rounded-2xl border border-error/30 bg-error/5 p-6 text-sm text-error">
 			{view.message}
 			<div class="mt-3">
-				<Button variant="secondary" size="sm" onclick={load}>Reessayer</Button>
+				<Button variant="secondary" size="sm" onclick={load}>{i18n.t('p26.validation.retryBtn')}</Button>
 			</div>
 		</div>
 	{:else if view.apps.length === 0}
 		<EmptyState
 			variant="scroll"
-			title="Aucune candidature pour l'instant"
-			body="Candidate sur un domaine ou tu maitrises pour rejoindre l'equipe de validateurs."
+			title={i18n.t('p26.validatorApplication.listEmptyTitle')}
+			body={i18n.t('p26.validatorApplication.listEmptyBody')}
 		>
 			{#snippet action()}
-				<Button variant="primary" href="/settings/validator-application/new">Candidater</Button>
+				<Button variant="primary" href="/settings/validator-application/new">{i18n.t('p26.validatorApplication.listApplyCta')}</Button>
 			{/snippet}
 		</EmptyState>
 	{:else if visibleApps.length === 0}
-		<EmptyState variant="search" title="Aucune candidature dans ce filtre." />
+		<EmptyState variant="search" title={i18n.t('p26.validatorApplication.listEmptyFilterTitle')} />
 	{:else}
 		<div class="flex flex-col gap-4">
 			{#each visibleApps as app (app.id)}
@@ -184,9 +187,9 @@
 					<div class="flex flex-wrap items-center gap-2">
 						<Badge variant={domainVariant(app.domain)}>{app.domain}</Badge>
 						<Badge variant={app.origin === 'admin_invite' ? 'accent' : 'default'}>
-							{app.origin === 'admin_invite' ? 'Invitation admin' : 'Candidature'}
+							{app.origin === 'admin_invite' ? i18n.t('p26.validatorApplication.originAdminInvite') : i18n.t('p26.validatorApplication.originApplication')}
 						</Badge>
-						<Badge variant={STATUS_BADGE[app.status]}>{STATUS_LABEL[app.status]}</Badge>
+						<Badge variant={STATUS_BADGE[app.status]}>{statusLabel(app.status)}</Badge>
 					</div>
 
 					{#if app.motivation}
@@ -195,15 +198,15 @@
 
 					{#if app.admin_notes}
 						<div class="rounded-lg bg-primary/10 p-3 text-sm">
-							<p class="mb-1 text-xs font-semibold text-primary">Note admin</p>
+							<p class="mb-1 text-xs font-semibold text-primary">{i18n.t('p26.validatorApplication.adminNote')}</p>
 							<p>{app.admin_notes}</p>
 						</div>
 					{/if}
 
 					<div class="text-xs text-text-muted">
-						Cree le {formatDate(app.created_at)}
+						{i18n.t('p26.validatorApplication.createdOn', { date: formatDate(app.created_at) })}
 						{#if app.updated_at && app.updated_at !== app.created_at}
-							— maj {formatDate(app.updated_at)}
+							— {i18n.t('p26.validatorApplication.updatedOn', { date: formatDate(app.updated_at) })}
 						{/if}
 					</div>
 
@@ -216,14 +219,14 @@
 									loading={actingId === app.id}
 									onclick={() => accept(app)}
 								>
-									Accepter l'invitation
+									{i18n.t('p26.validatorApplication.acceptInvitationBtn')}
 								</Button>
 								<Button
 									variant="secondary"
 									size="sm"
 									href={`/settings/validator-invitations/${app.id}`}
 								>
-									Voir le detail
+									{i18n.t('p26.validatorApplication.viewDetailBtn')}
 								</Button>
 							{/if}
 							<Button
@@ -232,7 +235,7 @@
 								loading={actingId === app.id}
 								onclick={() => withdraw(app)}
 							>
-								Retirer
+								{i18n.t('p26.validatorApplication.withdrawBtn')}
 							</Button>
 						</div>
 					{/if}

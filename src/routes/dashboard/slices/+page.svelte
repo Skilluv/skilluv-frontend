@@ -3,6 +3,7 @@
 	import { slicesApi, type Slice, type SliceStatus } from '$api/slices';
 	import { SkilluError } from '$api/client';
 	import { toast } from '$stores/toast.svelte';
+	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
@@ -21,18 +22,9 @@
 
 	let { data }: Props = $props();
 
-	const STATUS_LABEL: Record<SliceStatus, string> = {
-		open: 'Ouvert',
-		claimed: 'Reserve',
-		in_progress: 'En cours',
-		submitted: 'PR soumise',
-		ci_green: 'CI verte',
-		pending_validation: 'En validation',
-		validated: 'Validee',
-		merged: 'Merge upstream',
-		closed: 'Ferme',
-		expired: 'Expire'
-	};
+	function statusLabel(s: SliceStatus): string {
+		return i18n.t(`p26.slice.status.${s}`);
+	}
 
 	const STATUS_VARIANT: Record<SliceStatus, 'default' | 'primary' | 'accent' | 'success' | 'warning' | 'error'> = {
 		open: 'primary',
@@ -79,13 +71,13 @@
 		claimingId = s.id;
 		try {
 			await slicesApi.claim(s.id);
-			toast.success('Challenge reserve');
+			toast.success(i18n.t('p26.dashboardSlices.toastReserved'));
 			await goto(`/slices/${s.id}`);
 		} catch (err) {
 			if (err instanceof SkilluError && err.status === 403) {
-				toast.warning('Ton rank ou orientation ne correspond pas encore.');
+				toast.warning(i18n.t('p26.dashboardSlices.toastGateBlocked'));
 			} else {
-				toast.error(err instanceof SkilluError ? err.message : 'Reservation impossible');
+				toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.dashboardSlices.toastReserveError'));
 			}
 		} finally {
 			claimingId = null;
@@ -95,19 +87,19 @@
 	function daysLeft(iso: string | null): string | null {
 		if (!iso) return null;
 		const diff = new Date(iso).getTime() - Date.now();
-		if (diff <= 0) return 'Expire';
-		return `Reste ${Math.ceil(diff / 86400000)}j`;
+		if (diff <= 0) return i18n.t('p26.slice.expired');
+		return i18n.t('p26.slice.daysLeft', { n: Math.ceil(diff / 86400000) });
 	}
 
-	const tabs = [
-		{ value: 'active' as const, label: 'Actifs' },
-		{ value: 'done' as const, label: 'Completes' },
-		{ value: 'archived' as const, label: 'Archives' }
-	];
+	const tabs = $derived([
+		{ value: 'active' as const, label: i18n.t('p26.dashboardSlices.tabActive') },
+		{ value: 'done' as const, label: i18n.t('p26.dashboardSlices.tabDone') },
+		{ value: 'archived' as const, label: i18n.t('p26.dashboardSlices.tabArchived') }
+	]);
 </script>
 
 <svelte:head>
-	<title>Mes challenges — Skilluv</title>
+	<title>{i18n.t('p26.dashboardSlices.seoTitle')}</title>
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-8">
@@ -116,10 +108,10 @@
 		<div class="mb-6 flex flex-wrap items-end justify-between gap-4">
 			<div>
 				<h1 class="font-heading text-3xl sm:text-4xl font-bold text-text-primary tracking-tight">
-					Mes challenges
+					{i18n.t('p26.dashboardSlices.title')}
 				</h1>
 				<p class="mt-2 text-sm text-text-muted">
-					Tes contributions en cours, terminees ou archivees.
+					{i18n.t('p26.dashboardSlices.subtitle')}
 				</p>
 			</div>
 			<SegmentedControl items={tabs} bind:value={tab} />
@@ -133,25 +125,25 @@
 			{#if tab === 'active'}
 				<EmptyState
 					variant="scroll"
-					title="Aucun challenge en cours"
-					body="Decouvre les challenges recommandes pour toi ci-dessous."
+					title={i18n.t('p26.dashboardSlices.emptyActiveTitle')}
+					body={i18n.t('p26.dashboardSlices.emptyActiveBody')}
 				>
 					{#snippet action()}
-						<Button variant="accent" onclick={scrollToReco}>Voir les recommandations</Button>
+						<Button variant="accent" onclick={scrollToReco}>{i18n.t('p26.dashboardSlices.emptyActiveCta')}</Button>
 					{/snippet}
 				</EmptyState>
 			{:else if tab === 'done'}
-				<EmptyState variant="seal-intact" title="Aucune contribution validee pour le moment" />
+				<EmptyState variant="seal-intact" title={i18n.t('p26.dashboardSlices.emptyDoneTitle')} />
 			{:else}
-				<EmptyState variant="bookmark" title="Rien ici" />
+				<EmptyState variant="bookmark" title={i18n.t('p26.dashboardSlices.emptyArchivedTitle')} />
 			{/if}
 		{:else}
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				{#each pageItems as s (s.id)}
 					<article class="rounded-2xl border border-border bg-surface-elevated p-5 flex flex-col gap-3 hover:border-accent/40 transition-colors">
 						<div class="flex flex-wrap items-center gap-2">
-							<Badge variant={STATUS_VARIANT[s.status]}>{STATUS_LABEL[s.status]}</Badge>
-							<Badge variant="default">difficulte {s.difficulty}/5</Badge>
+							<Badge variant={STATUS_VARIANT[s.status]}>{statusLabel(s.status)}</Badge>
+							<Badge variant="default">{i18n.t('p26.dashboardSlices.difficultyBadge', { n: s.difficulty })}</Badge>
 							{#if s.claim_expires_at && (s.status === 'claimed' || s.status === 'in_progress')}
 								{@const dl = daysLeft(s.claim_expires_at)}
 								{#if dl}<Badge variant="warning">{dl}</Badge>{/if}
@@ -162,7 +154,7 @@
 						</h3>
 						<p class="text-sm text-text-muted line-clamp-2 flex-1">{s.description}</p>
 						<div class="pt-2">
-							<Button variant="ghost" size="sm" href={`/slices/${s.id}`}>Voir</Button>
+							<Button variant="ghost" size="sm" href={`/slices/${s.id}`}>{i18n.t('p26.dashboardSlices.viewBtn')}</Button>
 						</div>
 					</article>
 				{/each}
@@ -176,17 +168,16 @@
 	<section bind:this={recoRef}>
 		<div class="mb-6">
 			<h2 class="font-heading text-2xl sm:text-3xl font-bold text-text-primary tracking-tight">
-				Recommandes pour toi
+				{i18n.t('p26.dashboardSlices.recoTitle')}
 			</h2>
 			{#if data.recoMeta}
 				<p class="mt-2 text-sm text-text-muted">
-					Base sur ton rank
+					{i18n.t('p26.dashboardSlices.recoBasedOnRank')}
 					{#if data.recoMeta.user_rank_ord != null}
 						(<span class="font-mono">{data.recoMeta.user_rank_ord}</span>)
 					{/if}
 					{#if data.recoMeta.median_difficulty != null}
-						et tes derniers challenges (difficulty mediane :
-						<span class="font-mono">{data.recoMeta.median_difficulty}/5</span>)
+						{i18n.t('p26.dashboardSlices.recoMedian', { n: data.recoMeta.median_difficulty })}
 					{/if}
 				</p>
 			{/if}
@@ -199,17 +190,17 @@
 		{:else if data.reco.length === 0}
 			<EmptyState
 				variant="search"
-				title="Aucune recommandation pour l'instant"
-				body="Ton rank et tes orientations determinent les slices proposees."
+				title={i18n.t('p26.dashboardSlices.recoEmptyTitle')}
+				body={i18n.t('p26.dashboardSlices.recoEmptyBody')}
 			/>
 		{:else}
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				{#each data.reco as s (s.id)}
 					<article class="rounded-2xl border border-border bg-surface-elevated p-5 flex flex-col gap-3 hover:border-accent/40 transition-colors">
 						<div class="flex flex-wrap items-center gap-2">
-							<Badge variant={STATUS_VARIANT[s.status]}>{STATUS_LABEL[s.status]}</Badge>
-							<Badge variant="default">difficulte {s.difficulty}/5</Badge>
-							{#if s.min_rank}<Badge variant="default">rank {s.min_rank}</Badge>{/if}
+							<Badge variant={STATUS_VARIANT[s.status]}>{statusLabel(s.status)}</Badge>
+							<Badge variant="default">{i18n.t('p26.dashboardSlices.difficultyBadge', { n: s.difficulty })}</Badge>
+							{#if s.min_rank}<Badge variant="default">{i18n.t('p26.dashboardSlices.rankBadge', { rank: s.min_rank })}</Badge>{/if}
 						</div>
 						<h3 class="font-heading text-lg font-semibold text-text-primary line-clamp-2">
 							{s.title}
@@ -223,9 +214,9 @@
 								disabled={claimingId !== null}
 								onclick={() => quickClaim(s)}
 							>
-								Claim
+								{i18n.t('p26.dashboardSlices.claimBtn')}
 							</Button>
-							<Button variant="ghost" size="sm" href={`/slices/${s.id}`}>Detail</Button>
+							<Button variant="ghost" size="sm" href={`/slices/${s.id}`}>{i18n.t('p26.dashboardSlices.detailBtn')}</Button>
 						</div>
 					</article>
 				{/each}

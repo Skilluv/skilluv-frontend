@@ -10,6 +10,7 @@
 	import { SkilluError } from '$api/client';
 	import { auth } from '$stores/auth.svelte';
 	import { toast } from '$stores/toast.svelte';
+	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
@@ -64,7 +65,7 @@
 		} catch (err) {
 			view = {
 				status: 'error',
-				message: err instanceof SkilluError ? err.message : 'Impossible de charger la review.'
+				message: err instanceof SkilluError ? err.message : i18n.t('p26.validation.reviewLoadError')
 			};
 		}
 	}
@@ -83,9 +84,9 @@
 			approveResult = res.data;
 		} catch (err) {
 			if (err instanceof SkilluError && err.status === 400) {
-				submitError = 'Impossible : tu es le claimer de cette PR.';
+				submitError = i18n.t('p26.validation.errClaimerSelf');
 			} else {
-				submitError = err instanceof SkilluError ? err.message : 'Erreur lors de l approbation.';
+				submitError = err instanceof SkilluError ? err.message : i18n.t('p26.validation.errApprove');
 			}
 		} finally {
 			approving = false;
@@ -98,13 +99,13 @@
 		rejecting = true;
 		try {
 			await validationApi.reject(view.item.slice.id, { reason: feedback });
-			toast.success('PR rejetee.');
+			toast.success(i18n.t('p26.validation.toastRejected'));
 			await goto('/validations/queue');
 		} catch (err) {
 			if (err instanceof SkilluError && err.status === 400) {
-				submitError = 'Impossible : tu es le claimer de cette PR.';
+				submitError = i18n.t('p26.validation.errClaimerSelf');
 			} else {
-				submitError = err instanceof SkilluError ? err.message : 'Erreur lors du rejet.';
+				submitError = err instanceof SkilluError ? err.message : i18n.t('p26.validation.errReject');
 			}
 		} finally {
 			rejecting = false;
@@ -113,7 +114,7 @@
 </script>
 
 <svelte:head>
-	<title>Reviewer une PR — Skilluv</title>
+	<title>{i18n.t('p26.validation.reviewSeoTitle')}</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-8">
@@ -123,7 +124,7 @@
 			class="inline-flex items-center gap-1 text-sm text-text-muted hover:text-text-primary"
 		>
 			<ArrowLeft size={14} strokeWidth={2} />
-			Retour a la queue
+			{i18n.t('p26.validation.backToQueue')}
 		</a>
 	</div>
 
@@ -134,16 +135,16 @@
 		<Skeleton class="h-40 w-full rounded-2xl" />
 	{:else if view.status === 'not-found'}
 		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
-			<h1 class="mb-2 text-lg font-semibold">Introuvable</h1>
+			<h1 class="mb-2 text-lg font-semibold">{i18n.t('p26.validation.notFoundTitle')}</h1>
 			<p class="text-sm text-text-muted">
-				Ce challenge n'existe pas dans ta file de validation. Il a peut-etre deja ete traite.
+				{i18n.t('p26.validation.notFoundBody')}
 			</p>
 		</div>
 	{:else if view.status === 'error'}
 		<div class="rounded-2xl border border-error/30 bg-error/5 p-6 text-sm text-error">
 			{view.message}
 			<div class="mt-3">
-				<Button variant="secondary" size="sm" onclick={load}>Reessayer</Button>
+				<Button variant="secondary" size="sm" onclick={load}>{i18n.t('p26.validation.retryBtn')}</Button>
 			</div>
 		</div>
 	{:else}
@@ -159,19 +160,19 @@
 			</h1>
 			<div class="flex flex-wrap gap-2">
 				<Badge variant={domainVariant(domain)}>{domain}</Badge>
-				<Badge variant="accent">difficulte {item.slice.difficulty}</Badge>
-				<Badge variant="success">status {item.slice.status}</Badge>
+				<Badge variant="accent">{i18n.t('p26.validation.difficultyBadge', { n: item.slice.difficulty })}</Badge>
+				<Badge variant="success">{i18n.t('p26.validation.statusBadge', { status: item.slice.status })}</Badge>
 			</div>
 		</header>
 
 		{#if approveResult}
 			<div class="mb-6 rounded-2xl border border-success/30 bg-success/10 p-6">
-				<h2 class="mb-2 text-lg font-semibold text-success">Validation approuvee</h2>
+				<h2 class="mb-2 text-lg font-semibold text-success">{i18n.t('p26.validation.approvedTitle')}</h2>
 				<p class="mb-4 text-sm text-text-muted">
-					{approveResult.fragments_credited} fragments credites. L'attestation est publique.
+					{i18n.t('p26.validation.approvedFragments', { n: approveResult.fragments_credited })}
 				</p>
 				<p class="mb-4 break-all font-mono text-xs text-text-muted">
-					Attestation ID : {approveResult.attestation_hash}
+					{i18n.t('p26.validation.attestationIdLabel', { hash: approveResult.attestation_hash })}
 				</p>
 				<div class="flex flex-wrap gap-2">
 					<Button
@@ -182,10 +183,10 @@
 						rel="noopener"
 					>
 						<Download size={14} strokeWidth={2} />
-						Telecharger le PDF
+						{i18n.t('p26.validation.downloadPdf')}
 					</Button>
 					<Button variant="secondary" size="sm" href="/validations/queue">
-						Retour a la queue
+						{i18n.t('p26.validation.backToQueue')}
 					</Button>
 				</div>
 			</div>
@@ -193,18 +194,17 @@
 			<div
 				class="mb-6 rounded-xl border border-primary/40 bg-primary/10 p-4 text-sm text-text-primary"
 			>
-				En approvant, tu genereras une attestation qui sera publique via /verify/{'{hash}'} et
-				telechargeable en PDF. Les fragments seront credites au challenger et a toi.
+				{i18n.t('p26.validation.warningPublicApprove')}
 			</div>
 
 			<section class="mb-6 rounded-2xl border border-border bg-surface-elevated p-5">
-				<h2 class="mb-3 text-base font-semibold">Reviewer la PR</h2>
+				<h2 class="mb-3 text-base font-semibold">{i18n.t('p26.validation.reviewPrTitle')}</h2>
 				<p class="mb-4 text-sm text-text-muted">
-					L'iframe est bloque par GitHub — utilise ce bouton pour ouvrir la PR dans un nouvel onglet.
+					{i18n.t('p26.validation.reviewIframeHint')}
 				</p>
 				<Button variant="primary" size="md" href={item.pr_url} target="_blank" rel="noopener">
 					<ExternalLink size={14} strokeWidth={2} />
-					Ouvrir la PR sur GitHub
+					{i18n.t('p26.validation.openPrOnGithub')}
 				</Button>
 
 				<div class="mt-5 flex items-center gap-3 border-t border-border pt-4">
@@ -226,10 +226,10 @@
 			</section>
 
 			<section class="rounded-2xl border border-border bg-surface-elevated p-5">
-				<h2 class="mb-3 text-base font-semibold">Ton verdict</h2>
+				<h2 class="mb-3 text-base font-semibold">{i18n.t('p26.validation.verdictTitle')}</h2>
 
 				<label for="feedback" class="mb-1.5 block text-sm font-medium">
-					Feedback (obligatoire pour rejeter, 1-2000 caracteres)
+					{i18n.t('p26.validation.feedbackLabel')}
 				</label>
 				<textarea
 					id="feedback"
@@ -238,9 +238,9 @@
 					rows="6"
 					disabled={busy}
 					class="w-full rounded-xl border border-border bg-surface-overlay p-3 text-sm text-text-primary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-					placeholder="Explique ce qui va (ou pas) dans cette PR."
+					placeholder={i18n.t('p26.validation.feedbackPh')}
 				></textarea>
-				<p class="mt-1 text-xs text-text-muted">{feedback.length}/2000</p>
+				<p class="mt-1 text-xs text-text-muted">{i18n.t('p26.validation.feedbackCounter', { n: feedback.length })}</p>
 
 				{#if submitError}
 					<p class="mt-3 text-sm text-error" role="alert">{submitError}</p>
@@ -253,10 +253,10 @@
 						loading={rejecting}
 						onclick={reject}
 					>
-						Rejeter
+						{i18n.t('p26.validation.rejectBtn')}
 					</Button>
 					<Button variant="primary" disabled={busy} loading={approving} onclick={approve}>
-						Approuver
+						{i18n.t('p26.validation.approveBtn')}
 					</Button>
 				</div>
 			</section>

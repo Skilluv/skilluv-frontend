@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# Pages authentifiees (loaders SSR requierent session)
+Disallow: /dashboard/
+Disallow: /settings/
+Disallow: /notifications
+Disallow: /wallet
+Disallow: /messages
+Disallow: /validations/
+
+# Espace entreprise (recruteur)
+Disallow: /enterprise/
+
+# Flux auth (redirects, ne pas indexer)
+Disallow: /auth/
+Disallow: /onboarding/
+Disallow: /maintainer-digest/confirm/
+Disallow: /maintainer-digest/unsubscribe/
+
+# API + dev
+Disallow: /api/
+Disallow: /design-system/
+
+Sitemap: https://skill-uv.com/sitemap.xml

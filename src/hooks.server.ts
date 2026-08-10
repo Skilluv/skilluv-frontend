@@ -1,5 +1,43 @@
-import type { Handle } from '@sveltejs/kit';
+import type { Handle, HandleServerError } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
+
+/**
+ * Interceptor cote serveur. Sanitize le message qui sera passe a
+ * `$page.error.message` — en prod on ne veut PAS exposer les messages Rust /
+ * TypeScript / stack traces qui peuvent leak la structure interne.
+ * Le vrai message est log cote serveur avec un errorId de correlation.
+ */
+export const handleError: HandleServerError = ({ error, event, status, message }) => {
+	const errorId = crypto.randomUUID();
+	const isProd = import.meta.env.PROD;
+
+	if (isProd) {
+		// En prod le log part vers stdout, capture par la stack observabilite
+		// (Coolify -> Sentry si configure via DSN).
+		console.error(
+			JSON.stringify({
+				level: 'error',
+				errorId,
+				source: 'server',
+				pathname: event.url.pathname,
+				status,
+				message,
+				error: error instanceof Error ? { name: error.name, message: error.message } : String(error)
+			})
+		);
+	} else {
+		console.error(`[server error ${errorId}]`, error);
+	}
+
+	const safeMessage = isProd
+		? 'Une erreur inattendue est survenue. Reessaie ou reviens plus tard.'
+		: (error instanceof Error ? error.message : String(error));
+
+	return {
+		message: safeMessage,
+		errorId
+	};
+};
 import { env } from '$env/dynamic/private';
 import type { UserPrivate } from '$lib/types';
 

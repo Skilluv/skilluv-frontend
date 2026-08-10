@@ -37,9 +37,12 @@ class Observability {
 		const dsn = import.meta.env.PUBLIC_SENTRY_DSN as string | undefined;
 		if (!dsn) return;
 		try {
-			// @ts-expect-error — Sentry SDK is opt-in; the import target is only
-			// resolved when the package is actually installed.
-			const Sentry = await import('@sentry/sveltekit');
+			// Sentry SDK is opt-in; the import target is only resolved when the
+			// package is actually installed. Using dynamic import with vite-ignore
+			// so the resolver ne bloque pas le build quand le package est absent.
+			const Sentry = (await import(/* @vite-ignore */ '@sentry/sveltekit' as string)) as {
+				init: (opts: Record<string, unknown>) => void;
+			};
 			Sentry.init({
 				dsn,
 				tracesSampleRate: 0.1,
@@ -56,8 +59,16 @@ class Observability {
 		const key = import.meta.env.PUBLIC_POSTHOG_KEY as string | undefined;
 		if (!key) return;
 		try {
-			// @ts-expect-error — PostHog SDK is opt-in.
-			const posthog = (await import('posthog-js')).default;
+			// PostHog SDK is opt-in. Voir commentaire Sentry ci-dessus.
+			const mod = (await import(/* @vite-ignore */ 'posthog-js' as string)) as {
+				default: {
+					init: (key: string, opts: Record<string, unknown>) => void;
+					capture: (event: string, props?: Record<string, unknown>) => void;
+					identify: (id: string, props?: Record<string, unknown>) => void;
+					reset: () => void;
+				};
+			};
+			const posthog = mod.default;
 			posthog.init(key, {
 				api_host:
 					(import.meta.env.PUBLIC_POSTHOG_HOST as string | undefined) ??

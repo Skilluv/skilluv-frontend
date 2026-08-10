@@ -5,6 +5,7 @@
 	import { SkilluError } from '$api/client';
 	import { auth } from '$stores/auth.svelte';
 	import { toast } from '$stores/toast.svelte';
+	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
@@ -65,7 +66,7 @@
 			}
 			view = {
 				status: 'error',
-				message: err instanceof SkilluError ? err.message : 'Impossible de charger la file.'
+				message: err instanceof SkilluError ? err.message : i18n.t('p26.validation.toastLoadError')
 			};
 		}
 	}
@@ -86,12 +87,12 @@
 					)
 				};
 			}
-			toast.success('Challenge pris en charge.');
+			toast.success(i18n.t('p26.validation.toastPickedUp'));
 		} catch (err) {
 			if (err instanceof SkilluError && err.status === 400) {
-				toast.error('Ce challenge a ete pris par un autre validateur.');
+				toast.error(i18n.t('p26.validation.toastTakenByOther'));
 			} else {
-				toast.error(err instanceof SkilluError ? err.message : 'Erreur lors du pick-up.');
+				toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.validation.toastPickupError'));
 			}
 			// Refetch pour resynchroniser la file (le back est source de verite).
 			await load();
@@ -107,25 +108,25 @@
 </script>
 
 <svelte:head>
-	<title>File de validation — Skilluv</title>
+	<title>{i18n.t('p26.validation.queueSeoTitle')}</title>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl px-4 py-8">
 	<header class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 		<div>
 			<h1 class="font-heading text-3xl font-bold" style:font-family="'Fraunces Variable', Georgia, serif">
-				File de validation
+				{i18n.t('p26.validation.queueTitle')}
 			</h1>
 			<p class="mt-1 text-sm text-text-muted">
-				Les PRs en attente de validation dans tes domaines.
+				{i18n.t('p26.validation.queueSubtitle')}
 			</p>
 		</div>
 
 		{#if view.status === 'ready' && view.items.length > 0}
 			<SegmentedControl
 				items={[
-					{ value: 'all', label: 'Toutes' },
-					{ value: 'mine', label: 'Prises par moi' }
+					{ value: 'all', label: i18n.t('p26.validation.filterAll') },
+					{ value: 'mine', label: i18n.t('p26.validation.filterMine') }
 				]}
 				bind:value={filter}
 				size="sm"
@@ -142,25 +143,25 @@
 	{:else if view.status === 'no-caps'}
 		<EmptyState
 			variant="lantern"
-			title="Tu n'es pas encore validateur"
-			body="Pour acceder a la file, il faut candidater comme validateur sur au moins un domaine."
+			title={i18n.t('p26.validation.notValidatorTitle')}
+			body={i18n.t('p26.validation.notValidatorBody')}
 		>
 			{#snippet action()}
-				<Button variant="primary" href="/settings/validator-application/new">Candidater</Button>
+				<Button variant="primary" href="/settings/validator-application/new">{i18n.t('p26.validation.applyCta')}</Button>
 			{/snippet}
 		</EmptyState>
 	{:else if view.status === 'error'}
 		<div class="rounded-2xl border border-error/30 bg-error/5 p-6 text-sm text-error">
 			{view.message}
 			<div class="mt-3">
-				<Button variant="secondary" size="sm" onclick={load}>Reessayer</Button>
+				<Button variant="secondary" size="sm" onclick={load}>{i18n.t('p26.validation.retryBtn')}</Button>
 			</div>
 		</div>
 	{:else if visibleItems.length === 0}
 		<EmptyState
 			variant="search"
-			title="Aucune PR a valider dans tes domaines"
-			body="Reviens plus tard, la file se remplit automatiquement."
+			title={i18n.t('p26.validation.emptyTitle')}
+			body={i18n.t('p26.validation.emptyBody')}
 		/>
 	{:else}
 		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -180,7 +181,7 @@
 					<div class="flex flex-wrap items-center gap-2">
 						<Badge>{shortRepo(item.repo_url)}</Badge>
 						<Badge variant={domainVariant(domain)}>{domain}</Badge>
-						<Badge variant="accent">difficulte {item.slice.difficulty}</Badge>
+						<Badge variant="accent">{i18n.t('p26.validation.difficultyBadge', { n: item.slice.difficulty })}</Badge>
 					</div>
 
 					<div class="flex items-center gap-3 border-t border-border pt-3">
@@ -202,12 +203,12 @@
 					<div class="mt-1 flex flex-wrap items-center gap-2">
 						<Button variant="secondary" size="sm" href={item.pr_url} target="_blank" rel="noopener">
 							<ExternalLink size={14} strokeWidth={2} />
-							Voir la PR
+							{i18n.t('p26.validation.viewPr')}
 						</Button>
 
 						{#if item.picked_up_by_me}
 							<Button variant="primary" size="sm" href={`/validations/${item.slice.id}/review`}>
-								Reviewer
+								{i18n.t('p26.validation.reviewBtn')}
 							</Button>
 						{:else}
 							<Button
@@ -216,7 +217,7 @@
 								loading={pickingId === item.slice.id}
 								onclick={() => pickup(item)}
 							>
-								Prendre en charge
+								{i18n.t('p26.validation.pickupBtn')}
 							</Button>
 						{/if}
 					</div>

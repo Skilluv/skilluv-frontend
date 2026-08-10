@@ -7,6 +7,7 @@
 	} from '$api/attestation';
 	import { SkilluError } from '$api/client';
 	import { toast } from '$stores/toast.svelte';
+	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
@@ -26,7 +27,7 @@
 			state = { status: 'ready', result };
 		} catch (err) {
 			const message =
-				err instanceof SkilluError ? err.message : 'Impossible de charger cette attestation.';
+				err instanceof SkilluError ? err.message : i18n.t('p26.verify.fallbackError');
 			state = { status: 'error', message };
 		}
 	});
@@ -57,10 +58,10 @@
 		const url = typeof window !== 'undefined' ? window.location.href : '';
 		try {
 			await navigator.clipboard.writeText(url);
-			toast.success('Lien copie dans le presse-papiers');
+			toast.success(i18n.t('p26.verify.copyToast'));
 		} catch {
 			// Fallback : selection manuelle via prompt
-			window.prompt('Copiez ce lien :', url);
+			window.prompt(i18n.t('p26.verify.copyPrompt'), url);
 		}
 	}
 
@@ -79,13 +80,13 @@
 
 	let seoTitle = $derived(
 		valid
-			? `Attestation Skilluv verifiee — ${valid.challenger.display_name}`
-			: 'Attestation Skilluv'
+			? i18n.t('p26.verify.seoTitleValid', { name: valid.challenger.display_name })
+			: i18n.t('p26.verify.seoTitleDefault')
 	);
 	let seoDescription = $derived(
 		valid
-			? `Attestation Skilluv de ${valid.challenger.display_name} pour une contribution validee`
-			: 'Verifiez une attestation Skilluv.'
+			? i18n.t('p26.verify.seoDescValid', { name: valid.challenger.display_name })
+			: i18n.t('p26.verify.seoDescDefault')
 	);
 </script>
 
@@ -119,52 +120,52 @@
 			<div class="flex items-center gap-3">
 				<XCircle class="text-error" size={28} />
 				<h1 class="font-heading text-2xl sm:text-3xl text-text-primary">
-					Erreur de chargement
+					{i18n.t('p26.verify.errorTitle')}
 				</h1>
 			</div>
 			<p class="text-text-muted">{state.message}</p>
-			<Button variant="primary" href="/">Retour a skill-uv.com</Button>
+			<Button variant="primary" href="/">{i18n.t('p26.verify.backHome')}</Button>
 		</div>
 	{:else if invalid}
 		<div class="rounded-2xl bg-surface-elevated p-6 sm:p-10 space-y-6">
 			<div class="flex flex-wrap items-center gap-3">
 				<h1 class="font-heading text-2xl sm:text-3xl text-text-primary">
-					Attestation introuvable
+					{i18n.t('p26.verify.notFoundTitle')}
 				</h1>
 				<Badge variant="error">
 					<XCircle size={12} strokeWidth={2.5} />
-					invalide
+					{i18n.t('p26.verify.invalidBadge')}
 				</Badge>
 			</div>
 			<p class="text-text-muted">
 				{invalid.reason === 'malformed attestation hash'
-					? 'Ce lien ne correspond pas au format d’une attestation Skilluv.'
+					? i18n.t('p26.verify.reasonMalformed')
 					: invalid.reason === 'unknown attestation hash'
-						? 'Aucune attestation ne correspond a ce hash. Elle a peut-etre ete revoquee ou n’a jamais existe.'
+						? i18n.t('p26.verify.reasonUnknown')
 						: invalid.reason}
 			</p>
-			<Button variant="primary" href="/">Retour a skill-uv.com</Button>
+			<Button variant="primary" href="/">{i18n.t('p26.verify.backHome')}</Button>
 		</div>
 	{:else if valid}
 		<article class="rounded-2xl bg-surface-elevated p-6 sm:p-10 space-y-8">
 			<header class="space-y-3">
 				<div class="flex flex-wrap items-center gap-3">
 					<h1 class="font-heading text-2xl sm:text-3xl text-text-primary">
-						Attestation Skilluv verifiee
+						{i18n.t('p26.verify.verifiedTitle')}
 					</h1>
 					<Badge variant="success">
 						<CheckCircle2 size={12} strokeWidth={2.5} />
-						verified
+						{i18n.t('p26.verify.verifiedBadge')}
 					</Badge>
 				</div>
 				<p class="text-sm text-text-muted">
-					Delivree le {formatDate(valid.validated_at)}
+					{i18n.t('p26.verify.issuedOn', { date: formatDate(valid.validated_at) })}
 				</p>
 			</header>
 
 			<section class="space-y-3">
 				<h2 class="text-xs font-semibold uppercase tracking-wider text-text-subtle">
-					Contributeur
+					{i18n.t('p26.verify.contributor')}
 				</h2>
 				<a
 					href={`/profile/${valid.challenger.username}`}
@@ -192,7 +193,7 @@
 
 			<section class="space-y-3">
 				<h2 class="text-xs font-semibold uppercase tracking-wider text-text-subtle">
-					Validee par
+					{i18n.t('p26.verify.validatedBy')}
 				</h2>
 				<a
 					href={`/profile/${valid.validator.username}`}
@@ -220,21 +221,21 @@
 
 			<section class="space-y-3">
 				<h2 class="text-xs font-semibold uppercase tracking-wider text-text-subtle">
-					Contribution
+					{i18n.t('p26.verify.contribution')}
 				</h2>
 				<div class="flex flex-wrap items-center gap-2">
 					<Badge variant={domainVariant(valid.domain)}>{valid.domain}</Badge>
-					<Badge variant="default">difficulte {valid.difficulty}/5</Badge>
+					<Badge variant="default">{i18n.t('p26.verify.difficultyBadge', { n: valid.difficulty })}</Badge>
 					{#if valid.merged_upstream}
-						<Badge variant="accent">Merge upstream</Badge>
+						<Badge variant="accent">{i18n.t('p26.verify.mergedUpstream')}</Badge>
 					{/if}
 				</div>
 				<p class="text-sm text-text-muted">
-					Repo : <span class="font-mono text-text-primary">{valid.repo}</span>
+					{i18n.t('p26.verify.repoLabel')} <span class="font-mono text-text-primary">{valid.repo}</span>
 				</p>
 				<Button variant="secondary" href={valid.pr_url} target="_blank" rel="noopener noreferrer">
 					<ExternalLink size={16} />
-					Voir la PR
+					{i18n.t('p26.verify.viewPr')}
 				</Button>
 			</section>
 
@@ -247,17 +248,17 @@
 					download
 				>
 					<Download size={16} />
-					Telecharger le PDF
+					{i18n.t('p26.verify.downloadPdf')}
 				</Button>
 				<Button variant="secondary" onclick={copyLink}>
 					<Share2 size={16} />
-					Partager
+					{i18n.t('p26.verify.share')}
 				</Button>
 			</section>
 
 			<footer class="rounded-xl border border-border bg-surface-overlay/50 p-4">
 				<div class="text-xs uppercase tracking-wider text-text-subtle mb-1">
-					Attestation ID
+					{i18n.t('p26.verify.attestationId')}
 				</div>
 				<code
 					class="font-mono text-xs text-text-muted break-all"

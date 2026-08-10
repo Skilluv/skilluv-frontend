@@ -5,6 +5,7 @@
 	import { attestationApi } from '$api/attestation';
 	import { SkilluError } from '$api/client';
 	import { toast } from '$stores/toast.svelte';
+	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import ActiveSkilluversWidget from '$components/slice/ActiveSkilluversWidget.svelte';
@@ -35,18 +36,9 @@
 		'merged'
 	];
 
-	const STATUS_LABEL: Record<SliceStatus, string> = {
-		open: 'Ouvert',
-		claimed: 'Reserve',
-		in_progress: 'En cours',
-		submitted: 'PR soumise',
-		ci_green: 'CI verte',
-		pending_validation: 'En validation',
-		validated: 'Validee',
-		merged: 'Merge upstream',
-		closed: 'Ferme',
-		expired: 'Expire'
-	};
+	function statusLabel(s: SliceStatus): string {
+		return i18n.t(`p26.slice.status.${s}`);
+	}
 
 	const STATUS_VARIANT: Record<SliceStatus, 'default' | 'primary' | 'accent' | 'success' | 'warning' | 'error'> = {
 		open: 'primary',
@@ -80,13 +72,13 @@
 		try {
 			const res = await slicesApi.claim(slice.id);
 			slice = { ...slice, status: 'claimed', claimed_by_user_id: auth.user?.id ?? null, fork_repo_url: res.data.fork_repo_url ?? slice.fork_repo_url };
-			toast.success('Challenge reserve');
+			toast.success(i18n.t('p26.slice.toastReserved'));
 			await invalidateAll();
 		} catch (err) {
 			if (err instanceof SkilluError && err.status === 403) {
 				claimGateBlocked = true;
 			} else {
-				toast.error(err instanceof SkilluError ? err.message : 'Reservation impossible');
+				toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.slice.toastReserveError'));
 			}
 		} finally {
 			claiming = false;
@@ -94,15 +86,15 @@
 	}
 
 	async function doUnclaim() {
-		if (!confirm('Liberer ce challenge ?')) return;
+		if (!confirm(i18n.t('p26.slice.confirmRelease'))) return;
 		unclaiming = true;
 		try {
 			await slicesApi.unclaim(slice.id);
 			slice = { ...slice, status: 'open', claimed_by_user_id: null };
-			toast.success('Challenge libere');
+			toast.success(i18n.t('p26.slice.toastReleased'));
 			await invalidateAll();
 		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : 'Operation impossible');
+			toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.slice.toastReleaseError'));
 		} finally {
 			unclaiming = false;
 		}
@@ -117,10 +109,10 @@
 			slice = { ...slice, status: 'submitted', submitted_pr_url: prUrl };
 			prUrl = '';
 			announce = false;
-			toast.success('PR soumise');
+			toast.success(i18n.t('p26.slice.toastPrSent'));
 			await invalidateAll();
 		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : 'Envoi impossible');
+			toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.slice.toastSendError'));
 		} finally {
 			submittingPr = false;
 		}
@@ -129,9 +121,9 @@
 	function fmtDaysLeft(iso: string | null): string | null {
 		if (!iso) return null;
 		const diff = new Date(iso).getTime() - Date.now();
-		if (diff <= 0) return 'Expire';
+		if (diff <= 0) return i18n.t('p26.slice.expired');
 		const days = Math.ceil(diff / 86400000);
-		return `Reste ${days}j`;
+		return i18n.t('p26.slice.daysLeft', { n: days });
 	}
 
 	function truncHash(h: string): string {
@@ -150,19 +142,19 @@
 			<!-- Header -->
 			<header class="mb-6">
 				<div class="flex flex-wrap items-center gap-2 mb-3">
-					<Badge variant={STATUS_VARIANT[slice.status]}>{STATUS_LABEL[slice.status]}</Badge>
+					<Badge variant={STATUS_VARIANT[slice.status]}>{statusLabel(slice.status)}</Badge>
 					{#if slice.labels[0]}
 						<Badge variant="code">{slice.labels[0]}</Badge>
 					{/if}
 					{#if slice.min_rank}
-						<Badge variant="default">rank &ge; {slice.min_rank}</Badge>
+						<Badge variant="default">{i18n.t('p26.slice.rankGte', { rank: slice.min_rank })}</Badge>
 					{/if}
 					{#if slice.required_orientation_slugs}
 						{#each slice.required_orientation_slugs as o (o)}
 							<Badge variant="accent">{o}</Badge>
 						{/each}
 					{/if}
-					<Badge variant="default">difficulte {slice.difficulty}/5</Badge>
+					<Badge variant="default">{i18n.t('p26.slice.difficultyBadge', { n: slice.difficulty })}</Badge>
 					{#if slice.claim_expires_at && (slice.status === 'claimed' || slice.status === 'in_progress')}
 						{@const dl = fmtDaysLeft(slice.claim_expires_at)}
 						{#if dl}
@@ -182,7 +174,7 @@
 							class="inline-flex items-center gap-1.5 text-text-muted hover:text-accent transition-colors"
 						>
 							<ExternalLink size={14} strokeWidth={2} />
-							Issue GitHub
+							{i18n.t('p26.slice.issueGithub')}
 						</a>
 					{/if}
 					{#if slice.fork_repo_url}
@@ -193,7 +185,7 @@
 							class="inline-flex items-center gap-1.5 text-text-muted hover:text-accent transition-colors"
 						>
 							<GitBranch size={14} strokeWidth={2} />
-							Ton fork
+							{i18n.t('p26.slice.yourFork')}
 						</a>
 					{/if}
 					{#if slice.submitted_pr_url}
@@ -204,7 +196,7 @@
 							class="inline-flex items-center gap-1.5 text-text-muted hover:text-accent transition-colors"
 						>
 							<ExternalLink size={14} strokeWidth={2} />
-							Voir la PR
+							{i18n.t('p26.slice.viewPr')}
 						</a>
 					{/if}
 				</div>
@@ -221,7 +213,7 @@
 			{#if slice.acceptance_criteria?.length}
 				<section class="mb-8">
 					<h2 class="text-sm font-semibold uppercase tracking-wider text-text-muted mb-3">
-						Criteres d'acceptation
+						{i18n.t('p26.slice.acceptanceTitle')}
 					</h2>
 					<ul class="space-y-2">
 						{#each slice.acceptance_criteria as c, i (i)}
@@ -237,7 +229,7 @@
 			<!-- Stepper -->
 			<section class="mb-8">
 				<h2 class="text-sm font-semibold uppercase tracking-wider text-text-muted mb-4">
-					Workflow
+					{i18n.t('p26.slice.workflowTitle')}
 				</h2>
 				<ol class="relative border-l border-border pl-6 space-y-4">
 					{#each STATUS_ORDER as st, i (st)}
@@ -256,20 +248,22 @@
 							<span
 								class="text-sm {current ? 'font-semibold text-text-primary' : reached ? 'text-text-primary' : 'text-text-muted'}"
 							>
-								{STATUS_LABEL[st]}
+								{statusLabel(st)}
 							</span>
 						</li>
 					{/each}
 				</ol>
 				{#if slice.status === 'closed' || slice.status === 'expired'}
-					<p class="mt-4 text-sm text-text-muted italic">Workflow interrompu ({STATUS_LABEL[slice.status]}).</p>
+					<p class="mt-4 text-sm text-text-muted italic">
+						{i18n.t('p26.slice.workflowInterrupted', { status: statusLabel(slice.status) })}
+					</p>
 				{/if}
 			</section>
 
 			<!-- Rejection block -->
 			{#if slice.validation_reject_reason}
 				<section class="mb-8 rounded-xl border border-error/40 bg-error/10 p-4">
-					<h3 class="text-sm font-semibold text-error mb-2">PR non validee</h3>
+					<h3 class="text-sm font-semibold text-error mb-2">{i18n.t('p26.slice.rejectTitle')}</h3>
 					<p class="text-sm text-text-primary whitespace-pre-wrap">{slice.validation_reject_reason}</p>
 				</section>
 			{/if}
@@ -279,41 +273,41 @@
 				{#if canClaim}
 					{#if claimGateBlocked}
 						<p class="text-sm text-warning mb-3">
-							Ton rank ou orientation ne correspond pas encore a cette slice.
+							{i18n.t('p26.slice.claimGateBlocked')}
 						</p>
 					{/if}
 					<Button variant="primary" size="lg" loading={claiming} onclick={doClaim}>
-						Claim ce challenge
+						{i18n.t('p26.slice.claimBtn')}
 					</Button>
 				{:else if !auth.isAuthenticated && slice.status === 'open'}
 					<Button variant="primary" size="lg" href={`/auth/login?redirect=/slices/${slice.id}`}>
-						Se connecter pour claim
+						{i18n.t('p26.slice.loginToClaim')}
 					</Button>
 				{/if}
 
 				{#if canSubmitPr}
 					<div class="rounded-2xl border border-border bg-surface-elevated p-5">
-						<h3 class="text-base font-semibold text-text-primary mb-4">Soumettre ta PR</h3>
+						<h3 class="text-base font-semibold text-text-primary mb-4">{i18n.t('p26.slice.submitPrTitle')}</h3>
 						<form onsubmit={doSubmitPr} class="space-y-4">
 							<div>
 								<label for="pr-url" class="block text-sm font-medium text-text-primary mb-1.5">
-									URL de la Pull Request
+									{i18n.t('p26.slice.prUrlLabel')}
 								</label>
 								<input
 									id="pr-url"
 									type="url"
 									bind:value={prUrl}
 									required
-									placeholder="https://github.com/owner/repo/pull/123"
+									placeholder={i18n.t('p26.slice.prUrlPh')}
 									class="h-11 w-full rounded-xl border border-border bg-surface px-4 text-sm text-text-primary placeholder:text-text-muted focus:border-primary focus:ring-1 focus:ring-primary"
 								/>
 							</div>
 							<label class="flex items-start gap-3 text-sm cursor-pointer">
 								<input type="checkbox" bind:checked={announce} class="mt-0.5 rounded border-border" />
 								<span>
-									<span class="text-text-primary">Annoncer publiquement sur la PR que je contribue via Skilluv</span>
+									<span class="text-text-primary">{i18n.t('p26.slice.announceLabel')}</span>
 									<span class="block text-xs text-text-muted mt-0.5">
-										Un commentaire sera poste sur ta PR sous ton nom.
+										{i18n.t('p26.slice.announceHint')}
 									</span>
 								</span>
 							</label>
@@ -324,7 +318,7 @@
 									disabled={!prUrl.trim() || submittingPr}
 									loading={submittingPr}
 								>
-									Envoyer la PR
+									{i18n.t('p26.slice.sendPrBtn')}
 								</Button>
 								<Button
 									type="button"
@@ -333,7 +327,7 @@
 									loading={unclaiming}
 									disabled={unclaiming}
 								>
-									Unclaim
+									{i18n.t('p26.slice.unclaimBtn')}
 								</Button>
 							</div>
 						</form>
@@ -343,37 +337,37 @@
 				{#if isMine && (slice.status === 'submitted' || slice.status === 'ci_green')}
 					<div class="flex flex-wrap items-center gap-3">
 						{#if slice.submitted_pr_url}
-							<Button variant="secondary" href={slice.submitted_pr_url}>Voir la PR</Button>
+							<Button variant="secondary" href={slice.submitted_pr_url}>{i18n.t('p26.slice.viewPr')}</Button>
 						{/if}
 						<Badge variant={slice.status === 'ci_green' ? 'success' : 'warning'}>
-							{slice.status === 'ci_green' ? 'CI verte, en attente validation' : 'En attente CI'}
+							{slice.status === 'ci_green' ? i18n.t('p26.slice.ciGreen') : i18n.t('p26.slice.ciPending')}
 						</Badge>
 					</div>
 				{/if}
 
 				{#if slice.status === 'pending_validation'}
 					<p class="text-sm text-text-muted">
-						En cours de review
+						{i18n.t('p26.slice.pendingReview')}
 						<!-- TODO(back): expose validator_username sur Slice pour afficher le nom du valideur -->
-						{#if slice.validator_user_id}par un valideur Skilluv.{/if}
+						{#if slice.validator_user_id}{i18n.t('p26.slice.pendingReviewBy')}{/if}
 					</p>
 				{/if}
 
 				{#if (slice.status === 'validated' || slice.status === 'merged') && slice.attestation_hash}
 					<div class="rounded-2xl border border-success/30 bg-success/5 p-5 space-y-3">
 						<div class="flex flex-wrap items-center gap-2">
-							<Badge variant="success">Attestation generee</Badge>
+							<Badge variant="success">{i18n.t('p26.slice.attestationGenerated')}</Badge>
 							{#if slice.status === 'merged'}
-								<Badge variant="accent">Merge upstream</Badge>
+								<Badge variant="accent">{i18n.t('p26.slice.mergedUpstream')}</Badge>
 							{/if}
 						</div>
 						<div class="flex flex-wrap gap-3">
 							<Button variant="primary" href={attestationApi.pdfUrl(slice.attestation_hash)}>
-								Telecharger le PDF de l'attestation
+								{i18n.t('p26.slice.downloadAttestationPdf')}
 							</Button>
 							<Button variant="secondary" href={`/verify/${slice.attestation_hash}`}>
 								<ShieldCheck size={14} strokeWidth={2} />
-								Verifier publiquement
+								{i18n.t('p26.slice.verifyPublic')}
 							</Button>
 						</div>
 					</div>
@@ -383,7 +377,7 @@
 			<!-- Attestation hint -->
 			{#if slice.attestation_hash}
 				<p class="text-xs text-text-muted mb-8" title={slice.attestation_hash}>
-					Attestation ID :
+					{i18n.t('p26.slice.attestationIdLabel')}
 					<code class="font-mono">{truncHash(slice.attestation_hash)}</code>
 				</p>
 			{/if}
