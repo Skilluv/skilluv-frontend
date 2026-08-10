@@ -35,14 +35,14 @@
 		`[![Skilluv](${BASE}/badge/user/${username}/validated.svg)](${BASE}/profile/${username})`
 	);
 	let userHtml = $derived(
-		`<a href="${BASE}/profile/${username}"><img src="${BASE}/badge/user/${username}/validated.svg" alt="Skilluv" /></a>`
+		`<a href="${BASE}/profile/${username}"><img src="${BASE}/badge/user/${username}/validated.svg" alt="Skilluv" width="140" height="20" /></a>`
 	);
 
 	function repoMarkdown(owner: string, name: string): string {
 		return `[![Skilluv](${BASE}/badge/repo/${owner}/${name}/validated.svg)](${BASE}/for-maintainers)`;
 	}
 	function repoHtml(owner: string, name: string): string {
-		return `<a href="${BASE}/for-maintainers"><img src="${BASE}/badge/repo/${owner}/${name}/validated.svg" alt="Skilluv" /></a>`;
+		return `<a href="${BASE}/for-maintainers"><img src="${BASE}/badge/repo/${owner}/${name}/validated.svg" alt="Skilluv" width="140" height="20" /></a>`;
 	}
 
 	async function copyToClipboard(text: string): Promise<boolean> {

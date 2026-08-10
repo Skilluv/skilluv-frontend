@@ -58,7 +58,7 @@
 	<!-- Left: Skilluv logo + enterprise workspace switcher -->
 	<div class="flex items-center gap-3">
 		<a href="/enterprise/dashboard" class="flex items-center gap-2 text-lg font-black tracking-tight">
-			<img src="/favicon.svg" alt="" class="h-6 w-6" />
+			<img src="/favicon.svg" alt="" width="24" height="24" class="h-6 w-6" />
 			<span>
 				<span class="text-accent">Skill</span><span class="text-text-primary">uv</span>
 			</span>

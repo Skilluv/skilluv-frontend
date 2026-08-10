@@ -228,7 +228,7 @@
 
 <div class="flex min-h-[100vh] flex-col items-center justify-center px-4 py-12">
 	<a href="/" class="mb-8 flex items-center gap-2 text-3xl font-black tracking-tight">
-		<img src="/favicon.svg" alt="" class="h-8 w-8" />
+		<img src="/favicon.svg" alt="" width="32" height="32" class="h-8 w-8" />
 		<span><span class="text-accent">Skill</span><span class="text-text-primary">uv</span></span>
 	</a>
 

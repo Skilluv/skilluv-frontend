@@ -211,7 +211,7 @@
 
 				<div class="mt-5 flex items-center gap-3 border-t border-border pt-4">
 					{#if item.claimer_avatar_url}
-						<img src={item.claimer_avatar_url} alt="" class="h-9 w-9 rounded-full object-cover" />
+						<img src={item.claimer_avatar_url} alt="" width="36" height="36" loading="lazy" class="h-9 w-9 rounded-full object-cover" />
 					{:else}
 						<div class="h-9 w-9 rounded-full bg-surface-overlay"></div>
 					{/if}

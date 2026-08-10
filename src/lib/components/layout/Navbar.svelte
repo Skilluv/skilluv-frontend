@@ -324,7 +324,7 @@
 		     (Fraunces WONK, easter egg: le LUV rouge se révèle au 2e regard) -->
 		<a href="/" class="flex items-center gap-2.5" aria-label="Skilluv accueil">
 			{#if tenant.isWhiteLabel && tenant.logoUrl}
-				<img src={tenant.logoUrl} alt={tenant.name} class="h-8 max-w-[120px] object-contain" />
+				<img src={tenant.logoUrl} alt={tenant.name} width="120" height="32" class="h-8 max-w-[120px] object-contain" />
 				<span class="text-lg font-black tracking-tight text-text-primary truncate max-w-[160px]">
 					{tenant.name}
 				</span>

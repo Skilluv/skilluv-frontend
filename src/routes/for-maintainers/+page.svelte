@@ -193,7 +193,7 @@
 		</p>
 		<div class="rounded-2xl bg-surface-elevated p-6 space-y-4">
 			<div class="flex justify-center">
-				<img src={badgeUrl} alt={i18n.t('p26.forMaintainers.badgeAlt')} class="h-8" />
+				<img src={badgeUrl} alt={i18n.t('p26.forMaintainers.badgeAlt')} width="140" height="32" loading="lazy" class="h-8" />
 			</div>
 			<div class="relative">
 				<pre

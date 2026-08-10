@@ -67,7 +67,7 @@
 					title={u.display_name}
 				>
 					{#if u.avatar_url}
-						<img src={u.avatar_url} alt={u.display_name} class="h-full w-full object-cover" />
+						<img src={u.avatar_url} alt={u.display_name} width="36" height="36" loading="lazy" class="h-full w-full object-cover" />
 					{:else}
 						{initials(u.display_name || u.username)}
 					{/if}

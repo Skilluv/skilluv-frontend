@@ -125,7 +125,7 @@
 								class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-surface-overlay text-[10px] font-semibold text-text-primary overflow-hidden shrink-0"
 							>
 								{#if e.author_avatar_url}
-									<img src={e.author_avatar_url} alt={e.author_display_name} class="h-full w-full object-cover" />
+									<img src={e.author_avatar_url} alt={e.author_display_name} width="28" height="28" loading="lazy" class="h-full w-full object-cover" />
 								{:else}
 									{initials(e.author_display_name || e.author_username)}
 								{/if}

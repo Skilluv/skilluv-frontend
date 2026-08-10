@@ -182,7 +182,7 @@
 					<!-- Avatar -->
 					<div class="shrink-0 h-16 w-16 rounded-full bg-surface-overlay flex items-center justify-center text-2xl font-bold {titleColors[user.title]}">
 						{#if user.avatar_url}
-							<img src={user.avatar_url} alt={user.display_name} class="h-16 w-16 rounded-full object-cover" />
+							<img src={user.avatar_url} alt={user.display_name} width="64" height="64" class="h-16 w-16 rounded-full object-cover" />
 						{:else}
 							{user.display_name.charAt(0).toUpperCase()}
 						{/if}
