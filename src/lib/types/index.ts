@@ -53,7 +53,24 @@ export type NotificationType =
 	| 'rank_promotion'
 	| 'badge_earned'
 	| 'team_slot_match'
-	| 'payout_status_change';
+	| 'payout_status_change'
+	// SKI-97 — evenements workflow challenge (16 nouveaux types).
+	| 'slice_claimed'
+	| 'slice_fork_created'
+	| 'slice_pr_submitted'
+	| 'slice_pr_submitted_announced'
+	| 'slice_ci_green'
+	| 'validation_picked_up_by_you'
+	| 'validation_picked_up_by_other'
+	| 'slice_validated'
+	| 'slice_rejected'
+	| 'slice_merged_upstream'
+	| 'slice_pr_rejected_upstream'
+	| 'validator_application_status_changed'
+	| 'validator_invitation_received'
+	| 'slice_upstream_closed'
+	| 'maintainer_digest_confirmation_sent'
+	| 'maintainer_digest_subscribed';
 
 /** Capabilities P18.4 — sources de permissions user (mentor, curator, etc.). */
 export type Capability =

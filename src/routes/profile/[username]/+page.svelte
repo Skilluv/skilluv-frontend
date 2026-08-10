@@ -28,6 +28,7 @@
 	import BadgesWall from '$lib/components/badges/BadgesWall.svelte';
 	import { OrientationList } from '$lib/components/orientations';
 	import { ContributionSection } from '$lib/components/capabilities';
+	import BadgesSection from '$lib/components/profile/BadgesSection.svelte';
 
 	onMount(() => {
 		void geo.ensureCountries();
@@ -359,6 +360,11 @@
 
 		<div class="mt-6">
 			<BadgesWall badges={badgesData} isOwn={isOwnProfile} />
+		</div>
+
+		<!-- SKI-104 — Badges Skilluv (personnel + repos maintenus si dispo) -->
+		<div class="mt-6">
+			<BadgesSection {username} isOwner={isOwnProfile} />
 		</div>
 	{/if}
 </div>
