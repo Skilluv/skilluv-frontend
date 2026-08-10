@@ -36,7 +36,8 @@ Thumbs.db
 
 
 # Documentation
-docs/
+docs/*
+!docs/LIGHTHOUSE-AUDIT-*.md
 
 # BMAD workflow
 _bmad/
@@ -48,3 +49,5 @@ design-artifacts/
 # AI coding assistant caches
 .claude/
 .claude.*
+# Lighthouse audit output
+lighthouse-report/
