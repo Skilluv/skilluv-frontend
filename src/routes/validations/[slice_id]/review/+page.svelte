@@ -54,7 +54,9 @@
 		}
 		view = { status: 'loading' };
 		try {
-			// TODO(back): endpoint dedie /slices/{id}/validation aurait ete plus efficace.
+			// La queue est deja filtree cote back sur les caps validator du user
+			// (SKI-86) donc refiltrer par slice_id ici garantit qu'on ne render
+			// jamais une slice hors droits de l'user courant.
 			const res = await validationApi.queue();
 			const found = res.data.items.find((it) => it.slice.id === data.sliceId);
 			if (!found) {

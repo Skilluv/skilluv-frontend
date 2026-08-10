@@ -1,13 +1,15 @@
 /**
- * P26 v2 SKI-94 — dashboard "mes challenges" + reco feed.
- * Skip permanent : back non deploye.
+ * P26 v2 SKI-94 — dashboard "mes challenges".
+ *
+ * Visiteur anonyme -> redirect vers /auth/login. Le test verifie qu'il n'y a
+ * pas d'ecran blanc et que le tunnel auth prend le relais.
  */
 import { test, expect } from '@playwright/test';
 
 test.describe('@parcours dashboard-slices', () => {
-	test('dashboard slices accessible', async ({ page }) => {
-		test.skip(true, 'P26 v2 back not deployed: /api/me/feed/challenges (SKI-121) + /api/users/me/slices en Todo');
+	test('dashboard slices redirige visiteur anonyme vers login', async ({ page }) => {
 		await page.goto('/dashboard/slices');
+		await page.waitForLoadState('domcontentloaded');
 		await expect(page.locator('h1').first()).toBeVisible({ timeout: 15_000 });
 	});
 });

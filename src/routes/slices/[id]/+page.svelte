@@ -348,8 +348,9 @@
 				{#if slice.status === 'pending_validation'}
 					<p class="text-sm text-text-muted">
 						{i18n.t('p26.slice.pendingReview')}
-						<!-- TODO(back): expose validator_username sur Slice pour afficher le nom du valideur -->
-						{#if slice.validator_user_id}{i18n.t('p26.slice.pendingReviewBy')}{/if}
+						{#if slice.validator_username}
+							{i18n.t('p26.slice.pendingReviewBy', { username: slice.validator_username })}
+						{/if}
 					</p>
 				{/if}
 

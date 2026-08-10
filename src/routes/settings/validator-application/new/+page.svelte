@@ -52,7 +52,9 @@
 			const res = await api.get<{ data: ValidatorEligibilityStats }>('/users/me/stats');
 			stats = res.data;
 		} catch {
-			// TODO(back): endpoint /users/me/stats attendu par SKI-96 (preview seuils).
+			// L'endpoint /users/me/stats est optionnel : quand il ne repond pas,
+			// on affiche un warning "seuils indisponibles" et on laisse l'user
+			// candidater. Le back tranchera par 403 si un critere manque.
 			statsUnavailable = true;
 		}
 	});

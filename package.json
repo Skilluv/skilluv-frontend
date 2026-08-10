@@ -36,9 +36,15 @@
 	},
 	"dependencies": {
 		"@lucide/svelte": "^1.25.0",
+		"@sentry/sveltekit": "^10.70.0",
 		"@simplewebauthn/browser": "^13.3.0",
 		"gsap": "^3.15.0",
 		"monaco-editor": "^0.56.0",
-		"sharp-cli": "^5.2.0"
+		"posthog-js": "^1.415.1"
+	},
+	"overrides": {
+		"cookie": "^0.7.0",
+		"dompurify": "^3.4.13",
+		"brace-expansion": "^2.0.2"
 	}
 }

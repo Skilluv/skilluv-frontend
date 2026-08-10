@@ -19,8 +19,6 @@
 	import OrientationPromptBanner from '$lib/components/orientations/OrientationPromptBanner.svelte';
 	import { observability } from '$lib/observability';
 	import KeysSprite from '$lib/components/badges/primitives/keys-sprite.svelte';
-	// Terminal mode désactivé pour l'instant — composants conservés sous src/lib/components/terminal/*
-	// pour réactivation future. Voir TerminalEmulator.svelte / TerminalConfirm.svelte / commands.ts.
 
 	let { data, children } = $props();
 

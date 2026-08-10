@@ -43,6 +43,8 @@ export interface Slice {
 	claimed_by_user_id: string | null;
 	claim_expires_at: string | null;
 	validator_user_id: string | null;
+	/** Renseigne quand le back joint le username du validateur pour affichage. */
+	validator_username?: string | null;
 	project_id: string;
 	project_slug: string;
 	created_at: string;

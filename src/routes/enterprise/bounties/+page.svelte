@@ -35,9 +35,12 @@
 	let createExpires = $state('30');
 	let createBusy = $state(false);
 
-	// MVP : le backend n'a pas encore `GET /enterprise/bounties`. On liste toutes
-	// les bounties (public) et on filtre client-side par company_name du user.
-	// TODO backend : `GET /enterprise/bounties` scopé sur l'enterprise du user.
+	// Le back expose GET /bounties (liste publique). Pour la vue "mes bounties
+	// enterprise" on filtre client-side sur company_name : c'est safe car on ne
+	// rend que ce que l'user est deja autorise a voir (la liste est publique).
+	// Un endpoint dedie /enterprise/bounties resterait pertinent pour eviter
+	// le fetch de toutes les bounties, mais n'est pas critique tant que le
+	// volume reste faible.
 	async function load() {
 		loading = true;
 		try {
