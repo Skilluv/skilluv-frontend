@@ -211,8 +211,8 @@
 	--sk-surface-meta: #2c2412;        /* safran sombre */
 
 	/* Accents chromatiques */
-	--sk-primary: #457b9d;             /* bleu terreux */
-	--sk-primary-hover: #5891b3;
+	--sk-primary: #3a6a86;             /* bleu terreux (assombri pour contrast WCAG AA >= 4.5 avec text-primary-fg) */
+	--sk-primary-hover: #457b9d;
 	--sk-primary-fg: #f4ede0;
 	--sk-accent: #ea8a3d;               /* ocre plus vif que #c47a2e — SIGNATURE */
 	--sk-accent-hover: #f4a261;
@@ -223,8 +223,8 @@
 	--sk-success-soft: rgba(42, 157, 143, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
-	--sk-error: #e63946;
-	--sk-error-soft: rgba(230, 57, 70, 0.2);
+	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
+	--sk-error-soft: rgba(193, 39, 45, 0.2);
 	--sk-error-fg: #ffffff;
 	--sk-info: #457b9d;
 	--sk-info-soft: rgba(69, 123, 157, 0.2);
@@ -304,8 +304,8 @@
 	--sk-success-soft: rgba(131, 197, 190, 0.2);
 	--sk-warning: #f4a261;
 	--sk-warning-soft: rgba(244, 162, 97, 0.2);
-	--sk-error: #e63946;
-	--sk-error-soft: rgba(230, 57, 70, 0.2);
+	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
+	--sk-error-soft: rgba(193, 39, 45, 0.2);
 	--sk-error-fg: #ffffff;
 	--sk-info: #83c5be;
 	--sk-info-soft: rgba(131, 197, 190, 0.2);
@@ -544,8 +544,8 @@
 	--sk-success-soft: rgba(131, 197, 190, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
-	--sk-error: #e63946;
-	--sk-error-soft: rgba(230, 57, 70, 0.2);
+	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
+	--sk-error-soft: rgba(193, 39, 45, 0.2);
 	--sk-error-fg: #ffffff;
 	--sk-info: #b898c0;
 	--sk-info-soft: rgba(184, 152, 192, 0.2);

@@ -319,7 +319,10 @@
 <svelte:window onclick={handleClickOutside} />
 
 <header class="relative z-40 bg-transparent">
-	<nav class="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-4">
+	<nav
+		aria-label={i18n.locale === 'fr' ? 'Navigation principale' : 'Primary navigation'}
+		class="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-4"
+	>
 		<!-- Logo — tenant-aware. Skilluv canonique = wordmark bicolore sKIL·LUV
 		     (Fraunces WONK, easter egg: le LUV rouge se révèle au 2e regard) -->
 		<a href="/" class="flex items-center gap-2.5" aria-label="Skilluv accueil">

@@ -51,3 +51,10 @@ design-artifacts/
 .claude.*
 # Lighthouse audit output
 lighthouse-report/
+
+# Axe audit output
+axe-report/
+
+# Bundle analyzer output
+bundle-report.html
+stats.html

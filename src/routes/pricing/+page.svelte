@@ -172,9 +172,12 @@
 			{/each}
 		</div>
 	{:else if error}
-		<div class="rounded-2xl border border-error/30 bg-error/10 p-6 text-center">
-			<p class="text-error">{error}</p>
-			<button class="mt-4 text-sm underline" onclick={load}>
+		<div class="rounded-2xl border border-error bg-error p-6 text-center">
+			<p class="font-semibold text-error-fg">{error}</p>
+			<button
+				class="mt-4 rounded-lg bg-error-fg px-3 py-1 text-sm font-semibold text-error hover:brightness-95"
+				onclick={load}
+			>
 				{i18n.locale === 'fr' ? 'Réessayer' : 'Retry'}
 			</button>
 		</div>
@@ -351,7 +354,7 @@
 			</ul>
 		</div>
 		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
-			<p class="mb-4 text-xs font-bold uppercase tracking-wider text-primary">Skilluv</p>
+			<p class="mb-4 text-xs font-bold uppercase tracking-wider text-accent">Skilluv</p>
 			<ul class="space-y-3 text-sm">
 				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Pay-as-you-go. Aucun abonnement caché.' : 'Pay-as-you-go. No hidden subscription.'}</li>
 				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Vous ne payez que les tentatives réelles' : 'You only pay for real attempts'}</li>

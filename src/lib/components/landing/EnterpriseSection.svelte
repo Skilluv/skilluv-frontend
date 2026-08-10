@@ -126,7 +126,7 @@
 
 			<!-- Skilluv -->
 			<div class="rounded-2xl border-2 border-cat-meta bg-surface-meta p-5">
-				<p class="text-xs text-primary uppercase tracking-wider mb-4 font-bold">Skilluv</p>
+				<p class="text-xs text-accent uppercase tracking-wider mb-4 font-bold">Skilluv</p>
 				<ul class="space-y-2.5 text-sm text-text-muted">
 					<li class="flex items-start gap-2">
 						<span class="shrink-0 text-success mt-0.5">+</span>

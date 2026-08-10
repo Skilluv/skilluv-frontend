@@ -196,10 +196,13 @@
 				<img src={badgeUrl} alt={i18n.t('p26.forMaintainers.badgeAlt')} width="140" height="32" loading="lazy" class="h-8" />
 			</div>
 			<div class="relative">
-				<pre
-					class="overflow-x-auto rounded-xl bg-surface-overlay p-4 text-xs font-mono text-text-primary"><code
-						>{badgeMarkdown}</code
-					></pre>
+				<textarea
+					readonly
+					rows="4"
+					aria-label={i18n.t('p26.forMaintainers.badgeMarkdownAria')}
+					class="w-full resize-none overflow-x-auto rounded-xl bg-surface-overlay p-4 text-xs font-mono text-text-primary focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+					value={badgeMarkdown}
+				></textarea>
 				<button
 					type="button"
 					onclick={copyBadge}

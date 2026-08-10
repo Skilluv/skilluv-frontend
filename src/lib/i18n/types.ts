@@ -987,6 +987,7 @@ export interface Translations {
 			badgeAlt: string;
 			copyBtn: string;
 			copyAria: string;
+			badgeMarkdownAria: string;
 			copyToast: string;
 			copyPrompt: string;
 			faqTitle: string;

@@ -812,6 +812,7 @@ export const en: Translations = {
 			badgeAlt: 'Skilluv validated badge',
 			copyBtn: 'Copy',
 			copyAria: 'Copy snippet',
+			badgeMarkdownAria: 'Skilluv badge Markdown snippet, keyboard-scrollable',
 			copyToast: 'Snippet copied',
 			copyPrompt: 'Copy this snippet:',
 			faqTitle: 'FAQ',

@@ -99,8 +99,11 @@ jobs:
         run: npm run build
 
       - name: Run Lighthouse CI
+        # Assertion a11y = "error" a 100 -> ce job BLOQUE la PR sur regression
+        # a11y. Perf/best/seo restent en warn (variance mobile trop haute pour
+        # bloquer sans false positives).
         run: |
           npm install -g @lhci/cli@0.15.x
-          lhci autorun --config=./lighthouserc.json || true
+          lhci autorun --config=./lighthouserc.json
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
