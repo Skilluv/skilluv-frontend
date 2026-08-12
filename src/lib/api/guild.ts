@@ -12,11 +12,16 @@ export interface Guild {
 	tag: string;
 	description: string | null;
 	logo_url: string | null;
-	color_hex: string | null;
-	member_count: number;
-	total_fragments: number;
-	total_wars_won: number;
-	total_wars_lost: number;
+	/** The list endpoint returns `color_hex`, the detail one `color_primary`. */
+	color_hex?: string | null;
+	color_primary?: string | null;
+	// The detail endpoint (`GET /guilds/{slug}`) omits these aggregates; only
+	// the list endpoint returns them. Optional so the detail page cannot crash
+	// on a missing counter.
+	member_count?: number;
+	total_fragments?: number;
+	total_wars_won?: number;
+	total_wars_lost?: number;
 	rank?: number;
 	created_at: string;
 }
@@ -50,15 +55,30 @@ export const guildApi = {
 		return api.get<ApiResponse<{ guilds: Guild[] }>>('/guilds', params as Record<string, number>);
 	},
 
+	/** The backend wraps the guild in `data.guild`, unlike the list endpoint. */
 	getBySlug(slug: string) {
-		return api.get<ApiResponse<Guild>>(`/guilds/${slug}`);
+		return api.get<ApiResponse<{ guild: Guild }>>(`/guilds/${slug}`);
 	},
 
 	members(guildId: string) {
 		return api.get<ApiResponse<{ members: GuildMember[] }>>(`/guilds/${guildId}/members`);
 	},
 
-	create(data: { name: string; tag: string; description?: string; color_hex?: string }) {
+	/**
+	 * Mint a guild.
+	 *
+	 * The backend requires `slug` and exactly three `cofounder_ids` — a guild
+	 * cannot be founded alone. The previous signature omitted both and would
+	 * always fail with 422. There is no creation page yet; see SKI-289.
+	 */
+	create(data: {
+		name: string;
+		slug: string;
+		tag: string;
+		cofounder_ids: [string, string, string];
+		description?: string;
+		color_hex?: string;
+	}) {
 		return api.post<ApiResponse<{ guild: Guild }>>('/guilds', data);
 	},
 

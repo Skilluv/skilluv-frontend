@@ -14,7 +14,20 @@ export async function expectNoSeriousA11yViolations(
 	page: Page,
 	scopeSelector?: string
 ): Promise<void> {
-	let builder = new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']);
+	let builder = new AxeBuilder({ page })
+		.withTags(['wcag2a', 'wcag2aa'])
+		// WCAG 1.4.3 incidental-text exemption: the lettering baked INTO design
+		// system badges (rank chevron, event stamp) is part of the artwork. Each
+		// badge is a `role="img"` with a complete `aria-label`, and its inner
+		// lettering is `aria-hidden`, so no information is reachable only
+		// through that text.
+		//
+		// Deliberately limited to these components: every other contrast defect
+		// on the page stays blocking. Drop these lines if the design system
+		// revisits the colours.
+		.exclude('.chevron__label')
+		.exclude('.stamp__name')
+		.exclude('.stamp__year');
 	if (scopeSelector) builder = builder.include(scopeSelector);
 	const results = await builder.analyze();
 	const blocking = results.violations.filter(

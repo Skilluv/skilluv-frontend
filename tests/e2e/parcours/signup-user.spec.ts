@@ -3,7 +3,7 @@
  *
  * Test réel contre back staging (https://api.skill-uv.com via vite proxy).
  * Le back envoie un mail de vérification à la fin — le test s'arrête juste
- * après la réponse serveur (redirect vers /onboarding/bonjour-skilluv). La
+ * après la réponse serveur (redirect vers /challenges/onboarding). La
  * validation du mail ne peut pas être automatisée ici (Playwright ne lit pas
  * Gmail) — voir annotation "MANUAL FOLLOW-UP".
  *
@@ -11,16 +11,18 @@
  */
 import { test, expect, type Request, type Response } from '@playwright/test';
 import { getVerifyToken } from './_helpers/dev-verify';
+import { ANONYMOUS_STATE } from './_helpers/user-session';
 
 const HAS_BACK = Boolean(process.env.PUBLIC_API_BASE_URL);
 
 // Nonce pour éviter les collisions username/email si l'user relance sans
-// cleanup back. L'email reste jeremiezitti@gmail.com (contrainte user).
+// cleanup. The address is derived from E2E_USER_EMAIL (see .env.example).
 const NONCE = Date.now().toString(36);
+const [USER_LOCAL, USER_DOMAIN] = (process.env.E2E_USER_EMAIL ?? 'test@example.com').split('@');
 const USER = {
-	// Gmail plus-addressing → arrive dans la boîte jeremiezitti@gmail.com,
+	// Plus-addressing lands in the same mailbox as E2E_USER_EMAIL,
 	// permet de relancer le test sans collision back.
-	email: `jeremiezitti+${NONCE}@gmail.com`,
+	email: `${USER_LOCAL}+${NONCE}@${USER_DOMAIN}`,
 	username: `jz_test_${NONCE}`,
 	password: 'TestSkilluv2026!',
 	firstName: 'Jeremie',
@@ -31,6 +33,9 @@ const USER = {
 };
 
 test.describe('@signup signup-user', () => {
+	// SKI-71: explicit session posture. The subject of this test IS the
+	// anonymous visitor, so no session must leak in from another spec.
+	test.use({ storageState: ANONYMOUS_STATE });
 	test.skip(!HAS_BACK, 'requires PUBLIC_API_BASE_URL (back staging)');
 	test.setTimeout(90_000);
 
@@ -135,11 +140,13 @@ test.describe('@signup signup-user', () => {
 			);
 		}
 
-		// Redirection attendue vers onboarding
-		await page.waitForURL(/\/onboarding\/bonjour-skilluv/, { timeout: 15_000 }).catch(async () => {
+		// The register page sends new accounts straight to /challenges/onboarding.
+		// The previously expected /onboarding/bonjour-skilluv welcome page does
+		// not exist in this frontend.
+		await page.waitForURL(/\/challenges\/onboarding/, { timeout: 15_000 }).catch(async () => {
 			await page.screenshot({ path: testInfo.outputPath('step-4-no-redirect.png'), fullPage: true });
 			throw new Error(
-				`BLOCAGE: submit OK (${status}) mais pas de redirect vers /onboarding/bonjour-skilluv. URL actuelle: ${page.url()}`
+				`submit OK (${status}) but no redirect to /challenges/onboarding. Current URL: ${page.url()}`
 			);
 		});
 

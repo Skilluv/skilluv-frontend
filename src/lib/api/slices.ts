@@ -3,6 +3,34 @@ import { createApiClient } from './client';
 
 const api = createApiClient();
 
+/**
+ * Injectable variant for use inside universal `load` functions.
+ *
+ * The default client captures the global `fetch`. During SSR a relative URL
+ * like `/api/slices/{id}` has no base and throws `TypeError: Failed to parse
+ * URL`. The `fetch` from SvelteKit's load event resolves relative URLs against
+ * the incoming request and forwards session cookies.
+ */
+export function createSlicesApi(customFetch: typeof fetch) {
+	const scoped = createApiClient(customFetch);
+	return {
+		get(id: string) {
+			return scoped.get<ApiResponse<Slice>>(`/slices/${id}`);
+		},
+		mySlices(params?: { status?: SliceStatus; page?: number; per_page?: number }) {
+			return scoped.get<ApiResponse<{ slices: Slice[]; page: number; per_page: number }>>(
+				'/users/me/slices',
+				params as Record<string, string | number>
+			);
+		},
+		feedRecommended(limit = 20) {
+			return scoped.get<
+				ApiResponse<{ slices: Slice[]; meta?: { user_rank_ord?: number; median_difficulty?: number } }>
+			>('/me/feed/challenges', { limit });
+		}
+	};
+}
+
 // --- Types (P26 v2 workflow challenge) ---
 
 export type SliceStatus =

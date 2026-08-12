@@ -304,8 +304,42 @@ export const fr: Translations = {
 			account_unbanned: 'Compte rétabli'
 		}
 	},
+	mentions: {
+		title: 'Mentions',
+		subtitle: 'Tous les endroits où on t’a cité.',
+		empty: 'Personne ne t’a encore cité.',
+		emptyHint: 'Quand quelqu’un écrit @{username}, ça apparaît ici.',
+		markAllRead: 'Tout marquer comme lu',
+		allRead: 'Tout est marqué comme lu.',
+		loadError: 'Impossible de charger tes mentions.',
+		retry: 'Réessayer',
+		sources: {
+			forum_post: 'Forum',
+			comment: 'Commentaire',
+			slice_diary: 'Carnet de bord',
+			message: 'Message'
+		}
+	},
 	settings: {
 		title: 'Paramètres',
+		notifications: {
+			title: 'Notifications',
+			subtitle: 'Choisis comment Skilluv te tient au courant.'
+		},
+		emailPrefs: {
+			title: 'Préférences email',
+			subtitle: 'Choisis les emails que tu reçois.',
+			digestWeekly: 'Résumé hebdomadaire',
+			digestWeeklyDesc: 'Ton activité de la semaine, une fois par semaine.',
+			streakReminder: 'Rappel de série',
+			streakReminderDesc: 'Un rappel quand ta série est sur le point de tomber.',
+			marketing: 'Annonces produit',
+			marketingDesc: 'Nouveautés et annonces. Désactivé par défaut.',
+			transactional:
+				'Les emails indispensables (vérification, mot de passe, sécurité, reçus de paiement) restent envoyés.',
+			saved: 'Préférences enregistrées',
+			loadError: 'Impossible de charger tes préférences email.'
+		},
 		theme: {
 			title: 'Thème', forge: 'Forge', forgeDesc: 'Ocre + terracotta — l\'atelier de l\'artisan',
 			vesperal: 'Vespéral', vesperalDesc: 'Bleu nuit + orange braise — la nuit à la lanterne',
@@ -316,7 +350,26 @@ export const fr: Translations = {
 		language: { title: 'Langue', fr: 'Français', en: 'English' },
 		profileSection: {
 			title: 'Profil', displayName: 'Nom d\'affichage',
-			bio: 'Bio', bioHint: 'Courte description visible sur ton profil'
+			bio: 'Bio', bioHint: 'Courte description visible sur ton profil',
+			subtitle: 'Ce que les autres voient de toi sur Skilluv.',
+			domain: 'Domaine principal',
+			country: 'Pays', city: 'Ville',
+			saved: 'Profil mis à jour.'
+		},
+		availability: {
+			title: 'Disponibilité',
+			subtitle: 'Indique aux recruteurs si tu es ouvert aux opportunités.',
+			openLabel: 'Ouvert aux opportunités',
+			openHint: 'Visible par les entreprises abonnées.',
+			lookingFor: 'Ce que tu cherches',
+			lookingForPh: 'ex. mission backend Rust, 3 jours/semaine',
+			salaryMin: 'Prétention min (EUR/an)',
+			salaryMax: 'Prétention max (EUR/an)',
+			visibility: 'Visibilité des prétentions',
+			visibilityPrivate: 'Privée',
+			visibilityRecruiters: 'Recruteurs vérifiés',
+			visibilityPublic: 'Publique',
+			saved: 'Disponibilité mise à jour.'
 		},
 		password: {
 			title: 'Mot de passe', current: 'Mot de passe actuel',
@@ -598,7 +651,82 @@ export const fr: Translations = {
 			receivedFallback: 'Nouvelle notification'
 		}
 	},
+	notifTypes: {
+		slice_claimed: 'Tu as claim la slice {title}. 7 jours pour livrer.',
+		slice_fork_created: 'Ton fork est prêt : {url}',
+		slice_pr_submitted: 'PR {url} enregistrée, en attente CI',
+		slice_pr_submitted_announced: 'Commentaire posté sur ta PR',
+		slice_ci_green: 'Ta PR a passé la CI, en attente de validation Skilluv',
+		validation_picked_up_by_you: 'Tu as pris en charge la validation de la PR de @{user}',
+		validation_picked_up_by_other: 'Ta PR est en cours de review par @{user}',
+		slice_validated: 'Ta PR a été validée. Attestation générée. Fragments crédités.',
+		slice_rejected: 'Ta PR a été refusée par @{user}. Raison : {reason}',
+		slice_merged_upstream: 'Ta PR a été mergée sur {repo}. Bonus de {n} fragments.',
+		slice_pr_rejected_upstream: 'Ta PR a été fermée upstream sans merge. Tu peux reprendre la slice ou passer à autre chose.',
+		validator_application_status_changed: 'Ta candidature validateur ({domain}) a été {status}',
+		validator_invitation_received: 'Skilluv t’invite à devenir validateur {domain}. Raison : {notes}',
+		slice_upstream_closed: 'L’issue upstream {url} a été fermée. Ta claim a été relâchée.',
+		maintainer_digest_confirmation_sent: 'Email de confirmation envoyé',
+		maintainer_digest_subscribed: 'Ton abonnement digest est confirmé',
+		statusApproved: 'acceptée',
+		statusRejected: 'refusée',
+		groupedCount: '{n} notifications sur ce challenge'
+	},
+	notifActions: {
+		seeReasons: 'Voir raisons et reclaim',
+		accept: 'Accepter',
+		decline: 'Refuser',
+		downloadPdf: 'Télécharger PDF',
+		shareBadge: 'Partager mon badge'
+	},
+	guilds: {
+		tabsLabel: 'Sections de la guilde',
+		tabComposition: 'Composition',
+		tabWars: 'Guerres',
+		tabMembers: 'Membres',
+		roleOwner: 'Fondateur',
+		roleOfficer: 'Officier',
+		roleMember: 'Membre',
+		warsEmpty: 'Aucune guerre pour le moment.',
+		membersEmpty: 'Aucun membre pour le moment.',
+		warStatus: {
+			proposed: 'Proposee',
+			accepted: 'Acceptee',
+			declined: 'Refusee',
+			concluded: 'Terminee'
+		}
+	},
+	tracks: {
+		title: 'Parcours',
+		subtitle: 'Des itineraires guides pour passer des bases a une contribution reelle.',
+		estimatedHours: '{n} h estimees',
+		emptyTitle: 'Aucun parcours disponible',
+		emptyBody: 'Les parcours arrivent bientot. Reviens plus tard.',
+		enrollCta: 'Rejoindre ce parcours',
+		loginToEnroll: 'Se connecter pour rejoindre',
+		enrolledBadge: 'Inscrit',
+		completedBadge: 'Termine',
+		inProgressBadge: 'En cours',
+		enrolledToast: 'Inscrit au parcours',
+		startedOn: 'Demarre le {date}',
+		viewCta: 'Voir',
+		browseCta: 'Parcourir le catalogue',
+		dashboardTitle: 'Mes parcours',
+		dashboardSubtitle: 'Les parcours que tu as rejoints.',
+		dashboardEmptyTitle: 'Tu n\'as rejoint aucun parcours',
+		dashboardEmptyBody: 'Choisis un parcours pour structurer ta progression.'
+	},
 	teams: {
+		dashboard: {
+			title: 'Mes équipes',
+			subtitle: 'Les équipes dont tu fais partie sur les challenges collectifs.',
+			findSlotCta: 'Trouver un slot',
+			viewCta: 'Voir',
+			memberCount: '{n} membre(s)',
+			capacity: 'max {max}',
+			emptyTitle: 'Tu ne fais partie d\'aucune équipe',
+			emptyBody: 'Rejoins un slot ouvert sur le marché des équipes pour démarrer un challenge collectif.'
+		},
 		marketplace: {
 			title: 'Marché des équipes',
 			subtitle: 'Rejoins un slot ouvert sur un challenge team. Skilluv te matche selon tes orientations et tes compétences prouvées.',

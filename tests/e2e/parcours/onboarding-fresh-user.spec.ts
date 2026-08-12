@@ -3,23 +3,25 @@
  *
  * Chemin teste :
  *   1. /auth/register (domain picker + account form) -> POST /auth/register
- *   2. redirect vers /onboarding/bonjour-skilluv (page welcome)
+ *   2. redirect vers /challenges/onboarding
  *   3. verify-email programmatique via dev-endpoint (dev-verify helper)
  *   4. /onboarding/complete-profile (skill_domain + terms) -> POST /me/complete
  *   5. /onboarding/orientations (optionnel, peut skipper) -> POST /me/orientations
  *   6. /challenges -> premier challenge accessible
  *
  * Consomme 1 register cost (rate-limit budget 5/heure). Utiliser un email
- * plus-addressing pour permettre re-run sans collision : `jeremiezitti+onbNONCE@gmail.com`.
+ * plus-addressing pour permettre re-run sans collision, derive de E2E_USER_EMAIL.
  */
 import { test, expect, type Response } from '@playwright/test';
 import { getVerifyToken } from './_helpers/dev-verify';
+import { ANONYMOUS_STATE } from './_helpers/user-session';
 
 const HAS_BACK = Boolean(process.env.PUBLIC_API_BASE_URL);
 const NONCE = Date.now().toString(36);
+const [USER_LOCAL, USER_DOMAIN] = (process.env.E2E_USER_EMAIL ?? 'test@example.com').split('@');
 
 const FRESH_USER = {
-	email: `jeremiezitti+onb${NONCE}@gmail.com`,
+	email: `${USER_LOCAL}+onb${NONCE}@${USER_DOMAIN}`,
 	username: `jz_onb_${NONCE}`,
 	password: 'TestSkilluv2026!',
 	firstName: 'Jeremie',
@@ -27,6 +29,9 @@ const FRESH_USER = {
 } as const;
 
 test.describe('@parcours onboarding-fresh-user', () => {
+	// SKI-71: explicit session posture. The subject of this test IS the
+	// anonymous visitor, so no session must leak in from another spec.
+	test.use({ storageState: ANONYMOUS_STATE });
 	test.skip(!HAS_BACK, 'requires PUBLIC_API_BASE_URL (back staging)');
 	test.setTimeout(120_000);
 
@@ -104,7 +109,9 @@ test.describe('@parcours onboarding-fresh-user', () => {
 			);
 		}
 
-		await page.waitForURL(/\/onboarding\/bonjour-skilluv/, { timeout: 15_000 });
+		// See signup-user.spec.ts: the welcome page does not exist, registration
+		// lands directly on /challenges/onboarding.
+		await page.waitForURL(/\/challenges\/onboarding/, { timeout: 15_000 });
 		await page.screenshot({ path: testInfo.outputPath('03-onboarding-welcome.png'), fullPage: true });
 
 		// ---- STEP 3 : verify-email programmatique ----

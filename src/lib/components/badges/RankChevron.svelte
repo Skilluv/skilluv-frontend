@@ -24,9 +24,12 @@
 	role="img"
 	aria-label="Rang {rankName}"
 >
-	<span class="chevron__symbol">{symbol}</span>
+	<!-- The parent already carries role="img" + aria-label; these spans are the
+	     visual rendering of the same content. Without aria-hidden the rank is
+	     announced twice. -->
+	<span class="chevron__symbol" aria-hidden="true">{symbol}</span>
 	{#if showLabel}
-		<span class="chevron__label">{rankName}</span>
+		<span class="chevron__label" aria-hidden="true">{rankName}</span>
 	{/if}
 </span>
 

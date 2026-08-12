@@ -24,6 +24,16 @@ interface PublicProfileResponse {
 	};
 }
 
+export type SalaryVisibility = 'private' | 'recruiters' | 'public';
+
+export interface ProfileAvailability {
+	available_for_hire: boolean;
+	looking_for: string | null;
+	salary_range_min_eur: number | null;
+	salary_range_max_eur: number | null;
+	salary_visibility: SalaryVisibility;
+}
+
 interface SkillTreeResponse {
 	data: {
 		user: { id: string; display_name: string; title: string; golden_stars: number; total_fragments: number };
@@ -47,6 +57,16 @@ export const profileApi = {
 	/** Modifier son profil */
 	update(data: { bio?: string; github?: string; linkedin?: string; website?: string; twitter?: string; country?: string; city?: string }) {
 		return api.put<ApiResponse<{ user: UserPublic }>>('/profile/me', data);
+	},
+
+	/** GET /profile/me/availability — hiring availability + salary expectations. */
+	getAvailability() {
+		return api.get<ApiResponse<ProfileAvailability>>('/profile/me/availability');
+	},
+
+	/** PUT /profile/me/availability */
+	updateAvailability(data: ProfileAvailability) {
+		return api.put<ApiResponse<ProfileAvailability>>('/profile/me/availability', data);
 	},
 
 	/** Upload avatar */

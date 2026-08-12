@@ -25,24 +25,27 @@
 
 	let { username, isOwner = false, ownedProjects }: Props = $props();
 
-	// Base publique (deep-link stable pour les snippets a coller ailleurs).
-	const BASE = 'https://skill-uv.com';
+	// Public site, for the link the badge points to.
+	const SITE = 'https://skill-uv.com';
 
+	// The badge images themselves are served by the backend, not by this app.
+	// Snippet and preview must use the same source, otherwise the badge a user
+	// pastes into a README differs from the one shown here.
 	let badgeUserSrc = $derived(attestationApi.badgeUserUrl(username));
 	let badgeUserFailed = $state(false);
 
 	let userMarkdown = $derived(
-		`[![Skilluv](${BASE}/badge/user/${username}/validated.svg)](${BASE}/profile/${username})`
+		`[![Skilluv](${badgeUserSrc})](${SITE}/profile/${username})`
 	);
 	let userHtml = $derived(
-		`<a href="${BASE}/profile/${username}"><img src="${BASE}/badge/user/${username}/validated.svg" alt="Skilluv" width="140" height="20" /></a>`
+		`<a href="${SITE}/profile/${username}"><img src="${badgeUserSrc}" alt="Skilluv" width="140" height="20" /></a>`
 	);
 
 	function repoMarkdown(owner: string, name: string): string {
-		return `[![Skilluv](${BASE}/badge/repo/${owner}/${name}/validated.svg)](${BASE}/for-maintainers)`;
+		return `[![Skilluv](${attestationApi.badgeRepoUrl(owner, name)})](${SITE}/for-maintainers)`;
 	}
 	function repoHtml(owner: string, name: string): string {
-		return `<a href="${BASE}/for-maintainers"><img src="${BASE}/badge/repo/${owner}/${name}/validated.svg" alt="Skilluv" width="140" height="20" /></a>`;
+		return `<a href="${SITE}/for-maintainers"><img src="${attestationApi.badgeRepoUrl(owner, name)}" alt="Skilluv" width="140" height="20" /></a>`;
 	}
 
 	async function copyToClipboard(text: string): Promise<boolean> {
@@ -112,7 +115,12 @@
 						{i18n.t('p26.badges.copyBtn')}
 					</Button>
 				</div>
-				<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs"><code>{userMarkdown}</code></pre>
+				<!-- A horizontally scrollable block must be keyboard reachable (WCAG 2.1.1,
+				     axe rule scrollable-region-focusable). The Svelte rule forbids tabindex on
+				     a non-interactive element; axe wins here and the block is exposed as a
+				     named region. -->
+				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+				<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs" tabindex="0" role="region" aria-label={i18n.t('p26.badges.markdownLabel')}><code>{userMarkdown}</code></pre>
 			</div>
 
 			<!-- HTML snippet -->
@@ -124,7 +132,12 @@
 						{i18n.t('p26.badges.copyBtn')}
 					</Button>
 				</div>
-				<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs"><code>{userHtml}</code></pre>
+				<!-- A horizontally scrollable block must be keyboard reachable (WCAG 2.1.1,
+				     axe rule scrollable-region-focusable). The Svelte rule forbids tabindex on
+				     a non-interactive element; axe wins here and the block is exposed as a
+				     named region. -->
+				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+				<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs" tabindex="0" role="region" aria-label={i18n.t('p26.badges.htmlLabel')}><code>{userHtml}</code></pre>
 			</div>
 		</div>
 
@@ -164,7 +177,12 @@
 										{i18n.t('p26.badges.copyBtn')}
 									</Button>
 								</div>
-								<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs"><code>{md}</code></pre>
+								<!-- A horizontally scrollable block must be keyboard reachable (WCAG 2.1.1,
+								     axe rule scrollable-region-focusable). The Svelte rule forbids tabindex on
+								     a non-interactive element; axe wins here and the block is exposed as a
+								     named region. -->
+								<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+								<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs" tabindex="0" role="region" aria-label={i18n.t('p26.badges.markdownLabel')}><code>{md}</code></pre>
 							</div>
 
 							<div>
@@ -175,7 +193,12 @@
 										{i18n.t('p26.badges.copyBtn')}
 									</Button>
 								</div>
-								<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs"><code>{html}</code></pre>
+								<!-- A horizontally scrollable block must be keyboard reachable (WCAG 2.1.1,
+								     axe rule scrollable-region-focusable). The Svelte rule forbids tabindex on
+								     a non-interactive element; axe wins here and the block is exposed as a
+								     named region. -->
+								<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+								<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs" tabindex="0" role="region" aria-label={i18n.t('p26.badges.htmlLabel')}><code>{html}</code></pre>
 							</div>
 						</div>
 					{/each}

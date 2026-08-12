@@ -168,7 +168,9 @@
 
 	{:else if error}
 		<div class="py-16 text-center">
-			<p class="text-4xl font-bold text-text-muted mb-2">404</p>
+			<!-- A real heading, not a styled paragraph: the error state used to
+			     leave the page without any heading at all. -->
+			<h1 class="text-4xl font-bold text-text-muted mb-2">404</h1>
 			<p class="text-text-muted mb-6">{error}</p>
 			<Button variant="secondary" href="/leaderboards">{i18n.t('errors.backHome')}</Button>
 		</div>

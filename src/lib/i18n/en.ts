@@ -304,8 +304,42 @@ export const en: Translations = {
 			account_unbanned: 'Account restored'
 		}
 	},
+	mentions: {
+		title: 'Mentions',
+		subtitle: 'Every place you were cited.',
+		empty: 'Nobody has cited you yet.',
+		emptyHint: 'When someone writes @{username}, it shows up here.',
+		markAllRead: 'Mark all as read',
+		allRead: 'Everything marked as read.',
+		loadError: 'Could not load your mentions.',
+		retry: 'Try again',
+		sources: {
+			forum_post: 'Forum',
+			comment: 'Comment',
+			slice_diary: 'Slice diary',
+			message: 'Message'
+		}
+	},
 	settings: {
 		title: 'Settings',
+		notifications: {
+			title: 'Notifications',
+			subtitle: 'Choose how Skilluv keeps you posted.'
+		},
+		emailPrefs: {
+			title: 'Email preferences',
+			subtitle: 'Choose which emails you receive.',
+			digestWeekly: 'Weekly digest',
+			digestWeeklyDesc: 'Your week of activity, once a week.',
+			streakReminder: 'Streak reminder',
+			streakReminderDesc: 'A nudge when your streak is about to break.',
+			marketing: 'Product announcements',
+			marketingDesc: 'News and announcements. Off by default.',
+			transactional:
+				'Essential emails (verification, password, security, payment receipts) are always sent.',
+			saved: 'Preferences saved',
+			loadError: 'Could not load your email preferences.'
+		},
 		theme: {
 			title: 'Theme', forge: 'Forge', forgeDesc: 'Ochre + terracotta — the artisan\'s workshop',
 			vesperal: 'Vespéral', vesperalDesc: 'Deep blue + ember orange — lantern-lit night',
@@ -316,7 +350,26 @@ export const en: Translations = {
 		language: { title: 'Language', fr: 'Français', en: 'English' },
 		profileSection: {
 			title: 'Profile', displayName: 'Display name',
-			bio: 'Bio', bioHint: 'Short description visible on your profile'
+			bio: 'Bio', bioHint: 'Short description visible on your profile',
+			subtitle: 'What others see of you on Skilluv.',
+			domain: 'Primary domain',
+			country: 'Country', city: 'City',
+			saved: 'Profile updated.'
+		},
+		availability: {
+			title: 'Availability',
+			subtitle: 'Tell recruiters whether you are open to opportunities.',
+			openLabel: 'Open to opportunities',
+			openHint: 'Visible to subscribed companies.',
+			lookingFor: 'What you are looking for',
+			lookingForPh: 'e.g. Rust backend contract, 3 days a week',
+			salaryMin: 'Expected min (EUR/year)',
+			salaryMax: 'Expected max (EUR/year)',
+			visibility: 'Salary visibility',
+			visibilityPrivate: 'Private',
+			visibilityRecruiters: 'Verified recruiters',
+			visibilityPublic: 'Public',
+			saved: 'Availability updated.'
 		},
 		password: {
 			title: 'Password', current: 'Current password',
@@ -598,7 +651,82 @@ export const en: Translations = {
 			receivedFallback: 'New notification'
 		}
 	},
+	notifTypes: {
+		slice_claimed: 'You claimed the slice {title}. 7 days to deliver.',
+		slice_fork_created: 'Your fork is ready: {url}',
+		slice_pr_submitted: 'PR {url} recorded, waiting for CI',
+		slice_pr_submitted_announced: 'Comment posted on your PR',
+		slice_ci_green: 'Your PR passed CI, waiting for Skilluv validation',
+		validation_picked_up_by_you: 'You picked up the validation of the PR by @{user}',
+		validation_picked_up_by_other: 'Your PR is being reviewed by @{user}',
+		slice_validated: 'Your PR was validated. Attestation generated. Fragments credited.',
+		slice_rejected: 'Your PR was rejected by @{user}. Reason: {reason}',
+		slice_merged_upstream: 'Your PR was merged into {repo}. Bonus of {n} fragments.',
+		slice_pr_rejected_upstream: 'Your PR was closed upstream without merging. You can pick the slice up again or move on.',
+		validator_application_status_changed: 'Your validator application ({domain}) was {status}',
+		validator_invitation_received: 'Skilluv invites you to become a {domain} validator. Reason: {notes}',
+		slice_upstream_closed: 'The upstream issue {url} was closed. Your claim was released.',
+		maintainer_digest_confirmation_sent: 'Confirmation email sent',
+		maintainer_digest_subscribed: 'Your digest subscription is confirmed',
+		statusApproved: 'approved',
+		statusRejected: 'rejected',
+		groupedCount: '{n} notifications on this challenge'
+	},
+	notifActions: {
+		seeReasons: 'See reasons and reclaim',
+		accept: 'Accept',
+		decline: 'Decline',
+		downloadPdf: 'Download PDF',
+		shareBadge: 'Share my badge'
+	},
+	guilds: {
+		tabsLabel: 'Guild sections',
+		tabComposition: 'Composition',
+		tabWars: 'Wars',
+		tabMembers: 'Members',
+		roleOwner: 'Owner',
+		roleOfficer: 'Officer',
+		roleMember: 'Member',
+		warsEmpty: 'No war yet.',
+		membersEmpty: 'No member yet.',
+		warStatus: {
+			proposed: 'Proposed',
+			accepted: 'Accepted',
+			declined: 'Declined',
+			concluded: 'Concluded'
+		}
+	},
+	tracks: {
+		title: 'Tracks',
+		subtitle: 'Guided itineraries from the basics to a real contribution.',
+		estimatedHours: '{n} h estimated',
+		emptyTitle: 'No track available',
+		emptyBody: 'Tracks are coming soon. Check back later.',
+		enrollCta: 'Join this track',
+		loginToEnroll: 'Sign in to join',
+		enrolledBadge: 'Enrolled',
+		completedBadge: 'Completed',
+		inProgressBadge: 'In progress',
+		enrolledToast: 'Enrolled in track',
+		startedOn: 'Started on {date}',
+		viewCta: 'View',
+		browseCta: 'Browse catalogue',
+		dashboardTitle: 'My tracks',
+		dashboardSubtitle: 'The tracks you joined.',
+		dashboardEmptyTitle: 'You have not joined any track',
+		dashboardEmptyBody: 'Pick a track to structure your progress.'
+	},
 	teams: {
+		dashboard: {
+			title: 'My teams',
+			subtitle: 'The teams you belong to on collective challenges.',
+			findSlotCta: 'Find a slot',
+			viewCta: 'View',
+			memberCount: '{n} member(s)',
+			capacity: 'max {max}',
+			emptyTitle: 'You are not on any team yet',
+			emptyBody: 'Join an open slot on the team marketplace to start a collective challenge.'
+		},
 		marketplace: {
 			title: 'Team marketplace',
 			subtitle: 'Join an open slot on a team challenge. Skilluv matches you against your orientations and proven skills.',

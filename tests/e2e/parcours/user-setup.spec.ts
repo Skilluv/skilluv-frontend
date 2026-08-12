@@ -1,7 +1,7 @@
 /**
  * SKI-49/50/51/52 — bootstrap user standard (login-first, idempotent).
  *
- * Utilise le compte fixe jeremiezitti@gmail.com. Login-first ; fallback
+ * Uses the account configured through E2E_USER_*. Login-first; fallback
  * register + verify seulement si le compte n'existe pas.
  *
  * A runner AVANT toute spec user necessitant storageState.

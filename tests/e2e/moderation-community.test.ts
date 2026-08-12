@@ -1,6 +1,7 @@
 import { test, expect, type Page, type Route } from '@playwright/test';
+import { gotoHydrated } from './utils/hydration';
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, context }) => {
 	await page.addInitScript(() => {
 		try {
 			localStorage.setItem('skilluv-locale', 'fr');
@@ -8,6 +9,13 @@ test.beforeEach(async ({ page }) => {
 			// storage unavailable
 		}
 	});
+	// Auth is resolved during SSR (hooks.server.ts): without this cookie the
+	// page renders anonymous, capabilities never load and the curator queue
+	// shows "no permission". The capability itself comes from each test's own
+	// `/users/me/capabilities` mock.
+	await context.addCookies([
+		{ name: 'access_token', value: 'challenger', domain: 'localhost', path: '/' }
+	]);
 });
 
 type ApiRoute = { path: string; handler: (route: Route) => Promise<void> | void };
@@ -153,15 +161,43 @@ test.describe('Curator community queue', () => {
 	});
 
 	test('curator sees the queue and approves a challenge', async ({ page }) => {
-		await page.goto('/community/curator');
+		await gotoHydrated(page, '/community/curator');
 		await expect(page.getByRole('heading', { name: 'File curator' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Build a Rust HTTP server' })).toBeVisible();
 
 		await page.getByRole('button', { name: 'Approuver' }).click();
 		await expect(page.getByRole('heading', { name: 'Approuver ce challenge ?' })).toBeVisible();
-		await page.getByLabel('Raison').fill('Solid challenge');
+		// Approving does NOT ask for a reason (`requireReason` is only true for a
+		// rejection): the old `getByLabel('Raison')` waited on a field that is
+		// never rendered and timed the test out.
 		await page.getByRole('button', { name: 'Confirmer' }).click();
 
+		await expect(page.getByRole('heading', { name: 'Build a Rust HTTP server' })).toHaveCount(0);
+	});
+
+	test('curator rejects a challenge with the canonical `reason` payload', async ({ page }) => {
+		let rejected: Record<string, unknown> | null = null;
+		await page.route('**/api/community/challenges/ch-1/reject', async (route) => {
+			rejected = route.request().postDataJSON();
+			await route.fulfill({
+				status: 200,
+				contentType: 'application/json',
+				body: JSON.stringify({ data: { rejected: true, id: 'ch-1', title: 'Build a Rust HTTP server' } })
+			});
+		});
+
+		await gotoHydrated(page, '/community/curator');
+		await expect(page.getByRole('heading', { name: 'Build a Rust HTTP server' })).toBeVisible();
+
+		await page.getByRole('button', { name: 'Rejeter' }).click();
+		await expect(page.getByRole('heading', { name: 'Rejeter ce challenge ?' })).toBeVisible();
+		// A rejection requires a reason, unlike an approval.
+		await page.getByLabel('Raison').fill('Hors sujet pour le domaine code');
+		await page.getByRole('button', { name: 'Confirmer' }).click();
+
+		await expect.poll(() => rejected).not.toBeNull();
+		// The backend field is `reason`; `feedback` returns 422.
+		expect(rejected).toEqual({ reason: 'Hors sujet pour le domaine code' });
 		await expect(page.getByRole('heading', { name: 'Build a Rust HTTP server' })).toHaveCount(0);
 	});
 
@@ -173,7 +209,7 @@ test.describe('Curator community queue', () => {
 				body: JSON.stringify({ data: [] })
 			});
 		});
-		await page.goto('/community/curator');
+		await gotoHydrated(page, '/community/curator');
 		await expect(page.getByText(/permissions/i)).toBeVisible();
 	});
 });

@@ -358,15 +358,18 @@ describe('moderationApi', () => {
 		);
 	});
 
-	it('community.rejectChallenge() sends `feedback` key', async () => {
+	// Verified against the backend on 2026-08-12: sending `feedback` returns
+	// 422 `missing field reason`. This test previously locked in the wrong key,
+	// which is why the broken payload went unnoticed.
+	it('community.rejectChallenge() sends the `reason` key', async () => {
 		fetchMock.mockResolvedValue(ok({}));
 		const { moderationApi } = await import('../../src/lib/api/moderation');
 		await moderationApi.community.rejectChallenge('ch-1', {
-			feedback: 'off-topic — align to the code domain'
+			reason: 'off-topic — align to the code domain'
 		});
 		expect(fetchMock).toHaveBeenCalledWith(
 			'/api/community/challenges/ch-1/reject',
-			expect.objectContaining({ body: expect.stringContaining('feedback') })
+			expect.objectContaining({ body: expect.stringContaining('reason') })
 		);
 	});
 

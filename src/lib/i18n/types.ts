@@ -400,8 +400,41 @@ export interface Translations {
 			account_unbanned: string;
 		};
 	};
+	mentions: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		markAllRead: string;
+		allRead: string;
+		loadError: string;
+		retry: string;
+		sources: {
+			forum_post: string;
+			comment: string;
+			slice_diary: string;
+			message: string;
+		};
+	};
 	settings: {
 		title: string;
+		notifications: {
+			title: string;
+			subtitle: string;
+		};
+		emailPrefs: {
+			title: string;
+			subtitle: string;
+			digestWeekly: string;
+			digestWeeklyDesc: string;
+			streakReminder: string;
+			streakReminderDesc: string;
+			marketing: string;
+			marketingDesc: string;
+			transactional: string;
+			saved: string;
+			loadError: string;
+		};
 		theme: {
 			title: string;
 			forge: string;
@@ -425,6 +458,26 @@ export interface Translations {
 			displayName: string;
 			bio: string;
 			bioHint: string;
+			subtitle: string;
+			domain: string;
+			country: string;
+			city: string;
+			saved: string;
+		};
+		availability: {
+			title: string;
+			subtitle: string;
+			openLabel: string;
+			openHint: string;
+			lookingFor: string;
+			lookingForPh: string;
+			salaryMin: string;
+			salaryMax: string;
+			visibility: string;
+			visibilityPrivate: string;
+			visibilityRecruiters: string;
+			visibilityPublic: string;
+			saved: string;
 		};
 		password: {
 			title: string;
@@ -773,7 +826,82 @@ export interface Translations {
 			receivedFallback: string;
 		};
 	};
+	notifTypes: {
+		slice_claimed: string;
+		slice_fork_created: string;
+		slice_pr_submitted: string;
+		slice_pr_submitted_announced: string;
+		slice_ci_green: string;
+		validation_picked_up_by_you: string;
+		validation_picked_up_by_other: string;
+		slice_validated: string;
+		slice_rejected: string;
+		slice_merged_upstream: string;
+		slice_pr_rejected_upstream: string;
+		validator_application_status_changed: string;
+		validator_invitation_received: string;
+		slice_upstream_closed: string;
+		maintainer_digest_confirmation_sent: string;
+		maintainer_digest_subscribed: string;
+		statusApproved: string;
+		statusRejected: string;
+		groupedCount: string;
+	};
+	notifActions: {
+		seeReasons: string;
+		accept: string;
+		decline: string;
+		downloadPdf: string;
+		shareBadge: string;
+	};
+	guilds: {
+		tabsLabel: string;
+		tabComposition: string;
+		tabWars: string;
+		tabMembers: string;
+		roleOwner: string;
+		roleOfficer: string;
+		roleMember: string;
+		warsEmpty: string;
+		membersEmpty: string;
+		warStatus: {
+			proposed: string;
+			accepted: string;
+			declined: string;
+			concluded: string;
+		};
+	};
+	tracks: {
+		title: string;
+		subtitle: string;
+		estimatedHours: string;
+		emptyTitle: string;
+		emptyBody: string;
+		enrollCta: string;
+		loginToEnroll: string;
+		enrolledBadge: string;
+		completedBadge: string;
+		inProgressBadge: string;
+		enrolledToast: string;
+		startedOn: string;
+		viewCta: string;
+		browseCta: string;
+		dashboardTitle: string;
+		dashboardSubtitle: string;
+		dashboardEmptyTitle: string;
+		dashboardEmptyBody: string;
+	};
 	teams: {
+		dashboard: {
+			title: string;
+			subtitle: string;
+			findSlotCta: string;
+			viewCta: string;
+			memberCount: string;
+			capacity: string;
+			emptyTitle: string;
+			emptyBody: string;
+		};
 		marketplace: {
 			title: string;
 			subtitle: string;

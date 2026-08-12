@@ -59,49 +59,54 @@
 		return (n.data as NotifData | null) ?? {};
 	}
 
-	/** Rendu FR du body enrichi. Fallback : `n.body` renvoye par le back. */
+	/** Localised body for enriched types. Falls back to the backend `body`. */
 	function renderBody(n: Notification): string {
 		const d = ctx(n);
-		switch (n.notification_type) {
-			case 'slice_claimed':
-				return `Tu as claim la slice ${d.slice_title ?? ''}. 7 jours pour livrer.`;
-			case 'slice_fork_created':
-				return `Ton fork est pret : ${d.fork_url ?? ''}`;
-			case 'slice_pr_submitted':
-				return `PR ${d.pr_url ?? ''} enregistree, en attente CI`;
-			case 'slice_pr_submitted_announced':
-				return 'Commentaire poste sur ta PR';
-			case 'slice_ci_green':
-				return 'Ta PR a passe la CI, en attente de validation Skilluv';
-			case 'validation_picked_up_by_you':
-				return `Tu as pris en charge la validation de la PR de @${d.claimer ?? ''}`;
-			case 'validation_picked_up_by_other':
-				return `Ta PR est en cours de review par @${d.validator ?? ''}`;
-			case 'slice_validated':
-				return 'Ta PR a ete validee. Attestation generee. Fragments credites.';
-			case 'slice_rejected':
-				return `Ta PR a ete refusee par @${d.validator ?? ''}. Raison : ${d.reason ?? '—'}`;
-			case 'slice_merged_upstream':
-				return `Ta PR a ete mergee sur ${d.repo ?? ''}. Bonus de ${d.fragments_bonus ?? 0} fragments.`;
-			case 'slice_pr_rejected_upstream':
-				return 'Ta PR a ete fermee upstream sans merge. Tu peux reprendre la slice ou passer a autre chose.';
-			case 'validator_application_status_changed':
-				return `Ta candidature validateur (${d.domain ?? ''}) a ete ${d.status ?? ''}`;
-			case 'validator_invitation_received':
-				return `Skilluv t'invite a devenir validateur ${d.domain ?? ''}. Raison : ${d.notes ?? '—'}`;
-			case 'slice_upstream_closed':
-				return `L'issue upstream ${d.upstream_issue_url ?? ''} a ete fermee. Ta claim a ete relachee.`;
-			case 'maintainer_digest_confirmation_sent':
-				return 'Email de confirmation envoye';
-			case 'maintainer_digest_subscribed':
-				return 'Ton abonnement digest est confirme';
-			default:
-				return n.body ?? '';
-		}
+		const key = `notifTypes.${n.notification_type}`;
+		const params: Record<string, string | number> = {
+			title: d.slice_title ?? '',
+			url: d.fork_url ?? d.pr_url ?? d.upstream_issue_url ?? '',
+			user: d.claimer ?? d.validator ?? '',
+			reason: d.reason ?? '—',
+			repo: d.repo ?? '',
+			n: d.fragments_bonus ?? 0,
+			domain: d.domain ?? '',
+			notes: d.notes ?? '—',
+			status:
+				d.status === 'approved'
+					? i18n.t('notifTypes.statusApproved')
+					: d.status === 'rejected'
+						? i18n.t('notifTypes.statusRejected')
+						: (d.status ?? '')
+		};
+		const text = i18n.t(key, params);
+		// `t()` returns the key itself when missing: fall back to the backend copy
+		// rather than showing a raw key to the user.
+		return text === key ? (n.body ?? '') : text;
 	}
-	// TODO(J-05 v2): grouper par slice_id si plusieurs notifs consecutives.
+
 
 	let items = $state<Notification[]>([]);
+
+	/**
+	 * Consecutive notifications about the same slice are collapsed onto the most
+	 * recent one, which carries a counter. A single claim can otherwise emit five
+	 * notifications in a row (claimed, fork, PR, CI, validation) and bury
+	 * everything else in the list.
+	 */
+	let grouped = $derived.by(() => {
+		const out: { notif: Notification; count: number }[] = [];
+		for (const n of items) {
+			const sliceId = ctx(n).slice_id;
+			const prev = out[out.length - 1];
+			if (sliceId && prev && ctx(prev.notif).slice_id === sliceId && prev.notif.read === n.read) {
+				prev.count += 1;
+				continue;
+			}
+			out.push({ notif: n, count: 1 });
+		}
+		return out;
+	});
 	let loading = $state(true);
 	let error = $state('');
 	let filterRead = $state<boolean | undefined>(false);
@@ -234,7 +239,8 @@
 		/>
 	{:else}
 		<div class="flex flex-col gap-2">
-			{#each items as notif}
+			{#each grouped as row (row.notif.id)}
+				{@const notif = row.notif}
 				{@const Icon = typeIcon[notif.notification_type]}
 				{@const d = ctx(notif)}
 				{@const enrichedBody = renderBody(notif)}
@@ -257,6 +263,11 @@
 						onclick={() => markRead(notif)}
 					>
 						<p class="text-sm font-medium {notif.read ? 'text-text-muted' : 'text-text-primary'}">{notif.title}</p>
+						{#if row.count > 1}
+							<p class="text-xs text-text-muted" data-testid="notif-group-count">
+								{i18n.t('notifTypes.groupedCount', { n: row.count })}
+							</p>
+						{/if}
 						{#if enrichedBody}
 							<p class="text-xs text-text-muted">{enrichedBody}</p>
 						{/if}
@@ -265,28 +276,28 @@
 						{#if notif.notification_type === 'slice_rejected' && d.slice_id}
 							<div class="mt-2">
 								<Button variant="ghost" size="sm" href={`/slices/${d.slice_id}`}>
-									Voir raisons et reclaim
+									{i18n.t('notifActions.seeReasons')}
 								</Button>
 							</div>
 						{:else if notif.notification_type === 'validator_invitation_received' && d.invitation_id}
 							<div class="mt-2 flex gap-2">
 								<Button variant="primary" size="sm" href={`/settings/validator-invitations/${d.invitation_id}`}>
-									Accepter
+									{i18n.t('notifActions.accept')}
 								</Button>
 								<Button variant="ghost" size="sm" href={`/settings/validator-invitations/${d.invitation_id}`}>
-									Refuser
+									{i18n.t('notifActions.decline')}
 								</Button>
 							</div>
 						{:else if notif.notification_type === 'slice_validated' && d.attestation_hash}
 							<div class="mt-2">
 								<Button variant="ghost" size="sm" href={attestationApi.pdfUrl(d.attestation_hash)}>
-									Telecharger PDF
+									{i18n.t('notifActions.downloadPdf')}
 								</Button>
 							</div>
 						{:else if notif.notification_type === 'slice_merged_upstream' && auth.user?.username}
 							<div class="mt-2">
 								<Button variant="ghost" size="sm" href={attestationApi.badgeUserUrl(auth.user.username)}>
-									Partager mon badge
+									{i18n.t('notifActions.shareBadge')}
 								</Button>
 							</div>
 						{/if}

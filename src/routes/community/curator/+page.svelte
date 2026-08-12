@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { moderationApi, type CommunityReviewItem } from '$lib/api/moderation';
 	import { SkilluError } from '$lib/api/client';
 	import { i18n } from '$lib/i18n';
@@ -21,12 +20,20 @@
 
 	let allowed = $derived(auth.can('community_curator') || auth.can('admin'));
 
-	onMount(async () => {
-		if (!allowed) {
+	// Capabilities land after mount (fetch triggered by the layout), so a plain
+	// check inside `onMount` always concluded "no permission" for a legitimate
+	// curator landing directly on the URL.
+	let queueRequested = false;
+	$effect(() => {
+		if (!auth.capabilitiesLoaded) return;
+		if (allowed) {
+			if (!queueRequested) {
+				queueRequested = true;
+				void load();
+			}
+		} else {
 			loading = false;
-			return;
 		}
-		await load();
 	});
 
 	async function load() {
@@ -62,7 +69,7 @@
 			if (dialogAction === 'approve') {
 				await moderationApi.community.approveChallenge(dialogChallenge.id);
 			} else {
-				await moderationApi.community.rejectChallenge(dialogChallenge.id, { feedback: reason });
+				await moderationApi.community.rejectChallenge(dialogChallenge.id, { reason });
 			}
 			challenges = challenges.filter((c) => c.id !== dialogChallenge?.id);
 			toast.success(i18n.t('moderation.toast.done'));
@@ -103,7 +110,15 @@
 		</p>
 	</header>
 
-	{#if !allowed}
+	<!-- Show loading until capabilities land: rendering the refusal on the
+	     first pass flashed "forbidden" at a legitimate curator. -->
+	{#if !auth.capabilitiesLoaded}
+		<div class="space-y-3">
+			{#each Array(3) as _}
+				<Skeleton class="h-32 w-full" rounded="xl" />
+			{/each}
+		</div>
+	{:else if !allowed}
 		<div class="rounded-2xl border border-warning/40 bg-warning/5 p-6 text-center" role="alert">
 			<p class="text-sm text-text-primary">{i18n.t('errors.forbiddenMessage')}</p>
 		</div>

@@ -9,23 +9,9 @@
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import Modal from '$components/ui/Modal.svelte';
-	import CountrySelect from '$components/ui/CountrySelect.svelte';
-	import CityAutocomplete from '$components/ui/CityAutocomplete.svelte';
-	import PushToggle from '$components/pwa/PushToggle.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { Locale } from '$lib/i18n';
 	import type { ThemeBase, SkillDomain, PrivacySettings } from '$types';
-
-	// Profile
-	let bio = $state(auth.user?.bio ?? '');
-	let github = $state(auth.user?.github ?? '');
-	let linkedin = $state(auth.user?.linkedin ?? '');
-	let website = $state(auth.user?.website ?? '');
-	let twitter = $state(auth.user?.twitter ?? '');
-	let country = $state<string | null>(auth.user?.country ?? null);
-	let city = $state<string | null>(auth.user?.city ?? null);
-	let displayName = $state(auth.user?.display_name ?? '');
-	let savingProfile = $state(false);
 
 	// Password
 	let currentPassword = $state('');
@@ -65,29 +51,6 @@
 			privacy = res.data.privacy;
 		}).catch(() => {});
 	});
-
-	async function saveProfile() {
-		savingProfile = true;
-		try {
-			await profileApi.update({
-				bio,
-				github,
-				linkedin,
-				website,
-				twitter,
-				country: country ?? undefined,
-				city: city ?? undefined
-			});
-			if (displayName !== auth.user?.display_name) {
-				await authApi.me(); // refresh
-			}
-			toast.success('Profil mis à jour.');
-		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : 'Erreur lors de la sauvegarde.');
-		} finally {
-			savingProfile = false;
-		}
-	}
 
 	async function changePassword() {
 		if (newPassword.length < 8) { toast.error('8 caractères minimum.'); return; }
@@ -170,42 +133,52 @@
 		</div>
 	</section>
 
-	<!-- Notifications push -->
+	<!-- Notifications (link to dedicated page) -->
 	<section class="mb-8">
-		<h2 class="mb-4 text-lg font-semibold">
-			{i18n.locale === 'fr' ? 'Notifications' : 'Notifications'}
-		</h2>
-		<PushToggle />
+		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.notifications.title')}</h2>
+		<a
+			href="/settings/notifications"
+			data-testid="settings-link-notifications"
+			class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
+		>
+			<div>
+				<p class="font-medium">{i18n.t('settings.notifications.title')}</p>
+				<p class="text-xs text-text-muted">{i18n.t('settings.notifications.subtitle')}</p>
+			</div>
+			<span class="text-text-muted">→</span>
+		</a>
 	</section>
 
-	<!-- Profil -->
+	<!-- Email preferences (link to dedicated page) -->
+	<section class="mb-8">
+		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.emailPrefs.title')}</h2>
+		<a
+			href="/settings/email-preferences"
+			data-testid="settings-link-email-prefs"
+			class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
+		>
+			<div>
+				<p class="font-medium">{i18n.t('settings.emailPrefs.title')}</p>
+				<p class="text-xs text-text-muted">{i18n.t('settings.emailPrefs.subtitle')}</p>
+			</div>
+			<span class="text-text-muted">→</span>
+		</a>
+	</section>
+
+	<!-- Profil (link to dedicated page) -->
 	<section class="mb-8">
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.profileSection.title')}</h2>
-		<div class="flex flex-col gap-4 rounded-2xl border border-border bg-surface-elevated p-6">
-			<Input label={i18n.t('settings.profileSection.displayName')} bind:value={displayName} />
-			<Input label={i18n.t('settings.profileSection.bio')} bind:value={bio} hint={i18n.t('settings.profileSection.bioHint')} />
-			<div class="grid grid-cols-2 gap-3">
-				<Input label="GitHub" placeholder="username" bind:value={github} />
-				<Input label="LinkedIn" placeholder="username" bind:value={linkedin} />
+		<a
+			href="/settings/profile"
+			data-testid="settings-link-profile"
+			class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
+		>
+			<div>
+				<p class="font-medium">{i18n.t('settings.profileSection.title')}</p>
+				<p class="text-xs text-text-muted">{i18n.t('settings.profileSection.subtitle')}</p>
 			</div>
-			<div class="grid grid-cols-2 gap-3">
-				<Input label="X/Twitter" placeholder="@handle" bind:value={twitter} />
-				<Input label={i18n.t('profile.links.website')} placeholder="https://..." bind:value={website} />
-			</div>
-			<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-				<CountrySelect
-					label={i18n.locale === 'fr' ? 'Pays' : 'Country'}
-					bind:value={country}
-					clearable
-				/>
-				<CityAutocomplete
-					label={i18n.locale === 'fr' ? 'Ville' : 'City'}
-					bind:value={city}
-					{country}
-				/>
-			</div>
-			<Button variant="primary" loading={savingProfile} onclick={saveProfile}>{i18n.t('common.actions.save')}</Button>
-		</div>
+			<span class="text-text-muted">→</span>
+		</a>
 	</section>
 
 	<!-- Mot de passe -->

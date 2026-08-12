@@ -40,7 +40,8 @@
 		User as UserIcon,
 		ChevronDown,
 		FileSearch,
-		BookOpenCheck
+		BookOpenCheck,
+		AtSign
 	} from '@lucide/svelte';
 
 	// Conditional user-menu links driven by P18.4 capabilities.
@@ -258,6 +259,7 @@
 				{ href: '/guilds', icon: Shield, label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
 				{ href: '/tournaments', icon: Trophy, label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments' },
 				{ href: '/messages', icon: MessageSquare, label: 'Messages' },
+				{ href: '/mentions', icon: AtSign, label: i18n.t('mentions.title') },
 				{ href: '/leaderboards', icon: TrendingUp, label: i18n.t('common.nav.leaderboards') }
 			]
 		}

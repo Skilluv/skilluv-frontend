@@ -100,15 +100,15 @@ describe('moderationApi.community', () => {
 		expect(init.method).toBe('POST');
 	});
 
-	it('rejectChallenge() carries the `feedback` key (backend contract)', async () => {
+	it('rejectChallenge() carries the `reason` key (backend contract)', async () => {
 		fetchMock.mockResolvedValue(ok({ rejected: true, id: 'c-1', title: 'x' }));
 		const { moderationApi } = await import('../../src/lib/api/moderation');
 		await moderationApi.community.rejectChallenge('c-1', {
-			feedback: 'off-topic — please align with the code domain'
+			reason: 'off-topic — please align with the code domain'
 		});
 		const body = JSON.parse(fetchMock.mock.calls[0][1].body);
-		expect(body.feedback).toBeDefined();
-		expect(body.feedback.length).toBeGreaterThanOrEqual(8);
+		expect(body.reason).toBeDefined();
+		expect(body.reason.length).toBeGreaterThanOrEqual(8);
 	});
 });
 

@@ -1,11 +1,9 @@
 /**
  * Helper enterprise-session — LOGIN-FIRST sur compte fixe.
  *
- * Compte fixe backend (staging) :
- *   email    : flemartpro@gmail.com
- *   username : flemartpro
- *   password : Password123!
- *   slug     : flemart-pro
+ * Credentials come from the environment, never from source: this repository is
+ * public. Set E2E_ENTERPRISE_EMAIL / E2E_ENTERPRISE_USERNAME /
+ * E2E_ENTERPRISE_PASSWORD (see .env.example).
  *
  * Strategie :
  *  1. Tentative login /api/auth/login. Si succes :
@@ -33,14 +31,37 @@ const __dirname = path.dirname(__filename);
 
 // ---- Compte fixe ----------------------------------------------------------
 
+function requireEnv(name: string): string {
+	const value = process.env[name];
+	if (!value) {
+		throw new Error(
+			`${name} is not set. The e2e enterprise account is configured through ` +
+				`the environment, not in source. See .env.example.`
+		);
+	}
+	return value;
+}
+
 export const ENTERPRISE_FIXED = {
-	email: 'flemartpro@gmail.com',
-	username: 'flemartpro',
-	password: 'Password123!',
-	firstName: 'Flemart',
-	lastName: 'Pro',
-	companyName: 'Flemart Pro'
-} as const;
+	get email() {
+		return requireEnv('E2E_ENTERPRISE_EMAIL');
+	},
+	get username() {
+		return requireEnv('E2E_ENTERPRISE_USERNAME');
+	},
+	get password() {
+		return requireEnv('E2E_ENTERPRISE_PASSWORD');
+	},
+	get firstName() {
+		return process.env.E2E_ENTERPRISE_FIRST_NAME ?? 'Test';
+	},
+	get lastName() {
+		return process.env.E2E_ENTERPRISE_LAST_NAME ?? 'Enterprise';
+	},
+	get companyName() {
+		return process.env.E2E_ENTERPRISE_COMPANY ?? 'Test Enterprise';
+	}
+};
 
 export interface EnterpriseCredentials {
 	email: string;

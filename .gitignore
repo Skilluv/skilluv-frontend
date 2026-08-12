@@ -16,6 +16,8 @@ vite.config.ts.timestamp-*
 # Tests
 test-results
 playwright-report
+# Playwright storage state + plaintext test-account credentials.
+tests/e2e/.auth/
 
 # OS
 .DS_Store

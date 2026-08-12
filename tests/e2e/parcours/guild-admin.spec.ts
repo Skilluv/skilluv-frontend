@@ -18,7 +18,9 @@ test.describe('@parcours guild admin', () => {
 
 	test('page guilds/{slug} affiche les onglets et le membre courant peut voir composition', async ({ page }) => {
 		await page.goto('/guilds');
-		const first = page.locator('a[href^="/guilds/"]').first();
+		// Target the cards explicitly: `a[href^="/guilds/"]` also matched the
+		// "create a guild" CTA, which navigated to /guilds/new and failed.
+		const first = page.getByTestId('guild-card').first();
 		const count = await first.count();
 		if (count === 0) {
 			test.info().annotations.push({ type: 'note', description: 'no guild in seed' });

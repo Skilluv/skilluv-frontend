@@ -10,12 +10,16 @@
  */
 import { test, expect, type Response } from '@playwright/test';
 import { getVerifyToken } from './_helpers/dev-verify';
+import { ANONYMOUS_STATE } from './_helpers/user-session';
 
 const HAS_BACK = Boolean(process.env.PUBLIC_API_BASE_URL);
 
 const NONCE = Date.now().toString(36);
+const [ENT_LOCAL, ENT_DOMAIN] = (
+	process.env.E2E_ENTERPRISE_EMAIL ?? 'test-enterprise@example.com'
+).split('@');
 const OWNER = {
-	email: `flemartpro+${NONCE}@gmail.com`,
+	email: `${ENT_LOCAL}+${NONCE}@${ENT_DOMAIN}`,
 	username: `flemart_pro_${NONCE}`,
 	// Le validateur enterprise interdit d'inclure name/username/email dans le
 	// password. Le user avait proposé "TestSkilluv2026!" mais lastName="Test"
@@ -32,6 +36,9 @@ const OWNER = {
 };
 
 test.describe('@signup signup-enterprise', () => {
+	// SKI-71: explicit session posture. The subject of this test IS the
+	// anonymous visitor, so no session must leak in from another spec.
+	test.use({ storageState: ANONYMOUS_STATE });
 	test.skip(!HAS_BACK, 'requires PUBLIC_API_BASE_URL (back staging)');
 	test.setTimeout(90_000);
 

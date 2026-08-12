@@ -1,7 +1,7 @@
 /**
  * SKI-53 — bootstrap enterprise-owner (login-first, idempotent).
  *
- * Utilise le compte fixe flemartpro@gmail.com deja seed cote back. Login-first
+ * Uses the account configured through E2E_ENTERPRISE_*. Login-first
  * — le TOTP est arme si necessaire, sinon on ne re-arme pas. Le storageState
  * est rafraichi a chaque run pour que les cookies restent valides.
  *

@@ -1,3 +1,4 @@
+import { env } from '$env/dynamic/public';
 import { createApiClient } from './client';
 
 // --- Types (P26 v2 attestation publique) ---
@@ -29,27 +30,48 @@ export interface AttestationInvalid {
 
 export type AttestationResponse = AttestationValid | AttestationInvalid;
 
-// SKI-115 endpoint hors /api (public verify)
-const publicApi = createApiClient(fetch, '');
+const api = createApiClient();
+
+/**
+ * Origin of the backend, without the `/api` prefix.
+ *
+ * The PDF and the badge SVGs are served from the backend ROOT, not under
+ * `/api`. Referencing them with a relative path resolved them against the
+ * frontend origin instead, where `/badge/*` does not exist and `/verify/*` is
+ * taken by the verification page itself — so every badge and every PDF link was
+ * broken. They are consumed as `href` / `src`, never fetched, so an absolute
+ * cross-origin URL needs no CORS.
+ */
+function backendOrigin(): string {
+	return (env.PUBLIC_API_BASE_URL ?? '').replace(/\/+$/, '');
+}
 
 export const attestationApi = {
-	// GET /verify/{hash} — retourne le JSON attestation
+	/**
+	 * Verification payload.
+	 *
+	 * Goes through `/api` so it stays same-origin behind the existing proxy.
+	 * See SKI-288: the backend also serves this at its root, but that path
+	 * collides with this app's own `/verify/[hash]` page.
+	 */
 	verify(hash: string) {
-		return publicApi.get<AttestationResponse>(`/verify/${encodeURIComponent(hash)}`);
+		// Bare payload, not the `{ data, meta }` envelope: this route mirrors the
+		// public root endpoint, which returns the object directly.
+		return api.get<AttestationResponse>(`/verify/${encodeURIComponent(hash)}`);
 	},
 
-	// URL directe du PDF (deep link, pas de fetch cote front)
+	/** Direct PDF link (SKI-118). */
 	pdfUrl(hash: string): string {
-		return `/verify/${encodeURIComponent(hash)}.pdf`;
+		return `${backendOrigin()}/verify/${encodeURIComponent(hash)}.pdf`;
 	},
 
-	// SKI-116 badge user SVG (URL directe)
+	/** User badge SVG (SKI-116). */
 	badgeUserUrl(username: string): string {
-		return `/badge/user/${encodeURIComponent(username)}/validated.svg`;
+		return `${backendOrigin()}/badge/user/${encodeURIComponent(username)}/validated.svg`;
 	},
 
-	// SKI-117 badge repo SVG (URL directe)
+	/** Repo badge SVG (SKI-117). */
 	badgeRepoUrl(owner: string, name: string): string {
-		return `/badge/repo/${encodeURIComponent(owner)}/${encodeURIComponent(name)}/validated.svg`;
+		return `${backendOrigin()}/badge/repo/${encodeURIComponent(owner)}/${encodeURIComponent(name)}/validated.svg`;
 	}
 };

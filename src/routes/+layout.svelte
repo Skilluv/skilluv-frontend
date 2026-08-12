@@ -49,24 +49,44 @@
 		return seg ?? 'home';
 	});
 
-	// Hydrate auth depuis les donnees SSR — includes the `hasPasskey` flag so
-	// the enterprise layout guard can honour "TOTP OR passkey" as satisfying
-	// the 2FA gate on the very first client render (no /auth/me round-trip
-	// needed).
-	//
-	// SKI-102 : quand `authProbe === 'unknown'` (backend a repondu 5xx ou
-	// timeout au SSR fetch /auth/me), on NE DOIT PAS reset l'auth store. Le
-	// cookie access_token est encore la, la session est probablement valide,
-	// et un vrai reset ferait disparaitre navbar+sidebar d'un user pourtant
-	// legitime. Un vrai logout serveur passe par authProbe === 'unauthenticated'.
-	$effect(() => {
+	// Plain variable, deliberately not `$state`: the effect below must not track
+	// it. Without this guard the effect re-applied `data.user` on every pass and
+	// wiped the orientations loaded moments earlier by refreshOrientations(),
+	// leaving soft-blocked pages stuck on "no orientation".
+	let seededIdentity: string | null = null;
+
+	// Hydrates auth from SSR data, including `hasPasskey` so the enterprise
+	// layout guard can honour "TOTP OR passkey" on the very first client render
+	// (no /auth/me round-trip needed).
+	function syncAuthFromServer() {
 		if (data.authProbe === 'unknown' && auth.user) {
-			// Backend flake : garder l'etat client existant.
+			// SKI-102: on `unknown` (backend 5xx or timeout on the SSR /auth/me
+			// fetch) the store must NOT be reset. The access_token cookie is
+			// still there and the session is probably valid; resetting would
+			// strip navbar + sidebar from a legitimate user. A real logout comes
+			// through authProbe === 'unauthenticated'.
 			return;
 		}
+		const identity = `${data.user?.id ?? 'anon'}|${data.authProbe}|${data.hasPasskey ?? false}`;
+		if (identity === seededIdentity) return;
+		seededIdentity = identity;
 		auth.setUser(data.user);
 		auth.hasPasskey = data.hasPasskey ?? false;
-	});
+		// The user comes from SSR, not from `auth.init()`, so capabilities and
+		// orientations must be loaded explicitly. Idempotent in the store.
+		void auth.hydrateSessionExtras();
+	}
+
+	// Seed synchronously, while the layout script runs, hence before child
+	// pages mount. Pages guarded by
+	// `onMount(() => { if (!auth.isAuthenticated) goto('/auth/login') })` run
+	// before the layout's effects: seeding only from the effect bounced
+	// authenticated users to /auth/login on a direct page load.
+	syncAuthFromServer();
+
+	// The effect still covers later navigations, where `data` changes without
+	// re-running the layout script.
+	$effect(syncAuthFromServer);
 
 	// Initialise theme + langue côté client
 	$effect(() => {

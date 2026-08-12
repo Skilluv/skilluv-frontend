@@ -1,6 +1,7 @@
 import { test, expect, type Page, type Route } from '@playwright/test';
+import { gotoHydrated } from './utils/hydration';
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, context }) => {
 	await page.addInitScript(() => {
 		try {
 			localStorage.setItem('skilluv-locale', 'fr');
@@ -8,6 +9,12 @@ test.beforeEach(async ({ page }) => {
 			// storage unavailable
 		}
 	});
+	// Auth state is resolved during SSR (hooks.server.ts): mocking `/auth/me` in
+	// the browser is not enough, the page rendered anonymous and the orientation
+	// soft-block never showed.
+	await context.addCookies([
+		{ name: 'access_token', value: 'challenger', domain: 'localhost', path: '/' }
+	]);
 });
 
 type ApiRoute = { path: string; handler: (route: Route) => Promise<void> | void };
@@ -156,14 +163,14 @@ test.describe('Team marketplace page', () => {
 	});
 
 	test('renders open slots with team + challenge info', async ({ page }) => {
-		await page.goto('/teams/marketplace');
+		await gotoHydrated(page, '/teams/marketplace');
 		await expect(page.getByRole('heading', { name: 'Marché des équipes' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Build a KV store' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Realtime dashboard' })).toBeVisible();
 	});
 
 	test('opens fill dialog and joins a slot', async ({ page }) => {
-		await page.goto('/teams/marketplace');
+		await gotoHydrated(page, '/teams/marketplace');
 		await page
 			.locator('article', { hasText: 'Build a KV store' })
 			.getByRole('button', { name: 'Rejoindre' })
@@ -181,7 +188,7 @@ test.describe('Team marketplace page', () => {
 				body: JSON.stringify({ data: [] })
 			});
 		});
-		await page.goto('/teams/marketplace');
+		await gotoHydrated(page, '/teams/marketplace');
 		await expect(
 			page.getByRole('heading', { name: 'Cette section a besoin de tes orientations' })
 		).toBeVisible();

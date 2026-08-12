@@ -1,4 +1,5 @@
 import { test, expect, type Page, type Route } from '@playwright/test';
+import { gotoHydrated } from './utils/hydration';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -35,6 +36,30 @@ async function mockApi(page: Page, routes: ApiRoute[]) {
 	});
 }
 
+/** Selects a domain card on /auth/register, retrying until step 2 renders. */
+async function selectDomain(page: Page, label: string) {
+	const card = page.getByRole('button').filter({ has: page.getByText(label, { exact: true }) });
+	await expect(async () => {
+		await card.click();
+		await expect(page.locator('input[type="email"]')).toBeVisible({ timeout: 1500 });
+	}).toPass({ timeout: 20_000 });
+}
+
+/** Submits the login form, retrying until POST /auth/login actually fires. */
+async function submitLogin(page: Page) {
+	const submit = page.getByRole('button', { name: 'Se connecter', exact: true });
+	await expect(async () => {
+		const posted = page
+			.waitForRequest(
+				(r) => r.url().includes('/api/auth/login') && r.method() === 'POST',
+				{ timeout: 1500 }
+			)
+			.catch(() => null);
+		await submit.click();
+		expect(await posted, 'POST /auth/login fired').not.toBeNull();
+	}).toPass({ timeout: 20_000 });
+}
+
 const fakeUser = {
 	id: 'user-1',
 	email: 'kofi@example.com',
@@ -52,14 +77,14 @@ const fakeUser = {
 
 test.describe('Auth layout', () => {
 	test('logo, footer, and no top navbar on auth pages', async ({ page }) => {
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await expect(page.getByRole('link', { name: /Skilluv/i }).first()).toBeVisible();
 		await expect(page.locator('header nav')).toHaveCount(0);
 		await expect(page.getByText(/Skilluv ©/)).toBeVisible();
 	});
 
 	test('logo links back to home', async ({ page }) => {
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		const logo = page.locator('a[href="/"]').first();
 		await expect(logo).toBeVisible();
 	});
@@ -71,16 +96,22 @@ test.describe('Auth layout', () => {
 
 test.describe('Register — step 1 (domain selection)', () => {
 	test('shows the four domain cards', async ({ page }) => {
-		await page.goto('/auth/register');
+		await gotoHydrated(page, '/auth/register');
 		await expect(page.locator('h1')).toBeVisible();
 
+		// A card's accessible name is label + description, and the descriptions
+		// quote each other ("Game design" in the Jeux Video card, "motion design"
+		// in the Design card), so /Design/i matched two buttons. Target the card
+		// title instead.
 		for (const label of ['Code', 'Design', 'Jeux Vidéo', 'Cybersécurité']) {
-			await expect(page.getByRole('button', { name: new RegExp(label, 'i') })).toBeVisible();
+			await expect(
+				page.getByRole('button').filter({ has: page.getByText(label, { exact: true }) })
+			).toBeVisible();
 		}
 	});
 
 	test('shows the three OAuth entry points', async ({ page }) => {
-		await page.goto('/auth/register');
+		await gotoHydrated(page, '/auth/register');
 		await expect(page.getByRole('link', { name: 'Google' })).toHaveAttribute(
 			'href',
 			'/api/auth/google/start'
@@ -96,13 +127,13 @@ test.describe('Register — step 1 (domain selection)', () => {
 	});
 
 	test('links to /auth/login', async ({ page }) => {
-		await page.goto('/auth/register');
+		await gotoHydrated(page, '/auth/register');
 		await expect(page.locator('a[href="/auth/login"]')).toBeVisible();
 	});
 
 	test('clicking a domain moves to step 2 with domain shown', async ({ page }) => {
-		await page.goto('/auth/register');
-		await page.getByRole('button', { name: /Code/ }).click();
+		await gotoHydrated(page, '/auth/register');
+		await selectDomain(page, 'Code');
 
 		await expect(page.locator('input[autocomplete="username"]')).toBeVisible();
 		await expect(page.locator('input[type="email"]')).toBeVisible();
@@ -114,9 +145,8 @@ test.describe('Register — step 1 (domain selection)', () => {
 	test.describe('domain switching', () => {
 		for (const domain of ['Design', 'Jeux Vidéo', 'Cybersécurité']) {
 			test(`selecting "${domain}" jumps to step 2`, async ({ page }) => {
-				await page.goto('/auth/register');
-				await page.getByRole('button', { name: new RegExp(domain, 'i') }).click();
-				await expect(page.locator('input[type="email"]')).toBeVisible();
+				await gotoHydrated(page, '/auth/register');
+				await selectDomain(page, domain);
 			});
 		}
 	});
@@ -128,8 +158,8 @@ test.describe('Register — step 1 (domain selection)', () => {
 
 test.describe('Register — step 2 (form)', () => {
 	test.beforeEach(async ({ page }) => {
-		await page.goto('/auth/register');
-		await page.getByRole('button', { name: /Code/ }).click();
+		await gotoHydrated(page, '/auth/register');
+		await selectDomain(page, 'Code');
 	});
 
 	test('back link returns to step 1', async ({ page }) => {
@@ -178,7 +208,11 @@ test.describe('Register — step 2 (form)', () => {
 		await page.locator('input[type="checkbox"]').evaluate((el) => el.removeAttribute('required'));
 
 		await page.getByRole('button', { name: /Créer mon compte/i }).click();
-		await expect(page.getByText(/CGU|Terms of Service/i)).toBeVisible();
+		// The checkbox label already contains a "CGU" link, so assert on the full
+		// error message rather than the word alone.
+		await expect(
+			page.getByText(/Vous devez accepter les CGU|You must accept the Terms of Service/i)
+		).toBeVisible();
 	});
 
 	test('successful registration redirects to /challenges/onboarding', async ({ page }) => {
@@ -274,22 +308,22 @@ test.describe('Register — step 2 (form)', () => {
 
 test.describe('Login', () => {
 	test('renders the form fields', async ({ page }) => {
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await expect(page.locator('h1')).toBeVisible();
 		await expect(page.locator('input[autocomplete="username"]')).toBeVisible();
 		await expect(page.locator('input[type="password"]')).toBeVisible();
-		await expect(page.getByRole('button', { name: /Se connecter/i })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Se connecter', exact: true })).toBeVisible();
 	});
 
 	test('links to register, forgot password and magic-link', async ({ page }) => {
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await expect(page.locator('a[href="/auth/register"]')).toBeVisible();
 		await expect(page.locator('a[href="/auth/forgot-password"]')).toBeVisible();
 		await expect(page.locator('a[href="/auth/magic-link"]')).toBeVisible();
 	});
 
 	test('shows OAuth provider buttons', async ({ page }) => {
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await expect(page.getByRole('button', { name: /Google/i })).toBeVisible();
 		await expect(page.getByRole('button', { name: /LinkedIn/i })).toBeVisible();
 		await expect(page.getByRole('button', { name: /GitHub/i })).toBeVisible();
@@ -299,9 +333,14 @@ test.describe('Login', () => {
 		await page.route('**/api/auth/google/start', (route) =>
 			route.fulfill({ status: 200, contentType: 'text/html', body: '<html><body>ok</body></html>' })
 		);
-		await page.goto('/auth/login');
-		await page.getByRole('button', { name: /Google/i }).click();
-		await page.waitForURL('**/api/auth/google/start');
+		await gotoHydrated(page, '/auth/login');
+		// The OAuth button navigates through JS, so the click is inert until
+		// hydration. Retry until the URL changes.
+		const google = page.getByRole('button', { name: /Google/i });
+		await expect(async () => {
+			await google.click();
+			await expect(page).toHaveURL(/\/api\/auth\/google\/start/, { timeout: 1500 });
+		}).toPass({ timeout: 20_000 });
 	});
 
 	test('successful login with active profile redirects home', async ({ page }) => {
@@ -326,10 +365,10 @@ test.describe('Login', () => {
 			}
 		]);
 
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await page.locator('input[autocomplete="username"]').fill('kofi@example.com');
 		await page.locator('input[type="password"]').fill('StrongPass1!');
-		await page.getByRole('button', { name: /Se connecter/i }).click();
+		await submitLogin(page);
 
 		await page.waitForURL((url) => url.pathname === '/', { timeout: 5000 });
 	});
@@ -347,10 +386,10 @@ test.describe('Login', () => {
 			}
 		]);
 
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await page.locator('input[autocomplete="username"]').fill('kofi@example.com');
 		await page.locator('input[type="password"]').fill('StrongPass1!');
-		await page.getByRole('button', { name: /Se connecter/i }).click();
+		await submitLogin(page);
 
 		await page.waitForURL('**/challenges/onboarding', { timeout: 5000 });
 	});
@@ -370,10 +409,10 @@ test.describe('Login', () => {
 			}
 		]);
 
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await page.locator('input[autocomplete="username"]').fill('kofi@example.com');
 		await page.locator('input[type="password"]').fill('StrongPass1!');
-		await page.getByRole('button', { name: /Se connecter/i }).click();
+		await submitLogin(page);
 
 		await expect(page.locator('input[autocomplete="one-time-code"]')).toBeVisible();
 		await expect(page.getByRole('button', { name: /Utiliser un code de secours/i })).toBeVisible();
@@ -394,10 +433,10 @@ test.describe('Login', () => {
 			}
 		]);
 
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await page.locator('input[autocomplete="username"]').fill('kofi@example.com');
 		await page.locator('input[type="password"]').fill('StrongPass1!');
-		await page.getByRole('button', { name: /Se connecter/i }).click();
+		await submitLogin(page);
 
 		await page.getByRole('button', { name: /code de secours/i }).click();
 		await expect(page.getByRole('button', { name: /code TOTP/i })).toBeVisible();
@@ -421,10 +460,10 @@ test.describe('Login', () => {
 			}
 		]);
 
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await page.locator('input[autocomplete="username"]').fill('kofi@example.com');
 		await page.locator('input[type="password"]').fill('StrongPass1!');
-		await page.getByRole('button', { name: /Se connecter/i }).click();
+		await submitLogin(page);
 
 		await expect(page.getByText(/Un code a été envoyé/i)).toBeVisible();
 		await expect(page.locator('input[autocomplete="one-time-code"]')).toBeVisible();
@@ -445,10 +484,10 @@ test.describe('Login', () => {
 			}
 		]);
 
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await page.locator('input[autocomplete="username"]').fill('kofi@example.com');
 		await page.locator('input[type="password"]').fill('WrongPass1!');
-		await page.getByRole('button', { name: /Se connecter/i }).click();
+		await submitLogin(page);
 
 		await expect(page.getByRole('alert')).toContainText(/Identifiants invalides/i);
 	});
@@ -468,12 +507,12 @@ test.describe('Login', () => {
 			}
 		]);
 
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await expect(page.getByText(/^ou$/i).first()).toBeVisible();
 
 		await page.locator('input[autocomplete="username"]').fill('kofi@example.com');
 		await page.locator('input[type="password"]').fill('StrongPass1!');
-		await page.getByRole('button', { name: /Se connecter/i }).click();
+		await submitLogin(page);
 
 		await expect(page.locator('input[autocomplete="one-time-code"]')).toBeVisible();
 		// OAuth buttons disappear during 2FA flows
@@ -487,14 +526,14 @@ test.describe('Login', () => {
 
 test.describe('Forgot password', () => {
 	test('renders the email form', async ({ page }) => {
-		await page.goto('/auth/forgot-password');
+		await gotoHydrated(page, '/auth/forgot-password');
 		await expect(page.locator('h1')).toBeVisible();
 		await expect(page.locator('input[type="email"]')).toBeVisible();
 		await expect(page.getByRole('button', { name: /Envoyer le lien/i })).toBeVisible();
 	});
 
 	test('back-to-login link is present', async ({ page }) => {
-		await page.goto('/auth/forgot-password');
+		await gotoHydrated(page, '/auth/forgot-password');
 		await expect(page.locator('a[href="/auth/login"]')).toBeVisible();
 	});
 
@@ -511,7 +550,7 @@ test.describe('Forgot password', () => {
 			}
 		]);
 
-		await page.goto('/auth/forgot-password');
+		await gotoHydrated(page, '/auth/forgot-password');
 		await page.locator('input[type="email"]').fill('kofi@example.com');
 		await page.getByRole('button', { name: /Envoyer le lien/i }).click();
 
@@ -534,7 +573,7 @@ test.describe('Forgot password', () => {
 			}
 		]);
 
-		await page.goto('/auth/forgot-password');
+		await gotoHydrated(page, '/auth/forgot-password');
 		await page.locator('input[type="email"]').fill('kofi@example.com');
 		await page.getByRole('button', { name: /Envoyer le lien/i }).click();
 
@@ -548,13 +587,13 @@ test.describe('Forgot password', () => {
 
 test.describe('Reset password', () => {
 	test('renders the new-password form when a token is provided', async ({ page }) => {
-		await page.goto('/auth/reset-password?token=abc123');
+		await gotoHydrated(page, '/auth/reset-password?token=abc123');
 		await expect(page.locator('h1')).toContainText(/Nouveau mot de passe/i);
 		await expect(page.locator('input[autocomplete="new-password"]')).toHaveCount(2);
 	});
 
 	test('mismatched passwords show an error', async ({ page }) => {
-		await page.goto('/auth/reset-password?token=abc123');
+		await gotoHydrated(page, '/auth/reset-password?token=abc123');
 		const inputs = page.locator('input[autocomplete="new-password"]');
 		await inputs.nth(0).fill('StrongPass1!');
 		await inputs.nth(1).fill('OtherPass1!');
@@ -563,16 +602,20 @@ test.describe('Reset password', () => {
 	});
 
 	test('too-short password shows an error', async ({ page }) => {
-		await page.goto('/auth/reset-password?token=abc123');
+		await gotoHydrated(page, '/auth/reset-password?token=abc123');
 		const inputs = page.locator('input[autocomplete="new-password"]');
 		await inputs.nth(0).fill('short');
 		await inputs.nth(1).fill('short');
-		await page.getByRole('button', { name: /Changer le mot de passe/i }).click();
-		await expect(page.getByRole('alert')).toBeVisible();
+		// Purely client-side validation: without hydration the click does nothing.
+		const submit = page.getByRole('button', { name: /Changer le mot de passe/i });
+		await expect(async () => {
+			await submit.click();
+			await expect(page.getByRole('alert')).toBeVisible({ timeout: 1500 });
+		}).toPass({ timeout: 20_000 });
 	});
 
 	test('missing token shows the invalid-link error', async ({ page }) => {
-		await page.goto('/auth/reset-password');
+		await gotoHydrated(page, '/auth/reset-password');
 		const inputs = page.locator('input[autocomplete="new-password"]');
 		await inputs.nth(0).fill('StrongPass1!');
 		await inputs.nth(1).fill('StrongPass1!');
@@ -593,7 +636,7 @@ test.describe('Reset password', () => {
 			}
 		]);
 
-		await page.goto('/auth/reset-password?token=abc123');
+		await gotoHydrated(page, '/auth/reset-password?token=abc123');
 		const inputs = page.locator('input[autocomplete="new-password"]');
 		await inputs.nth(0).fill('StrongPass1!');
 		await inputs.nth(1).fill('StrongPass1!');
@@ -617,7 +660,7 @@ test.describe('Reset password', () => {
 			}
 		]);
 
-		await page.goto('/auth/reset-password?token=abc123');
+		await gotoHydrated(page, '/auth/reset-password?token=abc123');
 		const inputs = page.locator('input[autocomplete="new-password"]');
 		await inputs.nth(0).fill('StrongPass1!');
 		await inputs.nth(1).fill('StrongPass1!');
@@ -633,7 +676,7 @@ test.describe('Reset password', () => {
 
 test.describe('Magic link (request)', () => {
 	test('renders the form with intent tabs and email input', async ({ page }) => {
-		await page.goto('/auth/magic-link');
+		await gotoHydrated(page, '/auth/magic-link');
 		await expect(page.locator('h1')).toBeVisible();
 		await expect(page.getByRole('button', { name: /^Connexion$/i })).toBeVisible();
 		await expect(page.getByRole('button', { name: /^Inscription$/i })).toBeVisible();
@@ -641,13 +684,13 @@ test.describe('Magic link (request)', () => {
 	});
 
 	test('submit button is disabled when email is empty', async ({ page }) => {
-		await page.goto('/auth/magic-link');
+		await gotoHydrated(page, '/auth/magic-link');
 		const submit = page.getByRole('button', { name: /M'envoyer un lien/i });
 		await expect(submit).toBeDisabled();
 	});
 
 	test('toggling the intent tab changes the submit label', async ({ page }) => {
-		await page.goto('/auth/magic-link');
+		await gotoHydrated(page, '/auth/magic-link');
 		await page.locator('input[type="email"]').fill('kofi@example.com');
 		await expect(page.getByRole('button', { name: /lien de connexion/i })).toBeVisible();
 
@@ -668,7 +711,7 @@ test.describe('Magic link (request)', () => {
 			}
 		]);
 
-		await page.goto('/auth/magic-link');
+		await gotoHydrated(page, '/auth/magic-link');
 		await page.locator('input[type="email"]').fill('kofi@example.com');
 		await page.getByRole('button', { name: /M'envoyer un lien/i }).click();
 
@@ -684,7 +727,7 @@ test.describe('Magic link (request)', () => {
 
 test.describe('Magic link (consume)', () => {
 	test('missing token shows the error state', async ({ page }) => {
-		await page.goto('/auth/magic-link/consume');
+		await gotoHydrated(page, '/auth/magic-link/consume');
 		await expect(page.getByText(/Lien invalide/i)).toBeVisible();
 		await expect(page.getByText(/Aucun token/i)).toBeVisible();
 	});
@@ -711,12 +754,17 @@ test.describe('Magic link (consume)', () => {
 			}
 		]);
 
-		await page.goto('/auth/magic-link/consume?token=abc123&intent=login');
+		await gotoHydrated(page, '/auth/magic-link/consume?token=abc123&intent=login');
 		await expect(page.getByText(/Bienvenue/i)).toBeVisible({ timeout: 5000 });
 		await page.waitForURL((url) => url.pathname === '/', { timeout: 5000 });
 	});
 
 	test('signup intent redirects to onboarding after consume', async ({ page }) => {
+		// A signup magic link always leads to an inactive account: it is
+		// `profile_active: false` that routes to onboarding through
+		// postLoginDestination(). The previous version mocked an already active
+		// account while expecting onboarding, an impossible scenario.
+		const freshUser = { ...fakeUser, profile_active: false };
 		await mockApi(page, [
 			{
 				path: '/auth/magic-link/consume',
@@ -724,7 +772,7 @@ test.describe('Magic link (consume)', () => {
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
-						body: JSON.stringify({ data: { user: fakeUser } })
+						body: JSON.stringify({ data: { user: freshUser } })
 					})
 			},
 			{
@@ -733,12 +781,12 @@ test.describe('Magic link (consume)', () => {
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
-						body: JSON.stringify({ data: { user: fakeUser } })
+						body: JSON.stringify({ data: { user: freshUser } })
 					})
 			}
 		]);
 
-		await page.goto('/auth/magic-link/consume?token=abc123&intent=signup');
+		await gotoHydrated(page, '/auth/magic-link/consume?token=abc123&intent=signup');
 		await page.waitForURL('**/challenges/onboarding', { timeout: 5000 });
 	});
 
@@ -757,7 +805,7 @@ test.describe('Magic link (consume)', () => {
 			}
 		]);
 
-		await page.goto('/auth/magic-link/consume?token=bad');
+		await gotoHydrated(page, '/auth/magic-link/consume?token=bad');
 		await expect(page.getByText(/Lien invalide ou expiré/i)).toBeVisible({ timeout: 5000 });
 		await expect(page.getByRole('link', { name: /Nouveau lien/i })).toBeVisible();
 		await expect(page.getByRole('link', { name: /Mot de passe/i })).toBeVisible();
@@ -770,7 +818,7 @@ test.describe('Magic link (consume)', () => {
 
 test.describe('Verify email', () => {
 	test('missing token shows the error state', async ({ page }) => {
-		await page.goto('/auth/verify-email');
+		await gotoHydrated(page, '/auth/verify-email');
 		await expect(page.getByText(/Lien de vérification invalide/i)).toBeVisible();
 	});
 
@@ -787,8 +835,12 @@ test.describe('Verify email', () => {
 			}
 		]);
 
-		await page.goto('/auth/verify-email?token=abc123');
-		await expect(page.getByText(/Email vérifié/i)).toBeVisible({ timeout: 5000 });
+		await gotoHydrated(page, '/auth/verify-email?token=abc123');
+		// Both the heading and the backend message contain "Email verifie", so
+		// anchor on the heading to stay unambiguous.
+		await expect(page.getByRole('heading', { name: /Email vérifié/i })).toBeVisible({
+			timeout: 5000
+		});
 		await expect(page.getByText(/Email vérifié avec succès/i)).toBeVisible();
 		await expect(page.getByRole('link', { name: /Se connecter/i })).toBeVisible();
 	});
@@ -808,7 +860,7 @@ test.describe('Verify email', () => {
 			}
 		]);
 
-		await page.goto('/auth/verify-email?token=bad');
+		await gotoHydrated(page, '/auth/verify-email?token=bad');
 		await expect(page.getByText(/Token invalide/i)).toBeVisible({ timeout: 5000 });
 		await expect(page.getByRole('link', { name: /Retour à la connexion/i })).toBeVisible();
 	});
@@ -820,7 +872,7 @@ test.describe('Verify email', () => {
 
 test.describe('Change email confirmation', () => {
 	test('missing token shows the error state', async ({ page }) => {
-		await page.goto('/auth/change-email/confirm');
+		await gotoHydrated(page, '/auth/change-email/confirm');
 		await expect(page.getByText(/Lien invalide/i)).toBeVisible();
 	});
 
@@ -837,7 +889,7 @@ test.describe('Change email confirmation', () => {
 			}
 		]);
 
-		await page.goto('/auth/change-email/confirm?token=abc123');
+		await gotoHydrated(page, '/auth/change-email/confirm?token=abc123');
 		await expect(page.getByText(/Email confirmé/i)).toBeVisible({ timeout: 5000 });
 		await expect(page.getByRole('button', { name: /Se reconnecter/i })).toBeVisible();
 	});
@@ -857,7 +909,7 @@ test.describe('Change email confirmation', () => {
 			}
 		]);
 
-		await page.goto('/auth/change-email/confirm?token=bad');
+		await gotoHydrated(page, '/auth/change-email/confirm?token=bad');
 		await expect(page.getByRole('heading', { name: /Erreur/i })).toBeVisible({ timeout: 5000 });
 		await expect(page.getByText(/Lien expiré/i)).toBeVisible();
 		await expect(page.getByRole('button', { name: /Retour/i })).toBeVisible();

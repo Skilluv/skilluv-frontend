@@ -1,16 +1,14 @@
 /**
- * Helper user-session — LOGIN-FIRST sur compte user fixe.
+ * Login-first session helper for the standard test user.
  *
- * Compte fixe (staging) :
- *   email    : jeremiezitti@gmail.com
- *   username : jeremiezitti
- *   password : Password123!
+ * Credentials come from the environment, never from source: this repository is
+ * public. Set E2E_USER_EMAIL / E2E_USER_USERNAME / E2E_USER_PASSWORD (see
+ * .env.example); `.env` is git-ignored and loaded by playwright.config.ts.
  *
- * Strategie identique a enterprise-session :
- *  1. Login /api/auth/login. Si succes → save state.
- *  2. Si 401/404 → fallback register + verify-email (consomme 1 register).
- *
- * Pas de TOTP requis pour un user standard.
+ * Strategy:
+ *  1. POST /api/auth/login. On success, save the storage state.
+ *  2. On 401/404, fall back to register + verify-email (uses one register from
+ *     the hourly rate-limit budget).
  */
 import { expect, type Page, type BrowserContext } from '@playwright/test';
 import path from 'node:path';
@@ -21,13 +19,34 @@ import { getVerifyToken } from './dev-verify';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+function requireEnv(name: string): string {
+	const value = process.env[name];
+	if (!value) {
+		throw new Error(
+			`${name} is not set. The e2e test account is configured through the ` +
+				`environment, not in source. See .env.example.`
+		);
+	}
+	return value;
+}
+
 export const USER_FIXED = {
-	email: 'jeremiezitti@gmail.com',
-	username: 'jeremiezitti',
-	password: 'Password123!',
-	firstName: 'Jeremie',
-	lastName: 'Zitti'
-} as const;
+	get email() {
+		return requireEnv('E2E_USER_EMAIL');
+	},
+	get username() {
+		return requireEnv('E2E_USER_USERNAME');
+	},
+	get password() {
+		return requireEnv('E2E_USER_PASSWORD');
+	},
+	get firstName() {
+		return process.env.E2E_USER_FIRST_NAME ?? 'Test';
+	},
+	get lastName() {
+		return process.env.E2E_USER_LAST_NAME ?? 'User';
+	}
+};
 
 export interface UserCredentials {
 	email: string;
@@ -36,6 +55,17 @@ export interface UserCredentials {
 	firstName: string;
 	lastName: string;
 }
+
+/**
+ * Explicit session posture for specs whose subject IS the anonymous visitor
+ * (auth funnels, signup, fresh-user onboarding).
+ *
+ * SKI-71: every `parcours/` spec now declares its posture through this module,
+ * either `userStoragePath()` for a signed-in session or `ANONYMOUS_STATE` for a
+ * deliberate absence of one. No spec depends on an implicit skeleton fixture,
+ * and none leaves its posture to execution order.
+ */
+export const ANONYMOUS_STATE: { cookies: []; origins: [] } = { cookies: [], origins: [] };
 
 export function userStoragePath(): string {
 	return path.resolve(__dirname, '../../.auth/user-standard.json');
@@ -111,13 +141,13 @@ export async function setupUserSession(
 	});
 
 	if (attempt.status() === 401 || attempt.status() === 404) {
-		// Compte inexistant OU password mismatch (compte pre-existant chez
-		// jeremiezitti@gmail.com avec un mdp inconnu — cas releve sur staging
-		// 2026-08-06). Fallback : creer un nouveau compte nonce et le persister.
+		// Unknown account or password mismatch. Create a nonce-suffixed account
+		// and persist it for subsequent runs.
 		const nonce = Date.now().toString(36) + Math.floor(Math.random() * 1000).toString(36);
+		const [local, domain] = USER_FIXED.email.split('@');
 		const freshCreds: UserCredentials = {
-			email: `jeremiezitti+ski${nonce}@gmail.com`,
-			username: `jeremiezitti_${nonce}`,
+			email: `${local}+ski${nonce}@${domain}`,
+			username: `${USER_FIXED.username}_${nonce}`,
 			password: USER_FIXED.password,
 			firstName: USER_FIXED.firstName,
 			lastName: USER_FIXED.lastName

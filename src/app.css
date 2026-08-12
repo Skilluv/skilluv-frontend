@@ -200,7 +200,7 @@
 	--sk-border-strong: #7a6350;
 
 	--sk-text: #f4ede0;                /* crème patinée */
-	--sk-text-muted: #b8a68a;
+	--sk-text-muted: #c2b195;         /* AA: 4.99:1 on surface-overlay (was 4.42) */
 
 	/* Surfaces catégorielles — zones colorées assumées (Persona-style) */
 	--sk-surface-craft: #3a2510;       /* ambre profond */
@@ -219,8 +219,8 @@
 	--sk-accent-fg: #18130f;
 
 	--sk-shadow-color: rgba(0, 0, 0, 0.5);
-	--sk-success: #2a9d8f;
-	--sk-success-soft: rgba(42, 157, 143, 0.2);
+	--sk-success: #32b8ab;             /* AA: 4.72:1 on bg-success/15 (was 3.66) */
+	--sk-success-soft: rgba(50, 184, 171, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
 	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
@@ -283,7 +283,7 @@
 	--sk-border-strong: #5a6a95;
 
 	--sk-text: #f4e8c8;
-	--sk-text-muted: #9d8865;
+	--sk-text-muted: #beb098;         /* AA: 4.70:1 on surface-overlay (was 2.93) */
 
 	--sk-surface-craft: #2f2618;
 	--sk-surface-create: #38141a;
@@ -380,8 +380,8 @@
 	--sk-accent-fg: #f4ede0;
 
 	--sk-shadow-color: rgba(0, 0, 0, 0.7);
-	--sk-success: #2a9d8f;
-	--sk-success-soft: rgba(42, 157, 143, 0.2);
+	--sk-success: #32b8ab;             /* AA: 4.72:1 on bg-success/15 (was 3.66) */
+	--sk-success-soft: rgba(50, 184, 171, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
 	--sk-error: #ea580c;

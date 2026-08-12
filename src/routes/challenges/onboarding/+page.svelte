@@ -52,6 +52,13 @@
 </svelte:head>
 
 <div class="mx-auto max-w-2xl px-4 py-12">
+	<!-- Always rendered, outside the state machine: while loading or on error the
+	     page used to have no heading at all, which is both an accessibility gap
+	     and a source of flaky waits. -->
+	<h1 class="mb-6 text-sm font-semibold uppercase tracking-wider text-text-muted">
+		{i18n.t('challenges.onboarding.title')}
+	</h1>
+
 	{#if loading}
 		<div class="flex flex-col gap-4">
 			<Skeleton class="h-8 w-48" />
@@ -72,7 +79,7 @@
 				<span class="text-xs text-text-muted">{i18n.t('challenges.onboarding.onboardingLabel')}</span>
 			</div>
 
-			<h1 class="mb-3 text-3xl font-bold">{challenge.title}</h1>
+			<h2 class="mb-3 text-3xl font-bold">{challenge.title}</h2>
 			<p class="mb-8 text-text-muted">{challenge.description}</p>
 
 			<!-- Instructions -->

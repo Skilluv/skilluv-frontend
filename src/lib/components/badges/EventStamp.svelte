@@ -34,8 +34,10 @@
 			<Key type={keyOverlay} size={dim / 4} color="rgba(244, 237, 224, 0.4)" />
 		</div>
 	{/if}
-	<span class="stamp__name">{eventName}</span>
-	<span class="stamp__year">{year}</span>
+	<!-- Same as RankChevron: the parent already exposes "{eventName} {year}"
+	     through aria-label. -->
+	<span class="stamp__name" aria-hidden="true">{eventName}</span>
+	<span class="stamp__year" aria-hidden="true">{year}</span>
 </div>
 
 <style>

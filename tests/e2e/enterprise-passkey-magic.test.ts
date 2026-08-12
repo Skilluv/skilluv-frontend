@@ -1,4 +1,5 @@
 import { test, expect, type Page, type Route } from '@playwright/test';
+import { gotoHydrated } from './utils/hydration';
 
 // Cover the two secondary login paths for enterprise accounts — passkey and
 // magic link. The real ceremonies (WebAuthn, email delivery) are out of scope
@@ -168,7 +169,7 @@ test.describe('Enterprise passkey bypasses TOTP', () => {
 			}
 		]);
 
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await page.locator('input[autocomplete="username"]').fill('acme_owner');
 		await page.getByRole('button', { name: /Se connecter avec une passkey/i }).click();
 
@@ -287,7 +288,7 @@ test.describe('Enterprise passkey login', () => {
 			}
 		]);
 
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await page.locator('input[autocomplete="username"]').fill('acme_owner');
 		// Passkey button lives just above the OAuth providers in the layout.
 		await page.getByRole('button', { name: /Se connecter avec une passkey/i }).click();
@@ -335,7 +336,7 @@ test.describe('Enterprise magic link', () => {
 			}
 		]);
 
-		await page.goto('/auth/magic-link/consume?token=fake-magic-token');
+		await gotoHydrated(page, '/auth/magic-link/consume?token=fake-magic-token');
 
 		await page.waitForURL('**/enterprise/dashboard', { timeout: 5000 });
 		expect(page.url()).toContain('/enterprise/dashboard');

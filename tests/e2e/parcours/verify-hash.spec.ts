@@ -7,8 +7,18 @@
  * Les 2 chemins convergent visuellement (badge error + message + CTA).
  */
 import { test, expect } from '@playwright/test';
+import { userStoragePath } from './_helpers/user-session';
+import fs from 'node:fs';
 
+const HAS_BACK = Boolean(process.env.PUBLIC_API_BASE_URL);
+const STATE = userStoragePath();
+const HAS_STATE = fs.existsSync(STATE);
 test.describe('@parcours verify-hash', () => {
+	// SKI-71: signed-in session through the shared helper, no skeleton fixture.
+	// See tests/e2e/parcours/_helpers/user-session.ts.
+	test.skip(!HAS_BACK, 'requires PUBLIC_API_BASE_URL + seeded back');
+	test.skip(!HAS_STATE, 'requires user-setup.spec.ts run first');
+	if (HAS_STATE) test.use({ storageState: STATE });
 	test('page verify accessible et rend un etat lisible pour hash inexistant', async ({ page }) => {
 		await page.goto('/verify/000000000000000000000000000000000000000000000000000000000deadbeef');
 		await page.waitForLoadState('domcontentloaded');

@@ -17,7 +17,10 @@ class GeoState {
 		this.pending = (async () => {
 			try {
 				const res = await geoApi.getCountries();
-				this.countries = res.data;
+				// A degraded response (empty payload, proxy returning a non-array)
+				// used to reach `.find()` below and throw an uncaught TypeError
+				// that broke hydration of the whole page.
+				this.countries = Array.isArray(res.data) ? res.data : [];
 				this.loaded = true;
 			} catch (err) {
 				this.error = err instanceof Error ? err.message : 'Failed to load countries';

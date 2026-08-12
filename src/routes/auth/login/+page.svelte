@@ -148,8 +148,9 @@
 					requiresTotp = true;
 					error = '';
 				} else if (err.code === 'AUTH_SSO_REQUIRED' && err.startUrl) {
-					// The enterprise enforced SSO for this domain — jump to the IdP.
-					window.location.href = err.startUrl;
+					// The API client already redirects to the IdP (see client.ts).
+					// Doing it again here started a second navigation to the same
+					// URL, which aborted the first one (net::ERR_ABORTED).
 					return;
 				} else {
 					error = err.message;

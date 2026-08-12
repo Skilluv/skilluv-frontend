@@ -1,6 +1,7 @@
 import type {
 	ApiPaginatedResponse,
 	ApiResponse,
+	Team,
 	TeamMarketplaceSlot,
 	TeamRoleSlot
 } from '$lib/types';
@@ -26,6 +27,11 @@ export interface CreateSlotBody {
 }
 
 export const teamMarketplaceApi = {
+	/** GET /users/me/teams — teams the current user belongs to. */
+	myTeams() {
+		return api.get<ApiResponse<{ teams: Team[] }>>('/users/me/teams');
+	},
+
 	marketplace(filters?: MarketplaceFilters) {
 		return api.get<ApiPaginatedResponse<TeamMarketplaceSlot>>('/teams/marketplace', filters);
 	},

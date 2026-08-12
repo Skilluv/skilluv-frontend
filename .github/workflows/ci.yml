@@ -50,9 +50,11 @@ jobs:
     name: Playwright end-to-end
     runs-on: ubuntu-latest
     needs: check
-    # Playwright currently requires a running backend (proxied /api/* calls).
-    # TODO: mock API calls or spin up backend services here. Non-blocking for now.
-    continue-on-error: true
+    # Blocking on purpose: the mocked suite no longer needs a real backend.
+    # Browser calls are intercepted by `page.route` and SSR auth is served by
+    # tests/e2e/utils/mock-backend.mjs, started as a webServer by
+    # playwright.config.ts. Do not reintroduce `continue-on-error`: that is what
+    # let 35 broken tests go unnoticed.
     steps:
       - uses: actions/checkout@v7
 
@@ -68,14 +70,67 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Playwright tests (unit + axe-core a11y assertions)
-        run: npx playwright test
+      # Mocked suite only: hermetic, no real backend. The parcours specs run in
+      # their own job below so a backend outage cannot redden this one.
+      - name: Playwright mocked suite
+        run: npx playwright test --project=legacy-chromium
 
       - name: Upload Playwright report
         if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  e2e-parcours:
+    name: Playwright parcours (real backend)
+    runs-on: ubuntu-latest
+    needs: check
+    # Hits the shared test backend, so it only runs where the secrets exist.
+    # Skipped on forks rather than failing with empty credentials.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    env:
+      PUBLIC_API_BASE_URL: ${{ secrets.E2E_API_BASE_URL }}
+      API_URL: ${{ secrets.E2E_API_BASE_URL }}/api
+      E2E_USER_EMAIL: ${{ secrets.E2E_USER_EMAIL }}
+      E2E_USER_USERNAME: ${{ secrets.E2E_USER_USERNAME }}
+      E2E_USER_PASSWORD: ${{ secrets.E2E_USER_PASSWORD }}
+      E2E_ENTERPRISE_EMAIL: ${{ secrets.E2E_ENTERPRISE_EMAIL }}
+      E2E_ENTERPRISE_USERNAME: ${{ secrets.E2E_ENTERPRISE_USERNAME }}
+      E2E_ENTERPRISE_PASSWORD: ${{ secrets.E2E_ENTERPRISE_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      # Without the backend URL the specs would all skip silently, which reads
+      # exactly like a green run. Fail loudly instead.
+      - name: Verify backend configuration
+        run: |
+          if [ -z "$PUBLIC_API_BASE_URL" ]; then
+            echo "E2E_API_BASE_URL secret is not set; parcours specs would all skip." >&2
+            exit 1
+          fi
+
+      - name: Playwright parcours suite
+        run: npx playwright test --project=parcours-chromium
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report-parcours
           path: playwright-report/
           retention-days: 7
 

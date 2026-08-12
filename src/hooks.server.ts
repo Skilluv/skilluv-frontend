@@ -1,6 +1,7 @@
 import type { Handle, HandleServerError } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
+import { env as publicEnv } from '$env/dynamic/public';
 import type { UserPrivate } from '$lib/types';
 
 /**
@@ -59,7 +60,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (accessToken) {
 		try {
-			const apiUrl = env.API_URL ?? 'http://localhost:3001/api';
+			// `PUBLIC_API_BASE_URL` drives both the dev server proxy
+			// (vite.config.ts) and this SSR call. `API_URL` still wins for
+			// deployments that need an internal URL distinct from the public one.
+			const apiUrl =
+				env.API_URL ??
+				(publicEnv.PUBLIC_API_BASE_URL
+					? `${publicEnv.PUBLIC_API_BASE_URL.replace(/\/+$/, '')}/api`
+					: 'http://localhost:3001/api');
 			const response = await fetch(`${apiUrl}/auth/me`, {
 				headers: {
 					Cookie: `access_token=${accessToken}`

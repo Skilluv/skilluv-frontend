@@ -1,4 +1,5 @@
 import { test, expect, type Page, type Route } from '@playwright/test';
+import { gotoHydrated } from './utils/hydration';
 
 test.beforeEach(async ({ page }) => {
 	await page.addInitScript(() => {
@@ -125,7 +126,7 @@ test.describe('Agency clients page', () => {
 	});
 
 	test('shows empty state and adds a new client', async ({ page }) => {
-		await page.goto('/enterprise/agency-clients');
+		await gotoHydrated(page, '/enterprise/agency-clients');
 		await expect(page.getByRole('heading', { name: 'Mes clients' })).toBeVisible();
 		await expect(page.getByText('Aucun client pour l\'instant.')).toBeVisible();
 
@@ -147,7 +148,7 @@ test.describe('Agency clients page', () => {
 				})
 			});
 		});
-		await page.goto('/enterprise/agency-clients');
+		await gotoHydrated(page, '/enterprise/agency-clients');
 		await expect(page.getByText(/Réservé aux comptes agency/i)).toBeVisible();
 	});
 });

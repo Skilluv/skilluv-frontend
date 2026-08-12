@@ -6,10 +6,14 @@
  * page login ou afficher un message explicite sans crasher la page.
  */
 import { test, expect } from '@playwright/test';
+import { ANONYMOUS_STATE } from './_helpers/user-session';
 
 const HAS_BACK = Boolean(process.env.PUBLIC_API_BASE_URL);
 
 test.describe('@parcours auth-invite-token', () => {
+	// SKI-71: explicit session posture. The subject of this test IS the
+	// anonymous visitor, so no session must leak in from another spec.
+	test.use({ storageState: ANONYMOUS_STATE });
 	test.skip(!HAS_BACK, 'requires PUBLIC_API_BASE_URL');
 
 	test('token invalide rend une page graceful (login/erreur, pas de crash)', async ({ page }) => {

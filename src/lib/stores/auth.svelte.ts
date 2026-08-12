@@ -21,7 +21,18 @@ class AuthState {
 	 * Un fetch séparé permet un rafraîchissement à la demande (ex: après
 	 * qu'un event WS ait signalé une nouvelle capability accordée). */
 	capabilities = $state<UserCapability[]>([]);
+	/**
+	 * True once the capabilities response landed (or failed).
+	 *
+	 * Capability-gated pages must wait for this before deciding: evaluating
+	 * `auth.can(...)` while the fetch is still in flight yields "no permission"
+	 * and they never re-check. Until it flips, show a loading state, not a
+	 * refusal.
+	 */
+	capabilitiesLoaded = $state(false);
 	loading = $state(true);
+	/** Identity whose capabilities + orientations were already loaded. */
+	private extrasLoadedFor: string | null = null;
 
 	get isAuthenticated(): boolean {
 		return this.user !== null;
@@ -88,18 +99,48 @@ class AuthState {
 		}
 	}
 
+	/**
+	 * Loads session extras (capabilities + orientations) when the user comes
+	 * from SSR rather than from `init()`.
+	 *
+	 * The layout hydrates auth via `setUser(data.user)` and never calls
+	 * `init()`, which only runs on two pages. Without this, `capabilities`
+	 * stayed empty on a normal login or any reload, so every `auth.can(...)`
+	 * gate returned false and all capability-gated UI stayed hidden from the
+	 * users entitled to it.
+	 *
+	 * Idempotent: one load per identity, never during SSR.
+	 */
+	async hydrateSessionExtras(): Promise<void> {
+		if (typeof window === 'undefined') return;
+		const id = this.user?.id ?? null;
+		if (!id) {
+			// Anonymous visitor: nothing to load, but the state must still be
+			// "known" or capability-gated pages hang on their loading skeleton.
+			this.capabilities = [];
+			this.capabilitiesLoaded = true;
+			return;
+		}
+		if (this.extrasLoadedFor === id) return;
+		this.extrasLoadedFor = id;
+		await Promise.allSettled([this.refreshCapabilities(), this.refreshOrientations()]);
+	}
+
 	/** Rafraîchit uniquement les capabilities. Appelable après un event WS
 	 * `capabilities_recomputed` sans re-fetch le /auth/me complet. */
 	async refreshCapabilities() {
 		if (!this.user) {
 			this.capabilities = [];
+			this.capabilitiesLoaded = true;
 			return;
 		}
 		try {
 			const res = await capabilitiesApi.myCapabilities();
-			this.capabilities = res.data;
+			this.capabilities = Array.isArray(res.data) ? res.data : [];
 		} catch {
 			this.capabilities = [];
+		} finally {
+			this.capabilitiesLoaded = true;
 		}
 	}
 

@@ -16,6 +16,10 @@ const STATE = userStoragePath();
 const HAS_STATE = fs.existsSync(STATE);
 
 test.describe('@parcours email-preferences', () => {
+	// QUARANTINE: the front ships (/settings/email-preferences, covered by
+	// tests/e2e/email-preferences.test.ts) but the backend endpoint
+	// /api/users/me/email-preferences is not implemented yet (SKI-286).
+	test.fixme(true, 'backend /api/users/me/email-preferences not implemented yet (SKI-286)');
 	test.skip(!HAS_BACK, 'requires PUBLIC_API_BASE_URL + seeded back');
 	test.skip(!HAS_STATE, 'requires user-setup.spec.ts run first');
 	if (HAS_STATE) test.use({ storageState: STATE });

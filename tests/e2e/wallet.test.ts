@@ -1,4 +1,5 @@
 import { test, expect, type Page, type Route } from '@playwright/test';
+import { gotoHydrated } from './utils/hydration';
 
 test.beforeEach(async ({ page }) => {
 	await page.addInitScript(() => {
@@ -58,115 +59,86 @@ const talent = {
 	created_at: '2026-01-01'
 };
 
+/**
+ * Wallet endpoints moved from `/talent/wallet/*` to `/users/me/wallet*` during
+ * the backend contract realignment. The old mocks matched nothing, the page
+ * stayed empty and all three tests failed. Payloads follow the `Wallet` and
+ * `WalletTransaction` types.
+ */
+const wallet = {
+	user_id: 'u1',
+	balance_eur: '34.00',
+	balance_xof: '22300',
+	residency_country: 'BJ',
+	stripe_account_id: 'acct_test',
+	stripe_kyc_status: 'verified',
+	momo_phone: '+22990000000',
+	momo_phone_verified: true,
+	created_at: '2026-01-01T10:00:00Z',
+	updated_at: '2026-07-16T10:00:00Z'
+};
+
+const transactions = [
+	{
+		id: 't1',
+		user_id: 'u1',
+		delta: '12.50',
+		currency: 'EUR',
+		reason: 'slice_payout',
+		notes: 'Challenge termine — React hook',
+		ledger_hash: 'a1b2c3d4e5f6g7h8',
+		prev_ledger_hash: null,
+		created_at: '2026-07-10T09:00:00Z'
+	}
+];
+
+function json(body: unknown, status = 200) {
+	return (route: Route) =>
+		route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) });
+}
+
 test.describe('Wallet page', () => {
 	test.beforeEach(async ({ page }) => {
 		await mockApi(page, [
 			{
 				path: '/auth/me',
-				handler: (route) =>
-					route.fulfill({
-						status: 200,
-						contentType: 'application/json',
-						body: JSON.stringify({
-							data: { user: talent, login_method: 'password', has_passkey: false }
-						})
-					})
+				handler: json({ data: { user: talent, login_method: 'password', has_passkey: false } })
 			},
-			{
-				path: '/users/me/capabilities',
-				handler: (route) =>
-					route.fulfill({
-						status: 200,
-						contentType: 'application/json',
-						body: JSON.stringify({ data: [] })
-					})
-			},
-			{
-				path: '/users/me/orientations',
-				handler: (route) =>
-					route.fulfill({
-						status: 200,
-						contentType: 'application/json',
-						body: JSON.stringify({ data: [] })
-					})
-			},
-			{
-				path: '/talent/wallet/balance',
-				handler: (route) =>
-					route.fulfill({
-						status: 200,
-						contentType: 'application/json',
-						body: JSON.stringify({
-							data: { fragments: 3400, eur_equivalent: 34, last_updated: '2026-07-16T10:00:00Z' }
-						})
-					})
-			},
-			{
-				path: '/talent/wallet/history',
-				handler: (route) =>
-					route.fulfill({
-						status: 200,
-						contentType: 'application/json',
-						body: JSON.stringify({
-							data: [
-								{
-									id: 't1',
-									kind: 'earn',
-									fragments_delta: 100,
-									description: 'Challenge terminé — React hook',
-									entry_hash: 'a1b2c3d4e5f6g7h8',
-									created_at: '2026-07-10'
-								}
-							],
-							pagination: { page: 1, per_page: 25, total: 1, total_pages: 1 },
-							meta: { request_id: 'r', timestamp: '2026-07-16' }
-						})
-					})
-			},
-			{
-				path: '/talent/wallet/payouts',
-				handler: (route) =>
-					route.fulfill({
-						status: 200,
-						contentType: 'application/json',
-						body: JSON.stringify({
-							data: [],
-							pagination: { page: 1, per_page: 25, total: 0, total_pages: 0 },
-							meta: { request_id: 'r', timestamp: '2026-07-16' }
-						})
-					})
-			},
-			{
-				path: '/talent/wallet/stripe/status',
-				handler: (route) =>
-					route.fulfill({
-						status: 200,
-						contentType: 'application/json',
-						body: JSON.stringify({ data: { connected: true, account_id: 'acct_test' } })
-					})
-			}
+			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
+			{ path: '/users/me/orientations', handler: json({ data: [] }) },
+			{ path: '/users/me/wallet/transactions', handler: json({ data: { transactions } }) },
+			{ path: '/users/me/wallet', handler: json({ data: { wallet } }) }
 		]);
 	});
 
-	test('displays balance and history', async ({ page }) => {
-		await page.goto('/wallet');
+	test('affiche les soldes EUR/XOF et l historique', async ({ page }) => {
+		await gotoHydrated(page, '/wallet');
 		await expect(page.getByRole('heading', { name: 'Mon wallet' })).toBeVisible();
-		await expect(page.getByText('3 400 fragments').or(page.getByText('3,400 fragments'))).toBeVisible();
-		await expect(page.getByText('Challenge terminé — React hook')).toBeVisible();
+		await expect(page.getByText('EUR', { exact: true }).first()).toBeVisible();
+		await expect(page.getByText('XOF', { exact: true }).first()).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'Historique' })).toBeVisible();
+		await expect(page.getByText('Challenge termine — React hook')).toBeVisible();
 	});
 
-	test('opens payout modal and shows Stripe status', async ({ page }) => {
-		await page.goto('/wallet');
+	test('ouvre la modale de payout et montre Stripe verifie', async ({ page }) => {
+		await gotoHydrated(page, '/wallet');
 		await page.getByRole('button', { name: 'Demander un payout' }).click();
 		await expect(page.getByRole('heading', { name: 'Demander un payout' })).toBeVisible();
-		await expect(page.getByText('Stripe connecté')).toBeVisible();
+		await expect(page.getByText('Stripe vérifié')).toBeVisible();
 	});
 
-	test('switching to Mobile Money reveals the operator + number fields', async ({ page }) => {
-		await page.goto('/wallet');
+	test('basculer sur Mobile Money revele les champs operateur + numero', async ({ page }) => {
+		await gotoHydrated(page, '/wallet');
 		await page.getByRole('button', { name: 'Demander un payout' }).click();
-		await page.getByText('Orange Money / MTN', { exact: false }).click();
-		await expect(page.getByLabel('Numéro Mobile Money')).toBeVisible();
-		await expect(page.getByLabel('Orange Money')).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'Demander un payout' })).toBeVisible();
+		// The radio is `sr-only`: present in the DOM but covered by the label's
+		// visual content, hence not normally clickable. Forcing the check still
+		// fires the component's `onchange`.
+		await page.getByRole('radio', { name: /Mobile Money \(XOF\)/ }).check({ force: true });
+		// `getByLabel` also matches the method radio, whose accessible name
+		// contains "Mobile Money"; target the text field explicitly.
+		await expect(page.getByRole('textbox', { name: 'Numéro Mobile Money' })).toBeVisible();
+		// "Operateur" is a <legend>, so it is a group, not a field label.
+		await expect(page.getByRole('group', { name: 'Opérateur' })).toBeVisible();
 	});
 });
