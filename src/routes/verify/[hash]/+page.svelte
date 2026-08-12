@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 	import {
 		attestationApi,
 		type AttestationResponse,
@@ -96,6 +97,10 @@
 	<meta property="og:title" content={seoTitle} />
 	<meta property="og:description" content={seoDescription} />
 	<meta property="og:type" content="article" />
+	<!-- Absolute: this URL is shared and re-crawled off-site, where a relative
+	     path resolves against the crawler's own host. -->
+	<meta property="og:url" content={`${page.url.origin}/verify/${data.hash}`} />
+	<meta property="og:image" content={`${page.url.origin}/og-image.svg`} />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={seoTitle} />
 	<meta name="twitter:description" content={seoDescription} />
