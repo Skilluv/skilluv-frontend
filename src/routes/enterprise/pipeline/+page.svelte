@@ -147,7 +147,12 @@
 		if (!editingEntry) return;
 		editBusy = true;
 		try {
-			const salaryNum = editSalary.trim() === '' ? null : Number(editSalary);
+			// Svelte coerces `bind:value` on <input type="number"> to a number, so
+			// this is not always the string the declaration suggests. Normalising
+			// first: calling .trim() on a number threw and the save failed with a
+			// generic error every time a salary was entered.
+			const rawSalary = String(editSalary ?? '').trim();
+			const salaryNum = rawSalary === '' ? null : Number(rawSalary);
 			if (salaryNum !== null && !Number.isFinite(salaryNum)) {
 				toast.error(i18n.locale === 'fr' ? 'Salaire invalide' : 'Invalid salary');
 				editBusy = false;

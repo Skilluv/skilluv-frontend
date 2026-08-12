@@ -57,6 +57,30 @@ export const USERS = {
 		first_name: 'Ama',
 		last_name: 'Doe',
 		display_name: 'Ama Doe'
+	},
+	// Enterprise identities. Role drives the whole /enterprise layout, and owner
+	// vs recruiter decides who may invite, revoke and buy.
+	owner: {
+		...baseUser,
+		id: 'u-owner',
+		email: 'owner@acme.io',
+		username: 'yaa',
+		first_name: 'Yaa',
+		last_name: 'Mensah',
+		display_name: 'Yaa Mensah',
+		role: 'enterprise',
+		totp_enabled: true
+	},
+	recruiter: {
+		...baseUser,
+		id: 'u-recruiter',
+		email: 'recruteur@acme.io',
+		username: 'kwame',
+		first_name: 'Kwame',
+		last_name: 'Boateng',
+		display_name: 'Kwame Boateng',
+		role: 'recruiter',
+		totp_enabled: true
 	}
 };
 
