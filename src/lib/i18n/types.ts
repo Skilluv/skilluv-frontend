@@ -859,6 +859,21 @@ export interface Translations {
 		tabComposition: string;
 		tabWars: string;
 		tabMembers: string;
+		tabApplications: string;
+		tabInvitations: string;
+		manage: {
+			applicationsEmpty: string;
+			invitationsEmpty: string;
+			accept: string;
+			reject: string;
+			revoke: string;
+			revokeConfirm: string;
+			applicationAccepted: string;
+			applicationRejected: string;
+			invitationRevoked: string;
+			linkInvitation: string;
+			expiresOn: string;
+		};
 		roleOwner: string;
 		roleOfficer: string;
 		roleMember: string;

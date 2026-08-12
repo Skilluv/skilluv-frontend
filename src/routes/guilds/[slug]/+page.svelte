@@ -5,7 +5,14 @@
 	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
-	import { guildApi, type Guild, type GuildMember, type GuildWar } from '$api/guild';
+	import {
+		guildApi,
+		type Guild,
+		type GuildMember,
+		type GuildWar,
+		type GuildApplication,
+		type GuildInvitation
+	} from '$api/guild';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
 
@@ -18,8 +25,18 @@
 	let members = $state<GuildMember[]>([]);
 	let wars = $state<GuildWar[]>([]);
 
-	type Tab = 'composition' | 'wars' | 'members';
+	type Tab = 'composition' | 'wars' | 'members' | 'applications' | 'invitations';
 	let tab = $state<Tab>('composition');
+
+	// Applications and invitations are owner/officer-only: the backend returns
+	// 403 for everyone else, so the tabs are hidden rather than shown broken.
+	let applications = $state<GuildApplication[]>([]);
+	let invitations = $state<GuildInvitation[]>([]);
+	let deciding = $state<string | null>(null);
+	let revoking = $state<string | null>(null);
+
+	let myRole = $derived(members.find((m) => m.user_id === auth.user?.id)?.role ?? null);
+	let canManage = $derived(myRole === 'owner' || myRole === 'officer');
 
 	// Composition is derived from the member list: the backend has no dedicated
 	// endpoint for it, and roles are already part of the members payload.
@@ -51,11 +68,62 @@
 			// a failure here must not hide the guild.
 			const wRes = await guildApi.listWars().catch(() => null);
 			if (wRes) wars = Array.isArray(wRes.data?.wars) ? wRes.data.wars : [];
+			await loadManagement();
 		} catch (e) {
 			guild = null;
 			toast.error(e instanceof SkilluError ? e.message : 'Erreur');
 		} finally {
 			loading = false;
+		}
+	}
+
+	/**
+	 * Owner/officer-only lists. Both are optional signals: a 403 for a plain
+	 * member must not take the guild page down with it.
+	 */
+	async function loadManagement() {
+		if (!guild) return;
+		const id = guild.id;
+		const [aRes, iRes] = await Promise.all([
+			guildApi.applications(id).catch(() => null),
+			guildApi.invitations(id).catch(() => null)
+		]);
+		applications = Array.isArray(aRes?.data?.applications) ? aRes.data.applications : [];
+		invitations = Array.isArray(iRes?.data?.invitations) ? iRes.data.invitations : [];
+	}
+
+	async function decide(applicationId: string, accept: boolean) {
+		deciding = applicationId;
+		try {
+			await guildApi.decideApplication(applicationId, accept);
+			toast.success(
+				accept
+					? i18n.t('guilds.manage.applicationAccepted')
+					: i18n.t('guilds.manage.applicationRejected')
+			);
+			// A newly accepted member changes the roster too.
+			const mRes = await guildApi.members(guild!.id).catch(() => null);
+			if (mRes) members = Array.isArray(mRes.data?.members) ? mRes.data.members : [];
+			await loadManagement();
+		} catch (e) {
+			toast.error(e instanceof SkilluError ? e.message : i18n.t('errors.generic'));
+		} finally {
+			deciding = null;
+		}
+	}
+
+	async function revokeInvitation(invitationId: string) {
+		if (!guild) return;
+		if (!confirm(i18n.t('guilds.manage.revokeConfirm'))) return;
+		revoking = invitationId;
+		try {
+			await guildApi.revokeInvitation(guild.id, invitationId);
+			toast.success(i18n.t('guilds.manage.invitationRevoked'));
+			await loadManagement();
+		} catch (e) {
+			toast.error(e instanceof SkilluError ? e.message : i18n.t('errors.generic'));
+		} finally {
+			revoking = null;
 		}
 	}
 
@@ -155,7 +223,7 @@
 
 		<!-- Tabs: composition / wars / members -->
 		<div class="mb-4 flex flex-wrap gap-2" role="tablist" aria-label={i18n.t('guilds.tabsLabel')}>
-			{#each [{ id: 'composition', label: i18n.t('guilds.tabComposition') }, { id: 'wars', label: i18n.t('guilds.tabWars') }, { id: 'members', label: i18n.t('guilds.tabMembers') }] as t (t.id)}
+			{#each [{ id: 'composition', label: i18n.t('guilds.tabComposition') }, { id: 'wars', label: i18n.t('guilds.tabWars') }, { id: 'members', label: i18n.t('guilds.tabMembers') }, ...(canManage ? [{ id: 'applications', label: i18n.t('guilds.tabApplications') }, { id: 'invitations', label: i18n.t('guilds.tabInvitations') }] : [])] as t (t.id)}
 				<button
 					type="button"
 					role="tab"
@@ -214,6 +282,101 @@
 								<Badge variant={war.status === 'concluded' ? 'success' : 'accent'} size="sm">
 									{i18n.t(`guilds.warStatus.${war.status}`)}
 								</Badge>
+							</li>
+						{/each}
+					</ul>
+				{/if}
+			</div>
+		{:else if tab === 'applications'}
+			<div
+				id="guild-panel-applications"
+				role="tabpanel"
+				aria-labelledby="guild-tab-applications"
+				data-testid="applications-panel"
+			>
+				{#if applications.length === 0}
+					<div class="rounded-2xl border border-border bg-surface-elevated p-8 text-center text-sm text-text-muted">
+						{i18n.t('guilds.manage.applicationsEmpty')}
+					</div>
+				{:else}
+					<ul class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+						{#each applications as a (a.id)}
+							<li class="flex flex-wrap items-center gap-3 p-4" data-testid="application-row">
+								<div class="min-w-0 flex-1">
+									<p class="font-semibold truncate">
+										{a.applicant.display_name ?? a.applicant.username ?? a.applicant.id}
+									</p>
+									{#if a.applicant.username}
+										<p class="font-mono text-xs text-text-muted">@{a.applicant.username}</p>
+									{/if}
+									{#if a.message}
+										<p class="mt-1 text-sm text-text-muted">{a.message}</p>
+									{/if}
+									<p class="mt-1 text-xs text-text-muted">{fmtDate(a.applied_at)}</p>
+								</div>
+								<div class="flex shrink-0 gap-2">
+									<Button
+										variant="accent"
+										size="sm"
+										loading={deciding === a.id}
+										onclick={() => decide(a.id, true)}
+									>
+										{i18n.t('guilds.manage.accept')}
+									</Button>
+									<Button
+										variant="ghost"
+										size="sm"
+										loading={deciding === a.id}
+										onclick={() => decide(a.id, false)}
+									>
+										{i18n.t('guilds.manage.reject')}
+									</Button>
+								</div>
+							</li>
+						{/each}
+					</ul>
+				{/if}
+			</div>
+		{:else if tab === 'invitations'}
+			<div
+				id="guild-panel-invitations"
+				role="tabpanel"
+				aria-labelledby="guild-tab-invitations"
+				data-testid="invitations-panel"
+			>
+				{#if invitations.length === 0}
+					<div class="rounded-2xl border border-border bg-surface-elevated p-8 text-center text-sm text-text-muted">
+						{i18n.t('guilds.manage.invitationsEmpty')}
+					</div>
+				{:else}
+					<ul class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+						{#each invitations as inv (inv.id)}
+							<li class="flex flex-wrap items-center gap-3 p-4" data-testid="invitation-row">
+								<div class="min-w-0 flex-1">
+									{#if inv.invitee}
+										<p class="font-semibold truncate">
+											{inv.invitee.display_name ?? inv.invitee.username ?? inv.invitee.id}
+										</p>
+										{#if inv.invitee.username}
+											<p class="font-mono text-xs text-text-muted">@{inv.invitee.username}</p>
+										{/if}
+									{:else}
+										<!-- Link invitation: nobody is named, anyone holding the
+										     token can join, which is precisely why revoking matters. -->
+										<p class="font-semibold">{i18n.t('guilds.manage.linkInvitation')}</p>
+									{/if}
+									<p class="mt-1 text-xs text-text-muted">
+										{i18n.t('guilds.manage.expiresOn', { date: fmtDate(inv.expires_at) })}
+									</p>
+								</div>
+								<Button
+									variant="ghost"
+									size="sm"
+									loading={revoking === inv.id}
+									onclick={() => revokeInvitation(inv.id)}
+								>
+									{i18n.t('guilds.manage.revoke')}
+								</Button>
 							</li>
 						{/each}
 					</ul>

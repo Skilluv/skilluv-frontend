@@ -50,6 +50,34 @@ export interface GuildWar {
 
 // --- API ---
 
+/** A user named in an application or an invitation. */
+export interface GuildUserRef {
+	id: string;
+	username: string | null;
+	display_name: string | null;
+}
+
+/** One pending application to join a guild. Decided ones drop out of the list. */
+export interface GuildApplication {
+	id: string;
+	applicant: GuildUserRef;
+	status: string;
+	applied_at: string;
+	message: string | null;
+}
+
+/**
+ * One pending invitation. Exactly one of `invitee` / `token` is set: a direct
+ * invitation names a user, a shareable link carries a token.
+ */
+export interface GuildInvitation {
+	id: string;
+	invitee: GuildUserRef | null;
+	token: { value: string } | null;
+	sent_at: string;
+	expires_at: string;
+}
+
 export const guildApi = {
 	leaderboard(params?: { page?: number; per_page?: number }) {
 		return api.get<ApiResponse<{ guilds: Guild[] }>>('/guilds', params as Record<string, number>);
@@ -88,6 +116,41 @@ export const guildApi = {
 
 	joinByToken(token: string) {
 		return api.post<ApiResponse<{ joined: boolean }>>('/guilds/join-by-token', { token });
+	},
+
+	/** GET /guilds/{id}/applications — owner/officer only. */
+	applications(guildId: string) {
+		return api.get<ApiResponse<{ applications: GuildApplication[] }>>(
+			`/guilds/${guildId}/applications`
+		);
+	},
+
+	/**
+	 * POST /guild-applications/{id}/decide — accept or reject a candidate.
+	 *
+	 * The body is `{ accept }`. The OpenAPI leaves this request untyped, so the
+	 * field name was confirmed against the test backend: anything else comes
+	 * back as `missing field \`accept\``.
+	 */
+	decideApplication(applicationId: string, accept: boolean) {
+		return api.post<ApiResponse<{ id: string; status: string }>>(
+			`/guild-applications/${applicationId}/decide`,
+			{ accept }
+		);
+	},
+
+	/** GET /guilds/{id}/invitations — owner/officer only. */
+	invitations(guildId: string) {
+		return api.get<ApiResponse<{ invitations: GuildInvitation[] }>>(
+			`/guilds/${guildId}/invitations`
+		);
+	},
+
+	/** DELETE /guilds/{id}/invitations/{invitationId} — idempotent (SKI-289). */
+	revokeInvitation(guildId: string, invitationId: string) {
+		return api.delete<ApiResponse<{ revoked: boolean; invitation_id: string }>>(
+			`/guilds/${guildId}/invitations/${invitationId}`
+		);
 	},
 
 	apply(guildId: string, message?: string) {
