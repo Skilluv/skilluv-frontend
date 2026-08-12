@@ -694,6 +694,33 @@ export const en: Translations = {
 			accepted: 'Accepted',
 			declined: 'Declined',
 			concluded: 'Concluded'
+		},
+		create: {
+			cta: 'Found a guild',
+			title: 'Found a guild',
+			subtitle: 'A guild cannot be founded alone.',
+			rule: 'You need exactly 3 co-founders besides yourself. Pick them before you start: the backend rejects any other composition.',
+			name: 'Name',
+			namePlaceholder: 'The Northern Smiths',
+			slug: 'Handle',
+			slugHint: 'Lowercase letters, digits and dashes. Used as the address: /guilds/my-handle',
+			tag: 'Tag',
+			tagHint: '2 to 5 characters, shown next to member names.',
+			description: 'Description',
+			color: 'Banner colour',
+			cofounders: 'Co-founders',
+			cofoundersHint: 'Type a Skilluv username and confirm. Exactly 3 are required.',
+			cofounderPlaceholder: 'username',
+			addCofounder: 'Add',
+			removeCofounder: 'Remove {username}',
+			cofounderCount: '{n} / 3 co-founders',
+			cofounderNotFound: 'No account with that username.',
+			cofounderDuplicate: 'That account is already on the list.',
+			cofounderSelf: 'You are already the founder, no need to add yourself.',
+			cofounderFull: 'You already have 3 co-founders.',
+			submit: 'Found the guild',
+			needThree: 'Exactly 3 co-founders are required to found a guild.',
+			created: 'Guild founded.'
 		}
 	},
 	tracks: {

@@ -870,6 +870,33 @@ export interface Translations {
 			declined: string;
 			concluded: string;
 		};
+		create: {
+			cta: string;
+			title: string;
+			subtitle: string;
+			rule: string;
+			name: string;
+			namePlaceholder: string;
+			slug: string;
+			slugHint: string;
+			tag: string;
+			tagHint: string;
+			description: string;
+			color: string;
+			cofounders: string;
+			cofoundersHint: string;
+			cofounderPlaceholder: string;
+			addCofounder: string;
+			removeCofounder: string;
+			cofounderCount: string;
+			cofounderNotFound: string;
+			cofounderDuplicate: string;
+			cofounderSelf: string;
+			cofounderFull: string;
+			submit: string;
+			needThree: string;
+			created: string;
+		};
 	};
 	tracks: {
 		title: string;

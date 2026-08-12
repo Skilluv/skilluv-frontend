@@ -694,6 +694,33 @@ export const fr: Translations = {
 			accepted: 'Acceptee',
 			declined: 'Refusee',
 			concluded: 'Terminee'
+		},
+		create: {
+			cta: 'Fonder une guilde',
+			title: 'Fonder une guilde',
+			subtitle: 'Une guilde ne se fonde pas seul.',
+			rule: 'Il faut exactement 3 cofondateurs en plus de toi. Choisis-les avant de commencer : le backend refuse toute autre composition.',
+			name: 'Nom',
+			namePlaceholder: 'Les Forgerons du Nord',
+			slug: 'Identifiant',
+			slugHint: 'Lettres minuscules, chiffres et tirets. Sert d’adresse : /guilds/mon-identifiant',
+			tag: 'Tag',
+			tagHint: '2 a 5 caracteres, affiche a cote du nom des membres.',
+			description: 'Description',
+			color: 'Couleur de banniere',
+			cofounders: 'Cofondateurs',
+			cofoundersHint: 'Saisis un pseudo Skilluv et valide. Il en faut exactement 3.',
+			cofounderPlaceholder: 'pseudo',
+			addCofounder: 'Ajouter',
+			removeCofounder: 'Retirer {username}',
+			cofounderCount: '{n} / 3 cofondateurs',
+			cofounderNotFound: 'Aucun compte ne porte ce pseudo.',
+			cofounderDuplicate: 'Ce compte est deja dans la liste.',
+			cofounderSelf: 'Tu es deja fondateur, inutile de t’ajouter.',
+			cofounderFull: 'Tu as deja 3 cofondateurs.',
+			submit: 'Fonder la guilde',
+			needThree: 'Il faut exactement 3 cofondateurs pour fonder une guilde.',
+			created: 'Guilde fondee.'
 		}
 	},
 	tracks: {

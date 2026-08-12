@@ -54,9 +54,13 @@
 				? "Rejoignez une guilde pour combattre, apprendre, cultiver. Guildes MMO au style écurie F1 : bannière, tag, chef, wars. Classement live sur la somme des fragments."
 				: 'Join a guild to fight, learn, cultivate. MMO-style guilds F1-team-inspired: banner, tag, leader, wars. Live ranking on total fragments.'}
 		</p>
-		<!-- The "create a guild" CTA lived here. It pointed at /guilds/new, a route
-		     that does not exist, so it returned a 404. Restore it with the page:
-		     see SKI-290. -->
+		<a
+			href="/guilds/new"
+			data-testid="guild-create-cta"
+			class="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-primary/90"
+		>
+			{i18n.t('guilds.create.cta')}
+		</a>
 	</div>
 </section>
 
@@ -85,7 +89,11 @@
 				? 'Sois le premier à fonder une guilde — invite tes compagnons et choisissez ensemble vos clés.'
 				: 'Be the first to found a guild — invite your fellows and pick your keys together.'}
 		>
-			<!-- Same reason as above: see SKI-290. -->
+			{#snippet action()}
+				<Button variant="primary" href="/guilds/new" data-testid="guild-create-cta-empty">
+					{i18n.t('guilds.create.cta')}
+				</Button>
+			{/snippet}
 		</EmptyState>
 	{:else}
 		<div class="space-y-2">
