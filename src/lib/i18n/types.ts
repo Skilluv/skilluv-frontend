@@ -853,6 +853,10 @@ export interface Translations {
 		decline: string;
 		downloadPdf: string;
 		shareBadge: string;
+		seeInvitation: string;
+		declineConfirm: string;
+		acceptedOutcome: string;
+		declinedOutcome: string;
 	};
 	guilds: {
 		tabsLabel: string;

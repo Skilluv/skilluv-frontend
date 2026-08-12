@@ -56,7 +56,12 @@ function page_(items: unknown[]) {
 	};
 }
 
-async function signIn(page: Page, items: unknown[], locale: 'fr' | 'en' = 'fr') {
+async function signIn(
+	page: Page,
+	items: unknown[],
+	locale: 'fr' | 'en' = 'fr',
+	extra: ApiRoute[] = []
+) {
 	await page.addInitScript((l) => {
 		try {
 			localStorage.setItem('skilluv-locale', l as string);
@@ -65,6 +70,7 @@ async function signIn(page: Page, items: unknown[], locale: 'fr' | 'en' = 'fr') 
 		}
 	}, locale);
 	await mockApi(page, [
+		...extra,
 		{ path: '/notifications/unread-count', handler: json({ data: { count: items.length } }) },
 		{ path: '/notifications', handler: json(page_(items)) },
 		{ path: '/users/me/capabilities', handler: json({ data: [] }) },
@@ -137,21 +143,68 @@ test.describe('SKI-97 inline CTAs', () => {
 		);
 	});
 
-	test('une invitation validateur propose accepter et refuser', async ({ page }) => {
-		await signIn(page, [
-			notif('n1', 'validator_invitation_received', {
-				invitation_id: 'inv-1',
-				domain: 'code',
-				notes: 'Ton historique parle pour toi'
-			})
+	const invitation = () => [
+		notif('n1', 'validator_invitation_received', {
+			invitation_id: 'inv-1',
+			domain: 'code',
+			notes: 'Ton historique parle pour toi'
+		})
+	];
+
+	test('accepter une invitation validateur se fait sans quitter le fil', async ({ page }) => {
+		let accepted = 0;
+		await signIn(page, invitation(), 'fr', [
+			{
+				path: '/validator-applications/inv-1/accept',
+				handler: (route) => {
+					accepted++;
+					return json({ data: { accepted: true } })(route);
+				}
+			}
 		]);
 		await gotoHydrated(page, '/notifications');
 
-		await expect(page.getByRole('link', { name: 'Accepter' })).toHaveAttribute(
+		await page.getByRole('button', { name: 'Accepter' }).click();
+
+		await expect.poll(() => accepted).toBe(1);
+		// The decision replaces the buttons: the invitation is gone backend-side
+		// but the notification stays, so live buttons would be a trap.
+		await expect(page.getByTestId('invitation-outcome')).toHaveText('Invitation acceptée');
+		await expect(page.getByRole('button', { name: 'Accepter' })).toHaveCount(0);
+	});
+
+	test('refuser demande confirmation avant d appeler le back', async ({ page }) => {
+		let declined = 0;
+		await signIn(page, invitation(), 'fr', [
+			{
+				path: '/validator-applications/inv-1/withdraw',
+				handler: (route) => {
+					declined++;
+					return json({ data: { withdrawn: true } })(route);
+				}
+			}
+		]);
+		await gotoHydrated(page, '/notifications');
+
+		page.once('dialog', (d) => d.dismiss());
+		await page.getByRole('button', { name: 'Refuser' }).click();
+		await page.waitForTimeout(400);
+		expect(declined).toBe(0);
+
+		page.once('dialog', (d) => d.accept());
+		await page.getByRole('button', { name: 'Refuser' }).click();
+		await expect.poll(() => declined).toBe(1);
+		await expect(page.getByTestId('invitation-outcome')).toHaveText('Invitation refusée');
+	});
+
+	test('le detail de l invitation reste accessible', async ({ page }) => {
+		await signIn(page, invitation());
+		await gotoHydrated(page, '/notifications');
+
+		await expect(page.getByRole('link', { name: 'Voir le détail' })).toHaveAttribute(
 			'href',
 			'/settings/validator-invitations/inv-1'
 		);
-		await expect(page.getByRole('link', { name: 'Refuser' })).toBeVisible();
 	});
 
 	test('une validation propose le PDF de l attestation', async ({ page }) => {

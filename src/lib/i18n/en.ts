@@ -677,7 +677,11 @@ export const en: Translations = {
 		accept: 'Accept',
 		decline: 'Decline',
 		downloadPdf: 'Download PDF',
-		shareBadge: 'Share my badge'
+		shareBadge: 'Share my badge',
+		seeInvitation: 'See details',
+		declineConfirm: 'Decline this invitation? It cannot be taken back.',
+		acceptedOutcome: 'Invitation accepted',
+		declinedOutcome: 'Invitation declined'
 	},
 	guilds: {
 		tabsLabel: 'Guild sections',

@@ -2,6 +2,8 @@
 	import { notificationsApi } from '$api/notifications';
 	import { notifications } from '$stores/notifications.svelte';
 	import { attestationApi } from '$api/attestation';
+	import { validatorApplicationsApi } from '$api/validatorApplications';
+	import { toast } from '$stores/toast.svelte';
 	import { auth } from '$stores/auth.svelte';
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
@@ -167,6 +169,36 @@
 		} catch { /* silent */ }
 	}
 
+	// SKI-97 — decide a validator invitation without leaving the feed. The
+	// outcome replaces the buttons in place: the backend drops the invitation
+	// from the list, but the notification itself stays, so without this the
+	// user would be looking at buttons for a decision already taken.
+	let invitationBusy = $state<string | null>(null);
+	let invitationDecisions = $state<Record<string, 'accepted' | 'declined'>>({});
+
+	async function decideInvitation(invitationId: string, accept: boolean) {
+		if (!accept && !confirm(i18n.t('notifActions.declineConfirm'))) return;
+		invitationBusy = invitationId;
+		try {
+			if (accept) {
+				await validatorApplicationsApi.accept(invitationId);
+			} else {
+				await validatorApplicationsApi.withdraw(invitationId);
+			}
+			invitationDecisions = {
+				...invitationDecisions,
+				[invitationId]: accept ? 'accepted' : 'declined'
+			};
+			toast.success(
+				accept ? i18n.t('notifActions.acceptedOutcome') : i18n.t('notifActions.declinedOutcome')
+			);
+		} catch (e) {
+			toast.error(e instanceof SkilluError ? e.message : i18n.t('errors.generic'));
+		} finally {
+			invitationBusy = null;
+		}
+	}
+
 	async function markAllRead() {
 		try {
 			await notificationsApi.markAllRead();
@@ -271,8 +303,13 @@
 						{#if enrichedBody}
 							<p class="text-xs text-text-muted">{enrichedBody}</p>
 						{/if}
+					</button>
 
-						<!-- CTA inline SKI-97 (rendus si contexte requis present). -->
+					<div class="flex-1">
+						<!-- CTA inline SKI-97 (rendus si contexte requis present).
+						     Hors du bouton "marquer comme lu" : imbriquer des
+						     elements interactifs est invalide, et le clic sur une
+						     action remontait au parent. -->
 						{#if notif.notification_type === 'slice_rejected' && d.slice_id}
 							<div class="mt-2">
 								<Button variant="ghost" size="sm" href={`/slices/${d.slice_id}`}>
@@ -280,13 +317,38 @@
 								</Button>
 							</div>
 						{:else if notif.notification_type === 'validator_invitation_received' && d.invitation_id}
-							<div class="mt-2 flex gap-2">
-								<Button variant="primary" size="sm" href={`/settings/validator-invitations/${d.invitation_id}`}>
-									{i18n.t('notifActions.accept')}
-								</Button>
-								<Button variant="ghost" size="sm" href={`/settings/validator-invitations/${d.invitation_id}`}>
-									{i18n.t('notifActions.decline')}
-								</Button>
+							{@const invitationId = d.invitation_id}
+							<div class="mt-2 flex flex-wrap items-center gap-2">
+								{#if invitationDecisions[invitationId]}
+									<span class="text-xs font-medium text-text-muted" data-testid="invitation-outcome">
+										{invitationDecisions[invitationId] === 'accepted'
+											? i18n.t('notifActions.acceptedOutcome')
+											: i18n.t('notifActions.declinedOutcome')}
+									</span>
+								{:else}
+									<Button
+										variant="primary"
+										size="sm"
+										loading={invitationBusy === invitationId}
+										onclick={() => decideInvitation(invitationId, true)}
+									>
+										{i18n.t('notifActions.accept')}
+									</Button>
+									<Button
+										variant="ghost"
+										size="sm"
+										loading={invitationBusy === invitationId}
+										onclick={() => decideInvitation(invitationId, false)}
+									>
+										{i18n.t('notifActions.decline')}
+									</Button>
+									<a
+										href={`/settings/validator-invitations/${invitationId}`}
+										class="text-xs text-text-muted underline hover:text-text-primary"
+									>
+										{i18n.t('notifActions.seeInvitation')}
+									</a>
+								{/if}
 							</div>
 						{:else if notif.notification_type === 'slice_validated' && d.attestation_hash}
 							<div class="mt-2">
@@ -301,7 +363,7 @@
 								</Button>
 							</div>
 						{/if}
-					</button>
+					</div>
 
 					<span class="shrink-0 text-xs text-text-muted">{formatDate(notif.created_at)}</span>
 					{#if !notif.read}
