@@ -14,7 +14,7 @@ export const fr: Translations = {
 			profile: 'Profil', settings: 'Paramètres', notifications: 'Notifications',
 			login: 'Connexion', register: 'Commencer', logout: 'Déconnexion', community: 'Communauté'
 		},
-		domains: { code: 'Code', design: 'Design', game: 'Jeux Vidéo', security: 'Cybersécurité' },
+		domains: { code: 'Code', design: 'Design', game: 'Jeux Vidéo', security: 'Cybersécurité', ai: 'Intelligence artificielle', ops: 'Ops & Cloud', soft_skills: 'Communication & leadership' },
 		titles: { apprenti: 'Apprenti', ranger: 'Ranger', artisan: 'Artisan', maitre: 'Maître', doyen: 'Doyen', legende: 'Légende' },
 		difficulty: { 1: 'Débutant', 2: 'Facile', 3: 'Intermédiaire', 4: 'Avancé', 5: 'Expert' },
 		tone: { serious: 'Sérieux', fun: 'Loufoque', educational: 'Éducatif' },

@@ -82,16 +82,19 @@
 		<div class="grid lg:grid-cols-2 gap-4">
 			{#each domains as domain}
 				{@const ds = domainStyle(domain.key)}
-				{@const catMap: Record<SkillDomain, string> = {
+				{@const catMap: Partial<Record<SkillDomain, string>> = {
 					code: 'bg-surface-craft border-cat-craft',
 					design: 'bg-surface-create border-cat-create',
 					game: 'bg-surface-meta border-cat-meta',
-					security: 'bg-surface-operate border-cat-operate'
+					security: 'bg-surface-operate border-cat-operate',
+					ai: 'bg-surface-create border-cat-create',
+					ops: 'bg-surface-operate border-cat-operate',
+					soft_skills: 'bg-surface-meta border-cat-meta'
 				}}
 				<a
 					href="/challenges?domain={domain.key}"
 					use:scrollReveal
-					class="group rounded-2xl border-2 {catMap[domain.key]} overflow-hidden transition-colors duration-200 {ds.hoverBorder}"
+					class="group rounded-2xl border-2 {catMap[domain.key] ?? 'bg-surface-elevated border-border'} overflow-hidden transition-colors duration-200 {ds.hoverBorder}"
 				>
 					<!-- Domain header bar -->
 					<div class="flex items-center gap-3 border-b border-border px-5 py-3">

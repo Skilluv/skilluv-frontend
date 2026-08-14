@@ -48,8 +48,8 @@
 		if (urlError === 'admin_wrong_frontend' && !error) {
 			error =
 				i18n.locale === 'fr'
-					? 'Ce compte est administrateur. Connectez-vous sur admin.skilluv.com.'
-					: 'This account is an administrator. Sign in on admin.skilluv.com.';
+					? 'Ce compte est administrateur. Connectez-vous sur admin.skill-uv.com.'
+					: 'This account is an administrator. Sign in on admin.skill-uv.com.';
 		}
 	});
 
@@ -103,7 +103,7 @@
 			}
 
 			if (res.data.user) {
-				// Admins have their own frontend (admin.skilluv.com) and must
+				// Admins have their own frontend (admin.skill-uv.com) and must
 				// not carry an authenticated session on the public shell.
 				// Revoke the session we just created and surface a clear
 				// message before hydrating anything client-side.
@@ -115,8 +115,8 @@
 					}
 					error =
 						i18n.locale === 'fr'
-							? 'Ce compte est administrateur. Connectez-vous sur admin.skilluv.com.'
-							: 'This account is an administrator. Sign in on admin.skilluv.com.';
+							? 'Ce compte est administrateur. Connectez-vous sur admin.skill-uv.com.'
+							: 'This account is an administrator. Sign in on admin.skill-uv.com.';
 					return;
 				}
 				auth.setUser(res.data.user, res.data.login_method ?? 'password');

@@ -35,6 +35,9 @@ export interface Translations {
 			design: string;
 			game: string;
 			security: string;
+			ai: string;
+			ops: string;
+			soft_skills: string;
 		};
 		titles: {
 			apprenti: string;

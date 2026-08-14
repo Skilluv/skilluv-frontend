@@ -129,7 +129,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// gamification shell (challenges, forum, guilds, leaderboards, feed…) and
 	// a candidate must NEVER see the enterprise workspace (except the two
 	// bootstrap paths that let a candidate become an enterprise / accept an
-	// invite). Admins have their own frontend (admin.skilluv.com) and
+	// invite). Admins have their own frontend (admin.skill-uv.com) and
 	// should not be able to reach ANY page on the public shell — see the
 	// admin branch below.
 	//
@@ -188,7 +188,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 				}
 			}
 		} else if (role === 'admin') {
-			// Admins live on admin.skilluv.com — kick them out of the public
+			// Admins live on admin.skill-uv.com — kick them out of the public
 			// app entirely. The auth/* routes stay reachable so they can log
 			// out or re-sign in with the right account. Every other page,
 			// including root, redirects to the login screen with a clear

@@ -22,7 +22,7 @@ export function profileJsonLd(user: UserPublic, stats: { total_fragments: number
 		memberOf: {
 			'@type': 'Organization',
 			name: 'Skilluv',
-			url: 'https://skilluv.com'
+			url: 'https://skill-uv.com'
 		}
 	};
 }
@@ -35,11 +35,11 @@ export function websiteJsonLd() {
 		'@context': 'https://schema.org',
 		'@type': 'WebSite',
 		name: 'Skilluv',
-		url: 'https://skilluv.com',
+		url: 'https://skill-uv.com',
 		description: 'Plateforme gamifiée de démonstration de compétences tech — Code, Design, Game, Security',
 		potentialAction: {
 			'@type': 'SearchAction',
-			target: 'https://skilluv.com/talents/search?q={search_term_string}',
+			target: 'https://skill-uv.com/talents/search?q={search_term_string}',
 			'query-input': 'required name=search_term_string'
 		}
 	};

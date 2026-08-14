@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 
 	interface Props {
-		variant?: 'default' | 'primary' | 'accent' | 'success' | 'warning' | 'error' | 'code' | 'design' | 'game' | 'security';
+		variant?: 'default' | 'primary' | 'accent' | 'success' | 'warning' | 'error' | 'code' | 'design' | 'game' | 'security' | 'ai' | 'ops' | 'soft_skills';
 		size?: 'sm' | 'md';
 		children: Snippet;
 	}
@@ -19,7 +19,10 @@
 		code: 'bg-blue-400/15 text-blue-400',
 		design: 'bg-pink-400/15 text-pink-400',
 		game: 'bg-green-400/15 text-green-400',
-		security: 'bg-red-400/15 text-red-400'
+		security: 'bg-red-400/15 text-red-400',
+		ai: 'bg-violet-400/15 text-violet-400',
+		ops: 'bg-teal-400/15 text-teal-400',
+		soft_skills: 'bg-amber-400/15 text-amber-400'
 	};
 
 	const sizes: Record<string, string> = {

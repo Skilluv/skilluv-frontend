@@ -39,11 +39,45 @@ export const DOMAIN_STYLES: Record<SkillDomain, DomainStyle> = {
 		dot: 'bg-red-500',
 		bgSoft: 'bg-red-500/10',
 		hoverBorder: 'hover:border-red-500/40'
+	},
+	ai: {
+		text: 'text-violet-400',
+		dot: 'bg-violet-500',
+		bgSoft: 'bg-violet-500/10',
+		hoverBorder: 'hover:border-violet-500/40'
+	},
+	ops: {
+		text: 'text-teal-400',
+		dot: 'bg-teal-500',
+		bgSoft: 'bg-teal-500/10',
+		hoverBorder: 'hover:border-teal-500/40'
+	},
+	soft_skills: {
+		text: 'text-amber-400',
+		dot: 'bg-amber-500',
+		bgSoft: 'bg-amber-500/10',
+		hoverBorder: 'hover:border-amber-500/40'
 	}
 };
 
-export function domainStyle(d: SkillDomain): DomainStyle {
-	return DOMAIN_STYLES[d];
+/** Neutral styling for a domain the backend knows and this build does not. */
+const UNKNOWN_DOMAIN_STYLE: DomainStyle = {
+	text: 'text-text-muted',
+	dot: 'bg-text-muted',
+	bgSoft: 'bg-surface-overlay',
+	hoverBorder: 'hover:border-text-muted'
+};
+
+/**
+ * Total by design. The catalogue of disciplines lives on the backend and grows
+ * there first: `ai`, `ops` and `soft_skills` were already served while this
+ * build only knew four domains, and the direct lookup returned `undefined`,
+ * so reading `.dot` off it threw and took the whole card down. A discipline we
+ * have no colour for must render plainly, not break the page.
+ */
+export function domainStyle(d: SkillDomain | string | null | undefined): DomainStyle {
+	if (!d) return UNKNOWN_DOMAIN_STYLE;
+	return DOMAIN_STYLES[d as SkillDomain] ?? UNKNOWN_DOMAIN_STYLE;
 }
 
 /**

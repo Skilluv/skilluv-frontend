@@ -74,7 +74,7 @@ En production, les variables suivantes sont egalement utilisees (voir le Dockerf
 | `NODE_ENV`  | Environnement d'execution | `production`            |
 | `PORT`      | Port d'ecoute du serveur  | `3000`                  |
 | `HOST`      | Adresse d'ecoute          | `0.0.0.0`              |
-| `ORIGIN`    | Origine publique du site  | `https://skilluv.com`  |
+| `ORIGIN`    | Origine publique du site  | `https://skill-uv.com`  |
 
 En developpement, Vite proxifie automatiquement les requetes `/api` et `/ws` vers `http://localhost:3001`.
 
@@ -261,8 +261,8 @@ Le projet inclut un Dockerfile multi-stage optimise produisant une image d'envir
 ```bash
 docker build -t skilluv-frontend .
 docker run -p 3000:3000 \
-  -e API_URL=https://api.skilluv.com \
-  -e ORIGIN=https://skilluv.com \
+  -e API_URL=https://api.skill-uv.com \
+  -e ORIGIN=https://skill-uv.com \
   skilluv-frontend
 ```
 

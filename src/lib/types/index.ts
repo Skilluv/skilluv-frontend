@@ -17,7 +17,19 @@ export { RANK_NAMES } from '$lib/components/badges/types';
 
 // --- Enums ---
 
-export type SkillDomain = 'code' | 'design' | 'game' | 'security';
+/**
+ * Disciplines served by the backend. Kept in sync with `primary_domain` on
+ * `GET /api/orientations` — `ai`, `ops` and `soft_skills` were live there while
+ * this type still listed four, which is how unknown domains reached the UI.
+ */
+export type SkillDomain =
+	| 'code'
+	| 'design'
+	| 'game'
+	| 'security'
+	| 'ai'
+	| 'ops'
+	| 'soft_skills';
 
 /** @deprecated Remplacé par Rank (5 valeurs) — voir MVP §0.7. Reste supporté 6 mois pour portfolios historiques. */
 export type Title = 'apprenti' | 'artisan' | 'maitre' | 'legende';
