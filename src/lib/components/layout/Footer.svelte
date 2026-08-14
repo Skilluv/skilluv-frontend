@@ -59,7 +59,7 @@
 			<!-- ▓▓▓ 1. HEADLINE + NEWSLETTER ▓▓▓ -->
 			<div class="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
 				<div>
-					<h2 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[0.9] tracking-[-0.03em] text-text-primary">
+					<h2 class="text-5xl sm:text-6xl font-black leading-none tracking-tighter text-text-primary">
 						{#if i18n.locale === 'fr'}
 							Prêt à prouver<br />ce que tu sais faire<span class="text-accent"> ?</span>
 						{:else}
