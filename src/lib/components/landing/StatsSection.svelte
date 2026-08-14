@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import { scrollReveal, countUp } from '$lib/utils/animations';
-	import { domainStyle } from '$lib/utils/domains';
-	import type { SkillDomain } from '$lib/types';
+	import { domainStyle, PUBLIC_DOMAINS } from '$lib/utils/domains';
 
-	const allDomains: SkillDomain[] = ['code', 'design', 'game', 'security'];
+	// Driven by the catalogue: this said four while the section above listed eleven.
+	const allDomains = PUBLIC_DOMAINS;
 </script>
 
 <section class="py-16 sm:py-24 lg:py-32">
@@ -30,7 +30,7 @@
 					{/each}
 				</div>
 				<div class="mt-auto">
-					<p use:countUp={{ target: 4, duration: 1.5 }} class="text-5xl sm:text-7xl lg:text-8xl font-black text-text-primary tracking-tight mb-2">4</p>
+					<p use:countUp={{ target: PUBLIC_DOMAINS.length, duration: 1.5 }} class="text-5xl sm:text-7xl lg:text-8xl font-black text-text-primary tracking-tight mb-2">{PUBLIC_DOMAINS.length}</p>
 					<p class="text-sm font-semibold mb-1">{i18n.locale === 'fr' ? 'Domaines' : 'Domains'}</p>
 					<p class="text-xs text-text-muted">Code, Design, Game, Security</p>
 				</div>
