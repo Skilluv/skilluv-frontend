@@ -36,7 +36,13 @@ export default defineConfig(({ mode }) => {
 			include: ['tests/unit/**/*.test.ts'],
 			environment: 'jsdom',
 			setupFiles: ['tests/unit/setup.ts'],
-			globals: true
+			globals: true,
+			// The default 5s is spent setting up the environment, not running
+			// assertions: the auth-store tests pass alone and time out in a
+			// full run on a loaded machine. A suite that fails for that reason
+			// is one people learn to re-run instead of read.
+			testTimeout: 30_000,
+			hookTimeout: 30_000
 		}
 	};
 });
