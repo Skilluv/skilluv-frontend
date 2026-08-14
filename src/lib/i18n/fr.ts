@@ -78,7 +78,7 @@ export const fr: Translations = {
 	landing: {
 		title: 'Prouve ce que tu sais faire.',
 		titleAccent: 'Pour de vrai.',
-		subtitle: 'Skilluv est une plateforme open source où l’on apprend son métier en fabriquant réellement. Ceux qui sont passés avant relisent le travail de ceux qui arrivent, et chacun repart avec la preuve de ce qu’il a livré.',
+		subtitle: 'Une plateforme open source où l’on apprend en fabriquant. Chacun repart avec la preuve de ce qu’il a livré.',
 		cta: 'Commencer gratuitement',
 		ctaSecondary: 'Voir les challenges',
 		statDomains: 'Domaines',

@@ -78,7 +78,7 @@ export const en: Translations = {
 	landing: {
 		title: 'Prove what you can do.',
 		titleAccent: 'For real.',
-		subtitle: 'Skilluv is an open source platform where you learn your craft by actually making things. Those further along review the work of those arriving, and everyone walks away with proof of what they shipped.',
+		subtitle: 'An open source platform where you learn by making. Everyone walks away with proof of what they shipped.',
 		cta: 'Get started for free',
 		ctaSecondary: 'Browse challenges',
 		statDomains: 'Domains',
