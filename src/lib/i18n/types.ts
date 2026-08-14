@@ -97,6 +97,9 @@ export interface Translations {
 			codeDesc: string;
 			designDesc: string;
 			gameDesc: string;
+			aiDesc: string;
+			opsDesc: string;
+			softSkillsDesc: string;
 			securityDesc: string;
 			changeDomain: string;
 			createAccount: string;

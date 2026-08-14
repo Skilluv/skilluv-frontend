@@ -10,7 +10,7 @@
 	import CityAutocomplete from '$components/ui/CityAutocomplete.svelte';
 	import type { SkillDomain } from '$types';
 	import type { Component } from 'svelte';
-	import { Code2, Palette, Gamepad2, Shield } from '@lucide/svelte';
+	import { Code2, Palette, Gamepad2, Shield, Brain, Cloud, Users } from '@lucide/svelte';
 
 	let step = $state<1 | 2>(1);
 	let loading = $state(false);
@@ -22,12 +22,17 @@
 	let city = $state<string | null>(auth.user?.city ?? null);
 	let termsAccepted = $state(false);
 
-	const domains: { value: SkillDomain; label: string; desc: string; icon: Component }[] = [
-		{ value: 'code', label: i18n.t('common.domains.code'), desc: i18n.t('auth.register.codeDesc'), icon: Code2 },
-		{ value: 'design', label: i18n.t('common.domains.design'), desc: i18n.t('auth.register.designDesc'), icon: Palette },
-		{ value: 'game', label: i18n.t('common.domains.game'), desc: i18n.t('auth.register.gameDesc'), icon: Gamepad2 },
-		{ value: 'security', label: i18n.t('common.domains.security'), desc: i18n.t('auth.register.securityDesc'), icon: Shield }
-	];
+	// $derived, not const: evaluated once, these labels froze on whichever locale
+	// happened to be active at first render and never followed a language switch.
+	const domains: { value: SkillDomain; label: string; desc: string; icon: Component }[] = $derived([
+		{ value: 'code', label: i18n.t('common.domains.code'), desc: i18n.t('auth.register.codeDesc'), icon: Code2 as Component },
+		{ value: 'design', label: i18n.t('common.domains.design'), desc: i18n.t('auth.register.designDesc'), icon: Palette as Component },
+		{ value: 'game', label: i18n.t('common.domains.game'), desc: i18n.t('auth.register.gameDesc'), icon: Gamepad2 as Component },
+		{ value: 'security', label: i18n.t('common.domains.security'), desc: i18n.t('auth.register.securityDesc'), icon: Shield as Component },
+		{ value: 'ai', label: i18n.t('common.domains.ai'), desc: i18n.t('auth.register.aiDesc'), icon: Brain as Component },
+		{ value: 'ops', label: i18n.t('common.domains.ops'), desc: i18n.t('auth.register.opsDesc'), icon: Cloud as Component },
+		{ value: 'soft_skills', label: i18n.t('common.domains.soft_skills'), desc: i18n.t('auth.register.softSkillsDesc'), icon: Users as Component }
+	]);
 
 	function pickDomain(d: SkillDomain) {
 		selectedDomain = d;

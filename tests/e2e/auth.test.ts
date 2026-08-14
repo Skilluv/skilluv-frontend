@@ -95,7 +95,7 @@ test.describe('Auth layout', () => {
 // ---------------------------------------------------------------------------
 
 test.describe('Register — step 1 (domain selection)', () => {
-	test('shows the four domain cards', async ({ page }) => {
+	test('shows one card per discipline the backend serves', async ({ page }) => {
 		await gotoHydrated(page, '/auth/register');
 		await expect(page.locator('h1')).toBeVisible();
 
@@ -103,7 +103,15 @@ test.describe('Register — step 1 (domain selection)', () => {
 		// quote each other ("Game design" in the Jeux Video card, "motion design"
 		// in the Design card), so /Design/i matched two buttons. Target the card
 		// title instead.
-		for (const label of ['Code', 'Design', 'Jeux Vidéo', 'Cybersécurité']) {
+		for (const label of [
+			'Code',
+			'Design',
+			'Jeux Vidéo',
+			'Cybersécurité',
+			'Intelligence artificielle',
+			'Ops & Cloud',
+			'Communication & leadership'
+		]) {
 			await expect(
 				page.getByRole('button').filter({ has: page.getByText(label, { exact: true }) })
 			).toBeVisible();
