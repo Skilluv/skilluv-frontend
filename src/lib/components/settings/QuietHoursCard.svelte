@@ -8,7 +8,7 @@
 	import { MoonStar } from '@lucide/svelte';
 
 	interface Props {
-		/** État initial, quand l'appelant l'a déjà chargé. */
+		/** Initial state, when the caller has already loaded it. */
 		start?: number | null;
 		end?: number | null;
 		timezone?: string | null;
@@ -16,10 +16,9 @@
 
 	let { start = null, end = null, timezone = null }: Props = $props();
 
-	// Valeurs de départ, lues une fois. L'appelant ne monte cette carte
-	// qu'une fois la fenêtre chargée : les props sont déjà définitives, et
-	// les suivre ensuite écraserait ce que la personne est en train de
-	// régler.
+	// Starting values, read once. The caller only mounts this card after
+	// the window is loaded: the props are already final, and tracking them
+	// afterwards would overwrite what the person is setting.
 	// svelte-ignore state_referenced_locally
 	let enabled = $state(start !== null && end !== null);
 	// svelte-ignore state_referenced_locally
@@ -29,12 +28,11 @@
 	let saving = $state(false);
 
 	/**
-	 * Le fuseau du navigateur, quand le compte n'en a pas encore.
+	 * The browser's timezone, when the account has none yet.
 	 *
-	 * Le backend refuse une fenêtre sans fuseau, et il a raison : une heure
-	 * qu'on ne sait pas situer ne peut pas être appliquée. Le demander à la
-	 * personne alors que son navigateur le connaît serait une question pour
-	 * rien.
+	 * The backend refuses a window without one, and it is right to: an hour
+	 * you cannot place cannot be applied. Asking the person for it while
+	 * their browser knows it would be a question for nothing.
 	 */
 	let resolvedTimezone = $derived(
 		timezone ??
@@ -50,8 +48,8 @@
 
 	async function save() {
 		if (startHour === endHour) {
-			// Le backend refuse aussi, mais le dire ici évite un aller-retour
-			// pour une erreur que l'écran peut voir.
+			// The backend refuses this too, but saying so here avoids a round
+			// trip for an error the screen can see.
 			toast.error(i18n.t('errors.generic'));
 			return;
 		}
@@ -76,9 +74,9 @@
 	async function clear() {
 		saving = true;
 		try {
-			// Les deux bornes à null effacent la fenêtre. Le fuseau reste :
-			// il appartient à la personne, pas à la fenêtre, et le
-			// redemander à la réactivation serait une question de plus.
+			// Both bounds null clear the window. The timezone stays: it
+			// belongs to the person, not to the window, and asking again on
+			// re-enable would be one more question.
 			await notificationPreferencesApi.setQuietHours({
 				start: null,
 				end: null,

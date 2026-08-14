@@ -25,6 +25,8 @@ export interface Certification {
 export interface PurchaseResponse {
 	attempt_id: string;
 	checkout_url?: string;
+	/** Our identifier for the charge, when a payment was opened. */
+	payment_id?: string;
 	session_id?: string;
 	status?: string;
 	message?: string;

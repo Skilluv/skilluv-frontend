@@ -493,6 +493,22 @@ export const en: Translations = {
 		retryBtn: 'Retry',
 		generic: 'An error occurred. Please try again.'
 	},
+	payments: {
+		title: 'Pay',
+		operator: 'Operator',
+		phone: 'Phone number',
+		phoneHint: 'The number that will receive the confirmation request.',
+		inlineHint: 'You confirm on your phone. You never leave this page.',
+		pay: 'Send the request',
+		waiting: 'Request sent to your phone',
+		waitingHint: 'Approve it on your phone. You can close this window: the payment goes through either way.',
+		done: 'Payment confirmed.',
+		background: 'Still waiting on your operator. We keep checking on our side and will let you know. Do not pay a second time.',
+		failed: 'The payment did not go through. Nothing was charged.',
+		noInline: 'No operator in your country supports paying without leaving the page.',
+		otherMethod: 'Other payment method',
+		closeWhileWaiting: 'Close'
+	},
 	wallet: {
 		title: 'My wallet',
 		subtitle: 'Cash out to euros (Stripe) or CFA francs (Mobile Money). Hash-chained history for audit.',

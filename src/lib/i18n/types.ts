@@ -669,6 +669,22 @@ export interface Translations {
 		retryBtn: string;
 		generic: string;
 	};
+	payments: {
+		title: string;
+		operator: string;
+		phone: string;
+		phoneHint: string;
+		inlineHint: string;
+		pay: string;
+		waiting: string;
+		waitingHint: string;
+		done: string;
+		background: string;
+		failed: string;
+		noInline: string;
+		otherMethod: string;
+		closeWhileWaiting: string;
+	};
 	wallet: {
 		title: string;
 		subtitle: string;

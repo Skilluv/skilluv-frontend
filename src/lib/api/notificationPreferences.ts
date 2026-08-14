@@ -3,42 +3,42 @@ import { createApiClient } from './client';
 
 const api = createApiClient();
 
-/** Les trois canaux, dans l'ordre où l'écran les présente. */
+/** The three channels, in the order the screen presents them. */
 export const CHANNELS = ['in_app', 'push', 'email'] as const;
 export type Channel = (typeof CHANNELS)[number];
 
 /**
- * Un type de notification, avec les réglages effectifs de l'appelant.
+ * One notification kind, with the caller's effective settings.
  *
- * « Effectifs » veut dire : son choix stocké, sinon le défaut du catalogue.
- * Le backend fait la fusion, donc l'écran n'a jamais à distinguer « jamais
- * touché » de « explicitement laissé comme ça ».
+ * "Effective" means: their stored choice, else the catalogue default. The
+ * backend merges the two, so the screen never has to tell "never touched"
+ * apart from "deliberately left as is".
  */
 export interface KindPreference {
-	/** Identifiant pointé : `social.mention`, `payout.sent`. */
+	/** Dotted identifier: `social.mention`, `payout.sent`. */
 	kind: string;
-	/** Regroupement d'affichage : `payments`, `social`, `guild`… */
+	/** Display grouping: `payments`, `social`, `guild`. */
 	category: string;
-	/** Titre traduit dans la langue de l'appelant. */
+	/** Title, translated into the caller's language. */
 	label: string;
 	/**
-	 * Canaux que ce type peut utiliser. Un canal absent d'ici ne peut pas
-	 * être activé, quoi que dise la requête — l'écran ne doit donc pas
-	 * afficher d'interrupteur pour lui.
+	 * Channels this kind can use. A channel missing from here cannot be
+	 * turned on whatever the request says, so the screen must not show a
+	 * toggle for it.
 	 */
 	available_channels: Channel[];
 	in_app: boolean;
 	push: boolean;
 	email: boolean;
 	/**
-	 * Ne peut pas être coupé. À afficher comme fixe plutôt qu'en
-	 * interrupteur qui revient tout seul : un virement échoué part quoi
-	 * qu'il arrive, et prétendre le contraire est un mensonge.
+	 * Cannot be turned off. Show it as fixed rather than as a toggle that
+	 * springs back: a failed transfer goes out regardless, and pretending
+	 * otherwise is a lie.
 	 */
 	transactional: boolean;
 }
 
-/** Modification partielle : seuls les canaux fournis sont touchés. */
+/** Partial update: only the channels supplied are touched. */
 export interface PreferenceUpdate {
 	kind: string;
 	in_app?: boolean;
@@ -49,18 +49,18 @@ export interface PreferenceUpdate {
 export interface UpdateResult {
 	updated: number;
 	/**
-	 * Refusées, avec la raison. Le backend les remonte au lieu de les
-	 * ignorer : un écran qui montre un interrupteur bouger alors que le
-	 * serveur n'en a rien fait est pire qu'une erreur.
+	 * Rejected, with the reason. The backend reports them instead of
+	 * ignoring them: a screen showing a toggle move when the server did
+	 * nothing is worse than an error.
 	 */
 	rejected: string[];
 }
 
-/** Fenêtre de silence. Les deux bornes ou aucune, et un fuseau avec. */
+/** Quiet window. Both bounds or neither, and a timezone with them. */
 export interface QuietHours {
 	start: number | null;
 	end: number | null;
-	/** Nom IANA, ex. `Africa/Porto-Novo`. */
+	/** IANA name, e.g. `Africa/Porto-Novo`. */
 	timezone: string | null;
 }
 
@@ -68,10 +68,10 @@ export const notificationPreferencesApi = {
 	/**
 	 * GET /users/me/notification-preferences
 	 *
-	 * Renvoie aussi la fenêtre de silence. Elle voyage ici plutôt que sur
-	 * un endpoint à elle : elle pouvait être écrite et jamais relue, donc
-	 * l'écran repartait des valeurs par défaut et écrasait le choix de la
-	 * personne au premier enregistrement.
+	 * Also returns the quiet window. It travels here rather than on an
+	 * endpoint of its own: it could be written and never read back, so the
+	 * screen started from the defaults and overwrote the person's choice on
+	 * the first save.
 	 */
 	list(): Promise<{ data: { preferences: KindPreference[]; quiet_hours: QuietHours } }> {
 		return api.get<{ data: { preferences: KindPreference[]; quiet_hours: QuietHours } }>(
@@ -87,11 +87,11 @@ export const notificationPreferencesApi = {
 	},
 
 	/**
-	 * PUT /users/me/notification-preferences/reset — retour aux défauts.
+	 * PUT /users/me/notification-preferences/reset — back to defaults.
 	 *
-	 * Le backend supprime les surcharges au lieu d'écrire les défauts :
-	 * l'absence de ligne *est* le défaut, et une ligne qui stocke un défaut
-	 * ne peut plus être distinguée d'un choix délibéré.
+	 * The backend deletes the overrides instead of writing the defaults:
+	 * the absence of a row *is* the default, and a row storing a default
+	 * can no longer be told apart from a deliberate choice.
 	 */
 	reset(): Promise<ApiResponse<{ cleared: number }>> {
 		return api.put<ApiResponse<{ cleared: number }>>(
@@ -103,9 +103,8 @@ export const notificationPreferencesApi = {
 	/**
 	 * PUT /users/me/quiet-hours
 	 *
-	 * `start` et `end` à `null` ensemble effacent la fenêtre. Le fuseau
-	 * survit à l'effacement : il appartient à la personne, pas à la
-	 * fenêtre.
+	 * `start` and `end` both `null` clear the window. The timezone survives
+	 * that: it belongs to the person, not to the window.
 	 */
 	setQuietHours(body: {
 		start: number | null;

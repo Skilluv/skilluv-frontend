@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { foldNotifications, actorsLine } from '$lib/utils/notificationGrouping';
 import type { Notification } from '$lib/types';
 
-/** Une notification minimale, complétée par les champs utiles au test. */
+/** A minimal notification, with the fields a test cares about applied over it. */
 function notif(over: Partial<Notification> = {}): Notification {
 	return {
 		id: over.id ?? 'n1',
@@ -21,25 +21,25 @@ function notif(over: Partial<Notification> = {}): Notification {
 	};
 }
 
-/** Traduction de test : rend la clé et les paramètres, sans catalogue. */
+/** Test translator: echoes the key and its params, with no catalogue. */
 const t = (key: string, params: Record<string, string | number> = {}) =>
 	`${key}(${Object.entries(params)
 		.map(([k, v]) => `${k}=${v}`)
 		.join(',')})`;
 
 describe('foldNotifications', () => {
-	it('compte un événement par ligne quand rien n est groupé', () => {
+	it('counts one event per row when nothing is grouped', () => {
 		const rows = foldNotifications([notif({ id: 'a' }), notif({ id: 'b' })]);
 		expect(rows).toHaveLength(2);
 		expect(rows.map((r) => r.count)).toEqual([1, 1]);
 	});
 
-	it('reprend le compte du backend plutôt que de compter les lignes', () => {
+	it('takes the backend tally rather than counting rows', () => {
 		const rows = foldNotifications([notif({ group_count: 5 })]);
 		expect(rows[0].count).toBe(5);
 	});
 
-	it('replie les notifications consécutives sur la même slice', () => {
+	it('folds consecutive notifications about the same slice', () => {
 		const rows = foldNotifications([
 			notif({ id: 'a', data: { slice_id: 's1' } }),
 			notif({ id: 'b', data: { slice_id: 's1' } }),
@@ -50,10 +50,10 @@ describe('foldNotifications', () => {
 		expect(rows[0].notif.id).toBe('a');
 	});
 
-	it('additionne les deux replis : le compte est le nombre d événements', () => {
-		// Le backend a déjà replié 3 événements sur la première ligne et 2 sur
-		// la seconde. Les deux portent sur la même slice, donc la ligne
-		// affichée en représente cinq — et pas deux.
+	it('adds both folds up: the count is the number of events', () => {
+		// The backend already folded three events onto the first row and two
+		// onto the second. Both are about the same slice, so the displayed
+		// row stands for five — not two.
 		const rows = foldNotifications([
 			notif({ id: 'a', group_count: 3, data: { slice_id: 's1' } }),
 			notif({ id: 'b', group_count: 2, data: { slice_id: 's1' } })
@@ -62,7 +62,7 @@ describe('foldNotifications', () => {
 		expect(rows[0].count).toBe(5);
 	});
 
-	it('ne mélange pas les lues et les non-lues', () => {
+	it('never merges read rows with unread ones', () => {
 		const rows = foldNotifications([
 			notif({ id: 'a', read: false, data: { slice_id: 's1' } }),
 			notif({ id: 'b', read: true, data: { slice_id: 's1' } })
@@ -70,30 +70,30 @@ describe('foldNotifications', () => {
 		expect(rows).toHaveLength(2);
 	});
 
-	it('ne replie pas les notifications sans slice', () => {
+	it('does not fold notifications with no slice', () => {
 		const rows = foldNotifications([notif({ id: 'a' }), notif({ id: 'b' })]);
 		expect(rows).toHaveLength(2);
 	});
 
-	it('traite un group_count absent comme un seul événement', () => {
-		// Les lignes écrites avant le groupement n ont pas la colonne.
+	it('treats a missing group_count as a single event', () => {
+		// Rows written before grouping existed have no such column.
 		const legacy = { ...notif(), group_count: undefined } as unknown as Notification;
 		expect(foldNotifications([legacy])[0].count).toBe(1);
 	});
 });
 
 describe('actorsLine', () => {
-	it('ne rend rien quand personne n est nommé', () => {
+	it('renders nothing when nobody is named', () => {
 		expect(actorsLine(notif(), t)).toBe('');
 	});
 
-	it('rend le nom seul pour une personne', () => {
+	it('renders the bare name for one person', () => {
 		expect(actorsLine(notif({ group_actors: [{ username: 'fatou' }], group_count: 1 }), t)).toBe(
 			'fatou'
 		);
 	});
 
-	it('joint les deux derniers noms quand tout le monde est nommé', () => {
+	it('joins the last two names when everyone is named', () => {
 		const line = actorsLine(
 			notif({ group_actors: [{ username: 'fatou' }, { username: 'kofi' }], group_count: 2 }),
 			t
@@ -101,10 +101,9 @@ describe('actorsLine', () => {
 		expect(line).toBe('notifTypes.actorsLast(names=fatou,last=kofi)');
 	});
 
-	it('déduit le reste de group_count, pas de la liste tronquée', () => {
-		// Le backend ne garde que les quatre plus récents : compter les
-		// « autres » sur la liste dirait « et 0 autres » alors que dix
-		// personnes ont participé.
+	it('derives the remainder from group_count, not from the truncated list', () => {
+		// The backend only keeps the four most recent: counting the "others"
+		// off the list would say "and 0 others" when ten people took part.
 		const line = actorsLine(
 			notif({
 				group_actors: [
@@ -120,7 +119,7 @@ describe('actorsLine', () => {
 		expect(line).toBe('notifTypes.actorsAndOthers(names=a, b, c, d,n=6)');
 	});
 
-	it('ignore les acteurs sans nom plutôt que de rendre un vide', () => {
+	it('skips actors with no name rather than rendering a blank', () => {
 		const line = actorsLine(
 			notif({ group_actors: [{ id: 'x' }, { username: 'fatou' }], group_count: 2 }),
 			t

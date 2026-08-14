@@ -1,35 +1,33 @@
 import type { Notification } from '$lib/types';
 
-/** Une ligne affichée, et le nombre d'événements qu'elle représente. */
+/** One displayed row, and how many events it stands for. */
 export interface GroupedRow {
 	notif: Notification;
 	count: number;
 }
 
-/** Le `data` d'une notification, pour la seule clé qui sert au repli. */
+/** A notification's `data`, for the one key the fold uses. */
 function sliceIdOf(n: Notification): string | undefined {
 	return (n.data as { slice_id?: string } | null)?.slice_id;
 }
 
 /**
- * Replie une liste de notifications en lignes affichables.
+ * Fold a list of notifications into displayable rows.
  *
- * Deux mécanismes se composent ici :
+ * Two mechanisms compose here:
  *
- * - le backend a déjà replié plusieurs événements de *même type* sur un
- *   *même contexte* dans une seule ligne, et en a gardé le compte dans
- *   `group_count` ;
- * - ce repli-ci rassemble les notifications *consécutives* portant sur la
- *   même slice, quel que soit leur type. Une seule claim émet sinon cinq
- *   lignes d'affilée (claimed, fork, PR, CI, validation) et enterre tout le
- *   reste.
+ * - the backend has already folded repeated events of the *same kind* on
+ *   the *same context* into one row, and kept the tally in `group_count`;
+ * - this fold gathers *consecutive* notifications about the same slice,
+ *   whatever their kind. One claim otherwise emits five rows in a row
+ *   (claimed, fork, PR, CI, validation) and buries everything else.
  *
- * Le compte rendu est la somme : le nombre d'événements que la ligne
- * représente vraiment. Afficher un nombre par mécanisme donnerait deux
- * chiffres pour la même chose.
+ * The reported count is the sum: the number of events the row actually
+ * stands for. Showing one number per mechanism would give the reader two
+ * figures for the same thing.
  *
- * Les lues et les non-lues ne se mélangent pas : marquer une ligne comme lue
- * doit rester une action dont on voit le résultat.
+ * Read and unread rows never merge: marking a row read has to be an action
+ * whose result you can see.
  */
 export function foldNotifications(items: Notification[]): GroupedRow[] {
 	const out: GroupedRow[] = [];
@@ -47,12 +45,12 @@ export function foldNotifications(items: Notification[]): GroupedRow[] {
 }
 
 /**
- * « Fatou et 2 autres », à partir des personnes que le backend a retenues.
+ * "Fatou and 2 others", from the people the backend kept.
  *
- * Il n'en garde que les quatre plus récentes, donc le reste se déduit de
- * `group_count` plutôt que de la liste. Rien à afficher si personne n'est
- * nommé : un compteur seul est rendu ailleurs, et « 3 personnes » sans nom
- * n'apprend rien.
+ * It only keeps the four most recent, so the remainder comes from
+ * `group_count` rather than from the list. Nothing to show when nobody is
+ * named: a bare tally is rendered elsewhere, and "3 people" without names
+ * teaches the reader nothing.
  */
 export function actorsLine(
 	n: Notification,

@@ -54,6 +54,12 @@ export interface MentorshipSession {
 export interface BookResponse {
 	session_id: string;
 	checkout_url: string;
+	/**
+	 * Our identifier for the charge. Needed to pay without leaving the
+	 * page: pushing the operator prompt and asking where the payment got to
+	 * are both keyed on it.
+	 */
+	payment_id: string;
 	price_total_cents: number;
 	mentor_share_cents: number;
 	platform_share_cents: number;

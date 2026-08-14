@@ -23,10 +23,9 @@
 	let saving = $state(false);
 
 	/**
-	 * L'ordre d'affichage. L'argent d'abord, le bruit social ensuite, la
-	 * modération à la fin. Quelqu'un qui ouvre cet écran cherche presque
-	 * toujours à couper quelque chose de social — mais il doit voir d'abord
-	 * ce qu'il ne peut pas couper.
+	 * Display order. Money first, social noise next, moderation last.
+	 * Someone opening this screen is almost always trying to silence
+	 * something social, but they should first see what cannot be silenced.
 	 */
 	const CATEGORY_ORDER = [
 		'payments',
@@ -48,9 +47,9 @@
 			list.push(pref);
 			buckets.set(pref.category, list);
 		}
-		// Une catégorie absente de la liste ci-dessus passe à la fin plutôt
-		// que de disparaître : un type ajouté côté backend doit apparaître
-		// ici sans redéploiement du front.
+		// A category missing from the list above sorts last rather than
+		// disappearing: a kind added backend-side must show up here without
+		// a frontend release.
 		return [...buckets.entries()].sort(
 			([a], [b]) =>
 				(CATEGORY_ORDER.indexOf(a) + 1 || 99) - (CATEGORY_ORDER.indexOf(b) + 1 || 99)
@@ -60,8 +59,8 @@
 	function categoryLabel(category: string): string {
 		const key = `settings.notifications.categories.${category}`;
 		const label = i18n.t(key);
-		// `t` rend la clé quand elle manque. Le nom brut de la catégorie est
-		// moins laid qu'un chemin de traduction affiché à l'utilisateur.
+		// `t` returns the key when it is missing. The raw category name is
+		// less ugly than a translation path shown to the user.
 		return label === key ? category : label;
 	}
 
@@ -84,11 +83,11 @@
 	});
 
 	/**
-	 * Enregistre une bascule, tout de suite.
+	 * Save one toggle, immediately.
 	 *
-	 * Pas de bouton « Enregistrer » : sur quarante-huit types, une personne
-	 * en change un ou deux puis ferme l'onglet. Un écran qui perd ce choix
-	 * parce qu'elle n'a pas vu le bouton tout en bas ne sert à rien.
+	 * No "Save" button: across forty-eight kinds, a person changes one or
+	 * two then closes the tab. A screen that loses that choice because they
+	 * never saw the button at the bottom is worth nothing.
 	 */
 	async function toggle(pref: KindPreference, channel: Channel) {
 		if (pref.transactional) return;
@@ -103,9 +102,9 @@
 				{ kind: pref.kind, [channel]: next }
 			]);
 			if (res.data.rejected.length > 0) {
-				// Le serveur a refusé. On remet l'interrupteur où il était :
-				// le laisser bouger alors que rien n'a changé est pire
-				// qu'une erreur, parce que la personne croit avoir choisi.
+				// The server refused. Put the toggle back where it was:
+				// letting it move when nothing changed is worse than an
+				// error, because the person believes they chose.
 				pref[channel] = before;
 				toast.error(res.data.rejected[0]);
 			}
@@ -156,9 +155,9 @@
 
 	{#if !loading}
 		<div class="mt-4">
-			<!-- Monte apres le chargement : la carte prend l'etat courant en
-			     valeur initiale, et l'afficher avant de le connaitre
-			     montrerait les defauts a quelqu'un qui a deja choisi. -->
+			<!-- Mounted after loading: the card takes the current state as
+			     its initial value, and showing it before we know that would
+			     show defaults to someone who already chose. -->
 			<QuietHoursCard
 				start={quiet?.start ?? null}
 				end={quiet?.end ?? null}

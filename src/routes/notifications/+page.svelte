@@ -54,12 +54,12 @@
 	};
 
 	/**
-	 * Icône par famille de `kind`, sur le préfixe pointé.
+	 * Icon per `kind` family, keyed on the dotted prefix.
 	 *
-	 * Le catalogue backend compte une soixantaine de types et en gagne à
-	 * chaque fonctionnalité. Les énumérer ici voudrait dire qu'un type ajouté
-	 * côté serveur s'affiche sans icône jusqu'au prochain déploiement du
-	 * front. Le préfixe, lui, est stable.
+	 * The backend catalogue holds some sixty kinds and gains one with every
+	 * feature. Enumerating them here would mean a kind added server-side
+	 * renders with no icon until the next frontend release. The prefix is
+	 * stable.
 	 */
 	const familyIcon: Record<string, Component> = {
 		payout: Wallet,
@@ -207,11 +207,10 @@
 	}
 
 	/**
-	 * Page suivante, ajoutée à la suite.
+	 * Next page, appended.
 	 *
-	 * Sans ça la liste s'arrêtait à cinquante sans le dire : au-delà, les
-	 * notifications existaient côté serveur et n'étaient joignables par aucun
-	 * geste.
+	 * Without it the list stopped at fifty without saying so: past that,
+	 * notifications existed server-side and no gesture could reach them.
 	 */
 	async function loadMore() {
 		if (loadingMore || page >= totalPages) return;
@@ -443,9 +442,9 @@
 						{/if}
 					</div>
 
-					<!-- Date du dernier evenement replie : sur une ligne groupee,
-					     la date de creation est celle du premier, donc la plus
-					     vieille, et la ligne paraitrait perimee. -->
+					<!-- Date of the last folded event: on a grouped row the
+					     creation date is the first one, hence the oldest, and
+					     the row would look stale. -->
 					<span class="shrink-0 text-xs text-text-muted">
 						{formatDate(notif.updated_at ?? notif.created_at)}
 					</span>

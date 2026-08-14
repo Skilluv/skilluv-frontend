@@ -493,6 +493,22 @@ export const fr: Translations = {
 		retryBtn: 'Réessayer',
 		generic: 'Une erreur est survenue. Réessaie.'
 	},
+	payments: {
+		title: 'Payer',
+		operator: 'Opérateur',
+		phone: 'Numéro de téléphone',
+		phoneHint: 'Le numéro qui recevra la demande de confirmation.',
+		inlineHint: 'Tu confirmes sur ton téléphone. Tu ne quittes pas cette page.',
+		pay: 'Envoyer la demande',
+		waiting: 'Demande envoyée sur ton téléphone',
+		waitingHint: 'Valide-la sur ton téléphone. Tu peux fermer cette fenêtre : le paiement sera pris en compte de toute façon.',
+		done: 'Paiement confirmé.',
+		background: 'Toujours en attente chez ton opérateur. On continue de vérifier de notre côté, tu seras prévenu. Ne paie pas une deuxième fois.',
+		failed: 'Le paiement n’a pas abouti. Rien ne t’a été prélevé.',
+		noInline: 'Aucun opérateur ne permet de payer sans quitter la page depuis ton pays.',
+		otherMethod: 'Autre moyen de paiement',
+		closeWhileWaiting: 'Fermer'
+	},
 	wallet: {
 		title: 'Mon wallet',
 		subtitle: 'Convertis tes gains en euros (Stripe) ou francs CFA (Mobile Money). Historique hash-chainé pour audit.',
