@@ -324,7 +324,44 @@ export const en: Translations = {
 		title: 'Settings',
 		notifications: {
 			title: 'Notifications',
-			subtitle: 'Choose how Skilluv keeps you posted.'
+			subtitle: 'Choose how Skilluv keeps you informed.',
+			channels: { inApp: 'In-app', push: 'Push', email: 'Email' },
+			channelsHint:
+				'In-app: the bell. Push: your phone buzzes. Email: your inbox.',
+			fixed: 'Always sent',
+			fixedHint:
+				'Some notifications are about your money or your account. They go out regardless, and showing you a switch that does nothing would be a lie.',
+			categories: {
+				payments: 'Money',
+				account: 'Account',
+				mentorship: 'Mentorship',
+				social: 'Social',
+				guild: 'Guilds',
+				learning: 'Progress',
+				enterprise: 'Companies',
+				digest: 'Digests',
+				lifecycle: 'Product news',
+				admin: 'Moderation'
+			},
+			saved: 'Preferences saved',
+			savedPartial: 'Saved, but {count} change(s) were refused.',
+			resetAll: 'Reset everything to defaults',
+			resetDone: '{count} customisation(s) removed.',
+			quiet: {
+				title: 'Quiet hours',
+				subtitle:
+					'During this window your phone stays silent. The notification is still written: you find it in the bell.',
+				start: 'From',
+				end: 'Until',
+				timezone: 'Time zone',
+				timezoneDetected: 'Detected from your browser.',
+				transactional:
+					'A failed payout goes through anyway: better woken than told the next morning.',
+				enable: 'Turn on quiet hours',
+				clear: 'Turn off',
+				saved: 'Quiet hours saved',
+				cleared: 'Quiet hours turned off'
+			}
 		},
 		emailPrefs: {
 			title: 'Email preferences',

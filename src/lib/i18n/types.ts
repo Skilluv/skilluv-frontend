@@ -421,6 +421,44 @@ export interface Translations {
 		notifications: {
 			title: string;
 			subtitle: string;
+			channels: { inApp: string; push: string; email: string };
+			channelsHint: string;
+			fixed: string;
+			fixedHint: string;
+			/**
+			 * Une entree par categorie du catalogue backend. L'ecran retombe
+			 * sur le nom brut quand une categorie apparait sans traduction,
+			 * donc ajouter un type cote backend ne casse pas cette page.
+			 */
+			categories: {
+				payments: string;
+				account: string;
+				mentorship: string;
+				social: string;
+				guild: string;
+				learning: string;
+				enterprise: string;
+				digest: string;
+				lifecycle: string;
+				admin: string;
+			};
+			saved: string;
+			savedPartial: string;
+			resetAll: string;
+			resetDone: string;
+			quiet: {
+				title: string;
+				subtitle: string;
+				start: string;
+				end: string;
+				timezone: string;
+				timezoneDetected: string;
+				transactional: string;
+				enable: string;
+				clear: string;
+				saved: string;
+				cleared: string;
+			};
 		};
 		emailPrefs: {
 			title: string;

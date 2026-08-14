@@ -324,7 +324,44 @@ export const fr: Translations = {
 		title: 'Paramètres',
 		notifications: {
 			title: 'Notifications',
-			subtitle: 'Choisis comment Skilluv te tient au courant.'
+			subtitle: 'Choisis comment Skilluv te tient au courant.',
+			channels: { inApp: 'Sur le site', push: 'Push', email: 'Email' },
+			channelsHint:
+				'Sur le site : la cloche. Push : ton téléphone vibre. Email : ta boîte de réception.',
+			fixed: 'Toujours envoyé',
+			fixedHint:
+				'Certaines notifications concernent ton argent ou ton compte. Elles partent de toute façon, et te montrer un bouton qui ne fait rien serait un mensonge.',
+			categories: {
+				payments: 'Argent',
+				account: 'Compte',
+				mentorship: 'Mentorat',
+				social: 'Social',
+				guild: 'Guildes',
+				learning: 'Progression',
+				enterprise: 'Entreprises',
+				digest: 'Résumés',
+				lifecycle: 'Annonces produit',
+				admin: 'Modération'
+			},
+			saved: 'Préférences enregistrées',
+			savedPartial: 'Enregistré, mais {count} modification(s) ont été refusées.',
+			resetAll: 'Tout remettre par défaut',
+			resetDone: '{count} personnalisation(s) supprimée(s).',
+			quiet: {
+				title: 'Heures de silence',
+				subtitle:
+					'Pendant cette plage, ton téléphone ne vibre pas. La notification est écrite quand même : tu la retrouves dans la cloche.',
+				start: 'À partir de',
+				end: 'Jusque',
+				timezone: 'Fuseau horaire',
+				timezoneDetected: 'Détecté depuis ton navigateur.',
+				transactional:
+					'Un virement qui échoue passe outre : mieux vaut être réveillé que de le découvrir le lendemain.',
+				enable: 'Activer les heures de silence',
+				clear: 'Désactiver',
+				saved: 'Heures de silence enregistrées',
+				cleared: 'Heures de silence désactivées'
+			}
 		},
 		emailPrefs: {
 			title: 'Préférences email',
