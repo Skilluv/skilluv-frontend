@@ -41,37 +41,6 @@ export type ThemeBase = 'forge' | 'vesperal' | 'arena' | 'scriptorium' | 'sakura
 export type ThemeMode = 'dark' | 'light';
 export type Theme = ThemeBase | `${ThemeBase}-light`;
 
-export type NotificationType =
-	| 'interest_request_received'
-	| 'interest_accepted'
-	| 'interest_declined'
-	| 'new_message'
-	| 'challenge_approved'
-	| 'challenge_rejected'
-	| 'account_banned'
-	| 'account_unbanned'
-	| 'rank_promotion'
-	| 'badge_earned'
-	| 'team_slot_match'
-	| 'payout_status_change'
-	// SKI-97 — evenements workflow challenge (16 nouveaux types).
-	| 'slice_claimed'
-	| 'slice_fork_created'
-	| 'slice_pr_submitted'
-	| 'slice_pr_submitted_announced'
-	| 'slice_ci_green'
-	| 'validation_picked_up_by_you'
-	| 'validation_picked_up_by_other'
-	| 'slice_validated'
-	| 'slice_rejected'
-	| 'slice_merged_upstream'
-	| 'slice_pr_rejected_upstream'
-	| 'validator_application_status_changed'
-	| 'validator_invitation_received'
-	| 'slice_upstream_closed'
-	| 'maintainer_digest_confirmation_sent'
-	| 'maintainer_digest_subscribed';
-
 /** Capabilities P18.4 — sources de permissions user (mentor, curator, etc.). */
 export type Capability =
 	| 'challenger'
@@ -217,12 +186,32 @@ export interface Submission {
 export interface Notification {
 	id: string;
 	user_id: string;
-	notification_type: NotificationType;
+	/**
+	 * Legacy discriminant. Deliberately open: the backend catalogue now writes
+	 * dotted names (`payout.sent`) and grows without a frontend release. A
+	 * closed union here would be a type that lies about the payload.
+	 */
+	notification_type: string;
+	/** Dotted catalogue identifier. Absent on rows written before the catalogue. */
+	kind: string | null;
 	title: string;
 	body: string | null;
 	data: unknown | null;
 	read: boolean;
+	/** How many events this row stands for. At least one. */
+	group_count: number;
+	/** Most recent distinct people involved, newest first, capped at four. */
+	group_actors: NotificationActor[];
 	created_at: string;
+	/** When the row last absorbed an event. Drives the sort order. */
+	updated_at: string | null;
+}
+
+/** One person folded into a grouped notification. */
+export interface NotificationActor {
+	id?: string;
+	username?: string;
+	avatar_url?: string | null;
 }
 
 export interface Message {

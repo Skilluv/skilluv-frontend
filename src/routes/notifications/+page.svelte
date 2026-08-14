@@ -10,8 +10,23 @@
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import { i18n } from '$lib/i18n';
-	import type { Notification, NotificationType } from '$types';
-	import { Rocket, CheckCircle2, UserPlus, Mail } from '@lucide/svelte';
+	import type { Notification } from '$types';
+	import { foldNotifications, actorsLine } from '$lib/utils/notificationGrouping';
+	import {
+		Rocket,
+		CheckCircle2,
+		UserPlus,
+		Mail,
+		Wallet,
+		Scale,
+		AtSign,
+		Users,
+		CalendarCheck,
+		ShieldAlert,
+		Award,
+		Building2,
+		MessageSquare
+	} from '@lucide/svelte';
 	import type { Component } from 'svelte';
 
 	// SKI-97 — 4 categories iconiques :
@@ -19,7 +34,7 @@
 	//   validation (validated/rejected/pickups)  -> CheckCircle2
 	//   candidature validateur                   -> UserPlus
 	//   maintainer digest                        -> Mail
-	const typeIcon: Partial<Record<NotificationType, Component>> = {
+	const typeIcon: Record<string, Component> = {
 		slice_claimed: Rocket,
 		slice_fork_created: Rocket,
 		slice_pr_submitted: Rocket,
@@ -37,6 +52,48 @@
 		maintainer_digest_confirmation_sent: Mail,
 		maintainer_digest_subscribed: Mail
 	};
+
+	/**
+	 * Icône par famille de `kind`, sur le préfixe pointé.
+	 *
+	 * Le catalogue backend compte une soixantaine de types et en gagne à
+	 * chaque fonctionnalité. Les énumérer ici voudrait dire qu'un type ajouté
+	 * côté serveur s'affiche sans icône jusqu'au prochain déploiement du
+	 * front. Le préfixe, lui, est stable.
+	 */
+	const familyIcon: Record<string, Component> = {
+		payout: Wallet,
+		payment: Wallet,
+		funds: Wallet,
+		dispute: Scale,
+		social: AtSign,
+		forum: MessageSquare,
+		dm: MessageSquare,
+		guild: Users,
+		mentorship: CalendarCheck,
+		security: ShieldAlert,
+		account: ShieldAlert,
+		badge: Award,
+		rank: Award,
+		attestation: Award,
+		tournament: Award,
+		enterprise: Building2,
+		contact: UserPlus,
+		challenge: CheckCircle2,
+		deliverable: CheckCircle2,
+		community: CheckCircle2,
+		digest: Mail,
+		lifecycle: Mail,
+		streak: Mail
+	};
+
+	function iconFor(n: Notification): Component | undefined {
+		const legacy = typeIcon[n.notification_type];
+		if (legacy) return legacy;
+		const kind = n.kind ?? n.notification_type;
+		return familyIcon[kind.split('.')[0]];
+	}
+
 
 	// Contexte data payload (best-effort — deprecate CTA si champ absent).
 	interface NotifData {
@@ -90,26 +147,11 @@
 
 	let items = $state<Notification[]>([]);
 
-	/**
-	 * Consecutive notifications about the same slice are collapsed onto the most
-	 * recent one, which carries a counter. A single claim can otherwise emit five
-	 * notifications in a row (claimed, fork, PR, CI, validation) and bury
-	 * everything else in the list.
-	 */
-	let grouped = $derived.by(() => {
-		const out: { notif: Notification; count: number }[] = [];
-		for (const n of items) {
-			const sliceId = ctx(n).slice_id;
-			const prev = out[out.length - 1];
-			if (sliceId && prev && ctx(prev.notif).slice_id === sliceId && prev.notif.read === n.read) {
-				prev.count += 1;
-				continue;
-			}
-			out.push({ notif: n, count: 1 });
-		}
-		return out;
-	});
+	let grouped = $derived(foldNotifications(items));
 	let loading = $state(true);
+	let loadingMore = $state(false);
+	let page = $state(1);
+	let totalPages = $state(1);
 	let error = $state('');
 	let filterRead = $state<boolean | undefined>(false);
 	let filterValue = $derived(filterRead === false ? 'unread' : 'all');
@@ -147,16 +189,46 @@
 		loadNotifications();
 	});
 
+	const PER_PAGE = 50;
+
 	async function loadNotifications() {
 		loading = true;
 		try {
-			const res = await notificationsApi.list({ read: filterRead, per_page: 50 });
+			const res = await notificationsApi.list({ read: filterRead, page: 1, per_page: PER_PAGE });
 			items = res.data;
+			page = res.pagination.page;
+			totalPages = res.pagination.total_pages;
 		} catch (err) {
 			if (err instanceof SkilluError) error = err.message;
 			else error = 'Impossible de charger les notifications.';
 		} finally {
 			loading = false;
+		}
+	}
+
+	/**
+	 * Page suivante, ajoutée à la suite.
+	 *
+	 * Sans ça la liste s'arrêtait à cinquante sans le dire : au-delà, les
+	 * notifications existaient côté serveur et n'étaient joignables par aucun
+	 * geste.
+	 */
+	async function loadMore() {
+		if (loadingMore || page >= totalPages) return;
+		loadingMore = true;
+		try {
+			const res = await notificationsApi.list({
+				read: filterRead,
+				page: page + 1,
+				per_page: PER_PAGE
+			});
+			items = [...items, ...res.data];
+			page = res.pagination.page;
+			totalPages = res.pagination.total_pages;
+		} catch (err) {
+			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
+		} finally {
+			loadingMore = false;
 		}
 	}
 
@@ -273,9 +345,10 @@
 		<div class="flex flex-col gap-2">
 			{#each grouped as row (row.notif.id)}
 				{@const notif = row.notif}
-				{@const Icon = typeIcon[notif.notification_type]}
+				{@const Icon = iconFor(notif)}
 				{@const d = ctx(notif)}
 				{@const enrichedBody = renderBody(notif)}
+				{@const actors = actorsLine(notif, i18n.t)}
 				<div
 					class="flex w-full items-start gap-3 rounded-2xl border p-4 text-left transition-colors
 						{notif.read ? 'border-border bg-surface' : 'border-accent/20 bg-accent/5'}"
@@ -295,9 +368,14 @@
 						onclick={() => markRead(notif)}
 					>
 						<p class="text-sm font-medium {notif.read ? 'text-text-muted' : 'text-text-primary'}">{notif.title}</p>
+						{#if actors}
+							<p class="text-xs text-text-muted" data-testid="notif-group-actors">{actors}</p>
+						{/if}
 						{#if row.count > 1}
 							<p class="text-xs text-text-muted" data-testid="notif-group-count">
-								{i18n.t('notifTypes.groupedCount', { n: row.count })}
+								{ctx(notif).slice_id
+									? i18n.t('notifTypes.groupedCount', { n: row.count })
+									: i18n.t('notifTypes.groupedEvents', { n: row.count })}
 							</p>
 						{/if}
 						{#if enrichedBody}
@@ -365,12 +443,31 @@
 						{/if}
 					</div>
 
-					<span class="shrink-0 text-xs text-text-muted">{formatDate(notif.created_at)}</span>
+					<!-- Date du dernier evenement replie : sur une ligne groupee,
+					     la date de creation est celle du premier, donc la plus
+					     vieille, et la ligne paraitrait perimee. -->
+					<span class="shrink-0 text-xs text-text-muted">
+						{formatDate(notif.updated_at ?? notif.created_at)}
+					</span>
 					{#if !notif.read}
 						<span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent"></span>
 					{/if}
 				</div>
 			{/each}
 		</div>
+
+		{#if page < totalPages}
+			<div class="mt-4 flex justify-center">
+				<Button
+					variant="ghost"
+					size="sm"
+					loading={loadingMore}
+					onclick={loadMore}
+					data-testid="notif-load-more"
+				>
+					{i18n.t('common.actions.loadMore')}
+				</Button>
+			</div>
+		{/if}
 	{/if}
 </div>

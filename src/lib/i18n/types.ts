@@ -16,6 +16,7 @@ export interface Translations {
 			create: string;
 			loading: string;
 			sending: string;
+			loadMore: string;
 		};
 		nav: {
 			home: string;
@@ -884,6 +885,9 @@ export interface Translations {
 		statusApproved: string;
 		statusRejected: string;
 		groupedCount: string;
+		groupedEvents: string;
+		actorsAndOthers: string;
+		actorsLast: string;
 	};
 	notifActions: {
 		seeReasons: string;

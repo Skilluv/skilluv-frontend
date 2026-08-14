@@ -6,7 +6,8 @@ export const en: Translations = {
 			save: 'Save', cancel: 'Cancel', delete: 'Delete', edit: 'Edit',
 			search: 'Search', retry: 'Retry', back: 'Back', next: 'Next',
 			previous: 'Previous', submit: 'Submit', confirm: 'Confirm', close: 'Close',
-			create: 'Create', loading: 'Loading...', sending: 'Sending...'
+			create: 'Create', loading: 'Loading...', sending: 'Sending...',
+			loadMore: 'Load more'
 		},
 		nav: {
 			home: 'Home', challenges: 'Challenges', leaderboards: 'Leaderboards',
@@ -707,7 +708,10 @@ export const en: Translations = {
 		maintainer_digest_subscribed: 'Your digest subscription is confirmed',
 		statusApproved: 'approved',
 		statusRejected: 'rejected',
-		groupedCount: '{n} notifications on this challenge'
+		groupedCount: '{n} notifications on this challenge',
+		groupedEvents: '{n} times',
+		actorsAndOthers: '{names} and {n} others',
+		actorsLast: '{names} and {last}'
 	},
 	notifActions: {
 		seeReasons: 'See reasons and reclaim',

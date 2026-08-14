@@ -6,7 +6,8 @@ export const fr: Translations = {
 			save: 'Sauvegarder', cancel: 'Annuler', delete: 'Supprimer', edit: 'Modifier',
 			search: 'Rechercher', retry: 'Réessayer', back: 'Retour', next: 'Suivant',
 			previous: 'Précédent', submit: 'Soumettre', confirm: 'Confirmer', close: 'Fermer',
-			create: 'Créer', loading: 'Chargement...', sending: 'Envoi...'
+			create: 'Créer', loading: 'Chargement...', sending: 'Envoi...',
+			loadMore: 'Voir plus'
 		},
 		nav: {
 			home: 'Accueil', challenges: 'Challenges', leaderboards: 'Classements',
@@ -707,7 +708,10 @@ export const fr: Translations = {
 		maintainer_digest_subscribed: 'Ton abonnement digest est confirmé',
 		statusApproved: 'acceptée',
 		statusRejected: 'refusée',
-		groupedCount: '{n} notifications sur ce challenge'
+		groupedCount: '{n} notifications sur ce challenge',
+		groupedEvents: '{n} fois',
+		actorsAndOthers: '{names} et {n} autres',
+		actorsLast: '{names} et {last}'
 	},
 	notifActions: {
 		seeReasons: 'Voir raisons et reclaim',

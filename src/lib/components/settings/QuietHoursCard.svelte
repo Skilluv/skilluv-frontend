@@ -16,8 +16,15 @@
 
 	let { start = null, end = null, timezone = null }: Props = $props();
 
+	// Valeurs de départ, lues une fois. L'appelant ne monte cette carte
+	// qu'une fois la fenêtre chargée : les props sont déjà définitives, et
+	// les suivre ensuite écraserait ce que la personne est en train de
+	// régler.
+	// svelte-ignore state_referenced_locally
 	let enabled = $state(start !== null && end !== null);
+	// svelte-ignore state_referenced_locally
 	let startHour = $state(start ?? 22);
+	// svelte-ignore state_referenced_locally
 	let endHour = $state(end ?? 7);
 	let saving = $state(false);
 
