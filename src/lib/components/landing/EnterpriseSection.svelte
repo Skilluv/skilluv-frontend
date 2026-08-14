@@ -107,6 +107,7 @@
 		<div use:scrollReveal class="mt-8 grid sm:grid-cols-2 gap-4">
 			<!-- Traditional -->
 			<div class="rounded-2xl border-2 border-border bg-surface-alt p-5">
+				<p class="mb-3 text-[10px] uppercase tracking-widest text-text-muted">{i18n.t('commonExtra.exampleLabel')}</p>
 				<p class="text-xs text-text-muted uppercase tracking-wider mb-4 line-through decoration-error/50">{i18n.locale === 'fr' ? 'Recrutement classique' : 'Traditional hiring'}</p>
 				<ul class="space-y-2.5 text-sm text-text-muted">
 					<li class="flex items-start gap-2">

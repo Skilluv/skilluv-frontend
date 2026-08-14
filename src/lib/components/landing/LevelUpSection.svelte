@@ -144,7 +144,8 @@
 
 			<!-- After -->
 			<div class="rounded-2xl border-2 border-cat-craft bg-surface-craft p-5">
-				<p class="text-[10px] text-amber-400 uppercase tracking-wider mb-3">{i18n.locale === 'fr' ? '6 mois plus tard' : '6 months later'}</p>
+				<p class="text-[10px] text-amber-400 uppercase tracking-wider mb-1">{i18n.locale === 'fr' ? '6 mois plus tard' : '6 months later'}</p>
+				<p class="mb-3 text-[10px] uppercase tracking-widest text-text-muted">{i18n.t('commonExtra.exampleLabel')}</p>
 				<div class="flex items-center gap-3 mb-3">
 					<div class="h-9 w-9 rounded-full bg-amber-500/15 flex items-center justify-center text-xs font-bold text-amber-400">A</div>
 					<div>
