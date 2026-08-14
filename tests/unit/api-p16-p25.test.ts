@@ -191,14 +191,14 @@ describe('walletApi', () => {
 		);
 	});
 
-	it('stripeWithdraw() posts amount + currency', async () => {
+	it('withdraw() poste montant + devise sur un endpoint unique', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ transaction_id: 't1', stripe_transfer_id: 'tr_1', amount_cents: 1000 })
+			ok({ amount: '10.00', currency: 'EUR', provider: 'stripe', reference: 'tr_1', status: 'completed' })
 		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.stripeWithdraw({ amount: '10.00', currency: 'EUR' });
+		await walletApi.withdraw({ amount: '10.00', currency: 'EUR', rail: 'bank_account' });
 		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/users/me/wallet/withdraw/stripe',
+			'/api/users/me/wallet/withdraw',
 			expect.objectContaining({
 				method: 'POST',
 				body: expect.stringContaining('"amount":"10.00"')
@@ -206,12 +206,14 @@ describe('walletApi', () => {
 		);
 	});
 
-	it('momoWithdraw() posts amount in XOF', async () => {
-		fetchMock.mockResolvedValue(ok({ transaction_id: 't2', momo_reference: 'ref_1' }));
+	it('withdraw() en XOF vise le meme endpoint', async () => {
+		fetchMock.mockResolvedValue(
+			ok({ amount: '5000', currency: 'XOF', provider: 'mtn', reference: 'ref_1', status: 'pending' })
+		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.momoWithdraw({ amount: '5000', currency: 'XOF' });
+		await walletApi.withdraw({ amount: '5000', currency: 'XOF', rail: 'mobile_money' });
 		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/users/me/wallet/withdraw/momo',
+			'/api/users/me/wallet/withdraw',
 			expect.objectContaining({
 				body: expect.stringContaining('"amount":"5000"')
 			})

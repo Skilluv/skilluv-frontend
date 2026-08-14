@@ -116,11 +116,15 @@
 
 		submitting = true;
 		try {
-			if (method === 'stripe') {
-				await walletApi.stripeWithdraw({ amount, currency: 'EUR' });
-			} else {
-				await walletApi.momoWithdraw({ amount, currency: 'XOF' });
-			}
+			// Un seul endpoint. Ce que l'utilisateur choisit ici, c'est la
+			// devise et la destination qu'il a enregistrée — pas le
+			// prestataire : quel opérateur le paie dépend de son pays, et
+			// c'est le backend qui le décide avec sa table de routage.
+			await walletApi.withdraw({
+				amount,
+				currency: method === 'stripe' ? 'EUR' : 'XOF',
+				rail: method === 'stripe' ? 'bank_account' : 'mobile_money'
+			});
 			toast.success(i18n.t('wallet.payoutModal.submitted'));
 			onSubmitted();
 		} catch (err) {

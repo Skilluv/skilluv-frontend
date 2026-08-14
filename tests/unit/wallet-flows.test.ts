@@ -80,14 +80,19 @@ describe('walletApi Stripe flow', () => {
 		expect(res.data.onboarding_url).toContain('stripe.com');
 	});
 
-	it('stripeWithdraw() POSTs the amount body', async () => {
+	// Ces tests verifiaient l'URL, pas son existence : ils passaient
+	// pendant que `/withdraw/stripe` et `/withdraw/momo` avaient disparu du
+	// backend et que le retrait etait casse en production. Un test qui
+	// affirme une URL sans qu'aucun test de contrat ne la confirme donne
+	// une confiance qui n'est adossee a rien.
+	it('withdraw() en EUR passe par un endpoint unique', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ transaction_id: 't1', stripe_transfer_id: 'tr_1', amount_cents: 1500 })
+			ok({ amount: '15.00', currency: 'EUR', provider: 'stripe', reference: 'tr_1', status: 'completed' })
 		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.stripeWithdraw({ amount: '15.00', currency: 'EUR' });
+		await walletApi.withdraw({ amount: '15.00', currency: 'EUR', rail: 'bank_account' });
 		const [url, init] = fetchMock.mock.calls[0];
-		expect(url).toBe('/api/users/me/wallet/withdraw/stripe');
+		expect(url).toBe('/api/users/me/wallet/withdraw');
 		expect(init.method).toBe('POST');
 		const body = JSON.parse(init.body);
 		expect(body.amount).toBe('15.00');
@@ -107,17 +112,29 @@ describe('walletApi Mobile Money flow', () => {
 		expect(body.provider).toBe('orange');
 	});
 
-	it('momoWithdraw() POSTs the amount', async () => {
+	it('withdraw() en XOF passe par le meme endpoint', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ transaction_id: 't2', momo_reference: 'ref_1' })
+			ok({ amount: '10000', currency: 'XOF', provider: 'mtn', reference: 'ref_1', status: 'pending' })
 		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.momoWithdraw({ amount: '10000', currency: 'XOF' });
+		await walletApi.withdraw({ amount: '10000', currency: 'XOF', rail: 'mobile_money' });
 		const [url, init] = fetchMock.mock.calls[0];
-		expect(url).toBe('/api/users/me/wallet/withdraw/momo');
-		expect(init.method).toBe('POST');
+		expect(url).toBe('/api/users/me/wallet/withdraw');
 		const body = JSON.parse(init.body);
 		expect(body.amount).toBe('10000');
 		expect(body.currency).toBe('XOF');
+	});
+
+	it('ne choisit jamais le prestataire, seulement le rail', async () => {
+		fetchMock.mockResolvedValue(
+			ok({ amount: '5000', currency: 'XOF', provider: 'fedapay', reference: 'r', status: 'pending' })
+		);
+		const { walletApi } = await import('../../src/lib/api/wallet');
+		await walletApi.withdraw({ amount: '5000', currency: 'XOF', rail: 'mobile_money' });
+		const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+		// Qui paie depend du pays du beneficiaire et de la table de
+		// routage. Un client qui nomme un prestataire court-circuite ce
+		// choix et casse le jour ou un corridor change.
+		expect(body.provider).toBeUndefined();
 	});
 });
