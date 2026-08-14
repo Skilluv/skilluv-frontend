@@ -64,10 +64,15 @@
 			<h1 class="text-3xl font-bold text-text-primary">{i18n.t('wallet.title')}</h1>
 			<p class="mt-2 max-w-3xl text-text-muted">{i18n.t('wallet.subtitle')}</p>
 		</div>
-		<Button variant="ghost" href={walletApi.statementCsvUrl()}>
-			<Download size={14} strokeWidth={2} />
-			{i18n.t('wallet.downloadStatement')}
-		</Button>
+		<div class="flex flex-wrap gap-2">
+			<Button variant="ghost" href="/disputes">
+				{i18n.t('disputes.title')}
+			</Button>
+			<Button variant="ghost" href={walletApi.statementCsvUrl()}>
+				<Download size={14} strokeWidth={2} />
+				{i18n.t('wallet.downloadStatement')}
+			</Button>
+		</div>
 	</header>
 
 	{#if loading}

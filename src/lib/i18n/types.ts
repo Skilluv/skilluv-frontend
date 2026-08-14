@@ -669,6 +669,47 @@ export interface Translations {
 		retryBtn: string;
 		generic: string;
 	};
+	disputes: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyBody: string;
+		decision: string;
+		payerHint: string;
+		recipientHint: string;
+		contestedHint: string;
+		contestTitle: string;
+		contestHint: string;
+		contestPlaceholder: string;
+		status: {
+			open: string;
+			contested: string;
+			refunded: string;
+			released: string;
+			withdrawn: string;
+		};
+		actions: {
+			raise: string;
+			concede: string;
+			contest: string;
+			withdraw: string;
+		};
+		done: {
+			concede: string;
+			contest: string;
+			withdraw: string;
+		};
+		subjects: {
+			mentorship_session: string;
+			bounty_slice: string;
+			certification_purchase: string;
+			credit_pack: string;
+		};
+		raiseTitle: string;
+		raiseHint: string;
+		raisePlaceholder: string;
+		raised: string;
+	};
 	payments: {
 		title: string;
 		operator: string;

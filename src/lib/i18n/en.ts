@@ -493,6 +493,47 @@ export const en: Translations = {
 		retryBtn: 'Retry',
 		generic: 'An error occurred. Please try again.'
 	},
+	disputes: {
+		title: 'Disputes',
+		subtitle: 'A frozen payment, and what each side says about it.',
+		empty: 'No disputes',
+		emptyBody: 'Nothing to contest, and nobody is contesting anything of yours.',
+		decision: 'Decision',
+		payerHint: 'Withdrawing releases the money to the recipient.',
+		recipientHint: 'If you do not answer, an operator will decide.',
+		contestedHint: 'An operator is reviewing it. You will both be told.',
+		contestTitle: 'Contest',
+		contestHint: 'Explain what happened. The payer and the operator will read this.',
+		contestPlaceholder: 'What you delivered, and when.',
+		status: {
+			open: 'Open',
+			contested: 'Contested',
+			refunded: 'Refunded',
+			released: 'Paid out',
+			withdrawn: 'Withdrawn'
+		},
+		actions: {
+			raise: 'Report a problem',
+			concede: 'Refund',
+			contest: 'Contest',
+			withdraw: 'Withdraw'
+		},
+		done: {
+			concede: 'Refunded.',
+			contest: 'Your answer was sent.',
+			withdraw: 'Dispute withdrawn, money released.'
+		},
+		subjects: {
+			mentorship_session: 'Mentorship session',
+			bounty_slice: 'Bounty',
+			certification_purchase: 'Certification',
+			credit_pack: 'Credit pack'
+		},
+		raiseTitle: 'Report a problem',
+		raiseHint: 'The money is frozen until the recipient answers. Say what went wrong.',
+		raisePlaceholder: 'The session never happened.',
+		raised: 'Reported. The recipient has to answer.'
+	},
 	payments: {
 		title: 'Pay',
 		operator: 'Operator',

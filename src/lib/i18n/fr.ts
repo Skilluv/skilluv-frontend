@@ -493,6 +493,47 @@ export const fr: Translations = {
 		retryBtn: 'Réessayer',
 		generic: 'Une erreur est survenue. Réessaie.'
 	},
+	disputes: {
+		title: 'Litiges',
+		subtitle: 'Un paiement gelé, et ce que chaque partie en dit.',
+		empty: 'Aucun litige',
+		emptyBody: 'Rien à contester, et personne ne conteste rien qui te concerne.',
+		decision: 'Décision',
+		payerHint: 'Retirer ta contestation libère l’argent vers le bénéficiaire.',
+		recipientHint: 'Sans réponse de ta part, un opérateur tranchera.',
+		contestedHint: 'Un opérateur examine le dossier. Vous serez tous deux prévenus.',
+		contestTitle: 'Contester',
+		contestHint: 'Explique ce qui s’est passé. Le payeur et l’opérateur liront ta réponse.',
+		contestPlaceholder: 'Ce que tu as livré, et quand.',
+		status: {
+			open: 'Ouvert',
+			contested: 'Contesté',
+			refunded: 'Remboursé',
+			released: 'Versé',
+			withdrawn: 'Retiré'
+		},
+		actions: {
+			raise: 'Signaler un problème',
+			concede: 'Rembourser',
+			contest: 'Contester',
+			withdraw: 'Retirer'
+		},
+		done: {
+			concede: 'Remboursement effectué.',
+			contest: 'Ta réponse est partie.',
+			withdraw: 'Litige retiré, argent libéré.'
+		},
+		subjects: {
+			mentorship_session: 'Session de mentorat',
+			bounty_slice: 'Prime',
+			certification_purchase: 'Certification',
+			credit_pack: 'Pack de crédits'
+		},
+		raiseTitle: 'Signaler un problème',
+		raiseHint: 'L’argent est gelé le temps que le bénéficiaire réponde. Dis ce qui n’a pas été.',
+		raisePlaceholder: 'La session n’a pas eu lieu.',
+		raised: 'Signalé. Le bénéficiaire doit répondre.'
+	},
 	payments: {
 		title: 'Payer',
 		operator: 'Opérateur',
