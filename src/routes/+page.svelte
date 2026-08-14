@@ -11,7 +11,6 @@
 	import HowItWorks from '$lib/components/landing/HowItWorks.svelte';
 	import TrendingChallenges from '$lib/components/landing/TrendingChallenges.svelte';
 	import RecentActivity from '$lib/components/landing/RecentActivity.svelte';
-	import LeaderboardPreview from '$lib/components/landing/LeaderboardPreview.svelte';
 	import StatsSection from '$lib/components/landing/StatsSection.svelte';
 	import LevelUpSection from '$lib/components/landing/LevelUpSection.svelte';
 	import OpportunitiesSection from '$lib/components/landing/OpportunitiesSection.svelte';
@@ -118,7 +117,6 @@
 	<HowItWorks />
 	<TrendingChallenges />
 	<RecentActivity />
-	<LeaderboardPreview />
 	<StatsSection />
 	<LevelUpSection />
 	<OpportunitiesSection />

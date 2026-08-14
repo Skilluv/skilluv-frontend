@@ -146,9 +146,9 @@
 			<div class="rounded-2xl border-2 border-cat-craft bg-surface-craft p-5">
 				<p class="text-[10px] text-amber-400 uppercase tracking-wider mb-3">{i18n.locale === 'fr' ? '6 mois plus tard' : '6 months later'}</p>
 				<div class="flex items-center gap-3 mb-3">
-					<div class="h-9 w-9 rounded-full bg-amber-500/15 flex items-center justify-center text-xs font-bold text-amber-400">R</div>
+					<div class="h-9 w-9 rounded-full bg-amber-500/15 flex items-center justify-center text-xs font-bold text-amber-400">A</div>
 					<div>
-						<p class="text-sm font-semibold">RustLord</p>
+						<p class="text-sm font-semibold">A. Diallo</p>
 						<p class="text-xs text-amber-400">{i18n.locale === 'fr' ? 'Légende' : 'Legend'} ★★★ · 4 821 ◆</p>
 					</div>
 				</div>

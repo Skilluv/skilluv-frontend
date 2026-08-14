@@ -131,10 +131,11 @@
 			<div use:scrollReveal class="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
 				<!-- Mini profile card -->
 				<div class="order-2 lg:order-1 rounded-2xl border-2 border-cat-share bg-surface-share p-6">
+					<p class="mb-3 text-[10px] uppercase tracking-wider text-text-muted">{i18n.t('commonExtra.exampleLabel')}</p>
 					<div class="flex items-center gap-4 mb-4">
-						<div class="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-lg">K</div>
+						<div class="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-lg">A</div>
 						<div>
-							<p class="font-semibold">Kira_x42</p>
+							<p class="font-semibold">A. Diallo</p>
 							<p class="text-xs text-text-muted">{i18n.locale === 'fr' ? 'Artisan' : 'Artisan'} &#9733;</p>
 						</div>
 					</div>

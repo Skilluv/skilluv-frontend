@@ -52,6 +52,37 @@ export const DOMAIN_STYLES: Record<SkillDomain, DomainStyle> = {
 		bgSoft: 'bg-teal-500/10',
 		hoverBorder: 'hover:border-teal-500/40'
 	},
+	quality: {
+		text: 'text-cyan-400',
+		dot: 'bg-cyan-500',
+		bgSoft: 'bg-cyan-500/10',
+		hoverBorder: 'hover:border-cyan-500/40'
+	},
+	leadership: {
+		text: 'text-orange-400',
+		dot: 'bg-orange-500',
+		bgSoft: 'bg-orange-500/10',
+		hoverBorder: 'hover:border-orange-500/40'
+	},
+	audio: {
+		text: 'text-fuchsia-400',
+		dot: 'bg-fuchsia-500',
+		bgSoft: 'bg-fuchsia-500/10',
+		hoverBorder: 'hover:border-fuchsia-500/40'
+	},
+	communication: {
+		text: 'text-amber-400',
+		dot: 'bg-amber-500',
+		bgSoft: 'bg-amber-500/10',
+		hoverBorder: 'hover:border-amber-500/40'
+	},
+	education: {
+		text: 'text-lime-400',
+		dot: 'bg-lime-500',
+		bgSoft: 'bg-lime-500/10',
+		hoverBorder: 'hover:border-lime-500/40'
+	},
+	// Legacy: split into `communication` + `education`, kept for old profiles.
 	soft_skills: {
 		text: 'text-amber-400',
 		dot: 'bg-amber-500',
@@ -59,6 +90,24 @@ export const DOMAIN_STYLES: Record<SkillDomain, DomainStyle> = {
 		hoverBorder: 'hover:border-amber-500/40'
 	}
 };
+
+/**
+ * The eleven disciplines, in the order the public pages present them. Excludes
+ * the deprecated `soft_skills`, which no page should advertise.
+ */
+export const PUBLIC_DOMAINS = [
+	'code',
+	'design',
+	'security',
+	'game',
+	'ai',
+	'ops',
+	'quality',
+	'leadership',
+	'audio',
+	'communication',
+	'education'
+] as const satisfies readonly SkillDomain[];
 
 /** Neutral styling for a domain the backend knows and this build does not. */
 const UNKNOWN_DOMAIN_STYLE: DomainStyle = {

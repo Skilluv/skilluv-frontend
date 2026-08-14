@@ -37,6 +37,11 @@ export interface Translations {
 			security: string;
 			ai: string;
 			ops: string;
+			quality: string;
+			leadership: string;
+			audio: string;
+			communication: string;
+			education: string;
 			soft_skills: string;
 		};
 		titles: {
@@ -70,6 +75,48 @@ export interface Translations {
 		team: string;
 		votes: string;
 		page: string;
+	};
+	launch: {
+		eyebrow: string;
+		date: string;
+		badge: string;
+		countdown: string;
+		soon: string;
+		open: string;
+		cta: string;
+		note: string;
+	};
+	commonExtra: {
+		exampleLabel: string;
+	},
+	board: {
+		title: string;
+		titleAccent: string;
+		subtitle: string;
+		emptyTitle: string;
+		emptyBody: string;
+		emptyPoint1: string;
+		emptyPoint2: string;
+		emptyPoint3: string;
+		emptyCta: string;
+		loadError: string;
+	};
+	disciplines: {
+		sectionEyebrow: string;
+		sectionTitle: string;
+		sectionSubtitle: string;
+		tracksNote: string;
+		code: { label: string; desc: string };
+		design: { label: string; desc: string };
+		security: { label: string; desc: string };
+		game: { label: string; desc: string };
+		ai: { label: string; desc: string };
+		ops: { label: string; desc: string };
+		quality: { label: string; desc: string };
+		leadership: { label: string; desc: string };
+		audio: { label: string; desc: string };
+		communication: { label: string; desc: string };
+		education: { label: string; desc: string };
 	};
 	landing: {
 		title: string;
