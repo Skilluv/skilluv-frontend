@@ -284,7 +284,7 @@
 						<p class="text-[10px] uppercase tracking-widest text-text-muted mb-0.5">
 							{i18n.locale === 'fr' ? 'Code vérifiable' : 'Verifiable code'}
 						</p>
-						<p class="font-mono text-sm font-bold text-accent">#SKV-2027-XXXX</p>
+						<p class="font-mono text-sm font-bold text-accent">#ABCD1234</p>
 					</div>
 				</div>
 			</a>
@@ -308,7 +308,7 @@
 						<p class="text-[10px] uppercase tracking-widest text-text-muted mb-0.5">
 							{i18n.locale === 'fr' ? 'Numéro facture' : 'Invoice number'}
 						</p>
-						<p class="font-mono text-sm font-bold text-primary">SKV-2027-XXXX</p>
+						<p class="font-mono text-sm font-bold text-primary">ABCD1234</p>
 					</div>
 				</div>
 			</a>

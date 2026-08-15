@@ -157,6 +157,13 @@ export const RANK_COLORS: Record<Rank, string> = {
 	doyen: 'text-amber-400'
 };
 
-export function rankColor(r: Rank): string {
-	return RANK_COLORS[r];
+/**
+ * Total, comme domainStyle : le backend renvoie encore `legende` sur les
+ * profils historiques, et un rang inconnu ne doit pas casser une ligne de
+ * classement pour une question de couleur.
+ */
+export function rankColor(r: Rank | Title | string | null | undefined): string {
+	if (!r) return 'text-text-muted';
+	if (r === 'legende') return 'text-amber-400';
+	return RANK_COLORS[r as Rank] ?? 'text-text-muted';
 }

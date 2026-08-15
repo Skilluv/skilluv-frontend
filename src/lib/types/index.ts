@@ -54,7 +54,8 @@ export type ChallengeMode = 'solo' | 'team';
 export type ChallengeTone = 'serious' | 'fun' | 'educational';
 export type ChallengeStatus = 'draft' | 'published' | 'archived';
 export type CommunityStatus = 'draft' | 'review' | 'approved' | 'rejected' | null;
-export type LeaderboardDomain = 'global' | 'code' | 'design' | 'game' | 'security';
+/** Derive du catalogue : fige a quatre domaines, il ignorait les sept autres. */
+export type LeaderboardDomain = 'global' | SkillDomain;
 export type LeaderboardPeriod = 'alltime' | 'weekly' | 'monthly';
 export type ReportTargetType = 'user' | 'challenge' | 'message' | 'enterprise';
 export type ReportReason = 'spam' | 'harassment' | 'inappropriate' | 'cheating' | 'fake_profile' | 'other';

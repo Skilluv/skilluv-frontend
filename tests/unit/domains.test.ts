@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { domainStyle, DOMAIN_STYLES } from '$lib/utils/domains';
+import { domainStyle, DOMAIN_STYLES, rankColor, RANK_COLORS } from '$lib/utils/domains';
 
 /**
  * The discipline catalogue lives on the backend and grows there first. Three
@@ -29,5 +29,27 @@ describe('domainStyle', () => {
 		expect(domainStyle(null).dot).toBeTruthy();
 		expect(domainStyle(undefined).dot).toBeTruthy();
 		expect(domainStyle('').dot).toBeTruthy();
+	});
+});
+
+/**
+ * Ranks reach the UI straight from the backend, which still carries `legende`
+ * on historical profiles even though the canonical Rank type dropped it.
+ */
+describe('rankColor', () => {
+	it('covers the five canonical ranks', () => {
+		for (const r of ['apprenti', 'ranger', 'artisan', 'maitre', 'doyen']) {
+			expect(RANK_COLORS[r as keyof typeof RANK_COLORS], r).toBeDefined();
+		}
+	});
+
+	it('still colours the legacy legende rank', () => {
+		expect(rankColor('legende')).toBe('text-amber-400');
+	});
+
+	it('never returns undefined for an unknown or missing rank', () => {
+		expect(rankColor('archimage')).toBeTruthy();
+		expect(rankColor(null)).toBeTruthy();
+		expect(rankColor(undefined)).toBeTruthy();
 	});
 });
