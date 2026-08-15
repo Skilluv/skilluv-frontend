@@ -39,7 +39,10 @@ export const SOCIAL_ACCOUNTS: SocialAccount[] = [
 	{ key: 'medium', label: 'Medium', url: 'https://medium.com/@skilluv' },
 	{ key: 'substack', label: 'Substack', url: 'https://joinskilluv.substack.com' },
 	{ key: 'producthunt', label: 'Product Hunt', url: 'https://producthunt.com/@joinskilluv' },
-	{ key: 'reddit', label: 'Reddit', url: 'https://reddit.com/r/Skilluv' }
+	{ key: 'reddit', label: 'Reddit', url: 'https://reddit.com/r/Skilluv' },
+	// Handle verified against the domain itself: the `_atproto.skill-uv.com` TXT
+	// record and the resolved DID match. On Bluesky the domain is the badge.
+	{ key: 'bluesky', label: 'Bluesky', url: 'https://bsky.app/profile/skill-uv.com' }
 ];
 
 export const PRIMARY_SOCIAL_ACCOUNTS = SOCIAL_ACCOUNTS.filter((a) => a.primary);
@@ -52,12 +55,10 @@ export const PRIMARY_SOCIAL_ACCOUNTS = SOCIAL_ACCOUNTS.filter((a) => a.primary);
  *  - Discord: needs the permanent invite code (`discord.gg/<code>`). It must be
  *    a never-expiring, unlimited-use invite — the default one dies after seven
  *    days and would break the footer without anyone noticing.
- *  - Bluesky: needs the full handle (`joinskilluv.bsky.social`, or a custom
- *    domain handle if one is configured).
  *  - GitHub `Skilluv` org: the documentation points at `skilluv-community` for
  *    the code, so that is the one linked. Say if the other should show too.
  */
-export const PENDING_ACCOUNTS = ['discord', 'bluesky'] as const;
+export const PENDING_ACCOUNTS = ['discord'] as const;
 
 /**
  * Contact addresses, on the Skilluv domain.
