@@ -86,6 +86,42 @@ test.describe('SKI-104 badge gallery', () => {
 			{ path: '/users/user-42/orientations', handler: json({ data: [] }) },
 			{ path: '/users/user-42/capabilities', handler: json({ data: [] }) },
 			{
+				// SKI-291: the route that feeds the per-repo badges.
+				path: '/u/kofi/projects',
+				handler: json({
+					data: {
+						projects: [
+							{
+								id: 'p-1',
+								slug: 'skilluv-backend',
+								name: 'Skilluv Backend',
+								github_repo_owner: 'skilluv-community',
+								github_repo_name: 'skilluv-backend',
+								archived_at: null
+							},
+							{
+								// No GitHub coordinates: a repo badge would point nowhere.
+								id: 'p-2',
+								slug: 'carnet-interne',
+								name: 'Carnet interne',
+								github_repo_owner: null,
+								github_repo_name: null,
+								archived_at: null
+							},
+							{
+								// Archived: still owned, no longer advertised.
+								id: 'p-3',
+								slug: 'vieux-projet',
+								name: 'Vieux projet',
+								github_repo_owner: 'skilluv-community',
+								github_repo_name: 'vieux-projet',
+								archived_at: '2026-02-01T09:00:00Z'
+							}
+						]
+					}
+				})
+			},
+			{
 				path: '/geo/countries',
 				handler: json({ data: [{ iso2: 'BJ', iso3: 'BEN', name: 'Bénin', dial_code: '229' }] })
 			}
@@ -148,5 +184,22 @@ test.describe('SKI-104 badge gallery', () => {
 
 		await gotoHydrated(page, '/profile/kofi');
 		await expect(page.getByText('Badge pas encore genere')).toBeVisible();
+	});
+
+	test('les badges de repo listent les projets maintenus, eux seuls', async ({ page, context }) => {
+		// The repo snippets are for the profile owner to copy, so they only render
+		// on your own profile. The mock backend serves `kofi` for this token.
+		await context.addCookies([
+			{ name: 'access_token', value: 'challenger', domain: 'localhost', path: '/' }
+		]);
+		await gotoHydrated(page, '/profile/kofi');
+
+		// Only the project that has GitHub coordinates and is not archived can
+		// carry a repo badge.
+		await expect(page.getByText('Skilluv Backend')).toBeVisible();
+		// The repo appears in the heading and in both snippets.
+		await expect(page.getByText('skilluv-community/skilluv-backend').first()).toBeVisible();
+		await expect(page.getByText('Carnet interne')).toHaveCount(0);
+		await expect(page.getByText('Vieux projet')).toHaveCount(0);
 	});
 });

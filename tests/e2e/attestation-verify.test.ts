@@ -90,6 +90,20 @@ test.describe('SKI-103 public attestation verification', () => {
 		await expect(page.getByRole('button', { name: 'Partager' })).toBeVisible();
 	});
 
+	test('la carte de partage est le PNG genere pour cette attestation', async ({ page }) => {
+		await mockApi(page, [{ path: `/verify/${HASH}`, handler: json(VALID) }, ...common]);
+		await gotoHydrated(page, `/verify/${HASH}`);
+
+		// A generic SVG card is what the social platforms refuse to render, and it
+		// would not name the contributor. This one is rendered per attestation.
+		const og = page.locator('meta[property="og:image"]');
+		await expect(og).toHaveAttribute('content', new RegExp(`/api/verify/${HASH}/og\.png$`));
+		await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
+			'content',
+			'1200'
+		);
+	});
+
 	test('un hash inconnu est distingue d un hash malforme', async ({ page }) => {
 		await mockApi(page, [
 			{

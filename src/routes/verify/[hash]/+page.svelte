@@ -100,7 +100,12 @@
 	<!-- Absolute: this URL is shared and re-crawled off-site, where a relative
 	     path resolves against the crawler's own host. -->
 	<meta property="og:url" content={`${page.url.origin}/verify/${data.hash}`} />
-	<meta property="og:image" content={`${page.url.origin}/og-image.svg`} />
+	<!-- Generated per attestation by the backend (SKI-292): names the contributor
+	     rather than showing the generic site card, and is a PNG, which is what
+	     the social platforms actually render. -->
+	<meta property="og:image" content={attestationApi.ogImageUrl(data.hash)} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={seoTitle} />
 	<meta name="twitter:description" content={seoDescription} />

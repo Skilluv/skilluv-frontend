@@ -60,6 +60,14 @@ export const attestationApi = {
 		return api.get<AttestationResponse>(`/verify/${encodeURIComponent(hash)}`);
 	},
 
+	/**
+	 * OpenGraph card, rendered per attestation (SKI-292). 1200x630 PNG, served
+	 * under `/api` so it stays same-origin behind the existing proxy.
+	 */
+	ogImageUrl(hash: string): string {
+		return `${backendOrigin()}/api/verify/${encodeURIComponent(hash)}/og.png`;
+	},
+
 	/** Direct PDF link (SKI-118). */
 	pdfUrl(hash: string): string {
 		return `${backendOrigin()}/verify/${encodeURIComponent(hash)}.pdf`;

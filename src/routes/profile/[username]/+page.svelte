@@ -29,6 +29,7 @@
 	import { OrientationList } from '$lib/components/orientations';
 	import { ContributionSection } from '$lib/components/capabilities';
 	import BadgesSection from '$lib/components/profile/BadgesSection.svelte';
+	import { projectsApi } from '$api/projects';
 
 	onMount(() => {
 		void geo.ensureCountries();
@@ -44,6 +45,11 @@
 	let badgesData = $state<UserBadgesResponse | null>(null);
 	let orientations = $state<UserOrientation[]>([]);
 	let publicCapabilities = $state<UserCapability[]>([]);
+	// Repos this user maintains, for the per-repo README badges. Only those with
+	// GitHub coordinates can carry one.
+	let ownedProjects = $state<
+		{ slug: string; github_repo_owner: string; github_repo_name: string; name: string }[]
+	>([]);
 	let loading = $state(true);
 	let error = $state('');
 
@@ -87,6 +93,7 @@
 		badgesData = null;
 		orientations = [];
 		publicCapabilities = [];
+		ownedProjects = [];
 		try {
 			const res = await profileApi.getPublic(name);
 			user = res.data.user;
@@ -98,14 +105,25 @@
 			// P17/P16/P18.4 — chargements enrichis, tolérants aux 404 tant que le
 			// backend n'a pas encore les endpoints publics correspondants.
 			if (user?.id) {
-				const [badgesRes, orientationsRes, capabilitiesRes] = await Promise.allSettled([
+				const [badgesRes, orientationsRes, capabilitiesRes, projectsRes] = await Promise.allSettled([
 					badgesApi.forUser(user.id),
 					orientationsApi.forUser(user.id),
-					capabilitiesApi.forUser(user.id)
+					capabilitiesApi.forUser(user.id),
+					projectsApi.forUser(name)
 				]);
 				if (badgesRes.status === 'fulfilled') badgesData = badgesRes.value.data;
 				if (orientationsRes.status === 'fulfilled') orientations = orientationsRes.value.data;
 				if (capabilitiesRes.status === 'fulfilled') publicCapabilities = capabilitiesRes.value.data;
+				if (projectsRes.status === 'fulfilled') {
+					ownedProjects = (projectsRes.value.data.projects ?? [])
+						.filter((pr) => pr.github_repo_owner && pr.github_repo_name && !pr.archived_at)
+						.map((pr) => ({
+							slug: pr.slug,
+							name: pr.name,
+							github_repo_owner: pr.github_repo_owner as string,
+							github_repo_name: pr.github_repo_name as string
+						}));
+				}
 			}
 		} catch (err) {
 			if (err instanceof SkilluError) {
@@ -366,7 +384,7 @@
 
 		<!-- SKI-104 — Badges Skilluv (personnel + repos maintenus si dispo) -->
 		<div class="mt-6">
-			<BadgesSection {username} isOwner={isOwnProfile} />
+			<BadgesSection {username} isOwner={isOwnProfile} {ownedProjects} />
 		</div>
 	{/if}
 </div>
