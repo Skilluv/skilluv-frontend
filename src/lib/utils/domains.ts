@@ -1,4 +1,4 @@
-import type { SkillDomain, Title } from '$lib/types';
+import type { SkillDomain, Title, Rank } from '$lib/types';
 
 /**
  * Classes Tailwind par domaine.
@@ -141,4 +141,22 @@ export const TITLE_COLORS: Record<Title, string> = {
 
 export function titleColor(t: Title): string {
 	return TITLE_COLORS[t];
+}
+
+/**
+ * Classes Tailwind par rang canonique (Rank, 5 paliers Apprenti -> Doyen).
+ *
+ * TITLE_COLORS ne couvre que l'ancien type Title deprecie, qui ignore `ranger`
+ * et `doyen` et porte un `legende` qui n'existe plus.
+ */
+export const RANK_COLORS: Record<Rank, string> = {
+	apprenti: 'text-text-muted',
+	ranger: 'text-emerald-400',
+	artisan: 'text-blue-400',
+	maitre: 'text-purple-400',
+	doyen: 'text-amber-400'
+};
+
+export function rankColor(r: Rank): string {
+	return RANK_COLORS[r];
 }

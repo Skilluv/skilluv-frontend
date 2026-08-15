@@ -124,6 +124,17 @@ export interface Translations {
 		reward: string;
 		minutes: string;
 	};
+	ranks: {
+		title: string;
+		titleAccent: string;
+		subtitle: string;
+		apprentiMeaning: string;
+		rangerMeaning: string;
+		artisanMeaning: string;
+		maitreMeaning: string;
+		doyenMeaning: string;
+		note: string;
+	};
 	howItWorks: {
 		title: string;
 		subtitle: string;

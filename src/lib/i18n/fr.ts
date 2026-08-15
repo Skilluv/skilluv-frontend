@@ -69,6 +69,17 @@ export const fr: Translations = {
 		reward: '+{n} fragments',
 		minutes: '{n} min'
 	},
+	ranks: {
+		title: 'Ton rang,',
+		titleAccent: 'tu le fabriques.',
+		subtitle: 'Cinq paliers, de l’Apprenti au Doyen. Ils ne se debloquent pas : ils se calculent sur ce que tu as reellement livre, et chacun remonte a la piece qui l’a valu.',
+		apprentiMeaning: 'Premiers gestes, encadres de pres.',
+		rangerMeaning: 'Tu livres seul sur des missions cadrees.',
+		artisanMeaning: 'Tu prends en charge une piece de bout en bout.',
+		maitreMeaning: 'Tu examines le travail des autres.',
+		doyenMeaning: 'Tu fixes le niveau attendu sur ta discipline.',
+		note: 'Rien n’est reserve a un rang. Les missions, les revues, les attestations et la visibilite aupres des entreprises sont ouvertes a tous, des le premier jour.'
+	},
 	howItWorks: {
 		title: 'Comment ça marche',
 		subtitle: 'Quatre temps, du premier geste à la preuve.',

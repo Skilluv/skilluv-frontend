@@ -45,11 +45,11 @@
 				</div>
 				<div class="mt-auto">
 					<div class="flex items-baseline gap-1">
-						<p use:countUp={{ target: 20, duration: 2 }} class="text-5xl sm:text-7xl lg:text-8xl font-black text-text-primary tracking-tight">20</p>
+						<p use:countUp={{ target: 120, duration: 2 }} class="text-5xl sm:text-7xl lg:text-8xl font-black text-text-primary tracking-tight">120</p>
 						<span class="text-4xl lg:text-5xl font-black text-accent">+</span>
 					</div>
-					<p class="text-sm font-semibold mb-1 mt-3">{i18n.locale === 'fr' ? 'Langages & outils' : 'Languages & tools'}</p>
-					<p class="text-xs text-text-muted">{i18n.locale === 'fr' ? 'De Rust à Figma' : 'From Rust to Figma'}</p>
+					<p class="text-sm font-semibold mb-1 mt-3">{i18n.locale === 'fr' ? 'Parcours métier' : 'Career tracks'}</p>
+					<p class="text-xs text-text-muted">{i18n.locale === 'fr' ? 'Sur onze disciplines' : 'Across eleven disciplines'}</p>
 				</div>
 			</div>
 

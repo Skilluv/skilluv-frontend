@@ -69,6 +69,17 @@ export const en: Translations = {
 		reward: '+{n} fragments',
 		minutes: '{n} min'
 	},
+	ranks: {
+		title: 'Your rank,',
+		titleAccent: 'you make it.',
+		subtitle: 'Five tiers, from Apprentice to Elder. They are not unlocked: they are computed from what you actually shipped, and each one traces back to the piece that earned it.',
+		apprentiMeaning: 'First gestures, closely guided.',
+		rangerMeaning: 'You ship on your own, on scoped assignments.',
+		artisanMeaning: 'You own a piece end to end.',
+		maitreMeaning: 'You examine other people’s work.',
+		doyenMeaning: 'You set the bar on your discipline.',
+		note: 'Nothing is reserved for a rank. Assignments, reviews, credentials and visibility to companies are open to everyone from day one.'
+	},
 	howItWorks: {
 		title: 'How it works',
 		subtitle: 'Four beats, from the first gesture to the proof.',
