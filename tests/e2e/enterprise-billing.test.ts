@@ -2,8 +2,9 @@
  * S6.8 (SKI-53) — /enterprise/credits and /enterprise/subscriptions.
  *
  * Money surfaces. Two things must hold: the owner/recruiter split on anything
- * that charges the company card, and the fact that we hand off to Stripe with
- * the pack the user actually clicked.
+ * that charges the company card, and the fact that a purchase carries the pack
+ * the user actually clicked — whether it settles in place or hands off to the
+ * provider.
  */
 import { test, expect, type Page, type Route } from '@playwright/test';
 import { gotoHydrated } from './utils/hydration';
@@ -127,7 +128,9 @@ test.describe('S6.8 enterprise credits', () => {
 		await expect(page.getByText('Achat').first()).toBeVisible();
 	});
 
-	test('acheter un pack envoie vers Stripe avec le bon slug', async ({ page }) => {
+	test('acheter un pack ouvre le paiement avec le bon slug, sans quitter la page', async ({
+		page
+	}) => {
 		let sent: Record<string, unknown> | null = null;
 		await signIn(page, 'owner');
 		await mockApi(page, [
@@ -135,10 +138,27 @@ test.describe('S6.8 enterprise credits', () => {
 				path: '/enterprise/credits/checkout',
 				handler: (route) => {
 					sent = route.request().postDataJSON();
-					return json({ data: { checkout_url: 'https://checkout.stripe.com/c/pay/cs_test_1' } })(
-						route
-					);
+					return json({
+						data: {
+							checkout_url: 'https://checkout.stripe.com/c/pay/cs_test_1',
+							session_id: 'cs_test_1',
+							payment_id: '11111111-1111-4111-8111-111111111111'
+						}
+					})(route);
 				}
+			},
+			{
+				path: '/payments/methods',
+				handler: json({
+					data: [
+						{
+							operator: 'mtn_bj',
+							label: 'MTN MoMo',
+							supports_inline: true,
+							provider: 'fedapay'
+						}
+					]
+				})
 			},
 			...billingRoutes
 		]);
@@ -148,7 +168,12 @@ test.describe('S6.8 enterprise credits', () => {
 
 		await expect.poll(() => sent).not.toBeNull();
 		expect(sent).toEqual({ pack_slug: 'pack-100' });
-		await expect(page).toHaveURL(/checkout\.stripe\.com/);
+
+		// The redirect used to be the whole flow. It is now the way out, kept
+		// behind "autre moyen de paiement" for cards: an operator that
+		// confirms on the handset must not send anyone to a form.
+		await expect(page.getByTestId('payment-phone')).toBeVisible();
+		await expect(page).toHaveURL(/\/enterprise\/credits$/);
 	});
 
 	test('un code promo credite le compte', async ({ page }) => {
