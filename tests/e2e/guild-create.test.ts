@@ -55,6 +55,16 @@ const common: ApiRoute[] = [
 async function addCofounder(page: Page, username: string) {
 	await page.getByTestId('cofounder-input').fill(username);
 	await page.getByTestId('add-cofounder').click();
+	// Resolving a username is a round-trip, and the field is cleared once it
+	// succeeds. Chaining the next add before that settles types into a field
+	// that is about to be wiped, so the name is silently dropped.
+	await expect
+		.poll(async () => {
+			const empty = (await page.getByTestId('cofounder-input').inputValue()) === '';
+			const errored = (await page.getByTestId('cofounder-error').count()) > 0;
+			return empty || errored;
+		})
+		.toBe(true);
 }
 
 test.beforeEach(async ({ page, context }) => {
