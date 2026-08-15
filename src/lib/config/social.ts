@@ -38,7 +38,8 @@ export const SOCIAL_ACCOUNTS: SocialAccount[] = [
 	{ key: 'hashnode', label: 'Hashnode', url: 'https://hashnode.com/@joinskilluv' },
 	{ key: 'medium', label: 'Medium', url: 'https://medium.com/@skilluv' },
 	{ key: 'substack', label: 'Substack', url: 'https://joinskilluv.substack.com' },
-	{ key: 'producthunt', label: 'Product Hunt', url: 'https://producthunt.com/@joinskilluv' }
+	{ key: 'producthunt', label: 'Product Hunt', url: 'https://producthunt.com/@joinskilluv' },
+	{ key: 'reddit', label: 'Reddit', url: 'https://reddit.com/r/Skilluv' }
 ];
 
 export const PRIMARY_SOCIAL_ACCOUNTS = SOCIAL_ACCOUNTS.filter((a) => a.primary);
@@ -48,15 +49,15 @@ export const PRIMARY_SOCIAL_ACCOUNTS = SOCIAL_ACCOUNTS.filter((a) => a.primary);
  * these produces a 404 on the footer of a launch page, so they are listed here
  * instead of being published.
  *
- *  - Discord: needs the permanent invite code (`discord.gg/<code>`).
+ *  - Discord: needs the permanent invite code (`discord.gg/<code>`). It must be
+ *    a never-expiring, unlimited-use invite — the default one dies after seven
+ *    days and would break the footer without anyone noticing.
  *  - Bluesky: needs the full handle (`joinskilluv.bsky.social`, or a custom
  *    domain handle if one is configured).
- *  - Reddit: needs to know whether it is a subreddit (`r/Skilluv`) or a user
- *    account (`u/Skilluv`).
  *  - GitHub `Skilluv` org: the documentation points at `skilluv-community` for
  *    the code, so that is the one linked. Say if the other should show too.
  */
-export const PENDING_ACCOUNTS = ['discord', 'bluesky', 'reddit'] as const;
+export const PENDING_ACCOUNTS = ['discord', 'bluesky'] as const;
 
 /**
  * Contact addresses, on the Skilluv domain.
