@@ -58,6 +58,17 @@ export const en: Translations = {
 		cta: 'Create my account',
 		loadError: 'Leaderboard temporarily unavailable.'
 	},
+	openMissions: {
+		title: 'Open assignments',
+		titleAccent: 'Pick yours.',
+		subtitle: 'Each one sits on software that runs, with its users and its requirements.',
+		emptyTitle: 'The catalogue opens with the beta.',
+		emptyBody: 'The first assignments land on 11 January 2027. Claim your seat now and you will hear the day they open.',
+		emptyCta: 'Claim my seat',
+		allCta: 'All assignments',
+		reward: '+{n} fragments',
+		minutes: '{n} min'
+	},
 	howItWorks: {
 		title: 'How it works',
 		subtitle: 'Four beats, from the first gesture to the proof.',
@@ -85,7 +96,7 @@ export const en: Translations = {
 		sectionTitleLine1: 'Eleven disciplines',
 		sectionTitleLine2: 'A hundred and twenty tracks.',
 		sectionSubtitle: 'Every discipline has its tracks, its grounds and its ranks.',
-		hint: 'Hover a discipline.',
+		lead: 'All of them lead to the same place: proof of what you made.',
 		code: { label: 'Code', desc: 'Backend, frontend, mobile, systems, embedded.' },
 		design: { label: 'Design', desc: 'UI/UX, design systems, motion, illustration.' },
 		security: { label: 'Cybersecurity', desc: 'Pentesting, red team, forensics, cryptography.' },

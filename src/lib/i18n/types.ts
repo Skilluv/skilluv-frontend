@@ -113,6 +113,17 @@ export interface Translations {
 		cta: string;
 		loadError: string;
 	};
+	openMissions: {
+		title: string;
+		titleAccent: string;
+		subtitle: string;
+		emptyTitle: string;
+		emptyBody: string;
+		emptyCta: string;
+		allCta: string;
+		reward: string;
+		minutes: string;
+	};
 	howItWorks: {
 		title: string;
 		subtitle: string;
@@ -140,7 +151,7 @@ export interface Translations {
 		sectionTitleLine1: string;
 		sectionTitleLine2: string;
 		sectionSubtitle: string;
-		hint: string;
+		lead: string;
 		code: { label: string; desc: string };
 		design: { label: string; desc: string };
 		security: { label: string; desc: string };

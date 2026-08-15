@@ -12,7 +12,7 @@ const api = createApiClient();
 
 // --- Types réponses spécifiques ---
 
-interface ChallengeListItem {
+export interface ChallengeListItem {
 	challenge: Challenge;
 	locked: boolean;
 }

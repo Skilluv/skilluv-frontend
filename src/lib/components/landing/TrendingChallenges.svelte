@@ -1,81 +1,121 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { scrollReveal } from '$lib/utils/animations';
 	import { domainStyle } from '$lib/utils/domains';
+	import { challengesApi, type ChallengeListItem } from '$api/challenges';
 	import Button from '$components/ui/Button.svelte';
-	import type { SkillDomain } from '$lib/types';
 
-	interface ChallengeItem {
-		title: string;
-		domain: SkillDomain;
-		lang: string;
-		difficulty: number;
-		fragments: number;
-		completions: number;
-		duration: string;
-	}
+	/**
+	 * The open catalogue, fed by GET /api/challenges.
+	 *
+	 * This section used to list four invented challenges with completion counts
+	 * — "342 réussites", "518 completions" — under the heading "most attempted
+	 * this week". Nobody has attempted anything yet, so the ranking, the counts
+	 * and the titles were all fabricated.
+	 *
+	 * It now shows the real catalogue. Empty before the opening, it says so and
+	 * points at the date rather than filling the space with numbers.
+	 */
+	let items = $state<ChallengeListItem[]>([]);
 
-	const challenges: ChallengeItem[] = [
-		{ title: 'Reverse a Linked List', domain: 'code', lang: 'Rust', difficulty: 3, fragments: 120, completions: 342, duration: '15 min' },
-		{ title: 'Responsive Dashboard', domain: 'design', lang: 'CSS', difficulty: 2, fragments: 85, completions: 518, duration: '30 min' },
-		{ title: 'Physics Engine Bug', domain: 'game', lang: 'C#', difficulty: 4, fragments: 150, completions: 127, duration: '25 min' },
-		{ title: 'SQL Injection Hunt', domain: 'security', lang: 'CTF', difficulty: 3, fragments: 200, completions: 203, duration: '20 min' },
-	];
+	onMount(async () => {
+		try {
+			const res = await challengesApi.list({ per_page: 4 });
+			items = res.data ?? [];
+		} catch {
+			// The catalogue is a nice-to-have on this page, not a reason to break it.
+			items = [];
+		}
+	});
 
-	const difficultyLabels: Record<number, { fr: string; en: string }> = {
-		1: { fr: 'Débutant', en: 'Beginner' },
-		2: { fr: 'Facile', en: 'Easy' },
-		3: { fr: 'Intermédiaire', en: 'Intermediate' },
-		4: { fr: 'Avancé', en: 'Advanced' },
-		5: { fr: 'Expert', en: 'Expert' }
-	};
+	const hasItems = $derived(items.length > 0);
 </script>
 
 <section class="py-16 sm:py-24 lg:py-32">
 	<div class="mx-auto max-w-7xl px-4">
-		<div use:scrollReveal class="flex items-end justify-between mb-12">
+		<div use:scrollReveal class="mb-12 flex items-end justify-between">
 			<div>
-				<h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight mb-4">
-					{i18n.locale === 'fr' ? 'Challenges populaires' : 'Trending challenges'}<span class="text-accent">.</span>
+				<h2
+					class="mb-4 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl"
+				>
+					{i18n.t('openMissions.title')}<span class="text-accent">.</span><br />
+					<span class="text-accent">{i18n.t('openMissions.titleAccent')}</span>
 				</h2>
-				<p class="text-text-muted text-base sm:text-lg max-w-2xl">
-					{i18n.locale === 'fr'
-						? 'Les plus relevés cette semaine, tous domaines confondus.'
-						: 'Most attempted this week, across all domains.'}
+				<p class="max-w-2xl text-base text-text-muted sm:text-lg">
+					{i18n.t('openMissions.subtitle')}
 				</p>
 			</div>
-			<Button variant="ghost" href="/challenges" class="hidden sm:inline-flex shrink-0">
-				{i18n.locale === 'fr' ? 'Tous les challenges →' : 'All challenges →'}
-			</Button>
+			{#if hasItems}
+				<Button variant="ghost" href="/challenges" class="hidden shrink-0 sm:inline-flex">
+					{i18n.t('openMissions.allCta')} →
+				</Button>
+			{/if}
 		</div>
 
-		<div use:scrollReveal class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-			{#each challenges as c}
-				{@const catBg = c.domain === 'code' ? 'bg-surface-craft border-cat-craft' : c.domain === 'design' ? 'bg-surface-create border-cat-create' : c.domain === 'game' ? 'bg-surface-meta border-cat-meta' : 'bg-surface-operate border-cat-operate'}
-				<a href="/challenges" class="group rounded-2xl border-2 {catBg} overflow-hidden transition-colors duration-200 hover:border-text-muted/40">
-					<div class="flex items-center gap-2 border-b border-border px-4 py-2.5">
-						<div class="h-2.5 w-2.5 rounded-sm {domainStyle(c.domain).dot}"></div>
-						<span class="text-xs font-mono text-text-muted capitalize">{c.domain}</span>
-						<span class="ml-auto text-[10px] text-text-muted border border-border rounded px-1.5 py-0.5">
-							{i18n.locale === 'fr' ? difficultyLabels[c.difficulty].fr : difficultyLabels[c.difficulty].en}
-						</span>
-					</div>
-					<div class="p-4">
-						<p class="text-sm font-semibold mb-1 group-hover:text-accent transition-colors duration-200">{c.title}</p>
-						<p class="text-xs text-text-muted mb-4">{c.lang} · {c.duration}</p>
-						<div class="flex items-center justify-between">
-							<span class="text-sm text-accent font-bold">+{c.fragments} ◆</span>
-							<span class="text-[11px] text-text-muted">{c.completions} {i18n.locale === 'fr' ? 'réussites' : 'completions'}</span>
+		{#if hasItems}
+			<div use:scrollReveal class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				{#each items as item (item.challenge.id)}
+					{@const c = item.challenge}
+					{@const ds = domainStyle(c.skill_domain)}
+					<a
+						href="/challenges/{c.id}"
+						data-testid="mission-card"
+						class="group overflow-hidden rounded-2xl border-2 border-border bg-surface-elevated transition-colors duration-200 {ds.hoverBorder}"
+					>
+						<div class="flex items-center gap-2 border-b border-border px-4 py-2.5">
+							<span class="h-2.5 w-2.5 rounded-sm {ds.dot}"></span>
+							<span class="text-xs {ds.text}">
+								{i18n.t(`common.domains.${c.skill_domain}`)}
+							</span>
+							<span
+								class="ml-auto rounded border border-border px-1.5 py-0.5 text-[10px] text-text-muted"
+							>
+								{i18n.t(`common.difficulty.${c.difficulty}`)}
+							</span>
 						</div>
-					</div>
-				</a>
-			{/each}
-		</div>
+						<div class="p-4">
+							<p
+								class="mb-1 text-sm font-semibold transition-colors duration-200 group-hover:text-accent"
+							>
+								{c.title}
+							</p>
+							<p class="mb-4 text-xs text-text-muted">
+								{c.language ?? ''}{c.language && c.duration_minutes ? ' · ' : ''}{c.duration_minutes
+									? i18n.t('openMissions.minutes', { n: c.duration_minutes })
+									: ''}
+							</p>
+							<span class="text-sm font-bold text-accent">
+								{i18n.t('openMissions.reward', { n: c.reward_fragments })}
+							</span>
+						</div>
+					</a>
+				{/each}
+			</div>
 
-		<div class="mt-6 sm:hidden">
-			<Button variant="ghost" href="/challenges" class="w-full">
-				{i18n.locale === 'fr' ? 'Tous les challenges →' : 'All challenges →'}
-			</Button>
-		</div>
+			<div class="mt-6 sm:hidden">
+				<Button variant="ghost" href="/challenges" class="w-full">
+					{i18n.t('openMissions.allCta')} →
+				</Button>
+			</div>
+		{:else}
+			<div
+				use:scrollReveal
+				data-testid="missions-empty"
+				class="rounded-2xl border-2 border-accent/30 bg-accent/5 p-6 sm:p-10"
+			>
+				<p class="text-2xl font-black tracking-tight sm:text-3xl">
+					{i18n.t('openMissions.emptyTitle')}
+				</p>
+				<p class="mt-3 max-w-2xl text-base leading-relaxed text-text-muted">
+					{i18n.t('openMissions.emptyBody')}
+				</p>
+				<div class="mt-8">
+					<Button variant="accent" size="lg" href="/auth/register">
+						{i18n.t('openMissions.emptyCta')}
+					</Button>
+				</div>
+			</div>
+		{/if}
 	</div>
 </section>

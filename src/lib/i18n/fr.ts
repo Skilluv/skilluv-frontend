@@ -58,6 +58,17 @@ export const fr: Translations = {
 		cta: 'Créer mon compte',
 		loadError: 'Classement momentanément indisponible.'
 	},
+	openMissions: {
+		title: 'Les missions ouvertes',
+		titleAccent: 'Choisis la tienne.',
+		subtitle: 'Chacune porte sur un logiciel qui tourne, avec ses utilisateurs et ses exigences.',
+		emptyTitle: 'Le catalogue ouvre avec la bêta.',
+		emptyBody: 'Les premières missions arrivent le 11 janvier 2027. Prends ta place maintenant, tu seras prévenu le jour où elles s’ouvrent.',
+		emptyCta: 'Prendre ma place',
+		allCta: 'Toutes les missions',
+		reward: '+{n} fragments',
+		minutes: '{n} min'
+	},
 	howItWorks: {
 		title: 'Comment ça marche',
 		subtitle: 'Quatre temps, du premier geste à la preuve.',
@@ -85,7 +96,7 @@ export const fr: Translations = {
 		sectionTitleLine1: 'Onze disciplines',
 		sectionTitleLine2: 'Cent vingt parcours.',
 		sectionSubtitle: 'Chaque discipline a ses parcours, ses terrains et ses rangs.',
-		hint: 'Survole une discipline.',
+		lead: 'Toutes mènent au même endroit : une preuve de ce que tu as fabriqué.',
 		code: { label: 'Code', desc: 'Backend, frontend, mobile, systèmes, embarqué.' },
 		design: { label: 'Design', desc: 'UI/UX, design systems, motion, illustration.' },
 		security: { label: 'Cybersécurité', desc: 'Pentest, red team, forensics, cryptographie.' },

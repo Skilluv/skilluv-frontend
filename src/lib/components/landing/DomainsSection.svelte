@@ -149,7 +149,7 @@
 					</p>
 				{:else}
 					<p class="text-lg text-text-muted sm:text-xl">
-						{i18n.t('disciplines.hint')}
+						{i18n.t('disciplines.lead')}
 					</p>
 				{/if}
 			</div>
