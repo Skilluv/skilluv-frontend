@@ -17,7 +17,32 @@ export { RANK_NAMES } from '$lib/components/badges/types';
 
 // --- Enums ---
 
-export type SkillDomain = 'code' | 'design' | 'game' | 'security';
+/**
+ * The eleven disciplines Skilluv opens with.
+ *
+ * This is the target catalogue, not a snapshot of what the backend serves
+ * today: `quality`, `leadership`, `audio`, `communication` and `education` are
+ * specified and not yet live. The public pages describe the full scope on
+ * purpose — they are written for the January 2027 opening, and a UI that only
+ * knows today's domains would go stale the week the next one ships.
+ *
+ * `soft_skills` is the legacy domain being split into `communication` and
+ * `education`. Kept so historical profiles keep rendering.
+ */
+export type SkillDomain =
+	| 'code'
+	| 'design'
+	| 'game'
+	| 'security'
+	| 'ai'
+	| 'ops'
+	| 'quality'
+	| 'leadership'
+	| 'audio'
+	| 'communication'
+	| 'education'
+	/** @deprecated split into `communication` + `education`. */
+	| 'soft_skills';
 
 /** @deprecated Remplacé par Rank (5 valeurs) — voir MVP §0.7. Reste supporté 6 mois pour portfolios historiques. */
 export type Title = 'apprenti' | 'artisan' | 'maitre' | 'legende';

@@ -2,6 +2,7 @@
 	import { i18n } from '$lib/i18n';
 	import { theme } from '$lib/stores/theme.svelte';
 	import type { ThemeBase } from '$lib/types';
+	import { PRIMARY_SOCIAL_ACCOUNTS, CONTACT_EMAIL, DPO_EMAIL } from '$lib/config/social';
 
 	const year = new Date().getFullYear();
 
@@ -58,7 +59,7 @@
 			<!-- ▓▓▓ 1. HEADLINE + NEWSLETTER ▓▓▓ -->
 			<div class="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
 				<div>
-					<h2 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[0.9] tracking-[-0.03em] text-text-primary">
+					<h2 class="text-5xl sm:text-6xl font-black leading-none tracking-tighter text-text-primary">
 						{#if i18n.locale === 'fr'}
 							Prêt à prouver<br />ce que tu sais faire<span class="text-accent"> ?</span>
 						{:else}
@@ -88,11 +89,17 @@
 				<div class="lg:pt-6 space-y-8">
 					<!-- Email en gros, statement -->
 					<div>
-						<a href="mailto:contact@skilluv.dev" class="group inline-flex items-baseline text-2xl sm:text-3xl font-black tracking-tight text-text-primary transition-colors duration-200 hover:text-accent">
-							contact<span class="text-accent">@</span>skilluv.dev
+						<a
+							href="mailto:{CONTACT_EMAIL}"
+							class="group inline-flex items-baseline text-2xl font-black tracking-tight text-text-primary transition-colors duration-200 hover:text-accent sm:text-3xl"
+						>
+							{CONTACT_EMAIL}
 						</a>
-						<a href="mailto:dpo@skilluv.dev" class="mt-1 block text-sm text-text-muted transition-colors duration-200 hover:text-text-primary">
-							dpo@skilluv.dev
+						<a
+							href="mailto:{DPO_EMAIL}"
+							class="mt-1 block text-sm text-text-muted transition-colors duration-200 hover:text-text-primary"
+						>
+							{i18n.locale === 'fr' ? 'Données personnelles' : 'Data protection'} · {DPO_EMAIL}
 						</a>
 					</div>
 
@@ -214,18 +221,17 @@
 				</a>
 
 				<div class="flex flex-wrap items-center gap-2">
-					<a href="https://github.com/skilluv" target="_blank" rel="noopener" class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-text-primary transition-colors duration-200 hover:bg-surface-overlay hover:border-text-primary">
-						GitHub
-					</a>
-					<a href="https://twitter.com/skilluv" target="_blank" rel="noopener" class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-text-primary transition-colors duration-200 hover:bg-surface-overlay hover:border-text-primary">
-						Twitter
-					</a>
-					<a href="https://discord.gg/skilluv" target="_blank" rel="noopener" class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-text-primary transition-colors duration-200 hover:bg-surface-overlay hover:border-text-primary">
-						Discord
-					</a>
-					<a href="https://linkedin.com/company/skilluv" target="_blank" rel="noopener" class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-text-primary transition-colors duration-200 hover:bg-surface-overlay hover:border-text-primary">
-						LinkedIn
-					</a>
+					{#each PRIMARY_SOCIAL_ACCOUNTS as account (account.key)}
+						<a
+							href={account.url}
+							target="_blank"
+							rel="noopener"
+							data-testid="social-{account.key}"
+							class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-text-primary transition-colors duration-200 hover:border-text-primary hover:bg-surface-overlay"
+						>
+							{account.label}
+						</a>
+					{/each}
 				</div>
 			</div>
 

@@ -33,7 +33,7 @@
 	// (Navbar / EmailVerificationBanner / Footer / BottomBar) est masqué —
 	// l'espace entreprise apporte son propre header + sidebar. On garde la
 	// Toast / PWA / auth store logic qui restent globaux. L'admin a son
-	// propre frontend sur admin.skilluv.com, plus rien à gérer ici.
+	// propre frontend sur admin.skill-uv.com, plus rien à gérer ici.
 	let isWorkspace = $derived(
 		$page.url.pathname.startsWith('/enterprise/') && !isBareLayout
 	);
@@ -88,7 +88,14 @@
 	// re-running the layout script.
 	$effect(syncAuthFromServer);
 
-	// Initialise theme + langue côté client
+	// Resolve the locale synchronously, for the same reason the session is seeded
+	// synchronously above: effects run after the tree has mounted, so a child
+	// reading `i18n.locale` in its own onMount saw the default rather than the
+	// stored or browser locale. That is how a French visitor landed on English
+	// error messages. No-op on the server.
+	i18n.init();
+
+	// Initialise theme côté client
 	$effect(() => {
 		theme.init();
 		i18n.init();

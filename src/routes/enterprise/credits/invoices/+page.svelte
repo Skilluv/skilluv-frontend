@@ -272,8 +272,8 @@
 				<p class="mb-2 text-xs font-bold uppercase tracking-wider text-text-muted">
 					{i18n.locale === 'fr' ? 'Support' : 'Support'}
 				</p>
-				<a href="mailto:billing@skilluv.com" class="text-sm underline hover:text-primary">
-					billing@skilluv.com
+				<a href="mailto:billing@skill-uv.com" class="text-sm underline hover:text-primary">
+					billing@skill-uv.com
 				</a>
 			</div>
 		</div>

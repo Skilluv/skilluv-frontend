@@ -35,6 +35,14 @@ export interface Translations {
 			design: string;
 			game: string;
 			security: string;
+			ai: string;
+			ops: string;
+			quality: string;
+			leadership: string;
+			audio: string;
+			communication: string;
+			education: string;
+			soft_skills: string;
 		};
 		titles: {
 			apprenti: string;
@@ -68,6 +76,60 @@ export interface Translations {
 		votes: string;
 		page: string;
 	};
+	launch: {
+		eyebrow: string;
+		date: string;
+		badge: string;
+		countdown: string;
+		soon: string;
+		open: string;
+		cta: string;
+		note: string;
+	};
+	commonExtra: {
+		exampleLabel: string;
+	},
+	board: {
+		title: string;
+		titleAccent: string;
+		subtitle: string;
+		rowThem: string;
+		rowUs: string;
+		bootcampsLabel: string;
+		bootcampsThem: string;
+		bootcampsUs: string;
+		practiceLabel: string;
+		practiceThem: string;
+		practiceUs: string;
+		jobsLabel: string;
+		jobsThem: string;
+		jobsUs: string;
+		freelanceLabel: string;
+		freelanceThem: string;
+		freelanceUs: string;
+		offshoreLabel: string;
+		offshoreThem: string;
+		offshoreUs: string;
+		cta: string;
+		loadError: string;
+	};
+	disciplines: {
+		sectionTitleLine1: string;
+		sectionTitleLine2: string;
+		sectionSubtitle: string;
+		hint: string;
+		code: { label: string; desc: string };
+		design: { label: string; desc: string };
+		security: { label: string; desc: string };
+		game: { label: string; desc: string };
+		ai: { label: string; desc: string };
+		ops: { label: string; desc: string };
+		quality: { label: string; desc: string };
+		leadership: { label: string; desc: string };
+		audio: { label: string; desc: string };
+		communication: { label: string; desc: string };
+		education: { label: string; desc: string };
+	};
 	landing: {
 		title: string;
 		titleAccent: string;
@@ -94,6 +156,9 @@ export interface Translations {
 			codeDesc: string;
 			designDesc: string;
 			gameDesc: string;
+			aiDesc: string;
+			opsDesc: string;
+			softSkillsDesc: string;
 			securityDesc: string;
 			changeDomain: string;
 			createAccount: string;

@@ -4,19 +4,11 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
 
-	// Ticker fake bounties (rotate every 2.5s)
-	const bountyTicker = [
-		{ frag: 250, slug: 'reverse-async-runtime' },
-		{ frag: 180, slug: 'fix-hydration-race' },
-		{ frag: 320, slug: 'pentest-jwt-flow' },
-		{ frag: 140, slug: 'godot-physics-drift' }
-	];
-	let tickerIndex = $state(0);
+	// Every figure this section used to display was invented: an active-bounty
+	// count, a weekly payout, a diploma tally, a mentor count, a match rate.
+	// The three products are real; the numbers were not, so they are gone and
+	// the terms of each deal are shown instead. Those are true today.
 
-	$effect(() => {
-		const id = setInterval(() => { tickerIndex = (tickerIndex + 1) % bountyTicker.length; }, 2500);
-		return () => clearInterval(id);
-	});
 </script>
 
 <section class="py-16 sm:py-24 lg:py-32">
@@ -48,30 +40,10 @@
 					<span class="text-sm font-semibold text-primary">
 						{i18n.locale === 'fr' ? 'Bounties OSS' : 'OSS Bounties'}
 					</span>
-					<span class="ml-auto flex items-center gap-1.5 text-xs text-text-muted">
-						<span class="h-1.5 w-1.5 rounded-full bg-success"></span>
-						142 {i18n.locale === 'fr' ? 'actives' : 'active'}
-					</span>
 				</div>
 
 				<div class="p-5 flex-1 flex flex-col">
 					<!-- Ticker (voix "hunt") -->
-					<div class="font-mono text-xs leading-relaxed mb-5 space-y-1">
-						{#key tickerIndex}
-							<p class="flex items-baseline gap-2 text-text-primary animate-in slide-in-from-bottom-1">
-								<span class="text-accent font-bold">+{bountyTicker[tickerIndex].frag}◆</span>
-								<span class="truncate text-text-muted">{bountyTicker[tickerIndex].slug}</span>
-							</p>
-						{/key}
-						<p class="flex items-baseline gap-2 opacity-40">
-							<span class="text-accent font-bold">+{bountyTicker[(tickerIndex + 1) % bountyTicker.length].frag}◆</span>
-							<span class="truncate text-text-muted">{bountyTicker[(tickerIndex + 1) % bountyTicker.length].slug}</span>
-						</p>
-						<p class="flex items-baseline gap-2 opacity-20">
-							<span class="text-accent font-bold">+{bountyTicker[(tickerIndex + 2) % bountyTicker.length].frag}◆</span>
-							<span class="truncate text-text-muted">{bountyTicker[(tickerIndex + 2) % bountyTicker.length].slug}</span>
-						</p>
-					</div>
 
 					<h3 class="text-2xl font-black tracking-tight mb-2 group-hover:text-accent transition-colors duration-200">
 						{i18n.locale === 'fr' ? 'Chasse. Merge. Empoche.' : 'Hunt. Merge. Cash.'}
@@ -85,7 +57,9 @@
 					<!-- Metric bottom (comme DomainsSection : pulse + N°) -->
 					<div class="mt-auto pt-5 flex items-center gap-1.5 text-xs text-text-muted">
 						<span class="h-1.5 w-1.5 rounded-full bg-success"></span>
-						<span>3.2K◆ {i18n.locale === 'fr' ? 'payés cette semaine' : 'paid this week'}</span>
+						<span>{i18n.locale === 'fr'
+							? 'L’entreprise finance, le talent encaisse, Skilluv prend une commission modérée.'
+							: 'The company funds it, the talent receives it, Skilluv takes a moderate commission.'}</span>
 					</div>
 				</div>
 			</a>
@@ -112,7 +86,8 @@
 						<p class="text-[10px] uppercase tracking-widest text-text-muted mb-1">
 							{i18n.locale === 'fr' ? 'Code vérifiable' : 'Verifiable code'}
 						</p>
-						<p class="font-mono text-sm font-bold text-accent">#SLV-2026-R7X4</p>
+						<p class="font-mono text-sm font-bold text-accent">#SKV-2027-XXXX</p>
+						<p class="mt-1 text-[10px] uppercase tracking-widest text-text-muted">{i18n.t('commonExtra.exampleLabel')}</p>
 					</div>
 
 					<h3 class="text-2xl font-black tracking-tight mb-2 group-hover:text-accent transition-colors duration-200">
@@ -126,11 +101,9 @@
 					</p>
 
 					<div class="mt-auto pt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-text-muted">
-						<span><b class="text-text-primary">12</b> certifs</span>
-						<span class="text-border">·</span>
-						<span><b class="text-text-primary">4 823</b> {i18n.locale === 'fr' ? 'diplômes' : 'diplomas'}</span>
-						<span class="text-border">·</span>
-						<span><b class="text-accent">0</b> {i18n.locale === 'fr' ? 'tricheurs' : 'cheaters'}</span>
+						<span>{i18n.locale === 'fr'
+							? 'Chaque diplôme porte un code que n’importe qui peut vérifier en ligne.'
+							: 'Every diploma carries a code anyone can verify online.'}</span>
 					</div>
 				</div>
 			</a>
@@ -147,7 +120,7 @@
 						Mentorship
 					</span>
 					<span class="ml-auto">
-						<Badge variant="success" size="sm">92% match</Badge>
+						
 					</span>
 				</div>
 
@@ -181,7 +154,7 @@
 
 					<div class="mt-auto pt-5 flex items-center gap-1.5 text-xs text-text-muted">
 						<span class="h-1.5 w-1.5 rounded-full bg-success"></span>
-						<span>89 {i18n.locale === 'fr' ? 'mentors actifs' : 'active mentors'}</span>
+						<span>{i18n.locale === 'fr' ? '80 % du tarif revient au mentor.' : '80% of the fee goes to the mentor.'}</span>
 					</div>
 				</div>
 			</a>

@@ -3,8 +3,8 @@
 	 * Analytics Skilluv — Plausible (self-hosted, RGPD-friendly)
 	 *
 	 * Config via props :
-	 *   domain="skilluv.com"
-	 *   apiHost="https://analytics.skilluv.com"
+	 *   domain="skill-uv.com"
+	 *   apiHost="https://analytics.skill-uv.com"
 	 */
 	import { dev } from '$app/environment';
 	import { page } from '$app/stores';
