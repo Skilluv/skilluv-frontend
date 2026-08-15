@@ -114,10 +114,10 @@ export interface Translations {
 		loadError: string;
 	};
 	disciplines: {
-		sectionEyebrow: string;
-		sectionTitle: string;
+		sectionTitleLine1: string;
+		sectionTitleLine2: string;
 		sectionSubtitle: string;
-		tracksNote: string;
+		hint: string;
 		code: { label: string; desc: string };
 		design: { label: string; desc: string };
 		security: { label: string; desc: string };
