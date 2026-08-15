@@ -135,6 +135,20 @@ export interface Translations {
 		doyenMeaning: string;
 		note: string;
 	};
+	otherLines: {
+		title: string;
+		titleAccent: string;
+		subtitle: string;
+		bountyTitle: string;
+		bountyBody: string;
+		contestTitle: string;
+		contestBody: string;
+		managedTitle: string;
+		managedBody: string;
+		dataTitle: string;
+		dataBody: string;
+		cta: string;
+	};
 	howItWorks: {
 		title: string;
 		subtitle: string;

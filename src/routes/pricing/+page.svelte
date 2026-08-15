@@ -8,6 +8,7 @@
 	import Select from '$components/ui/Select.svelte';
 	import { pricingApi, type PricingResponse } from '$api/pricing';
 	import { SkilluError } from '$api/client';
+	import { CONTACT_EMAIL } from '$lib/config/social';
 	import { Sparkles, Coins, Package, Boxes, Gem, ThumbsDown, Timer, Check, X } from '@lucide/svelte';
 
 	let data = $state<PricingResponse | null>(null);
@@ -331,6 +332,48 @@
 		</div>
 	</section>
 {/if}
+
+<!-- ============================================
+     AUTRES LIGNES — sur devis, pas en libre-service
+     ============================================
+     Le modele compte plusieurs sources de revenus cote entreprise ; la page
+     n'en montrait qu'une. Celles-ci se negocient, donc elles sont presentees
+     avec leurs termes commerciaux et sans prix affiche : annoncer un tarif
+     pour une prestation cadree au cas par cas serait faux. -->
+<section class="mx-auto max-w-6xl px-4 py-20 sm:py-24">
+	<h2 class="mb-5 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+		{i18n.t('otherLines.title')}<br />
+		<span class="text-accent">{i18n.t('otherLines.titleAccent')}</span>
+	</h2>
+	<p class="mb-12 max-w-2xl text-base text-text-muted sm:text-lg">
+		{i18n.t('otherLines.subtitle')}
+	</p>
+
+	<div class="grid gap-4 sm:grid-cols-2">
+		{#each [
+			{ key: 'bounty', icon: Coins },
+			{ key: 'contest', icon: Sparkles },
+			{ key: 'managed', icon: Package },
+			{ key: 'data', icon: Boxes }
+		] as line (line.key)}
+			<div class="flex flex-col gap-3 rounded-2xl border border-border bg-surface-elevated p-6">
+				<span class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+					<line.icon size={20} strokeWidth={2} />
+				</span>
+				<p class="text-lg font-bold">{i18n.t(`otherLines.${line.key}Title`)}</p>
+				<p class="text-sm leading-relaxed text-text-muted">
+					{i18n.t(`otherLines.${line.key}Body`)}
+				</p>
+			</div>
+		{/each}
+	</div>
+
+	<div class="mt-8">
+		<Button variant="secondary" size="lg" href="mailto:{CONTACT_EMAIL}">
+			{i18n.t('otherLines.cta')}
+		</Button>
+	</div>
+</section>
 
 <!-- ============================================
      COMPARAISON — Skilluv vs Classique

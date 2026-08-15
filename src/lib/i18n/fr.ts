@@ -80,6 +80,20 @@ export const fr: Translations = {
 		doyenMeaning: 'Tu fixes le niveau attendu sur ta discipline.',
 		note: 'Rien n’est reserve a un rang. Les missions, les revues, les attestations et la visibilite aupres des entreprises sont ouvertes a tous, des le premier jour.'
 	},
+	otherLines: {
+		title: 'Contacter un talent n’est pas',
+		titleAccent: 'la seule facon de travailler avec nous.',
+		subtitle: 'Ces offres se construisent avec vous. Elles ne se paient pas en ligne : on en discute, on cadre, on chiffre.',
+		bountyTitle: 'Missions remunerees',
+		bountyBody: 'Vous financez une prime sur une issue de vos depots. Le talent la recoit, Skilluv prend une commission moderee.',
+		contestTitle: 'Challenges sponsorises',
+		contestBody: 'Vous financez une mission a votre marque et vous observez des candidats travailler en conditions reelles.',
+		managedTitle: 'Recrutement gere',
+		managedBody: 'On construit la liste courte pour vous. Forfait fixe, plus un honoraire au succes.',
+		dataTitle: 'Donnees et integrations',
+		dataBody: 'Acces programmatique pour vos outils de recrutement, sous conditions de consentement strictes.',
+		cta: 'En parler'
+	},
 	howItWorks: {
 		title: 'Comment ça marche',
 		subtitle: 'Quatre temps, du premier geste à la preuve.',

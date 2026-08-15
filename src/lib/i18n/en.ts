@@ -80,6 +80,20 @@ export const en: Translations = {
 		doyenMeaning: 'You set the bar on your discipline.',
 		note: 'Nothing is reserved for a rank. Assignments, reviews, credentials and visibility to companies are open to everyone from day one.'
 	},
+	otherLines: {
+		title: 'Reaching a talent is not',
+		titleAccent: 'the only way to work with us.',
+		subtitle: 'These are built with you. They are not bought online: we talk, we scope, we quote.',
+		bountyTitle: 'Paid assignments',
+		bountyBody: 'You fund a bounty on an issue in your repositories. The talent receives it, Skilluv takes a moderate commission.',
+		contestTitle: 'Sponsored challenges',
+		contestBody: 'You fund a branded assignment and watch candidates work in real conditions.',
+		managedTitle: 'Managed recruitment',
+		managedBody: 'We build the shortlist for you. Fixed fee, plus a success fee.',
+		dataTitle: 'Data and integrations',
+		dataBody: 'Programmatic access for your recruitment tooling, under strict consent conditions.',
+		cta: 'Talk to us'
+	},
 	howItWorks: {
 		title: 'How it works',
 		subtitle: 'Four beats, from the first gesture to the proof.',
