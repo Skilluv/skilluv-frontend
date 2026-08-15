@@ -2,9 +2,12 @@ name: CI
 
 on:
   push:
-    branches: [master, main]
+    branches: [master, main, prep-prod]
   pull_request:
-    branches: [master, main]
+    # prep-prod is an integration branch that work merges into before it
+    # reaches main. Without it here, every pull request targeting prep-prod
+    # ran no check at all and merged unverified.
+    branches: [master, main, prep-prod]
 
 jobs:
   check:
