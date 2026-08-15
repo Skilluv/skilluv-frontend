@@ -5,8 +5,8 @@
  * `skilluv` handle that is not ours. The handle is `joinskilluv` almost
  * everywhere, and a dead social link on a launch page costs more than no link.
  *
- * Anything whose exact URL is not confirmed stays out of this file rather than
- * being guessed — see PENDING_ACCOUNTS at the bottom.
+ * Every URL below was checked to resolve before being added. Nothing goes in
+ * here on the strength of a handle alone.
  */
 
 export interface SocialAccount {
@@ -19,8 +19,18 @@ export interface SocialAccount {
 }
 
 export const SOCIAL_ACCOUNTS: SocialAccount[] = [
-	// The code, the documentation and the design decisions (AGPL-3.0).
-	{ key: 'github', label: 'GitHub', url: 'https://github.com/skilluv-community', primary: true },
+	// Two orgs: `Skilluv` is the organisation proper, `skilluv-community` holds
+	// the community repositories. The footer links the former; the latter is
+	// reachable from the community page.
+	{ key: 'github', label: 'GitHub', url: 'https://github.com/Skilluv', primary: true },
+	{
+		key: 'githubCommunity',
+		label: 'GitHub Community',
+		url: 'https://github.com/skilluv-community'
+	},
+	// Permanent invite, checked against the Discord API: never expires. The
+	// default invite dies after seven days and would rot here unnoticed.
+	{ key: 'discord', label: 'Discord', url: 'https://discord.gg/jSGF5RhR8u', primary: true },
 	{ key: 'x', label: 'X', url: 'https://x.com/joinskilluv', primary: true },
 	{
 		key: 'linkedin',
@@ -33,7 +43,9 @@ export const SOCIAL_ACCOUNTS: SocialAccount[] = [
 	{ key: 'tiktok', label: 'TikTok', url: 'https://tiktok.com/@joinskilluv' },
 	{ key: 'threads', label: 'Threads', url: 'https://threads.net/@joinskilluv' },
 	{ key: 'twitch', label: 'Twitch', url: 'https://twitch.tv/joinskilluv' },
-	{ key: 'mastodon', label: 'Mastodon', url: 'https://fosstodon.org/@joinskilluv' },
+	// On mastodon.social, not Fosstodon: the Fosstodon lookup comes back empty
+	// under either handle, this one resolves.
+	{ key: 'mastodon', label: 'Mastodon', url: 'https://mastodon.social/@joinskilluv' },
 	{ key: 'devto', label: 'DEV', url: 'https://dev.to/joinskilluv' },
 	{ key: 'hashnode', label: 'Hashnode', url: 'https://hashnode.com/@joinskilluv' },
 	{ key: 'medium', label: 'Medium', url: 'https://medium.com/@skilluv' },
@@ -46,19 +58,6 @@ export const SOCIAL_ACCOUNTS: SocialAccount[] = [
 ];
 
 export const PRIMARY_SOCIAL_ACCOUNTS = SOCIAL_ACCOUNTS.filter((a) => a.primary);
-
-/**
- * Accounts that exist but whose exact URL was not confirmed. Guessing any of
- * these produces a 404 on the footer of a launch page, so they are listed here
- * instead of being published.
- *
- *  - Discord: needs the permanent invite code (`discord.gg/<code>`). It must be
- *    a never-expiring, unlimited-use invite — the default one dies after seven
- *    days and would break the footer without anyone noticing.
- *  - GitHub `Skilluv` org: the documentation points at `skilluv-community` for
- *    the code, so that is the one linked. Say if the other should show too.
- */
-export const PENDING_ACCOUNTS = ['discord'] as const;
 
 /**
  * Contact addresses, on the Skilluv domain.
