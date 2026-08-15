@@ -349,17 +349,25 @@
 		{i18n.t('otherLines.subtitle')}
 	</p>
 
-	<div class="grid gap-4 sm:grid-cols-2">
+	<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 		{#each [
-			{ key: 'bounty', icon: Coins },
-			{ key: 'contest', icon: Sparkles },
-			{ key: 'managed', icon: Package },
-			{ key: 'data', icon: Boxes }
+			{ key: 'talent', icon: Gem },
+			{ key: 'work', icon: Coins },
+			{ key: 'brand', icon: Sparkles },
+			{ key: 'data', icon: Boxes },
+			{ key: 'ecosystem', icon: Package },
+			{ key: 'consult', icon: Timer },
+			{ key: 'finance', icon: Coins }
 		] as line (line.key)}
 			<div class="flex flex-col gap-3 rounded-2xl border border-border bg-surface-elevated p-6">
-				<span class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
-					<line.icon size={20} strokeWidth={2} />
-				</span>
+				<div class="flex items-center gap-3">
+					<span class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+						<line.icon size={20} strokeWidth={2} />
+					</span>
+					<span class="ml-auto rounded-full border border-border px-2.5 py-0.5 text-[10px] uppercase tracking-widest text-text-muted">
+						{i18n.t(`otherLines.${line.key}Who`)}
+					</span>
+				</div>
 				<p class="text-lg font-bold">{i18n.t(`otherLines.${line.key}Title`)}</p>
 				<p class="text-sm leading-relaxed text-text-muted">
 					{i18n.t(`otherLines.${line.key}Body`)}
