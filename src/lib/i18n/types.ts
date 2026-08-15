@@ -113,6 +113,29 @@ export interface Translations {
 		cta: string;
 		loadError: string;
 	};
+	howItWorks: {
+		title: string;
+		subtitle: string;
+		step1Title: string;
+		step1Body: string;
+		step2Title: string;
+		step2Body: string;
+		step3Title: string;
+		step3Body: string;
+		step4Title: string;
+		step4Body: string;
+		freeTitle: string;
+		freeBody: string;
+		trackHours: string;
+		missionLabel: string;
+		missionTitle: string;
+		missionReward: string;
+		reviewLabel: string;
+		reviewAsk: string;
+		reviewReply: string;
+		reviewOutcome: string;
+		profileLabel: string;
+	};
 	disciplines: {
 		sectionTitleLine1: string;
 		sectionTitleLine2: string;
