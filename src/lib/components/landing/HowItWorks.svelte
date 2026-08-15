@@ -24,6 +24,14 @@
 		{ name: 'Security Foundations', domain: 'security', hours: 50 }
 	];
 
+	// The gradation, which is what step 02 is actually about: assignments arrive
+	// as a sequence of widening scope, not as one card off a catalogue.
+	const gradation = $derived([
+		{ scope: i18n.t('howItWorks.gradation1Scope'), body: i18n.t('howItWorks.gradation1Body') },
+		{ scope: i18n.t('howItWorks.gradation2Scope'), body: i18n.t('howItWorks.gradation2Body') },
+		{ scope: i18n.t('howItWorks.gradation3Scope'), body: i18n.t('howItWorks.gradation3Body') }
+	]);
+
 	const codeStyle = domainStyle('code');
 </script>
 
@@ -77,29 +85,26 @@
 				<div
 					class="order-2 overflow-hidden rounded-2xl border-2 border-cat-craft bg-surface-craft lg:order-1"
 				>
-					<div class="flex items-center gap-3 border-b border-border px-5 py-3">
-						<span class="h-2.5 w-2.5 rounded-sm {codeStyle.dot}"></span>
+					<div class="border-b border-border px-5 py-3">
 						<span class="text-xs font-bold uppercase tracking-widest text-text-muted">
-							{i18n.t('howItWorks.missionLabel')}
+							{i18n.t('howItWorks.gradationLabel')}
 						</span>
-						<span class="ml-auto font-mono text-xs text-text-muted">{i18n.t('commonExtra.exampleLabel')}</span>
 					</div>
-					<div class="p-5">
-						<p class="font-mono text-xs text-text-muted">skilluv-community/skilluv-backend</p>
-						<p class="mt-2 text-lg font-bold">{i18n.t('howItWorks.missionTitle')}</p>
-						<div class="mt-4 flex flex-wrap items-center gap-2">
-							<span
-								class="rounded-md {codeStyle.bgSoft} px-2 py-0.5 text-[11px] font-medium {codeStyle.text}"
-								>Rust</span
-							>
-							<span class="rounded-md bg-surface-overlay px-2 py-0.5 text-[11px] text-text-muted">
-								{i18n.t('common.difficulty.2')}
-							</span>
-							<span class="ml-auto text-sm font-bold text-accent">
-								{i18n.t('howItWorks.missionReward', { n: 120 })}
-							</span>
-						</div>
-					</div>
+					<ol class="divide-y divide-border">
+						{#each gradation as step, idx (step.scope)}
+							<li class="flex gap-4 p-5">
+								<span class="mt-1 flex shrink-0 flex-col gap-1" aria-hidden="true">
+									{#each Array(idx + 1) as _, bar (bar)}
+										<span class="block h-1 w-6 rounded-full {codeStyle.dot}"></span>
+									{/each}
+								</span>
+								<span class="min-w-0">
+									<span class="block text-sm font-bold {codeStyle.text}">{step.scope}</span>
+									<span class="block text-sm text-text-muted">{step.body}</span>
+								</span>
+							</li>
+						{/each}
+					</ol>
 				</div>
 
 				<div class="order-1 lg:order-2">

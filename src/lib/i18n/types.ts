@@ -148,10 +148,14 @@ export interface Translations {
 		step4Body: string;
 		freeTitle: string;
 		freeBody: string;
+		gradationLabel: string;
+		gradation1Scope: string;
+		gradation1Body: string;
+		gradation2Scope: string;
+		gradation2Body: string;
+		gradation3Scope: string;
+		gradation3Body: string;
 		trackHours: string;
-		missionLabel: string;
-		missionTitle: string;
-		missionReward: string;
 		reviewLabel: string;
 		reviewAsk: string;
 		reviewReply: string;
