@@ -10,6 +10,7 @@
 	import SkillTree from '$components/profile/SkillTree.svelte';
 	import Timeline from '$components/profile/Timeline.svelte';
 	import ExternalSignals from '$components/profile/ExternalSignals.svelte';
+	import Vouchings from '$components/profile/Vouchings.svelte';
 	import Heatmap from '$components/profile/Heatmap.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
@@ -19,7 +20,6 @@
 	import { onMount } from 'svelte';
 	import type {
 		UserPublic,
-		SkillNode,
 		HeatmapEntry,
 		UserBadgesResponse,
 		UserOrientation,
@@ -41,7 +41,6 @@
 
 	let user = $state<UserPublic | null>(null);
 	let stats = $state<{ challenges_completed: number; total_fragments: number; streak_current: number; trust_score: number } | null>(null);
-	let skillTree = $state<SkillNode[]>([]);
 	let heatmap = $state<HeatmapEntry[]>([]);
 	let badges = $state<{ slug: string; name: string; icon: string; category: string; earned_at: string }[]>([]);
 	let badgesData = $state<UserBadgesResponse | null>(null);
@@ -109,7 +108,6 @@
 			const res = await profileApi.getPublic(name);
 			user = res.data.user;
 			stats = res.data.stats;
-			skillTree = res.data.skill_tree ?? [];
 			heatmap = res.data.heatmap_summary ?? [];
 			badges = res.data.badges ?? [];
 
@@ -356,14 +354,15 @@
 					</div>
 				{/if}
 
-				<!-- Skill tree -->
-				{#if skillTree.length > 0}
+				<!-- SKI-47 — the taxonomy with prerequisites, not the fragment
+				     roll-up: the point of a tree is showing what is blocked. -->
+				{#if profileUserId}
 					<div class="rounded-xl border border-border bg-surface-elevated overflow-hidden">
 						<div class="px-5 py-3 border-b border-border">
 							<span class="text-xs font-bold uppercase tracking-wider text-text-muted">{i18n.t('profile.sections.skills')}</span>
 						</div>
 						<div class="p-5">
-							<SkillTree tree={skillTree} />
+							<SkillTree userId={profileUserId} />
 						</div>
 					</div>
 				{:else}
@@ -395,6 +394,11 @@
 					capabilities={publicCapabilities}
 					viewer={isOwnProfile ? 'own' : 'public'}
 				/>
+
+				<!-- SKI-46 — who staked their own rank on this person. -->
+				{#if profileUserId}
+					<Vouchings userId={profileUserId} isOwn={isOwnProfile} />
+				{/if}
 
 				<!-- SKI-42 — declared context, kept visually apart from the proofs above. -->
 				{#if profileUserId}

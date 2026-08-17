@@ -41,7 +41,12 @@
 		ChevronDown,
 		FileSearch,
 		BookOpenCheck,
-		AtSign
+		AtSign,
+		Sparkles,
+		Clock,
+		CalendarRange,
+		Handshake,
+		NotebookPen
 	} from '@lucide/svelte';
 
 	// Conditional user-menu links driven by P18.4 capabilities.
@@ -123,8 +128,8 @@
 		if (path === '/') return 'home';
 		if (auth.isAuthenticated) {
 			if (path.startsWith('/challenges')) return 'challenges';
-			if (['/bounties', '/certifications', '/diplomas', '/mentors', '/mentorship'].some((p) => path === p || path.startsWith(p + '/'))) return 'grow';
-			if (['/feed', '/forum', '/guilds', '/tournaments', '/messages', '/leaderboards', '/community'].some((p) => path === p || path.startsWith(p + '/'))) return 'community';
+			if (['/bounties', '/certifications', '/diplomas', '/mentors', '/mentorship', '/assistant', '/talent-offers'].some((p) => path === p || path.startsWith(p + '/'))) return 'grow';
+			if (['/feed', '/forum', '/guilds', '/tournaments', '/messages', '/leaderboards', '/community', '/cohorts', '/dashboard/peer-matching'].some((p) => path === p || path.startsWith(p + '/'))) return 'community';
 			if (['/enterprise', '/for-companies', '/pricing'].some((p) => path === p || path.startsWith(p + '/'))) return 'enterprise';
 		} else {
 			if (['/challenges', '/community', '/bounties', '/certifications', '/mentors'].some((p) => path === p || path.startsWith(p + '/'))) return 'discover';
@@ -248,6 +253,13 @@
 				{ href: '/mentorship/sessions', icon: Target, label: i18n.locale === 'fr' ? 'Mes sessions' : 'My sessions' },
 				{ href: '/mentors/me', icon: Pencil, label: i18n.locale === 'fr' ? 'Devenir mentor' : 'Become a mentor', badge: '80%' }
 			]
+		},
+		{
+			// Post-MVP tier 3 — the assistant and the reverse marketplace.
+			items: [
+				{ href: '/assistant', icon: Sparkles, label: i18n.t('assistant.title'), description: i18n.t('assistant.subtitle') },
+				{ href: '/talent-offers', icon: Clock, label: i18n.t('talentOffers.title'), description: i18n.t('talentOffers.subtitle') }
+			]
 		}
 	]);
 
@@ -261,6 +273,13 @@
 				{ href: '/messages', icon: MessageSquare, label: 'Messages' },
 				{ href: '/mentions', icon: AtSign, label: i18n.t('mentions.title') },
 				{ href: '/leaderboards', icon: TrendingUp, label: i18n.t('common.nav.leaderboards') }
+			]
+		},
+		{
+			// Post-MVP tier 2 — learning together rather than alone.
+			items: [
+				{ href: '/cohorts', icon: CalendarRange, label: i18n.t('cohorts.title'), description: i18n.t('cohorts.subtitle') },
+				{ href: '/dashboard/peer-matching', icon: Handshake, label: i18n.t('peerMatching.title'), description: i18n.t('peerMatching.subtitle') }
 			]
 		}
 	]);
@@ -549,6 +568,25 @@
 								<span>{i18n.locale === 'fr' ? 'Paramètres' : 'Settings'}</span>
 							</a>
 
+							<!-- Post-MVP tier 1 — the personal shelf: what you saved,
+							     what you noted, what you are aiming at. -->
+							<div class="my-1.5 h-px bg-border"></div>
+							{#each [
+								{ href: '/dashboard/bookmarks', icon: Bookmark, label: i18n.t('bookmarks.title') },
+								{ href: '/dashboard/notes', icon: NotebookPen, label: i18n.t('notes.title') },
+								{ href: '/dashboard/goals', icon: Target, label: i18n.t('goals.title') }
+							] as shelfLink (shelfLink.href)}
+								{@const ShelfIcon = shelfLink.icon}
+								<a
+									href={shelfLink.href}
+									onclick={() => (userMenuOpen = false)}
+									class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
+								>
+									<ShelfIcon size={14} strokeWidth={2} />
+									<span>{shelfLink.label}</span>
+								</a>
+							{/each}
+
 							{#if capabilityLinks.length > 0}
 								<div class="my-1.5 h-px bg-border"></div>
 								{#each capabilityLinks as link (link.href)}
@@ -624,6 +662,13 @@
 						{ href: '/tournaments', label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments' },
 						{ href: '/messages', label: 'Messages' },
 						{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards') },
+						{ href: '/cohorts', label: i18n.t('cohorts.title') },
+						{ href: '/dashboard/peer-matching', label: i18n.t('peerMatching.title') },
+						{ href: '/assistant', label: i18n.t('assistant.title') },
+						{ href: '/talent-offers', label: i18n.t('talentOffers.title') },
+						{ href: '/dashboard/bookmarks', label: i18n.t('bookmarks.title') },
+						{ href: '/dashboard/notes', label: i18n.t('notes.title') },
+						{ href: '/dashboard/goals', label: i18n.t('goals.title') },
 						{ href: `/profile/${auth.user?.username}`, label: i18n.t('common.nav.profile') },
 						{ href: '/settings', label: i18n.t('common.nav.settings') }
 					] as link}

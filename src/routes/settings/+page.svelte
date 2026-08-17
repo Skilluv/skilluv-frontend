@@ -181,6 +181,22 @@
 		</a>
 	</section>
 
+	<!-- SKI-42 — declared context, kept apart from the Skilluv proofs. -->
+	<section class="mb-8">
+		<h2 class="mb-4 text-lg font-semibold">{i18n.t('externalSignals.title')}</h2>
+		<a
+			href="/settings/external-signals"
+			data-testid="settings-link-external-signals"
+			class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
+		>
+			<div>
+				<p class="font-medium">{i18n.t('externalSignals.title')}</p>
+				<p class="text-xs text-text-muted">{i18n.t('externalSignals.subtitle')}</p>
+			</div>
+			<span class="text-text-muted">→</span>
+		</a>
+	</section>
+
 	<!-- Mot de passe -->
 	<section class="mb-8">
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.password.title')}</h2>
