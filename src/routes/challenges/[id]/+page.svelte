@@ -7,6 +7,7 @@
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import { BookmarkButton, NoteEditor } from '$components/saved';
 	import type { Challenge } from '$types';
 
 	let challengeId = $derived($page.params.id ?? '');
@@ -126,7 +127,16 @@
 
 			<div class="p-6">
 				<!-- Title + description -->
-				<h1 class="text-2xl sm:text-3xl font-bold mb-3">{challenge.title}</h1>
+				<div class="mb-3 flex flex-wrap items-start justify-between gap-3">
+					<h1 class="text-2xl sm:text-3xl font-bold">{challenge.title}</h1>
+					<!-- SKI-36 — save it here or lose it to memory. -->
+					<BookmarkButton
+						targetType="challenge_template"
+						targetId={challenge.id}
+						variant="labelled"
+						withDialog
+					/>
+				</div>
 				<p class="text-text-muted leading-relaxed mb-8">{challenge.description}</p>
 
 				<!-- Stats row -->
@@ -207,6 +217,11 @@
 					</Button>
 				{/if}
 			</div>
+		</div>
+
+		<!-- SKI-37 — a private note on what you just read. -->
+		<div class="mt-6">
+			<NoteEditor targetType="challenge_template" targetId={challenge.id} />
 		</div>
 	{/if}
 </div>

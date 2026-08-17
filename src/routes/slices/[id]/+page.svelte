@@ -10,6 +10,7 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import ActiveSkilluversWidget from '$components/slice/ActiveSkilluversWidget.svelte';
 	import DiaryWidget from '$components/slice/DiaryWidget.svelte';
+	import { BookmarkButton, NoteEditor } from '$components/saved';
 	import { ExternalLink, Check, GitBranch, ShieldCheck } from '@lucide/svelte';
 
 	interface Props {
@@ -162,9 +163,13 @@
 						{/if}
 					{/if}
 				</div>
-				<h1 class="font-heading text-3xl sm:text-4xl font-bold text-text-primary tracking-tight mb-4">
-					{slice.title}
-				</h1>
+				<div class="mb-4 flex flex-wrap items-start justify-between gap-3">
+					<h1 class="font-heading text-3xl sm:text-4xl font-bold text-text-primary tracking-tight">
+						{slice.title}
+					</h1>
+					<!-- SKI-36 — save the slice before it scrolls out of the session. -->
+					<BookmarkButton targetType="slice" targetId={slice.id} variant="labelled" withDialog />
+				</div>
 				<div class="flex flex-wrap items-center gap-3 text-sm">
 					{#if slice.external_metadata?.issue_url}
 						<a
@@ -385,6 +390,11 @@
 
 			<!-- Diary -->
 			<DiaryWidget sliceId={slice.id} canPost={isMine} />
+
+			<!-- SKI-37 — private note, distinct from the public diary above. -->
+			<div class="mt-4">
+				<NoteEditor targetType="slice" targetId={slice.id} />
+			</div>
 		</article>
 
 		<!-- Side column -->
