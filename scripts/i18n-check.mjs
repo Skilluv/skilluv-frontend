@@ -21,7 +21,11 @@ const SRC = join(ROOT, 'src');
 // own and the key sets are unioned.
 const LANG_FILES = ['fr', 'en'].map((l) => ({
 	locale: l,
-	paths: [join(SRC, 'lib', 'i18n', `${l}.ts`), join(SRC, 'lib', 'i18n', `postmvp.${l}.ts`)]
+	paths: [
+		join(SRC, 'lib', 'i18n', `${l}.ts`),
+		join(SRC, 'lib', 'i18n', `postmvp.${l}.ts`),
+		join(SRC, 'lib', 'i18n', `design.${l}.ts`)
+	]
 }));
 
 function walk(dir, out = []) {

@@ -1,3 +1,4 @@
+import type { DesignTranslations } from './design.types';
 import type { PostMvpTranslations } from './postmvp.types';
 
 /**
@@ -5,7 +6,7 @@ import type { PostMvpTranslations } from './postmvp.types';
  * `postmvp.types.ts` and folded in here, so `i18n.t('goals.title')` type-checks
  * exactly like an MVP key while the two sets stay separately readable.
  */
-export interface Translations extends PostMvpTranslations {
+export interface Translations extends PostMvpTranslations, DesignTranslations {
 	common: {
 		actions: {
 			save: string;

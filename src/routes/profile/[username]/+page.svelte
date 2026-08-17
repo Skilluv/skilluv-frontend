@@ -11,6 +11,7 @@
 	import Timeline from '$components/profile/Timeline.svelte';
 	import ExternalSignals from '$components/profile/ExternalSignals.svelte';
 	import Vouchings from '$components/profile/Vouchings.svelte';
+	import { DesignSection } from '$components/design';
 	import Heatmap from '$components/profile/Heatmap.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
@@ -394,6 +395,10 @@
 					capabilities={publicCapabilities}
 					viewer={isOwnProfile ? 'own' : 'public'}
 				/>
+
+				<!-- SKI-253 — the design record. Addressed by username, so unlike
+				     the sections above it needs no UUID. -->
+				<DesignSection {username} isOwn={isOwnProfile} />
 
 				<!-- SKI-46 — who staked their own rank on this person. -->
 				{#if profileUserId}
