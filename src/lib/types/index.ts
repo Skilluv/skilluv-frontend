@@ -2,6 +2,10 @@
 // Types Skilluv — basés sur API-ROUTES.md + MVP.md P16-P25
 // ============================================
 
+// Post-MVP tiers 1-3 (SKI-36 … SKI-47) live in their own module and are
+// re-exported here, so `$types` stays the single import surface.
+export * from './postmvp';
+
 // Réutilisation source de vérité unique pour les types badge/rang.
 // Voir src/lib/components/badges/types.ts pour les définitions primitives.
 import type {

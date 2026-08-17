@@ -15,9 +15,13 @@ import { dirname } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const SRC = join(ROOT, 'src');
+// A locale is spread across several modules: the MVP dictionary plus the
+// Post-MVP one (SKI-36 … SKI-47), which `fr.ts` / `en.ts` fold in with a
+// spread. The spread itself is unevaluable here, so each part is read on its
+// own and the key sets are unioned.
 const LANG_FILES = ['fr', 'en'].map((l) => ({
 	locale: l,
-	path: join(SRC, 'lib', 'i18n', `${l}.ts`)
+	paths: [join(SRC, 'lib', 'i18n', `${l}.ts`), join(SRC, 'lib', 'i18n', `postmvp.${l}.ts`)]
 }));
 
 function walk(dir, out = []) {
@@ -58,16 +62,15 @@ function flatten(obj, prefix = '', out = new Set()) {
 	return out;
 }
 
-async function loadLocaleKeys(entry) {
-	const modUrl = new URL(`file://${entry.path.replaceAll('\\', '/')}`);
-	// Vite would strip the type imports; when running through node we parse the
-	// TS source manually via dynamic import + esbuild-loader is overkill here.
-	// Instead: read source, isolate the exported object literal, and eval it in
-	// a controlled scope. This is safe on our own maintained files.
-	const src = readFileSync(entry.path, 'utf8');
+// Vite would strip the type imports; when running through node we parse the
+// TS source manually via dynamic import + esbuild-loader is overkill here.
+// Instead: read source, isolate the exported object literal, and eval it in
+// a controlled scope. This is safe on our own maintained files.
+function loadFileKeys(path) {
+	const src = readFileSync(path, 'utf8');
 	const startTag = src.indexOf('= {');
 	const start = src.indexOf('{', startTag);
-	if (start < 0) throw new Error(`Cannot find object literal start in ${entry.path}`);
+	if (start < 0) throw new Error(`Cannot find object literal start in ${path}`);
 	// Naive brace matching to find the matching closing brace.
 	let depth = 0;
 	let end = -1;
@@ -82,11 +85,20 @@ async function loadLocaleKeys(entry) {
 			}
 		}
 	}
-	if (end < 0) throw new Error(`Unbalanced braces in ${entry.path}`);
-	const literal = src.slice(start, end + 1);
+	if (end < 0) throw new Error(`Unbalanced braces in ${path}`);
+	// Drop `...otherModule,` lines: the referenced binding does not exist in
+	// this scope, and its keys are collected from its own file instead.
+	const literal = src.slice(start, end + 1).replace(/^\s*\.\.\.[A-Za-z0-9_$]+,?\s*$/gm, '');
 	// eslint-disable-next-line no-new-func
-	const obj = new Function(`return (${literal});`)();
-	return { locale: entry.locale, keys: flatten(obj), modUrl };
+	return flatten(new Function(`return (${literal});`)());
+}
+
+async function loadLocaleKeys(entry) {
+	const keys = new Set();
+	for (const path of entry.paths) {
+		for (const k of loadFileKeys(path)) keys.add(k);
+	}
+	return { locale: entry.locale, keys };
 }
 
 async function main() {

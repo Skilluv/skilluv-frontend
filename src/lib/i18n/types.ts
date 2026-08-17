@@ -1,4 +1,11 @@
-export interface Translations {
+import type { PostMvpTranslations } from './postmvp.types';
+
+/**
+ * The Post-MVP namespaces (SKI-36 … SKI-47) are declared in
+ * `postmvp.types.ts` and folded in here, so `i18n.t('goals.title')` type-checks
+ * exactly like an MVP key while the two sets stay separately readable.
+ */
+export interface Translations extends PostMvpTranslations {
 	common: {
 		actions: {
 			save: string;

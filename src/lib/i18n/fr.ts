@@ -1,6 +1,8 @@
+import { postMvpFr } from './postmvp.fr';
 import type { Translations } from './types';
 
 export const fr: Translations = {
+	...postMvpFr,
 	common: {
 		actions: {
 			save: 'Sauvegarder', cancel: 'Annuler', delete: 'Supprimer', edit: 'Modifier',

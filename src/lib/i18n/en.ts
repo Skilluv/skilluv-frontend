@@ -1,6 +1,8 @@
+import { postMvpEn } from './postmvp.en';
 import type { Translations } from './types';
 
 export const en: Translations = {
+	...postMvpEn,
 	common: {
 		actions: {
 			save: 'Save', cancel: 'Cancel', delete: 'Delete', edit: 'Edit',
