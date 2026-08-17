@@ -8,6 +8,7 @@
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import SkillTree from '$components/profile/SkillTree.svelte';
+	import Timeline from '$components/profile/Timeline.svelte';
 	import Heatmap from '$components/profile/Heatmap.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
@@ -54,6 +55,15 @@
 	let error = $state('');
 
 	let isOwnProfile = $derived(auth.user?.username === username);
+
+	/**
+	 * The user's UUID, needed by every id-addressed section (timeline, skill
+	 * tree, badges…). `/profile/{username}` only returns `id` to enterprise
+	 * and recruiter callers, so on someone else's profile it can be absent —
+	 * those sections then stay hidden rather than firing a request with an
+	 * empty id. Your own profile always resolves, through the auth store.
+	 */
+	let profileUserId = $derived(isOwnProfile ? (auth.user?.id ?? user?.id) : user?.id);
 
 	const titleColors: Record<string, string> = {
 		apprenti: 'text-text-muted',
@@ -358,6 +368,20 @@
 				{:else}
 					<div class="rounded-xl border border-border bg-surface-elevated p-8 text-center">
 						<p class="text-sm text-text-muted">{i18n.t('profile.noSkills')}</p>
+					</div>
+				{/if}
+
+				<!-- SKI-39 — chronological history, for recruiters and for pride. -->
+				{#if profileUserId}
+					<div class="rounded-xl border border-border bg-surface-elevated overflow-hidden">
+						<div class="px-5 py-3 border-b border-border">
+							<span class="text-xs font-bold uppercase tracking-wider text-text-muted">
+								{i18n.t('timeline.title')}
+							</span>
+						</div>
+						<div class="p-5">
+							<Timeline userId={profileUserId} isOwn={isOwnProfile} />
+						</div>
 					</div>
 				{/if}
 			</div>

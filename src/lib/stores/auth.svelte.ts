@@ -2,6 +2,7 @@ import type { UserPrivate, LoginMethod, Capability, UserCapability, UserOrientat
 import { api } from '$lib/api/client';
 import { capabilitiesApi, hasCapability } from '$lib/api/capabilities';
 import { orientationsApi } from '$lib/api/orientations';
+import { bookmarks } from './bookmarks.svelte';
 
 class AuthState {
 	user = $state<UserPrivate | null>(null);
@@ -167,6 +168,9 @@ class AuthState {
 			this.loginMethod = null;
 			this.hasPasskey = false;
 			this.capabilities = [];
+			// The saved-items index is per-user; leaving it behind would show
+			// the next person on this browser someone else's bookmarks.
+			bookmarks.reset();
 		}
 	}
 
@@ -176,6 +180,7 @@ class AuthState {
 		this.hasPasskey = false;
 		this.capabilities = [];
 		this.loading = false;
+		bookmarks.reset();
 	}
 }
 
