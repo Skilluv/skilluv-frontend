@@ -43,6 +43,8 @@
 		BookOpenCheck,
 		AtSign,
 		Sparkles,
+		Palette,
+		Briefcase,
 		Clock,
 		CalendarRange,
 		Handshake,
@@ -128,7 +130,7 @@
 		if (path === '/') return 'home';
 		if (auth.isAuthenticated) {
 			if (path.startsWith('/challenges')) return 'challenges';
-			if (['/bounties', '/certifications', '/diplomas', '/mentors', '/mentorship', '/assistant', '/talent-offers'].some((p) => path === p || path.startsWith(p + '/'))) return 'grow';
+			if (['/bounties', '/certifications', '/diplomas', '/mentors', '/mentorship', '/assistant', '/talent-offers', '/design'].some((p) => path === p || path.startsWith(p + '/'))) return 'grow';
 			if (['/feed', '/forum', '/guilds', '/tournaments', '/messages', '/leaderboards', '/community', '/cohorts', '/dashboard/peer-matching'].some((p) => path === p || path.startsWith(p + '/'))) return 'community';
 			if (['/enterprise', '/for-companies', '/pricing'].some((p) => path === p || path.startsWith(p + '/'))) return 'enterprise';
 		} else {
@@ -252,6 +254,14 @@
 				{ href: '/mentors', icon: Star, label: i18n.locale === 'fr' ? 'Trouver un mentor' : 'Find a mentor' },
 				{ href: '/mentorship/sessions', icon: Target, label: i18n.locale === 'fr' ? 'Mes sessions' : 'My sessions' },
 				{ href: '/mentors/me', icon: Pencil, label: i18n.locale === 'fr' ? 'Devenir mentor' : 'Become a mentor', badge: '80%' }
+			]
+		},
+		{
+			// Skilluv Design (SKI-237, SKI-248): contests and paid missions.
+			title: i18n.t('common.domains.design'),
+			items: [
+				{ href: '/design/contests', icon: Palette, label: i18n.t('designContests.title'), description: i18n.t('designContests.subtitle') },
+				{ href: '/design/missions', icon: Briefcase, label: i18n.t('designMissions.title'), description: i18n.t('designMissions.subtitle') }
 			]
 		},
 		{
@@ -666,6 +676,8 @@
 						{ href: '/dashboard/peer-matching', label: i18n.t('peerMatching.title') },
 						{ href: '/assistant', label: i18n.t('assistant.title') },
 						{ href: '/talent-offers', label: i18n.t('talentOffers.title') },
+						{ href: '/design/contests', label: i18n.t('designContests.title') },
+						{ href: '/design/missions', label: i18n.t('designMissions.title') },
 						{ href: '/dashboard/bookmarks', label: i18n.t('bookmarks.title') },
 						{ href: '/dashboard/notes', label: i18n.t('notes.title') },
 						{ href: '/dashboard/goals', label: i18n.t('goals.title') },
