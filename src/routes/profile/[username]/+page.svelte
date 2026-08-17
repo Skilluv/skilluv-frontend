@@ -9,6 +9,7 @@
 	import { i18n } from '$lib/i18n';
 	import SkillTree from '$components/profile/SkillTree.svelte';
 	import Timeline from '$components/profile/Timeline.svelte';
+	import ExternalSignals from '$components/profile/ExternalSignals.svelte';
 	import Heatmap from '$components/profile/Heatmap.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
@@ -394,6 +395,11 @@
 					capabilities={publicCapabilities}
 					viewer={isOwnProfile ? 'own' : 'public'}
 				/>
+
+				<!-- SKI-42 — declared context, kept visually apart from the proofs above. -->
+				{#if profileUserId}
+					<ExternalSignals userId={profileUserId} />
+				{/if}
 
 				<div class="rounded-xl border border-border bg-surface-elevated p-5">
 					<p class="text-xs text-text-muted mb-1">{i18n.locale === 'fr' ? 'Membre depuis' : 'Member since'}</p>

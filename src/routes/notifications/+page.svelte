@@ -112,10 +112,36 @@
 		notes?: string;
 		attestation_hash?: string;
 		upstream_issue_url?: string;
+		/** SKI-43 promotion payloads. */
+		to_rank?: string;
+		unlock_hint?: { unlocked_slices_count?: number; sample?: { slice_id: string; title: string }[] };
+		capability?: string;
+		badge_slug?: string;
+		goal_id?: string;
 	}
 
 	function ctx(n: Notification): NotifData {
 		return (n.data as NotifData | null) ?? {};
+	}
+
+	/**
+	 * The five kinds `promotion_notify` emits (SKI-43).
+	 *
+	 * Rows written before the catalogue carry the kind in `notification_type`
+	 * instead of `kind`, so both are consulted. Anything else returns null and
+	 * falls through the CTA chain untouched.
+	 */
+	const PROMOTION_KINDS = new Set([
+		'rank.promoted',
+		'capability.granted',
+		'badge.awarded',
+		'deliverable.first_verified',
+		'goal.reached'
+	]);
+
+	function promotionKind(n: Notification): string | null {
+		const kind = n.kind ?? n.notification_type;
+		return PROMOTION_KINDS.has(kind) ? kind : null;
 	}
 
 	/** Localised body for enriched types. Falls back to the backend `body`. */
@@ -437,6 +463,61 @@
 							<div class="mt-2">
 								<Button variant="ghost" size="sm" href={attestationApi.badgeUserUrl(auth.user.username)}>
 									{i18n.t('notifActions.shareBadge')}
+								</Button>
+							</div>
+						{:else if promotionKind(notif) === 'rank.promoted'}
+							<!-- SKI-43 — celebrate at the moment it happens, and say what
+							     the rank actually bought. -->
+							<div class="mt-2 flex flex-wrap items-center gap-3">
+								<Button variant="primary" size="sm" href="/challenges">
+									{i18n.t('promotionNotifs.rankCta')}
+								</Button>
+								<span class="text-xs text-text-muted">
+									{#if (d.unlock_hint?.unlocked_slices_count ?? 0) > 0}
+										{i18n.t('promotionNotifs.unlockedSlices', {
+											n: d.unlock_hint?.unlocked_slices_count ?? 0
+										})}
+									{:else}
+										{i18n.t('promotionNotifs.unlockedNone')}
+									{/if}
+								</span>
+							</div>
+							{#if d.unlock_hint?.sample?.length}
+								<ul class="mt-2 space-y-1" role="list">
+									{#each d.unlock_hint.sample as slice (slice.slice_id)}
+										<li>
+											<a
+												href={`/slices/${slice.slice_id}`}
+												class="text-xs text-text-muted underline-offset-4 hover:text-text-primary hover:underline"
+											>
+												{slice.title}
+											</a>
+										</li>
+									{/each}
+								</ul>
+							{/if}
+						{:else if promotionKind(notif) === 'capability.granted' && auth.user?.username}
+							<div class="mt-2">
+								<Button variant="ghost" size="sm" href={`/profile/${auth.user.username}`}>
+									{i18n.t('promotionNotifs.capabilityCta')}
+								</Button>
+							</div>
+						{:else if promotionKind(notif) === 'badge.awarded' && auth.user?.username}
+							<div class="mt-2">
+								<Button variant="ghost" size="sm" href={`/profile/${auth.user.username}`}>
+									{i18n.t('promotionNotifs.badgeCta')}
+								</Button>
+							</div>
+						{:else if promotionKind(notif) === 'deliverable.first_verified' && auth.user?.username}
+							<div class="mt-2">
+								<Button variant="primary" size="sm" href={`/profile/${auth.user.username}`}>
+									{i18n.t('promotionNotifs.firstVerifiedCta')}
+								</Button>
+							</div>
+						{:else if promotionKind(notif) === 'goal.reached'}
+							<div class="mt-2">
+								<Button variant="ghost" size="sm" href="/dashboard/goals">
+									{i18n.t('promotionNotifs.goalCta')}
 								</Button>
 							</div>
 						{/if}
