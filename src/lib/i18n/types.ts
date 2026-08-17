@@ -818,6 +818,33 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 		retryBtn: string;
 		generic: string;
 	};
+	attestationVerify: {
+		title: string;
+		subtitle: string;
+		checking: string;
+		validTitle: string;
+		validBody: string;
+		revokedTitle: string;
+		revokedBody: string;
+		revokedOn: string;
+		revokeReason: string;
+		notFoundTitle: string;
+		notFoundBody: string;
+		issuedOn: string;
+		expiresOn: string;
+		expired: string;
+		typeLabel: string;
+		issuerLabel: string;
+		issuerSkilluv: string;
+		issuerOrg: string;
+		codeLabel: string;
+		copyCode: string;
+		copiedToast: string;
+		shareCta: string;
+		sharedToast: string;
+		holderCta: string;
+		fallbackError: string;
+	};
 	disputes: {
 		title: string;
 		subtitle: string;

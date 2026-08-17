@@ -51,3 +51,17 @@ test.describe('Skilluv Design pages', () => {
 		}
 	});
 });
+
+test.describe('Issued attestation verification', () => {
+	test('an unknown code renders the page rather than an error screen', async ({ page }) => {
+		await gotoHydrated(page, '/attestations/verify/UNKNOWNCODE');
+		await expect(page.getByTestId('attestation-verify-page')).toBeVisible();
+		await expect(page.locator('h1')).toBeVisible();
+	});
+
+	test('no i18n key leaks on the verification page', async ({ page }) => {
+		await gotoHydrated(page, '/attestations/verify/UNKNOWNCODE');
+		const body = await page.locator('body').innerText();
+		expect(body).not.toMatch(/\battestationVerify\.[a-zA-Z]/);
+	});
+});

@@ -1,5 +1,45 @@
 import { env } from '$env/dynamic/public';
+import type { ApiResponse } from '$lib/types';
 import { createApiClient } from './client';
+
+/** An issued attestation, as the `attestations` table stores it. */
+export interface IssuedAttestation {
+	id: string;
+	user_id: string;
+	attestation_type: string;
+	title: string;
+	description: string;
+	icon: string | null;
+	linked_deliverable_ids: string[];
+	linked_skill_node_ids: string[];
+	linked_project_ids: string[];
+	linked_reviewer_ids: string[];
+	/** `skilluv` or an organisation. */
+	issued_by_type: string;
+	issued_by_org_id: string | null;
+	verification_code: string;
+	public: boolean;
+	revoked_at: string | null;
+	revoked_by_user_id: string | null;
+	revoke_reason: string | null;
+	issued_at: string;
+	expires_at: string | null;
+}
+
+/**
+ * The three outcomes of a code lookup, discriminated on `valid`.
+ *
+ * A revoked attestation still comes back with its body: the reader asked
+ * whether a document stands, and "it was issued and then withdrawn" is a more
+ * useful answer than "no".
+ */
+export interface IssuedAttestationVerifyResponse {
+	valid: boolean;
+	/** Present only when invalid: `revoked` or `not_found`. */
+	reason?: string;
+	attestation?: IssuedAttestation;
+	verification_url?: string;
+}
 
 // --- Types (P26 v2 attestation publique) ---
 
@@ -81,5 +121,22 @@ export const attestationApi = {
 	/** Repo badge SVG (SKI-117). */
 	badgeRepoUrl(owner: string, name: string): string {
 		return `${backendOrigin()}/badge/repo/${encodeURIComponent(owner)}/${encodeURIComponent(name)}/validated.svg`;
+	},
+
+	/**
+	 * Verify an issued attestation by its 12-character code.
+	 *
+	 * A different object from `verify()` above, despite the shared word. That
+	 * one resolves a 64-hex `attestation_hash` on a validated slice; this one
+	 * resolves a `verification_code` on the `attestations` table — the
+	 * documents the design programme, compagnonnage and certifications issue.
+	 *
+	 * All three outcomes come back as 200 with a discriminated body, so a
+	 * third-party verifier renders each state without decoding error codes.
+	 */
+	verifyIssued(code: string) {
+		return api.get<ApiResponse<IssuedAttestationVerifyResponse>>(
+			`/attestations/verify/${encodeURIComponent(code)}`
+		);
 	}
 };

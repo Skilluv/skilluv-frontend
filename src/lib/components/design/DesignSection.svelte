@@ -309,15 +309,15 @@
 									<BadgeCheck size={13} strokeWidth={2} class="text-success" />
 									{attestation.title}
 								</span>
-								<!-- Shown, not linked: `/verify/[hash]` resolves a 64-hex slice
+								<!-- Not `/verify/[hash]`: that route resolves a 64-hex slice
 									     attestation hash, while this is a 12-character
-									     `verification_code` on the attestations table. The backend
-									     serves it at /api/attestations/verify/{code}; there is no
-									     page for that route yet, and a link into the wrong one
-									     would only 404. -->
-								<span class="font-mono text-xs text-text-muted" title={i18n.t('designProfile.verifyCta')}>
-									{attestation.verification_code}
-								</span>
+									     `verification_code` on the attestations table. -->
+								<a
+									href="/attestations/verify/{attestation.verification_code}"
+									class="text-xs text-text-muted underline-offset-4 hover:text-text-primary hover:underline"
+								>
+									{i18n.t('designProfile.verifyCta')}
+								</a>
 							</li>
 						{/each}
 					</ul>

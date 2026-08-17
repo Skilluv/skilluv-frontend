@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
+// `$api/attestation` reads PUBLIC_API_BASE_URL to build absolute badge and PDF
+// URLs. The virtual module behind it has no `process.env` under jsdom, so it is
+// stubbed with the empty environment — which is also what a browser sees when
+// the variable is unset.
+vi.mock('$env/dynamic/public', () => ({ env: {} }));
+
 /**
  * SKI-237, SKI-248, SKI-253, SKI-265 — the Skilluv Design front layer.
  *
@@ -285,5 +291,51 @@ describe('the wizard holds what the server will not take', () => {
 			expect(designFr.designWizard.goals[goal]).toBeTruthy();
 			expect(designEn.designWizard.goals[goal]).toBeTruthy();
 		}
+	});
+});
+
+describe('issued attestation verification', () => {
+	it('resolves a 12-character code, not a slice hash', async () => {
+		fetchMock.mockResolvedValue(
+			ok({
+				valid: true,
+				attestation: { verification_code: 'ABC123XYZ789', title: 'Brand system delivered' },
+				verification_url: '/attestations/verify/ABC123XYZ789'
+			})
+		);
+		const { attestationApi } = await import('../../src/lib/api/attestation');
+		const res = await attestationApi.verifyIssued('ABC123XYZ789');
+		expect(fetchMock.mock.calls[0][0]).toBe('/api/attestations/verify/ABC123XYZ789');
+		expect(res.data.valid).toBe(true);
+	});
+
+	it('a revoked attestation still comes back with its body', async () => {
+		fetchMock.mockResolvedValue(
+			ok({
+				valid: false,
+				reason: 'revoked',
+				attestation: { verification_code: 'ABC123XYZ789', revoke_reason: 'plagiarism' }
+			})
+		);
+		const { attestationApi } = await import('../../src/lib/api/attestation');
+		const res = await attestationApi.verifyIssued('ABC123XYZ789');
+		// Withdrawn and never-existed are different facts about a person.
+		expect(res.data.valid).toBe(false);
+		expect(res.data.reason).toBe('revoked');
+		expect(res.data.attestation?.revoke_reason).toBe('plagiarism');
+	});
+
+	it('an unknown code answers 200 with no attestation', async () => {
+		fetchMock.mockResolvedValue(ok({ valid: false, reason: 'not_found' }));
+		const { attestationApi } = await import('../../src/lib/api/attestation');
+		const res = await attestationApi.verifyIssued('NOPE');
+		expect(res.data.attestation).toBeUndefined();
+	});
+
+	it('the code is escaped into the path', async () => {
+		fetchMock.mockResolvedValue(ok({ valid: false, reason: 'not_found' }));
+		const { attestationApi } = await import('../../src/lib/api/attestation');
+		await attestationApi.verifyIssued('a/b c');
+		expect(fetchMock.mock.calls[0][0]).toBe('/api/attestations/verify/a%2Fb%20c');
 	});
 });
