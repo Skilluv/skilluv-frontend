@@ -5,13 +5,14 @@
 	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
-	import { tournamentApi, type Tournament, type TournamentEntry } from '$api/tournament';
+	import { tournamentApi } from '$api/tournament';
+	import type { Tournament, TournamentParticipant } from '$types';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
 
 	let slug = $derived(page.params.slug ?? '');
 	let tournament = $state<Tournament | null>(null);
-	let leaderboard = $state<TournamentEntry[]>([]);
+	let leaderboard = $state<TournamentParticipant[]>([]);
 	let loading = $state(true);
 	let registering = $state(false);
 
@@ -22,8 +23,8 @@
 				tournamentApi.get(slug),
 				tournamentApi.leaderboard(slug).catch(() => null)
 			]);
-			tournament = tRes.data;
-			if (lRes) leaderboard = lRes.data.entries;
+			tournament = tRes.data.tournament;
+			if (lRes) leaderboard = lRes.data.leaderboard;
 		} catch (e) {
 			toast.error(e instanceof SkilluError ? e.message : 'Erreur');
 		} finally {
@@ -71,6 +72,11 @@
 		if (!tournament) return false;
 		return new Date(tournament.starts_at) > new Date();
 	});
+
+	/** Registration is not a field on the tournament; it is a row in the standing. */
+	let isRegistered = $derived(
+		!!auth.user && leaderboard.some((e) => e.participant_id === auth.user?.id)
+	);
 
 	onMount(() => void load());
 </script>
@@ -133,17 +139,20 @@
 					<p class="mb-1 text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Participants' : 'Participants'}
 					</p>
-					<p class="text-4xl font-black text-primary">
-						{tournament.participants_count}{#if tournament.max_participants}<span class="text-lg text-text-muted"> / {tournament.max_participants}</span>{/if}
-					</p>
-					{#if !tournament.registered && (isActive || isUpcoming)}
+					<!-- Counted from the standing rather than read from the tournament:
+					     the model carries no participant counter, and the two former
+					     fields here were never served. -->
+					<p class="text-4xl font-black text-primary">{leaderboard.length}</p>
+					{#if isRegistered}
+						<Badge variant="success" size="sm">
+							{i18n.locale === 'fr' ? 'Inscrit·e' : 'Registered'}
+						</Badge>
+					{:else if isActive || isUpcoming}
 						<div class="mt-3">
 							<Button variant="accent" loading={registering} onclick={register}>
 								{i18n.locale === 'fr' ? 'S\'inscrire' : 'Register'}
 							</Button>
 						</div>
-					{:else if tournament.registered}
-						<Badge variant="success" size="sm">✓ {i18n.locale === 'fr' ? 'Inscrit·e' : 'Registered'}</Badge>
 					{/if}
 				</div>
 			</div>
@@ -156,22 +165,35 @@
 					{i18n.locale === 'fr' ? 'Classement' : 'Leaderboard'}
 				</h2>
 				<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
-					{#each leaderboard as e}
-						<a
-							href={`/profile/${e.username}`}
-							class="flex items-center gap-4 p-4 hover:bg-surface-overlay transition-colors"
+					<!-- The standing carries participant UUIDs and nothing else, so a
+					     row shows its rank, its score, and whether it is yours.
+					     Rendering a name here would mean inventing one. -->
+					{#each leaderboard as e (e.participant_id)}
+						{@const isMe = e.participant_id === auth.user?.id}
+						<div
+							class="flex items-center gap-4 p-4 {isMe ? 'bg-accent/5' : ''}"
+							data-testid="leaderboard-row"
 						>
 							<div class="w-12 text-center shrink-0">
-								<div class="text-2xl font-black {rankColor(e.rank)}">
-									#{e.rank}
+								<div class="text-2xl font-black {rankColor(e.rank ?? 0)}">
+									{e.rank ? `#${e.rank}` : '—'}
 								</div>
 							</div>
-							<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg font-black text-primary shrink-0">
-								{e.display_name.charAt(0)}
-							</div>
 							<div class="min-w-0 flex-1">
-								<div class="font-semibold truncate">{e.display_name}</div>
-								<div class="font-mono text-xs text-text-muted">@{e.username}</div>
+								{#if isMe}
+									<div class="font-semibold">{i18n.locale === 'fr' ? 'Toi' : 'You'}</div>
+								{:else}
+									<div class="font-mono text-xs text-text-muted">
+										{e.participant_type === 'guild'
+											? (i18n.locale === 'fr' ? 'Guilde' : 'Guild')
+											: (i18n.locale === 'fr' ? 'Participant' : 'Entrant')}
+									</div>
+								{/if}
+								{#if e.prize_fragments_awarded > 0}
+									<div class="text-xs text-text-muted">
+										+{e.prize_fragments_awarded} {i18n.t('common.fragments')}
+									</div>
+								{/if}
 							</div>
 							<div class="text-right shrink-0">
 								<div class="text-lg font-black text-primary">{e.score.toLocaleString()}</div>
@@ -179,7 +201,7 @@
 									{i18n.locale === 'fr' ? 'score' : 'score'}
 								</div>
 							</div>
-						</a>
+						</div>
 					{/each}
 				</div>
 			</section>

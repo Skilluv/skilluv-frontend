@@ -6,6 +6,11 @@
 // re-exported here, so `$types` stays the single import surface.
 export * from './postmvp';
 
+// Skilluv Design (SKI-182 … SKI-268). Contests and missions live on the
+// tournament and mission endpoints, so their types are here rather than in a
+// `design`-prefixed silo that would hide the reuse.
+export * from './design';
+
 // Réutilisation source de vérité unique pour les types badge/rang.
 // Voir src/lib/components/badges/types.ts pour les définitions primitives.
 import type {

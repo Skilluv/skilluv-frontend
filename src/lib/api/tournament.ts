@@ -1,4 +1,11 @@
-import type { ApiResponse } from '$lib/types';
+import type {
+	ApiResponse,
+	CommunityRankingRow,
+	ContestJuror,
+	ContestSubmission,
+	Tournament,
+	TournamentParticipant
+} from '$lib/types';
 import { createApiClient } from './client';
 
 const api = createApiClient();
@@ -16,26 +23,32 @@ export interface Season {
 	ends_at: string;
 }
 
-export interface Tournament {
-	id: string;
-	slug: string;
-	season_id: string;
-	name: string;
-	description: string | null;
-	skill_domain: string | null;
-	starts_at: string;
-	ends_at: string;
-	max_participants: number | null;
-	participants_count: number;
-	registered?: boolean;
+/**
+ * `Tournament` and the contest shapes now live in `$types`, derived from the
+ * backend model rather than hand-written here. The old local interface had
+ * invented `max_participants` and `participants_count` and omitted `kind`,
+ * `status` and `rules` — the three fields every contest surface reads.
+ */
+export type { Tournament } from '$lib/types';
+
+export interface ContestSubmissionInput {
+	/** Defaults to `user` server-side. */
+	participant_type?: string;
+	participant_id?: string;
+	artifact_url: string;
+	artifact_type: string;
+	secondary_url?: string;
+	summary: string;
+	language?: string;
+	measured_value?: number;
 }
 
-export interface TournamentEntry {
-	rank: number;
-	user_id: string;
-	username: string;
-	display_name: string;
-	score: number;
+export interface JudgeInput {
+	/** `accepted`, `rejected` or `disqualified`. */
+	status: string;
+	/** 0..100. Refused on a measured contest, where the artifact scores itself. */
+	judge_score?: number;
+	judge_notes?: string;
 }
 
 // --- API ---
@@ -49,22 +62,81 @@ export const tournamentApi = {
 		return api.get<ApiResponse<Season>>('/seasons/current');
 	},
 
-	list(params?: { season_id?: string; skill_domain?: string }) {
+	/**
+	 * The backend takes `status`, `upcoming` and `limit` — there is no `kind`
+	 * or `skill_domain` filter, so callers that want one kind of contest
+	 * narrow the result themselves. See `listDesignContests` in `$api/design`.
+	 */
+	list(params?: { status?: string; upcoming?: boolean; limit?: number }) {
 		return api.get<ApiResponse<{ tournaments: Tournament[] }>>(
 			'/tournaments',
-			params as Record<string, string>
+			params as Record<string, string | number | boolean | undefined>
 		);
 	},
 
 	get(slug: string) {
-		return api.get<ApiResponse<Tournament>>(`/tournaments/${slug}`);
+		return api.get<ApiResponse<{ tournament: Tournament }>>(`/tournaments/${slug}`);
 	},
 
 	leaderboard(slug: string) {
-		return api.get<ApiResponse<{ entries: TournamentEntry[] }>>(`/tournaments/${slug}/leaderboard`);
+		return api.get<ApiResponse<{ leaderboard: TournamentParticipant[] }>>(
+			`/tournaments/${slug}/leaderboard`
+		);
 	},
 
 	register(slug: string) {
 		return api.post<ApiResponse<{ registered: boolean }>>(`/tournaments/${slug}/register`);
+	},
+
+	/** Hand in an entry, or replace the one already handed in. */
+	submit(slug: string, input: ContestSubmissionInput) {
+		return api.post<ApiResponse<{ submission: ContestSubmission }>>(
+			`/tournaments/${slug}/submissions`,
+			input
+		);
+	},
+
+	/**
+	 * Every entry, publicly. The backend is explicit that this stays open:
+	 * "a contest whose entries cannot be read is a contest whose result
+	 * cannot be questioned".
+	 */
+	submissions(slug: string) {
+		return api.get<ApiResponse<{ submissions: ContestSubmission[] }>>(
+			`/tournaments/${slug}/submissions`
+		);
+	},
+
+	/** Requires the `jury_tournament` capability. */
+	judge(submissionId: string, input: JudgeInput) {
+		return api.post<ApiResponse<{ submission: ContestSubmission }>>(
+			`/submissions/${submissionId}/judge`,
+			input
+		);
+	},
+
+	jury(slug: string) {
+		return api.get<ApiResponse<{ jury: ContestJuror[] }>>(`/tournaments/${slug}/jury`);
+	},
+
+	/** Declining with a reason lets the organiser widen the panel in time. */
+	respondToJury(slug: string, accept: boolean, declineReason?: string) {
+		return api.post<ApiResponse<{ jury: ContestJuror }>>(`/tournaments/${slug}/jury/respond`, {
+			accept,
+			decline_reason: declineReason
+		});
+	},
+
+	/** One voice, movable: re-posting moves the vote rather than adding one. */
+	communityVote(slug: string, submissionId: string) {
+		return api.post<ApiResponse<{ recorded: boolean }>>(`/tournaments/${slug}/community-vote`, {
+			submission_id: submissionId
+		});
+	},
+
+	communityRanking(slug: string) {
+		return api.get<ApiResponse<{ ranking: CommunityRankingRow[] }>>(
+			`/tournaments/${slug}/community-ranking`
+		);
 	}
 };

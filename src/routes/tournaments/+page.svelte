@@ -165,11 +165,13 @@
 					</div>
 
 					<div class="mt-4 flex items-baseline justify-between border-t border-border pt-4">
+						<!-- The listing carries no participant counter. The prize pool is
+						     what it does carry, and it is the more useful number anyway. -->
 						<div>
-							<div class="text-2xl font-black text-primary">{t.participants_count}</div>
-							<div class="text-xs text-text-muted">
-								{i18n.locale === 'fr' ? 'participants' : 'participants'}
+							<div class="text-2xl font-black text-primary">
+								{t.prize_pool_fragments.toLocaleString()}
 							</div>
+							<div class="text-xs text-text-muted">{i18n.t('common.fragments')}</div>
 						</div>
 						{#if t.skill_domain}
 							<Badge variant="accent" size="sm">{t.skill_domain}</Badge>
