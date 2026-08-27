@@ -5,12 +5,12 @@
 	 * domain it is looking at and where its own links go.
 	 */
 	import { i18n } from '$lib/i18n';
-	import { MyMissions } from '$components/missions';
+	import { MissionDetail } from '$components/missions';
 </script>
 
-<MyMissions
-	domain="design"
-	basePath="/design/missions"
-	minePath="/design/my/missions"
-	boardTitle={i18n.t('missions.boards.design.title')}
+<MissionDetail
+	domain="ai"
+	basePath="/ai/missions"
+	minePath="/ai/my/missions"
+	boardTitle={i18n.t('missions.boards.ai.title')}
 />

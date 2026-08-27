@@ -85,9 +85,18 @@ export const designFr: DesignTranslations = {
 		awardsNotice:
 			'Les Skilluv Design Awards annuels arrivent. En attendant, chaque concours a ses résultats.'
 	},
-	designMissions: {
-		title: 'Missions design',
-		subtitle: 'Du travail payé, briefé par des entreprises, livré par des designers.',
+	missions: {
+		boards: {
+			design: {
+				title: 'Missions design',
+				subtitle: 'Du travail payé, briefé par des entreprises, livré par des designers.'
+			},
+			ai: {
+				title: 'Missions IA',
+				subtitle:
+					"Du travail payé sur des modèles, des jeux de données et des agents. Même workflow, même commission et même voie de litige que tous les autres domaines."
+			}
+		},
 		howItWorksTitle: 'Comment ça marche',
 		howItWorksBody:
 			'Une entreprise publie un brief. Tu candidates avec une lettre et des références. Si tu es retenu, tu livres, puis tu es payé via la plateforme.',

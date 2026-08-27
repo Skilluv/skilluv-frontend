@@ -23,7 +23,7 @@
 			return `${mission.revenue_share_percent}%`;
 		}
 		if (mission.budget_eur) return fmtEur(mission.budget_eur);
-		return i18n.t('designMissions.budgetUnset');
+		return i18n.t('missions.budgetUnset');
 	});
 
 	/** NUMERIC arrives as a string; parse once, here, rather than at each read. */
@@ -38,7 +38,7 @@
 	}
 
 	function label(group: string, value: string): string {
-		const key = `designMissions.${group}.${value}`;
+		const key = `missions.${group}.${value}`;
 		const translated = i18n.t(key);
 		return translated === key ? value : translated;
 	}
@@ -82,13 +82,13 @@
 		{#if mission.nda_required}
 			<span class="inline-flex items-center gap-1 text-xs text-text-muted">
 				<Lock size={11} strokeWidth={2} />
-				{i18n.t('designMissions.ndaRequired')}
+				{i18n.t('missions.ndaRequired')}
 			</span>
 		{/if}
 		{#if mission.remote_only}
 			<span class="inline-flex items-center gap-1 text-xs text-text-muted">
 				<Globe size={11} strokeWidth={2} />
-				{i18n.t('designMissions.remoteOnly')}
+				{i18n.t('missions.remoteOnly')}
 			</span>
 		{/if}
 	</div>
@@ -101,7 +101,7 @@
 				<span class="mx-1.5">·</span>
 				<span class="inline-flex items-center gap-1">
 					<Clock size={11} strokeWidth={2} />
-					{i18n.t('designMissions.estimatedDays', { n: mission.estimated_days })}
+					{i18n.t('missions.estimatedDays', { n: mission.estimated_days })}
 				</span>
 			{/if}
 		</span>
@@ -109,7 +109,7 @@
 
 	{#if mission.applications_close_at}
 		<p class="mt-2 text-xs text-text-muted">
-			{i18n.t('designMissions.closesAt', { date: fmtDate(mission.applications_close_at) })}
+			{i18n.t('missions.closesAt', { date: fmtDate(mission.applications_close_at) })}
 		</p>
 	{/if}
 </article>

@@ -46,7 +46,7 @@ test.describe('Skilluv Design pages', () => {
 			await gotoHydrated(page, path);
 			const body = await page.locator('body').innerText();
 			expect(body).not.toMatch(
-				/\b(designContests|designMissions|designProfile|designWizard)\.[a-zA-Z]+\.[a-zA-Z]/
+				/\b(designContests|missions|designProfile|designWizard)\.[a-zA-Z]+\.[a-zA-Z]/
 			);
 		}
 	});

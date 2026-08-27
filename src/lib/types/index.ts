@@ -14,6 +14,9 @@ export * from './design';
 // Voice castings — the audio domain's own hiring loop.
 export * from './audio';
 
+// The AI domain of work, which is not the assistant. See `ai_domain.ts`.
+export * from './ai_domain';
+
 // Craft records for the domains served by a flat `{domain}-profile`
 // endpoint (ai, audio). One shape on purpose — see `craft.ts`.
 export * from './craft';

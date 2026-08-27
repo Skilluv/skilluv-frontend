@@ -26,10 +26,10 @@
 
 	let known = $derived(KNOWN.includes(terms));
 	let label = $derived(
-		known ? i18n.t(`designMissions.ipTerms.${terms as MissionIpTerms}`) : terms
+		known ? i18n.t(`missions.ipTerms.${terms as MissionIpTerms}`) : terms
 	);
 	let hint = $derived(
-		known ? i18n.t(`designMissions.ipTermsHints.${terms as MissionIpTerms}`) : ''
+		known ? i18n.t(`missions.ipTermsHints.${terms as MissionIpTerms}`) : ''
 	);
 
 	let tone = $derived(

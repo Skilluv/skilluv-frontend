@@ -25,6 +25,8 @@
 		{ href: '/mentors', fr: 'Mentors', en: 'Mentors' },
 		{ href: '/guides', fr: 'Guides', en: 'Guides' },
 		{ href: '/audio/castings', fr: 'Castings voix', en: 'Voice castings' },
+		{ href: '/ai', fr: 'IA', en: 'AI' },
+		{ href: '/ai/missions', fr: 'Missions IA', en: 'AI missions' },
 		{ href: '/enterprise/register', fr: 'Entreprises', en: 'Enterprise' },
 		{ href: '/pricing', fr: 'Tarifs', en: 'Pricing' },
 		{ href: '/for-companies', fr: 'Talents', en: 'Talents' },

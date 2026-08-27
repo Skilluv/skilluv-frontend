@@ -1066,6 +1066,30 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 	/** Voice castings — the audio domain's own hiring loop. */
 	/** The files of an audio delivery, and what was measured on them. */
 	/** Who is credited on a project, from the attestations that carry it. */
+	/** The AI domain of work — artefacts published here, contests elsewhere. */
+	aiDomain: {
+		title: string;
+		subtitle: string;
+		artifactsTitle: string;
+		artifactsHint: string;
+		artifactsEmpty: string;
+		artifactsEmptyBody: string;
+		allSubtypes: string;
+		subtypes: {
+			ml_model: string;
+			dataset: string;
+			llm_agent: string;
+			data_pipeline: string;
+			ai_service_api: string;
+			ai_research_paper: string;
+		};
+		openHub: string;
+		competitionsTitle: string;
+		competitionsHint: string;
+		competitionsEmpty: string;
+		closesIn: string;
+		rolling: string;
+	};
 	projectCredits: {
 		title: string;
 		verifyCta: string;

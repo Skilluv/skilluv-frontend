@@ -162,10 +162,10 @@ describe('design missions are missions', () => {
 		const { designFr } = await import('../../src/lib/i18n/design.fr');
 		const { designEn } = await import('../../src/lib/i18n/design.en');
 		for (const terms of MISSION_IP_TERMS) {
-			expect(designFr.designMissions.ipTerms[terms]).toBeTruthy();
-			expect(designFr.designMissions.ipTermsHints[terms]).toBeTruthy();
-			expect(designEn.designMissions.ipTerms[terms]).toBeTruthy();
-			expect(designEn.designMissions.ipTermsHints[terms]).toBeTruthy();
+			expect(designFr.missions.ipTerms[terms]).toBeTruthy();
+			expect(designFr.missions.ipTermsHints[terms]).toBeTruthy();
+			expect(designEn.missions.ipTerms[terms]).toBeTruthy();
+			expect(designEn.missions.ipTermsHints[terms]).toBeTruthy();
 		}
 	});
 
@@ -174,8 +174,8 @@ describe('design missions are missions', () => {
 		const { designFr } = await import('../../src/lib/i18n/design.fr');
 		const { designEn } = await import('../../src/lib/i18n/design.en');
 		for (const model of MISSION_PAYMENT_MODELS) {
-			expect(designFr.designMissions.paymentModels[model]).toBeTruthy();
-			expect(designEn.designMissions.paymentModels[model]).toBeTruthy();
+			expect(designFr.missions.paymentModels[model]).toBeTruthy();
+			expect(designEn.missions.paymentModels[model]).toBeTruthy();
 		}
 	});
 });

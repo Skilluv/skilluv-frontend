@@ -9,8 +9,8 @@
 </script>
 
 <MyMissions
-	domain="design"
-	basePath="/design/missions"
-	minePath="/design/my/missions"
-	boardTitle={i18n.t('missions.boards.design.title')}
+	domain="ai"
+	basePath="/ai/missions"
+	minePath="/ai/my/missions"
+	boardTitle={i18n.t('missions.boards.ai.title')}
 />

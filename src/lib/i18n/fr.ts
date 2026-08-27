@@ -874,6 +874,32 @@ export const fr: Translations = {
 			noAccess: 'Cette page est réservée aux plagiarism_reviewer.'
 		}
 	},
+	aiDomain: {
+		title: 'L’IA sur Skilluv',
+		subtitle:
+			"Ce que les gens d'ici ont réellement publié, et ce qui vaut la peine d'être tenté ailleurs en ce moment. L'assistant est autre chose et vit sur sa propre page.",
+		artifactsTitle: 'Artefacts publiés',
+		artifactsHint:
+			"Uniquement du travail vérifié. Une soumission en attente répondrait de travers à la question pour laquelle cette liste existe.",
+		artifactsEmpty: 'Rien de publié pour l’instant',
+		artifactsEmptyBody: 'Aucun artefact vérifié sous ce filtre.',
+		allSubtypes: 'Tout',
+		subtypes: {
+			ml_model: 'Modèle',
+			dataset: 'Jeu de données',
+			llm_agent: 'Agent',
+			data_pipeline: 'Pipeline',
+			ai_service_api: 'Service',
+			ai_research_paper: 'Article'
+		},
+		openHub: 'Sur son hub',
+		competitionsTitle: 'À tenter',
+		competitionsHint:
+			"Compétitions et classements hors Skilluv, choisis par un curateur qui dit pourquoi celle-ci et pas les quarante autres.",
+		competitionsEmpty: 'Rien d’ouvert en ce moment.',
+		closesIn: 'Ferme dans {n} jours',
+		rolling: 'En continu'
+	},
 	projectCredits: {
 		title: 'Crédits sur ce projet',
 		verifyCta: 'Vérifier'

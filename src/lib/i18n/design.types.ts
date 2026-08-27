@@ -90,9 +90,21 @@ export interface DesignTranslations {
 		awardsNotice: string;
 	};
 	/** SKI-248 — paid design missions, on the shared `/missions` endpoint. */
-	designMissions: {
-		title: string;
-		subtitle: string;
+	/**
+	 * Paid missions, every domain.
+	 *
+	 * Named `designMissions` until the AI board needed the same copy: apart
+	 * from the title and subtitle, none of it was ever design-specific —
+	 * `/missions` is one endpoint for every domain, and a rights badge reads
+	 * the same whoever is signing. The per-domain copy lives in each board's
+	 * own namespace.
+	 */
+	missions: {
+		/** Board name per domain: the only copy here that was ever domain-specific. */
+		boards: {
+			design: { title: string; subtitle: string };
+			ai: { title: string; subtitle: string };
+		};
 		howItWorksTitle: string;
 		howItWorksBody: string;
 		commissionNotice: string;

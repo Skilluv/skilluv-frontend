@@ -85,9 +85,18 @@ export const designEn: DesignTranslations = {
 		awardsNotice:
 			'The annual Skilluv Design Awards are on their way. Until then, each contest has its own result.'
 	},
-	designMissions: {
-		title: 'Design missions',
-		subtitle: 'Paid work, briefed by companies, delivered by designers.',
+	missions: {
+		boards: {
+			design: {
+				title: 'Design missions',
+				subtitle: 'Paid work, briefed by companies, delivered by designers.'
+			},
+			ai: {
+				title: 'AI missions',
+				subtitle:
+					'Paid work on models, datasets and agents. Same workflow, same commission and same dispute path as every other domain.'
+			}
+		},
 		howItWorksTitle: 'How it works',
 		howItWorksBody:
 			'A company posts a brief. You apply with a letter and references. If you are picked, you deliver, then you get paid through the platform.',

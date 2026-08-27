@@ -277,7 +277,15 @@
 			title: i18n.t('common.domains.design'),
 			items: [
 				{ href: '/design/contests', icon: Palette, label: i18n.t('designContests.title'), description: i18n.t('designContests.subtitle') },
-				{ href: '/design/missions', icon: Briefcase, label: i18n.t('designMissions.title'), description: i18n.t('designMissions.subtitle') }
+				{ href: '/design/missions', icon: Briefcase, label: i18n.t('missions.boards.design.title'), description: i18n.t('missions.boards.design.subtitle') }
+			]
+		},
+		{
+			// The AI domain of work — not the assistant, which is below.
+			title: i18n.t('common.domains.ai'),
+			items: [
+				{ href: '/ai', icon: Sparkles, label: i18n.t('aiDomain.title'), description: i18n.t('aiDomain.subtitle') },
+				{ href: '/ai/missions', icon: Briefcase, label: i18n.t('missions.boards.ai.title'), description: i18n.t('missions.boards.ai.subtitle') }
 			]
 		},
 		{
@@ -694,7 +702,9 @@
 						{ href: '/assistant', label: i18n.t('assistant.title') },
 						{ href: '/talent-offers', label: i18n.t('talentOffers.title') },
 						{ href: '/design/contests', label: i18n.t('designContests.title') },
-						{ href: '/design/missions', label: i18n.t('designMissions.title') },
+						{ href: '/design/missions', label: i18n.t('missions.boards.design.title') },
+						{ href: '/ai', label: i18n.t('aiDomain.title') },
+						{ href: '/ai/missions', label: i18n.t('missions.boards.ai.title') },
 						{ href: '/dashboard/bookmarks', label: i18n.t('bookmarks.title') },
 						{ href: '/dashboard/notes', label: i18n.t('notes.title') },
 						{ href: '/dashboard/goals', label: i18n.t('goals.title') },

@@ -874,6 +874,32 @@ export const en: Translations = {
 			noAccess: 'This page is reserved to plagiarism_reviewer capability holders.'
 		}
 	},
+	aiDomain: {
+		title: 'AI on Skilluv',
+		subtitle:
+			'What people here have actually published, and what is worth entering right now elsewhere. The assistant is a different thing and lives on its own page.',
+		artifactsTitle: 'Published artefacts',
+		artifactsHint:
+			'Verified work only. A pending submission would answer the question this listing exists for in the wrong way.',
+		artifactsEmpty: 'Nothing published yet',
+		artifactsEmptyBody: 'No verified artefact under this filter.',
+		allSubtypes: 'Everything',
+		subtypes: {
+			ml_model: 'Model',
+			dataset: 'Dataset',
+			llm_agent: 'Agent',
+			data_pipeline: 'Pipeline',
+			ai_service_api: 'Service',
+			ai_research_paper: 'Paper'
+		},
+		openHub: 'On its hub',
+		competitionsTitle: 'Worth entering',
+		competitionsHint:
+			'Competitions and leaderboards outside Skilluv, picked by a curator who says why this one and not the forty others.',
+		competitionsEmpty: 'Nothing open right now.',
+		closesIn: 'Closes in {n} days',
+		rolling: 'Rolling'
+	},
 	projectCredits: {
 		title: 'Credits on this project',
 		verifyCta: 'Check it'
