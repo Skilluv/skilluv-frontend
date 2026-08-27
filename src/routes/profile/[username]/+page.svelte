@@ -13,6 +13,13 @@
 	import Vouchings from '$components/profile/Vouchings.svelte';
 	import { DesignSection } from '$components/design';
 	import CraftSection from '$components/profile/CraftSection.svelte';
+	import {
+		CodeRecord,
+		QualityRecord,
+		OpsRecord,
+		LeadershipRecord,
+		SecurityRecord
+	} from '$components/profile/records';
 	import Heatmap from '$components/profile/Heatmap.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
@@ -407,6 +414,15 @@
 				     domain, so a code-only profile is unchanged. -->
 				<CraftSection domain="ai" {username} />
 				<CraftSection domain="audio" {username} />
+
+				<!-- The five records served with a nested score. Same rule as
+				     above: a domain this person has never worked in answers 404
+				     and renders nothing. -->
+				<CodeRecord {username} isOwn={isOwnProfile} />
+				<QualityRecord {username} />
+				<OpsRecord {username} />
+				<LeadershipRecord {username} />
+				<SecurityRecord {username} />
 
 				<!-- SKI-46 — who staked their own rank on this person. -->
 				{#if profileUserId}

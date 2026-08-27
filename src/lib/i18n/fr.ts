@@ -1107,6 +1107,87 @@ export const fr: Translations = {
 		otherLocaleNotice:
 			"Servi en {locale} : ce guide n'a pas encore été traduit dans ta langue."
 	},
+	domainRecord: {
+		titles: {
+			code: 'Parcours code',
+			quality: 'Parcours qualité',
+			ops: 'Parcours ops',
+			leadership: 'Parcours leadership',
+			security: 'Parcours sécurité'
+		},
+		primary: 'principal',
+		until: "jusqu'au {date}",
+		openReport: 'Rapport',
+		targetDomainsTitle: 'Ce que le travail visait',
+		credentialsTitle: 'Certifications',
+		credentialsHint:
+			"Délivrées par quelqu'un d'autre. Listées à part des attestations : l'une est une chose dont Skilluv répond, l'autre une chose dont Skilluv a vérifié le lien.",
+		code: {
+			storedDiffers:
+				"Les classements trient encore sur {n} — le balayage horaire n'a pas rattrapé.",
+			languagesTitle: 'Langages',
+			packagesTitle: 'Paquets publiés',
+			readOn: 'lu le {date}',
+			missionsTitle: 'Missions livrées',
+			portfoliosTitle: 'Comptes ailleurs',
+			portfolioVerified: 'propriété prouvée',
+			portfolioDeclared: 'déclaré'
+		},
+		quality: {
+			bugsTitle: 'Défauts confirmés',
+			bugsHint:
+				"Uniquement ceux dont le correctif est parti et a été re-vérifié. Le correctif est en lien ; la reproduction non, volontairement.",
+			severityUnreviewed: 'sévérité non revue',
+			seeTheFix: 'Voir le correctif',
+			testRunsTitle: 'Exécutions de tests vérifiées',
+			testRunsHint:
+				"Vérifiées par un relecteur. Un badge vert sur son propre dépôt n'en est pas une.",
+			testCount: '{total} tests, {failed} en échec'
+		},
+		ops: {
+			objectivesTitle: 'Objectifs tenus',
+			objectivesHint:
+				"Chacun avec le chiffre et sa source, pour qu'on puisse aller vérifier.",
+			objectiveFigures: '{achieved}% pour {target}% visés sur {days} jours',
+			met: 'Tenu',
+			missed: 'Manqué',
+			evidence: 'Source',
+			incidentsTitle: 'Incidents',
+			detect: 'détecté en {v}',
+			resolve: 'résolu en {v}',
+			postmortem: 'post-mortem {date}',
+			costTitle: 'Travail sur les coûts',
+			sloKept: 'objectif toujours tenu',
+			sloBroken: 'objectif plus tenu'
+		},
+		leadership: {
+			artefactsTitle: 'Documents',
+			adopted: 'Adopté',
+			confidentialTitle: 'Travail confidentiel',
+			confidentialHint:
+				"Quel genre, à quelle échelle, dans quel secteur — et jamais quoi ni où. Dit dans l'abstrait parce que le reste ne nous appartient pas.",
+			cohortsTitle: 'Cohortes menées',
+			cohortFigures: '{graduated} arrivés au bout sur {joined}',
+			leftForWork: '· {n} partis pour un poste',
+			ledToEnd: 'Menée jusqu’au bout',
+			retrosTitle: 'Rétrospectives',
+			retrosHint: 'Et si les actions ont réellement atterri.',
+			retroFigures: '{resolved} actions résolues sur {total}',
+			followedThrough: 'Suivi jusqu’au bout'
+		},
+		security: {
+			findingsTitle: 'Findings confirmées',
+			findingsHint:
+				"Une finding encore sous embargo arrive sans son titre, et datée au mois : un titre est la moitié de la divulgation, et une date précise réduit la fenêtre.",
+			underEmbargo: 'Titre retenu jusqu’à la divulgation',
+			writeup: 'Writeup',
+			practiceTitle: 'Entraînement résolu',
+			credentialChecked: 'vérifiée',
+			credentialDeclared: 'déclarée',
+			elsewhereTitle: 'Réputation ailleurs',
+			figuresDeclared: 'chiffres déclarés'
+		}
+	},
 	craftProfile: {
 		titles: {
 			ai: 'Parcours IA',
@@ -1118,6 +1199,8 @@ export const fr: Translations = {
 		nextTierAt: 'Palier suivant à {n}',
 		breakdownTitle: 'Ce qui a compté',
 		tradesTitle: 'Métiers avec du travail vérifié',
+		attestationsTitle: 'Attestations',
+		verifyCta: 'Vérifier',
 		highlightsTitle: 'À écouter en premier',
 		highlightsHint:
 			"Travaux publiés. Écouter un master passe par la slice à laquelle il appartient, sur un lien qui expire.",

@@ -1104,6 +1104,84 @@ export const en: Translations = {
 		otherLocaleNotice:
 			'Served in {locale}: this guide has not been translated into your language yet.'
 	},
+	domainRecord: {
+		titles: {
+			code: 'Code record',
+			quality: 'Quality record',
+			ops: 'Ops record',
+			leadership: 'Leadership record',
+			security: 'Security record'
+		},
+		primary: 'main',
+		until: 'until {date}',
+		openReport: 'Report',
+		targetDomainsTitle: 'What the work was aimed at',
+		credentialsTitle: 'Certifications',
+		credentialsHint:
+			'Issued by somebody else. Listed apart from the attestations: one is a thing Skilluv stands behind, the other a thing Skilluv checked a link to.',
+		code: {
+			storedDiffers: 'The listings still sort on {n} — the hourly sweep has not caught up.',
+			languagesTitle: 'Languages',
+			packagesTitle: 'Published packages',
+			readOn: 'read {date}',
+			missionsTitle: 'Missions delivered',
+			portfoliosTitle: 'Accounts elsewhere',
+			portfolioVerified: 'ownership proved',
+			portfolioDeclared: 'declared'
+		},
+		quality: {
+			bugsTitle: 'Confirmed defects',
+			bugsHint:
+				'Only the ones whose fix shipped and was re-checked. The fix is linked; the reproduction is not, and deliberately.',
+			severityUnreviewed: 'severity not reviewed',
+			seeTheFix: 'See the fix',
+			testRunsTitle: 'Verified test runs',
+			testRunsHint: 'Checked by a reviewer. A green badge on your own repository is not one.',
+			testCount: '{total} tests, {failed} failing'
+		},
+		ops: {
+			objectivesTitle: 'Objectives held',
+			objectivesHint: 'Each with the figure and where it came from, so you can go and check.',
+			objectiveFigures: '{achieved}% against {target}% over {days} days',
+			met: 'Met',
+			missed: 'Missed',
+			evidence: 'Source',
+			incidentsTitle: 'Incidents',
+			detect: 'detected in {v}',
+			resolve: 'resolved in {v}',
+			postmortem: 'post-mortem {date}',
+			costTitle: 'Cost work',
+			sloKept: 'objective still met',
+			sloBroken: 'objective no longer met'
+		},
+		leadership: {
+			artefactsTitle: 'Documents',
+			adopted: 'Adopted',
+			confidentialTitle: 'Confidential work',
+			confidentialHint:
+				'What kind, at what scale, in what industry — and never what or where. Said in the abstract because the rest is not ours to publish.',
+			cohortsTitle: 'Cohorts led',
+			cohortFigures: '{graduated} finished of {joined}',
+			leftForWork: '· {n} left for a job',
+			ledToEnd: 'Led to the end',
+			retrosTitle: 'Retrospectives',
+			retrosHint: 'And whether the action items actually landed.',
+			retroFigures: '{resolved} of {total} actions resolved',
+			followedThrough: 'Followed through'
+		},
+		security: {
+			findingsTitle: 'Confirmed findings',
+			findingsHint:
+				'A finding still under embargo arrives without its title, and dated to the month: a title is half the disclosure and a precise day narrows the window.',
+			underEmbargo: 'Title withheld until disclosure',
+			writeup: 'Writeup',
+			practiceTitle: 'Practice solved',
+			credentialChecked: 'checked',
+			credentialDeclared: 'declared',
+			elsewhereTitle: 'Reputation elsewhere',
+			figuresDeclared: 'figures declared'
+		}
+	},
 	craftProfile: {
 		titles: {
 			ai: 'AI record',
@@ -1115,6 +1193,8 @@ export const en: Translations = {
 		nextTierAt: 'Next tier at {n}',
 		breakdownTitle: 'What counted',
 		tradesTitle: 'Trades with verified work',
+		attestationsTitle: 'Attestations',
+		verifyCta: 'Check it',
 		highlightsTitle: 'Worth hearing first',
 		highlightsHint:
 			'Published work. Listening to a master goes through the slice it belongs to, on a link that expires.',

@@ -1278,6 +1278,81 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 		backToList: string;
 		otherLocaleNotice: string;
 	};
+	/** The five craft records served with a nested score. */
+	domainRecord: {
+		titles: {
+			code: string;
+			quality: string;
+			ops: string;
+			leadership: string;
+			security: string;
+		};
+		primary: string;
+		until: string;
+		openReport: string;
+		targetDomainsTitle: string;
+		credentialsTitle: string;
+		credentialsHint: string;
+		code: {
+			storedDiffers: string;
+			languagesTitle: string;
+			packagesTitle: string;
+			readOn: string;
+			missionsTitle: string;
+			portfoliosTitle: string;
+			portfolioVerified: string;
+			portfolioDeclared: string;
+		};
+		quality: {
+			bugsTitle: string;
+			bugsHint: string;
+			severityUnreviewed: string;
+			seeTheFix: string;
+			testRunsTitle: string;
+			testRunsHint: string;
+			testCount: string;
+		};
+		ops: {
+			objectivesTitle: string;
+			objectivesHint: string;
+			objectiveFigures: string;
+			met: string;
+			missed: string;
+			evidence: string;
+			incidentsTitle: string;
+			detect: string;
+			resolve: string;
+			postmortem: string;
+			costTitle: string;
+			sloKept: string;
+			sloBroken: string;
+		};
+		leadership: {
+			artefactsTitle: string;
+			adopted: string;
+			confidentialTitle: string;
+			confidentialHint: string;
+			cohortsTitle: string;
+			cohortFigures: string;
+			leftForWork: string;
+			ledToEnd: string;
+			retrosTitle: string;
+			retrosHint: string;
+			retroFigures: string;
+			followedThrough: string;
+		};
+		security: {
+			findingsTitle: string;
+			findingsHint: string;
+			underEmbargo: string;
+			writeup: string;
+			practiceTitle: string;
+			credentialChecked: string;
+			credentialDeclared: string;
+			elsewhereTitle: string;
+			figuresDeclared: string;
+		};
+	};
 	craftProfile: {
 		titles: {
 			ai: string;
@@ -1289,6 +1364,8 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 		nextTierAt: string;
 		breakdownTitle: string;
 		tradesTitle: string;
+		attestationsTitle: string;
+		verifyCta: string;
 		highlightsTitle: string;
 		highlightsHint: string;
 		openWork: string;

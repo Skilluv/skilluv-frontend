@@ -20,6 +20,10 @@ export * from './ai_domain';
 // The per-domain onboarding wizard, rendered from what the backend serves.
 export * from './domain_wizard';
 
+// The five craft records served with a nested score — code, quality, ops,
+// leadership, security. See `domain_profiles.ts` on why that is a third shape.
+export * from './domain_profiles';
+
 // Craft records for the domains served by a flat `{domain}-profile`
 // endpoint (ai, audio). One shape on purpose — see `craft.ts`.
 export * from './craft';
