@@ -80,6 +80,24 @@ class DesignWizardState {
 	heldLocally = $state(false);
 	saving = $state(false);
 
+	/**
+	 * Whether anything at all has been answered.
+	 *
+	 * Read by the skip path: somebody who filled in four questions and then
+	 * gave up should not lose the four, but a save with nothing in it is a
+	 * request that can only waste a round trip.
+	 */
+	get hasAnswers(): boolean {
+		return (
+			this.level !== null ||
+			this.weeklyHours !== null ||
+			this.goal !== null ||
+			this.pending.preferred_families.length > 0 ||
+			this.pending.challenge_preference !== null ||
+			this.pending.main_tool !== null
+		);
+	}
+
 	/** Read back what a previous session left behind, plus the server's answers. */
 	async hydrate(): Promise<void> {
 		this.pending = readStored();

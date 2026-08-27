@@ -35,6 +35,7 @@
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import Select from '$components/ui/Select.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import FeaturedDesigner from '$components/design/FeaturedDesigner.svelte';
 	import type { AwardCategory, AwardEdition, AwardNominee } from '$types';
 
 	/**
@@ -190,6 +191,11 @@
 		</h1>
 		<p class="text-sm text-text-muted">{i18n.t('designAwards.subtitle')}</p>
 	</header>
+
+	<!-- P-03 sits here rather than on a page of its own: a weekly featuring
+	     and an annual award are the same act at two cadences, and the awards
+	     page is otherwise empty for most of the year. -->
+	<FeaturedDesigner />
 
 	{#if years.length > 1}
 		<section class="space-y-2">

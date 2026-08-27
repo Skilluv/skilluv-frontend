@@ -639,3 +639,99 @@ describe('the annual awards', () => {
 		expect(currentAction({ status: 'concluded' } as never)).toBeNull();
 	});
 });
+
+describe('the wizard, skipped rather than half-answered', () => {
+	it('skip is its own endpoint, not a save with nothing in it', async () => {
+		fetchMock.mockResolvedValue({ ok: true, status: 204, json: () => Promise.resolve({}) });
+		const { domainProfileApi } = await import('../../src/lib/api/domain_profile');
+		await domainProfileApi.skip('design');
+		const [url, init] = fetchMock.mock.calls[0];
+		// Recorded separately from "answered nothing": without the distinction
+		// the wizard reappears for ever for the people who least wanted it.
+		expect(url).toBe('/api/users/me/domain-profile/design/skip');
+		expect(init.method).toBe('POST');
+	});
+
+	it('the question vocabulary comes from the platform, not from a constant', async () => {
+		fetchMock.mockResolvedValue(
+			ok([
+				{ key: 'main_tool', answer: 'single', allowed: ['figma', 'penpot'], max_selections: null, max_len: null },
+				{ key: 'portfolio_url', answer: 'text', allowed: [], max_selections: null, max_len: 500 }
+			])
+		);
+		const { domainProfileApi, allowedFor } = await import('../../src/lib/api/domain_profile');
+		const res = await domainProfileApi.questions('design');
+		expect(fetchMock.mock.calls[0][0]).toBe('/api/users/me/domain-profile/design/questions');
+		// A value added server-side shows up without a release.
+		expect(allowedFor(res.data, 'main_tool')).toEqual(['figma', 'penpot']);
+		// No vocabulary and unknown question are different answers, and only
+		// the second is a reason to fall back on a hardcoded constant.
+		expect(allowedFor(res.data, 'portfolio_url')).toBeNull();
+		expect(allowedFor(res.data, 'nothing_like_this')).toBeNull();
+	});
+});
+
+describe('the toolkit and the terrains', () => {
+	it('both are keyed on the domain, not written once per domain', async () => {
+		fetchMock.mockResolvedValue(ok({ domain: 'design', resources: [], category: null, orientation: null }));
+		const { practiceApi } = await import('../../src/lib/api/practice');
+		await practiceApi.toolkit('design', { category: 'tool' });
+		const url = String(fetchMock.mock.calls[0][0]);
+		expect(url).toContain('/api/domains/design/toolkit');
+		expect(url).toContain('category=tool');
+	});
+
+	it('declined terrains are hidden unless a curator asks for them', async () => {
+		fetchMock.mockResolvedValue(ok({ terrains: [] }));
+		const { practiceApi } = await import('../../src/lib/api/practice');
+		await practiceApi.terrains('design');
+		expect(String(fetchMock.mock.calls[0][0])).toContain('include_declined=false');
+
+		fetchMock.mockClear();
+		await practiceApi.terrains('design', true);
+		expect(String(fetchMock.mock.calls[0][0])).toContain('include_declined=true');
+	});
+
+	it('declining carries the reason that keeps it declined', async () => {
+		fetchMock.mockResolvedValue(ok({}));
+		const { practiceApi } = await import('../../src/lib/api/practice');
+		await practiceApi.decline('design', 'penpot', 'maintainers said no');
+		const [url, init] = fetchMock.mock.calls[0];
+		expect(url).toBe('/api/domains/design/terrains/penpot/decline');
+		expect(JSON.parse(init.body).reason).toBe('maintainers said no');
+	});
+
+	it('toolkit rows group by whatever categories came back', async () => {
+		const { groupByCategory } = await import('../../src/lib/api/practice');
+		const grouped = groupByCategory([
+			{ slug: 'a', category: 'tool' },
+			{ slug: 'b', category: 'course' },
+			{ slug: 'c', category: 'tool' }
+		] as never);
+		expect([...grouped.keys()]).toEqual(['tool', 'course']);
+		expect(grouped.get('tool')).toHaveLength(2);
+	});
+});
+
+describe('the featured designer', () => {
+	it('reads the current week and the history separately', async () => {
+		fetchMock.mockResolvedValue(ok({ featured: null }));
+		const { featuredApi } = await import('../../src/lib/api/featured');
+		await featuredApi.current('design');
+		expect(fetchMock.mock.calls[0][0]).toBe('/api/featured/design');
+
+		fetchMock.mockClear();
+		fetchMock.mockResolvedValue(ok({ featured: [] }));
+		await featuredApi.recent('design', 4);
+		const url = String(fetchMock.mock.calls[0][0]);
+		expect(url).toContain('/api/featured/design/recent');
+		expect(url).toContain('limit=4');
+	});
+
+	it('a week with nobody put forward is null, not an error', async () => {
+		fetchMock.mockResolvedValue(ok({ featured: null }));
+		const { featuredApi } = await import('../../src/lib/api/featured');
+		const res = await featuredApi.current('design');
+		expect(res.data.featured).toBeNull();
+	});
+});

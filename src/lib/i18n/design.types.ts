@@ -240,6 +240,7 @@ export interface DesignTranslations {
 		back: string;
 		finish: string;
 		skip: string;
+		skippedToast: string;
 		savedToast: string;
 		partialSaveNotice: string;
 		doneTitle: string;

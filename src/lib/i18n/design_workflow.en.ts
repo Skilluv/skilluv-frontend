@@ -267,6 +267,42 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 		}
 	},
 
+	designPractice: {
+		title: 'Toolkit and terrains',
+		subtitle: 'What designers work with, and the projects worth contributing to.',
+		toolkitTitle: 'Toolkit',
+		toolkitEmpty: 'Nothing curated for this domain yet.',
+		accessLabel: 'What it costs to reach',
+		openTool: 'Open',
+		allOrientations: 'Every orientation',
+		filterCategory: 'Category',
+		filterAll: 'All',
+		terrainsTitle: 'Where to contribute',
+		terrainsSubtitle:
+			'Upstream projects somebody researched as good places to start. A proposal becomes a terrain when a steward takes it.',
+		terrainsEmpty: 'Nothing proposed for this domain yet.',
+		whyTitle: 'Why this one',
+		adopted: 'Adopted',
+		adoptedOn: 'Adopted {date}',
+		notAdopted: 'Shortlisted',
+		notAdoptedHint: 'Nobody stewards it yet, so nothing is ingested from it.',
+		openUpstream: 'Open upstream',
+		openProject: 'Open on Skilluv',
+		declinedReason: 'Refused: {reason}'
+	},
+
+	designFeatured: {
+		title: 'Designer of the week',
+		subtitle: 'Put forward by an editor, with the reason attached.',
+		empty: 'Nobody put forward this week.',
+		weekOf: 'Week of {date}',
+		whyTitle: 'Why',
+		seeProfile: 'See the profile',
+		historyTitle: 'Previously',
+		noPostingNote:
+			'Nothing is posted anywhere from here. Whoever shares this is a person, not a schedule.'
+	},
+
 	designAwards: {
 		title: 'Design Awards',
 		subtitle: 'One year of work, put forward by the people who saw it.',

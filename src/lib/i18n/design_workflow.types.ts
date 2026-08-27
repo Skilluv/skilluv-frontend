@@ -266,6 +266,42 @@ export interface DesignWorkflowTranslations {
 		};
 	};
 
+	/** G-03 — the toolkit of a family, and where to go and contribute. */
+	designPractice: {
+		title: string;
+		subtitle: string;
+		toolkitTitle: string;
+		toolkitEmpty: string;
+		accessLabel: string;
+		openTool: string;
+		allOrientations: string;
+		filterCategory: string;
+		filterAll: string;
+		terrainsTitle: string;
+		terrainsSubtitle: string;
+		terrainsEmpty: string;
+		whyTitle: string;
+		adopted: string;
+		adoptedOn: string;
+		notAdopted: string;
+		notAdoptedHint: string;
+		openUpstream: string;
+		openProject: string;
+		declinedReason: string;
+	};
+
+	/** P-03 — who the platform puts forward this week. */
+	designFeatured: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		weekOf: string;
+		whyTitle: string;
+		seeProfile: string;
+		historyTitle: string;
+		noPostingNote: string;
+	};
+
 	/** C-02/C-04 — the annual awards. */
 	designAwards: {
 		title: string;

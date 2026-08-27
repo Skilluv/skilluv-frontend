@@ -16,6 +16,7 @@
 	 */
 	import { onMount } from 'svelte';
 	import { ArrowLeft, ArrowRight, Check } from '@lucide/svelte';
+	import { domainProfileApi } from '$lib/api/domain_profile';
 	import { orientationsApi } from '$lib/api/orientations';
 	import { externalSignalsApi } from '$lib/api/external_signals';
 	import { SkilluError } from '$api/client';
@@ -62,6 +63,7 @@
 
 	let step = $state(1);
 	let done = $state(false);
+	let skipping = $state(false);
 	let loading = $state(true);
 	let orientations = $state<Orientation[]>([]);
 
@@ -119,6 +121,32 @@
 			done = true;
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
+		}
+	}
+
+	/**
+	 * Stop asking, which is not the same thing as saving nothing.
+	 *
+	 * `POST /users/me/domain-profile/design/skip` sets `skipped_at`, and the
+	 * backend keeps that column precisely so the wizard does not reappear for
+	 * ever for the people who least wanted it. Calling `finish()` here — which
+	 * is what this button used to do — saved the partial answers and left
+	 * `skipped_at` null, so the dismissal was never recorded.
+	 *
+	 * Whatever was already answered is still saved first: somebody who filled
+	 * in four questions and then gave up should not lose the four.
+	 */
+	async function skip() {
+		skipping = true;
+		try {
+			if (designWizard.hasAnswers) await designWizard.save();
+			await domainProfileApi.skip('design');
+			toast.success(i18n.t('designWizard.skippedToast'));
+			done = true;
+		} catch (err) {
+			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
+		} finally {
+			skipping = false;
 		}
 	}
 
@@ -357,7 +385,7 @@
 			</Button>
 
 			<div class="flex items-center gap-3">
-				<Button variant="ghost" loading={designWizard.saving} onclick={finish}>
+				<Button variant="ghost" loading={skipping} onclick={skip}>
 					{i18n.t('designWizard.skip')}
 				</Button>
 				{#if step < TOTAL_STEPS}

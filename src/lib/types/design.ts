@@ -1212,3 +1212,105 @@ export interface NominateRequest {
 	/** Why this deserves it. Required: voters cannot weigh a name. */
 	citation: string;
 }
+
+// ---------------------------------------------------------------------------
+// Practice — the toolkit of a domain, and where to contribute
+// ---------------------------------------------------------------------------
+
+/** One curated tool, course or community. */
+export interface ToolkitRow {
+	slug: string;
+	display_name: string;
+	category: string;
+	url: string;
+	summary: string;
+	/**
+	 * What it costs to reach: free, trial, paid, student licence. The field the
+	 * listing exists for — recommending a tool somebody cannot afford wastes
+	 * the week it was meant to save.
+	 */
+	access_note: string;
+	/** Empty means the whole domain, not "none". */
+	orientation_slugs: string[];
+}
+
+export interface ToolkitResponse {
+	domain: string;
+	resources: ToolkitRow[];
+	/** Echoed back so a filtered view can say what it filtered on. */
+	category: string | null;
+	orientation: string | null;
+}
+
+/**
+ * An upstream project somebody researched as a good place to contribute.
+ *
+ * A shortlist entry, not a terrain: it becomes one when a steward takes it,
+ * which is what `adopted` and `project_slug` record. A declined proposal keeps
+ * its reason so the next person researching the domain does not propose it
+ * again.
+ */
+export interface TerrainProposal {
+	slug: string;
+	name: string;
+	kind: string;
+	upstream_url: string;
+	ingestion_labels: string[];
+	why_md: string;
+	adopted: boolean;
+	adopted_at: string | null;
+	project_slug: string | null;
+	declined_at: string | null;
+	declined_reason: string | null;
+}
+
+// ---------------------------------------------------------------------------
+// Featured talent
+// ---------------------------------------------------------------------------
+
+/** One week's pick in one domain. */
+export interface FeaturedTalent {
+	skill_domain: string;
+	/** The Monday the week starts on, as a date rather than a timestamp. */
+	week_of: string;
+	user_id: string;
+	username: string | null;
+	display_name: string | null;
+	avatar_url: string | null;
+	/** Why this person, in the editor's words. A featuring with no stated
+	 * reason is a popularity contest with extra steps. */
+	reason_md: string;
+	deliverable_id: string | null;
+	created_at: string;
+}
+
+// ---------------------------------------------------------------------------
+// The wizard, described by the platform rather than by the client
+// ---------------------------------------------------------------------------
+
+/** Whether an answer is one value, several, or typed. */
+export const QUESTION_ANSWER_KINDS = ['single', 'multi', 'text'] as const;
+
+export type QuestionAnswerKind = (typeof QUESTION_ANSWER_KINDS)[number];
+
+/**
+ * One question the platform asks in a domain's wizard.
+ *
+ * Exists so a front end renders the form from the platform rather than from
+ * its own copy of the list — the copy that goes stale the first time a domain
+ * adds a question and nobody tells the web team.
+ *
+ * `answer` is read together with `allowed`: `multi` with an empty `allowed`
+ * and a `max_len` is several answers of any value. `preferred_families` comes
+ * with its live vocabulary, read from the orientation catalogue, because the
+ * families of a domain change when an operator edits an orientation — a
+ * constant would be wrong within a release.
+ */
+export interface DomainQuestionSpec {
+	key: string;
+	answer: string;
+	/** Empty where the question has no vocabulary. */
+	allowed: string[];
+	max_selections: number | null;
+	max_len: number | null;
+}

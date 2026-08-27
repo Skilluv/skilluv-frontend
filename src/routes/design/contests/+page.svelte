@@ -6,9 +6,10 @@
 	 * domain. `GET /tournaments` has no `kind` filter, so the narrowing happens
 	 * client-side over a capped page — see `listDesignContests`.
 	 *
-	 * The annual Design Awards (C-04) have no backend yet, so there is no
-	 * `/design/awards` route pretending otherwise; the notice at the bottom
-	 * says what is coming instead.
+	 * The annual Design Awards live at `/design/awards`, on the `awards` module
+	 * — an edition, its categories, its nominees and a two-ballot vote. They
+	 * were assumed absent when this page was written; they were not, they were
+	 * simply unconsumed.
 	 */
 	import { onMount } from 'svelte';
 	import { listDesignContests } from '$lib/api/design';
@@ -73,13 +74,22 @@
 		<p class="mt-3 text-lg text-text-muted">{i18n.t('designContests.subtitle')}</p>
 		<!-- The awards are the yearly companion to the contests, and nothing
 		     else on the site links to them. -->
-		<a
-			href="/design/awards"
-			class="mt-3 inline-block text-sm text-accent underline-offset-4 hover:underline"
-			data-testid="design-awards-link"
-		>
-			{i18n.t('designAwards.title')}
-		</a>
+		<div class="mt-3 flex flex-wrap gap-4 text-sm">
+			<a
+				href="/design/awards"
+				class="text-accent underline-offset-4 hover:underline"
+				data-testid="design-awards-link"
+			>
+				{i18n.t('designAwards.title')}
+			</a>
+			<a
+				href="/design/toolkit"
+				class="text-accent underline-offset-4 hover:underline"
+				data-testid="design-toolkit-link"
+			>
+				{i18n.t('designPractice.title')}
+			</a>
+		</div>
 	</header>
 
 	{#if loading}
@@ -120,5 +130,8 @@
 
 	<p class="mt-8 border-t border-border pt-6 text-sm text-text-muted">
 		{i18n.t('designContests.awardsNotice')}
+		<a href="/design/awards" class="ml-1 text-accent underline-offset-4 hover:underline">
+			{i18n.t('designAwards.title')}
+		</a>
 	</p>
 </div>

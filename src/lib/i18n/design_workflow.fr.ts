@@ -270,6 +270,42 @@ export const designWorkflowFr: DesignWorkflowTranslations = {
 		}
 	},
 
+	designPractice: {
+		title: 'Outils et terrains',
+		subtitle: 'Avec quoi les designers travaillent, et où il vaut la peine de contribuer.',
+		toolkitTitle: 'Outils',
+		toolkitEmpty: 'Rien de curaté pour ce domaine pour l’instant.',
+		accessLabel: 'Ce que ça coûte d’y accéder',
+		openTool: 'Ouvrir',
+		allOrientations: 'Toutes les orientations',
+		filterCategory: 'Catégorie',
+		filterAll: 'Tout',
+		terrainsTitle: 'Où contribuer',
+		terrainsSubtitle:
+			'Des projets amont que quelqu’un a étudiés comme de bons points de départ. Une proposition devient un terrain quand un steward la reprend.',
+		terrainsEmpty: 'Rien de proposé pour ce domaine pour l’instant.',
+		whyTitle: 'Pourquoi celui-ci',
+		adopted: 'Adopté',
+		adoptedOn: 'Adopté le {date}',
+		notAdopted: 'Présélectionné',
+		notAdoptedHint: 'Personne ne le steward encore, donc rien n’en est ingéré.',
+		openUpstream: 'Ouvrir le projet amont',
+		openProject: 'Ouvrir sur Skilluv',
+		declinedReason: 'Refusé : {reason}'
+	},
+
+	designFeatured: {
+		title: 'Designer de la semaine',
+		subtitle: 'Mis en avant par un éditeur, avec la raison attachée.',
+		empty: 'Personne mis en avant cette semaine.',
+		weekOf: 'Semaine du {date}',
+		whyTitle: 'Pourquoi',
+		seeProfile: 'Voir le profil',
+		historyTitle: 'Précédemment',
+		noPostingNote:
+			'Rien n’est publié nulle part depuis ici. Celui qui partage est une personne, pas un planificateur.'
+	},
+
 	designAwards: {
 		title: 'Design Awards',
 		subtitle: 'Une année de travail, mise en avant par ceux qui l’ont vue.',

@@ -16,7 +16,8 @@ const WORKFLOW_PAGES = [
 	'/design/briefs',
 	'/design/reviews',
 	'/design/contests/plagiarism/00000000-0000-0000-0000-000000000000',
-	'/design/awards'
+	'/design/awards',
+	'/design/toolkit'
 ];
 
 test.describe('design workflow pages', () => {
@@ -115,6 +116,20 @@ test.describe('design workflow pages', () => {
 		// With no backend the edition 404s, and the page has to say so rather
 		// than rendering an empty ceremony.
 		await expect(page.getByTestId('design-awards-missing')).toBeVisible();
+	});
+
+	test('the toolkit page is linked from contests and survives a dead API', async ({ page }) => {
+		await gotoHydrated(page, '/design/contests');
+		await expect(page.getByTestId('design-toolkit-link')).toBeVisible();
+
+		await gotoHydrated(page, '/design/toolkit');
+		await expect(page.getByTestId('design-practice-page')).toBeVisible();
+		await expect(page.locator('h1')).toBeVisible();
+		// With both listings failing, the page shows the failure rather than
+		// two empty sections implying the domain has no tools and no terrains.
+		// The sections themselves are covered by the unit specs, which can put
+		// rows behind the endpoints.
+		await expect(page.getByTestId('design-toolkit')).toHaveCount(0);
 	});
 
 	test('the mission workspace renders for an unknown slug', async ({ page }) => {

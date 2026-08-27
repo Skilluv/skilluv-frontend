@@ -83,7 +83,7 @@ export const designEn: DesignTranslations = {
 		yourEntry: 'Your entry',
 		noStanding: 'Not ranked yet',
 		awardsNotice:
-			'The annual Skilluv Design Awards are on their way. Until then, each contest has its own result.'
+			'A contest settles one brief. The annual awards settle the year.'
 	},
 	missions: {
 		boards: {
@@ -236,6 +236,7 @@ export const designEn: DesignTranslations = {
 		back: 'Back',
 		finish: 'Finish',
 		skip: 'Skip',
+		skippedToast: 'We will stop asking.',
 		savedToast: 'Answers saved.',
 		partialSaveNotice:
 			'Two answers are held on this device until the server accepts them.',
