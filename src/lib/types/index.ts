@@ -220,6 +220,21 @@ export interface UserPublic {
 export interface Challenge {
 	id: string;
 	title: string;
+	/**
+	 * Which cyber discipline a security challenge is — `ctf_flag`,
+	 * `defensive_lab`, `machine_walkthrough`, `training_ground`,
+	 * `analysis_exercise`, `audit_exercise`. Null on every non-security
+	 * challenge.
+	 *
+	 * Optional rather than required on purpose: the backend serialises it from
+	 * the fix batch onward, and reading it optionally means `/ctf` and
+	 * `/blue-lab` degrade to an empty list against an older deployment instead
+	 * of throwing. Until it arrives, a client cannot tell a CTF target from a
+	 * lab, which is why neither page could list before.
+	 */
+	security_kind?: string | null;
+	/** The cyber difficulty tier, alongside `security_kind`. Null off-domain. */
+	security_difficulty_tier?: string | null;
 	description: string;
 	instructions: string;
 	skill_domain: SkillDomain;

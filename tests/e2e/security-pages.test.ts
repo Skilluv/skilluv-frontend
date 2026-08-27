@@ -11,7 +11,14 @@ import { gotoHydrated } from './utils/hydration';
  * than a stack trace.
  */
 
-const PUBLIC_PAGES = ['/security', '/security/hall-of-fame', '/trust', '/ctf', '/security/bounties'];
+const PUBLIC_PAGES = [
+	'/security',
+	'/security/hall-of-fame',
+	'/trust',
+	'/ctf',
+	'/blue-lab',
+	'/security/bounties'
+];
 
 const SESSION_PAGES = [
 	'/security/report',
@@ -38,13 +45,20 @@ test.describe('Skilluv Cyber pages', () => {
 		await expect(page.getByTestId('trust-page')).toBeVisible();
 	});
 
-	test('the CTF page says what it cannot list, and still shows the board', async ({ page }) => {
+	test('the CTF page shows both the ranges and the board', async ({ page }) => {
 		await gotoHydrated(page, '/ctf');
 		await expect(page.getByTestId('ctf-page')).toBeVisible();
-		// A stated absence rather than a confident mislabel: nothing public
-		// distinguishes a hosted range from a defensive lab yet.
-		await expect(page.getByTestId('ctf-listing-unavailable')).toBeVisible();
+		// Listable since `security_kind` is serialised: the page asks for
+		// ranges rather than for every security challenge and hoping.
+		await expect(page.getByTestId('ctf-ranges')).toBeVisible();
 		await expect(page.getByTestId('ctf-scoreboard')).toBeVisible();
+	});
+
+	test('the blue lab lists and says the analysis stays on your machine', async ({ page }) => {
+		await gotoHydrated(page, '/blue-lab');
+		await expect(page.getByTestId('blue-lab-page')).toBeVisible();
+		// Where somebody decides whether to start: only the answers come back.
+		await expect(page.getByTestId('blue-lab-offline-note')).toBeVisible();
 	});
 
 	test('the report form refuses an empty submission', async ({ page }) => {
@@ -77,7 +91,7 @@ test.describe('Skilluv Cyber pages', () => {
 			await gotoHydrated(page, path);
 			const body = await page.locator('body').innerText();
 			expect(body, `raw i18n key leaked on ${path}`).not.toMatch(
-				/\b(securityScope|securityReport|securityMyReports|securityFinding|securityHallOfFame|securityTrust|securityPractice|securityResearch|securityBounties|securityCredentials|securityProfile)\.[a-zA-Z]+/
+				/\b(securityScope|securityReport|securityMyReports|securityFinding|securityHallOfFame|securityTrust|securityPractice|securityResearch|securityBounties|securityCredentials|blueLab)\.[a-zA-Z]+/
 			);
 		}
 	});

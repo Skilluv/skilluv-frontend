@@ -50,13 +50,23 @@
 		return translated === key ? format : translated;
 	}
 
-	/** Contests are tournaments; individual work is a slice. Rows with no slug
-	 * are not linked rather than linked wrongly. */
+	/**
+	 * Where a suggestion points.
+	 *
+	 * `target_kind` is the authority when the server sends it: it names what
+	 * the target *is*, so a third format or a moved route cannot silently send
+	 * a click elsewhere. The format is only the fallback for a deployment that
+	 * predates the field.
+	 *
+	 * A row with no slug is not linked at all rather than linked wrongly.
+	 */
 	function hrefFor(suggestion: NextChallenge): string | null {
 		if (!suggestion.slug) return null;
-		return suggestion.format === 'contest'
-			? `/tournaments/${suggestion.slug}`
-			: `/slices/${suggestion.id}`;
+		const kind = suggestion.target_kind ?? (suggestion.format === 'contest' ? 'tournament' : 'slice');
+		if (kind === 'tournament') return `/tournaments/${suggestion.slug}`;
+		if (kind === 'slice') return `/slices/${suggestion.id}`;
+		// A kind this build has not heard of: better unlinked than wrong.
+		return null;
 	}
 
 	function fmtDate(iso: string): string {

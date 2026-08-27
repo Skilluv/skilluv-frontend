@@ -126,6 +126,26 @@ export const securityEn: SecurityTranslations = {
 		notFound: 'No finding carries this identifier.'
 	},
 
+	blueLab: {
+		title: 'Defensive labs',
+		subtitle: 'An artefact from a real incident, and the questions it should let you answer.',
+		offlineNote:
+			'You download the artefact and open it in your own tools, on your own machine. Only your answers come back — nothing you run is sent to Skilluv.',
+		empty: 'No lab available.',
+		emptyHint: 'Labs are built from real incidents, so they arrive in batches rather than steadily.',
+		filterAll: 'All',
+		openCta: 'Open',
+		lockedCta: 'See what it needs',
+		locked: 'Locked',
+		minutes: '{n} min',
+		tiers: {
+			easy: 'Easy',
+			medium: 'Medium',
+			hard: 'Hard',
+			insane: 'Insane'
+		}
+	},
+
 	securityHallOfFame: {
 		title: 'Hall of fame',
 		subtitle: 'The people who told us before somebody else found out.',
@@ -190,8 +210,11 @@ export const securityEn: SecurityTranslations = {
 		labFailed: 'Not this time.',
 		labWrongQuestions: 'Wrong: {ids}',
 		labAttemptsLeft: '{n} attempts left',
-		listingUnavailable:
-			'The platform does not yet say which challenges are ranges and which are labs, so they cannot be listed apart here.'
+		listTitle: 'Ranges',
+		listEmpty: 'No range open.',
+		listEmptyHint: 'Ranges are hosted, so they come and go with what is deployed.',
+		openChallenge: 'Open',
+		lockedChallenge: 'See what it needs'
 	},
 
 	securityResearch: {

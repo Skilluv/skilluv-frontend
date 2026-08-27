@@ -18,7 +18,7 @@
 	 */
 	import { onMount } from 'svelte';
 	import { Link2, Plug, Unplug } from '@lucide/svelte';
-	import { designCloudApi, INSPECT_URL_MAX_LENGTH } from '$api/design_cloud';
+	import { designCloudApi, inspectionWarning, INSPECT_URL_MAX_LENGTH } from '$api/design_cloud';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';
@@ -42,6 +42,9 @@
 	let inspectError = $state('');
 
 	let tooLong = $derived(url.length > INSPECT_URL_MAX_LENGTH);
+
+	/** Translated from `warning_code`, not the server's sentence. */
+	let warning = $derived(inspection ? inspectionWarning(inspection, i18n.t.bind(i18n)) : null);
 
 	let connectedBy = $derived(new Map(connections.map((c) => [c.provider, c])));
 
@@ -246,7 +249,7 @@
 
 		{#if inspection}
 			<div
-				class="rounded-lg border px-3 py-2 text-sm {inspection.warning
+				class="rounded-lg border px-3 py-2 text-sm {warning
 					? 'border-warning/40 bg-warning/5'
 					: 'border-success/40 bg-success/5'}"
 				data-testid="design-inspect-result"
@@ -261,8 +264,8 @@
 				{:else}
 					<p class="font-medium text-text">{i18n.t('designTools.inspectUnknown')}</p>
 				{/if}
-				{#if inspection.warning}
-					<p class="mt-1 text-text-muted">{inspection.warning}</p>
+				{#if warning}
+					<p class="mt-1 text-text-muted">{warning}</p>
 				{/if}
 			</div>
 		{/if}

@@ -628,14 +628,30 @@ export interface DesignCloudSource {
 	opens_without_account: boolean;
 }
 
+/** The two things the inspector can warn about. Codes, not sentences. */
+export const INSPECT_WARNING_CODES = ['unrecognised_link', 'needs_public_sharing'] as const;
+
+export type InspectWarningCode = (typeof INSPECT_WARNING_CODES)[number];
+
 export interface DesignCloudInspection {
 	source: DesignCloudSource | null;
 	/**
-	 * Server-authored and shown verbatim. The person pasting is the only one
-	 * who can fix a private link, and the moment they paste is the only moment
-	 * they will.
+	 * The French sentence the endpoint used to return, kept by the backend for
+	 * the transition. Not rendered: this endpoint is public and serves an FR/EN
+	 * audience, and a French warning is worst exactly when an English reader
+	 * has to act on it.
 	 */
 	warning: string | null;
+	/**
+	 * What is wrong, as a code the client renders in the reader's language.
+	 * Null when the link is fine.
+	 */
+	warning_code?: string | null;
+	/**
+	 * The provider the sharing warning is about, so the client can name it in
+	 * its own sentence. Null unless `warning_code` is `needs_public_sharing`.
+	 */
+	warning_provider?: string | null;
 }
 
 // ---------------------------------------------------------------------------

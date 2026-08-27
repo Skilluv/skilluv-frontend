@@ -130,6 +130,26 @@ export interface SecurityTranslations {
 		notFound: string;
 	};
 
+	/** B-05 — the defensive labs. */
+	blueLab: {
+		title: string;
+		subtitle: string;
+		offlineNote: string;
+		empty: string;
+		emptyHint: string;
+		filterAll: string;
+		openCta: string;
+		lockedCta: string;
+		locked: string;
+		minutes: string;
+		tiers: {
+			easy: string;
+			medium: string;
+			hard: string;
+			insane: string;
+		};
+	};
+
 	/** T-05 — the hall of fame. */
 	securityHallOfFame: {
 		title: string;
@@ -195,7 +215,11 @@ export interface SecurityTranslations {
 		labFailed: string;
 		labWrongQuestions: string;
 		labAttemptsLeft: string;
-		listingUnavailable: string;
+		listTitle: string;
+		listEmpty: string;
+		listEmptyHint: string;
+		openChallenge: string;
+		lockedChallenge: string;
 	};
 
 	/** Research mode — a token that raises a rate limit and nothing else. */

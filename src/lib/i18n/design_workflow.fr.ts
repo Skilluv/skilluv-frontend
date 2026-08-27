@@ -112,6 +112,10 @@ export const designWorkflowFr: DesignWorkflowTranslations = {
 		inspectOpensFreely: 'S’ouvre sans compte.',
 		inspectNeedsAccount: 'Demande un partage activé.',
 		inspectTooLong: 'Ce lien est trop long pour être vérifié.',
+		warnUnrecognisedLink:
+			'Ce lien ne pointe vers aucun outil de design connu. Vérifie que c’est bien l’adresse du livrable.',
+		warnNeedsPublicSharing:
+			'Un lien {provider} n’est visible que si le fichier est partagé publiquement. Vérifie le partage avant de rendre : un relecteur qui ne peut pas ouvrir ton travail ne peut pas le valider.',
 		providers: {
 			figma: 'Figma',
 			miro: 'Miro',

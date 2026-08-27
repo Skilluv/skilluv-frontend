@@ -129,6 +129,27 @@ export const securityFr: SecurityTranslations = {
 		notFound: 'Aucun finding ne porte cet identifiant.'
 	},
 
+	blueLab: {
+		title: 'Labs défensifs',
+		subtitle: 'Un artefact d’incident réel, et les questions auxquelles il doit te permettre de répondre.',
+		offlineNote:
+			'Tu télécharges l’artefact et tu l’ouvres dans tes propres outils, sur ta machine. Seules tes réponses reviennent — rien de ce que tu lances n’est envoyé à Skilluv.',
+		empty: 'Aucun lab disponible.',
+		emptyHint:
+			'Les labs sont construits à partir d’incidents réels : ils arrivent par vagues plutôt que régulièrement.',
+		filterAll: 'Tous',
+		openCta: 'Ouvrir',
+		lockedCta: 'Voir ce qu’il faut',
+		locked: 'Verrouillé',
+		minutes: '{n} min',
+		tiers: {
+			easy: 'Facile',
+			medium: 'Moyen',
+			hard: 'Difficile',
+			insane: 'Extrême'
+		}
+	},
+
 	securityHallOfFame: {
 		title: 'Hall of fame',
 		subtitle: 'Ceux qui nous ont prévenus avant que quelqu’un d’autre ne le découvre.',
@@ -194,8 +215,11 @@ export const securityFr: SecurityTranslations = {
 		labFailed: 'Pas cette fois.',
 		labWrongQuestions: 'Faux : {ids}',
 		labAttemptsLeft: '{n} tentatives restantes',
-		listingUnavailable:
-			'La plateforme ne dit pas encore quels challenges sont des cibles et lesquels sont des labs : impossible de les lister séparément ici.'
+		listTitle: 'Cibles',
+		listEmpty: 'Aucune cible ouverte.',
+		listEmptyHint: 'Les cibles sont hébergées : elles vont et viennent avec ce qui est déployé.',
+		openChallenge: 'Ouvrir',
+		lockedChallenge: 'Voir ce qu’il faut'
 	},
 
 	securityResearch: {

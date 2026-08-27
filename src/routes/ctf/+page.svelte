@@ -6,19 +6,16 @@
 	 * what a CTF board is actually read for, and it is the column this page
 	 * leads with rather than raw solve counts.
 	 *
-	 * **The listing half cannot be built yet, and the page says so.** CTF
-	 * challenges live on `challenge_templates` under `security_kind`, and that
-	 * column is serialised on no public response — only `admin_security` selects
-	 * it, and `GET /challenges` neither returns nor filters on it. So a client
-	 * cannot tell a hosted range from a defensive lab from an audit exercise.
-	 *
-	 * The alternative was to list every security-domain challenge and call them
-	 * all CTFs, which would send somebody to submit a flag on an exercise that
-	 * has no flag. A stated absence beats a confident mislabel. Tracked
-	 * backend-side.
+	 * The listing half works now too. `security_kind` is serialised on a
+	 * challenge and `GET /challenges` takes `?security_kind=ctf_flag`, so this
+	 * page asks for ranges rather than for every security challenge and hoping
+	 * — which would have sent somebody to submit a flag on an exercise that has
+	 * none. The field is read optionally, so a deployment that predates it
+	 * yields an empty list rather than a wrong one.
 	 */
 	import { onMount } from 'svelte';
-	import { Flag, Info } from '@lucide/svelte';
+	import { Flag } from '@lucide/svelte';
+	import { challengesApi, type ChallengeListItem } from '$api/challenges';
 	import { securityApi } from '$api/security';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
@@ -29,6 +26,7 @@
 	import type { ScoreboardRow } from '$types';
 
 	let rows = $state<ScoreboardRow[]>([]);
+	let ranges = $state<ChallengeListItem[]>([]);
 	let loading = $state(true);
 	let loadError = $state('');
 
@@ -40,11 +38,18 @@
 		loading = true;
 		loadError = '';
 		try {
-			const res = await securityApi.scoreboard();
-			rows = res.data?.all_time ?? [];
-		} catch (err) {
-			rows = [];
-			loadError = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
+			// Settled: a board with no solves and a catalogue with no range are
+			// both normal, and a failure on one must not blank the other.
+			const [board, list] = await Promise.allSettled([
+				securityApi.scoreboard(),
+				challengesApi.list({ security_kind: 'ctf_flag', per_page: 50 })
+			]);
+			rows = board.status === 'fulfilled' ? (board.value.data?.all_time ?? []) : [];
+			ranges = list.status === 'fulfilled' ? (list.value.data ?? []) : [];
+			if (board.status === 'rejected') {
+				loadError =
+					board.reason instanceof SkilluError ? board.reason.message : i18n.t('errors.generic');
+			}
 		} finally {
 			loading = false;
 		}
@@ -69,21 +74,51 @@
 		<p class="text-sm text-text-muted">{i18n.t('securityPractice.ctfSubtitle')}</p>
 	</header>
 
-	<!-- Said out loud rather than papered over: the platform does not yet
-	     distinguish a hosted range from a defensive lab on any public
-	     response, so this page cannot list them apart. -->
-	<p
-		class="flex items-start gap-2 rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text-muted"
-		data-testid="ctf-listing-unavailable"
-	>
-		<Info size={15} class="mt-0.5 shrink-0" />
-		<span>
-			{i18n.t('securityPractice.listingUnavailable')}
-			<a href="/challenges?domain=security" class="ml-1 text-accent hover:underline">
-				{i18n.t('common.nav.challenges')}
-			</a>
-		</span>
-	</p>
+	<section class="space-y-3" data-testid="ctf-ranges">
+		<h2 class="text-sm font-bold uppercase tracking-wider text-text-muted">
+			{i18n.t('securityPractice.listTitle')}
+		</h2>
+
+		{#if loading}
+			<Skeleton class="h-40 w-full" rounded="xl" />
+		{:else if ranges.length === 0}
+			<EmptyState
+				title={i18n.t('securityPractice.listEmpty')}
+				body={i18n.t('securityPractice.listEmptyHint')}
+				size="sm"
+			/>
+		{:else}
+			<ul class="space-y-3">
+				{#each ranges as row (row.challenge.id)}
+					<li class="rounded-xl border border-border bg-surface-elevated p-4" data-testid="ctf-range">
+						<div class="flex flex-wrap items-start justify-between gap-2">
+							<div class="min-w-0 space-y-1">
+								<h3 class="truncate text-sm font-bold text-text">{row.challenge.title}</h3>
+								<p class="text-sm text-text-muted">{row.challenge.description}</p>
+							</div>
+							<Button href="/challenges/{row.challenge.id}" size="sm" variant="ghost">
+								{row.locked
+									? i18n.t('securityPractice.lockedChallenge')
+									: i18n.t('securityPractice.openChallenge')}
+							</Button>
+						</div>
+						<div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-text-muted">
+							{#if row.challenge.security_difficulty_tier}
+								<Badge size="sm">{row.challenge.security_difficulty_tier}</Badge>
+							{/if}
+							{#if row.challenge.reward_fragments > 0}
+								<span>
+									{i18n.t('securityPractice.fragmentsAwarded', {
+										n: row.challenge.reward_fragments
+									})}
+								</span>
+							{/if}
+						</div>
+					</li>
+				{/each}
+			</ul>
+		{/if}
+	</section>
 
 	<section class="space-y-3" data-testid="ctf-scoreboard">
 		<h2 class="text-sm font-bold uppercase tracking-wider text-text-muted">
@@ -143,5 +178,6 @@
 		<Button href="/security/hall-of-fame" size="sm" variant="ghost">
 			{i18n.t('securityHallOfFame.title')}
 		</Button>
+		<Button href="/blue-lab" size="sm" variant="ghost">{i18n.t('blueLab.title')}</Button>
 	</div>
 </div>

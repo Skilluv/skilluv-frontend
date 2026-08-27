@@ -34,6 +34,18 @@ export interface NextChallenge {
 	closes_at: string | null;
 	score: number;
 	reasons: string[];
+	/**
+	 * What the target is — `slice` or `tournament`.
+	 *
+	 * Returned so a client never infers the target's nature from the format
+	 * plus the URL convention holding still: a third format, or a route that
+	 * moves, would otherwise send a click somewhere wrong in silence, which is
+	 * the worst failure a recommendation can have.
+	 *
+	 * Optional here because the backend adds it in the fix batch; callers fall
+	 * back to the format while an older deployment answers.
+	 */
+	target_kind?: string;
 }
 
 export interface NextChallengesResponse {

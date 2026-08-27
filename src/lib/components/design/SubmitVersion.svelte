@@ -14,7 +14,7 @@
 	 */
 	import { AlertTriangle, CheckCircle2, Link2 } from '@lucide/svelte';
 	import { designApi } from '$api/design';
-	import { designCloudApi, INSPECT_URL_MAX_LENGTH } from '$api/design_cloud';
+	import { designCloudApi, inspectionWarning, INSPECT_URL_MAX_LENGTH } from '$api/design_cloud';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';
@@ -36,6 +36,9 @@
 	let errorText = $state('');
 	let inspection = $state<DesignCloudInspection | null>(null);
 	let inspectTimer: ReturnType<typeof setTimeout> | null = null;
+
+	/** Translated from `warning_code`, not the server's sentence. */
+	let warning = $derived(inspection ? inspectionWarning(inspection, i18n.t.bind(i18n)) : null);
 
 	let tooLong = $derived(artifactUrl.length > INSPECT_URL_MAX_LENGTH);
 	let canSubmit = $derived(artifactUrl.trim().length > 0 && !tooLong && !submitting);
@@ -102,14 +105,14 @@
 
 	{#if inspection}
 		<div
-			class="flex items-start gap-2 rounded-lg border px-3 py-2 text-sm {inspection.warning
+			class="flex items-start gap-2 rounded-lg border px-3 py-2 text-sm {warning
 				? 'border-warning/40 bg-warning/5 text-warning'
 				: 'border-success/40 bg-success/5 text-success'}"
 			data-testid="design-link-inspection"
 		>
-			{#if inspection.warning}
+			{#if warning}
 				<AlertTriangle size={15} class="mt-0.5 shrink-0" />
-				<span>{inspection.warning}</span>
+				<span>{warning}</span>
 			{:else}
 				<CheckCircle2 size={15} class="mt-0.5 shrink-0" />
 				<span>

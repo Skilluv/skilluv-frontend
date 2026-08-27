@@ -73,3 +73,32 @@ export const designCloudApi = {
  * instead of costing a round trip that can only answer 400.
  */
 export const INSPECT_URL_MAX_LENGTH = 2048;
+
+/**
+ * The inspector's warning, in the reader's language.
+ *
+ * Rendered from `warning_code` rather than from the server's `warning`
+ * sentence: the endpoint is public and serves an FR/EN audience, and a French
+ * warning is worst exactly when an English reader has to act on it (SKI-311).
+ *
+ * Falls back to the server sentence for a deployment that predates the code —
+ * a warning in the wrong language still beats no warning at the moment
+ * somebody is about to hand in a link nobody can open.
+ */
+export function inspectionWarning(
+	inspection: DesignCloudInspection,
+	t: (key: string, params?: Record<string, string | number>) => string
+): string | null {
+	if (inspection.warning_code === 'unrecognised_link') {
+		return t('designTools.warnUnrecognisedLink');
+	}
+	if (inspection.warning_code === 'needs_public_sharing') {
+		return t('designTools.warnNeedsPublicSharing', {
+			provider: inspection.warning_provider ?? inspection.source?.provider ?? ''
+		});
+	}
+	if (inspection.warning_code === null || inspection.warning_code === undefined) {
+		return inspection.warning;
+	}
+	return null;
+}

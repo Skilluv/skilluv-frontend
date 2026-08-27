@@ -113,6 +113,9 @@ export interface DesignWorkflowTranslations {
 		inspectOpensFreely: string;
 		inspectNeedsAccount: string;
 		inspectTooLong: string;
+		/** Rendered from `warning_code`, so an English reader gets English. */
+		warnUnrecognisedLink: string;
+		warnNeedsPublicSharing: string;
 		providers: {
 			figma: string;
 			miro: string;
