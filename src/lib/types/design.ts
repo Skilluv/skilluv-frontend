@@ -546,46 +546,6 @@ export interface DesignIterationStory {
 }
 
 // ---------------------------------------------------------------------------
-// Next challenges — one ranked list, challenges and contests together
-// ---------------------------------------------------------------------------
-
-/** Both formats come back in one list; this says which a row is. */
-export const SUGGESTION_FORMATS = ['individual', 'contest'] as const;
-
-export type SuggestionFormat = (typeof SUGGESTION_FORMATS)[number];
-
-/**
- * One suggestion, with the clauses that earned it its points.
- *
- * `reasons` is not decoration. The backend's note on the endpoint is that a
- * recommendation nobody can argue with is a recommendation nobody trusts, so
- * every surface showing a suggestion shows why it is there.
- */
-export interface ChallengeSuggestion {
-	id: string;
-	slug: string | null;
-	title: string;
-	format: string;
-	orientation_slug: string | null;
-	family: string | null;
-	difficulty: number | null;
-	estimated_hours: number | null;
-	closes_at: string | null;
-	score: number;
-	reasons: string[];
-}
-
-export interface NextChallenges {
-	suggestions: ChallengeSuggestion[];
-	/**
-	 * True when the hour-long cache answered. Shown rather than hidden: the
-	 * backend caches on purpose, because a list that changed on every page
-	 * load would stop reading as advice.
-	 */
-	cached: boolean;
-}
-
-// ---------------------------------------------------------------------------
 // Curated briefs — a member proposes, an admin publishes
 // ---------------------------------------------------------------------------
 
@@ -1282,35 +1242,4 @@ export interface FeaturedTalent {
 	reason_md: string;
 	deliverable_id: string | null;
 	created_at: string;
-}
-
-// ---------------------------------------------------------------------------
-// The wizard, described by the platform rather than by the client
-// ---------------------------------------------------------------------------
-
-/** Whether an answer is one value, several, or typed. */
-export const QUESTION_ANSWER_KINDS = ['single', 'multi', 'text'] as const;
-
-export type QuestionAnswerKind = (typeof QUESTION_ANSWER_KINDS)[number];
-
-/**
- * One question the platform asks in a domain's wizard.
- *
- * Exists so a front end renders the form from the platform rather than from
- * its own copy of the list — the copy that goes stale the first time a domain
- * adds a question and nobody tells the web team.
- *
- * `answer` is read together with `allowed`: `multi` with an empty `allowed`
- * and a `max_len` is several answers of any value. `preferred_families` comes
- * with its live vocabulary, read from the orientation catalogue, because the
- * families of a domain change when an operator edits an orientation — a
- * constant would be wrong within a release.
- */
-export interface DomainQuestionSpec {
-	key: string;
-	answer: string;
-	/** Empty where the question has no vocabulary. */
-	allowed: string[];
-	max_selections: number | null;
-	max_len: number | null;
 }

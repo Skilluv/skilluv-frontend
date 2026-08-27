@@ -134,8 +134,11 @@ describe('the critique trail', () => {
 describe('ranked suggestions', () => {
 	it('carry the cache flag through rather than swallowing it', async () => {
 		fetchMock.mockResolvedValue(ok({ suggestions: [{ id: 'c1', reasons: ['x'] }], cached: true }));
-		const { nextChallenges } = await import('../../src/lib/api/design');
-		const res = await nextChallenges({ domain: 'design' });
+		// One client for `/users/me/next-challenges`, in `$api/dashboard`: the
+		// endpoint is domain-parameterised, and a second client would be a
+		// second place for the shape to drift.
+		const { dashboardApi } = await import('../../src/lib/api/dashboard');
+		const res = await dashboardApi.nextChallenges({ domain: 'design' });
 		expect(res.data.cached).toBe(true);
 		expect(res.data.suggestions[0].reasons).toEqual(['x']);
 	});

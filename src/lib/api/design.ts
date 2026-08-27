@@ -1,6 +1,5 @@
 import type {
 	ApiResponse,
-	ChallengeSuggestion,
 	DesignAutoCheck,
 	DesignComparison,
 	DesignIterationStory,
@@ -9,11 +8,12 @@ import type {
 	DesignTiers,
 	DesignVerdict,
 	DesignVersionAtRound,
-	NextChallenges,
+	NextChallenge,
 	Tournament
 } from '$lib/types';
 import { DESIGN_CONTEST_KIND } from '$lib/types';
 import { createApiClient } from './client';
+import { dashboardApi } from './dashboard';
 import { tournamentApi } from './tournament';
 
 const api = createApiClient();
@@ -128,24 +128,14 @@ export const designApi = {
 };
 
 /**
- * What to spend this week on: open challenges and contests, ranked together.
+ * The design domain's slice of the suggestion engine.
  *
- * Lives here rather than in a domain-neutral module because the ranking is the
- * design programme's O-02, but the endpoint takes any of the seven domains and
- * defaults to the caller's own. Omitting `domain` on an account that never
- * finished onboarding is a 400, not an empty list.
+ * A thin call over `dashboardApi.nextChallenges`, which is the one client for
+ * `/users/me/next-challenges`: the endpoint is domain-parameterised and a
+ * second client would be a second place for the shape to drift.
  */
-export function nextChallenges(params?: { domain?: string; limit?: number }) {
-	return api.get<ApiResponse<NextChallenges>>('/users/me/next-challenges', {
-		domain: params?.domain,
-		limit: params?.limit
-	});
-}
-
-/** Convenience over {@link nextChallenges} for the surfaces that only render a
- * list and have no use for the cache flag. */
-export async function designSuggestions(limit?: number): Promise<ChallengeSuggestion[]> {
-	const res = await nextChallenges({ domain: 'design', limit });
+export async function designSuggestions(limit?: number): Promise<NextChallenge[]> {
+	const res = await dashboardApi.nextChallenges({ domain: 'design', limit });
 	return res.data?.suggestions ?? [];
 }
 
@@ -158,7 +148,7 @@ export async function designSuggestions(limit?: number): Promise<ChallengeSugges
  *
  * `GET /tournaments` takes no `kind` filter, so the narrowing happens here
  * over a page capped at 200. That is fine at launch volume and wrong at
- * scale; a `kind` query param is tracked backend-side.
+ * scale; a `kind` query param is tracked backend-side (SKI-302).
  */
 export async function listDesignContests(params?: {
 	status?: string;

@@ -76,35 +76,6 @@ export const domainProfileApi = {
 		return api.get<ApiResponse<MentorMatches>>(`/domains/${domain}/mentors/for-me`, { limit });
 	},
 
-	/**
-	 * What this domain's wizard asks, with the vocabulary each answer accepts.
-	 *
-	 * Served so a form is rendered from the platform rather than from the
-	 * client's own copy of the list — the copy that goes stale the first time a
-	 * domain adds a question and nobody tells the web team. Used here to fill
-	 * the closed questions' options, so a value added server-side appears
-	 * without a release.
-	 */
-	questions(domain: ProfileDomain) {
-		return api.get<ApiResponse<DomainQuestionSpec[]>>(
-			`/users/me/domain-profile/${domain}/questions`
-		);
-	},
-
-	/**
-	 * Stop asking.
-	 *
-	 * Recorded separately from "answered nothing", and the distinction is the
-	 * whole point: without it the wizard reappears for ever for exactly the
-	 * people who least wanted it. Saving partial answers is **not** the same
-	 * call and does not set it.
-	 *
-	 * Answers 204 with no body, because the write touches `skipped_at` and
-	 * nothing else.
-	 */
-	skip(domain: ProfileDomain) {
-		return api.post<void>(`/users/me/domain-profile/${domain}/skip`);
-	}
 };
 
 /**

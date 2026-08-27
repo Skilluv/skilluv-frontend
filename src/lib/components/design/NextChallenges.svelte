@@ -18,14 +18,14 @@
 	 */
 	import { onMount } from 'svelte';
 	import { ArrowRight, RefreshCw, Sparkles } from '@lucide/svelte';
-	import { nextChallenges } from '$api/design';
+	import { dashboardApi } from '$api/dashboard';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
-	import type { ChallengeSuggestion } from '$types';
+	import type { NextChallenge } from '$types';
 
 	interface Props {
 		/** Defaults to the caller's declared domain server-side. Passing one is
@@ -39,7 +39,7 @@
 
 	let { domain = 'design', limit = 5, bare = false }: Props = $props();
 
-	let suggestions = $state<ChallengeSuggestion[]>([]);
+	let suggestions = $state<NextChallenge[]>([]);
 	let cached = $state(false);
 	let loading = $state(true);
 	let loadError = $state('');
@@ -52,7 +52,7 @@
 
 	/** Contests are tournaments; individual work is a slice. Rows with no slug
 	 * are not linked rather than linked wrongly. */
-	function hrefFor(suggestion: ChallengeSuggestion): string | null {
+	function hrefFor(suggestion: NextChallenge): string | null {
 		if (!suggestion.slug) return null;
 		return suggestion.format === 'contest'
 			? `/tournaments/${suggestion.slug}`
@@ -67,7 +67,7 @@
 		loading = true;
 		loadError = '';
 		try {
-			const res = await nextChallenges({ domain, limit });
+			const res = await dashboardApi.nextChallenges({ domain, limit });
 			suggestions = res.data?.suggestions ?? [];
 			cached = res.data?.cached ?? false;
 		} catch (err) {
