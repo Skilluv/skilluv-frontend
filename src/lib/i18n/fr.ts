@@ -874,6 +874,27 @@ export const fr: Translations = {
 			noAccess: 'Cette page est réservée aux plagiarism_reviewer.'
 		}
 	},
+	guides: {
+		title: 'Guides et modèles',
+		subtitle:
+			"Par où commencer dans un métier, quoi installer, et les documents que le travail demande d'écrire. Un seul catalogue, toutes les disciplines.",
+		allDomains: 'Toutes les disciplines',
+		allKinds: 'Tout pour les contributeurs',
+		kinds: {
+			onboarding: 'Débuter',
+			toolkit: 'Outillage',
+			writeup_template: 'Modèle de compte rendu',
+			brief_template: 'Modèle de brief'
+		},
+		briefNotice:
+			"Un brief s'écrit par celui qui commande le travail, avant qu'il commence — ces modèles sont pour les entreprises, pas pour les contributeurs.",
+		empty: 'Aucun guide ici pour l’instant',
+		emptyBody: 'Rien de publié pour ce filtre. Essaie une autre discipline.',
+		notFound: "Ce guide n'existe pas, ou n'est pas publié.",
+		backToList: 'Tous les guides',
+		otherLocaleNotice:
+			"Servi en {locale} : ce guide n'a pas encore été traduit dans ta langue."
+	},
 	craftProfile: {
 		titles: {
 			ai: 'Parcours IA',

@@ -1062,6 +1062,25 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 	 * Craft records for the domains served by a flat `{domain}-profile`
 	 * endpoint. One namespace, because the backend returns one shape.
 	 */
+	/** `content_guides`, every discipline — onboarding, toolkits, templates. */
+	guides: {
+		title: string;
+		subtitle: string;
+		allDomains: string;
+		allKinds: string;
+		kinds: {
+			onboarding: string;
+			toolkit: string;
+			writeup_template: string;
+			brief_template: string;
+		};
+		briefNotice: string;
+		empty: string;
+		emptyBody: string;
+		notFound: string;
+		backToList: string;
+		otherLocaleNotice: string;
+	};
 	craftProfile: {
 		titles: {
 			ai: string;

@@ -874,6 +874,27 @@ export const en: Translations = {
 			noAccess: 'This page is reserved to plagiarism_reviewer capability holders.'
 		}
 	},
+	guides: {
+		title: 'Guides and templates',
+		subtitle:
+			'How to start in a trade, what to install, and the documents the work asks you to write. One catalogue, every discipline.',
+		allDomains: 'All disciplines',
+		allKinds: 'Everything for contributors',
+		kinds: {
+			onboarding: 'Getting started',
+			toolkit: 'Toolkit',
+			writeup_template: 'Writeup template',
+			brief_template: 'Brief template'
+		},
+		briefNotice:
+			'A brief is written by whoever commissions the work, before it starts — these are for companies, not for contributors.',
+		empty: 'No guide here yet',
+		emptyBody: 'Nothing published for this filter. Try another discipline.',
+		notFound: 'This guide does not exist, or is not published.',
+		backToList: 'All guides',
+		otherLocaleNotice:
+			'Served in {locale}: this guide has not been translated into your language yet.'
+	},
 	craftProfile: {
 		titles: {
 			ai: 'AI record',

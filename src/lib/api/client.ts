@@ -240,7 +240,17 @@ export function createApiClient(
 	}
 
 	return {
-		get<T>(path: string, params?: Record<string, string | number | boolean | undefined>): Promise<T> {
+		/**
+		 * `init` exists for the handful of reads whose answer depends on a
+		 * header rather than on the path — `/guides` picks its locale from
+		 * `Accept-Language`, and nothing else here sets one. Kept optional and
+		 * last so every existing call is untouched.
+		 */
+		get<T>(
+			path: string,
+			params?: Record<string, string | number | boolean | undefined>,
+			init?: RequestInit
+		): Promise<T> {
 			let url = path;
 			if (params) {
 				const searchParams = new URLSearchParams();
@@ -250,7 +260,7 @@ export function createApiClient(
 				const qs = searchParams.toString();
 				if (qs) url += `?${qs}`;
 			}
-			return request<T>(url);
+			return request<T>(url, init);
 		},
 
 		post<T>(path: string, body?: unknown): Promise<T> {

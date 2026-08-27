@@ -80,3 +80,46 @@ export interface AudioHighlight {
 export interface AudioCraftProfile extends CraftProfile {
 	highlights: AudioHighlight[];
 }
+
+// ---------------------------------------------------------------------------
+// Guides, toolkits and templates — `content_guides`, every domain
+// ---------------------------------------------------------------------------
+
+/**
+ * The four kinds of guide.
+ *
+ * `brief_template` is the odd one and deliberately so: it is written by
+ * whoever *commissions* the work, before it starts, while the other three are
+ * written by or for the person doing it. A listing meant for contributors
+ * usually asks for the other three.
+ */
+export const GUIDE_KINDS = [
+	'onboarding',
+	'toolkit',
+	'writeup_template',
+	'brief_template'
+] as const;
+
+export type GuideKind = (typeof GUIDE_KINDS)[number];
+
+/** A guide in a listing: everything but the body. */
+export interface GuideSummary {
+	slug: string;
+	kind: GuideKind;
+	skill_domain: string;
+	/** Set on onboarding guides: the family of trades it opens. */
+	reviewer_group: string | null;
+	/**
+	 * The locale actually served, which is not necessarily the one asked for.
+	 * A guide with no row in your locale arrives in the next best one, so this
+	 * is worth surfacing rather than assuming.
+	 */
+	locale: string;
+	title: string;
+	summary: string;
+}
+
+export interface Guide extends GuideSummary {
+	/** Markdown, rendered by the reader. */
+	body_md: string;
+}
