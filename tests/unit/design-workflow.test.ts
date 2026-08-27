@@ -575,3 +575,67 @@ describe('the visual half of an issued attestation', () => {
 		expect(attestationApi.issuedCardUrl('a/b')).toContain('a%2Fb');
 	});
 });
+
+describe('the annual awards', () => {
+	it('an edition is addressed by the year the work happened in', async () => {
+		fetchMock.mockResolvedValue(ok({ edition: { year: 2026, status: 'voting' }, nominees: [] }));
+		const { awardsApi } = await import('../../src/lib/api/awards');
+		const res = await awardsApi.edition(2026);
+		expect(fetchMock.mock.calls[0][0]).toBe('/api/awards/2026');
+		expect(res.data.edition.year).toBe(2026);
+	});
+
+	it('the jury ballot is a query flag, and separate from the community one', async () => {
+		fetchMock.mockResolvedValue(ok({ recorded: true, ballot: 'jury' }));
+		const { awardsApi } = await import('../../src/lib/api/awards');
+		await awardsApi.vote('n1', true);
+		expect(fetchMock.mock.calls[0][0]).toBe('/api/awards/nominees/n1/vote?jury=true');
+
+		fetchMock.mockClear();
+		await awardsApi.vote('n1');
+		// A juror holds both ballots; casting one must not spend the other, so
+		// the community call carries no flag at all.
+		expect(fetchMock.mock.calls[0][0]).toBe('/api/awards/nominees/n1/vote');
+	});
+
+	it('a nomination carries the citation, which is the whole nomination', async () => {
+		fetchMock.mockResolvedValue(ok({ nominee_id: 'n1' }));
+		const { awardsApi } = await import('../../src/lib/api/awards');
+		await awardsApi.nominate(2026, {
+			category_slug: 'brand-of-the-year',
+			subject_id: 'd1',
+			citation: 'it changed how the co-op reads'
+		});
+		const [url, init] = fetchMock.mock.calls[0];
+		expect(url).toBe('/api/awards/2026/nominations');
+		expect(JSON.parse(init.body).citation).toBe('it changed how the co-op reads');
+	});
+
+	it('the shortlist is posted as a list of ids', async () => {
+		fetchMock.mockResolvedValue(ok({ shortlisted: 2 }));
+		const { awardsApi } = await import('../../src/lib/api/awards');
+		await awardsApi.shortlist(['n1', 'n2']);
+		expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({ nominee_ids: ['n1', 'n2'] });
+	});
+
+	it('nominees group by category, best weighted score first', async () => {
+		const { groupByCategory } = await import('../../src/lib/api/awards');
+		const grouped = groupByCategory([
+			{ id: 'a', category_slug: 'brand', weighted_score: '4.0' },
+			{ id: 'b', category_slug: 'brand', weighted_score: '9.5' },
+			{ id: 'c', category_slug: 'motion', weighted_score: '1.0' }
+		] as never);
+		expect(grouped.get('brand')?.map((n) => n.id)).toEqual(['b', 'a']);
+		expect(grouped.get('motion')).toHaveLength(1);
+	});
+
+	it('only one action is offered, and only in the phase that accepts it', async () => {
+		const { currentAction } = await import('../../src/lib/api/awards');
+		expect(currentAction({ status: 'nominations' } as never)).toBe('nominate');
+		expect(currentAction({ status: 'voting' } as never)).toBe('vote');
+		// Neither is public and neither moves: offering a button in either
+		// state would be offering an error.
+		expect(currentAction({ status: 'draft' } as never)).toBeNull();
+		expect(currentAction({ status: 'concluded' } as never)).toBeNull();
+	});
+});

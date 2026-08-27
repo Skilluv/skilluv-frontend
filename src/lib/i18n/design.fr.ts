@@ -224,7 +224,10 @@ export const designFr: DesignTranslations = {
 		emptyTitle: 'Pas encore de parcours design',
 		emptyBody: 'Le premier travail validé ouvre cette section.',
 		notAClaim:
-			'Rien ici n’est déclaré : chaque ligne vient d’un travail que quelqu’un d’autre a validé.'
+			'Rien ici n’est déclaré : chaque ligne vient d’un travail que quelqu’un d’autre a validé.',
+		missionsTitle: 'Missions payées',
+		missionsRating: '{average} sur 5, sur {count} notes',
+		missionsNone: 'Aucune note révélée pour l’instant.'
 	},
 	designWizard: {
 		title: 'Bienvenue chez les designers',

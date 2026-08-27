@@ -270,6 +270,50 @@ export const designWorkflowFr: DesignWorkflowTranslations = {
 		}
 	},
 
+	designAwards: {
+		title: 'Design Awards',
+		subtitle: 'Une année de travail, mise en avant par ceux qui l’ont vue.',
+		editionOf: 'Édition {year}',
+		noEdition: 'Aucune édition pour {year}.',
+		noEditionHint: 'Une édition ouvre quand l’année qu’elle couvre est terminée.',
+		statuses: {
+			draft: 'Pas encore ouverte',
+			nominations: 'Nominations ouvertes',
+			voting: 'Vote ouvert',
+			concluded: 'Résultats publiés'
+		},
+		weights: '{community} % communauté, {jury} % jury',
+		prizePerCategory: '{amount} par catégorie',
+		nominationsClose: 'Nominations closes le {date}',
+		votingCloses: 'Vote clos le {date}',
+		categoriesTitle: 'Catégories',
+		categoryEmpty: 'Rien de proposé ici pour l’instant.',
+		nomineesTitle: 'Nominés',
+		citationLabel: 'Ce qui est plaidé',
+		shortlisted: 'Sur le bulletin',
+		notShortlisted: 'Pas sur le bulletin',
+		communityVotes: '{n} communauté',
+		juryVotes: '{n} jury',
+		weightedScore: 'Pondéré {n}',
+		voteCta: 'Voter',
+		voteJuryCta: 'Vote jury',
+		votedToast: 'Vote enregistré.',
+		nominateTitle: 'Proposer un travail',
+		nominateCategory: 'Catégorie',
+		nominateSubject: 'Ce que tu proposes',
+		nominateSubjectHint:
+			'L’identifiant de la personne, du projet ou du livrable que la catégorie demande.',
+		nominateCitation: 'Pourquoi ça le mérite',
+		nominateCitationHint:
+			'Obligatoire, et c’est toute la nomination : on ne peut pas peser un nom.',
+		nominateCta: 'Proposer',
+		nominatedToast: 'Proposé.',
+		closedNote: 'Plus rien ne bouge sur cette édition.',
+		everyDomainNote:
+			'Toutes les catégories de la plateforme sont listées : le backend ne dit pas encore à quel domaine chacune appartient.',
+		previousEditions: 'Autres années'
+	},
+
 	designMentors: {
 		title: 'Qui pourrait t’aider',
 		subtitle: 'Des mentors de ton domaine, et ce que tu as en commun avec chacun.',

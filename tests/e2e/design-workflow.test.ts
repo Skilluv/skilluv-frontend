@@ -15,7 +15,8 @@ const WORKFLOW_PAGES = [
 	'/design/tools',
 	'/design/briefs',
 	'/design/reviews',
-	'/design/contests/plagiarism/00000000-0000-0000-0000-000000000000'
+	'/design/contests/plagiarism/00000000-0000-0000-0000-000000000000',
+	'/design/awards'
 ];
 
 test.describe('design workflow pages', () => {
@@ -103,6 +104,17 @@ test.describe('design workflow pages', () => {
 		// No certificate on something that does not verify: a proud document
 		// under the words "unknown code" would be the page arguing with itself.
 		await expect(page.getByTestId('attestation-certificate')).toHaveCount(0);
+	});
+
+	test('the awards page renders and is reachable from the contests board', async ({ page }) => {
+		await gotoHydrated(page, '/design/contests');
+		await expect(page.getByTestId('design-awards-link')).toBeVisible();
+
+		await gotoHydrated(page, '/design/awards');
+		await expect(page.getByTestId('design-awards-page')).toBeVisible();
+		// With no backend the edition 404s, and the page has to say so rather
+		// than rendering an empty ceremony.
+		await expect(page.getByTestId('design-awards-missing')).toBeVisible();
 	});
 
 	test('the mission workspace renders for an unknown slug', async ({ page }) => {

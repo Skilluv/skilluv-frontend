@@ -227,6 +227,9 @@ export interface DesignTranslations {
 		emptyTitle: string;
 		emptyBody: string;
 		notAClaim: string;
+		missionsTitle: string;
+		missionsRating: string;
+		missionsNone: string;
 	};
 	/** SKI-265 — the designer onboarding wizard. */
 	designWizard: {

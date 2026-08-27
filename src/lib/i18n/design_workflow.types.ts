@@ -266,6 +266,48 @@ export interface DesignWorkflowTranslations {
 		};
 	};
 
+	/** C-02/C-04 — the annual awards. */
+	designAwards: {
+		title: string;
+		subtitle: string;
+		editionOf: string;
+		noEdition: string;
+		noEditionHint: string;
+		statuses: {
+			draft: string;
+			nominations: string;
+			voting: string;
+			concluded: string;
+		};
+		weights: string;
+		prizePerCategory: string;
+		nominationsClose: string;
+		votingCloses: string;
+		categoriesTitle: string;
+		categoryEmpty: string;
+		nomineesTitle: string;
+		citationLabel: string;
+		shortlisted: string;
+		notShortlisted: string;
+		communityVotes: string;
+		juryVotes: string;
+		weightedScore: string;
+		voteCta: string;
+		voteJuryCta: string;
+		votedToast: string;
+		nominateTitle: string;
+		nominateCategory: string;
+		nominateSubject: string;
+		nominateSubjectHint: string;
+		nominateCitation: string;
+		nominateCitationHint: string;
+		nominateCta: string;
+		nominatedToast: string;
+		closedNote: string;
+		everyDomainNote: string;
+		previousEditions: string;
+	};
+
 	/** O-03 — mentors worth suggesting, with the reasoning attached. */
 	designMentors: {
 		title: string;

@@ -71,6 +71,15 @@
 	<header class="mb-10 max-w-2xl">
 		<h1 class="text-4xl font-bold text-text-primary">{i18n.t('designContests.title')}</h1>
 		<p class="mt-3 text-lg text-text-muted">{i18n.t('designContests.subtitle')}</p>
+		<!-- The awards are the yearly companion to the contests, and nothing
+		     else on the site links to them. -->
+		<a
+			href="/design/awards"
+			class="mt-3 inline-block text-sm text-accent underline-offset-4 hover:underline"
+			data-testid="design-awards-link"
+		>
+			{i18n.t('designAwards.title')}
+		</a>
 	</header>
 
 	{#if loading}

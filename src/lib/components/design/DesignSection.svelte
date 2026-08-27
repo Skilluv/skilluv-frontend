@@ -17,13 +17,14 @@
 	import { onMount } from 'svelte';
 	import { BadgeCheck, ExternalLink, RefreshCw, Trophy } from '@lucide/svelte';
 	import { designApi } from '$lib/api/design';
+	import { missionsApi } from '$lib/api/missions';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
-	import type { DesignProfile } from '$types';
+	import type { DesignProfile, MissionStanding } from '$types';
 
 	interface Props {
 		username: string;
@@ -34,6 +35,13 @@
 	let { username, isOwn = false }: Props = $props();
 
 	let profile = $state<DesignProfile | null>(null);
+	/**
+	 * A-04 section 5. Not in the design-profile payload: mission behaviour is
+	 * its own endpoint, addressed by username like this one. `average` is null
+	 * rather than zero when nothing is revealed yet — an unrated person is not
+	 * a badly rated one, and a zero here would say the opposite.
+	 */
+	let standing = $state<MissionStanding | null>(null);
 	let loading = $state(true);
 	let recomputing = $state(false);
 	let breakdownOpen = $state(false);
@@ -64,8 +72,15 @@
 	async function load() {
 		loading = true;
 		try {
-			const res = await designApi.profile(username);
-			profile = res.data;
+			const [record, missions] = await Promise.allSettled([
+				designApi.profile(username),
+				missionsApi.standing(username)
+			]);
+			// Settled: a designer with a record and no mission is the common
+			// case, and a 404 on one must not blank the other.
+			standing = missions.status === 'fulfilled' ? (missions.value.data?.standing ?? null) : null;
+			if (record.status === 'rejected') throw record.reason;
+			profile = record.value.data;
 		} catch {
 			// A profile with no design record answers 404 here, and so does a
 			// hidden one. Either way the section simply does not render.
@@ -321,6 +336,22 @@
 							</li>
 						{/each}
 					</ul>
+				</div>
+			{/if}
+
+			{#if standing && standing.received > 0}
+				<div class="border-t border-border pt-4" data-testid="profile-mission-standing">
+					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
+						{i18n.t('designProfile.missionsTitle')}
+					</p>
+					<p class="mt-2 text-sm text-text-primary">
+						{standing.average !== null
+							? i18n.t('designProfile.missionsRating', {
+									average: standing.average.toFixed(1),
+									count: standing.received
+								})
+							: i18n.t('designProfile.missionsNone')}
+					</p>
 				</div>
 			{/if}
 

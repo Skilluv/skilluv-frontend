@@ -267,6 +267,48 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 		}
 	},
 
+	designAwards: {
+		title: 'Design Awards',
+		subtitle: 'One year of work, put forward by the people who saw it.',
+		editionOf: 'Edition {year}',
+		noEdition: 'No edition for {year}.',
+		noEditionHint: 'An edition opens when the year it covers is over.',
+		statuses: {
+			draft: 'Not open yet',
+			nominations: 'Nominations open',
+			voting: 'Vote open',
+			concluded: 'Results published'
+		},
+		weights: '{community}% community, {jury}% jury',
+		prizePerCategory: '{amount} per category',
+		nominationsClose: 'Nominations close {date}',
+		votingCloses: 'Vote closes {date}',
+		categoriesTitle: 'Categories',
+		categoryEmpty: 'Nothing put forward here yet.',
+		nomineesTitle: 'Nominees',
+		citationLabel: 'The case made for it',
+		shortlisted: 'On the ballot',
+		notShortlisted: 'Not on the ballot',
+		communityVotes: '{n} community',
+		juryVotes: '{n} jury',
+		weightedScore: 'Weighted {n}',
+		voteCta: 'Vote',
+		voteJuryCta: 'Jury vote',
+		votedToast: 'Vote recorded.',
+		nominateTitle: 'Put work forward',
+		nominateCategory: 'Category',
+		nominateSubject: 'What you are nominating',
+		nominateSubjectHint: 'The identifier of the person, project or deliverable the category asks for.',
+		nominateCitation: 'Why it deserves it',
+		nominateCitationHint: 'Required, and it is the whole nomination: voters cannot weigh a name.',
+		nominateCta: 'Nominate',
+		nominatedToast: 'Put forward.',
+		closedNote: 'Nothing moves on this edition any more.',
+		everyDomainNote:
+			'Every category the platform holds is listed: the backend does not yet say which domain each belongs to.',
+		previousEditions: 'Other years'
+	},
+
 	designMentors: {
 		title: 'Who could help',
 		subtitle: 'Mentors in your domain, and what you have in common with each.',

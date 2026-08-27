@@ -223,7 +223,10 @@ export const designEn: DesignTranslations = {
 		recomputedToast: 'Score recomputed.',
 		emptyTitle: 'No design record yet',
 		emptyBody: 'The first validated piece of work opens this section.',
-		notAClaim: 'Nothing here is declared: every line comes from work somebody else validated.'
+		notAClaim: 'Nothing here is declared: every line comes from work somebody else validated.',
+		missionsTitle: 'Paid missions',
+		missionsRating: '{average} out of 5, across {count} ratings',
+		missionsNone: 'No revealed rating yet.'
 	},
 	designWizard: {
 		title: 'Welcome to the design side',

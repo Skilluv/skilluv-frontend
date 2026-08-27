@@ -1124,3 +1124,91 @@ export interface MentorMatches {
 	 */
 	suggested: boolean;
 }
+
+// ---------------------------------------------------------------------------
+// The annual awards
+// ---------------------------------------------------------------------------
+
+/**
+ * Where an edition is in its year. Each verb is refused outside its phase.
+ *
+ * From the CHECK in migration 0190: categories exist but nothing is public
+ * (`draft`), anybody may put work forward (`nominations`), the shortlist is
+ * fixed and the vote is open (`voting`), counted and published and nothing
+ * moves after it (`concluded`).
+ */
+export const AWARD_EDITION_STATUSES = ['draft', 'nominations', 'voting', 'concluded'] as const;
+
+export type AwardEditionStatus = (typeof AWARD_EDITION_STATUSES)[number];
+
+/**
+ * One year of awards.
+ *
+ * `year` is the year the **work happened in**, not the year the ceremony is
+ * held. The two weights add to a hundred and are shown wherever a standing is:
+ * a weighted result presented without its weights is a number nobody can
+ * reproduce.
+ */
+export interface AwardEdition {
+	id: string;
+	year: number;
+	status: string;
+	community_weight: number;
+	jury_weight: number;
+	nominations_close_at: string | null;
+	voting_closes_at: string | null;
+	/** Per category, in euros. NUMERIC over JSON, so a string. Null for an
+	 * edition that runs on recognition rather than money. */
+	prize_amount_eur: string | null;
+}
+
+/** What kind of thing a category nominates. */
+export const AWARD_SUBJECT_TYPES = ['user', 'project', 'deliverable'] as const;
+
+export type AwardSubjectType = (typeof AWARD_SUBJECT_TYPES)[number];
+
+/**
+ * An award category.
+ *
+ * Carries no `skill_domain`, so a client cannot narrow the list to the design
+ * ones. Every category the platform holds appears on every awards surface
+ * until the backend says which domain each belongs to.
+ */
+export interface AwardCategory {
+	slug: string;
+	name: string;
+	description: string;
+	subject_type: string;
+	sort_order: number;
+}
+
+/**
+ * A nominee, with the running count behind it.
+ *
+ * `community_votes` and `jury_votes` are raw tallies; `weighted_score` is what
+ * actually orders the standing, and the two are shown together so a reader can
+ * see why a nominee with fewer votes sits higher.
+ *
+ * `shortlisted` gates voting: a vote for a nominee nobody shortlisted is a
+ * 400, so the UI offers the ballot only where it can land.
+ */
+export interface AwardNominee {
+	id: string;
+	category_slug: string;
+	subject_type: string;
+	subject_id: string;
+	subject_label: string | null;
+	citation: string;
+	shortlisted: boolean;
+	community_votes: number;
+	jury_votes: number;
+	/** NUMERIC over JSON. */
+	weighted_score: string;
+}
+
+export interface NominateRequest {
+	category_slug: string;
+	subject_id: string;
+	/** Why this deserves it. Required: voters cannot weigh a name. */
+	citation: string;
+}
