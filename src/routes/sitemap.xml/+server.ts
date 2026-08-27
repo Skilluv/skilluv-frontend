@@ -22,6 +22,7 @@ const STATIC_ROUTES: { path: string; changefreq: string; priority: number }[] = 
 	{ path: '/audio/castings', changefreq: 'weekly', priority: 0.6 },
 	{ path: '/ai', changefreq: 'weekly', priority: 0.7 },
 	{ path: '/ai/missions', changefreq: 'weekly', priority: 0.6 },
+	{ path: '/marketplace', changefreq: 'weekly', priority: 0.7 },
 	{ path: '/guilds', changefreq: 'weekly', priority: 0.7 },
 	{ path: '/tournaments', changefreq: 'weekly', priority: 0.7 },
 	{ path: '/bounties', changefreq: 'weekly', priority: 0.7 },

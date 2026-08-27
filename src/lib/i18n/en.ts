@@ -946,6 +946,45 @@ export const en: Translations = {
 			}
 		}
 	},
+	marketplace: {
+		title: 'Creators marketplace',
+		subtitle:
+			'Templates, boilerplates, kits and samples, made by people here. What you may do with each one is on the card, not buried in the description.',
+		allDomains: 'All disciplines',
+		empty: 'Nothing on sale',
+		emptyBody: 'No published item under this filter yet.',
+		notFound: 'This item does not exist, or is not published.',
+		backToList: 'All items',
+		draft: 'Draft',
+		downloadsCount: '{n} downloads',
+		commissionNotice:
+			'Skilluv keeps {low}% under €{threshold} and {high}% above. Taking a payment, hosting files and handling a dispute cost about the same whatever the price — a flat rate would make small items cost more to process than they earn, and small items are what make a marketplace worth browsing.',
+		creatorReceives: 'The creator receives {amount}',
+		platformKeeps: 'Skilluv keeps {amount}',
+		buyCta: 'Buy',
+		signInToBuy: 'Sign in to buy',
+		yourItem: 'Yours. You cannot buy your own item.',
+		publishCta: 'Publish it',
+		publishedToast: 'Published.',
+		boughtToast: 'Bought.',
+		purchasedTitle: 'Bought',
+		tokenTerms: 'The link lives {hours} hours and can be redeemed {n} times.',
+		redeemCta: 'Get the files',
+		notFetchableYet:
+			'These are storage names, not links yet — the download endpoint does not hand out fetchable URLs. Your purchase stands; ask us and we will send the files.',
+		rateCta: 'Rate it',
+		rateTitle: 'Rate this item',
+		rateHint: 'You bought it, so your rating counts. One to five.',
+		reviewLabel: 'A few words',
+		reviewPlaceholder: 'What it was good for, and what it was not.',
+		rateSubmit: 'Send',
+		ratedToast: 'Thanks — rating recorded.',
+		licenses: {
+			personal_use: 'Personal use',
+			commercial: 'Commercial use',
+			extended_commercial: 'Extended commercial'
+		}
+	},
 	aiDomain: {
 		title: 'AI on Skilluv',
 		onboardingCta: 'Set up my recommendations',

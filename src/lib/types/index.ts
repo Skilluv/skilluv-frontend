@@ -17,6 +17,9 @@ export * from './audio';
 // The AI domain of work, which is not the assistant. See `ai_domain.ts`.
 export * from './ai_domain';
 
+// The creators marketplace — a whole business pillar the front ignored.
+export * from './marketplace';
+
 // The per-domain onboarding wizard, rendered from what the backend serves.
 export * from './domain_wizard';
 

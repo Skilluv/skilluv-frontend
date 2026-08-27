@@ -1130,6 +1130,43 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 			};
 		};
 	};
+	/** The creators marketplace. */
+	marketplace: {
+		title: string;
+		subtitle: string;
+		allDomains: string;
+		empty: string;
+		emptyBody: string;
+		notFound: string;
+		backToList: string;
+		draft: string;
+		downloadsCount: string;
+		commissionNotice: string;
+		creatorReceives: string;
+		platformKeeps: string;
+		buyCta: string;
+		signInToBuy: string;
+		yourItem: string;
+		publishCta: string;
+		publishedToast: string;
+		boughtToast: string;
+		purchasedTitle: string;
+		tokenTerms: string;
+		redeemCta: string;
+		notFetchableYet: string;
+		rateCta: string;
+		rateTitle: string;
+		rateHint: string;
+		reviewLabel: string;
+		reviewPlaceholder: string;
+		rateSubmit: string;
+		ratedToast: string;
+		licenses: {
+			personal_use: string;
+			commercial: string;
+			extended_commercial: string;
+		};
+	};
 	aiDomain: {
 		title: string;
 		onboardingCta: string;

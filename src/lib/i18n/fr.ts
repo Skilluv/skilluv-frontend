@@ -946,6 +946,45 @@ export const fr: Translations = {
 			}
 		}
 	},
+	marketplace: {
+		title: 'Marché des créateurs',
+		subtitle:
+			"Templates, boilerplates, kits et samples, faits par les gens d'ici. Ce que tu as le droit d'en faire est sur la carte, pas enfoui dans la description.",
+		allDomains: 'Toutes les disciplines',
+		empty: 'Rien en vente',
+		emptyBody: 'Aucun item publié sous ce filtre pour l’instant.',
+		notFound: "Cet item n'existe pas, ou n'est pas publié.",
+		backToList: 'Tous les items',
+		draft: 'Brouillon',
+		downloadsCount: '{n} téléchargements',
+		commissionNotice:
+			"Skilluv garde {low}% en dessous de {threshold} € et {high}% au-dessus. Encaisser un paiement, héberger des fichiers et traiter un litige coûtent à peu près pareil quel que soit le prix — un taux unique rendrait les petits items plus chers à traiter qu'ils ne rapportent, et ce sont les petits items qui donnent envie de parcourir un marché.",
+		creatorReceives: 'Le créateur touche {amount}',
+		platformKeeps: 'Skilluv garde {amount}',
+		buyCta: 'Acheter',
+		signInToBuy: 'Se connecter pour acheter',
+		yourItem: 'Le tien. On n’achète pas son propre item.',
+		publishCta: 'Le publier',
+		publishedToast: 'Publié.',
+		boughtToast: 'Acheté.',
+		purchasedTitle: 'Acheté',
+		tokenTerms: 'Le lien vit {hours} heures et peut être utilisé {n} fois.',
+		redeemCta: 'Récupérer les fichiers',
+		notFetchableYet:
+			"Ce sont des noms de stockage, pas encore des liens — l'endpoint de téléchargement ne rend pas d'URL utilisable. Ton achat tient ; demande-nous et on t'envoie les fichiers.",
+		rateCta: 'Noter',
+		rateTitle: 'Noter cet item',
+		rateHint: 'Tu l’as acheté, donc ta note compte. De un à cinq.',
+		reviewLabel: 'Quelques mots',
+		reviewPlaceholder: 'À quoi ça a servi, et à quoi non.',
+		rateSubmit: 'Envoyer',
+		ratedToast: 'Merci — note enregistrée.',
+		licenses: {
+			personal_use: 'Usage personnel',
+			commercial: 'Usage commercial',
+			extended_commercial: 'Commercial étendu'
+		}
+	},
 	aiDomain: {
 		title: 'L’IA sur Skilluv',
 		onboardingCta: 'Régler mes recommandations',
