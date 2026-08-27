@@ -34,6 +34,11 @@ export * from './domain_profiles';
 // endpoint (ai, audio). One shape on purpose — see `craft.ts`.
 export * from './craft';
 
+// Skilluv Cyber (SKI-116 … SKI-284). Shares `/missions` and the tournament
+// routes with design, for the same reason: a mission is a mission and a
+// competition is a competition, whatever the subject.
+export * from './security';
+
 // Réutilisation source de vérité unique pour les types badge/rang.
 // Voir src/lib/components/badges/types.ts pour les définitions primitives.
 import type {

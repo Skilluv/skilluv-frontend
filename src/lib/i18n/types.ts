@@ -1,5 +1,6 @@
 import type { DesignTranslations } from './design.types';
 import type { DesignWorkflowTranslations } from './design_workflow.types';
+import type { SecurityTranslations } from './security.types';
 import type { PostMvpTranslations } from './postmvp.types';
 
 /**
@@ -10,7 +11,8 @@ import type { PostMvpTranslations } from './postmvp.types';
 export interface Translations
 	extends PostMvpTranslations,
 		DesignTranslations,
-		DesignWorkflowTranslations {
+		DesignWorkflowTranslations,
+		SecurityTranslations {
 	common: {
 		actions: {
 			save: string;

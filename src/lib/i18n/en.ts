@@ -1,5 +1,6 @@
 import { designEn } from './design.en';
 import { designWorkflowEn } from './design_workflow.en';
+import { securityEn } from './security.en';
 import { postMvpEn } from './postmvp.en';
 import type { Translations } from './types';
 
@@ -7,6 +8,7 @@ export const en: Translations = {
 	...postMvpEn,
 	...designEn,
 	...designWorkflowEn,
+	...securityEn,
 	common: {
 		actions: {
 			save: 'Save', cancel: 'Cancel', delete: 'Delete', edit: 'Edit',
