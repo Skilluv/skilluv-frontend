@@ -421,7 +421,12 @@ export const postMvpEn: PostMvpTranslations = {
 		brokenLabel: 'Broken',
 		brokenReason: 'Reason: {reason}',
 		rankFloor: 'Doyen and above.',
-		noStatement: 'No statement.'
+		noStatement: 'No statement.',
+		unknownVoucher: 'Account gone',
+		createdOn: 'Given {date}',
+		liveLabel: 'Live',
+		expiredLabel: 'Expired',
+		withdrawnLabel: 'Withdrawn'
 	},
 	skillTree: {
 		title: 'Skill tree',

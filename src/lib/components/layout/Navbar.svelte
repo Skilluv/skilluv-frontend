@@ -48,7 +48,8 @@
 		Clock,
 		CalendarRange,
 		Handshake,
-		NotebookPen
+		NotebookPen,
+		Link2
 	} from '@lucide/svelte';
 
 	// Conditional user-menu links driven by P18.4 capabilities.
@@ -72,6 +73,21 @@
 				icon: FileSearch,
 				label: i18n.t('capabilities.nav.plagiarismQueue'),
 				show: auth.can('plagiarism_reviewer')
+			},
+			{
+				// SKI-297 — the queue is gated on either capability, because a
+				// revoked deliverable is exactly what makes a backing worth
+				// re-reading.
+				href: '/moderation/vouchings',
+				icon: Handshake,
+				label: i18n.t('capabilities.nav.vouchingQueue'),
+				show: auth.can('community_moderator') || auth.can('plagiarism_reviewer')
+			},
+			{
+				href: '/moderation/external-signals',
+				icon: Link2,
+				label: i18n.t('capabilities.nav.externalSignalQueue'),
+				show: auth.can('community_moderator') || auth.can('community_curator')
 			},
 			{
 				href: '/mentors/me',
@@ -584,7 +600,8 @@
 							{#each [
 								{ href: '/dashboard/bookmarks', icon: Bookmark, label: i18n.t('bookmarks.title') },
 								{ href: '/dashboard/notes', icon: NotebookPen, label: i18n.t('notes.title') },
-								{ href: '/dashboard/goals', icon: Target, label: i18n.t('goals.title') }
+								{ href: '/dashboard/goals', icon: Target, label: i18n.t('goals.title') },
+								{ href: '/dashboard/vouchings', icon: Handshake, label: i18n.t('vouchings.title') }
 							] as shelfLink (shelfLink.href)}
 								{@const ShelfIcon = shelfLink.icon}
 								<a
@@ -681,6 +698,7 @@
 						{ href: '/dashboard/bookmarks', label: i18n.t('bookmarks.title') },
 						{ href: '/dashboard/notes', label: i18n.t('notes.title') },
 						{ href: '/dashboard/goals', label: i18n.t('goals.title') },
+						{ href: '/dashboard/vouchings', label: i18n.t('vouchings.title') },
 						{ href: `/profile/${auth.user?.username}`, label: i18n.t('common.nav.profile') },
 						{ href: '/settings', label: i18n.t('common.nav.settings') }
 					] as link}

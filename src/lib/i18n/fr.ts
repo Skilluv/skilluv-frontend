@@ -813,6 +813,51 @@ export const fr: Translations = {
 			confirmRejectTitle: 'Rejeter ce challenge ?',
 			confirmRejectBody: 'L\'auteur recevra ta raison. Il pourra soumettre une version corrigée.'
 		},
+		vouchings: {
+			title: 'File des cautions',
+			subtitle:
+				"Qui a mis son propre rang derrière qui. Rompre une caution coûte un rang pendant quatre-vingt-dix jours au garant : le coût est affiché avant la décision.",
+			statuses: {
+				live: 'En cours',
+				broken: 'Rompues',
+				expired: 'Expirées'
+			},
+			queueEmpty: 'Aucune caution dans cet état.',
+			flagged: 'Signalé',
+			flaggedHint: "Le compte cautionné porte un livrable révoqué ou un soupçon de multi-comptes.",
+			voucherLabel: 'Garant',
+			vouchedLabel: 'Cautionné',
+			rankAtStake: 'Rang {rank}',
+			openedOn: 'Ouverte le {date}',
+			untilLabel: "Jusqu'au {date}",
+			brokenOn: 'Rompue le {date}',
+			breakReason: 'Motif : {reason}',
+			breakCta: 'Rompre',
+			confirmBreakTitle: 'Rompre cette caution ?',
+			confirmBreakBody:
+				"Le garant perd un rang pendant quatre-vingt-dix jours s'il en avait mis un en jeu. Le motif part au journal d'audit et ne pourra plus être modifié.",
+			brokeWithPenalty: "Caution rompue. {name} redescend à {rank} jusqu'au {date}.",
+			brokeWithoutPenalty: "Caution rompue. Rien n'était en jeu, aucun rang n'a bougé.",
+			total: '{n} dans cet état',
+			loadMore: 'Charger la suite',
+			noAccess: 'Page réservée aux détenteurs des capabilities community_moderator et plagiarism_reviewer.'
+		},
+		externalSignals: {
+			title: 'File des signaux externes',
+			subtitle:
+				"Comptes déclarés en attente de confirmation humaine. Confirmer dit que la personne possède le compte, jamais que Skilluv atteste du travail.",
+			queueEmpty: 'Aucun signal en attente.',
+			declaredOn: 'Déclaré le {date}',
+			openLink: 'Ouvrir le lien',
+			verifyCta: 'Confirmer la propriété',
+			rejectCta: 'Supprimer',
+			confirmRejectTitle: 'Supprimer ce signal ?',
+			confirmRejectBody:
+				"La déclaration est détruite définitivement. Le motif part au journal d'audit, seule trace qui restera.",
+			verifiedToast: 'Signal confirmé.',
+			rejectedToast: 'Signal supprimé.',
+			noAccess: 'Page réservée aux détenteurs des capabilities community_moderator et community_curator.'
+		},
 		plagiarism: {
 			title: 'File plagiat',
 			subtitle: 'Deliverables flaggés par le backend. Décide si le rendu reste valide ou est révoqué.',
@@ -1195,7 +1240,9 @@ export const fr: Translations = {
 			pendingCurator: 'File curator',
 			plagiarismQueue: 'Review plagiat',
 			mentorZone: 'Espace mentor',
-			juryTournament: 'Jury tournoi'
+			juryTournament: 'Jury tournoi',
+			vouchingQueue: 'File des cautions',
+			externalSignalQueue: 'Signaux externes'
 		}
 	},
 	p26: {

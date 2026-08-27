@@ -430,6 +430,11 @@ export interface PostMvpTranslations {
 		brokenReason: string;
 		rankFloor: string;
 		noStatement: string;
+		unknownVoucher: string;
+		createdOn: string;
+		liveLabel: string;
+		expiredLabel: string;
+		withdrawnLabel: string;
 	};
 	/** T3-04 — the skill tree with prerequisites. */
 	skillTree: {

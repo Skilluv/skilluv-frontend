@@ -1,4 +1,12 @@
-import type { ApiResponse, PublicVouching, Vouching, VouchingStake } from '$lib/types';
+import type {
+	ApiResponse,
+	PublicVouching,
+	Vouching,
+	VouchingQueueRow,
+	VouchingQueueStatus,
+	VouchingStake,
+	VouchingWithParty
+} from '$lib/types';
 import { createApiClient } from './client';
 
 const api = createApiClient();
@@ -31,6 +39,27 @@ export interface VouchingBreakReport {
 	penalty_until: string | null;
 }
 
+export interface VouchingQueueParams {
+	/** Defaults to `live` server-side. */
+	status?: VouchingQueueStatus;
+	voucher_id?: string;
+	vouched_id?: string;
+	at_stake_kind?: VouchingStake;
+	limit?: number;
+	offset?: number;
+}
+
+export interface VouchingQueueResponse {
+	vouchings: VouchingQueueRow[];
+	status: VouchingQueueStatus;
+	total: number;
+	limit: number;
+	offset: number;
+}
+
+/** At least this many characters, or the break is refused server-side. */
+export const VOUCHING_BREAK_REASON_MIN = 8;
+
 export const vouchingsApi = {
 	create(payload: CreateVouchingRequest) {
 		return api.post<ApiResponse<{ vouching: Vouching }>>('/vouchings', payload);
@@ -48,10 +77,30 @@ export const vouchingsApi = {
 		);
 	},
 
+	/**
+	 * Both buckets, each row carrying the other party resolved (SKI-301).
+	 * `given` keeps the whole history including broken ones; `received` is
+	 * live only, the same set a visitor sees on the profile.
+	 */
 	listMine() {
-		return api.get<ApiResponse<{ given: Vouching[]; received: Vouching[]; max_live: number }>>(
-			'/users/me/vouchings'
-		);
+		return api.get<
+			ApiResponse<{
+				given: VouchingWithParty[];
+				received: VouchingWithParty[];
+				max_live: number;
+			}>
+		>('/users/me/vouchings');
+	},
+
+	/**
+	 * Moderation queue (SKI-297) — the listing the break endpoint always
+	 * needed. Same gate as the break itself: a moderator who may end a
+	 * vouching may read the list of them.
+	 */
+	moderationQueue(params: VouchingQueueParams = {}) {
+		return api.get<ApiResponse<VouchingQueueResponse>>('/moderation/vouchings', {
+			...params
+		});
 	},
 
 	/** Moderation only: breaking a vouching costs the voucher a rank for 90 days. */

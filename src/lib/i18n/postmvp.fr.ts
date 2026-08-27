@@ -425,7 +425,12 @@ export const postMvpFr: PostMvpTranslations = {
 		brokenLabel: 'Rompue',
 		brokenReason: 'Motif : {reason}',
 		rankFloor: 'Réservé aux Doyens.',
-		noStatement: 'Aucune déclaration.'
+		noStatement: 'Aucune déclaration.',
+		unknownVoucher: 'Compte supprimé',
+		createdOn: 'Donnée le {date}',
+		liveLabel: 'En cours',
+		expiredLabel: 'Expirée',
+		withdrawnLabel: 'Retirée'
 	},
 	skillTree: {
 		title: 'Arbre de skills',

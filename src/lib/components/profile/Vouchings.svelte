@@ -54,6 +54,15 @@
 		}))
 	);
 
+	/**
+	 * What to print for the voucher. The display name is nullable for the
+	 * same reason the username is — a deleted account leaves the row without
+	 * a party rather than failing the listing.
+	 */
+	function voucherName(row: PublicVouching): string {
+		return row.voucher_display_name ?? row.voucher_username ?? i18n.t('vouchings.unknownVoucher');
+	}
+
 	function fmtDate(iso: string): string {
 		return new Date(iso).toLocaleDateString(i18n.locale, {
 			day: 'numeric',
@@ -126,12 +135,21 @@
 					{#each rows as row (row.id)}
 						<li>
 							<p class="flex flex-wrap items-center gap-2">
-								<!-- The payload carries the voucher's id and display name but
-								     no username, and profiles are addressed by username, so
-								     this stays text rather than a link that would 404. -->
-								<span class="text-sm font-semibold text-text-primary">
-									{i18n.t('vouchings.vouchedBy', { name: row.voucher_display_name })}
-								</span>
+								<!-- SKI-301 — the payload now resolves the voucher's username,
+								     so the one thing a caution is for, going to check who gave
+								     it, is a link. It stays text when the join found nobody. -->
+								{#if row.voucher_username}
+									<a
+										href="/profile/{row.voucher_username}"
+										class="text-sm font-semibold text-text-primary underline-offset-2 hover:text-accent hover:underline"
+									>
+										{i18n.t('vouchings.vouchedBy', { name: voucherName(row) })}
+									</a>
+								{:else}
+									<span class="text-sm font-semibold text-text-primary">
+										{i18n.t('vouchings.vouchedBy', { name: voucherName(row) })}
+									</span>
+								{/if}
 								<Badge variant={row.at_stake_kind === 'rank_temporary' ? 'accent' : 'default'} size="sm">
 									{i18n.t(`vouchings.stakes.${row.at_stake_kind}`)}
 								</Badge>

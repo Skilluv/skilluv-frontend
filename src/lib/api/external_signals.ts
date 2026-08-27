@@ -30,6 +30,9 @@ export interface CreateSignalResponse {
  * them visually apart from attestations — the backend even ships a
  * `disclaimer` string in the payload to make the intent unmissable.
  */
+/** Below this the backend refuses the removal — it destroys a user claim. */
+export const SIGNAL_REJECT_REASON_MIN = 8;
+
 export const externalSignalsApi = {
 	create(payload: CreateSignalRequest) {
 		return api.post<ApiResponse<CreateSignalResponse>>('/users/me/external-signals', payload);
@@ -61,7 +64,14 @@ export const externalSignalsApi = {
 		);
 	},
 
-	reject(id: string) {
-		return api.delete<void>(`/moderation/external-signals/${id}`);
+	/**
+	 * Remove somebody else's declaration. The motive is mandatory and goes
+	 * in the query string rather than a body: enough proxies strip DELETE
+	 * bodies that a required one would fail in production only.
+	 */
+	reject(id: string, reason: string) {
+		return api.delete<void>(
+			`/moderation/external-signals/${id}?reason=${encodeURIComponent(reason)}`
+		);
 	}
 };

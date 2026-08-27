@@ -453,14 +453,69 @@ export interface Vouching {
 	created_at: string;
 }
 
-/** Public row on a profile: who vouched, what they said, what they staked. */
+/**
+ * Public row on a profile: who vouched, what they said, what they staked.
+ *
+ * SKI-301 added `voucher_username`. Profiles are addressed by username, so
+ * the display name alone could never be turned into a link — it 404s on the
+ * first space or accent. Both are nullable because the backend resolves them
+ * through a LEFT JOIN: a deleted account leaves the vouching without a party
+ * rather than failing the whole listing.
+ */
 export interface PublicVouching {
 	id: string;
 	voucher_id: string;
-	voucher_display_name: string;
+	voucher_username: string | null;
+	voucher_display_name: string | null;
 	statement: string;
 	active_until: string;
 	at_stake_kind: VouchingStake;
+}
+
+/**
+ * One row of `GET /users/me/vouchings`, carrying the *other* party.
+ *
+ * Which side "other" means depends on the bucket: on `given` it is the person
+ * backed, on `received` it is the backer. The vouching fields are flattened
+ * into the same object server-side, so this extends `Vouching` rather than
+ * nesting it.
+ */
+export interface VouchingWithParty extends Vouching {
+	other_user_id: string;
+	other_username: string | null;
+	other_display_name: string | null;
+}
+
+/** The three states a vouching can be listed under in moderation. */
+export const VOUCHING_QUEUE_STATUSES = ['live', 'broken', 'expired'] as const;
+export type VouchingQueueStatus = (typeof VOUCHING_QUEUE_STATUSES)[number];
+
+/**
+ * One row of the moderation queue (SKI-297).
+ *
+ * Both parties are resolved, and `vouched_user_flagged` is what turns a
+ * listing into a queue: the backend sorts on it, so a mentee already under
+ * suspicion comes first. `voucher_rank` is the raw rank — what breaking the
+ * vouching would cost, shown before the moderator imposes it.
+ */
+export interface VouchingQueueRow {
+	id: string;
+	status: VouchingQueueStatus;
+	voucher_id: string;
+	voucher_username: string | null;
+	voucher_display_name: string | null;
+	voucher_rank: string;
+	vouched_id: string;
+	vouched_username: string | null;
+	vouched_display_name: string | null;
+	vouched_user_flagged: boolean;
+	at_stake_kind: VouchingStake;
+	statement: string;
+	active_until: string;
+	created_at: string;
+	broken_at: string | null;
+	broken_by: string | null;
+	break_reason: string | null;
 }
 
 // ---------------------------------------------------------------------------

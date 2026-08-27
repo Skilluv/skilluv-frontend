@@ -813,6 +813,51 @@ export const en: Translations = {
 			confirmRejectTitle: 'Reject this challenge?',
 			confirmRejectBody: 'The author receives your reason. They can submit a fixed version.'
 		},
+		vouchings: {
+			title: 'Vouching queue',
+			subtitle:
+				'Who put their own rank behind whom. Breaking a vouching costs the voucher a rank for ninety days, so the cost is shown before the decision.',
+			statuses: {
+				live: 'Live',
+				broken: 'Broken',
+				expired: 'Expired'
+			},
+			queueEmpty: 'No vouching in this state.',
+			flagged: 'Flagged',
+			flaggedHint: 'The backed account carries a revoked deliverable or a multi-account suspicion.',
+			voucherLabel: 'Voucher',
+			vouchedLabel: 'Backed',
+			rankAtStake: 'Rank {rank}',
+			openedOn: 'Opened {date}',
+			untilLabel: 'Until {date}',
+			brokenOn: 'Broken {date}',
+			breakReason: 'Reason: {reason}',
+			breakCta: 'Break',
+			confirmBreakTitle: 'Break this vouching?',
+			confirmBreakBody:
+				'The voucher loses a rank for ninety days if they staked one. The reason is written to the audit log and cannot be edited afterwards.',
+			brokeWithPenalty: 'Vouching broken. {name} drops to {rank} until {date}.',
+			brokeWithoutPenalty: 'Vouching broken. Nothing was staked, so no rank changed.',
+			total: '{n} in this state',
+			loadMore: 'Load more',
+			noAccess: 'This page is reserved to community_moderator and plagiarism_reviewer capability holders.'
+		},
+		externalSignals: {
+			title: 'External signals queue',
+			subtitle:
+				'Declared accounts waiting on a human confirmation. Verifying says the person owns the account — never that Skilluv attests to the work.',
+			queueEmpty: 'No signal waiting.',
+			declaredOn: 'Declared {date}',
+			openLink: 'Open the link',
+			verifyCta: 'Confirm ownership',
+			rejectCta: 'Remove',
+			confirmRejectTitle: 'Remove this signal?',
+			confirmRejectBody:
+				'The declaration is destroyed for good. The reason is written to the audit log, which is the only trace that will remain.',
+			verifiedToast: 'Signal confirmed.',
+			rejectedToast: 'Signal removed.',
+			noAccess: 'This page is reserved to community_moderator and community_curator capability holders.'
+		},
 		plagiarism: {
 			title: 'Plagiarism queue',
 			subtitle: 'Deliverables flagged by the backend. Decide if the submission stays valid or is revoked.',
@@ -1195,7 +1240,9 @@ export const en: Translations = {
 			pendingCurator: 'Curator queue',
 			plagiarismQueue: 'Plagiarism review',
 			mentorZone: 'Mentor zone',
-			juryTournament: 'Tournament jury'
+			juryTournament: 'Tournament jury',
+			vouchingQueue: 'Vouching queue',
+			externalSignalQueue: 'External signals'
 		}
 	},
 	p26: {

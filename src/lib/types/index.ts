@@ -156,11 +156,19 @@ export interface UserPrivate {
 }
 
 export interface UserPublic {
-	/** User id — surfaced so enterprise flows can reference the target
-	 * user (add to a list, open messaging, promote to pipeline, etc.).
-	 * Backend returns it in the public projection for authenticated
-	 * enterprise/recruiter callers; kept optional to preserve backward
-	 * compatibility with candidate-facing consumers. */
+	/**
+	 * User id, always present since SKI-300.
+	 *
+	 * Four public sections (timeline, skill tree, external signals,
+	 * vouchings) are addressed by UUID, and this projection is the only
+	 * place a visitor can resolve a username to one — before SKI-300 the
+	 * front could render them on your own profile, where the id came from
+	 * the auth store, and on nobody else's. Handing it out is safe because
+	 * a hidden or banned profile is a 404 before this point.
+	 *
+	 * Kept optional so a stale payload degrades to a hidden section rather
+	 * than a request with an empty id.
+	 */
 	id?: string;
 	username: string;
 	display_name: string;

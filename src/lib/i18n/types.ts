@@ -1001,6 +1001,47 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 			confirmRejectTitle: string;
 			confirmRejectBody: string;
 		};
+		vouchings: {
+			title: string;
+			subtitle: string;
+			statuses: {
+				live: string;
+				broken: string;
+				expired: string;
+			};
+			queueEmpty: string;
+			flagged: string;
+			flaggedHint: string;
+			voucherLabel: string;
+			vouchedLabel: string;
+			rankAtStake: string;
+			openedOn: string;
+			untilLabel: string;
+			brokenOn: string;
+			breakReason: string;
+			breakCta: string;
+			confirmBreakTitle: string;
+			confirmBreakBody: string;
+			brokeWithPenalty: string;
+			brokeWithoutPenalty: string;
+			total: string;
+			loadMore: string;
+			noAccess: string;
+		};
+		externalSignals: {
+			title: string;
+			subtitle: string;
+			queueEmpty: string;
+			declaredOn: string;
+			openLink: string;
+			verifyCta: string;
+			rejectCta: string;
+			confirmRejectTitle: string;
+			confirmRejectBody: string;
+			verifiedToast: string;
+			rejectedToast: string;
+			noAccess: string;
+		};
 		plagiarism: {
 			title: string;
 			subtitle: string;
@@ -1384,6 +1425,8 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 			plagiarismQueue: string;
 			mentorZone: string;
 			juryTournament: string;
+			vouchingQueue: string;
+			externalSignalQueue: string;
 		};
 	};
 	p26: {

@@ -59,10 +59,11 @@
 
 	/**
 	 * The user's UUID, needed by every id-addressed section (timeline, skill
-	 * tree, badges…). `/profile/{username}` only returns `id` to enterprise
-	 * and recruiter callers, so on someone else's profile it can be absent —
-	 * those sections then stay hidden rather than firing a request with an
-	 * empty id. Your own profile always resolves, through the auth store.
+	 * tree, badges…). Since SKI-300 `/profile/{username}` returns it to every
+	 * caller, so those sections render on anyone's profile and not only on
+	 * your own. The auth-store fallback stays for your own page, and an
+	 * absent id still hides the sections rather than firing a request with an
+	 * empty one.
 	 */
 	let profileUserId = $derived(isOwnProfile ? (auth.user?.id ?? user?.id) : user?.id);
 
