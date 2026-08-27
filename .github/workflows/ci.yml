@@ -24,6 +24,8 @@ jobs:
 
       - name: i18n parity + orphan-key check
         run: npm run i18n:check
+      - name: XSS {@html} sink audit (FE-06)
+        run: bash scripts/check-html-sinks.sh
 
       - name: Svelte check
         run: npm run check

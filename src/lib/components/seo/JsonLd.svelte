@@ -5,7 +5,9 @@
 
 	let { data }: Props = $props();
 
-	let json = $derived(JSON.stringify(data));
+	// Escape `<` so a string containing `</script>` in `data` cannot break out
+	// of the JSON-LD script element (the classic JSON-in-HTML injection).
+	let json = $derived(JSON.stringify(data).replace(/</g, '\u003c'));
 </script>
 
 <svelte:head>
