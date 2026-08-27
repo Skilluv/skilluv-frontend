@@ -1319,3 +1319,56 @@ export interface FeaturedTalent {
 	deliverable_id: string | null;
 	created_at: string;
 }
+
+// ---------------------------------------------------------------------------
+// Series — contests that belong together
+// ---------------------------------------------------------------------------
+
+/**
+ * A group of contests read as one event.
+ *
+ * `kind` decides how it reads: an `awards_edition` lists thirteen podiums, a
+ * `sprint` lists one plus the run behind it, a `programme` is anything grouped
+ * for editorial reasons. Stored rather than inferred from the number of
+ * contests, so one set of routes serves all three.
+ */
+export interface TournamentSeries {
+	id: string;
+	slug: string;
+	name: string;
+	description: string | null;
+	kind: string;
+	/** Null for a series open to every domain. */
+	skill_domain: string | null;
+	starts_at: string;
+	ends_at: string;
+	created_at: string;
+}
+
+/**
+ * One line of a podium.
+ *
+ * Carries `username` and `display_name`, unlike a bare tournament leaderboard
+ * row — which is what lets a series result name its winners rather than rank
+ * anonymous UUIDs.
+ */
+export interface PodiumLine {
+	rank: number;
+	participant_type: string;
+	participant_id: string;
+	username: string | null;
+	display_name: string | null;
+	score: number;
+}
+
+/** One contest inside a series, with who came out on top of it. */
+export interface CategoryStanding {
+	/** The family this contest stands for, on an awards edition. */
+	category: string | null;
+	tournament_id: string;
+	tournament_slug: string;
+	tournament_name: string;
+	status: string;
+	ends_at: string;
+	podium: PodiumLine[];
+}

@@ -346,6 +346,27 @@ export interface DesignWorkflowTranslations {
 		previousEditions: string;
 	};
 
+	/** C-04/C-05 — contests that belong together. */
+	designSeries: {
+		title: string;
+		subtitle: string;
+		runningTitle: string;
+		pastTitle: string;
+		empty: string;
+		emptyHint: string;
+		openCta: string;
+		backCta: string;
+		everyDomain: string;
+		notFound: string;
+		noStandings: string;
+		noPodium: string;
+		kinds: {
+			awards_edition: string;
+			sprint: string;
+			programme: string;
+		};
+	};
+
 	/** O-03 — mentors worth suggesting, with the reasoning attached. */
 	designMentors: {
 		title: string;

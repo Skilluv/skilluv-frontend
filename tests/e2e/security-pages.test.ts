@@ -87,6 +87,11 @@ test.describe('Skilluv Cyber pages', () => {
 		await expect(page.getByRole('button', { name: /enregistrer|record it/i })).toBeDisabled();
 	});
 
+	test('the cyber onboarding wizard opens', async ({ page }) => {
+		await gotoHydrated(page, '/security/onboarding');
+		await expect(page.getByTestId('security-onboarding')).toBeVisible();
+	});
+
 	test('the cyber mission board renders', async ({ page }) => {
 		await gotoHydrated(page, '/security/missions');
 		await expect(page.getByTestId('security-missions-page')).toBeVisible();

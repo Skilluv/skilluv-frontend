@@ -1078,8 +1078,8 @@ export interface Translations
 	/** The AI domain of work — artefacts published here, contests elsewhere. */
 	/** The per-domain onboarding wizard, rendered from what the backend serves. */
 	domainWizard: {
-		titles: { ai: string };
-		subtitles: { ai: string };
+		titles: { ai: string; security: string };
+		subtitles: { ai: string; security: string };
 		notAClaim: string;
 		progressLabel: string;
 		stepOf: string;

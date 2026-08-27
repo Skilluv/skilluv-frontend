@@ -882,9 +882,11 @@ export const en: Translations = {
 		}
 	},
 	domainWizard: {
-		titles: { ai: 'Getting you started in AI' },
+		titles: { ai: 'Getting you started in AI', security: 'Getting you started in security' },
 		subtitles: {
-			ai: 'Six questions. They sort what gets recommended to you — nothing here counts as a proof.'
+			ai: 'Six questions. They sort what gets recommended to you — nothing here counts as a proof.',
+			security:
+				'A few questions. They sort what gets recommended to you — nothing here counts as a proof, and none of it grants any permission to test anything.'
 		},
 		notAClaim:
 			'Declared, never a claim. Rank, badges and craft score read verified work, and none of these answers is one.',

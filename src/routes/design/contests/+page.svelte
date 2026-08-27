@@ -83,6 +83,13 @@
 				{i18n.t('designAwards.title')}
 			</a>
 			<a
+				href="/design/series"
+				class="text-accent underline-offset-4 hover:underline"
+				data-testid="design-series-link"
+			>
+				{i18n.t('designSeries.title')}
+			</a>
+			<a
 				href="/design/toolkit"
 				class="text-accent underline-offset-4 hover:underline"
 				data-testid="design-toolkit-link"

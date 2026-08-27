@@ -347,6 +347,27 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 		previousEditions: 'Other years'
 	},
 
+	designSeries: {
+		title: 'Editions and sprints',
+		subtitle:
+			'Contests that belong together. An awards edition is many judged in parallel; a sprint is one short contest, run again.',
+		runningTitle: 'Running',
+		pastTitle: 'Other editions',
+		empty: 'Nothing grouped yet.',
+		emptyHint: 'An edition opens once the year it covers is over; a sprint runs on its own weekend.',
+		openCta: 'Read it',
+		backCta: 'All editions',
+		everyDomain: 'Open to every domain',
+		notFound: 'No edition carries this name.',
+		noStandings: 'Nothing has been judged yet.',
+		noPodium: 'No podium on this one yet.',
+		kinds: {
+			awards_edition: 'Awards edition',
+			sprint: 'Sprint',
+			programme: 'Programme'
+		}
+	},
+
 	designMentors: {
 		title: 'Who could help',
 		subtitle: 'Mentors in your domain, and what you have in common with each.',

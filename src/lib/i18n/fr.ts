@@ -882,9 +882,11 @@ export const fr: Translations = {
 		}
 	},
 	domainWizard: {
-		titles: { ai: 'Tes débuts en IA' },
+		titles: { ai: 'Tes débuts en IA', security: 'Tes débuts en sécurité' },
 		subtitles: {
-			ai: "Six questions. Elles trient ce qu'on te recommande — rien ici ne compte comme une preuve."
+			ai: "Six questions. Elles trient ce qu'on te recommande — rien ici ne compte comme une preuve.",
+			security:
+				"Quelques questions. Elles trient ce qu'on te recommande — rien ici ne compte comme une preuve, et rien n'autorise à tester quoi que ce soit."
 		},
 		notAClaim:
 			"Déclaré, jamais une affirmation. Le rang, les badges et le score de métier lisent du travail vérifié, et aucune de ces réponses n'en est un.",

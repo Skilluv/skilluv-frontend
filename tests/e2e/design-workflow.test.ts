@@ -17,7 +17,8 @@ const WORKFLOW_PAGES = [
 	'/design/reviews',
 	'/design/contests/plagiarism/00000000-0000-0000-0000-000000000000',
 	'/design/awards',
-	'/design/toolkit'
+	'/design/toolkit',
+	'/design/series'
 ];
 
 test.describe('design workflow pages', () => {
@@ -77,7 +78,7 @@ test.describe('design workflow pages', () => {
 				body,
 				`raw i18n key leaked on ${path}`
 			).not.toMatch(
-				/\b(designWorkshop|designUpload|designTools|designBriefs|designNext|designMissionWork|designPlagiarism|designIterationStories)\.[a-zA-Z]+/
+				/\b(designWorkshop|designUpload|designTools|designBriefs|designNext|designMissionWork|designPlagiarism|designIterationStories|designSeries)\.[a-zA-Z]+/
 			);
 		}
 	});
@@ -130,6 +131,19 @@ test.describe('design workflow pages', () => {
 		// The sections themselves are covered by the unit specs, which can put
 		// rows behind the endpoints.
 		await expect(page.getByTestId('design-toolkit')).toHaveCount(0);
+	});
+
+	test('the series board is linked from contests and renders', async ({ page }) => {
+		await gotoHydrated(page, '/design/contests');
+		await expect(page.getByTestId('design-series-link')).toBeVisible();
+
+		await gotoHydrated(page, '/design/series');
+		await expect(page.getByTestId('design-series-page')).toBeVisible();
+	});
+
+	test('an unknown series says so rather than erroring', async ({ page }) => {
+		await gotoHydrated(page, '/design/series/does-not-exist');
+		await expect(page.getByTestId('design-series-detail')).toBeVisible();
 	});
 
 	test('the mission workspace renders for an unknown slug', async ({ page }) => {
