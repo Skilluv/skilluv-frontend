@@ -121,4 +121,28 @@ describe('the craft shape', () => {
 		expect(Number.isInteger(contributing[0].measured)).toBe(true);
 		expect(Number.isInteger(contributing[1].measured)).toBe(false);
 	});
+
+	it('the wizard addresses every domain the backend guards, not the first seven', async () => {
+		const { PROFILE_DOMAINS } = await import('../../src/lib/types/design');
+		// `validators::SKILL_DOMAINS` is the list `routes::domain_profile`
+		// checks the path segment against. The five newest domains were
+		// missing here, so their wizard was unreachable from the front while
+		// the backend answered for them.
+		expect([...PROFILE_DOMAINS].sort()).toEqual(
+			[
+				'ai',
+				'audio',
+				'code',
+				'communication',
+				'design',
+				'education',
+				'game',
+				'leadership',
+				'ops',
+				'quality',
+				'security',
+				'soft_skills'
+			].sort()
+		);
+	});
 });

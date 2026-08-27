@@ -366,15 +366,28 @@ export interface DesignTiers {
 // Domain profile — the onboarding wizard's answers
 // ---------------------------------------------------------------------------
 
-/** Domains the wizard can be run for. Mirrors `routes::domain_profile::DOMAINS`. */
+/**
+ * Domains the wizard can be run for.
+ *
+ * Mirrors `validators::SKILL_DOMAINS`, which is what
+ * `routes::domain_profile` guards the path segment against — all twelve, not
+ * the seven that existed when the design wizard shipped. A domain missing
+ * here is a wizard the front cannot address at all, even though the backend
+ * would answer.
+ */
 export const PROFILE_DOMAINS = [
 	'code',
 	'design',
 	'game',
 	'security',
-	'soft_skills',
+	'ops',
 	'ai',
-	'ops'
+	'soft_skills',
+	'audio',
+	'quality',
+	'leadership',
+	'communication',
+	'education'
 ] as const;
 
 export type ProfileDomain = (typeof PROFILE_DOMAINS)[number];
