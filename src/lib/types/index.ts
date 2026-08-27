@@ -11,6 +11,9 @@ export * from './postmvp';
 // `design`-prefixed silo that would hide the reuse.
 export * from './design';
 
+// Voice castings — the audio domain's own hiring loop.
+export * from './audio';
+
 // Craft records for the domains served by a flat `{domain}-profile`
 // endpoint (ai, audio). One shape on purpose — see `craft.ts`.
 export * from './craft';

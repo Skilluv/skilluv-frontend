@@ -19,6 +19,7 @@ const STATIC_ROUTES: { path: string; changefreq: string; priority: number }[] = 
 	{ path: '/leaderboards', changefreq: 'daily', priority: 0.8 },
 	{ path: '/mentors', changefreq: 'weekly', priority: 0.8 },
 	{ path: '/guides', changefreq: 'weekly', priority: 0.7 },
+	{ path: '/audio/castings', changefreq: 'weekly', priority: 0.6 },
 	{ path: '/guilds', changefreq: 'weekly', priority: 0.7 },
 	{ path: '/tournaments', changefreq: 'weekly', priority: 0.7 },
 	{ path: '/bounties', changefreq: 'weekly', priority: 0.7 },

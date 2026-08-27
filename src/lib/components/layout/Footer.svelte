@@ -24,6 +24,7 @@
 		{ href: '/certifications', fr: 'Certifications', en: 'Certifications' },
 		{ href: '/mentors', fr: 'Mentors', en: 'Mentors' },
 		{ href: '/guides', fr: 'Guides', en: 'Guides' },
+		{ href: '/audio/castings', fr: 'Castings voix', en: 'Voice castings' },
 		{ href: '/enterprise/register', fr: 'Entreprises', en: 'Enterprise' },
 		{ href: '/pricing', fr: 'Tarifs', en: 'Pricing' },
 		{ href: '/for-companies', fr: 'Talents', en: 'Talents' },

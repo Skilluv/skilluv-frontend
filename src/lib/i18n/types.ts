@@ -1063,6 +1063,50 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 	 * endpoint. One namespace, because the backend returns one shape.
 	 */
 	/** `content_guides`, every discipline — onboarding, toolkits, templates. */
+	/** Voice castings — the audio domain's own hiring loop. */
+	castings: {
+		title: string;
+		subtitle: string;
+		detailTitle: string;
+		languageFilter: string;
+		languagePlaceholder: string;
+		languageHint: string;
+		filterCta: string;
+		blindLabel: string;
+		blindNotice: string;
+		maxSeconds: string;
+		closesToday: string;
+		closesIn: string;
+		deadline: string;
+		empty: string;
+		emptyBody: string;
+		notFound: string;
+		backToList: string;
+		briefTitle: string;
+		sampleLineTitle: string;
+		sampleLineHint: string;
+		takesTitle: string;
+		noTakes: string;
+		noPlaybackNotice: string;
+		auditionCta: string;
+		chooseCta: string;
+		notYours: string;
+		selectedToast: string;
+		auditionSentToast: string;
+		formTitle: string;
+		formHint: string;
+		formUrl: string;
+		formNotes: string;
+		formNotesPlaceholder: string;
+		formReplaceNotice: string;
+		formSubmit: string;
+		statuses: {
+			open: string;
+			reviewing: string;
+			selected: string;
+			cancelled: string;
+		};
+	};
 	guides: {
 		title: string;
 		subtitle: string;

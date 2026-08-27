@@ -874,6 +874,52 @@ export const en: Translations = {
 			noAccess: 'This page is reserved to plagiarism_reviewer capability holders.'
 		}
 	},
+	castings: {
+		title: 'Voice castings',
+		subtitle:
+			'Calls for a voice: a character, one line everybody records, a deadline. Blind by default — the names stay out until somebody is chosen.',
+		detailTitle: 'Voice casting',
+		languageFilter: 'Language',
+		languagePlaceholder: 'fr-BE',
+		languageHint: 'Exact match. An accent is part of the brief here.',
+		filterCta: 'Filter',
+		blindLabel: 'Blind',
+		blindNotice:
+			'Names are withheld until a voice is chosen. The numbers are stable on this page, so you can talk about “take three”.',
+		maxSeconds: '{n}s max',
+		closesToday: 'Closes today',
+		closesIn: 'Closes in {n} days',
+		deadline: 'Auditions until {date}',
+		empty: 'No open casting',
+		emptyBody: 'Nothing is taking auditions right now, in this language at least.',
+		notFound: 'This casting does not exist.',
+		backToList: 'All castings',
+		briefTitle: 'The character',
+		sampleLineTitle: 'The line',
+		sampleLineHint: 'Everybody records this one, which is what makes the takes comparable.',
+		takesTitle: 'Takes ({n})',
+		noTakes: 'Nobody has auditioned yet.',
+		noPlaybackNotice:
+			'Takes are not playable here: an audition is stored behind a short-lived signed link that this listing does not carry.',
+		auditionCta: 'Send a take',
+		chooseCta: 'Choose this voice',
+		notYours: 'Only whoever opened this casting can choose a voice.',
+		selectedToast: 'Voice chosen. The names are now public.',
+		auditionSentToast: 'Take sent.',
+		formTitle: 'Send a take',
+		formHint: 'Record the line and link the file. Anything publicly reachable works.',
+		formUrl: 'Link to the take',
+		formNotes: 'Notes',
+		formNotesPlaceholder: 'What you went for, the choices you made.',
+		formReplaceNotice: 'A second take replaces the first — you choose which one is heard.',
+		formSubmit: 'Send',
+		statuses: {
+			open: 'Open',
+			reviewing: 'Under review',
+			selected: 'Voice chosen',
+			cancelled: 'Cancelled'
+		}
+	},
 	guides: {
 		title: 'Guides and templates',
 		subtitle:

@@ -874,6 +874,55 @@ export const fr: Translations = {
 			noAccess: 'Cette page est réservée aux plagiarism_reviewer.'
 		}
 	},
+	castings: {
+		title: 'Castings voix',
+		subtitle:
+			"Des appels à une voix : un personnage, une réplique que tout le monde enregistre, une date. À l'aveugle par défaut — les noms restent dehors jusqu'à ce que quelqu'un soit choisi.",
+		detailTitle: 'Casting voix',
+		languageFilter: 'Langue',
+		languagePlaceholder: 'fr-BE',
+		languageHint: "Correspondance exacte. Ici l'accent fait partie du brief.",
+		filterCta: 'Filtrer',
+		blindLabel: 'À l’aveugle',
+		blindNotice:
+			'Les noms sont retenus jusqu’au choix d’une voix. Les numéros sont stables sur cette page : on peut parler de « la troisième prise ».',
+		maxSeconds: '{n}s max',
+		closesToday: "Ferme aujourd'hui",
+		closesIn: 'Ferme dans {n} jours',
+		deadline: "Auditions jusqu'au {date}",
+		empty: 'Aucun casting ouvert',
+		emptyBody: "Rien ne prend d'audition en ce moment, en tout cas dans cette langue.",
+		notFound: "Ce casting n'existe pas.",
+		backToList: 'Tous les castings',
+		briefTitle: 'Le personnage',
+		sampleLineTitle: 'La réplique',
+		sampleLineHint:
+			'Tout le monde enregistre celle-ci : c’est ce qui rend les prises comparables.',
+		takesTitle: 'Prises ({n})',
+		noTakes: "Personne n'a encore auditionné.",
+		noPlaybackNotice:
+			'Les prises ne sont pas écoutables ici : une audition est stockée derrière un lien signé de courte durée que cette liste ne transporte pas.',
+		auditionCta: 'Envoyer une prise',
+		chooseCta: 'Choisir cette voix',
+		notYours: 'Seul celui qui a ouvert ce casting peut choisir une voix.',
+		selectedToast: 'Voix choisie. Les noms sont désormais publics.',
+		auditionSentToast: 'Prise envoyée.',
+		formTitle: 'Envoyer une prise',
+		formHint:
+			'Enregistre la réplique et donne le lien du fichier. Tout ce qui est accessible publiquement convient.',
+		formUrl: 'Lien vers la prise',
+		formNotes: 'Notes',
+		formNotesPlaceholder: 'Ce que tu as cherché, les choix que tu as faits.',
+		formReplaceNotice:
+			'Une deuxième prise remplace la première — c’est toi qui choisis ce qui est écouté.',
+		formSubmit: 'Envoyer',
+		statuses: {
+			open: 'Ouvert',
+			reviewing: 'En écoute',
+			selected: 'Voix choisie',
+			cancelled: 'Annulé'
+		}
+	},
 	guides: {
 		title: 'Guides et modèles',
 		subtitle:
