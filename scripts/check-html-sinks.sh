@@ -12,7 +12,10 @@ set -uo pipefail
 # Files whose {@html} sinks are audited and escaped (FE-06).
 ALLOW='src/lib/components/seo/JsonLd.svelte|src/routes/\+page.svelte'
 
-hits=$(grep -rln '@html' src/ --include='*.svelte' 2>/dev/null | grep -vE "$ALLOW" || true)
+# `{@html ` with the trailing space, not the bare word: a doc comment saying a
+# component "never reaches {@html}" is not a sink, and matching the word flagged
+# two files that exist precisely to avoid one.
+hits=$(grep -rln '{@html ' src/ --include='*.svelte' 2>/dev/null | grep -vE "$ALLOW" || true)
 if [ -n "$hits" ]; then
   echo "FE-06 FAIL -- unaudited {@html} sink(s). Escape user content (src/lib/utils/html.ts), then allowlist:"
   printf '%s\n' "$hits" | sed 's/^/  /'
