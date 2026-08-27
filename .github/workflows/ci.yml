@@ -21,6 +21,13 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+      - name: Install gitleaks
+        run: |
+          VERSION=8.21.2
+          curl -fsSL -o gitleaks.tar.gz "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz"
+          tar -xzf gitleaks.tar.gz gitleaks && sudo mv gitleaks /usr/local/bin/
+      - name: Secret scan -- source (SE-04)
+        run: gitleaks detect --source . --redact --verbose --exit-code 1
 
       - name: i18n parity + orphan-key check
         run: npm run i18n:check
@@ -32,6 +39,20 @@ jobs:
 
       - name: Build
         run: npm run build
+      - name: Secret scan -- built bundle (SE-04)
+        # The client bundle is downloaded by every browser. SvelteKit keeps
+        # $env/static/private out of client code; this catches anything of the
+        # right shape that slips through.
+        run: gitleaks detect --source build --no-git --redact --verbose --exit-code 1
+      - name: No source maps in the prod build (SE-04)
+        # A .map ships the original source (server logic included) to the
+        # browser. Prod builds must not emit them.
+        run: |
+          maps=$(find build -name '*.map' 2>/dev/null || true)
+          if [ -n "$maps" ]; then
+            echo "SE-04 FAIL -- source maps in the prod build:"; echo "$maps"; exit 1
+          fi
+          echo "SE-04 ok -- no source maps in build/"
 
       - name: Upload Sentry sourcemaps (opt-in)
         if: env.SENTRY_AUTH_TOKEN != ''
