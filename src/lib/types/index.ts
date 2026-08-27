@@ -23,6 +23,9 @@ export * from './marketplace';
 // What is waiting for you: the `/users/me/**` reads `/dashboard` had no home for.
 export * from './dashboard';
 
+// What companies are asking of you — the talent half of the TALENT pillar.
+export * from './opportunities';
+
 // The per-domain onboarding wizard, rendered from what the backend serves.
 export * from './domain_wizard';
 

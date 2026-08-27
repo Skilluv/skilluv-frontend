@@ -69,6 +69,7 @@
 	let waitingCount = $derived(pendingInvitations.length);
 
 	const shortcuts = [
+		{ href: '/dashboard/opportunities', icon: Handshake, key: 'opportunities' },
 		{ href: '/dashboard/bookmarks', icon: Bookmark, key: 'bookmarks' },
 		{ href: '/dashboard/notes', icon: NotebookPen, key: 'notes' },
 		{ href: '/dashboard/goals', icon: Target, key: 'goals' },

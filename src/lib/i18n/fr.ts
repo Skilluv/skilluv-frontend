@@ -1146,6 +1146,66 @@ export const fr: Translations = {
 		otherLocaleNotice:
 			"Servi en {locale} : ce guide n'a pas encore été traduit dans ta langue."
 	},
+	opportunities: {
+		title: 'Ce qu’on te demande',
+		waiting: '{n} en attente d’une réponse de toi.',
+		nothingWaiting: 'Rien n’attend de réponse.',
+		empty: 'Personne ne demande rien pour l’instant',
+		emptyWithPosting:
+			'Ton annonce est en ligne. Les entreprises la voient quand elles cherchent ce que tu fais.',
+		emptyNoPosting:
+			'Publie ce que tu cherches et les entreprises pourront te pitcher, au lieu de l’inverse.',
+		pitchesTitle: 'Des entreprises te pitchent',
+		pitchesHint:
+			'Elles ont dépensé des crédits pour écrire ça. Ouvrir un pitch leur dit qu’il a été lu — rien de plus.',
+		opened: 'ouvert',
+		interested: 'Ça m’intéresse',
+		notInterested: 'Pas intéressé',
+		answeredToast: 'Réponse envoyée.',
+		declineTitle: 'Décliner celui-ci',
+		declineHint:
+			'Le motif est facultatif. Dix pitchs ne doivent pas dix explications.',
+		declinePlaceholder: 'Pas le bon moment, mauvaise stack, salaire trop bas…',
+		declineSubmit: 'Décliner',
+		campaignsTitle: 'Campagnes où tu es en shortlist',
+		interviewsTitle: 'Entretiens',
+		pickASlot: 'Choisis un créneau qui te va.',
+		joinMeeting: 'Rejoindre',
+		declineInterview: 'Aucun ne me va',
+		slotConfirmedToast: 'Créneau confirmé.',
+		declinedToast: 'Décliné.',
+		trialsTitle: 'Périodes d’essai',
+		trialsHint:
+			'Les heures approuvées te sont dues. Les heures en attente sont une déclaration que personne n’a encore regardée.',
+		until: 'jusqu’au {date}',
+		approvedHours: '{n} h approuvées',
+		pendingHours: '{n} h en attente',
+		openTrial: 'Ouvrir',
+		postingTitle: 'Ce que tu as publié',
+		remoteOnly: 'remote uniquement',
+		notLookingFor: 'Pas intéressé par : {text}',
+		pitchesLeft: 'Il reste {n} pitchs d’entreprises ce mois-ci.'
+	},
+	trialHours: {
+		title: 'Journées déclarées',
+		back: 'Retour',
+		approvedTotal: '{n} h approuvées',
+		pendingTotal: '{n} h en attente',
+		empty: 'Rien de déclaré pour l’instant.',
+		approved: 'Approuvée',
+		rejected: 'Refusée',
+		pending: 'En attente',
+		rejectionReason: 'Motif : {reason}',
+		claimCta: 'Déclarer une journée',
+		claimTitle: 'Déclarer une journée',
+		claimSubmit: 'Déclarer',
+		claimedToast: 'Journée déclarée.',
+		formDate: 'Jour travaillé',
+		formHours: 'Heures',
+		formSummary: 'Ce que tu as fait',
+		formSummaryPlaceholder: 'Concrètement, et de façon vérifiable.',
+		formSummaryHint: 'C’est là-dessus que le client approuve.'
+	},
 	dashboardHome: {
 		title: 'Ton tableau de bord',
 		greeting: 'Salut, {name}',
@@ -1176,6 +1236,7 @@ export const fr: Translations = {
 		since: 'depuis le {date}',
 		yoursTitle: 'À toi',
 		shortcuts: {
+			opportunities: 'Ce qu’on te demande',
 			bookmarks: 'Signets',
 			notes: 'Notes',
 			goals: 'Objectifs',
