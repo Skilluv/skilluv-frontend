@@ -108,3 +108,23 @@ export function profileUrlFor(platform: PortfolioPlatform, handle: string): stri
 	if (!trimmed) return null;
 	return platform.profile_url_pattern.replace('{handle}', encodeURIComponent(trimmed));
 }
+
+/**
+ * What a platform's counts are called, in the reader's language.
+ *
+ * Prefers `items_label_key` / `reach_label_key`, which are language-neutral,
+ * and falls back to the seeded word for a deployment that predates them — a
+ * label in the wrong language still beats a bare number.
+ */
+export function countLabel(
+	platform: PortfolioPlatform,
+	which: 'items' | 'reach',
+	t: (key: string, params?: Record<string, string | number>) => string
+): string | null {
+	const key = which === 'items' ? platform.items_label_key : platform.reach_label_key;
+	if (key) {
+		const translated = t(`portfolioLabels.${key}`);
+		return translated === `portfolioLabels.${key}` ? key : translated;
+	}
+	return which === 'items' ? platform.items_label : platform.reach_label;
+}

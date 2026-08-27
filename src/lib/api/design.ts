@@ -9,6 +9,7 @@ import type {
 	DesignVerdict,
 	DesignVersionAtRound,
 	NextChallenge,
+	SetAvailabilityRequest,
 	Tournament
 } from '$lib/types';
 import { DESIGN_CONTEST_KIND } from '$lib/types';
@@ -46,6 +47,17 @@ export const designApi = {
 	 */
 	profile(username: string) {
 		return api.get<ApiResponse<DesignProfile>>(`/users/${username}/design-profile`);
+	},
+
+	/**
+	 * Set your mission availability — the badge, the rate range, the next-free
+	 * date.
+	 *
+	 * A whole-state write, not a patch: every field is stored as sent, so
+	 * omitting one clears it. Callers send the complete object they rendered.
+	 */
+	setAvailability(payload: SetAvailabilityRequest) {
+		return api.put<ApiResponse<unknown>>('/users/me/availability', payload);
 	},
 
 	/** Force a recompute of the caller's own score. */

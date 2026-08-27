@@ -91,6 +91,10 @@ export const designEn: DesignTranslations = {
 				title: 'Design missions',
 				subtitle: 'Paid work, briefed by companies, delivered by designers.'
 			},
+			security: {
+				title: 'Security missions',
+				subtitle: 'Paid work, scoped by companies, delivered by people who break things carefully.'
+			},
 			ai: {
 				title: 'AI missions',
 				subtitle:
@@ -226,7 +230,14 @@ export const designEn: DesignTranslations = {
 		notAClaim: 'Nothing here is declared: every line comes from work somebody else validated.',
 		missionsTitle: 'Paid missions',
 		missionsRating: '{average} out of 5, across {count} ratings',
-		missionsNone: 'No revealed rating yet.'
+		missionsNone: 'No revealed rating yet.',
+		availabilityTitle: 'Open to work',
+		availableForMissions: 'Available for missions',
+		notAvailable: 'Not looking right now',
+		lookingFor: 'Looking for',
+		dayRate: 'Day rate',
+		availableFrom: 'Free from {date}',
+		availabilityDeclared: 'Declared by this person, like everything in this block.'
 	},
 	designWizard: {
 		title: 'Welcome to the design side',

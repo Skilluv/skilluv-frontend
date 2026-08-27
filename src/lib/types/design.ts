@@ -331,13 +331,61 @@ export interface DesignAttestationRef {
 	verification_code: string;
 }
 
+/**
+ * What somebody says they are open to.
+ *
+ * A declaration, never a credential, and the payload keeps it separate from
+ * everything above it for that reason. `day_rate_range` is a range rather than
+ * a price on purpose: a range can be filtered on and negotiated from, a price
+ * only anchors.
+ */
+export interface DesignAvailability {
+	available_for_missions: boolean;
+	looking_for: string | null;
+	day_rate_range: string | null;
+	available_from: string | null;
+}
+
+/** How much paid work somebody has delivered, and how it was received. */
+export interface DesignMissionRecord {
+	delivered: number;
+	by_type: { mission_type: string; delivered: number }[];
+	/** Null, not zero, for somebody nobody has rated yet. */
+	rating_average: number | null;
+	rating_count: number;
+}
+
 export interface DesignProfile {
 	username: string;
 	craft_score: CraftScore;
+	/**
+	 * The same object as `craft_score`, under the key every domain now answers
+	 * so one client reads all eight. Both hold the same thing until the front
+	 * moves over; `craft_score` stays the one this section reads.
+	 */
+	score?: CraftScore;
 	artefacts: DesignArtefact[];
 	contests: DesignContestStanding[];
 	trades: DesignTradeCount[];
 	attestations: DesignAttestationRef[];
+	/**
+	 * Served inline since the fix batch, so the mission record no longer costs
+	 * its own round trip. Optional while an older deployment answers.
+	 */
+	missions?: DesignMissionRecord;
+	/** Null for somebody who has never said. */
+	availability?: DesignAvailability | null;
+}
+
+export interface SetAvailabilityRequest {
+	/**
+	 * Every field is written as sent, so omitting one clears it: this is the
+	 * whole availability state, not a patch.
+	 */
+	available_for_missions: boolean;
+	looking_for?: string | null;
+	day_rate_range?: string | null;
+	available_from?: string | null;
 }
 
 export interface CraftScoreTier {
@@ -782,8 +830,20 @@ export interface PortfolioPlatform {
 	skill_domain: string | null;
 	name: string;
 	profile_url_pattern: string | null;
+	/**
+	 * The display words the endpoint seeded, in French. Kept by the backend for
+	 * the transition and **not rendered**: this endpoint is public and serves
+	 * an FR/EN audience.
+	 */
 	items_label: string | null;
 	reach_label: string | null;
+	/**
+	 * Language-neutral keys for the two labels — `downloads`, `stars`,
+	 * `repositories`. Rendered instead of the words above, so the reader's
+	 * language decides. Optional while an older deployment answers.
+	 */
+	items_label_key?: string | null;
+	reach_label_key?: string | null;
 	/**
 	 * False for every design platform today, which is why the figures below
 	 * are declared rather than fetched.

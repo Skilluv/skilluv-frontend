@@ -17,10 +17,12 @@
 	 *    `concluded`, and each verb is refused outside its phase. The page
 	 *    offers the action that can currently land rather than buttons that
 	 *    answer 400.
-	 * 3. **Every category is listed, and the page says why.** `Category`
-	 *    carries no `skill_domain`, so this cannot narrow to the design ones.
-	 *    Filtering on a name heuristic would silently hide a category, which is
-	 *    worse than showing a few that belong elsewhere.
+	 * 3. **The categories are the design ones.** `award_categories` gained a
+	 *    `skill_domain` in the backend fix batch, so `?domain=design` returns
+	 *    this family's awards plus the platform-wide ones. Before that the page
+	 *    had to list every category and say why — filtering on a name heuristic
+	 *    would have silently hidden one, which is worse than showing a few that
+	 *    belong elsewhere.
 	 */
 	import { onMount } from 'svelte';
 	import { Trophy, Vote } from '@lucide/svelte';
@@ -44,6 +46,9 @@
 	 * stop offering the current edition every January.
 	 */
 	const LATEST_YEAR = new Date().getFullYear() - 1;
+
+	/** The family this page shows. Cross-cutting categories come back too. */
+	const DOMAIN = 'design';
 
 	let year = $state(LATEST_YEAR);
 	let edition = $state<AwardEdition | null>(null);
@@ -115,7 +120,7 @@
 			// and the category list is still worth showing next to that.
 			const [ed, cats] = await Promise.allSettled([
 				awardsApi.edition(year),
-				awardsApi.categories()
+				awardsApi.categories(DOMAIN)
 			]);
 
 			if (ed.status === 'fulfilled') {
@@ -310,11 +315,7 @@
 				<h2 class="text-sm font-bold uppercase tracking-wider text-text-muted">
 					{i18n.t('designAwards.categoriesTitle')}
 				</h2>
-				{#if categories.length > 0}
-					<p class="mt-1 text-xs text-text-muted" data-testid="design-awards-domain-note">
-						{i18n.t('designAwards.everyDomainNote')}
-					</p>
-				{/if}
+
 			</div>
 
 			{#each categories as category (category.slug)}

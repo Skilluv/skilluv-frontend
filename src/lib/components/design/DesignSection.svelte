@@ -17,14 +17,13 @@
 	import { onMount } from 'svelte';
 	import { BadgeCheck, ExternalLink, RefreshCw, Trophy } from '@lucide/svelte';
 	import { designApi } from '$lib/api/design';
-	import { missionsApi } from '$lib/api/missions';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
-	import type { DesignProfile, MissionStanding } from '$types';
+	import type { DesignProfile } from '$types';
 
 	interface Props {
 		username: string;
@@ -36,12 +35,16 @@
 
 	let profile = $state<DesignProfile | null>(null);
 	/**
-	 * A-04 section 5. Not in the design-profile payload: mission behaviour is
-	 * its own endpoint, addressed by username like this one. `average` is null
-	 * rather than zero when nothing is revealed yet — an unrated person is not
-	 * a badly rated one, and a zero here would say the opposite.
+	 * A-04 sections 5 and 9, both served inline since the backend fix batch —
+	 * the mission record no longer costs its own round trip, and availability
+	 * has fields at last.
+	 *
+	 * `rating_average` is null rather than zero when nobody has rated: an
+	 * unrated person is not a badly rated one, and a zero would say the
+	 * opposite.
 	 */
-	let standing = $state<MissionStanding | null>(null);
+	let missions = $derived(profile?.missions ?? null);
+	let availability = $derived(profile?.availability ?? null);
 	let loading = $state(true);
 	let recomputing = $state(false);
 	let breakdownOpen = $state(false);
@@ -72,15 +75,8 @@
 	async function load() {
 		loading = true;
 		try {
-			const [record, missions] = await Promise.allSettled([
-				designApi.profile(username),
-				missionsApi.standing(username)
-			]);
-			// Settled: a designer with a record and no mission is the common
-			// case, and a 404 on one must not blank the other.
-			standing = missions.status === 'fulfilled' ? (missions.value.data?.standing ?? null) : null;
-			if (record.status === 'rejected') throw record.reason;
-			profile = record.value.data;
+			const res = await designApi.profile(username);
+			profile = res.data;
 		} catch {
 			// A profile with no design record answers 404 here, and so does a
 			// hidden one. Either way the section simply does not render.
@@ -339,18 +335,62 @@
 				</div>
 			{/if}
 
-			{#if standing && standing.received > 0}
+			{#if missions && missions.delivered > 0}
 				<div class="border-t border-border pt-4" data-testid="profile-mission-standing">
 					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.t('designProfile.missionsTitle')}
 					</p>
 					<p class="mt-2 text-sm text-text-primary">
-						{standing.average !== null
+						{missions.rating_average !== null
 							? i18n.t('designProfile.missionsRating', {
-									average: standing.average.toFixed(1),
-									count: standing.received
+									average: missions.rating_average.toFixed(1),
+									count: missions.rating_count
 								})
 							: i18n.t('designProfile.missionsNone')}
+					</p>
+					{#if missions.by_type.length > 0}
+						<div class="mt-2 flex flex-wrap gap-1.5">
+							{#each missions.by_type as row (row.mission_type)}
+								<Badge size="sm">{row.mission_type} · {row.delivered}</Badge>
+							{/each}
+						</div>
+					{/if}
+				</div>
+			{/if}
+
+			<!-- A-04 section 9. A declaration, and the block says so: nothing
+			     here was confirmed by anybody, unlike everything above it. -->
+			{#if availability}
+				<div class="border-t border-border pt-4" data-testid="profile-availability">
+					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
+						{i18n.t('designProfile.availabilityTitle')}
+					</p>
+					<div class="mt-2 flex flex-wrap items-center gap-2">
+						<Badge variant={availability.available_for_missions ? 'success' : 'default'}>
+							{availability.available_for_missions
+								? i18n.t('designProfile.availableForMissions')
+								: i18n.t('designProfile.notAvailable')}
+						</Badge>
+						{#if availability.day_rate_range}
+							<span class="text-sm text-text-primary">
+								{i18n.t('designProfile.dayRate')} · {availability.day_rate_range}
+							</span>
+						{/if}
+						{#if availability.available_from}
+							<span class="text-sm text-text-muted">
+								{i18n.t('designProfile.availableFrom', {
+									date: fmtDate(availability.available_from)
+								})}
+							</span>
+						{/if}
+					</div>
+					{#if availability.looking_for}
+						<p class="mt-1 text-sm text-text-muted">
+							{i18n.t('designProfile.lookingFor')} · {availability.looking_for}
+						</p>
+					{/if}
+					<p class="mt-1 text-xs text-text-muted">
+						{i18n.t('designProfile.availabilityDeclared')}
 					</p>
 				</div>
 			{/if}

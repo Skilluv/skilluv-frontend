@@ -91,6 +91,10 @@ export const designFr: DesignTranslations = {
 				title: 'Missions design',
 				subtitle: 'Du travail payé, briefé par des entreprises, livré par des designers.'
 			},
+			security: {
+				title: 'Missions sécurité',
+				subtitle: 'Du travail payé, cadré par des entreprises, livré par des gens qui cassent avec méthode.'
+			},
 			ai: {
 				title: 'Missions IA',
 				subtitle:
@@ -227,7 +231,14 @@ export const designFr: DesignTranslations = {
 			'Rien ici n’est déclaré : chaque ligne vient d’un travail que quelqu’un d’autre a validé.',
 		missionsTitle: 'Missions payées',
 		missionsRating: '{average} sur 5, sur {count} notes',
-		missionsNone: 'Aucune note révélée pour l’instant.'
+		missionsNone: 'Aucune note révélée pour l’instant.',
+		availabilityTitle: 'Ouvert aux missions',
+		availableForMissions: 'Disponible pour des missions',
+		notAvailable: 'Ne cherche pas en ce moment',
+		lookingFor: 'Cherche',
+		dayRate: 'Tarif journalier',
+		availableFrom: 'Libre à partir du {date}',
+		availabilityDeclared: 'Déclaré par la personne, comme tout ce bloc.'
 	},
 	designWizard: {
 		title: 'Bienvenue chez les designers',

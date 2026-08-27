@@ -33,9 +33,15 @@ import { createApiClient } from './client';
 const api = createApiClient();
 
 export const awardsApi = {
-	/** Every category, and what kind of subject each one nominates. */
-	categories() {
-		return api.get<ApiResponse<{ categories: AwardCategory[] }>>('/awards/categories');
+	/**
+	 * The categories, and what kind of subject each one nominates.
+	 *
+	 * `domain` narrows to one family's awards plus the platform-wide ones.
+	 * Omitting it returns every category, which is what this page had to do
+	 * before `award_categories` carried a `skill_domain` at all.
+	 */
+	categories(domain?: string) {
+		return api.get<ApiResponse<{ categories: AwardCategory[] }>>('/awards/categories', { domain });
 	},
 
 	/**

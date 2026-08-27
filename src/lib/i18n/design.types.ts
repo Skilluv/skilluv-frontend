@@ -104,6 +104,7 @@ export interface DesignTranslations {
 		boards: {
 			design: { title: string; subtitle: string };
 			ai: { title: string; subtitle: string };
+			security: { title: string; subtitle: string };
 		};
 		howItWorksTitle: string;
 		howItWorksBody: string;
@@ -230,6 +231,13 @@ export interface DesignTranslations {
 		missionsTitle: string;
 		missionsRating: string;
 		missionsNone: string;
+		availabilityTitle: string;
+		availableForMissions: string;
+		notAvailable: string;
+		lookingFor: string;
+		dayRate: string;
+		availableFrom: string;
+		availabilityDeclared: string;
 	};
 	/** SKI-265 — the designer onboarding wizard. */
 	designWizard: {

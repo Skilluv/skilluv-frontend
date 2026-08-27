@@ -343,7 +343,6 @@ export interface DesignWorkflowTranslations {
 		nominateCta: string;
 		nominatedToast: string;
 		closedNote: string;
-		everyDomainNote: string;
 		previousEditions: string;
 	};
 

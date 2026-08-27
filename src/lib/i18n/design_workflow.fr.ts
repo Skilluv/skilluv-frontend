@@ -349,8 +349,6 @@ export const designWorkflowFr: DesignWorkflowTranslations = {
 		nominateCta: 'Proposer',
 		nominatedToast: 'Proposé.',
 		closedNote: 'Plus rien ne bouge sur cette édition.',
-		everyDomainNote:
-			'Toutes les catégories de la plateforme sont listées : le backend ne dit pas encore à quel domaine chacune appartient.',
 		previousEditions: 'Autres années'
 	},
 

@@ -17,7 +17,8 @@ const PUBLIC_PAGES = [
 	'/trust',
 	'/ctf',
 	'/blue-lab',
-	'/security/bounties'
+	'/security/bounties',
+	'/security/missions'
 ];
 
 const SESSION_PAGES = [
@@ -84,6 +85,11 @@ test.describe('Skilluv Cyber pages', () => {
 		await gotoHydrated(page, '/settings/credentials');
 		await expect(page.getByTestId('credentials-page')).toBeVisible();
 		await expect(page.getByRole('button', { name: /enregistrer|record it/i })).toBeDisabled();
+	});
+
+	test('the cyber mission board renders', async ({ page }) => {
+		await gotoHydrated(page, '/security/missions');
+		await expect(page.getByTestId('security-missions-page')).toBeVisible();
 	});
 
 	test('no i18n key leaks as a raw dotted path on any cyber page', async ({ page }) => {
