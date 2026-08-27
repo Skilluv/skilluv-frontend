@@ -606,6 +606,7 @@
 							     what you noted, what you are aiming at. -->
 							<div class="my-1.5 h-px bg-border"></div>
 							{#each [
+								{ href: '/dashboard', icon: Compass, label: i18n.t('dashboardHome.title') },
 								{ href: '/dashboard/bookmarks', icon: Bookmark, label: i18n.t('bookmarks.title') },
 								{ href: '/dashboard/notes', icon: NotebookPen, label: i18n.t('notes.title') },
 								{ href: '/dashboard/goals', icon: Target, label: i18n.t('goals.title') },
@@ -705,6 +706,7 @@
 						{ href: '/design/missions', label: i18n.t('missions.boards.design.title') },
 						{ href: '/ai', label: i18n.t('aiDomain.title') },
 						{ href: '/ai/missions', label: i18n.t('missions.boards.ai.title') },
+						{ href: '/dashboard', label: i18n.t('dashboardHome.title') },
 						{ href: '/dashboard/bookmarks', label: i18n.t('bookmarks.title') },
 						{ href: '/dashboard/notes', label: i18n.t('notes.title') },
 						{ href: '/dashboard/goals', label: i18n.t('goals.title') },

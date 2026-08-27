@@ -1316,6 +1316,45 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 		otherLocaleNotice: string;
 	};
 	/** The five craft records served with a nested score. */
+	/** The dashboard home: what to do next, what is waiting on you. */
+	dashboardHome: {
+		title: string;
+		greeting: string;
+		waitingOnYou: string;
+		nothingWaiting: string;
+		invitationsTitle: string;
+		closesOn: string;
+		invitedOn: string;
+		openContest: string;
+		nextTitle: string;
+		cachedNotice: string;
+		nextEmpty: string;
+		nextEmptyBody: string;
+		suggestionsUnavailable: string;
+		pickAnOrientation: string;
+		difficulty: string;
+		estimatedHours: string;
+		formats: { individual: string; contest: string };
+		partOfTitle: string;
+		eventsTitle: string;
+		contribution: string;
+		mentoringTitle: string;
+		asMentor: string;
+		asMentee: string;
+		periodEnds: string;
+		notRenewing: string;
+		stewardshipsTitle: string;
+		since: string;
+		yoursTitle: string;
+		shortcuts: {
+			bookmarks: string;
+			notes: string;
+			goals: string;
+			vouchings: string;
+			slices: string;
+			teams: string;
+		};
+	};
 	domainRecord: {
 		titles: {
 			code: string;

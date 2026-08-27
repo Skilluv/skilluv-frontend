@@ -20,6 +20,9 @@ export * from './ai_domain';
 // The creators marketplace — a whole business pillar the front ignored.
 export * from './marketplace';
 
+// What is waiting for you: the `/users/me/**` reads `/dashboard` had no home for.
+export * from './dashboard';
+
 // The per-domain onboarding wizard, rendered from what the backend serves.
 export * from './domain_wizard';
 

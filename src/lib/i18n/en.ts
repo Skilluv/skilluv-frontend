@@ -1143,6 +1143,44 @@ export const en: Translations = {
 		otherLocaleNotice:
 			'Served in {locale}: this guide has not been translated into your language yet.'
 	},
+	dashboardHome: {
+		title: 'Your dashboard',
+		greeting: 'Hello, {name}',
+		waitingOnYou: '{n} thing waiting on an answer from you.',
+		nothingWaiting: 'Nothing is waiting on you.',
+		invitationsTitle: 'Waiting on you',
+		closesOn: 'closes {date}',
+		invitedOn: 'invited {date}',
+		openContest: 'Open the contest',
+		nextTitle: 'Worth doing next',
+		cachedNotice: 'Refreshed hourly',
+		nextEmpty: 'Nothing to suggest yet',
+		nextEmptyBody: 'Finish a challenge or two and this fills in.',
+		suggestionsUnavailable: 'Suggestions need a discipline to work from.',
+		pickAnOrientation: 'Pick a trade',
+		difficulty: 'difficulty {n}',
+		estimatedHours: '~{n}h',
+		formats: { individual: 'Solo brief', contest: 'Contest' },
+		partOfTitle: 'What you are part of',
+		eventsTitle: 'Events',
+		contribution: 'Contribution',
+		mentoringTitle: 'Mentoring',
+		asMentor: 'As mentor',
+		asMentee: 'As mentee',
+		periodEnds: 'Runs until {date}',
+		notRenewing: 'not renewing',
+		stewardshipsTitle: 'Projects you steward',
+		since: 'since {date}',
+		yoursTitle: 'Yours',
+		shortcuts: {
+			bookmarks: 'Bookmarks',
+			notes: 'Notes',
+			goals: 'Goals',
+			vouchings: 'Vouchings',
+			slices: 'My challenges',
+			teams: 'Teams'
+		}
+	},
 	domainRecord: {
 		titles: {
 			code: 'Code record',

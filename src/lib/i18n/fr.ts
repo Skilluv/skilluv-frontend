@@ -1146,6 +1146,44 @@ export const fr: Translations = {
 		otherLocaleNotice:
 			"Servi en {locale} : ce guide n'a pas encore été traduit dans ta langue."
 	},
+	dashboardHome: {
+		title: 'Ton tableau de bord',
+		greeting: 'Salut, {name}',
+		waitingOnYou: '{n} chose attend une réponse de toi.',
+		nothingWaiting: 'Rien n’attend après toi.',
+		invitationsTitle: 'En attente de toi',
+		closesOn: 'ferme le {date}',
+		invitedOn: 'invité le {date}',
+		openContest: 'Ouvrir le contest',
+		nextTitle: 'À faire ensuite',
+		cachedNotice: 'Rafraîchi toutes les heures',
+		nextEmpty: 'Rien à suggérer pour l’instant',
+		nextEmptyBody: 'Termine un challenge ou deux et ça se remplit.',
+		suggestionsUnavailable: 'Les suggestions ont besoin d’une discipline pour travailler.',
+		pickAnOrientation: 'Choisir un métier',
+		difficulty: 'difficulté {n}',
+		estimatedHours: '~{n}h',
+		formats: { individual: 'Brief solo', contest: 'Contest' },
+		partOfTitle: 'Ce dont tu fais partie',
+		eventsTitle: 'Événements',
+		contribution: 'Contribution',
+		mentoringTitle: 'Mentorat',
+		asMentor: 'Comme mentor',
+		asMentee: 'Comme mentoré',
+		periodEnds: 'Court jusqu’au {date}',
+		notRenewing: 'ne se renouvelle pas',
+		stewardshipsTitle: 'Projets dont tu es steward',
+		since: 'depuis le {date}',
+		yoursTitle: 'À toi',
+		shortcuts: {
+			bookmarks: 'Signets',
+			notes: 'Notes',
+			goals: 'Objectifs',
+			vouchings: 'Cautions',
+			slices: 'Mes challenges',
+			teams: 'Équipes'
+		}
+	},
 	domainRecord: {
 		titles: {
 			code: 'Parcours code',
