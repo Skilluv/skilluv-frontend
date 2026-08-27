@@ -1,9 +1,14 @@
 import type {
 	ApiResponse,
+	AudioFile,
+	AudioFileRole,
+	AudioSources,
 	AuditionRequest,
 	CastingDetail,
+	DeclareSourceRequest,
 	OpenCastingRequest,
-	VoiceCasting
+	VoiceCasting,
+	WorkCredit
 } from '$lib/types';
 import { createApiClient } from './client';
 
@@ -69,5 +74,59 @@ export const audioCastingsApi = {
 		return api.get<ApiResponse<{ url: string; expires_in_seconds: number }>>(
 			`/audio/files/${fileId}/listen`
 		);
+	}
+};
+
+/**
+ * One audio delivery: the files it is made of, and what it was built from.
+ *
+ * The two are separate endpoints because they answer to different people. The
+ * measurements are readable by any signed-in account — they are what a
+ * reviewer grades on, and hiding them would make the grid unusable — while the
+ * bytes go through `listen`. The source declaration is public outright: the
+ * provenance of a published piece is what a stranger has to be able to check
+ * for the attestation on it to mean anything.
+ */
+export const audioDeliveryApi = {
+	files(sliceId: string) {
+		return api.get<ApiResponse<AudioFile[]>>(`/audio/slices/${sliceId}/files`);
+	},
+
+	/**
+	 * Multipart, with a `role` part and a `file` part. The budget of the
+	 * slice's subtype decides what fits, and it is a row rather than a
+	 * constant, so the refusal comes from the server.
+	 */
+	upload(sliceId: string, file: File, role: AudioFileRole) {
+		const form = new FormData();
+		form.set('role', role);
+		form.set('file', file);
+		return api.upload<ApiResponse<{ id: string; analysis: string }>>(
+			`/audio/slices/${sliceId}/files`,
+			form
+		);
+	},
+
+	sources(sliceId: string) {
+		return api.get<ApiResponse<AudioSources>>(`/audio/slices/${sliceId}/sources`);
+	},
+
+	/**
+	 * Adding a source after saying the list was complete makes it incomplete
+	 * again, and the backend clears the declaration for exactly that reason.
+	 * Callers should re-read rather than assume the statement survived.
+	 */
+	declareSource(sliceId: string, payload: DeclareSourceRequest) {
+		return api.post<ApiResponse<{ id: string }>>(`/audio/slices/${sliceId}/sources`, payload);
+	},
+
+	/** The statement the attestation generators read. Not a row count. */
+	completeSources(sliceId: string) {
+		return api.post<ApiResponse<unknown>>(`/audio/slices/${sliceId}/sources/complete`);
+	},
+
+	/** Credits attested on a project's released work, each with its code. */
+	projectCredits(slug: string) {
+		return api.get<ApiResponse<WorkCredit[]>>(`/projects/${encodeURIComponent(slug)}/credits`);
 	}
 };

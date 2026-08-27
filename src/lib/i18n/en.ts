@@ -874,6 +874,70 @@ export const en: Translations = {
 			noAccess: 'This page is reserved to plagiarism_reviewer capability holders.'
 		}
 	},
+	projectCredits: {
+		title: 'Credits on this project',
+		verifyCta: 'Check it'
+	},
+	audioDelivery: {
+		title: 'Audio delivery',
+		empty: 'Nothing delivered yet.',
+		roleLabel: 'Role of the file',
+		roles: {
+			master: 'Masters',
+			stem: 'Stems',
+			preview: 'Previews',
+			project_archive: 'Project files',
+			documentation: 'Documentation'
+		},
+		analysis: {
+			pending: 'Not measured yet',
+			running: 'Measuring',
+			done: 'Nothing measurable on this file',
+			skipped: 'Not measured',
+			failed: 'Measurement failed'
+		},
+		analysisFailed: 'Measurement failed on this file',
+		mono: 'mono',
+		channels: '{n} channels',
+		listenCta: 'Listen',
+		linkExpires: 'This link expires shortly — reload the page to get another.',
+		uploadCta: 'Add a file',
+		uploadedToast: 'File stored. The measurements run on a sweep and are not there yet.'
+	},
+	audioSources: {
+		title: 'Sources and licences',
+		empty: 'No third-party source listed.',
+		addCta: 'Add a source',
+		declaredComplete: 'Declared complete on {date}',
+		notDeclared:
+			'Nobody has stated this list is complete. An empty list is not the same as an original piece — the attestation reads the statement, not the count.',
+		completeCta: 'This list is complete',
+		completedToast: 'Declaration recorded.',
+		declaredToast: 'Source added. The completeness statement was cleared.',
+		purchasedFrom: 'Bought from {name}',
+		noCommercial: 'Commercial use not permitted',
+		openSource: 'Open the source',
+		attributionRequired: 'A Creative Commons licence needs its credit line, verbatim.',
+		reopensNotice:
+			'Adding a source after declaring the list complete clears that statement — it stopped being true.',
+		formTitle: 'Declare a source',
+		formKind: 'How you came by it',
+		formName: 'What it is',
+		formNamePlaceholder: 'Splice pack, field recording, sample library…',
+		formUrl: 'Where it came from',
+		formLicence: 'Licence identifier',
+		formAttribution: 'Credit line',
+		formAttributionPlaceholder: 'As it must appear, word for word.',
+		formSubmit: 'Declare',
+		kinds: {
+			original: 'Original',
+			public_domain: 'Public domain',
+			creative_commons: 'Creative Commons',
+			royalty_free: 'Royalty-free',
+			licensed_commercial: 'Negotiated licence',
+			third_party_work: 'Third-party work'
+		}
+	},
 	castings: {
 		title: 'Voice castings',
 		subtitle:

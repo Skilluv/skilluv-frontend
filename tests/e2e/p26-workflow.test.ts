@@ -156,6 +156,8 @@ function makeSlice(overrides: Record<string, unknown> = {}) {
 	return {
 		id: 's-1',
 		title: 'Corriger le parsing des dates ISO',
+		slice_type: 'github_issue',
+		primary_domain: 'code',
 		description: 'Le parser casse sur les offsets negatifs.',
 		acceptance_criteria: ['Tests unitaires verts', 'Pas de regression sur les offsets positifs'],
 		labels: ['code', 'bug'],
@@ -207,7 +209,7 @@ test.describe('SKI-93 slice detail - claim', () => {
 		let claimCalls = 0;
 		await mockApi(page, [
 			...meRoutes(challenger),
-			{ path: '/slices/s-1', handler: json({ data: makeSlice() }) },
+			{ path: '/slices/s-1', handler: json({ data: { slice: makeSlice() } }) },
 			{
 				path: '/slices/s-1/claim',
 				handler: (route) => {
@@ -237,7 +239,7 @@ test.describe('SKI-93 slice detail - claim', () => {
 	test('an anonymous visitor sees the login CTA instead of claim', async ({ page }) => {
 		await mockApi(page, [
 			{ path: '/auth/me', handler: apiError(401, 'AUTH_UNAUTHORIZED', 'nope') },
-			{ path: '/slices/s-1', handler: json({ data: makeSlice() }) }
+			{ path: '/slices/s-1', handler: json({ data: { slice: makeSlice() } }) }
 		]);
 
 		await gotoClientSide(page, '/slices/s-1');
@@ -251,7 +253,7 @@ test.describe('SKI-93 slice detail - claim', () => {
 		await signIn(context, 'challenger');
 		await mockApi(page, [
 			...meRoutes(challenger),
-			{ path: '/slices/s-1', handler: json({ data: makeSlice({ min_rank: 'artisan' }) }) },
+			{ path: '/slices/s-1', handler: json({ data: { slice: makeSlice({ min_rank: 'artisan' }) } }) },
 			{
 				path: '/slices/s-1/claim',
 				handler: apiError(403, 'SLICE_RANK_TOO_LOW', 'rank insuffisant')
@@ -279,7 +281,7 @@ test.describe('SKI-93 slice detail - submit PR', () => {
 		let submitted: Record<string, unknown> | null = null;
 		await mockApi(page, [
 			...meRoutes(challenger),
-			{ path: '/slices/s-1', handler: json({ data: claimed }) },
+			{ path: '/slices/s-1', handler: json({ data: { slice: claimed } }) },
 			{
 				path: '/slices/s-1/submit-pr',
 				handler: (route) => {
@@ -311,7 +313,7 @@ test.describe('SKI-93 slice detail - submit PR', () => {
 		await signIn(context, 'challenger');
 		await mockApi(page, [
 			...meRoutes(challenger),
-			{ path: '/slices/s-1', handler: json({ data: claimed }) }
+			{ path: '/slices/s-1', handler: json({ data: { slice: claimed } }) }
 		]);
 
 		await gotoClientSide(page, '/slices/s-1');
@@ -326,12 +328,14 @@ test.describe('SKI-93 slice detail - submit PR', () => {
 			{
 				path: '/slices/s-1',
 				handler: json({
-					data: makeSlice({
-						status: 'validated',
-						claimed_by_user_id: 'u-challenger',
-						attestation_hash: hash,
-						submitted_pr_url: 'https://github.com/skilluv/skilluv-backend/pull/77'
-					})
+					data: {
+						slice: makeSlice({
+							status: 'validated',
+							claimed_by_user_id: 'u-challenger',
+							attestation_hash: hash,
+							submitted_pr_url: 'https://github.com/skilluv/skilluv-backend/pull/77'
+						})
+					}
 				})
 			}
 		]);

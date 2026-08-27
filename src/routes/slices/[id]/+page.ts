@@ -9,7 +9,8 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const api = createSlicesApi(fetch);
 	try {
 		const res = await api.get(params.id);
-		return { slice: res.data };
+		// `{ data: { slice } }`, not `{ data: slice }` — see `SliceEnvelope`.
+		return { slice: res.data.slice };
 	} catch (err) {
 		if (err instanceof SkilluError && err.status === 404) {
 			error(404, 'Slice introuvable');

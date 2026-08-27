@@ -1064,6 +1064,71 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 	 */
 	/** `content_guides`, every discipline — onboarding, toolkits, templates. */
 	/** Voice castings — the audio domain's own hiring loop. */
+	/** The files of an audio delivery, and what was measured on them. */
+	/** Who is credited on a project, from the attestations that carry it. */
+	projectCredits: {
+		title: string;
+		verifyCta: string;
+	};
+	audioDelivery: {
+		title: string;
+		empty: string;
+		roleLabel: string;
+		roles: {
+			master: string;
+			stem: string;
+			preview: string;
+			project_archive: string;
+			documentation: string;
+		};
+		analysis: {
+			pending: string;
+			running: string;
+			done: string;
+			skipped: string;
+			failed: string;
+		};
+		analysisFailed: string;
+		mono: string;
+		channels: string;
+		listenCta: string;
+		linkExpires: string;
+		uploadCta: string;
+		uploadedToast: string;
+	};
+	/** What a delivery was built from, and the statement that the list is whole. */
+	audioSources: {
+		title: string;
+		empty: string;
+		addCta: string;
+		declaredComplete: string;
+		notDeclared: string;
+		completeCta: string;
+		completedToast: string;
+		declaredToast: string;
+		purchasedFrom: string;
+		noCommercial: string;
+		openSource: string;
+		attributionRequired: string;
+		reopensNotice: string;
+		formTitle: string;
+		formKind: string;
+		formName: string;
+		formNamePlaceholder: string;
+		formUrl: string;
+		formLicence: string;
+		formAttribution: string;
+		formAttributionPlaceholder: string;
+		formSubmit: string;
+		kinds: {
+			original: string;
+			public_domain: string;
+			creative_commons: string;
+			royalty_free: string;
+			licensed_commercial: string;
+			third_party_work: string;
+		};
+	};
 	castings: {
 		title: string;
 		subtitle: string;

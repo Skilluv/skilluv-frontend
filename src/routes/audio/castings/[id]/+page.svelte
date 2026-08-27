@@ -96,8 +96,8 @@
 		// hidden, which is the safe way to be wrong.
 		if (auth.user && detail) {
 			try {
-				const slice = await slicesApi.get(detail.casting.slice_id);
-				sliceClaimedBy = slice.data.claimed_by_user_id;
+				const res = await slicesApi.get(detail.casting.slice_id);
+				sliceClaimedBy = res.data.slice.claimed_by_user_id;
 			} catch {
 				sliceClaimedBy = null;
 			}

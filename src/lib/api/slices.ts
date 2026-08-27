@@ -15,7 +15,7 @@ export function createSlicesApi(customFetch: typeof fetch) {
 	const scoped = createApiClient(customFetch);
 	return {
 		get(id: string) {
-			return scoped.get<ApiResponse<Slice>>(`/slices/${id}`);
+			return scoped.get<ApiResponse<SliceEnvelope>>(`/slices/${id}`);
 		},
 		mySlices(params?: { status?: SliceStatus; page?: number; per_page?: number }) {
 			return scoped.get<ApiResponse<{ slices: Slice[]; page: number; per_page: number }>>(
@@ -52,9 +52,29 @@ export interface SliceExternalMetadata {
 	repo_name?: string;
 }
 
+/**
+ * What `GET /slices/{id}` actually answers.
+ *
+ * `routes::slices::get_slice` wraps the row: `{ data: { slice } }`. This was
+ * typed as `ApiResponse<Slice>`, so TypeScript was happy and every field read
+ * off it at runtime was `undefined` — the detail page rendered an empty title
+ * against a real backend, and only passed its tests because the mock encoded
+ * the front's assumption rather than the backend's answer.
+ */
+export interface SliceEnvelope {
+	slice: Slice;
+}
+
 export interface Slice {
 	id: string;
 	title: string;
+	/**
+	 * `github_issue`, `audio_artifact`, `design_artifact`… Serialised by
+	 * `ProjectSlice` all along; declared here now that a surface branches on
+	 * it.
+	 */
+	slice_type: string;
+	primary_domain: string;
 	description: string;
 	acceptance_criteria: string[];
 	labels: string[];
@@ -131,7 +151,7 @@ export const slicesApi = {
 	},
 
 	get(id: string) {
-		return api.get<ApiResponse<Slice>>(`/slices/${id}`);
+		return api.get<ApiResponse<SliceEnvelope>>(`/slices/${id}`);
 	},
 
 	claim(id: string) {

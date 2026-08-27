@@ -11,6 +11,7 @@
 	import ActiveSkilluversWidget from '$components/slice/ActiveSkilluversWidget.svelte';
 	import DiaryWidget from '$components/slice/DiaryWidget.svelte';
 	import { BookmarkButton, NoteEditor } from '$components/saved';
+	import { AudioDelivery, AudioSources, ProjectCredits } from '$components/audio';
 	import { ExternalLink, Check, GitBranch, ShieldCheck } from '@lucide/svelte';
 
 	interface Props {
@@ -388,6 +389,17 @@
 				</p>
 			{/if}
 
+			<!-- The audio delivery: the files with what was measured on them, and
+			     what the work was built from. Only on an `audio_artifact` slice —
+			     the two endpoints would answer for any id, and a code slice has
+			     no business showing a loudness meter. -->
+			{#if slice.slice_type === 'audio_artifact'}
+				<div class="mb-4 space-y-4">
+					<AudioDelivery sliceId={slice.id} {isMine} />
+					<AudioSources sliceId={slice.id} {isMine} />
+				</div>
+			{/if}
+
 			<!-- Diary -->
 			<DiaryWidget sliceId={slice.id} canPost={isMine} />
 
@@ -400,6 +412,10 @@
 		<!-- Side column -->
 		<aside class="lg:sticky lg:top-24 lg:self-start space-y-4">
 			<ActiveSkilluversWidget projectSlug={slice.project_slug} />
+
+			<!-- Credits attested on this project's released work. Cross-domain
+			     since migration 0515, and silent when there are none. -->
+			<ProjectCredits projectSlug={slice.project_slug} />
 		</aside>
 	</div>
 </div>

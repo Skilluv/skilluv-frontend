@@ -80,3 +80,107 @@ export const CASTING_SAMPLE_LINE_MAX = 4000;
 export const AUDITION_NOTES_MAX = 4000;
 /** Default take ceiling when the opener names none. */
 export const CASTING_DEFAULT_MAX_SECONDS = 90;
+
+// ---------------------------------------------------------------------------
+// The delivery itself — files and the sources they were built from
+// ---------------------------------------------------------------------------
+
+/** What part a file plays in a delivery, from migration 0409. */
+export const AUDIO_FILE_ROLES = [
+	'master',
+	'stem',
+	'preview',
+	'project_archive',
+	'documentation'
+] as const;
+export type AudioFileRole = (typeof AUDIO_FILE_ROLES)[number];
+
+/**
+ * One stored file.
+ *
+ * The measurements are measured, never declared: absent means the analysis has
+ * not run — or that ffmpeg is not installed where it would have — and never
+ * zero. A meter that draws `0 LUFS` for "unknown" is a meter that lies.
+ */
+export interface AudioFile {
+	id: string;
+	role: AudioFileRole;
+	original_filename: string;
+	byte_size: number;
+	container: string;
+	duration_ms: number | null;
+	sample_rate_hz: number | null;
+	bit_depth: number | null;
+	channels: number | null;
+	/** Integrated loudness. A number, not a decimal string — see the handler. */
+	loudness_lufs: number | null;
+	true_peak_dbfs: number | null;
+	loudness_range_lu: number | null;
+	analysis_status: string;
+	analysis_error: string | null;
+	/** Four hundred peaks, 0..100, for drawing. Absent until the sweep has run. */
+	waveform_peaks: number[] | null;
+}
+
+/**
+ * How a source was come by.
+ *
+ * The distinction that matters commercially is `creative_commons`: some of
+ * those licences forbid exactly the commercial use a paid mission is.
+ */
+export const AUDIO_SOURCE_KINDS = [
+	'original',
+	'public_domain',
+	'creative_commons',
+	'royalty_free',
+	'licensed_commercial',
+	'third_party_work'
+] as const;
+export type AudioSourceKind = (typeof AUDIO_SOURCE_KINDS)[number];
+
+export interface AudioSource {
+	id: string;
+	kind: AudioSourceKind;
+	source_name: string;
+	source_url: string | null;
+	/** `CC-BY-4.0`, `CC0-1.0` — the licence's own identifier when it has one. */
+	licence_identifier: string | null;
+	/** The credit line, verbatim, as it must appear. Required for CC. */
+	attribution_text: string | null;
+	purchased_from: string | null;
+	permits_commercial_use: boolean | null;
+}
+
+/**
+ * The declaration, which is a statement and not a row count.
+ *
+ * `declared_complete_at` is the whole point: a wholly original track has no
+ * sources and is not undeclared. An empty list with no timestamp means nobody
+ * filled this in, and the attestation generators read the timestamp.
+ */
+export interface AudioSources {
+	sources: AudioSource[];
+	declared_complete_at: string | null;
+}
+
+export interface DeclareSourceRequest {
+	kind: AudioSourceKind;
+	source_name: string;
+	source_url?: string;
+	licence_identifier?: string;
+	attribution_text?: string;
+	purchased_from?: string;
+	purchase_price_eur?: number;
+	permits_commercial_use?: boolean;
+}
+
+/** A credit attested by hand on somebody's released work. */
+export interface WorkCredit {
+	username: string;
+	display_name: string | null;
+	credit_title: string;
+	audio_subtype: string | null;
+	/** The public attestation, so a reader can check rather than believe. */
+	verification_code: string;
+	issued_at: string;
+}

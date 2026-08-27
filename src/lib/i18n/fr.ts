@@ -874,6 +874,70 @@ export const fr: Translations = {
 			noAccess: 'Cette page est réservée aux plagiarism_reviewer.'
 		}
 	},
+	projectCredits: {
+		title: 'Crédits sur ce projet',
+		verifyCta: 'Vérifier'
+	},
+	audioDelivery: {
+		title: 'Livraison audio',
+		empty: 'Rien de livré pour l’instant.',
+		roleLabel: 'Rôle du fichier',
+		roles: {
+			master: 'Masters',
+			stem: 'Stems',
+			preview: 'Extraits',
+			project_archive: 'Fichiers de projet',
+			documentation: 'Documentation'
+		},
+		analysis: {
+			pending: 'Pas encore mesuré',
+			running: 'Mesure en cours',
+			done: 'Rien de mesurable sur ce fichier',
+			skipped: 'Non mesuré',
+			failed: 'La mesure a échoué'
+		},
+		analysisFailed: 'La mesure a échoué sur ce fichier',
+		mono: 'mono',
+		channels: '{n} canaux',
+		listenCta: 'Écouter',
+		linkExpires: 'Ce lien expire vite — recharge la page pour en obtenir un autre.',
+		uploadCta: 'Ajouter un fichier',
+		uploadedToast: 'Fichier stocké. Les mesures tournent par balayage et ne sont pas encore là.'
+	},
+	audioSources: {
+		title: 'Sources et licences',
+		empty: 'Aucune source tierce listée.',
+		addCta: 'Ajouter une source',
+		declaredComplete: 'Déclarée complète le {date}',
+		notDeclared:
+			"Personne n'a déclaré cette liste complète. Une liste vide n'est pas la même chose qu'un morceau original : l'attestation lit la déclaration, pas le compte.",
+		completeCta: 'Cette liste est complète',
+		completedToast: 'Déclaration enregistrée.',
+		declaredToast: 'Source ajoutée. La déclaration de complétude a été effacée.',
+		purchasedFrom: 'Acheté chez {name}',
+		noCommercial: 'Usage commercial non autorisé',
+		openSource: 'Ouvrir la source',
+		attributionRequired: 'Une licence Creative Commons exige sa ligne de crédit, mot pour mot.',
+		reopensNotice:
+			"Ajouter une source après avoir déclaré la liste complète efface cette déclaration — elle a cessé d'être vraie.",
+		formTitle: 'Déclarer une source',
+		formKind: 'Comment tu te l’es procurée',
+		formName: 'Ce que c’est',
+		formNamePlaceholder: 'Pack Splice, prise de son, banque de samples…',
+		formUrl: 'D’où ça vient',
+		formLicence: 'Identifiant de licence',
+		formAttribution: 'Ligne de crédit',
+		formAttributionPlaceholder: 'Telle qu’elle doit apparaître, mot pour mot.',
+		formSubmit: 'Déclarer',
+		kinds: {
+			original: 'Original',
+			public_domain: 'Domaine public',
+			creative_commons: 'Creative Commons',
+			royalty_free: 'Libre de droits',
+			licensed_commercial: 'Licence négociée',
+			third_party_work: 'Œuvre de tiers'
+		}
+	},
 	castings: {
 		title: 'Castings voix',
 		subtitle:
