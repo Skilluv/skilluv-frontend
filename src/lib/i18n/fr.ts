@@ -657,7 +657,10 @@ export const fr: Translations = {
 		shareCta: 'Partager le lien',
 		sharedToast: 'Lien copié.',
 		holderCta: 'Voir le profil',
-		fallbackError: 'La vérification n’a pas abouti. Réessaie.'
+		fallbackError: 'La vérification n’a pas abouti. Réessaie.',
+		certificateTitle: 'Le certificat',
+		certificateAlt: 'Certificat de {title}',
+		certificateDownload: 'Ouvrir le certificat'
 	},
 	disputes: {
 		title: 'Litiges',

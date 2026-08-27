@@ -848,6 +848,9 @@ export interface Translations
 		sharedToast: string;
 		holderCta: string;
 		fallbackError: string;
+		certificateTitle: string;
+		certificateAlt: string;
+		certificateDownload: string;
 	};
 	disputes: {
 		title: string;

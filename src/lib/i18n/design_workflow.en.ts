@@ -267,6 +267,20 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 		}
 	},
 
+	designMentors: {
+		title: 'Who could help',
+		subtitle: 'Mentors in your domain, and what you have in common with each.',
+		wouldHelp:
+			'You have handed in a few pieces without one landing yet. That is a normal place to be, and it is the point at which a mentor helps most.',
+		empty: 'Nobody to suggest yet.',
+		emptyHint: 'Mentors are matched on family, tools and timezone. Fill those in and this fills up.',
+		whyTitle: 'Why this person',
+		craftScore: 'Craft {n}',
+		activeMentees: '{n} mentees',
+		timezoneGap: '{n} h apart',
+		openCta: 'See the mentor'
+	},
+
 	designIterationStories: {
 		title: 'Work that took some arguing',
 		subtitle:

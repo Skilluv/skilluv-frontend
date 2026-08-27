@@ -102,6 +102,16 @@
 		property="og:description"
 		content={attestation?.description ?? i18n.t('attestationVerify.subtitle')}
 	/>
+	{#if attestation}
+		<!-- The card the backend renders per attestation, at the 1200x630 every
+		     social preview crops to. It is served with a one-hour cache rather
+		     than an immutable one, on purpose: an attestation can be revoked,
+		     and a card cached for a year would keep saying it holds. -->
+		<meta property="og:image" content={attestationApi.issuedCardUrl(attestation.verification_code)} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta name="twitter:card" content="summary_large_image" />
+	{/if}
 	<!-- A verification result is a per-request fact, not a page to rank on. -->
 	<meta name="robots" content="noindex" />
 </svelte:head>
@@ -213,6 +223,38 @@
 								</p>
 							{/if}
 						</div>
+					{/if}
+
+					{#if isValid}
+						<!-- A-03 — the visual half of an issued attestation: a document
+						     somebody can print or attach, as opposed to the share card,
+						     which exists to be unfurled by a chat client.
+
+						     Only on a standing attestation. Rendering a proud certificate
+						     under the words "this was withdrawn" would be the page
+						     arguing with itself, and the image is the half people
+						     screenshot. -->
+						<figure class="border-t border-border pt-4" data-testid="attestation-certificate">
+							<figcaption class="text-xs uppercase tracking-wide text-text-muted">
+								{i18n.t('attestationVerify.certificateTitle')}
+							</figcaption>
+							<img
+								src={attestationApi.issuedCertificateUrl(attestation.verification_code)}
+								alt={i18n.t('attestationVerify.certificateAlt', { title: attestation.title })}
+								loading="lazy"
+								class="mt-2 w-full rounded-xl border border-border bg-surface"
+							/>
+							<Button
+								variant="ghost"
+								size="sm"
+								class="mt-2"
+								href={attestationApi.issuedCertificateUrl(attestation.verification_code)}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{i18n.t('attestationVerify.certificateDownload')}
+							</Button>
+						</figure>
 					{/if}
 
 					<div class="border-t border-border pt-4">

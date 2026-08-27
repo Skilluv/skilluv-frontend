@@ -29,6 +29,8 @@
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import Select from '$components/ui/Select.svelte';
+	import MentorMatches from '$components/design/MentorMatches.svelte';
+	import NextChallenges from '$components/design/NextChallenges.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import {
 		DOMAIN_GOALS,
@@ -371,6 +373,16 @@
 					</Button>
 				{/if}
 			</div>
+		</div>
+
+		<!-- O-02 and O-03, at the end of the wizard rather than on a page of
+		     their own: the moment somebody has just said what they want is the
+		     moment a suggestion and a mentor mean something. Both render their
+		     own empty state, so an account that skipped the questions sees no
+		     hole. -->
+		<div class="mt-10 space-y-10">
+			<NextChallenges />
+			<MentorMatches />
 		</div>
 	{/if}
 </div>

@@ -270,6 +270,21 @@ export const designWorkflowFr: DesignWorkflowTranslations = {
 		}
 	},
 
+	designMentors: {
+		title: 'Qui pourrait t’aider',
+		subtitle: 'Des mentors de ton domaine, et ce que tu as en commun avec chacun.',
+		wouldHelp:
+			'Tu as rendu plusieurs pièces sans qu’aucune n’aboutisse encore. C’est un endroit normal où être, et c’est précisément là qu’un mentor sert le plus.',
+		empty: 'Personne à suggérer pour l’instant.',
+		emptyHint:
+			'Le matching se fait sur la famille, les outils et le fuseau. Renseigne-les et ça se remplit.',
+		whyTitle: 'Pourquoi cette personne',
+		craftScore: 'Craft {n}',
+		activeMentees: '{n} mentorés',
+		timezoneGap: '{n} h d’écart',
+		openCta: 'Voir le mentor'
+	},
+
 	designIterationStories: {
 		title: 'Le travail qui s’est discuté',
 		subtitle:

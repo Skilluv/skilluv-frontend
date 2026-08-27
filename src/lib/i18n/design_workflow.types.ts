@@ -266,6 +266,20 @@ export interface DesignWorkflowTranslations {
 		};
 	};
 
+	/** O-03 — mentors worth suggesting, with the reasoning attached. */
+	designMentors: {
+		title: string;
+		subtitle: string;
+		wouldHelp: string;
+		empty: string;
+		emptyHint: string;
+		whyTitle: string;
+		craftScore: string;
+		activeMentees: string;
+		timezoneGap: string;
+		openCta: string;
+	};
+
 	/** A-04 — the part of a profile a finished image cannot show. */
 	designIterationStories: {
 		title: string;

@@ -138,5 +138,33 @@ export const attestationApi = {
 		return api.get<ApiResponse<IssuedAttestationVerifyResponse>>(
 			`/attestations/verify/${encodeURIComponent(code)}`
 		);
+	},
+
+	/**
+	 * Share card for an issued attestation — 1200x630 PNG, the size every
+	 * social preview crops to.
+	 *
+	 * Served under `/api`, so it stays same-origin behind the existing proxy
+	 * and needs no CORS: it is consumed as an `og:image` and as an `<img>`,
+	 * never fetched.
+	 *
+	 * The backend caches it for an hour rather than for ever, on purpose — an
+	 * attestation can be revoked, and a card cached for a year would keep
+	 * saying it holds long after it stopped. Nothing here may extend that.
+	 */
+	issuedCardUrl(code: string): string {
+		return `${backendOrigin()}/api/attestations/verify/${encodeURIComponent(code)}/card.png`;
+	},
+
+	/**
+	 * The certificate itself, as SVG.
+	 *
+	 * The visual half of the design attestations (A-03): a document somebody
+	 * can print or attach, as opposed to the card, which exists to be
+	 * unfurled by a chat client. Vector rather than PDF, so it renders inline
+	 * in the page that already knows the code exists.
+	 */
+	issuedCertificateUrl(code: string): string {
+		return `${backendOrigin()}/api/attestations/verify/${encodeURIComponent(code)}/certificate.svg`;
 	}
 };

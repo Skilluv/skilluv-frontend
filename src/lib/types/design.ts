@@ -1082,3 +1082,45 @@ export interface IssueInvoiceRequest {
 	hours?: string | null;
 	expense_evidence_url?: string | null;
 }
+
+// ---------------------------------------------------------------------------
+// Mentor matching — one endpoint, seven domains
+// ---------------------------------------------------------------------------
+
+/**
+ * A mentor worth suggesting, and why.
+ *
+ * `because` ships with every match on purpose, and the backend says why: a
+ * recommendation nobody can argue with is one nobody can correct, and the
+ * first thing this will get wrong is who should be suggested to whom. So the
+ * UI renders the clauses rather than a bare ranked list.
+ *
+ * `shared_families` and `shared_tools` are the two axes O-03 asked for —
+ * cross-family pairing and a shared toolset. `timezone_gap_hours` is null
+ * when either side declared no offset, never zero: "we did not know" and "the
+ * same timezone" are different answers and only one of them is good news.
+ */
+export interface MentorMatch {
+	mentor_user_id: string;
+	username: string;
+	headline: string;
+	craft_score: number;
+	score: number;
+	shared_families: string[];
+	shared_tools: string[];
+	timezone_gap_hours: number | null;
+	active_mentees: number;
+	because: string[];
+}
+
+export interface MentorMatches {
+	mentors: MentorMatch[];
+	/**
+	 * True when this person handed in three pieces in the domain and none was
+	 * validated — the backend's own definition of somebody a mentor would
+	 * help. Shown as an invitation, never as a judgement: three unvalidated
+	 * hand-ins is a normal place to be, and phrasing it as a deficiency is how
+	 * somebody stops handing anything in.
+	 */
+	suggested: boolean;
+}

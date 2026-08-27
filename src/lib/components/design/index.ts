@@ -10,3 +10,4 @@ export { default as DesignUploader } from './DesignUploader.svelte';
 export { default as NextChallenges } from './NextChallenges.svelte';
 export { default as IterationStories } from './IterationStories.svelte';
 export { default as FlagPlagiarism } from './FlagPlagiarism.svelte';
+export { default as MentorMatches } from './MentorMatches.svelte';

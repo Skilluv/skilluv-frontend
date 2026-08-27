@@ -657,7 +657,10 @@ export const en: Translations = {
 		shareCta: 'Share the link',
 		sharedToast: 'Link copied.',
 		holderCta: 'See the profile',
-		fallbackError: 'The check did not go through. Try again.'
+		fallbackError: 'The check did not go through. Try again.',
+		certificateTitle: 'The certificate',
+		certificateAlt: 'Certificate for {title}',
+		certificateDownload: 'Open the certificate'
 	},
 	disputes: {
 		title: 'Disputes',

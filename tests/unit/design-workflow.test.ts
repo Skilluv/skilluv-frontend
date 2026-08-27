@@ -509,3 +509,69 @@ describe('the subtype ceilings mirror the server table', () => {
 		}
 	});
 });
+
+describe('mentor matching', () => {
+	it('is one endpoint per domain path, with a limit', async () => {
+		fetchMock.mockResolvedValue(ok({ mentors: [], suggested: false }));
+		const { domainProfileApi } = await import('../../src/lib/api/domain_profile');
+		await domainProfileApi.mentorMatches('design', 3);
+		const url = String(fetchMock.mock.calls[0][0]);
+		expect(url).toContain('/api/domains/design/mentors/for-me');
+		expect(url).toContain('limit=3');
+	});
+
+	it('carries the reasoning attached to each match', async () => {
+		fetchMock.mockResolvedValue(
+			ok({
+				mentors: [
+					{
+						mentor_user_id: 'm1',
+						username: 'ada',
+						headline: 'type and grids',
+						craft_score: 700,
+						score: 42,
+						shared_families: ['brand'],
+						shared_tools: ['figma'],
+						timezone_gap_hours: null,
+						active_mentees: 2,
+						because: ['same family', 'same tool']
+					}
+				],
+				suggested: true
+			})
+		);
+		const { domainProfileApi } = await import('../../src/lib/api/domain_profile');
+		const res = await domainProfileApi.mentorMatches('design');
+		expect(res.data.mentors[0].because).toEqual(['same family', 'same tool']);
+		// Null rather than zero: "we did not know" and "the same timezone" are
+		// different answers and only one of them is good news.
+		expect(res.data.mentors[0].timezone_gap_hours).toBeNull();
+		expect(res.data.suggested).toBe(true);
+	});
+
+	it('a domain with no mentorship rules is a refusal, not an empty list', async () => {
+		fetchMock.mockResolvedValue(fail(400, 'VALIDATION', 'no mentorship rules for domain `x`'));
+		const { domainProfileApi } = await import('../../src/lib/api/domain_profile');
+		const { SkilluError } = await import('../../src/lib/api/client');
+		await expect(
+			domainProfileApi.mentorMatches('design')
+		).rejects.toBeInstanceOf(SkilluError);
+	});
+});
+
+describe('the visual half of an issued attestation', () => {
+	it('addresses the card and the certificate by verification code', async () => {
+		const { attestationApi } = await import('../../src/lib/api/attestation');
+		expect(attestationApi.issuedCardUrl('ABC123DEF456')).toBe(
+			'/api/attestations/verify/ABC123DEF456/card.png'
+		);
+		expect(attestationApi.issuedCertificateUrl('ABC123DEF456')).toBe(
+			'/api/attestations/verify/ABC123DEF456/certificate.svg'
+		);
+	});
+
+	it('encodes a code rather than interpolating it raw', async () => {
+		const { attestationApi } = await import('../../src/lib/api/attestation');
+		expect(attestationApi.issuedCardUrl('a/b')).toContain('a%2Fb');
+	});
+});

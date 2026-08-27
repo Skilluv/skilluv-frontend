@@ -87,6 +87,24 @@ test.describe('design workflow pages', () => {
 		}
 	});
 
+	test('the wizard ends on a suggestion list and a mentor list', async ({ page }) => {
+		// O-02 and O-03 sit at the end of the wizard rather than on pages of
+		// their own: the moment somebody has just said what they want is the
+		// moment a suggestion means something. Both render their own empty
+		// state with no backend, so the block must survive a 404 on each.
+		await gotoHydrated(page, '/design/onboarding');
+		await expect(page.getByTestId('design-next-challenges')).toBeVisible();
+		await expect(page.getByTestId('design-mentor-matches')).toBeVisible();
+	});
+
+	test('an unknown attestation code still renders its page', async ({ page }) => {
+		await gotoHydrated(page, '/attestations/verify/UNKNOWNCODE');
+		await expect(page.getByTestId('attestation-verify-page')).toBeVisible();
+		// No certificate on something that does not verify: a proud document
+		// under the words "unknown code" would be the page arguing with itself.
+		await expect(page.getByTestId('attestation-certificate')).toHaveCount(0);
+	});
+
 	test('the mission workspace renders for an unknown slug', async ({ page }) => {
 		// Every panel on it is loaded with `allSettled`, so a mission that does
 		// not exist must leave a page, not a stack trace.

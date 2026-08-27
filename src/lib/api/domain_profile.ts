@@ -2,6 +2,7 @@ import type {
 	ApiResponse,
 	DomainProfileAnswers,
 	DomainQuestionSpec,
+	MentorMatches,
 	ProfileDomain
 } from '$lib/types';
 import { createApiClient } from './client';
@@ -55,5 +56,23 @@ export const domainProfileApi = {
 	/** An onboarding nobody can leave is a wall. */
 	skip(domain: ProfileDomain) {
 		return api.post<void>(`/users/me/domain-profile/${domain}/skip`);
+	},
+
+	/**
+	 * Mentors worth suggesting in one domain, with the reasoning attached.
+	 *
+	 * One endpoint for the seven domains rather than one each. The backend
+	 * consolidated it after the per-domain copies drifted — some took a
+	 * `limit` and some hardcoded ten, some answered a bare array and some an
+	 * envelope, and the two domains added last had no endpoint at all.
+	 *
+	 * A domain with no mentorship rules answers **400, not an empty list**:
+	 * how many mentees somebody can carry and what their tools are called
+	 * differ per domain, and guessing them would match people badly rather
+	 * than not at all. Callers surface that message rather than rendering
+	 * "no mentors" over a domain that was never configured.
+	 */
+	mentorMatches(domain: ProfileDomain, limit?: number) {
+		return api.get<ApiResponse<MentorMatches>>(`/domains/${domain}/mentors/for-me`, { limit });
 	}
 };
