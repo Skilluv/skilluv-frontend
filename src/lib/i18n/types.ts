@@ -1326,6 +1326,63 @@ export interface Translations
 	};
 	/** The five craft records served with a nested score. */
 	/** The dashboard home: what to do next, what is waiting on you. */
+	/** What companies are asking of you â the talent side of recruitment. */
+	opportunities: {
+		title: string;
+		waiting: string;
+		nothingWaiting: string;
+		empty: string;
+		emptyWithPosting: string;
+		emptyNoPosting: string;
+		pitchesTitle: string;
+		pitchesHint: string;
+		opened: string;
+		interested: string;
+		notInterested: string;
+		answeredToast: string;
+		declineTitle: string;
+		declineHint: string;
+		declinePlaceholder: string;
+		declineSubmit: string;
+		campaignsTitle: string;
+		interviewsTitle: string;
+		pickASlot: string;
+		joinMeeting: string;
+		declineInterview: string;
+		slotConfirmedToast: string;
+		declinedToast: string;
+		trialsTitle: string;
+		trialsHint: string;
+		until: string;
+		approvedHours: string;
+		pendingHours: string;
+		openTrial: string;
+		postingTitle: string;
+		remoteOnly: string;
+		notLookingFor: string;
+		pitchesLeft: string;
+	};
+	/** One trial period and the days claimed on it. */
+	trialHours: {
+		title: string;
+		back: string;
+		approvedTotal: string;
+		pendingTotal: string;
+		empty: string;
+		approved: string;
+		rejected: string;
+		pending: string;
+		rejectionReason: string;
+		claimCta: string;
+		claimTitle: string;
+		claimSubmit: string;
+		claimedToast: string;
+		formDate: string;
+		formHours: string;
+		formSummary: string;
+		formSummaryPlaceholder: string;
+		formSummaryHint: string;
+	};
 	dashboardHome: {
 		title: string;
 		greeting: string;
@@ -1356,6 +1413,7 @@ export interface Translations
 		since: string;
 		yoursTitle: string;
 		shortcuts: {
+			opportunities: string;
 			bookmarks: string;
 			notes: string;
 			goals: string;

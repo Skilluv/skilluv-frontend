@@ -607,6 +607,7 @@
 							<div class="my-1.5 h-px bg-border"></div>
 							{#each [
 								{ href: '/dashboard', icon: Compass, label: i18n.t('dashboardHome.title') },
+								{ href: '/dashboard/opportunities', icon: Handshake, label: i18n.t('opportunities.title') },
 								{ href: '/dashboard/bookmarks', icon: Bookmark, label: i18n.t('bookmarks.title') },
 								{ href: '/dashboard/notes', icon: NotebookPen, label: i18n.t('notes.title') },
 								{ href: '/dashboard/goals', icon: Target, label: i18n.t('goals.title') },
