@@ -429,8 +429,15 @@ export interface DomainProfileAnswers {
 	goal?: DomainGoal;
 	/** AI domain only. */
 	compute?: string;
-	main_framework?: string;
+	/**
+	 * Plural and a list: somebody who writes in two frameworks answers two,
+	 * and the question is `closed_multi` server-side. It was `main_framework`
+	 * here, singular, which the validator would have refused.
+	 */
+	main_frameworks?: string[];
 	huggingface_username?: string;
+	/** Sub-orientations, where the domain has families to offer. */
+	preferred_families?: string[];
 }
 
 // ---------------------------------------------------------------------------

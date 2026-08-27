@@ -17,6 +17,9 @@ export * from './audio';
 // The AI domain of work, which is not the assistant. See `ai_domain.ts`.
 export * from './ai_domain';
 
+// The per-domain onboarding wizard, rendered from what the backend serves.
+export * from './domain_wizard';
+
 // Craft records for the domains served by a flat `{domain}-profile`
 // endpoint (ai, audio). One shape on purpose — see `craft.ts`.
 export * from './craft';

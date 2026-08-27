@@ -1067,8 +1067,72 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 	/** The files of an audio delivery, and what was measured on them. */
 	/** Who is credited on a project, from the attestations that carry it. */
 	/** The AI domain of work — artefacts published here, contests elsewhere. */
+	/** The per-domain onboarding wizard, rendered from what the backend serves. */
+	domainWizard: {
+		titles: { ai: string };
+		subtitles: { ai: string };
+		notAClaim: string;
+		progressLabel: string;
+		stepOf: string;
+		pickUpTo: string;
+		maxSelections: string;
+		back: string;
+		next: string;
+		skipQuestion: string;
+		finish: string;
+		skipAll: string;
+		savedToast: string;
+		noQuestions: string;
+		questions: {
+			level: string;
+			weekly_hours: string;
+			goal: string;
+			compute: string;
+			main_frameworks: string;
+			huggingface_username: string;
+			preferred_families: string;
+		};
+		hints: {
+			compute: string;
+			huggingface_username: string;
+			preferred_families: string;
+		};
+		options: {
+			level: {
+				debutant: string;
+				apprentissage: string;
+				practitioner: string;
+				senior: string;
+				researcher: string;
+			};
+			weekly_hours: { lt3: string; '3_10': string; gt10: string; fulltime: string };
+			goal: {
+				learning: string;
+				portfolio: string;
+				paid_missions: string;
+				academic_research: string;
+				startup: string;
+			};
+			compute: {
+				none: string;
+				personal_gpu: string;
+				cloud_small: string;
+				cloud_large: string;
+				enterprise: string;
+			};
+			main_frameworks: {
+				pytorch: string;
+				jax: string;
+				tensorflow: string;
+				candle: string;
+				mlx: string;
+				other: string;
+			};
+		};
+	};
 	aiDomain: {
 		title: string;
+		onboardingCta: string;
 		subtitle: string;
 		artifactsTitle: string;
 		artifactsHint: string;

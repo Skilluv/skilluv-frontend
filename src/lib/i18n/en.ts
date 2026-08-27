@@ -874,8 +874,81 @@ export const en: Translations = {
 			noAccess: 'This page is reserved to plagiarism_reviewer capability holders.'
 		}
 	},
+	domainWizard: {
+		titles: { ai: 'Getting you started in AI' },
+		subtitles: {
+			ai: 'Six questions. They sort what gets recommended to you — nothing here counts as a proof.'
+		},
+		notAClaim:
+			'Declared, never a claim. Rank, badges and craft score read verified work, and none of these answers is one.',
+		progressLabel: 'Progress',
+		stepOf: 'Question {n} of {total}',
+		pickUpTo: 'Up to {n}.',
+		maxSelections: '{n} answers at most. Unpick one to add another.',
+		back: 'Back',
+		next: 'Next',
+		skipQuestion: 'Skip this one',
+		finish: 'Done',
+		skipAll: 'Skip the whole thing',
+		savedToast: 'Saved.',
+		noQuestions: 'This domain asks nothing yet.',
+		questions: {
+			level: 'Where are you at?',
+			weekly_hours: 'How much time a week?',
+			goal: 'What are you here for?',
+			compute: 'What can you actually run?',
+			main_frameworks: 'What do you work in?',
+			huggingface_username: 'Your HuggingFace username',
+			preferred_families: 'Which trades interest you?'
+		},
+		hints: {
+			compute:
+				'This one decides what is worth showing you: recommending a seventy-billion-parameter fine-tune to somebody on free Colab wastes their week.',
+			huggingface_username:
+				'A link a reader can follow. Your models there are not imported — a model counts here when it arrives as work that was reviewed.',
+			preferred_families: 'Sorting, not a commitment. You can work outside them.'
+		},
+		options: {
+			level: {
+				debutant: 'Starting out',
+				apprentissage: 'Learning',
+				practitioner: 'Practitioner',
+				senior: 'Senior',
+				researcher: 'Researcher'
+			},
+			weekly_hours: {
+				lt3: 'Under 3h',
+				'3_10': '3 to 10h',
+				gt10: 'Over 10h',
+				fulltime: 'Full time'
+			},
+			goal: {
+				learning: 'Learning',
+				portfolio: 'Building a portfolio',
+				paid_missions: 'Paid work',
+				academic_research: 'Academic research',
+				startup: 'Founding something'
+			},
+			compute: {
+				none: 'Free Colab or Kaggle',
+				personal_gpu: 'A card of my own',
+				cloud_small: 'Cloud, under $500 a month',
+				cloud_large: 'Cloud, over $500 a month',
+				enterprise: 'An employer’s cluster'
+			},
+			main_frameworks: {
+				pytorch: 'PyTorch',
+				jax: 'JAX',
+				tensorflow: 'TensorFlow',
+				candle: 'Candle',
+				mlx: 'MLX',
+				other: 'Something else'
+			}
+		}
+	},
 	aiDomain: {
 		title: 'AI on Skilluv',
+		onboardingCta: 'Set up my recommendations',
 		subtitle:
 			'What people here have actually published, and what is worth entering right now elsewhere. The assistant is a different thing and lives on its own page.',
 		artifactsTitle: 'Published artefacts',

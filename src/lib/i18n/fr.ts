@@ -874,8 +874,81 @@ export const fr: Translations = {
 			noAccess: 'Cette page est réservée aux plagiarism_reviewer.'
 		}
 	},
+	domainWizard: {
+		titles: { ai: 'Tes débuts en IA' },
+		subtitles: {
+			ai: "Six questions. Elles trient ce qu'on te recommande — rien ici ne compte comme une preuve."
+		},
+		notAClaim:
+			"Déclaré, jamais une affirmation. Le rang, les badges et le score de métier lisent du travail vérifié, et aucune de ces réponses n'en est un.",
+		progressLabel: 'Progression',
+		stepOf: 'Question {n} sur {total}',
+		pickUpTo: 'Jusqu’à {n}.',
+		maxSelections: '{n} réponses au maximum. Retires-en une pour en ajouter une autre.',
+		back: 'Retour',
+		next: 'Suivant',
+		skipQuestion: 'Passer celle-ci',
+		finish: 'Terminer',
+		skipAll: 'Tout passer',
+		savedToast: 'Enregistré.',
+		noQuestions: 'Ce domaine ne demande rien pour l’instant.',
+		questions: {
+			level: 'Tu en es où ?',
+			weekly_hours: 'Combien de temps par semaine ?',
+			goal: 'Tu viens pour quoi ?',
+			compute: 'Tu peux faire tourner quoi, concrètement ?',
+			main_frameworks: 'Tu travailles avec quoi ?',
+			huggingface_username: 'Ton pseudo HuggingFace',
+			preferred_families: 'Quels métiers t’intéressent ?'
+		},
+		hints: {
+			compute:
+				"Celle-ci décide de ce qu'on te montre : recommander un fine-tune de soixante-dix milliards de paramètres à quelqu'un sur Colab gratuit lui fait perdre sa semaine.",
+			huggingface_username:
+				"Un lien qu'un lecteur peut suivre. Tes modèles là-bas ne sont pas importés — un modèle compte ici quand il arrive comme du travail qui a été relu.",
+			preferred_families: 'Du tri, pas un engagement. Tu peux travailler en dehors.'
+		},
+		options: {
+			level: {
+				debutant: 'Débutant',
+				apprentissage: 'En apprentissage',
+				practitioner: 'Praticien',
+				senior: 'Senior',
+				researcher: 'Chercheur'
+			},
+			weekly_hours: {
+				lt3: 'Moins de 3h',
+				'3_10': '3 à 10h',
+				gt10: 'Plus de 10h',
+				fulltime: 'Temps plein'
+			},
+			goal: {
+				learning: 'Apprendre',
+				portfolio: 'Me construire un portfolio',
+				paid_missions: 'Du travail payé',
+				academic_research: 'De la recherche académique',
+				startup: 'Fonder quelque chose'
+			},
+			compute: {
+				none: 'Colab ou Kaggle gratuit',
+				personal_gpu: 'Une carte à moi',
+				cloud_small: 'Cloud, moins de 500 $ par mois',
+				cloud_large: 'Cloud, plus de 500 $ par mois',
+				enterprise: 'Le cluster d’un employeur'
+			},
+			main_frameworks: {
+				pytorch: 'PyTorch',
+				jax: 'JAX',
+				tensorflow: 'TensorFlow',
+				candle: 'Candle',
+				mlx: 'MLX',
+				other: 'Autre chose'
+			}
+		}
+	},
 	aiDomain: {
 		title: 'L’IA sur Skilluv',
+		onboardingCta: 'Régler mes recommandations',
 		subtitle:
 			"Ce que les gens d'ici ont réellement publié, et ce qui vaut la peine d'être tenté ailleurs en ce moment. L'assistant est autre chose et vit sur sa propre page.",
 		artifactsTitle: 'Artefacts publiés',

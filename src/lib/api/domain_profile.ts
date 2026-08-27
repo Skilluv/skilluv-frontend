@@ -1,4 +1,9 @@
-import type { ApiResponse, DomainProfileAnswers, ProfileDomain } from '$lib/types';
+import type {
+	ApiResponse,
+	DomainProfileAnswers,
+	DomainQuestionSpec,
+	ProfileDomain
+} from '$lib/types';
 import { createApiClient } from './client';
 
 const api = createApiClient();
@@ -31,5 +36,24 @@ export const domainProfileApi = {
 			`/users/me/domain-profile/${domain}`,
 			answers
 		);
+	},
+
+	/**
+	 * Which questions this domain asks, and what each accepts.
+	 *
+	 * The vocabulary lives server-side and changes as the wizard is reworded,
+	 * so a wizard that ships its own copy of the list is a wizard that goes
+	 * stale silently — it would keep offering a value the validator has
+	 * stopped accepting, and the refusal would land on the user.
+	 */
+	questions(domain: ProfileDomain) {
+		return api.get<ApiResponse<DomainQuestionSpec[]>>(
+			`/users/me/domain-profile/${domain}/questions`
+		);
+	},
+
+	/** An onboarding nobody can leave is a wall. */
+	skip(domain: ProfileDomain) {
+		return api.post<void>(`/users/me/domain-profile/${domain}/skip`);
 	}
 };

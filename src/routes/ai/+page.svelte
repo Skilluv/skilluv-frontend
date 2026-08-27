@@ -19,6 +19,8 @@
 	import { aiDomainApi } from '$lib/api/ai_domain';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
+	import { auth } from '$stores/auth.svelte';
+	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
@@ -96,9 +98,16 @@
 </svelte:head>
 
 <div class="mx-auto max-w-5xl px-4 py-8">
-	<header class="mb-8">
-		<h1 class="text-3xl font-bold text-text-primary">{i18n.t('aiDomain.title')}</h1>
-		<p class="mt-2 max-w-2xl text-text-muted">{i18n.t('aiDomain.subtitle')}</p>
+	<header class="mb-8 flex flex-wrap items-end justify-between gap-4">
+		<div class="max-w-2xl">
+			<h1 class="text-3xl font-bold text-text-primary">{i18n.t('aiDomain.title')}</h1>
+			<p class="mt-2 text-text-muted">{i18n.t('aiDomain.subtitle')}</p>
+		</div>
+		<!-- The wizard sorts what gets recommended. Offered rather than
+		     imposed: an onboarding nobody can leave is a wall. -->
+		{#if auth.user}
+			<Button variant="ghost" href="/ai/onboarding">{i18n.t('aiDomain.onboardingCta')}</Button>
+		{/if}
 	</header>
 
 	<section class="mb-12">
