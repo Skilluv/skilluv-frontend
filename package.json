@@ -14,7 +14,8 @@
 		"test:unit:watch": "vitest",
 		"i18n:check": "node scripts/i18n-check.mjs",
 		"audit:lighthouse": "node scripts/lighthouse-audit.mjs",
-		"audit:axe": "node scripts/axe-audit.mjs"
+		"audit:axe": "node scripts/axe-audit.mjs",
+		"security:html": "bash scripts/check-html-sinks.sh"
 	},
 	"devDependencies": {
 		"@axe-core/playwright": "^4.12.1",
