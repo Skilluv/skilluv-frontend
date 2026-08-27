@@ -874,6 +874,24 @@ export const en: Translations = {
 			noAccess: 'This page is reserved to plagiarism_reviewer capability holders.'
 		}
 	},
+	craftProfile: {
+		titles: {
+			ai: 'AI record',
+			audio: 'Audio record'
+		},
+		craftScoreTitle: 'Craft score',
+		tierLabel: 'Tier {name}',
+		cappedNotice: 'Ceiling reached',
+		nextTierAt: 'Next tier at {n}',
+		breakdownTitle: 'What counted',
+		tradesTitle: 'Trades with verified work',
+		highlightsTitle: 'Worth hearing first',
+		highlightsHint:
+			'Published work. Listening to a master goes through the slice it belongs to, on a link that expires.',
+		openWork: 'Open',
+		notAClaim:
+			'A craft score counts verified work. It is not a claim about anything done elsewhere.'
+	},
 	events: {
 		title: 'Skilluv events',
 		subtitle: 'Join a hackathon, a fest or a themed season. Every event you join earns a stamp in your collection.',

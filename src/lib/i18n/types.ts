@@ -1058,6 +1058,26 @@ export interface Translations extends PostMvpTranslations, DesignTranslations {
 			noAccess: string;
 		};
 	};
+	/**
+	 * Craft records for the domains served by a flat `{domain}-profile`
+	 * endpoint. One namespace, because the backend returns one shape.
+	 */
+	craftProfile: {
+		titles: {
+			ai: string;
+			audio: string;
+		};
+		craftScoreTitle: string;
+		tierLabel: string;
+		cappedNotice: string;
+		nextTierAt: string;
+		breakdownTitle: string;
+		tradesTitle: string;
+		highlightsTitle: string;
+		highlightsHint: string;
+		openWork: string;
+		notAClaim: string;
+	};
 	events: {
 		title: string;
 		subtitle: string;

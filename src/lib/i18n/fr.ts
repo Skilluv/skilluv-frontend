@@ -874,6 +874,24 @@ export const fr: Translations = {
 			noAccess: 'Cette page est réservée aux plagiarism_reviewer.'
 		}
 	},
+	craftProfile: {
+		titles: {
+			ai: 'Parcours IA',
+			audio: 'Parcours audio'
+		},
+		craftScoreTitle: 'Score de métier',
+		tierLabel: 'Palier {name}',
+		cappedNotice: 'Plafond atteint',
+		nextTierAt: 'Palier suivant à {n}',
+		breakdownTitle: 'Ce qui a compté',
+		tradesTitle: 'Métiers avec du travail vérifié',
+		highlightsTitle: 'À écouter en premier',
+		highlightsHint:
+			"Travaux publiés. Écouter un master passe par la slice à laquelle il appartient, sur un lien qui expire.",
+		openWork: 'Ouvrir',
+		notAClaim:
+			"Un score de métier compte du travail vérifié. Ce n'est pas une affirmation sur ce qui a été fait ailleurs."
+	},
 	events: {
 		title: 'Événements Skilluv',
 		subtitle: 'Rejoins un hackathon, un fest ou une saison thématique. Chaque événement rejoint donne un timbre à ta collection.',

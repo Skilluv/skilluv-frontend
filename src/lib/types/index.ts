@@ -11,6 +11,10 @@ export * from './postmvp';
 // `design`-prefixed silo that would hide the reuse.
 export * from './design';
 
+// Craft records for the domains served by a flat `{domain}-profile`
+// endpoint (ai, audio). One shape on purpose — see `craft.ts`.
+export * from './craft';
+
 // Réutilisation source de vérité unique pour les types badge/rang.
 // Voir src/lib/components/badges/types.ts pour les définitions primitives.
 import type {

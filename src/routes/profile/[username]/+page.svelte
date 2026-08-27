@@ -12,6 +12,7 @@
 	import ExternalSignals from '$components/profile/ExternalSignals.svelte';
 	import Vouchings from '$components/profile/Vouchings.svelte';
 	import { DesignSection } from '$components/design';
+	import CraftSection from '$components/profile/CraftSection.svelte';
 	import Heatmap from '$components/profile/Heatmap.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
@@ -400,6 +401,12 @@
 				<!-- SKI-253 — the design record. Addressed by username, so unlike
 				     the sections above it needs no UUID. -->
 				<DesignSection {username} isOwn={isOwnProfile} />
+
+				<!-- The AI and audio records, same shape and same addressing. Each
+				     renders nothing at all when this person has no work in that
+				     domain, so a code-only profile is unchanged. -->
+				<CraftSection domain="ai" {username} />
+				<CraftSection domain="audio" {username} />
 
 				<!-- SKI-46 — who staked their own rank on this person. -->
 				{#if profileUserId}
