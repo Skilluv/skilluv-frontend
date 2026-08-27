@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto, invalidateAll } from '$app/navigation';
 	import { auth } from '$stores/auth.svelte';
-	import { slicesApi, type Slice, type SliceStatus } from '$api/slices';
+	import { slicesApi, isDesignSlice, type Slice, type SliceStatus } from '$api/slices';
 	import { attestationApi } from '$api/attestation';
 	import { SkilluError } from '$api/client';
 	import { toast } from '$stores/toast.svelte';
@@ -12,6 +12,7 @@
 	import DiaryWidget from '$components/slice/DiaryWidget.svelte';
 	import { BookmarkButton, NoteEditor } from '$components/saved';
 	import { AudioDelivery, AudioSources, ProjectCredits } from '$components/audio';
+	import { CritiqueTrail, SubmitVersion } from '$components/design';
 	import { ExternalLink, Check, GitBranch, ShieldCheck } from '@lucide/svelte';
 
 	interface Props {
@@ -58,7 +59,19 @@
 	let currentIdx = $derived(STATUS_ORDER.indexOf(slice.status));
 	let isMine = $derived(!!auth.user && slice.claimed_by_user_id === auth.user.id);
 	let canClaim = $derived(slice.status === 'open' && auth.isAuthenticated);
-	let canSubmitPr = $derived(isMine && (slice.status === 'claimed' || slice.status === 'in_progress'));
+	/**
+	 * A design slice is answered with a version and a critique, not with a pull
+	 * request. `slice_type` decides which of the two workflows this page shows;
+	 * offering a PR field on a brand kit is how somebody pastes a Figma link
+	 * into a field that expects a repository.
+	 */
+	let isDesign = $derived(isDesignSlice(slice));
+	let canSubmitPr = $derived(
+		!isDesign && isMine && (slice.status === 'claimed' || slice.status === 'in_progress')
+	);
+	let canSubmitVersion = $derived(
+		isDesign && isMine && slice.status !== 'validated' && slice.status !== 'closed'
+	);
 
 	// --- Action state ---
 	let claiming = $state(false);
@@ -398,6 +411,18 @@
 					<AudioDelivery sliceId={slice.id} {isMine} />
 					<AudioSources sliceId={slice.id} {isMine} />
 				</div>
+			{/if}
+
+			<!-- W-05/W-08/W-09 — the critique loop, on design slices only. Same
+			     rule as the audio block above: the endpoints would answer for any
+			     id, and a code slice has no business showing a critique trail. -->
+			{#if isDesign}
+				<section class="mb-8 space-y-6" data-testid="design-workshop">
+					{#if canSubmitVersion}
+						<SubmitVersion sliceId={slice.id} onsubmitted={() => invalidateAll()} />
+					{/if}
+					<CritiqueTrail sliceId={slice.id} expectedRounds={slice.design_expected_rounds ?? null} />
+				</section>
 			{/if}
 
 			<!-- Diary -->

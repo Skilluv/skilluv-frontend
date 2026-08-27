@@ -448,3 +448,637 @@ export interface DomainProfileAnswers {
 export const DESIGN_VERDICTS = ['approve', 'iterate', 'reject'] as const;
 
 export type DesignVerdict = (typeof DESIGN_VERDICTS)[number];
+
+// ---------------------------------------------------------------------------
+// Version trail — rounds, comparison, automatic checks
+// ---------------------------------------------------------------------------
+
+/**
+ * One decided round on a design slice, as `GET /design/slices/{id}/reviews`
+ * returns them: oldest first, and public on purpose.
+ *
+ * The endpoint's own words: the sequence of rounds is the most convincing
+ * thing a designer can show. `reviewed_artifact_url` is the version the
+ * critique was written against, which is not necessarily the one on screen
+ * now — that is exactly why it is carried per round.
+ */
+export interface DesignReviewRound {
+	round: number;
+	/** `approve`, `iterate` or `reject`. Open: the vocabulary is server-side. */
+	decision: string;
+	blocking_reason: string | null;
+	reason: string | null;
+	reviewed_artifact_url: string | null;
+	reviewed_artifact_notes_md: string | null;
+	/** Free-form so a family grid can be revised without a migration. */
+	grid_scores: Record<string, unknown> | null;
+	decided_at: string;
+}
+
+/** A version as it stood at one round, with the critique that closed it. */
+export interface DesignVersionAtRound {
+	round: number;
+	artifact_url: string | null;
+	author_notes_md: string | null;
+	decision: string;
+	blocking_reason: string | null;
+	reason: string | null;
+	grid_scores: Record<string, unknown> | null;
+	decided_at: string;
+}
+
+/**
+ * Two rounds side by side, and everything said between them.
+ *
+ * No diff is computed server-side and none should be: the backend has neither
+ * the pixels nor the fonts, and rendering somebody's Figma node would mean
+ * holding their design account. `diff_strategy` is the backend telling the
+ * client which comparison this subtype makes meaningful, so the front does
+ * not keep its own copy of the twelve subtypes and guess wrong.
+ */
+export interface DesignComparison {
+	slice_id: string;
+	design_subtype: string | null;
+	diff_strategy: string | null;
+	from: DesignVersionAtRound;
+	to: DesignVersionAtRound;
+	critiques_between: DesignReviewRound[];
+}
+
+/** Severity vocabulary of `design_auto_checks::Severity`. */
+export const DESIGN_CHECK_SEVERITIES = ['info', 'warning', 'error'] as const;
+
+export type DesignCheckSeverity = (typeof DESIGN_CHECK_SEVERITIES)[number];
+
+/**
+ * What an automatic check found on one round.
+ *
+ * Nothing here is a verdict, and the UI must not present it as one: the
+ * backend is explicit that a version can carry an `error` and still be
+ * approved, because no check knows whether a mark is right for a cooperative.
+ */
+export interface DesignAutoCheck {
+	round: number;
+	check_type: string;
+	/** Open type: severities are compared against the constant, not narrowed. */
+	severity: string;
+	message: string;
+	details: Record<string, unknown> | null;
+	ran_at: string;
+}
+
+/**
+ * Validated work that took three rounds or more.
+ *
+ * Three rather than two, and the backend explains why: two rounds is one
+ * critique and a fix, which happens to everybody. Three is where a direction
+ * was questioned and the person came back.
+ */
+export interface DesignIterationStory {
+	slice_id: string;
+	title: string;
+	design_subtype: string | null;
+	orientation_slug: string | null;
+	rounds: number;
+	first_artifact_url: string | null;
+	final_artifact_url: string | null;
+	validated_at: string | null;
+}
+
+// ---------------------------------------------------------------------------
+// Next challenges — one ranked list, challenges and contests together
+// ---------------------------------------------------------------------------
+
+/** Both formats come back in one list; this says which a row is. */
+export const SUGGESTION_FORMATS = ['individual', 'contest'] as const;
+
+export type SuggestionFormat = (typeof SUGGESTION_FORMATS)[number];
+
+/**
+ * One suggestion, with the clauses that earned it its points.
+ *
+ * `reasons` is not decoration. The backend's note on the endpoint is that a
+ * recommendation nobody can argue with is a recommendation nobody trusts, so
+ * every surface showing a suggestion shows why it is there.
+ */
+export interface ChallengeSuggestion {
+	id: string;
+	slug: string | null;
+	title: string;
+	format: string;
+	orientation_slug: string | null;
+	family: string | null;
+	difficulty: number | null;
+	estimated_hours: number | null;
+	closes_at: string | null;
+	score: number;
+	reasons: string[];
+}
+
+export interface NextChallenges {
+	suggestions: ChallengeSuggestion[];
+	/**
+	 * True when the hour-long cache answered. Shown rather than hidden: the
+	 * backend caches on purpose, because a list that changed on every page
+	 * load would stop reading as advice.
+	 */
+	cached: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// Curated briefs — a member proposes, an admin publishes
+// ---------------------------------------------------------------------------
+
+/** Statuses a proposal moves through, from `services::design_briefs`. */
+export const BRIEF_PROPOSAL_STATUSES = ['pending', 'published', 'rejected', 'withdrawn'] as const;
+
+export type BriefProposalStatus = (typeof BRIEF_PROPOSAL_STATUSES)[number];
+
+/** A brief a member proposed, in whatever state the queue left it. */
+export interface DesignBriefProposal {
+	id: string;
+	proposed_by: string;
+	author_username: string | null;
+	title: string;
+	brief_md: string;
+	orientation_id: string;
+	orientation_slug: string | null;
+	design_subtype: string;
+	difficulty: number;
+	estimated_hours: number | null;
+	expected_rounds: number | null;
+	format: string;
+	status: string;
+	/** Why it was refused. The only field that makes a rejection actionable. */
+	review_feedback: string | null;
+	/** Set once an admin published it: the challenge the brief became. */
+	published_slice_id: string | null;
+	created_at: string;
+}
+
+export interface ProposeBriefRequest {
+	title: string;
+	brief_md: string;
+	orientation_slug: string;
+	design_subtype: string;
+	difficulty: number;
+	estimated_hours?: number | null;
+	expected_rounds?: number | null;
+	format: string;
+}
+
+// ---------------------------------------------------------------------------
+// Cloud design tools — Figma, Miro, Webflow
+// ---------------------------------------------------------------------------
+
+/** Providers `design_cloud::Provider::parse` accepts. */
+export const DESIGN_CLOUD_PROVIDERS = ['figma', 'miro', 'webflow'] as const;
+
+export type DesignCloudProvider = (typeof DESIGN_CLOUD_PROVIDERS)[number];
+
+export interface DesignCloudConnection {
+	provider: string;
+	scopes: string[];
+	remote_handle: string | null;
+	expires_at: string | null;
+	connected_at: string;
+}
+
+export interface DesignCloudStart {
+	authorize_url: string;
+	/**
+	 * Echoed back and checked at the callback. Without it, anybody could hand
+	 * somebody a callback URL and attach their own account.
+	 */
+	state: string;
+}
+
+/**
+ * What a pasted link turns out to be. A null `source` on the inspection means
+ * it is not a design tool link at all.
+ */
+export interface DesignCloudSource {
+	provider: string;
+	key: string | null;
+	node_id: string | null;
+	/**
+	 * False for a link a reviewer without an account cannot open — the whole
+	 * reason the inspect endpoint exists.
+	 */
+	opens_without_account: boolean;
+}
+
+export interface DesignCloudInspection {
+	source: DesignCloudSource | null;
+	/**
+	 * Server-authored and shown verbatim. The person pasting is the only one
+	 * who can fix a private link, and the moment they paste is the only moment
+	 * they will.
+	 */
+	warning: string | null;
+}
+
+// ---------------------------------------------------------------------------
+// Large uploads — presigned multipart, straight to the object store
+// ---------------------------------------------------------------------------
+
+/**
+ * The twelve deliverable subtypes, from `models::DesignSubtype`.
+ *
+ * Ordered as the backend's ceiling table reads them: vectors and words first,
+ * then screens and drawings, then the ones that are genuinely enormous.
+ */
+export const DESIGN_SUBTYPES = [
+	'brand_kit',
+	'icon_set',
+	'type_family',
+	'copy_deck',
+	'research_document',
+	'interface',
+	'design_system',
+	'illustration_set',
+	'sound',
+	'motion',
+	'video',
+	'three_d_scene'
+] as const;
+
+export type DesignSubtype = (typeof DESIGN_SUBTYPES)[number];
+
+/**
+ * How large a file of each subtype may be, mirroring
+ * `design_uploads::max_bytes`.
+ *
+ * Duplicated client-side to refuse a file before five gigabytes have moved,
+ * not to replace the server check. The ceiling is a refusal there too, and
+ * telling somebody after the upload is telling them too late.
+ */
+export const DESIGN_SUBTYPE_MAX_BYTES: Record<DesignSubtype, number> = {
+	brand_kit: 200 * 1024 * 1024,
+	icon_set: 200 * 1024 * 1024,
+	type_family: 200 * 1024 * 1024,
+	copy_deck: 100 * 1024 * 1024,
+	research_document: 100 * 1024 * 1024,
+	interface: 500 * 1024 * 1024,
+	design_system: 500 * 1024 * 1024,
+	illustration_set: 1024 * 1024 * 1024,
+	sound: 500 * 1024 * 1024,
+	motion: 2 * 1024 * 1024 * 1024,
+	video: 5 * 1024 * 1024 * 1024,
+	three_d_scene: 5 * 1024 * 1024 * 1024
+};
+
+/**
+ * Subtypes whose source a browser cannot open, and which therefore have to
+ * arrive with a preview. Mirrors `design_uploads::REQUIRES_PREVIEW`.
+ *
+ * `init` also returns `preview_required`, which is the authority; this list
+ * exists only so the form can say so before a file is chosen.
+ */
+export const DESIGN_SUBTYPES_REQUIRING_PREVIEW: readonly DesignSubtype[] = [
+	'motion',
+	'video',
+	'three_d_scene',
+	'sound'
+];
+
+export interface DesignUploadPart {
+	part_number: number;
+	url: string;
+	/**
+	 * Every part but the last is exactly this many bytes, or the store refuses
+	 * the assembly.
+	 */
+	bytes: number;
+}
+
+export interface DesignUploadInitiated {
+	session_id: string;
+	part_size: number;
+	parts: DesignUploadPart[];
+	preview_required: boolean;
+	expires_at: string;
+}
+
+export interface DesignUploadSession {
+	id: string;
+	user_id: string;
+	slice_id: string | null;
+	design_subtype: string;
+	filename: string;
+	content_type: string;
+	declared_bytes: number;
+	stored_bytes: number | null;
+	part_size: number;
+	part_count: number;
+	storage_key: string;
+	preview_key: string | null;
+	status: string;
+	created_at: string;
+	completed_at: string | null;
+	expires_at: string;
+}
+
+/**
+ * A part as the object store handed its ETag back. Passed through untouched,
+ * quotes and all: the store compares it with its own.
+ */
+export interface DesignUploadCompletedPart {
+	part_number: number;
+	etag: string;
+}
+
+export interface InitUploadRequest {
+	design_subtype: string;
+	filename: string;
+	content_type: string;
+	declared_bytes: number;
+	slice_id?: string | null;
+}
+
+// ---------------------------------------------------------------------------
+// External portfolios — declared, and said to be declared
+// ---------------------------------------------------------------------------
+
+/** A platform the backend knows how to link to. */
+export interface PortfolioPlatform {
+	slug: string;
+	skill_domain: string | null;
+	name: string;
+	profile_url_pattern: string | null;
+	items_label: string | null;
+	reach_label: string | null;
+	/**
+	 * False for every design platform today, which is why the figures below
+	 * are declared rather than fetched.
+	 */
+	has_public_api: boolean;
+}
+
+/**
+ * A portfolio somebody declared.
+ *
+ * `figures_are_declared` is the field the UI is built around: Behance and
+ * Dribbble expose no public API here, so the counts are the person's own word
+ * and every surface showing them says so. Nothing declared is a proof.
+ */
+export interface PortfolioDeclaration {
+	id: string;
+	platform: string;
+	skill_domain: string | null;
+	handle: string;
+	profile_url: string;
+	items_count: number | null;
+	reach_count: number | null;
+	figures_are_declared: boolean;
+	verified_at: string | null;
+	last_synced_at: string | null;
+}
+
+export interface DeclarePortfolioRequest {
+	platform: string;
+	handle: string;
+	profile_url: string;
+	items_count?: number | null;
+	reach_count?: number | null;
+}
+
+// ---------------------------------------------------------------------------
+// Plagiarism cases on contest entries
+// ---------------------------------------------------------------------------
+
+export const PLAGIARISM_CASE_STATUSES = ['open', 'answered', 'upheld', 'dismissed'] as const;
+
+export type PlagiarismCaseStatus = (typeof PLAGIARISM_CASE_STATUSES)[number];
+
+/**
+ * An accusation against a contest entry, and the answer to it.
+ *
+ * Not public, and deliberately: an open case is an allegation, and publishing
+ * allegations before they are decided is how a dismissed case still ruins
+ * somebody. Only the accused and the reviewers can read one.
+ *
+ * `respond_by` is the whole point of the table. Being disqualified by a
+ * process nobody told you about is the failure it exists to prevent, so the
+ * accused is notified with the accusation in full and given a deadline to
+ * answer before anybody decides.
+ *
+ * `upheld_against_accused` counts previously upheld cases against the same
+ * person. It is context for a reviewer, never a verdict on this case.
+ */
+export interface PlagiarismCase {
+	id: string;
+	submission_id: string;
+	accused_username: string | null;
+	raised_by_username: string | null;
+	reason_md: string;
+	evidence_url: string;
+	raised_at: string;
+	respond_by: string;
+	response_md: string | null;
+	responded_at: string | null;
+	status: string;
+	decision_md: string | null;
+	decided_at: string | null;
+	upheld_against_accused: number;
+}
+
+export interface FlagPlagiarismRequest {
+	reason_md: string;
+	/** One link, and required: an accusation with nothing to look at is one
+	 * nobody can check and the accused cannot answer. */
+	evidence_url: string;
+}
+
+export interface RespondToPlagiarismRequest {
+	response_md: string;
+}
+
+// ---------------------------------------------------------------------------
+// Mission execution — NDA, applications, delivery rounds, ratings, invoices
+// ---------------------------------------------------------------------------
+
+/**
+ * An application to a mission, as the publishing enterprise reads it.
+ *
+ * `verified_attestations` is the field that separates this from a CV: it is a
+ * count of Skilluv-verified work, computed server-side, and it sits next to
+ * `portfolio_urls`, which are links the applicant typed. The UI keeps the two
+ * visually apart for the same reason the platform keeps proofs and signals
+ * apart everywhere else.
+ */
+export interface MissionApplication {
+	id: string;
+	mission_id: string;
+	user_id: string;
+	username: string;
+	cover_letter: string;
+	portfolio_urls: string[];
+	/** Free-form: the shape depends on the mission type's questions. */
+	expertise: Record<string, unknown> | null;
+	past_similar_missions: string | null;
+	availability_hours_per_week: number | null;
+	status: string;
+	decision_reason: string | null;
+	verified_attestations: number;
+	created_at: string;
+}
+
+export const MISSION_APPLICATION_DECISIONS = ['accepted', 'rejected'] as const;
+
+export interface MissionDecisionRequest {
+	status: string;
+	/** Required to reject. A refusal with no reason teaches nothing and is the
+	 * one thing an applicant can act on. */
+	reason?: string | null;
+}
+
+/**
+ * The agreement a mission asks to be signed, rendered for a locale.
+ *
+ * `sha256` is not decoration: it is echoed back when signing, and a mismatch
+ * answers 409 rather than silently recording a signature on a document that
+ * changed after it was shown. `is_reviewed` says whether a lawyer has been
+ * over this template, and the UI says so too — presenting an unreviewed
+ * template as settled law is the failure mode worth avoiding.
+ */
+export interface MissionNdaAgreement {
+	template: string;
+	title: string;
+	body_md: string;
+	sha256: string;
+	version: number | null;
+	is_reviewed: boolean;
+	locale: string;
+}
+
+export interface SignNdaRequest {
+	typed_name: string;
+	/** The hash of the document actually displayed. */
+	document_sha256: string;
+	locale?: string | null;
+}
+
+/**
+ * A signature already given, or `null`.
+ *
+ * `released_at` is set rather than the row being deleted: that the obligation
+ * existed is a fact, and erasing it would erase the release too.
+ */
+export interface MissionNdaSignature {
+	id: string;
+	template: string;
+	document_sha256: string;
+	document_url: string | null;
+	typed_name: string;
+	signed_at: string;
+	released_at: string | null;
+	released_reason: string | null;
+}
+
+/**
+ * One delivery round.
+ *
+ * Two or three rounds is the normal case for design work, not a failure: the
+ * mission stays `in_progress` until a round is accepted, because the rounds
+ * live on the delivery and nothing about the mission regresses.
+ *
+ * `beyond_agreed_rounds` is the honest flag — it marks a round past what the
+ * brief allowed for without refusing it, which is the difference between a
+ * record and a gate.
+ */
+export interface MissionDelivery {
+	id: string;
+	mission_id: string;
+	round: number;
+	delivered_by: string;
+	artifact_url: string;
+	notes_md: string | null;
+	delivered_at: string;
+	/** `accepted`, `changes_requested`, or null while it waits. */
+	decision: string | null;
+	decision_reason: string | null;
+	decided_at: string | null;
+	beyond_agreed_rounds: boolean;
+}
+
+export interface DeliverRoundRequest {
+	artifact_url: string;
+	notes_md?: string | null;
+}
+
+export interface RequestChangesRequest {
+	/** At least twenty characters server-side: "not quite" costs a round and
+	 * teaches nothing. */
+	reason: string;
+}
+
+/**
+ * A rating, once it is readable.
+ *
+ * Written blind: nothing is returned until both sides have written or
+ * fourteen days have passed. A rating one side can read before writing their
+ * own is a negotiation, and one a silent client can suppress for ever is
+ * worse. The list simply comes back empty in the meantime — "nobody has said
+ * anything yet" and "it is not your turn to read" look the same from outside,
+ * on purpose.
+ */
+export interface MissionRating {
+	mission_id: string;
+	direction: string;
+	rater_id: string;
+	rated_id: string;
+	rating: number;
+	comment_md: string | null;
+	created_at: string;
+}
+
+export interface RateMissionRequest {
+	/** 1 to 5. */
+	rating: number;
+	comment_md?: string | null;
+}
+
+/**
+ * What somebody's revealed ratings average to.
+ *
+ * `average` is null rather than zero when nothing is revealed yet: an unrated
+ * person is not a badly rated one, and a zero on a profile says the opposite.
+ */
+export interface MissionStanding {
+	received: number;
+	average: number | null;
+}
+
+/**
+ * A line on a mission's account: the whole job, a month of a retainer, a batch
+ * of approved hours.
+ *
+ * NUMERIC over JSON, so `amount`, `commission_percent` and `hours` arrive as
+ * strings. Parsing them into floats to display them is how rounding errors get
+ * onto an invoice.
+ */
+export interface MissionInvoice {
+	id: string;
+	mission_id: string;
+	sequence: number;
+	label: string;
+	amount: string;
+	currency: string;
+	commission_percent: string;
+	period_start: string | null;
+	period_end: string | null;
+	hours: string | null;
+	status: string;
+	payment_id: string | null;
+	issued_at: string;
+}
+
+export interface IssueInvoiceRequest {
+	label: string;
+	amount?: string | null;
+	period_start?: string | null;
+	period_end?: string | null;
+	hours?: string | null;
+	expense_evidence_url?: string | null;
+}

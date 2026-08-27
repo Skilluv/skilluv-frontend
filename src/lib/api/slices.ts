@@ -97,6 +97,38 @@ export interface Slice {
 	project_slug: string;
 	created_at: string;
 	updated_at: string;
+
+	// ── Per-domain shape ──────────────────────────────────────────────
+	// `ProjectSlice` serialises these and nothing here read them, so a design
+	// brief rendered exactly like a GitHub issue. Every domain leaves the
+	// others null, hence optional on the way in and nullable on the way out.
+
+	/** Code: what the finished artefact is (migration 0181). */
+	code_subtype?: string | null;
+	/** AI: what the finished artefact is (migration 0214). */
+	ai_subtype?: string | null;
+	/** Design: which of the twelve deliverable kinds this is (migration 0505). */
+	design_subtype?: string | null;
+	/** Where the finished artefact lives, whatever domain produced it: a
+	 * package registry, a model hub, a Figma node, or an object in our own
+	 * storage for the source formats with no public home. */
+	published_artifact_url?: string | null;
+	/** Design: what the author says changed since the previous version. */
+	design_version_notes_md?: string | null;
+	/** Design: every tool the slice touches. */
+	design_tools?: string[];
+	/** Design: how many critique rounds the brief announces. The hard ceiling
+	 * is five and it is enforced on the decision journal, not here — so a
+	 * brief announcing three and taking four is a record, not a refusal. */
+	design_expected_rounds?: number | null;
+}
+
+/** The slice type the design critique loop applies to. */
+export const DESIGN_SLICE_TYPE = 'design_artifact';
+
+/** Whether a slice is reviewed by critique rounds rather than by a PR. */
+export function isDesignSlice(slice: { slice_type?: string }): boolean {
+	return slice.slice_type === DESIGN_SLICE_TYPE;
 }
 
 export interface ActiveSkilluver {

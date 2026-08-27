@@ -1,10 +1,12 @@
 import { designFr } from './design.fr';
+import { designWorkflowFr } from './design_workflow.fr';
 import { postMvpFr } from './postmvp.fr';
 import type { Translations } from './types';
 
 export const fr: Translations = {
 	...postMvpFr,
 	...designFr,
+	...designWorkflowFr,
 	common: {
 		actions: {
 			save: 'Sauvegarder', cancel: 'Annuler', delete: 'Supprimer', edit: 'Modifier',

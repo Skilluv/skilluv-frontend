@@ -135,6 +135,7 @@
 			{votedFor}
 			onvote={canVote ? vote : undefined}
 			ownParticipantId={auth.user?.id}
+			canReport={!!auth.user}
 		/>
 	{/if}
 </div>

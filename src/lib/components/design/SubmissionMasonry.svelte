@@ -16,6 +16,7 @@
 	import { ExternalLink, Heart } from '@lucide/svelte';
 	import { i18n } from '$lib/i18n';
 	import Badge from '$components/ui/Badge.svelte';
+	import FlagPlagiarism from './FlagPlagiarism.svelte';
 	import type { ContestSubmission } from '$types';
 
 	interface Props {
@@ -28,9 +29,23 @@
 		onvote?: (submissionId: string) => void;
 		/** The reader's own entry, highlighted. */
 		ownParticipantId?: string;
+		/**
+		 * Shows the plagiarism report action on entries that are not the
+		 * reader's own. Absent when signed out: raising a case requires an
+		 * account, and offering the button to somebody who cannot use it is a
+		 * dead end.
+		 */
+		canReport?: boolean;
 	}
 
-	let { submissions, votes = {}, votedFor = null, onvote, ownParticipantId }: Props = $props();
+	let {
+		submissions,
+		votes = {},
+		votedFor = null,
+		onvote,
+		ownParticipantId,
+		canReport = false
+	}: Props = $props();
 
 	/** An image URL renders inline; anything else gets a link. */
 	function isImage(url: string): boolean {
@@ -107,6 +122,10 @@
 							</a>
 						{/if}
 					</div>
+
+					{#if canReport && !isOwn}
+						<FlagPlagiarism submissionId={submission.id} />
+					{/if}
 
 					{#if onvote}
 						<button

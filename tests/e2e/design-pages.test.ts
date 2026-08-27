@@ -31,7 +31,12 @@ test.describe('Skilluv Design pages', () => {
 
 	test('the wizard walks forward and back without a backend', async ({ page }) => {
 		await gotoHydrated(page, '/design/onboarding');
-		const heading = page.locator('h2').first();
+		// Scoped to the wizard: a bare `h2.first()` also matches the footer's
+		// call to action, and which of the two comes first depends on whether
+		// the current question has rendered yet. That race read as a passing
+		// test until it read as a failing one.
+		const heading = page.getByTestId('design-onboarding').locator('h2').first();
+		await expect(heading).toBeVisible();
 		const firstQuestion = await heading.innerText();
 
 		await page.getByRole('button', { name: /suivant|next/i }).click();

@@ -1,8 +1,15 @@
 import type {
 	ApiResponse,
+	ChallengeSuggestion,
+	DesignAutoCheck,
+	DesignComparison,
+	DesignIterationStory,
 	DesignProfile,
+	DesignReviewRound,
 	DesignTiers,
 	DesignVerdict,
+	DesignVersionAtRound,
+	NextChallenges,
 	Tournament
 } from '$lib/types';
 import { DESIGN_CONTEST_KIND } from '$lib/types';
@@ -58,7 +65,9 @@ export const designApi = {
 
 	/** The whole critique trail on a slice. Readable by anyone. */
 	reviewHistory(sliceId: string) {
-		return api.get<ApiResponse<unknown>>(`/design/slices/${sliceId}/reviews`);
+		return api.get<ApiResponse<{ rounds: DesignReviewRound[] }>>(
+			`/design/slices/${sliceId}/reviews`
+		);
 	},
 
 	review(sliceId: string, payload: DesignReviewRequest) {
@@ -68,8 +77,77 @@ export const designApi = {
 	/** What the caller is competent to judge. */
 	reviewerQueue(limit?: number) {
 		return api.get<ApiResponse<unknown>>('/design/reviews/queue', { limit });
+	},
+
+	/**
+	 * Two rounds side by side, and every critique written between them.
+	 *
+	 * `from` must be strictly before `to` or the server answers 400 — the
+	 * caller orders the pair, because a comparison read backwards is a
+	 * comparison that tells the wrong story about who moved.
+	 */
+	compare(sliceId: string, from: number, to: number) {
+		return api.get<ApiResponse<{ comparison: DesignComparison }>>(
+			`/design/slices/${sliceId}/compare`,
+			{ from, to }
+		);
+	},
+
+	/** One version, as it stood when it was reviewed. */
+	versionAt(sliceId: string, round: number) {
+		return api.get<ApiResponse<{ version: DesignVersionAtRound }>>(
+			`/design/slices/${sliceId}/versions/${round}`
+		);
+	},
+
+	/**
+	 * What the automatic checks found, oldest round first.
+	 *
+	 * Public like the critique trail, and for the same reason: a reader who
+	 * can see the verdict should be able to see what the machine said about
+	 * it. None of it is a verdict — an `error` can sit on an approved version.
+	 */
+	autoChecks(sliceId: string) {
+		return api.get<ApiResponse<{ checks: DesignAutoCheck[] }>>(
+			`/design/slices/${sliceId}/auto-checks`
+		);
+	},
+
+	/**
+	 * Validated work that took three rounds or more, newest first.
+	 *
+	 * The one thing a portfolio of finished images can never show: a direction
+	 * questioned, and somebody who came back.
+	 */
+	iterationStories(username: string, limit?: number) {
+		return api.get<ApiResponse<{ stories: DesignIterationStory[] }>>(
+			`/design/users/${encodeURIComponent(username)}/iteration-stories`,
+			{ limit }
+		);
 	}
 };
+
+/**
+ * What to spend this week on: open challenges and contests, ranked together.
+ *
+ * Lives here rather than in a domain-neutral module because the ranking is the
+ * design programme's O-02, but the endpoint takes any of the seven domains and
+ * defaults to the caller's own. Omitting `domain` on an account that never
+ * finished onboarding is a 400, not an empty list.
+ */
+export function nextChallenges(params?: { domain?: string; limit?: number }) {
+	return api.get<ApiResponse<NextChallenges>>('/users/me/next-challenges', {
+		domain: params?.domain,
+		limit: params?.limit
+	});
+}
+
+/** Convenience over {@link nextChallenges} for the surfaces that only render a
+ * list and have no use for the cache flag. */
+export async function designSuggestions(limit?: number): Promise<ChallengeSuggestion[]> {
+	const res = await nextChallenges({ domain: 'design', limit });
+	return res.data?.suggestions ?? [];
+}
 
 /**
  * Design contests, from the tournament listing.

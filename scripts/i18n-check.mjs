@@ -24,7 +24,8 @@ const LANG_FILES = ['fr', 'en'].map((l) => ({
 	paths: [
 		join(SRC, 'lib', 'i18n', `${l}.ts`),
 		join(SRC, 'lib', 'i18n', `postmvp.${l}.ts`),
-		join(SRC, 'lib', 'i18n', `design.${l}.ts`)
+		join(SRC, 'lib', 'i18n', `design.${l}.ts`),
+		join(SRC, 'lib', 'i18n', `design_workflow.${l}.ts`)
 	]
 }));
 

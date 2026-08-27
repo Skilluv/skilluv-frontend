@@ -11,7 +11,7 @@
 	import Timeline from '$components/profile/Timeline.svelte';
 	import ExternalSignals from '$components/profile/ExternalSignals.svelte';
 	import Vouchings from '$components/profile/Vouchings.svelte';
-	import { DesignSection } from '$components/design';
+	import { DesignSection, IterationStories } from '$components/design';
 	import CraftSection from '$components/profile/CraftSection.svelte';
 	import {
 		CodeRecord,
@@ -408,6 +408,13 @@
 				<!-- SKI-253 — the design record. Addressed by username, so unlike
 				     the sections above it needs no UUID. -->
 				<DesignSection {username} isOwn={isOwnProfile} />
+
+				<!-- A-04 — the rounds a finished image cannot show. Sits directly
+				     under the design record it belongs to, and renders nothing when
+				     the account has no work that took three rounds or more. -->
+				<div class="mt-4">
+					<IterationStories {username} />
+				</div>
 
 				<!-- The AI and audio records, same shape and same addressing. Each
 				     renders nothing at all when this person has no work in that
