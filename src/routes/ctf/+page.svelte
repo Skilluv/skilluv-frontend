@@ -13,7 +13,7 @@
 	 * none. The field is read optionally, so a deployment that predates it
 	 * yields an empty list rather than a wrong one.
 	 */
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { Flag } from '@lucide/svelte';
 	import { challengesApi, type ChallengeListItem } from '$api/challenges';
 	import { securityApi } from '$api/security';
@@ -23,6 +23,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import { ws } from '$stores/websocket.svelte';
 	import type { ScoreboardRow } from '$types';
 
 	let rows = $state<ScoreboardRow[]>([]);
@@ -55,7 +56,44 @@
 		}
 	}
 
-	onMount(load);
+	/**
+	 * SKI-138 — the board updates itself.
+	 *
+	 * `security.first_solve` is the one event in this domain broadcast globally
+	 * rather than kept between a reporter and a reviewer, which is exactly what
+	 * a cross-challenge board needs: no room to join, and a first blood on any
+	 * range is news here.
+	 *
+	 * It refetches rather than patching the row in place. The board is ranked
+	 * server-side on solves and first-solves together, and a client that
+	 * incremented a counter locally would render an order the server does not
+	 * agree with — briefly right, then wrong, with nothing to say which.
+	 *
+	 * A dropped socket costs live updates and nothing else: the page already
+	 * loaded once, and the store reconnects on its own.
+	 */
+	let stopListening: (() => void) | null = null;
+
+	onMount(() => {
+		load();
+		ws.connect();
+		stopListening = ws.on('security.first_solve', () => {
+			refreshBoard();
+		});
+	});
+
+	onDestroy(() => stopListening?.());
+
+	/** The board alone — the range catalogue has not moved. */
+	async function refreshBoard() {
+		try {
+			const board = await securityApi.scoreboard();
+			rows = board.data?.all_time ?? [];
+		} catch {
+			// Keep what is on screen. A stale board beats an empty one, and the
+			// next event or reload will correct it.
+		}
+	}
 </script>
 
 <svelte:head>
@@ -121,9 +159,19 @@
 	</section>
 
 	<section class="space-y-3" data-testid="ctf-scoreboard">
-		<h2 class="text-sm font-bold uppercase tracking-wider text-text-muted">
-			{i18n.t('securityPractice.scoreboardTitle')}
-		</h2>
+		<div class="flex flex-wrap items-center gap-2">
+			<h2 class="text-sm font-bold uppercase tracking-wider text-text-muted">
+				{i18n.t('securityPractice.scoreboardTitle')}
+			</h2>
+			{#if ws.connected}
+				<!-- Said only while it is true. A board that claims to be live
+				     when the socket is down is worse than one that never
+				     claimed it. -->
+				<span class="text-xs text-success" data-testid="ctf-live">
+					{i18n.t('securityPractice.liveNote')}
+				</span>
+			{/if}
+		</div>
 
 		{#if loading}
 			<Skeleton class="h-64 w-full" rounded="xl" />

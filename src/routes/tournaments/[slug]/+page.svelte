@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/state';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
@@ -9,6 +9,7 @@
 	import type { Tournament, TournamentParticipant } from '$types';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import { ws, tournamentRoom } from '$stores/websocket.svelte';
 
 	let slug = $derived(page.params.slug ?? '');
 	let tournament = $state<Tournament | null>(null);
@@ -31,6 +32,49 @@
 			loading = false;
 		}
 	}
+
+	/** An entrant's name, or its UUID when the account is gone. */
+	function entrantName(e: TournamentParticipant): string {
+		return e.display_name ?? e.username ?? e.participant_id;
+	}
+
+	/**
+	 * SKI-149 — the standing updates itself.
+	 *
+	 * Room-scoped: `tournament:{id}`, joined once the tournament is loaded,
+	 * because the id is what the room is keyed on and the URL only carries the
+	 * slug.
+	 *
+	 * The events carry no score, deliberately, and that is the right shape: a
+	 * tournament has a `scoring_direction`, so whether a smaller number just
+	 * took the lead is the leaderboard's business and not a client's. So this
+	 * refetches rather than patching.
+	 */
+	let joinedRoom: string | null = null;
+	let stopListening: Array<() => void> = [];
+
+	async function refreshLeaderboard() {
+		try {
+			const res = await tournamentApi.leaderboard(slug);
+			leaderboard = res.data.leaderboard;
+		} catch {
+			// Keep the standing on screen rather than blanking it.
+		}
+	}
+
+	$effect(() => {
+		const id = tournament?.id;
+		if (!id || joinedRoom === tournamentRoom(id)) return;
+		if (joinedRoom) ws.leave(joinedRoom);
+		joinedRoom = tournamentRoom(id);
+		ws.connect();
+		ws.join(joinedRoom);
+	});
+
+	onDestroy(() => {
+		if (joinedRoom) ws.leave(joinedRoom);
+		for (const off of stopListening) off();
+	});
 
 	async function register() {
 		if (!auth.isAuthenticated) {
@@ -78,7 +122,15 @@
 		!!auth.user && leaderboard.some((e) => e.participant_id === auth.user?.id)
 	);
 
-	onMount(() => void load());
+	onMount(() => {
+		void load();
+		stopListening = [
+			ws.on('tournament.leaderboard_changed', () => refreshLeaderboard()),
+			// A conclusion moves the ranking and the tournament's own status,
+			// so this one reloads both rather than the standing alone.
+			ws.on('tournament.concluded', () => void load())
+		];
+	});
 </script>
 
 <svelte:head>
@@ -165,9 +217,11 @@
 					{i18n.locale === 'fr' ? 'Classement' : 'Leaderboard'}
 				</h2>
 				<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
-					<!-- The standing carries participant UUIDs and nothing else, so a
-					     row shows its rank, its score, and whether it is yours.
-					     Rendering a name here would mean inventing one. -->
+					<!-- SKI-302 — the standing names its entrants: `leaderboard_of`
+					     COALESCEs the user and guild joins, so one pair of fields
+					     covers both. A row whose account is gone keeps its rank
+					     and falls back to its id, because dropping it would move
+					     everybody below it. -->
 					{#each leaderboard as e (e.participant_id)}
 						{@const isMe = e.participant_id === auth.user?.id}
 						<div
@@ -180,15 +234,28 @@
 								</div>
 							</div>
 							<div class="min-w-0 flex-1">
-								{#if isMe}
-									<div class="font-semibold">{i18n.locale === 'fr' ? 'Toi' : 'You'}</div>
+								{#if e.username}
+									<a
+										href="/profile/{e.username}"
+										class="truncate font-semibold hover:underline"
+										data-testid="leaderboard-name"
+									>
+										{entrantName(e)}
+									</a>
 								{:else}
-									<div class="font-mono text-xs text-text-muted">
+									<div class="truncate font-mono text-xs text-text-muted">
+										{entrantName(e)}
+									</div>
+								{/if}
+								<div class="text-xs text-text-muted">
+									{#if isMe}
+										{i18n.locale === 'fr' ? 'Toi' : 'You'}
+									{:else}
 										{e.participant_type === 'guild'
 											? (i18n.locale === 'fr' ? 'Guilde' : 'Guild')
 											: (i18n.locale === 'fr' ? 'Participant' : 'Entrant')}
-									</div>
-								{/if}
+									{/if}
+								</div>
 								{#if e.prize_fragments_awarded > 0}
 									<div class="text-xs text-text-muted">
 										+{e.prize_fragments_awarded} {i18n.t('common.fragments')}

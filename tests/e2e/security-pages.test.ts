@@ -99,6 +99,16 @@ test.describe('Skilluv Cyber pages', () => {
 		await expect(page.getByTestId('security-missions-page')).toBeVisible();
 	});
 
+	test('the CTF board says it is live only while the socket is up', async ({ page }) => {
+		// SKI-141 landed the room-scoped events; the front was the half that
+		// never subscribed. With no backend there is no socket, so the claim
+		// must be absent — a board that says "live" while disconnected is
+		// worse than one that never said it.
+		await gotoHydrated(page, '/ctf');
+		await expect(page.getByTestId('ctf-scoreboard')).toBeVisible();
+		await expect(page.getByTestId('ctf-live')).toHaveCount(0);
+	});
+
 	test('a CTF target offers the flag form, a lab offers its artefact', async ({ page }) => {
 		// Both submission surfaces existed as components and were mounted
 		// nowhere: /ctf and /blue-lab linked to a challenge page that could not

@@ -2,10 +2,14 @@
 	/**
 	 * The top three of a concluded contest (SKI-237).
 	 *
-	 * The standing carries participant UUIDs and no names — `leaderboard_of`
-	 * joins nothing — so a step shows its rank, its score and what it won, and
-	 * marks the reader's own place. Inventing a display name here would be
-	 * inventing a winner.
+	 * The standing names its entrants: `leaderboard_of` LEFT JOINs `users` and
+	 * `guilds` and COALESCEs the pair, so one set of fields covers both. A
+	 * podium that could not say who won was the one thing that made a contest
+	 * results page pointless.
+	 *
+	 * The joins are LEFT, so a winner whose account is gone keeps their step
+	 * and falls back to their id — dropping the row would promote whoever came
+	 * second into a place they did not win.
 	 */
 	import { Trophy } from '@lucide/svelte';
 	import { i18n } from '$lib/i18n';
@@ -55,6 +59,19 @@
 			<div class="flex w-28 flex-col items-center sm:w-36">
 				{#if rank === 1}
 					<Trophy size={22} strokeWidth={2} class="mb-2 text-accent" />
+				{/if}
+				{#if entry.username}
+					<a
+						href="/profile/{entry.username}"
+						class="max-w-full truncate text-sm font-bold text-text hover:underline"
+						data-testid="podium-name"
+					>
+						{entry.display_name ?? entry.username}
+					</a>
+				{:else}
+					<p class="max-w-full truncate font-mono text-xs text-text-muted">
+						{entry.participant_id}
+					</p>
 				{/if}
 				<p class="text-xs font-semibold text-text-muted">
 					{isMe ? i18n.t('designContests.yourEntry') : rankLabel(rank)}

@@ -169,6 +169,21 @@ export interface TournamentParticipant {
 	prize_fragments_awarded: number;
 	prize_gp_awarded: number;
 	registered_at: string;
+	/**
+	 * Who the row is — SKI-302.
+	 *
+	 * `leaderboard_of` LEFT JOINs `users` and `guilds` and COALESCEs the two,
+	 * so one pair of fields names an entrant whichever it is. The joins are
+	 * LEFT on purpose: a participant whose account is gone comes back with null
+	 * names rather than vanishing, because removing the row would change the
+	 * standing of everybody below it.
+	 *
+	 * Optional here only for that null case and for an older deployment; the
+	 * server has carried them all along.
+	 */
+	username?: string | null;
+	display_name?: string | null;
+	avatar_url?: string | null;
 }
 
 // ---------------------------------------------------------------------------

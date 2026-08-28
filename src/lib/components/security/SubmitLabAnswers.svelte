@@ -8,10 +8,14 @@
 	 * exactly that and nothing more — no scoring per question, no reveal, no
 	 * "close enough".
 	 *
-	 * The questions themselves come from whoever mounts this: the lab's
-	 * artefact and its question list are the parent's to fetch, and a component
-	 * that invented question ids would submit answers to a lab that never asked
-	 * them.
+	 * The questions come from whoever mounts this: they ride on the challenge
+	 * itself (`security_lab_questions`), stripped of their answer hash and of
+	 * the author's hint. A component that invented question ids would submit
+	 * answers to a lab that never asked them.
+	 *
+	 * A `choice` question renders its options and a `text` one a field. The
+	 * difference matters: offering a free-text box for a question with four
+	 * possible answers spends an attempt on a spelling.
 	 */
 	import { ClipboardCheck } from '@lucide/svelte';
 	import { securityApi } from '$api/security';
@@ -19,16 +23,27 @@
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
-	import type { LabOutcome } from '$types';
+	import Select from '$components/ui/Select.svelte';
+	import type { LabOutcome, LabQuestion } from '$types';
 
 	interface Props {
 		challengeId: string;
 		/** The lab's questions, in the order it asks them. */
-		questions: { id: string; question: string; hint?: string | null }[];
+		questions: LabQuestion[];
+		/** The share that has to be right, said before the first attempt. */
+		passPercent?: number | null;
+		/** Attempts before the cooling-off period. */
+		maxAttempts?: number | null;
 		onsubmitted?: (outcome: LabOutcome) => void;
 	}
 
-	let { challengeId, questions, onsubmitted }: Props = $props();
+	let {
+		challengeId,
+		questions,
+		passPercent = null,
+		maxAttempts = null,
+		onsubmitted
+	}: Props = $props();
 
 	let answers = $state<Record<string, string>>({});
 	let sending = $state(false);
@@ -67,16 +82,45 @@
 		{i18n.t('securityPractice.labTitle')}
 	</h3>
 
+	{#if passPercent !== null || maxAttempts !== null}
+		<!-- Both announced rather than discovered after a failed attempt. -->
+		<p class="text-xs text-text-muted" data-testid="lab-terms">
+			{#if passPercent !== null}{i18n.t('securityPractice.labPassPercent', {
+					n: passPercent
+				})}{/if}{#if passPercent !== null && maxAttempts !== null} · {/if}{#if maxAttempts !== null}{i18n.t(
+					'securityPractice.labMaxAttempts',
+					{ n: maxAttempts }
+				)}{/if}
+		</p>
+	{/if}
+
 	<ol class="space-y-3">
 		{#each questions as question (question.id)}
+			{@const options = question.choices ?? []}
 			<li>
-				<label class="flex flex-col gap-1">
+				<div class="flex flex-col gap-1">
 					<span class="text-sm text-text">{question.question}</span>
-					<Input bind:value={answers[question.id]} data-testid="lab-answer-{question.id}" />
-					{#if question.hint}
-						<span class="text-xs text-text-muted">{question.hint}</span>
+					{#if question.kind === 'choice' && options.length > 0}
+						<!-- The options as given. A free-text box here would spend
+						     an attempt on a spelling. -->
+						<Select
+							items={[
+								{ value: '', label: i18n.t('securityPractice.labChoosePlaceholder') },
+								...options.map((c) => ({ value: c, label: c }))
+							]}
+							bind:value={answers[question.id]}
+							shape="rounded"
+						/>
+					{:else}
+						<Input bind:value={answers[question.id]} data-testid="lab-answer-{question.id}" />
+						{#if question.case_sensitive}
+							<!-- Only said where it is true, and it rarely is. -->
+							<span class="text-xs text-text-muted">
+								{i18n.t('securityPractice.labCaseSensitive')}
+							</span>
+						{/if}
 					{/if}
-				</label>
+				</div>
 				{#if wrong.has(question.id)}
 					<!-- Marked wrong, and nothing more: the right answer stays
 					     withheld or the retry teaches nothing. -->

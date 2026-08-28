@@ -6,7 +6,24 @@ export type WsEvent =
 	| 'badge.earned'
 	| 'leaderboard.updated'
 	| 'challenge.submission'
-	| 'notification';
+	| 'notification'
+	/**
+	 * A CTF challenge solved before anybody else (SKI-141).
+	 *
+	 * Broadcast twice by the server and the two are not the same message:
+	 * globally, because a first blood is community news, and into `ctf:{id}`,
+	 * because a page showing one challenge cannot filter the global stream down
+	 * to itself without receiving every other challenge's traffic first. Which
+	 * one a surface wants depends on what it renders — `room` says which
+	 * arrived.
+	 */
+	| 'security.first_solve'
+	/** A correct flag moved the board. Room-scoped: `ctf:{id}`. */
+	| 'security.scoreboard_changed'
+	/** A tournament standing moved. Room-scoped: `tournament:{id}`. */
+	| 'tournament.leaderboard_changed'
+	/** A tournament ended and its final ranking is readable. */
+	| 'tournament.concluded';
 
 interface WsMessage {
 	event: WsEvent;
@@ -63,7 +80,14 @@ class WebSocketState {
 		this.connected = false;
 	}
 
-	/** Rejoindre une room (leaderboard, challenge, etc.) */
+	/**
+	 * Rejoindre une room (leaderboard, challenge, etc.)
+	 *
+	 * Rooms are not access-controlled beyond `cohort:` — joining one only
+	 * decides what reaches this socket, never what the reader is allowed to
+	 * know. Every payload sent to `ctf:` and `tournament:` is already public on
+	 * the page that renders it.
+	 */
 	join(room: string) {
 		this.send({ action: 'join', room });
 	}
@@ -107,3 +131,19 @@ class WebSocketState {
 }
 
 export const ws = new WebSocketState();
+
+/**
+ * The room a CTF challenge publishes into.
+ *
+ * Named here rather than interpolated at each call site: the server formats it
+ * as `ctf:{id}` in one place, and a client that spells it differently gets a
+ * socket that connects, joins nothing, and reports no error at all.
+ */
+export function ctfRoom(challengeId: string): string {
+	return `ctf:${challengeId}`;
+}
+
+/** The room a tournament publishes into. Same reasoning as `ctfRoom`. */
+export function tournamentRoom(tournamentId: string): string {
+	return `tournament:${tournamentId}`;
+}

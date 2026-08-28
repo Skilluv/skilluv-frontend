@@ -204,6 +204,13 @@ export interface SecurityTranslations {
 		lastSolve: string;
 		flagTitle: string;
 		flagPlaceholder: string;
+		targetLabel: string;
+		formatLabel: string;
+		liveNote: string;
+		labChoosePlaceholder: string;
+		labCaseSensitive: string;
+		labPassPercent: string;
+		labMaxAttempts: string;
 		flagCta: string;
 		flagCorrect: string;
 		flagWrong: string;

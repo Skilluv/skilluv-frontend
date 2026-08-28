@@ -217,6 +217,20 @@ export interface UserPublic {
 	member_since: string;
 }
 
+/** One question of a defensive lab, stripped of its answer. */
+export interface LabQuestion {
+	/** The id to answer under. */
+	id: string;
+	/** `text` or `choice`. */
+	kind?: string | null;
+	question: string;
+	/** The options for a `choice` question; empty for a `text` one. */
+	choices?: string[];
+	/** Whether the answer is compared as typed. False for almost everything —
+	 * most answers here are an address, a tool name or a count. */
+	case_sensitive?: boolean;
+}
+
 export interface Challenge {
 	id: string;
 	title: string;
@@ -235,6 +249,36 @@ export interface Challenge {
 	security_kind?: string | null;
 	/** The cyber difficulty tier, alongside `security_kind`. Null off-domain. */
 	security_difficulty_tier?: string | null;
+	/**
+	 * Where a CTF target lives, and what shape its flag has — SKI-339.
+	 *
+	 * Both null on every kind but `ctf_flag`. The format matters more than it
+	 * looks: the comparison is case-sensitive after trimming, attempts are
+	 * capped per hour, and `submit_flag` already returns the shape as a hint on
+	 * a wrong answer. Announcing it up front is strictly better than teaching
+	 * it by refusal.
+	 *
+	 * `security_flag_hash` is not here and must never be: it is the answer.
+	 */
+	security_target_url?: string | null;
+	security_flag_format?: string | null;
+	/**
+	 * A defensive lab's questions, as a client is served them — SKI-332.
+	 *
+	 * The stored rows carry an `expected_answer_hash` and an author's `hint`
+	 * and neither is here: the hash of a short answer is a wordlist away from
+	 * the answer, and a hint shown before the first attempt is just a shorter
+	 * question. Hints arrive in the outcome, for the questions actually got
+	 * wrong.
+	 */
+	security_lab_questions?: LabQuestion[] | null;
+	/** Said before the download starts: a memory image on a metered
+	 * connection is a decision, not a click. */
+	security_lab_artifact_bytes?: number | null;
+	/** The share that has to be right, announced rather than discovered. */
+	security_lab_pass_percent?: number | null;
+	/** Attempts before the cooling-off period, for the same reason. */
+	security_lab_max_attempts?: number | null;
 	description: string;
 	instructions: string;
 	skill_domain: SkillDomain;

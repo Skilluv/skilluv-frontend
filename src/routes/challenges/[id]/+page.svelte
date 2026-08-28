@@ -8,7 +8,8 @@
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { BookmarkButton, NoteEditor } from '$components/saved';
-	import { LabArtifactLink, SubmitFlag } from '$components/security';
+	import { LabArtifactLink, SubmitFlag, SubmitLabAnswers } from '$components/security';
+	import { Crosshair } from '@lucide/svelte';
 	import type { Challenge } from '$types';
 
 	let challengeId = $derived($page.params.id ?? '');
@@ -237,16 +238,64 @@
 		</div>
 
 		{#if securityKind === 'ctf_flag'}
+			<!-- SKI-339 — where to attack, and what a flag looks like here.
+			     Both sit above the submission field, because they are what
+			     somebody needs before trying, not after being refused. The
+			     format especially: attempts are capped per hour and the
+			     comparison is case-sensitive, so learning the shape from a
+			     rejection costs one of ten tries. -->
+			{#if challenge.security_target_url || challenge.security_flag_format}
+				<div
+					class="mt-6 space-y-2 rounded-xl border border-border bg-surface-elevated p-5"
+					data-testid="ctf-target"
+				>
+					{#if challenge.security_target_url}
+						<div class="flex flex-wrap items-center gap-2 text-sm">
+							<Crosshair size={15} class="text-text-muted" />
+							<span class="text-text-muted">{i18n.t('securityPractice.targetLabel')}</span>
+							<a
+								href={challenge.security_target_url}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="break-all text-accent hover:underline"
+								data-testid="ctf-target-url"
+							>
+								{challenge.security_target_url}
+							</a>
+						</div>
+					{/if}
+					{#if challenge.security_flag_format}
+						<p class="text-sm text-text-muted">
+							{i18n.t('securityPractice.formatLabel')}
+							<code class="rounded bg-surface px-1.5 py-0.5 font-mono text-xs text-text">
+								{challenge.security_flag_format}
+							</code>
+						</p>
+					{/if}
+				</div>
+			{/if}
+
 			<!-- C-03 — where the flag actually goes. -->
 			<div class="mt-6">
 				<SubmitFlag challengeId={challenge.id} />
 			</div>
 		{:else if securityKind === 'defensive_lab'}
-			<!-- B-05 — the artefact. The questions are not served by any
-			     endpoint yet (SKI-332), so the answer form stays unmounted
-			     rather than inventing ids the lab never asked. -->
-			<div class="mt-6">
+			<!-- B-05 — download the artefact, analyse it in your own tools,
+			     bring back the answers. The questions ride on the challenge
+			     itself (SKI-332), stripped of their answer hash and of the
+			     author's hint; the hints arrive with the outcome, for the ones
+			     actually got wrong. -->
+			<div class="mt-6 space-y-6">
 				<LabArtifactLink challengeId={challenge.id} />
+
+				{#if challenge.security_lab_questions?.length}
+					<SubmitLabAnswers
+						challengeId={challenge.id}
+						questions={challenge.security_lab_questions}
+						passPercent={challenge.security_lab_pass_percent ?? null}
+						maxAttempts={challenge.security_lab_max_attempts ?? null}
+					/>
+				{/if}
 			</div>
 		{/if}
 
