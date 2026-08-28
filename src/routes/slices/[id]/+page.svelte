@@ -419,7 +419,11 @@
 			{#if isDesign}
 				<section class="mb-8 space-y-6" data-testid="design-workshop">
 					{#if canSubmitVersion}
-						<SubmitVersion sliceId={slice.id} onsubmitted={() => invalidateAll()} />
+						<SubmitVersion
+							sliceId={slice.id}
+							subtype={slice.design_subtype ?? 'interface'}
+							onsubmitted={() => invalidateAll()}
+						/>
 					{/if}
 					<CritiqueTrail sliceId={slice.id} expectedRounds={slice.design_expected_rounds ?? null} />
 				</section>

@@ -39,6 +39,9 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 		submitArtifactUrl: 'Where this version lives',
 		submitArtifactUrlHint:
 			'A versioned Figma node, a hosted board, a published project, or a file you uploaded.',
+		submitByLink: 'Paste a link',
+		submitByFile: 'Upload a file',
+		submitFileReady: 'File stored. Add your notes and hand it in.',
 		submitNotes: 'What changed',
 		submitNotesHint:
 			'Optional on the first version, and the single most useful thing to write on any later one.',

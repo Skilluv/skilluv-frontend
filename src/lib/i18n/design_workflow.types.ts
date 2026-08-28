@@ -44,6 +44,9 @@ export interface DesignWorkflowTranslations {
 		submitTitle: string;
 		submitArtifactUrl: string;
 		submitArtifactUrlHint: string;
+		submitByLink: string;
+		submitByFile: string;
+		submitFileReady: string;
 		submitNotes: string;
 		submitNotesHint: string;
 		submitCta: string;
