@@ -195,6 +195,22 @@
 			</div>
 			<span class="text-text-muted">→</span>
 		</a>
+
+		<!-- The sibling path, and the one that is easy to confuse with it: a
+		     declared portfolio on a platform Skilluv keeps a row for, rather
+		     than a signal a moderator confirms. Same page, so the difference is
+		     read once rather than discovered twice. -->
+		<a
+			href="/settings/portfolios"
+			data-testid="settings-link-portfolios"
+			class="mt-4 flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
+		>
+			<div>
+				<p class="font-medium">{i18n.t('portfolioSettings.title')}</p>
+				<p class="text-xs text-text-muted">{i18n.t('portfolioSettings.subtitle')}</p>
+			</div>
+			<span class="text-text-muted">→</span>
+		</a>
 	</section>
 
 	<!-- Mot de passe -->

@@ -1,6 +1,6 @@
 <script lang="ts">
 	/**
-	 * O-02 — what to spend this week on.
+	 * O-02 — what to spend this week on, in whichever domain asked.
 	 *
 	 * Challenges and contests arrive in one ranked list because they answer the
 	 * same question for the reader. Two lists would make this component merge
@@ -28,16 +28,23 @@
 	import type { NextChallenge } from '$types';
 
 	interface Props {
-		/** Defaults to the caller's declared domain server-side. Passing one is
-		 * required for an account that never finished onboarding — the endpoint
-		 * answers 400 rather than guessing. */
-		domain?: string;
+		/**
+		 * Which domain to recommend within.
+		 *
+		 * Required rather than defaulted: the endpoint answers 400 for an
+		 * account that never finished onboarding instead of guessing, and a
+		 * default of `design` would have made a cyber surface silently
+		 * recommend design work to a security researcher.
+		 */
+		domain: string;
 		limit?: number;
 		/** Drops the heading when the parent already has one. */
 		bare?: boolean;
+		/** Prefixes the testids, so each domain's list stays addressable. */
+		testPrefix?: string;
 	}
 
-	let { domain = 'design', limit = 5, bare = false }: Props = $props();
+	let { domain, limit = 5, bare = false, testPrefix = domain }: Props = $props();
 
 	let suggestions = $state<NextChallenge[]>([]);
 	let cached = $state(false);
@@ -45,7 +52,7 @@
 	let loadError = $state('');
 
 	function formatLabel(format: string): string {
-		const key = `designNext.formats.${format}`;
+		const key = `nextChallenges.formats.${format}`;
 		const translated = i18n.t(key);
 		return translated === key ? format : translated;
 	}
@@ -91,19 +98,19 @@
 	onMount(load);
 </script>
 
-<section class="space-y-4" data-testid="design-next-challenges">
+<section class="space-y-4" data-testid="{testPrefix}-next-challenges">
 	{#if !bare}
 		<header class="flex items-start justify-between gap-3">
 			<div class="space-y-1">
 				<h2 class="flex items-center gap-2 text-lg font-bold text-text">
 					<Sparkles size={18} />
-					{i18n.t('designNext.title')}
+					{i18n.t('nextChallenges.title')}
 				</h2>
-				<p class="text-sm text-text-muted">{i18n.t('designNext.subtitle')}</p>
+				<p class="text-sm text-text-muted">{i18n.t('nextChallenges.subtitle')}</p>
 			</div>
 			<Button variant="ghost" size="sm" loading={loading} onclick={load}>
 				<RefreshCw size={15} />
-				{i18n.t('designNext.refresh')}
+				{i18n.t('nextChallenges.refresh')}
 			</Button>
 		</header>
 	{/if}
@@ -116,8 +123,8 @@
 		</p>
 	{:else if suggestions.length === 0}
 		<EmptyState
-			title={i18n.t('designNext.empty')}
-			body={i18n.t('designNext.emptyHint')}
+			title={i18n.t('nextChallenges.empty')}
+			body={i18n.t('nextChallenges.emptyHint')}
 			size="sm"
 		/>
 	{:else}
@@ -126,7 +133,7 @@
 				{@const href = hrefFor(suggestion)}
 				<li
 					class="rounded-xl border border-border bg-surface-elevated p-4"
-					data-testid="design-suggestion"
+					data-testid="{testPrefix}-suggestion"
 				>
 					<div class="flex flex-wrap items-start justify-between gap-2">
 						<div class="min-w-0 space-y-1">
@@ -137,19 +144,19 @@
 								</Badge>
 								{#if suggestion.family}<span>{suggestion.family}</span>{/if}
 								{#if suggestion.difficulty !== null}
-									<span>{i18n.t('designNext.difficulty', { n: suggestion.difficulty })}</span>
+									<span>{i18n.t('nextChallenges.difficulty', { n: suggestion.difficulty })}</span>
 								{/if}
 								{#if suggestion.estimated_hours !== null}
-									<span>{i18n.t('designNext.hours', { n: suggestion.estimated_hours })}</span>
+									<span>{i18n.t('nextChallenges.hours', { n: suggestion.estimated_hours })}</span>
 								{/if}
 								{#if suggestion.closes_at}
-									<span>{i18n.t('designNext.closesAt', { date: fmtDate(suggestion.closes_at) })}</span>
+									<span>{i18n.t('nextChallenges.closesAt', { date: fmtDate(suggestion.closes_at) })}</span>
 								{/if}
 							</div>
 						</div>
 						{#if href}
 							<Button {href} size="sm" variant="ghost">
-								{i18n.t('designNext.openCta')}
+								{i18n.t('nextChallenges.openCta')}
 								<ArrowRight size={15} />
 							</Button>
 						{/if}
@@ -158,7 +165,7 @@
 					{#if suggestion.reasons.length > 0}
 						<div class="mt-3 border-t border-border pt-3">
 							<span class="text-xs font-bold uppercase tracking-wider text-text-muted">
-								{i18n.t('designNext.whyTitle')}
+								{i18n.t('nextChallenges.whyTitle')}
 							</span>
 							<ul class="mt-1 space-y-0.5">
 								{#each suggestion.reasons as reason (reason)}
@@ -172,8 +179,8 @@
 		</ul>
 
 		{#if cached}
-			<p class="text-xs text-text-muted" data-testid="design-next-cached">
-				{i18n.t('designNext.cachedNote')}
+			<p class="text-xs text-text-muted" data-testid="{testPrefix}-next-cached">
+				{i18n.t('nextChallenges.cachedNote')}
 			</p>
 		{/if}
 	{/if}

@@ -30,8 +30,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import Select from '$components/ui/Select.svelte';
-	import MentorMatches from '$components/design/MentorMatches.svelte';
-	import NextChallenges from '$components/design/NextChallenges.svelte';
+	import { MentorMatches, NextChallenges } from '$components/domain';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import {
 		DOMAIN_GOALS,
@@ -409,8 +408,8 @@
 		     own empty state, so an account that skipped the questions sees no
 		     hole. -->
 		<div class="mt-10 space-y-10">
-			<NextChallenges />
-			<MentorMatches />
+			<NextChallenges domain="design" />
+			<MentorMatches domain="design" />
 		</div>
 	{/if}
 </div>

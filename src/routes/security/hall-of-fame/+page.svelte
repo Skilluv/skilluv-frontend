@@ -23,6 +23,7 @@
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { FindingReporter, HallOfFame } from '$types';
+	import { FeaturedTalent } from '$components/domain';
 
 	let board = $state<HallOfFame | null>(null);
 	let loading = $state(true);
@@ -89,6 +90,14 @@
 		</h1>
 		<p class="text-sm text-text-muted">{i18n.t('securityHallOfFame.subtitle')}</p>
 	</header>
+
+	<!-- SKI-279 — the researcher of the week. `GET /featured/{domain}` serves
+	     every domain from one route and had a design-only surface, so this one
+	     was live and called by nothing. It belongs on the hall of fame rather
+	     than on a page of its own: both answer "who does this platform put
+	     forward", on different timescales. Renders its own empty state between
+	     weeks. -->
+	<FeaturedTalent domain="security" testPrefix="security" />
 
 	{#if loading}
 		<Skeleton class="h-80 w-full" rounded="xl" />

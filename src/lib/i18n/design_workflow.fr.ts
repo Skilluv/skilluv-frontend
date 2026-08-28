@@ -160,7 +160,7 @@ export const designWorkflowFr: DesignWorkflowTranslations = {
 		}
 	},
 
-	designNext: {
+	nextChallenges: {
 		title: 'À quoi passer ta semaine',
 		subtitle: 'Challenges et concours, classés ensemble : ils répondent à la même question.',
 		empty: 'Rien à suggérer pour l’instant.',
@@ -298,7 +298,7 @@ export const designWorkflowFr: DesignWorkflowTranslations = {
 		declinedReason: 'Refusé : {reason}'
 	},
 
-	designFeatured: {
+	featuredTalent: {
 		title: 'Designer de la semaine',
 		subtitle: 'Mis en avant par un éditeur, avec la raison attachée.',
 		empty: 'Personne mis en avant cette semaine.',
@@ -374,7 +374,7 @@ export const designWorkflowFr: DesignWorkflowTranslations = {
 		}
 	},
 
-	designMentors: {
+	mentorMatches: {
 		title: 'Qui pourrait t’aider',
 		subtitle: 'Des mentors de ton domaine, et ce que tu as en commun avec chacun.',
 		wouldHelp:

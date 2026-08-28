@@ -1,5 +1,6 @@
 import { designFr } from './design.fr';
 import { designWorkflowFr } from './design_workflow.fr';
+import { portfoliosFr } from './portfolios.fr';
 import { securityFr } from './security.fr';
 import { postMvpFr } from './postmvp.fr';
 import type { Translations } from './types';
@@ -9,6 +10,7 @@ export const fr: Translations = {
 	...designFr,
 	...designWorkflowFr,
 	...securityFr,
+	...portfoliosFr,
 	common: {
 		actions: {
 			save: 'Sauvegarder', cancel: 'Annuler', delete: 'Supprimer', edit: 'Modifier',

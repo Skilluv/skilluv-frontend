@@ -1,6 +1,6 @@
 <script lang="ts">
 	/**
-	 * P-03 — the designer the platform puts forward this week.
+	 * P-03 — the person the platform puts forward this week, in any domain.
 	 *
 	 * Public, because a featuring nobody can read is a distinction nobody can
 	 * check, and the history is shown next to the current week for the same
@@ -25,12 +25,19 @@
 	import type { FeaturedTalent } from '$types';
 
 	interface Props {
-		domain?: string;
+		/**
+		 * Which domain's pick to show. Required: `GET /featured/{domain}` serves
+		 * every domain from one route, and a default would have made a cyber
+		 * page quietly feature a designer.
+		 */
+		domain: string;
 		/** How many past weeks to list under the current one. */
 		historyLimit?: number;
+		/** Prefixes the testid, so each domain's block stays addressable. */
+		testPrefix?: string;
 	}
 
-	let { domain = 'design', historyLimit = 4 }: Props = $props();
+	let { domain, historyLimit = 4, testPrefix = domain }: Props = $props();
 
 	let current = $state<FeaturedTalent | null>(null);
 	let history = $state<FeaturedTalent[]>([]);
@@ -70,13 +77,13 @@
 {#if loading}
 	<Skeleton class="h-40 w-full" rounded="xl" />
 {:else if current || previous.length > 0}
-	<section class="space-y-4" data-testid="design-featured">
+	<section class="space-y-4" data-testid="{testPrefix}-featured">
 		<header class="space-y-1">
 			<h2 class="flex items-center gap-2 text-lg font-bold text-text">
 				<Star size={18} />
-				{i18n.t('designFeatured.title')}
+				{i18n.t('featuredTalent.title')}
 			</h2>
-			<p class="text-sm text-text-muted">{i18n.t('designFeatured.subtitle')}</p>
+			<p class="text-sm text-text-muted">{i18n.t('featuredTalent.subtitle')}</p>
 		</header>
 
 		{#if current}
@@ -96,34 +103,34 @@
 								{current.display_name ?? current.username ?? ''}
 							</p>
 							<p class="text-xs text-text-muted">
-								{i18n.t('designFeatured.weekOf', { date: fmtWeek(current.week_of) })}
+								{i18n.t('featuredTalent.weekOf', { date: fmtWeek(current.week_of) })}
 							</p>
 						</div>
 					</div>
 					{#if current.username}
 						<Button href="/profile/{current.username}" size="sm" variant="ghost">
-							{i18n.t('designFeatured.seeProfile')}
+							{i18n.t('featuredTalent.seeProfile')}
 						</Button>
 					{/if}
 				</div>
 
 				<div class="mt-3 border-t border-border pt-3">
 					<span class="text-xs font-bold uppercase tracking-wider text-text-muted">
-						{i18n.t('designFeatured.whyTitle')}
+						{i18n.t('featuredTalent.whyTitle')}
 					</span>
 					<p class="mt-1 whitespace-pre-line text-sm text-text">{current.reason_md}</p>
 				</div>
 			</article>
 		{:else}
 			<p class="rounded-lg border border-border bg-surface px-4 py-3 text-sm text-text-muted">
-				{i18n.t('designFeatured.empty')}
+				{i18n.t('featuredTalent.empty')}
 			</p>
 		{/if}
 
 		{#if previous.length > 0}
 			<div>
 				<span class="text-xs font-bold uppercase tracking-wider text-text-muted">
-					{i18n.t('designFeatured.historyTitle')}
+					{i18n.t('featuredTalent.historyTitle')}
 				</span>
 				<ul class="mt-2 space-y-2">
 					{#each previous as past (past.week_of)}
@@ -138,6 +145,6 @@
 			</div>
 		{/if}
 
-		<p class="text-xs text-text-muted">{i18n.t('designFeatured.noPostingNote')}</p>
+		<p class="text-xs text-text-muted">{i18n.t('featuredTalent.noPostingNote')}</p>
 	</section>
 {/if}

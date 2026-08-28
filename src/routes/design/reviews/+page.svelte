@@ -19,7 +19,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
-	import NextChallenges from '$components/design/NextChallenges.svelte';
+	import { NextChallenges } from '$components/domain';
 
 	/**
 	 * The queue rows are `json!({"slices": …})` server-side with no declared
@@ -114,5 +114,5 @@
 		</ul>
 	{/if}
 
-	<NextChallenges />
+	<NextChallenges domain="design" />
 </div>

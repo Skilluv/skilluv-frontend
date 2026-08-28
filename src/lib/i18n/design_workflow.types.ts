@@ -160,7 +160,7 @@ export interface DesignWorkflowTranslations {
 	};
 
 	/** O-02 — what to spend this week on. */
-	designNext: {
+	nextChallenges: {
 		title: string;
 		subtitle: string;
 		empty: string;
@@ -294,7 +294,7 @@ export interface DesignWorkflowTranslations {
 	};
 
 	/** P-03 — who the platform puts forward this week. */
-	designFeatured: {
+	featuredTalent: {
 		title: string;
 		subtitle: string;
 		empty: string;
@@ -368,7 +368,7 @@ export interface DesignWorkflowTranslations {
 	};
 
 	/** O-03 — mentors worth suggesting, with the reasoning attached. */
-	designMentors: {
+	mentorMatches: {
 		title: string;
 		subtitle: string;
 		wouldHelp: string;

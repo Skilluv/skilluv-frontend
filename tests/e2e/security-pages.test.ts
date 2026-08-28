@@ -23,6 +23,7 @@ const PUBLIC_PAGES = [
 
 const SESSION_PAGES = [
 	'/security/missions/does-not-exist/workspace',
+	'/settings/portfolios',
 	'/security/report',
 	'/security/reports',
 	'/security/research-mode',
@@ -117,12 +118,40 @@ test.describe('Skilluv Cyber pages', () => {
 		await expect(page.locator('h1')).toBeVisible();
 	});
 
+	test('the portfolio settings page renders and leads with the declared line', async ({ page }) => {
+		// `portfoliosApi` was written and mounted nowhere, so every seeded
+		// security platform — HackTheBox, TryHackMe, CTFtime, Intigriti,
+		// YesWeHack — had no surface at all.
+		await gotoHydrated(page, '/settings/portfolios');
+		await expect(page.getByTestId('portfolio-settings-page')).toBeVisible();
+		// Above the form on purpose: read before typing a follower count.
+		await expect(page.getByTestId('portfolio-declared-note')).toBeVisible();
+	});
+
+	test('the cyber onboarding offers what to do next and who to ask', async ({ page }) => {
+		// Both endpoints are domain-parameterised and had a design-only caller.
+		await gotoHydrated(page, '/security/onboarding');
+		await expect(page.getByTestId('security-next-steps')).toBeVisible();
+	});
+
+	test('the hall of fame carries the researcher of the week without inventing one', async ({
+		page
+	}) => {
+		// The block is mounted, and renders *nothing* between weeks rather than
+		// an empty "featured" heading — a distinction with nobody in it is
+		// noise. With no backend that is the branch taken, so what this asserts
+		// is that mounting it left the page intact.
+		await gotoHydrated(page, '/security/hall-of-fame');
+		await expect(page.getByTestId('security-hall-of-fame-page')).toBeVisible();
+		await expect(page.getByTestId('security-featured')).toHaveCount(0);
+	});
+
 	test('no i18n key leaks as a raw dotted path on any cyber page', async ({ page }) => {
 		for (const path of [...PUBLIC_PAGES, ...SESSION_PAGES]) {
 			await gotoHydrated(page, path);
 			const body = await page.locator('body').innerText();
 			expect(body, `raw i18n key leaked on ${path}`).not.toMatch(
-				/\b(securityScope|securityReport|securityMyReports|securityFinding|securityHallOfFame|securityTrust|securityPractice|securityResearch|securityBounties|securityCredentials|blueLab|missionWork)\.[a-zA-Z]+/
+				/\b(securityScope|securityReport|securityMyReports|securityFinding|securityHallOfFame|securityTrust|securityPractice|securityResearch|securityBounties|securityCredentials|blueLab|missionWork|portfolioSettings|nextChallenges|mentorMatches|featuredTalent)\.[a-zA-Z]+/
 			);
 		}
 	});

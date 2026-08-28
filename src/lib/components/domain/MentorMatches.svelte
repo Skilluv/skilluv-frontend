@@ -34,11 +34,18 @@
 	import type { MentorMatch, ProfileDomain } from '$types';
 
 	interface Props {
-		domain?: ProfileDomain;
+		/**
+		 * Which domain to match within. Required for the same reason as on
+		 * `NextChallenges`: a default would quietly offer design mentors to
+		 * somebody who asked for cyber ones.
+		 */
+		domain: ProfileDomain;
 		limit?: number;
+		/** Prefixes the testids, so each domain's list stays addressable. */
+		testPrefix?: string;
 	}
 
-	let { domain = 'design', limit = 5 }: Props = $props();
+	let { domain, limit = 5, testPrefix = domain }: Props = $props();
 
 	let mentors = $state<MentorMatch[]>([]);
 	let suggested = $state(false);
@@ -50,7 +57,7 @@
 		// know" and "the same timezone" are different answers, and only one of
 		// them is good news.
 		if (hours === null) return null;
-		return i18n.t('designMentors.timezoneGap', { n: Math.abs(hours) });
+		return i18n.t('mentorMatches.timezoneGap', { n: Math.abs(hours) });
 	}
 
 	async function load() {
@@ -71,21 +78,21 @@
 	onMount(load);
 </script>
 
-<section class="space-y-4" data-testid="design-mentor-matches">
+<section class="space-y-4" data-testid="{testPrefix}-mentor-matches">
 	<header class="space-y-1">
 		<h2 class="flex items-center gap-2 text-lg font-bold text-text">
 			<HeartHandshake size={18} />
-			{i18n.t('designMentors.title')}
+			{i18n.t('mentorMatches.title')}
 		</h2>
-		<p class="text-sm text-text-muted">{i18n.t('designMentors.subtitle')}</p>
+		<p class="text-sm text-text-muted">{i18n.t('mentorMatches.subtitle')}</p>
 	</header>
 
 	{#if suggested}
 		<p
 			class="rounded-lg border border-accent/40 bg-accent/5 px-4 py-3 text-sm text-text"
-			data-testid="design-mentor-invitation"
+			data-testid="{testPrefix}-mentor-invitation"
 		>
-			{i18n.t('designMentors.wouldHelp')}
+			{i18n.t('mentorMatches.wouldHelp')}
 		</p>
 	{/if}
 
@@ -97,8 +104,8 @@
 		</p>
 	{:else if mentors.length === 0}
 		<EmptyState
-			title={i18n.t('designMentors.empty')}
-			body={i18n.t('designMentors.emptyHint')}
+			title={i18n.t('mentorMatches.empty')}
+			body={i18n.t('mentorMatches.emptyHint')}
 			size="sm"
 		/>
 	{:else}
@@ -107,7 +114,7 @@
 				{@const gap = fmtGap(mentor.timezone_gap_hours)}
 				<li
 					class="rounded-xl border border-border bg-surface-elevated p-4"
-					data-testid="design-mentor"
+					data-testid="{testPrefix}-mentor"
 				>
 					<div class="flex flex-wrap items-start justify-between gap-2">
 						<div class="min-w-0 space-y-1">
@@ -117,17 +124,17 @@
 							{/if}
 						</div>
 						<Button href="/mentors/{mentor.mentor_user_id}" size="sm" variant="ghost">
-							{i18n.t('designMentors.openCta')}
+							{i18n.t('mentorMatches.openCta')}
 						</Button>
 					</div>
 
 					<div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-text-muted">
 						<Badge variant="accent">
-							{i18n.t('designMentors.craftScore', { n: mentor.craft_score })}
+							{i18n.t('mentorMatches.craftScore', { n: mentor.craft_score })}
 						</Badge>
 						<span class="inline-flex items-center gap-1">
 							<Users size={13} />
-							{i18n.t('designMentors.activeMentees', { n: mentor.active_mentees })}
+							{i18n.t('mentorMatches.activeMentees', { n: mentor.active_mentees })}
 						</span>
 						{#if gap}
 							<span class="inline-flex items-center gap-1">
@@ -151,7 +158,7 @@
 					{#if mentor.because.length > 0}
 						<div class="mt-3 border-t border-border pt-3">
 							<span class="text-xs font-bold uppercase tracking-wider text-text-muted">
-								{i18n.t('designMentors.whyTitle')}
+								{i18n.t('mentorMatches.whyTitle')}
 							</span>
 							<ul class="mt-1 space-y-0.5">
 								{#each mentor.because as reason (reason)}
