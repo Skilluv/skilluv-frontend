@@ -5,11 +5,11 @@
 
 	let { data }: Props = $props();
 
-	// Escape `<` so a `</script>` inside `data` cannot break out of the JSON-LD
-	// script element (the classic JSON-in-HTML injection). The regex matches `<`
-	// via its unicode escape so no literal `<` sits in the script block (a literal
-	// one trips the Svelte parser); the replacement emits the real six-char JSON
-	// escape `\\u003c`, not the character (which would be a silent no-op).
+	// Escape the less-than character so a closing
+	// script tag embedded in `data` cannot break out of the JSON-LD script element
+	// (the classic JSON-in-HTML injection). Keeping any literal less-than out of
+	// this block also avoids tripping the Svelte parser; the replacement emits the
+	// six-character JSON escape, not the character itself (which is a silent no-op).
 	let json = $derived(JSON.stringify(data).replace(/\u003c/g, '\\u003c'));
 </script>
 
