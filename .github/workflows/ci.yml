@@ -44,15 +44,19 @@ jobs:
         # $env/static/private out of client code; this catches anything of the
         # right shape that slips through.
         run: gitleaks detect --source build --no-git --redact --verbose --exit-code 1
-      - name: No source maps in the prod build (SE-04)
-        # A .map ships the original source (server logic included) to the
-        # browser. Prod builds must not emit them.
+      - name: No source maps served to the browser (SE-04)
+        # A .map in the client bundle ships the original source to the browser.
+        # `build/client` is the only directory adapter-node serves publicly, so
+        # it must carry no maps (vite.config sets build.sourcemap: false).
+        # `build/server` is NOT browser-reachable — adapter-node emits server
+        # maps for its own stack traces, and Vite's build.sourcemap does not
+        # suppress them — so it is deliberately out of scope here.
         run: |
-          maps=$(find build -name '*.map' 2>/dev/null || true)
+          maps=$(find build/client -name '*.map' 2>/dev/null || true)
           if [ -n "$maps" ]; then
-            echo "SE-04 FAIL -- source maps in the prod build:"; echo "$maps"; exit 1
+            echo "SE-04 FAIL -- source maps in the client bundle:"; echo "$maps"; exit 1
           fi
-          echo "SE-04 ok -- no source maps in build/"
+          echo "SE-04 ok -- no source maps under build/client"
 
       - name: Upload Sentry sourcemaps (opt-in)
         if: env.SENTRY_AUTH_TOKEN != ''
