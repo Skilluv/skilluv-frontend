@@ -142,6 +142,9 @@ export interface SecurityTranslations {
 		lockedCta: string;
 		locked: string;
 		minutes: string;
+		artifactTitle: string;
+		artifactCta: string;
+		artifactExpires: string;
 		tiers: {
 			easy: string;
 			medium: string;

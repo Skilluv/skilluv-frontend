@@ -138,6 +138,9 @@ export const securityEn: SecurityTranslations = {
 		lockedCta: 'See what it needs',
 		locked: 'Locked',
 		minutes: '{n} min',
+		artifactTitle: 'The artefact',
+		artifactCta: 'Get the download link',
+		artifactExpires: 'This link stops working in about {n} min. Ask for another if it does.',
 		tiers: {
 			easy: 'Easy',
 			medium: 'Medium',

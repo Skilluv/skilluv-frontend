@@ -193,7 +193,8 @@ export const designFr: DesignTranslations = {
 			withdrawn: 'Retirée'
 		},
 		decisionReason: 'Motif : {reason}',
-		backToList: 'Toutes les missions'
+		backToList: 'Toutes les missions',
+		openWorkspace: "Ouvrir l'espace de travail"
 	},
 	designProfile: {
 		sectionTitle: 'Design',

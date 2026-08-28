@@ -180,7 +180,7 @@ export interface DesignWorkflowTranslations {
 	};
 
 	/** M-04/M-05 — a mission once it is actually running. */
-	designMissionWork: {
+	missionWork: {
 		title: string;
 		subtitle: string;
 		ndaTitle: string;

@@ -44,6 +44,7 @@ import type {
 	HallOfFame,
 	IssueTokenRequest,
 	IssuedResearchToken,
+	LabArtifact,
 	LabOutcome,
 	MyFinding,
 	ResearchTokenView,
@@ -195,6 +196,24 @@ export const securityApi = {
 		return api.post<ApiResponse<{ outcome: LabOutcome }>>(
 			`/security/challenges/${challengeId}/answers`,
 			{ answers }
+		);
+	},
+
+	/**
+	 * A signed link to a defensive lab's artefact.
+	 *
+	 * Minted per request and short-lived: the object key never leaves the
+	 * server, because the same private bucket holds the proofs attached to
+	 * unpublished findings, and a client that held a key could guess its way
+	 * across it.
+	 *
+	 * The lab's questions are not served anywhere yet (SKI-332), so this is
+	 * the whole of what a lab can offer today — the artefact to open in your
+	 * own tools, which is the half that was always meant to happen off-platform.
+	 */
+	labArtifact(challengeId: string) {
+		return api.get<ApiResponse<LabArtifact>>(
+			`/security/challenges/${encodeURIComponent(challengeId)}/artifact`
 		);
 	},
 

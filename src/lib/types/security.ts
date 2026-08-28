@@ -363,6 +363,21 @@ export interface LabOutcome {
 	attestation_code: string | null;
 }
 
+/**
+ * A signed link to a defensive lab's artefact.
+ *
+ * Minted per request rather than stored: the link expires, and the object key
+ * it was signed from never reaches a client. `filename` is the object's own
+ * name, so the browser's save dialog offers something meaningful rather than
+ * a UUID.
+ */
+export interface LabArtifact {
+	url: string;
+	expires_in_seconds: number;
+	size_bytes: number;
+	filename: string;
+}
+
 export interface ScoreboardRow {
 	username: string;
 	display_name: string | null;

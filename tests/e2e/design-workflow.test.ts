@@ -78,7 +78,7 @@ test.describe('design workflow pages', () => {
 				body,
 				`raw i18n key leaked on ${path}`
 			).not.toMatch(
-				/\b(designWorkshop|designUpload|designTools|designBriefs|designNext|designMissionWork|designPlagiarism|designIterationStories|designSeries)\.[a-zA-Z]+/
+				/\b(designWorkshop|designUpload|designTools|designBriefs|designNext|missionWork|designPlagiarism|designIterationStories|designSeries)\.[a-zA-Z]+/
 			);
 		}
 	});

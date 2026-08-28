@@ -178,7 +178,7 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 		openCta: 'Open'
 	},
 
-	designMissionWork: {
+	missionWork: {
 		title: 'Mission workspace',
 		subtitle: 'The agreement, the rounds, the ratings and the money, in one place.',
 		ndaTitle: 'Agreement',

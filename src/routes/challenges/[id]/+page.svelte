@@ -8,6 +8,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { BookmarkButton, NoteEditor } from '$components/saved';
+	import { LabArtifactLink, SubmitFlag } from '$components/security';
 	import type { Challenge } from '$types';
 
 	let challengeId = $derived($page.params.id ?? '');
@@ -16,6 +17,22 @@
 	let loading = $state(true);
 	let starting = $state(false);
 	let error = $state('');
+
+	/**
+	 * How a security challenge is verified, when it is one.
+	 *
+	 * A CTF target is finished by pasting the flag you captured; a defensive
+	 * lab by downloading the artefact and analysing it off-platform. Both are
+	 * unreachable from the generic "start the sandbox" button above, which is
+	 * why the surfaces at /ctf and /blue-lab used to send people to a page that
+	 * could not take their answer.
+	 *
+	 * Read from `security_kind` rather than from `skill_domain`: a security
+	 * challenge is not necessarily verified this way, and one verified this way
+	 * is always tagged. Null against a deployment that predates the field, in
+	 * which case nothing extra renders and the page is exactly what it was.
+	 */
+	let securityKind = $derived(challenge?.security_kind ?? null);
 
 	const domainDot: Record<string, string> = {
 		code: 'bg-blue-500', design: 'bg-pink-500', game: 'bg-green-500', security: 'bg-red-500'
@@ -218,6 +235,20 @@
 				{/if}
 			</div>
 		</div>
+
+		{#if securityKind === 'ctf_flag'}
+			<!-- C-03 — where the flag actually goes. -->
+			<div class="mt-6">
+				<SubmitFlag challengeId={challenge.id} />
+			</div>
+		{:else if securityKind === 'defensive_lab'}
+			<!-- B-05 — the artefact. The questions are not served by any
+			     endpoint yet (SKI-332), so the answer form stays unmounted
+			     rather than inventing ids the lab never asked. -->
+			<div class="mt-6">
+				<LabArtifactLink challengeId={challenge.id} />
+			</div>
+		{/if}
 
 		<!-- SKI-37 — a private note on what you just read. -->
 		<div class="mt-6">

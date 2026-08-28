@@ -22,6 +22,7 @@ const PUBLIC_PAGES = [
 ];
 
 const SESSION_PAGES = [
+	'/security/missions/does-not-exist/workspace',
 	'/security/report',
 	'/security/reports',
 	'/security/research-mode',
@@ -97,12 +98,31 @@ test.describe('Skilluv Cyber pages', () => {
 		await expect(page.getByTestId('security-missions-page')).toBeVisible();
 	});
 
+	test('a CTF target offers the flag form, a lab offers its artefact', async ({ page }) => {
+		// Both submission surfaces existed as components and were mounted
+		// nowhere: /ctf and /blue-lab linked to a challenge page that could not
+		// take an answer. Which panel renders is read from `security_kind`, so
+		// a challenge with no kind still gets the plain page it always had.
+		await gotoHydrated(page, '/challenges/00000000-0000-0000-0000-000000000000');
+		await expect(page.getByTestId('security-submit-flag')).toHaveCount(0);
+		await expect(page.getByTestId('lab-artifact')).toHaveCount(0);
+	});
+
+	test('the cyber mission workspace renders for an unknown slug', async ({ page }) => {
+		// Same shape as the design one: every panel loads with `allSettled`, so
+		// a mission that does not exist must leave a page rather than a stack
+		// trace. It exists at all because the delivery endpoints were never
+		// design-specific — only the page was.
+		await gotoHydrated(page, '/security/missions/does-not-exist/workspace');
+		await expect(page.locator('h1')).toBeVisible();
+	});
+
 	test('no i18n key leaks as a raw dotted path on any cyber page', async ({ page }) => {
 		for (const path of [...PUBLIC_PAGES, ...SESSION_PAGES]) {
 			await gotoHydrated(page, path);
 			const body = await page.locator('body').innerText();
 			expect(body, `raw i18n key leaked on ${path}`).not.toMatch(
-				/\b(securityScope|securityReport|securityMyReports|securityFinding|securityHallOfFame|securityTrust|securityPractice|securityResearch|securityBounties|securityCredentials|blueLab)\.[a-zA-Z]+/
+				/\b(securityScope|securityReport|securityMyReports|securityFinding|securityHallOfFame|securityTrust|securityPractice|securityResearch|securityBounties|securityCredentials|blueLab|missionWork)\.[a-zA-Z]+/
 			);
 		}
 	});

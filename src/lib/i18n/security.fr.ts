@@ -142,6 +142,9 @@ export const securityFr: SecurityTranslations = {
 		lockedCta: 'Voir ce qu’il faut',
 		locked: 'Verrouillé',
 		minutes: '{n} min',
+		artifactTitle: "L'artefact",
+		artifactCta: 'Obtenir le lien de téléchargement',
+		artifactExpires: 'Ce lien cesse de fonctionner dans environ {n} min. Redemandes-en un si besoin.',
 		tiers: {
 			easy: 'Facile',
 			medium: 'Moyen',

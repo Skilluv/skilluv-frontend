@@ -194,6 +194,7 @@ export interface DesignTranslations {
 		};
 		decisionReason: string;
 		backToList: string;
+		openWorkspace: string;
 	};
 	/** SKI-253 — the design section of a public profile. */
 	designProfile: {

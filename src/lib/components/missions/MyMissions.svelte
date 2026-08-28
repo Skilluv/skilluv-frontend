@@ -139,6 +139,23 @@
 							{label('applicationStatuses', row.application_status)}
 						</Badge>
 					</div>
+
+					{#if row.application_status === 'selected'}
+						<!-- The one row that has somewhere else to be. Until this
+						     link existed the workspace was reachable only by typing
+						     its URL, so whoever won a mission had the NDA, the
+						     delivery rounds and the invoices sitting behind a page
+						     nothing pointed at. -->
+						<div class="mt-3">
+							<Button
+								size="sm"
+								href="{basePath}/{row.mission_slug}/workspace"
+								data-testid="my-mission-workspace"
+							>
+								{i18n.t('missions.openWorkspace')}
+							</Button>
+						</div>
+					{/if}
 				</li>
 			{/each}
 		</ul>
