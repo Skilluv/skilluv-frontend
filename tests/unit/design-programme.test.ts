@@ -64,29 +64,29 @@ afterEach(() => {
 });
 
 describe('design contests are tournaments', () => {
-	it('listDesignContests keeps only brief_contest entries in the design domain', async () => {
+	it('listDesignContests narrows server-side rather than in memory', async () => {
+		fetchMock.mockResolvedValue(ok({ tournaments: [tournament()] }));
+		const { listDesignContests } = await import('../../src/lib/api/design');
+		const contests = await listDesignContests();
+		const url = String(fetchMock.mock.calls[0][0]);
+		// SKI-302 added both filters. Narrowing in memory over a capped page
+		// held at launch volume and would have silently dropped the oldest
+		// design contests past two hundred tournaments.
+		expect(url).toContain('kind=brief_contest');
+		expect(url).toContain('skill_domain=design');
+		expect(contests.map((c) => c.id)).toEqual(['t1']);
+	});
+
+	it('does not add the open-to-every-domain contests back itself', async () => {
+		// `skill_domain=design` already returns them alongside the design ones,
+		// so a second pass here would be a second definition of the same rule.
 		fetchMock.mockResolvedValue(
-			ok({
-				tournaments: [
-					tournament(),
-					tournament({ id: 't2', kind: 'hackathon' }),
-					tournament({ id: 't3', skill_domain: 'code' }),
-					tournament({ id: 't4', skill_domain: null })
-				]
-			})
+			ok({ tournaments: [tournament(), tournament({ id: 't4', skill_domain: null })] })
 		);
 		const { listDesignContests } = await import('../../src/lib/api/design');
 		const contests = await listDesignContests();
-		// The open-to-every-domain contest counts; the code one and the
-		// hackathon do not.
 		expect(contests.map((c) => c.id)).toEqual(['t1', 't4']);
-	});
-
-	it('the listing is asked for a full page, since it has no kind filter', async () => {
-		fetchMock.mockResolvedValue(ok({ tournaments: [] }));
-		const { listDesignContests } = await import('../../src/lib/api/design');
-		await listDesignContests();
-		expect(fetchMock.mock.calls[0][0]).toContain('limit=200');
+		expect(String(fetchMock.mock.calls[0][0])).not.toContain('limit=200');
 	});
 
 	it('get() and leaderboard() read the keys the backend wraps them in', async () => {

@@ -158,17 +158,23 @@ export async function designSuggestions(limit?: number): Promise<NextChallenge[]
  * backend is explicit that a contest is the same event whatever its subject,
  * so there is no design-specific contest API to call.
  *
- * `GET /tournaments` takes no `kind` filter, so the narrowing happens here
- * over a page capped at 200. That is fine at launch volume and wrong at
- * scale; a `kind` query param is tracked backend-side (SKI-302).
+ * Narrowed **server-side** since SKI-302 added `kind` and `skill_domain` to the
+ * query. This used to ask for a page capped at 200 and filter in memory, which
+ * held at launch volume and would have silently dropped the oldest design
+ * contests once the platform ran more than two hundred tournaments.
+ *
+ * `skill_domain=design` already returns the contests open to every domain
+ * alongside the design ones, so nothing is added back here.
  */
 export async function listDesignContests(params?: {
 	status?: string;
 	upcoming?: boolean;
 	limit?: number;
 }): Promise<Tournament[]> {
-	const res = await tournamentApi.list({ limit: 200, ...params });
-	return (res.data?.tournaments ?? []).filter(
-		(t) => t.kind === DESIGN_CONTEST_KIND && (t.skill_domain === 'design' || t.skill_domain === null)
-	);
+	const res = await tournamentApi.list({
+		kind: DESIGN_CONTEST_KIND,
+		skill_domain: 'design',
+		...params
+	});
+	return res.data?.tournaments ?? [];
 }

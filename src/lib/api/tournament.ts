@@ -63,11 +63,21 @@ export const tournamentApi = {
 	},
 
 	/**
-	 * The backend takes `status`, `upcoming` and `limit` — there is no `kind`
-	 * or `skill_domain` filter, so callers that want one kind of contest
-	 * narrow the result themselves. See `listDesignContests` in `$api/design`.
+	 * The contest listing.
+	 *
+	 * `kind`
+	 * `kind` and `skill_domain` narrow server-side (SKI-302). A `skill_domain`
+	 * returns the contests scoped to it **and** those open to every domain,
+	 * which are the ones that most want a wide field — so a caller passing one
+	 * does not have to add the open contests back itself.
 	 */
-	list(params?: { status?: string; upcoming?: boolean; limit?: number }) {
+	list(params?: {
+		status?: string;
+		upcoming?: boolean;
+		kind?: string;
+		skill_domain?: string;
+		limit?: number;
+	}) {
 		return api.get<ApiResponse<{ tournaments: Tournament[] }>>(
 			'/tournaments',
 			params as Record<string, string | number | boolean | undefined>
