@@ -21,6 +21,7 @@
 		SecurityRecord
 	} from '$components/profile/records';
 	import Heatmap from '$components/profile/Heatmap.svelte';
+	import TakeItWithYou from '$components/profile/TakeItWithYou.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import JsonLd from '$lib/components/seo/JsonLd.svelte';
@@ -404,6 +405,15 @@
 					capabilities={publicCapabilities}
 					viewer={isOwnProfile ? 'own' : 'public'}
 				/>
+
+				<!-- The two public exports, which had no surface at all: the
+				     record as one JSON file, and the rank badge for a README.
+				     Shown on anybody's profile because both endpoints are public
+				     — the point of a portable record is that whoever is
+				     evaluating somebody can take it too. -->
+				<div class="mb-4">
+					<TakeItWithYou {username} />
+				</div>
 
 				<!-- SKI-253 — the design record. Addressed by username, so unlike
 				     the sections above it needs no UUID. -->

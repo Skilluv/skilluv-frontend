@@ -18,6 +18,16 @@ export const portfoliosEn: PortfolioTranslations = {
 		contributions: 'contributions'
 	},
 
+	portableRecord: {
+		title: 'Take this record with you',
+		subtitle:
+			'The whole public record as one file, and a badge for a README. Both are public, so whoever is evaluating this profile can take them too.',
+		jsonCta: 'Open the JSON',
+		badgeAlt: 'Skilluv rank badge',
+		copyMarkdown: 'Copy the Markdown',
+		copied: 'Copied'
+	},
+
 	portfolioSettings: {
 		title: 'Your portfolios elsewhere',
 		subtitle: 'The accounts where your work already lives, linked from your profile.',

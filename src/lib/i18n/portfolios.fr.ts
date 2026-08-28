@@ -18,6 +18,16 @@ export const portfoliosFr: PortfolioTranslations = {
 		contributions: 'contributions'
 	},
 
+	portableRecord: {
+		title: 'Emporte ce parcours',
+		subtitle:
+			"Tout le parcours public en un fichier, et un badge pour un README. Les deux sont publics, donc celui qui évalue ce profil peut les emporter aussi.",
+		jsonCta: 'Ouvrir le JSON',
+		badgeAlt: 'Badge de rang Skilluv',
+		copyMarkdown: 'Copier le Markdown',
+		copied: 'Copié'
+	},
+
 	portfolioSettings: {
 		title: 'Tes portfolios ailleurs',
 		subtitle: 'Les comptes où ton travail existe déjà, liés depuis ton profil.',

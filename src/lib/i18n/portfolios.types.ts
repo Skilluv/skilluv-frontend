@@ -29,6 +29,16 @@ export interface PortfolioTranslations {
 		contributions: string;
 	};
 
+	/** The two public exports of somebody's record: the JSON and the badge. */
+	portableRecord: {
+		title: string;
+		subtitle: string;
+		jsonCta: string;
+		badgeAlt: string;
+		copyMarkdown: string;
+		copied: string;
+	};
+
 	portfolioSettings: {
 		title: string;
 		subtitle: string;
