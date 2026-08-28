@@ -21,15 +21,42 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+      - name: Install gitleaks
+        run: |
+          VERSION=8.21.2
+          curl -fsSL -o gitleaks.tar.gz "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz"
+          tar -xzf gitleaks.tar.gz gitleaks && sudo mv gitleaks /usr/local/bin/
+      - name: Secret scan -- source (SE-04)
+        run: gitleaks detect --source . --redact --verbose --exit-code 1
 
       - name: i18n parity + orphan-key check
         run: npm run i18n:check
+      - name: XSS {@html} sink audit (FE-06)
+        run: bash scripts/check-html-sinks.sh
 
       - name: Svelte check
         run: npm run check
 
       - name: Build
         run: npm run build
+      - name: Secret scan -- built bundle (SE-04)
+        # The client bundle is downloaded by every browser. SvelteKit keeps
+        # $env/static/private out of client code; this catches anything of the
+        # right shape that slips through.
+        run: gitleaks detect --source build --no-git --redact --verbose --exit-code 1
+      - name: No source maps served to the browser (SE-04)
+        # A .map in the client bundle ships the original source to the browser.
+        # `build/client` is the only directory adapter-node serves publicly, so
+        # it must carry no maps (vite.config sets build.sourcemap: false).
+        # `build/server` is NOT browser-reachable — adapter-node emits server
+        # maps for its own stack traces, and Vite's build.sourcemap does not
+        # suppress them — so it is deliberately out of scope here.
+        run: |
+          maps=$(find build/client -name '*.map' 2>/dev/null || true)
+          if [ -n "$maps" ]; then
+            echo "SE-04 FAIL -- source maps in the client bundle:"; echo "$maps"; exit 1
+          fi
+          echo "SE-04 ok -- no source maps under build/client"
 
       - name: Upload Sentry sourcemaps (opt-in)
         if: env.SENTRY_AUTH_TOKEN != ''

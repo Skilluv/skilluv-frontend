@@ -3,6 +3,7 @@
 	import { i18n } from '$lib/i18n';
 	import JsonLd from '$lib/components/seo/JsonLd.svelte';
 	import { websiteJsonLd } from '$lib/utils/jsonld';
+	import { escapeHtml } from '$lib/utils/html';
 	import RecommendationsWidget from '$components/ai/RecommendationsWidget.svelte';
 
 	// Landing sections
@@ -32,7 +33,7 @@
 	<!-- Dashboard utilisateur connecte -->
 	<div class="mx-auto max-w-5xl px-4 py-8">
 		<h1 class="mb-2 text-3xl font-bold">
-			{@html i18n.t('dashboard.greeting', { name: `<span class="text-accent">${auth.displayName}</span>` })}
+			{@html i18n.t('dashboard.greeting', { name: `<span class="text-accent">${escapeHtml(auth.displayName)}</span>` })}
 		</h1>
 		<p class="mb-8 text-text-muted">
 			<span class="capitalize">{i18n.t(`common.titles.${auth.title}`)}</span>
