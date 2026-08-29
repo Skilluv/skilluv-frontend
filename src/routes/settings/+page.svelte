@@ -201,6 +201,18 @@
 		     than a signal a moderator confirms. Same page, so the difference is
 		     read once rather than discovered twice. -->
 		<a
+			href="/settings/cv"
+			data-testid="settings-link-cv"
+			class="mt-4 flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
+		>
+			<div>
+				<p class="font-medium">{i18n.t('cv.title')}</p>
+				<p class="text-xs text-text-muted">{i18n.t('cv.subtitle')}</p>
+			</div>
+			<span class="text-text-muted">→</span>
+		</a>
+
+		<a
 			href="/settings/portfolios"
 			data-testid="settings-link-portfolios"
 			class="mt-4 flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"

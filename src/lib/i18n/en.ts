@@ -1688,6 +1688,31 @@ export const en: Translations = {
 			'This is the only provider on the account, so unlinking it is not offered — it could leave you unable to sign in.'
 	},
 
+	cv: {
+		title: 'Your own account of yourself',
+		subtitle: 'Where you worked, where you studied, what you speak.',
+		declaredNote:
+			'Nothing on this page is verified, and none of it feeds a rank, a score or a search result. That is what attestations are for — and it is precisely because this part is visibly declared that the rest of your profile is worth something.',
+		experiencesTitle: 'Work',
+		educationsTitle: 'Education',
+		languagesTitle: 'Languages',
+		addCta: 'Add',
+		saveCta: 'Save',
+		removeCta: 'Remove',
+		removed: 'Removed.',
+		current: 'Current',
+		present: 'present',
+		leaveEndEmpty: 'Leave the end date empty if you are still there.',
+		companyPlaceholder: 'Company',
+		titlePlaceholder: 'Your title',
+		schoolPlaceholder: 'School',
+		degreePlaceholder: 'Degree (optional)',
+		setLanguageCta: 'Set',
+		experienceAdded: 'Experience added.',
+		educationAdded: 'Education added.',
+		languageSet: 'Language set.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'AI record',

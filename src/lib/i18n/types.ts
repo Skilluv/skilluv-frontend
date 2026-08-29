@@ -1838,6 +1838,31 @@ export interface Translations
 		lastOneNote: string;
 	};
 
+	/** The declared half of a profile: jobs, schools, languages. */
+	cv: {
+		title: string;
+		subtitle: string;
+		declaredNote: string;
+		experiencesTitle: string;
+		educationsTitle: string;
+		languagesTitle: string;
+		addCta: string;
+		saveCta: string;
+		removeCta: string;
+		removed: string;
+		current: string;
+		present: string;
+		leaveEndEmpty: string;
+		companyPlaceholder: string;
+		titlePlaceholder: string;
+		schoolPlaceholder: string;
+		degreePlaceholder: string;
+		setLanguageCta: string;
+		experienceAdded: string;
+		educationAdded: string;
+		languageSet: string;
+	};
+
 	craftProfile: {
 		titles: {
 			ai: string;

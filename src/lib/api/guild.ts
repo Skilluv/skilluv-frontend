@@ -153,6 +153,90 @@ export const guildApi = {
 		);
 	},
 
+	/**
+	 * A shareable join link, rather than an invitation to one person.
+	 *
+	 * The two coexist on purpose: `invite_direct` names somebody, this mints a
+	 * token anybody holding it can redeem through `joinByToken`. A link that
+	 * leaves the guild's control is a different risk from a named invitation,
+	 * which is why revoking exists.
+	 */
+	createTokenLink(guildId: string) {
+		return api.post<ApiResponse<{ invitation: GuildInvitation }>>(
+			`/guilds/${encodeURIComponent(guildId)}/invitations/link`,
+			{}
+		);
+	},
+
+	/** Accept an invitation addressed to you. */
+	acceptInvitation(invitationId: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/guild-invitations/${encodeURIComponent(invitationId)}/accept`,
+			{}
+		);
+	},
+
+	/**
+	 * Change a member's role.
+	 *
+	 * The role vocabulary is the guild's, and the server refuses one outside
+	 * it — so a caller offers the roles it was told about rather than a free
+	 * field.
+	 */
+	setMemberRole(guildId: string, userId: string, role: string) {
+		return api.post<ApiResponse<{ updated: boolean }>>(
+			`/guilds/${encodeURIComponent(guildId)}/members/${encodeURIComponent(userId)}/role`,
+			{ role }
+		);
+	},
+
+	/**
+	 * Remove somebody from the guild.
+	 *
+	 * Distinct from `leave`, which is the member's own act. A surface must not
+	 * present them as one gesture: being removed and choosing to go are
+	 * different things to have happened to you.
+	 */
+	kickMember(guildId: string, userId: string) {
+		return api.delete<void>(
+			`/guilds/${encodeURIComponent(guildId)}/members/${encodeURIComponent(userId)}`
+		);
+	},
+
+	/** Answer a war proposal. */
+	respondToWar(warId: string, accept: boolean) {
+		return api.post<ApiResponse<unknown>>(
+			`/guild-wars/${encodeURIComponent(warId)}/respond`,
+			{ accept }
+		);
+	},
+
+	/**
+	 * Declare a winner and close the war.
+	 *
+	 * The winner is named rather than computed, so the act has an author. A
+	 * result nobody signed is a result nobody can be asked about.
+	 */
+	concludeWar(warId: string, winnerGuildId: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/guild-wars/${encodeURIComponent(warId)}/conclude`,
+			{ winner_guild_id: winnerGuildId }
+		);
+	},
+
+	/**
+	 * What trades the guild actually covers.
+	 *
+	 * Read from its members' verified work rather than from what it says about
+	 * itself — which is why it is worth showing on a guild somebody is deciding
+	 * whether to join.
+	 */
+	composition(slug: string) {
+		return api.get<ApiResponse<{ composition: unknown }>>(
+			`/guilds/${encodeURIComponent(slug)}/composition`
+		);
+	},
+
 	apply(guildId: string, message?: string) {
 		return api.post<ApiResponse<{ application_id: string }>>(`/guilds/${guildId}/applications`, { message });
 	},

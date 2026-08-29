@@ -1714,6 +1714,31 @@ export const fr: Translations = {
 			'C’est le seul fournisseur du compte, donc le délier n’est pas proposé — tu pourrais ne plus pouvoir te connecter.'
 	},
 
+	cv: {
+		title: 'Ce que tu dis de toi',
+		subtitle: 'Où tu as travaillé, où tu as étudié, ce que tu parles.',
+		declaredNote:
+			'Rien sur cette page n’est vérifié, et rien n’alimente un rang, un score ou un résultat de recherche. C’est à ça que servent les attestations — et c’est justement parce que cette partie est visiblement déclarée que le reste de ton profil vaut quelque chose.',
+		experiencesTitle: 'Expérience',
+		educationsTitle: 'Formation',
+		languagesTitle: 'Langues',
+		addCta: 'Ajouter',
+		saveCta: 'Enregistrer',
+		removeCta: 'Retirer',
+		removed: 'Retiré.',
+		current: 'En cours',
+		present: 'aujourd’hui',
+		leaveEndEmpty: 'Laisse la date de fin vide si tu y es toujours.',
+		companyPlaceholder: 'Entreprise',
+		titlePlaceholder: 'Ton intitulé',
+		schoolPlaceholder: 'École',
+		degreePlaceholder: 'Diplôme (facultatif)',
+		setLanguageCta: 'Définir',
+		experienceAdded: 'Expérience ajoutée.',
+		educationAdded: 'Formation ajoutée.',
+		languageSet: 'Langue définie.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'Parcours IA',
