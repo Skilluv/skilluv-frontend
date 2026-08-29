@@ -1329,10 +1329,50 @@ export const en: Translations = {
 			figuresDeclared: 'figures declared'
 		}
 	},
+	requests: {
+		title: 'What you are being asked',
+		subtitle: 'Everything waiting on an answer from you, in one place.',
+		waitingCount: '{n} waiting on you',
+		empty: 'Nothing is waiting on you.',
+		emptyHint: 'Onboardings, placements, assessments and beta programmes show up here.',
+		onboardingsTitle: 'Mentored onboardings',
+		onboardingMonths: '{n}-month onboarding',
+		onboardingConsent:
+			'Your employer paid for this. That is not the same as your having agreed to it — accepting starts it and pays your mentor their share.',
+		asJunior: 'You are the junior',
+		asMentor: 'You are the mentor',
+		since: 'Since {date}',
+		placementsTitle: 'Placements',
+		placementTerms: '{months} months, {guarantee}-month guarantee',
+		placementConsent:
+			'This commits months of your working life, and a guarantee period after it. Read the terms before you accept.',
+		assessmentsTitle: 'Written about you',
+		assessmentsHint:
+			'A conclusion nobody can answer is a verdict. You can reply, and your reply travels with it.',
+		replyOpenCta: 'Reply',
+		replyCta: 'Send the reply',
+		replySent: 'Reply recorded.',
+		cancelCta: 'Cancel',
+		betaTitle: 'Beta programmes recruiting',
+		betaHint: 'Open to everybody, not addressed to you in particular.',
+		betaWeeks: '{n} weeks',
+		joinCta: 'Join',
+		joined: 'You are in.',
+		acceptCta: 'Accept',
+		declineCta: 'Decline',
+		accepted: 'Accepted.',
+		declined: 'Declined.',
+		unlistedNote:
+			'Consultations and engagements can be answered but not listed: nothing tells this page which ones you were invited to, so their absence here is not a sign that nobody asked.',
+		unlistedCta: 'Check your notifications'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'AI record',
-			audio: 'Audio record'
+			audio: 'Audio record',
+			communication: 'Communication record',
+			education: 'Teaching record'
 		},
 		craftScoreTitle: 'Craft score',
 		tierLabel: 'Tier {name}',
@@ -1346,6 +1386,18 @@ export const en: Translations = {
 		highlightsHint:
 			'Published work. Listening to a master goes through the slice it belongs to, on a link that expires.',
 		openWork: 'Open',
+		languagesTitle: 'Languages translated into',
+		languagesHint:
+			'Counted from validated translations, not from what someone said they speak. The languages they offer to review in are a separate, declared list.',
+		readFirstTitle: 'Worth reading first',
+		views: '{n} read',
+		engagement: '{n} reactions',
+		cohortsTitle: 'Cohorts led',
+		learners: '{n} learners',
+		completed: '{n} of {of} completed',
+		noOutcomes: 'No outcome recorded',
+		taughtTitle: 'Published teaching',
+		adoptions: 'run by {n} other trainers',
 		notAClaim:
 			'A craft score counts verified work. It is not a claim about anything done elsewhere.'
 	},

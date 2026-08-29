@@ -431,6 +431,13 @@
 				     domain, so a code-only profile is unchanged. -->
 				<CraftSection domain="ai" {username} />
 				<CraftSection domain="audio" {username} />
+				<!-- SKI-321. `/users/{username}/{domain}-profile` serves ten
+				     disciplines and the profile rendered eight; these two had a
+				     live endpoint and no reader. Each renders nothing at all for
+				     an account with no work in it, so a profile that was not
+				     about teaching or translating is unchanged. -->
+				<CraftSection domain="communication" {username} />
+				<CraftSection domain="education" {username} />
 
 				<!-- The five records served with a nested score. Same rule as
 				     above: a domain this person has never worked in answers 404

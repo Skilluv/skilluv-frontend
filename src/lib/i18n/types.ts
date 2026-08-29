@@ -1498,10 +1498,47 @@ export interface Translations
 			figuresDeclared: string;
 		};
 	};
+	/** SKI-327 — the solicitations inbox. */
+	requests: {
+		title: string;
+		subtitle: string;
+		waitingCount: string;
+		empty: string;
+		emptyHint: string;
+		onboardingsTitle: string;
+		onboardingMonths: string;
+		onboardingConsent: string;
+		asJunior: string;
+		asMentor: string;
+		since: string;
+		placementsTitle: string;
+		placementTerms: string;
+		placementConsent: string;
+		assessmentsTitle: string;
+		assessmentsHint: string;
+		replyOpenCta: string;
+		replyCta: string;
+		replySent: string;
+		cancelCta: string;
+		betaTitle: string;
+		betaHint: string;
+		betaWeeks: string;
+		joinCta: string;
+		joined: string;
+		acceptCta: string;
+		declineCta: string;
+		accepted: string;
+		declined: string;
+		unlistedNote: string;
+		unlistedCta: string;
+	};
+
 	craftProfile: {
 		titles: {
 			ai: string;
 			audio: string;
+			communication: string;
+			education: string;
 		};
 		craftScoreTitle: string;
 		tierLabel: string;
@@ -1513,6 +1550,17 @@ export interface Translations
 		verifyCta: string;
 		highlightsTitle: string;
 		highlightsHint: string;
+		languagesTitle: string;
+		languagesHint: string;
+		readFirstTitle: string;
+		views: string;
+		engagement: string;
+		cohortsTitle: string;
+		learners: string;
+		completed: string;
+		noOutcomes: string;
+		taughtTitle: string;
+		adoptions: string;
 		openWork: string;
 		notAClaim: string;
 	};

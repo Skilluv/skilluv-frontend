@@ -1337,10 +1337,51 @@ export const fr: Translations = {
 			figuresDeclared: 'chiffres déclarés'
 		}
 	},
+	requests: {
+		title: 'Ce qu’on te demande',
+		subtitle: 'Tout ce qui attend une réponse de ta part, au même endroit.',
+		waitingCount: '{n} en attente de toi',
+		empty: 'Rien ne t’attend.',
+		emptyHint:
+			'Les accompagnements, placements, bilans et programmes bêta apparaissent ici.',
+		onboardingsTitle: 'Accompagnements',
+		onboardingMonths: 'Accompagnement de {n} mois',
+		onboardingConsent:
+			'Ton employeur l’a payé. Ce n’est pas la même chose que ton accord — accepter le démarre et verse sa part à ton mentor.',
+		asJunior: 'Tu es le junior',
+		asMentor: 'Tu es le mentor',
+		since: 'Depuis le {date}',
+		placementsTitle: 'Placements',
+		placementTerms: '{months} mois, garantie de {guarantee} mois',
+		placementConsent:
+			'Cela engage des mois de ta vie professionnelle, et une période de garantie après. Lis les conditions avant d’accepter.',
+		assessmentsTitle: 'Écrit sur toi',
+		assessmentsHint:
+			'Une conclusion à laquelle personne ne peut répondre est un verdict. Tu peux répondre, et ta réponse voyage avec elle.',
+		replyOpenCta: 'Répondre',
+		replyCta: 'Envoyer la réponse',
+		replySent: 'Réponse enregistrée.',
+		cancelCta: 'Annuler',
+		betaTitle: 'Programmes bêta en recrutement',
+		betaHint: 'Ouverts à tous, pas adressés à toi en particulier.',
+		betaWeeks: '{n} semaines',
+		joinCta: 'Rejoindre',
+		joined: 'Tu en fais partie.',
+		acceptCta: 'Accepter',
+		declineCta: 'Refuser',
+		accepted: 'Accepté.',
+		declined: 'Refusé.',
+		unlistedNote:
+			'Les consultations et les engagements peuvent recevoir une réponse mais ne sont pas listés : rien n’indique à cette page auxquels tu as été invité, donc leur absence ici ne veut pas dire que personne n’a demandé.',
+		unlistedCta: 'Regarde tes notifications'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'Parcours IA',
-			audio: 'Parcours audio'
+			audio: 'Parcours audio',
+			communication: 'Parcours communication',
+			education: 'Parcours pédagogie'
 		},
 		craftScoreTitle: 'Score de métier',
 		tierLabel: 'Palier {name}',
@@ -1354,6 +1395,18 @@ export const fr: Translations = {
 		highlightsHint:
 			"Travaux publiés. Écouter un master passe par la slice à laquelle il appartient, sur un lien qui expire.",
 		openWork: 'Ouvrir',
+		languagesTitle: 'Langues traduites vers',
+		languagesHint:
+			"Compté depuis les traductions validées, pas depuis ce que quelqu'un dit parler. Les langues dans lesquelles il propose de relire sont une liste séparée, déclarée.",
+		readFirstTitle: 'À lire en premier',
+		views: '{n} lectures',
+		engagement: '{n} réactions',
+		cohortsTitle: 'Cohortes encadrées',
+		learners: '{n} apprenants',
+		completed: '{n} sur {of} terminés',
+		noOutcomes: 'Aucun résultat enregistré',
+		taughtTitle: 'Pédagogie publiée',
+		adoptions: 'reprise par {n} autres formateurs',
 		notAClaim:
 			"Un score de métier compte du travail vérifié. Ce n'est pas une affirmation sur ce qui a été fait ailleurs."
 	},

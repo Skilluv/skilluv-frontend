@@ -14,7 +14,7 @@
  */
 
 /** Domains served by a flat `{domain}-profile` endpoint. */
-export const CRAFT_DOMAINS = ['ai', 'audio'] as const;
+export const CRAFT_DOMAINS = ['ai', 'audio', 'communication', 'education'] as const;
 export type CraftDomain = (typeof CRAFT_DOMAINS)[number];
 
 /**
@@ -79,6 +79,69 @@ export interface AudioHighlight {
 /** The audio record adds work worth listening to first. */
 export interface AudioCraftProfile extends CraftProfile {
 	highlights: AudioHighlight[];
+}
+
+/**
+ * One language somebody has been credited with translating into.
+ *
+ * Counted from validated translations, not from what they said they speak —
+ * the declared list lives at `/communication/review-languages` and is a
+ * different claim.
+ */
+export interface CommunicationLanguage {
+	language: string;
+	/** How many validated translations into it. */
+	validated: number;
+}
+
+export interface CommunicationHighlight {
+	slice_id: string;
+	title: string;
+	subtype: string;
+	/** Where it lives publicly, or the pull request that carried it. */
+	url: string | null;
+	/** Languages a translation was carried into. Empty for everything else. */
+	target_languages: string[];
+	/** Readers or viewers where the platform publishes the figure. Null where
+	 * it does not, which is not the same as zero — so it is not rendered as 0. */
+	views: number | null;
+	engagement: number | null;
+}
+
+export interface CommunicationCraftProfile extends CraftProfile {
+	languages: CommunicationLanguage[];
+	highlights: CommunicationHighlight[];
+}
+
+/** One cohort somebody led, in aggregate. */
+export interface CohortSummary {
+	cohort_id: string;
+	name: string;
+	starts_at: string;
+	concluded_at: string | null;
+	learners: number;
+	/**
+	 * Learners with a recorded outcome who completed. Null when nobody
+	 * recorded anything, which is not the same as nobody finishing — so a
+	 * completion rate is only rendered where one was actually measured.
+	 */
+	completed: number | null;
+	outcomes_recorded: number;
+}
+
+export interface EducationHighlight {
+	slice_id: string;
+	title: string;
+	subtype: string;
+	target_audience: string | null;
+	url: string | null;
+	/** How many other trainers have run it. Only meaningful for a curriculum. */
+	adoptions: number;
+}
+
+export interface EducationCraftProfile extends CraftProfile {
+	cohorts: CohortSummary[];
+	highlights: EducationHighlight[];
 }
 
 // ---------------------------------------------------------------------------

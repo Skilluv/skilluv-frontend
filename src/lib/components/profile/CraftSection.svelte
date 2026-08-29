@@ -21,7 +21,16 @@
 	import { i18n } from '$lib/i18n';
 	import Badge from '$components/ui/Badge.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
-	import type { AudioCraftProfile, CraftDomain, CraftProfile } from '$types';
+	import type {
+		AudioCraftProfile,
+		CohortSummary,
+		CommunicationCraftProfile,
+		CommunicationHighlight,
+		CraftDomain,
+		CraftProfile,
+		EducationCraftProfile,
+		EducationHighlight
+	} from '$types';
 
 	interface Props {
 		domain: CraftDomain;
@@ -30,7 +39,9 @@
 
 	let { domain, username }: Props = $props();
 
-	let profile = $state<CraftProfile | AudioCraftProfile | null>(null);
+	let profile = $state<
+		CraftProfile | AudioCraftProfile | CommunicationCraftProfile | EducationCraftProfile | null
+	>(null);
 	let loading = $state(true);
 	let breakdownOpen = $state(false);
 
@@ -38,13 +49,44 @@
 		profile && 'highlights' in profile ? (profile as AudioCraftProfile).highlights : []
 	);
 
+	/**
+	 * The two domains whose record carries a second list beyond its highlights.
+	 *
+	 * Communication counts the languages somebody has been credited with
+	 * translating *into*. That is not the list at
+	 * `/communication/review-languages`, where somebody says what they can
+	 * review in: one is counted, the other is declared, and putting them in the
+	 * same place would blur exactly the distinction the two endpoints exist to
+	 * keep.
+	 */
+	let languages = $derived(
+		profile && 'languages' in profile ? (profile as CommunicationCraftProfile).languages : []
+	);
+	let cohorts = $derived(
+		profile && 'cohorts' in profile ? (profile as EducationCraftProfile).cohorts : []
+	);
+
+	let commHighlights = $derived(
+		domain === 'communication' ? (highlights as unknown as CommunicationHighlight[]) : []
+	);
+	let eduHighlights = $derived(
+		domain === 'education' ? (highlights as unknown as EducationHighlight[]) : []
+	);
+
 	/** Nothing to show at all: no score, no trade, nothing published. */
 	let isEmpty = $derived(
 		!!profile &&
 			profile.craft_score === 0 &&
 			profile.orientations.length === 0 &&
-			highlights.length === 0
+			highlights.length === 0 &&
+			languages.length === 0 &&
+			cohorts.length === 0
 	);
+
+	/** A cohort's start, as a month and a year. */
+	function fmtCohortDate(iso: string): string {
+		return new Date(iso).toLocaleDateString(i18n.locale, { month: 'short', year: 'numeric' });
+	}
 
 	/** Terms that actually contributed, biggest first. */
 	let contributingTerms = $derived(
@@ -178,7 +220,7 @@
 				</div>
 			{/if}
 
-			{#if highlights.length > 0}
+			{#if domain === 'audio' && highlights.length > 0}
 				<div>
 					<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
 						{i18n.t('craftProfile.highlightsTitle')}
@@ -205,6 +247,145 @@
 								{#if work.external_url}
 									<a
 										href={work.external_url}
+										target="_blank"
+										rel="noopener noreferrer nofollow ugc"
+										class="mt-2 inline-flex items-center gap-1 text-xs text-text-muted hover:text-text-primary"
+									>
+										{i18n.t('craftProfile.openWork')}
+										<ExternalLink size={11} strokeWidth={2} />
+									</a>
+								{/if}
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+
+			{#if languages.length > 0}
+				<div>
+					<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
+						{i18n.t('craftProfile.languagesTitle')}
+					</p>
+					<!-- Counted from validated translations, not declared. That
+					     difference is the whole reason the field exists. -->
+					<p class="mt-1 text-xs text-text-muted">{i18n.t('craftProfile.languagesHint')}</p>
+					<div class="mt-2 flex flex-wrap gap-2">
+						{#each languages as row (row.language)}
+							<span
+								class="rounded-full border border-border bg-surface-overlay px-3 py-1 text-xs text-text-primary"
+							>
+								{row.language}
+								<span class="ml-1 text-text-muted">{row.validated}</span>
+							</span>
+						{/each}
+					</div>
+				</div>
+			{/if}
+
+			{#if commHighlights.length > 0}
+				<div>
+					<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
+						{i18n.t('craftProfile.readFirstTitle')}
+					</p>
+					<ul class="mt-3 space-y-2" role="list">
+						{#each commHighlights as work (work.slice_id)}
+							<li class="rounded-xl border border-border p-4">
+								<p class="text-sm font-semibold text-text-primary">{work.title}</p>
+								<p class="mt-1 flex flex-wrap items-center gap-x-1.5 text-xs text-text-muted">
+									<span>{work.subtype}</span>
+									{#if work.target_languages.length > 0}
+										<span>&middot;</span><span>{work.target_languages.join(', ')}</span>
+									{/if}
+									<!-- Only where the platform publishes the figure. A missing
+									     count is not zero, and printing 0 would say nobody read
+									     it. -->
+									{#if work.views !== null}
+										<span>&middot;</span><span class="font-mono">
+											{i18n.t('craftProfile.views', { n: work.views.toLocaleString() })}
+										</span>
+									{/if}
+									{#if work.engagement !== null}
+										<span>&middot;</span><span class="font-mono">
+											{i18n.t('craftProfile.engagement', {
+												n: work.engagement.toLocaleString()
+											})}
+										</span>
+									{/if}
+								</p>
+								{#if work.url}
+									<a
+										href={work.url}
+										target="_blank"
+										rel="noopener noreferrer nofollow ugc"
+										class="mt-2 inline-flex items-center gap-1 text-xs text-text-muted hover:text-text-primary"
+									>
+										{i18n.t('craftProfile.openWork')}
+										<ExternalLink size={11} strokeWidth={2} />
+									</a>
+								{/if}
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+
+			{#if cohorts.length > 0}
+				<div>
+					<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
+						{i18n.t('craftProfile.cohortsTitle')}
+					</p>
+					<ul class="mt-3 space-y-2" role="list">
+						{#each cohorts as cohort (cohort.cohort_id)}
+							<li class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+								<span class="font-medium text-text-primary">{cohort.name}</span>
+								<span class="text-xs text-text-muted">
+									{i18n.t('craftProfile.learners', { n: cohort.learners })}
+								</span>
+								<!-- Only where an outcome was actually recorded. A completion
+								     rate computed over nobody reads as a result and is not
+								     one. -->
+								{#if cohort.completed !== null && cohort.outcomes_recorded > 0}
+									<span class="text-xs text-text-muted">
+										{i18n.t('craftProfile.completed', {
+											n: cohort.completed,
+											of: cohort.outcomes_recorded
+										})}
+									</span>
+								{:else}
+									<span class="text-xs text-text-muted">
+										{i18n.t('craftProfile.noOutcomes')}
+									</span>
+								{/if}
+								<span class="ml-auto text-xs text-text-muted">{fmtCohortDate(cohort.starts_at)}</span>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+
+			{#if eduHighlights.length > 0}
+				<div>
+					<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
+						{i18n.t('craftProfile.taughtTitle')}
+					</p>
+					<ul class="mt-3 space-y-2" role="list">
+						{#each eduHighlights as work (work.slice_id)}
+							<li class="rounded-xl border border-border p-4">
+								<p class="text-sm font-semibold text-text-primary">{work.title}</p>
+								<p class="mt-1 flex flex-wrap items-center gap-x-1.5 text-xs text-text-muted">
+									<span>{work.subtype}</span>
+									{#if work.target_audience}
+										<span>&middot;</span><span>{work.target_audience}</span>
+									{/if}
+									{#if work.adoptions > 0}
+										<span>&middot;</span><span>
+											{i18n.t('craftProfile.adoptions', { n: work.adoptions })}
+										</span>
+									{/if}
+								</p>
+								{#if work.url}
+									<a
+										href={work.url}
 										target="_blank"
 										rel="noopener noreferrer nofollow ugc"
 										class="mt-2 inline-flex items-center gap-1 text-xs text-text-muted hover:text-text-primary"
