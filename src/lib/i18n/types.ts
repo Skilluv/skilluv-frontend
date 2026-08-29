@@ -1613,6 +1613,66 @@ export interface Translations
 		proposalDeclined: string;
 	};
 
+	/** The quality workbench. */
+	quality: {
+		title: string;
+		subtitle: string;
+		tabMine: string;
+		tabQueue: string;
+		tabPublished: string;
+		queueHint: string;
+		empty: { mine: string; queue: string; published: string };
+		emptyHint: string;
+		wasFiledAs: string;
+		seeTheFix: string;
+		fixConfirmed: string;
+		fixUnconfirmed: string;
+		confirmFixCta: string;
+		awaitingReview: string;
+		acceptCta: string;
+		regradeTo: string;
+		reviewed: string;
+		testRunsLiveOnSlices: string;
+	};
+
+	/** Test runs imported against a slice. */
+	testRuns: {
+		title: string;
+		verified: string;
+		unverified: string;
+		verifyCta: string;
+		counts: string;
+		figuresFrom: string;
+		openReport: string;
+	};
+
+	/** The ops workbench. */
+	ops: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		objectivesTitle: string;
+		objectivesHint: string;
+		targetOver: string;
+		running: string;
+		met: string;
+		missed: string;
+		verified: string;
+		selfReported: string;
+		observedOutside: string;
+		evidence: string;
+		incidentsTitle: string;
+		incidentsHint: string;
+		ongoing: string;
+		minutes: string;
+		timeToDetect: string;
+		timeToResolve: string;
+		postmortemPublished: string;
+		postmortemMissing: string;
+		costWorkNote: string;
+	};
+
 	craftProfile: {
 		titles: {
 			ai: string;

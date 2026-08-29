@@ -1447,6 +1447,70 @@ export const en: Translations = {
 		proposalDeclined: 'Declined.'
 	},
 
+	quality: {
+		title: 'Defects',
+		subtitle: 'What you reported, what you can judge, and what the platform has published.',
+		tabMine: 'Mine',
+		tabQueue: 'To review',
+		tabPublished: 'Published',
+		queueHint:
+			'You can review these because of the trade they belong to, not because of a role. The record says which trade decided.',
+		empty: {
+			mine: 'You have not reported a defect yet.',
+			queue: 'Nothing waiting on your review.',
+			published: 'No published report.'
+		},
+		emptyHint: 'A defect report carries steps, what you expected, and what happened instead.',
+		wasFiledAs: 'filed as {severity}',
+		seeTheFix: 'See the fix',
+		fixConfirmed: 'Fix confirmed',
+		fixUnconfirmed: 'Fix awaiting confirmation',
+		confirmFixCta: 'Confirm the fix shipped',
+		awaitingReview: 'awaiting review',
+		acceptCta: 'Accept',
+		regradeTo: 'Accept as {severity}',
+		reviewed: 'Reviewed.',
+		testRunsLiveOnSlices:
+			'Test runs are read on the slice they ran against, next to the work they are evidence about.'
+	},
+
+	testRuns: {
+		title: 'Test runs',
+		verified: 'Verified',
+		unverified: 'Not verified',
+		verifyCta: 'Verify these figures',
+		counts: '{total} tests, {failed} failed, {skipped} skipped',
+		figuresFrom: 'figures from {source}',
+		openReport: 'Open the report'
+	},
+
+	ops: {
+		title: 'Operations',
+		subtitle: 'Service objectives you committed to, incidents you ran, and what they cost.',
+		empty: 'Nothing recorded yet.',
+		emptyHint: 'An objective belongs to a slice or a project — a target on its own promises nothing.',
+		objectivesTitle: 'Service objectives',
+		objectivesHint: 'A promise made in advance and judged after its window closes.',
+		targetOver: '{target}% over {days} days',
+		running: 'Running',
+		met: 'Met',
+		missed: 'Missed',
+		verified: 'Verified',
+		selfReported: 'closed by its owner, not yet checked',
+		observedOutside: 'observed from outside',
+		evidence: 'Evidence',
+		incidentsTitle: 'Incidents',
+		incidentsHint: 'What is worth reading is the postmortem and what was done after, not the outage.',
+		ongoing: 'Ongoing',
+		minutes: '{n} min',
+		timeToDetect: 'detected in {d}',
+		timeToResolve: 'resolved in {d}',
+		postmortemPublished: 'Postmortem published',
+		postmortemMissing: 'No postmortem yet',
+		costWorkNote:
+			'Cost work is recorded against the slice or project it changed, and the saving is only attested once the service is verified to still meet its objective.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'AI record',

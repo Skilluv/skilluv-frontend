@@ -13,6 +13,7 @@
 	import { BookmarkButton, NoteEditor } from '$components/saved';
 	import { AudioDelivery, AudioSources, ProjectCredits } from '$components/audio';
 	import { CritiqueTrail, SubmitVersion } from '$components/design';
+	import { TestRuns } from '$components/quality';
 	import { ExternalLink, Check, GitBranch, ShieldCheck } from '@lucide/svelte';
 
 	interface Props {
@@ -428,6 +429,15 @@
 					<CritiqueTrail sliceId={slice.id} expectedRounds={slice.design_expected_rounds ?? null} />
 				</section>
 			{/if}
+
+			<!-- The quality evidence about this slice. Renders nothing when there
+			     is none, and nothing when the slice carries no quality trade — a
+			     404 there is an answer, not a fault. Runs live here rather than in
+			     a list of their own because a run detached from what it ran on is
+			     a page of numbers. -->
+			<div class="mt-4">
+				<TestRuns sliceId={slice.id} />
+			</div>
 
 			<!-- Diary -->
 			<DiaryWidget sliceId={slice.id} canPost={isMine} />

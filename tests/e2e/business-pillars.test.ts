@@ -65,3 +65,37 @@ test.describe('Business pillar pages', () => {
 		}
 	});
 });
+
+/**
+ * The domain workbenches — quality and ops.
+ *
+ * Both had eleven endpoints served and one read: the profile record. So a
+ * practitioner in either could be *seen* to have done the work and had nowhere
+ * to do it.
+ */
+test.describe('Domain workbenches', () => {
+	test('the quality workbench renders without a review queue', async ({ page }) => {
+		// The review tab appears only when the server says this caller has
+		// something to judge — never from a role check here. With no backend the
+		// queue is empty, so the tab must be absent.
+		await gotoHydrated(page, '/quality');
+		await expect(page.getByTestId('quality-page')).toBeVisible();
+		await expect(page.locator('h1')).toBeVisible();
+	});
+
+	test('the ops workbench renders', async ({ page }) => {
+		await gotoHydrated(page, '/ops');
+		await expect(page.getByTestId('ops-page')).toBeVisible();
+		await expect(page.locator('h1')).toBeVisible();
+	});
+
+	test('no i18n key leaks on either workbench', async ({ page }) => {
+		for (const path of ['/quality', '/ops']) {
+			await gotoHydrated(page, path);
+			const body = await page.locator('body').innerText();
+			expect(body, `raw i18n key leaked on ${path}`).not.toMatch(
+				/\b(quality|ops|testRuns)\.[a-zA-Z]+/
+			);
+		}
+	});
+});

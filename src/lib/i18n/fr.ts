@@ -1463,6 +1463,73 @@ export const fr: Translations = {
 		proposalDeclined: 'Refusé.'
 	},
 
+	quality: {
+		title: 'Défauts',
+		subtitle: 'Ce que tu as signalé, ce que tu peux juger, et ce que la plateforme a publié.',
+		tabMine: 'Les miens',
+		tabQueue: 'À relire',
+		tabPublished: 'Publiés',
+		queueHint:
+			'Tu peux relire ceux-ci à cause du métier auquel ils appartiennent, pas à cause d’un rôle. La trace dit quel métier a décidé.',
+		empty: {
+			mine: 'Tu n’as pas encore signalé de défaut.',
+			queue: 'Rien n’attend ta relecture.',
+			published: 'Aucun rapport publié.'
+		},
+		emptyHint:
+			'Un rapport de défaut porte les étapes, ce que tu attendais, et ce qui s’est passé à la place.',
+		wasFiledAs: 'déposé en {severity}',
+		seeTheFix: 'Voir le correctif',
+		fixConfirmed: 'Correctif confirmé',
+		fixUnconfirmed: 'Correctif en attente de confirmation',
+		confirmFixCta: 'Confirmer que le correctif est parti',
+		awaitingReview: 'en attente de relecture',
+		acceptCta: 'Accepter',
+		regradeTo: 'Accepter en {severity}',
+		reviewed: 'Relu.',
+		testRunsLiveOnSlices:
+			'Les campagnes de test se lisent sur la slice contre laquelle elles ont tourné, à côté du travail dont elles sont la preuve.'
+	},
+
+	testRuns: {
+		title: 'Campagnes de test',
+		verified: 'Vérifiée',
+		unverified: 'Non vérifiée',
+		verifyCta: 'Vérifier ces chiffres',
+		counts: '{total} tests, {failed} en échec, {skipped} ignorés',
+		figuresFrom: 'chiffres depuis {source}',
+		openReport: 'Ouvrir le rapport'
+	},
+
+	ops: {
+		title: 'Exploitation',
+		subtitle: 'Les objectifs de service que tu as pris, les incidents que tu as menés, et ce qu’ils coûtent.',
+		empty: 'Rien d’enregistré pour le moment.',
+		emptyHint:
+			'Un objectif appartient à une slice ou à un projet — une cible toute seule ne promet rien.',
+		objectivesTitle: 'Objectifs de service',
+		objectivesHint: 'Une promesse prise à l’avance et jugée une fois sa fenêtre close.',
+		targetOver: '{target}% sur {days} jours',
+		running: 'En cours',
+		met: 'Tenu',
+		missed: 'Manqué',
+		verified: 'Vérifié',
+		selfReported: 'clôturé par son propriétaire, pas encore contrôlé',
+		observedOutside: 'observé de l’extérieur',
+		evidence: 'Preuve',
+		incidentsTitle: 'Incidents',
+		incidentsHint:
+			'Ce qui vaut d’être lu, c’est le postmortem et ce qui a été fait après, pas la panne.',
+		ongoing: 'En cours',
+		minutes: '{n} min',
+		timeToDetect: 'détecté en {d}',
+		timeToResolve: 'résolu en {d}',
+		postmortemPublished: 'Postmortem publié',
+		postmortemMissing: 'Pas encore de postmortem',
+		costWorkNote:
+			'Le travail sur les coûts s’enregistre contre la slice ou le projet qu’il a changé, et l’économie n’est attestée qu’une fois vérifié que le service tient toujours son objectif.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'Parcours IA',
