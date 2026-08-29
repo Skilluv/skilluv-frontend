@@ -21,6 +21,7 @@
 	 *    the promise the published policy makes, and it is the reason somebody
 	 *    chose to report here rather than on a mailing list.
 	 */
+	import { resolve } from '$app/paths';
 	import { FileUp, Send, ShieldAlert } from '@lucide/svelte';
 	import { goto } from '$app/navigation';
 	import { securityApi } from '$api/security';
@@ -159,7 +160,7 @@
 			<p class="mt-2 text-sm text-text-muted">
 				{i18n.t('securityReport.submittedBody', { date: fmtDate(submitted.triage_due_by) })}
 			</p>
-			<Button size="sm" class="mt-4" onclick={() => goto('/security/reports')}>
+			<Button size="sm" class="mt-4" onclick={() => goto(resolve('/security/reports'))}>
 				{i18n.t('securityMyReports.title')}
 			</Button>
 		</section>

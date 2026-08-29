@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
@@ -135,7 +136,7 @@
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 			{#each mentors as m (m.user_id)}
 				<a
-					href="/mentors/{m.user_id}"
+					href={resolve(`/mentors/${m.user_id}`)}
 					class="group flex flex-col rounded-2xl border border-border bg-surface-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
 				>
 					<!-- Header -->

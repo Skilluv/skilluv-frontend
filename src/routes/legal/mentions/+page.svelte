@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 </script>
 
@@ -72,7 +73,7 @@
 		Les utilisateurs peuvent soumettre des challenges, solutions, commentaires et autres contenus
 		via la plateforme. Ces contenus restent la propriété de leurs auteurs, qui en demeurent seuls
 		responsables. Les conditions d'utilisation détaillées de ces contenus sont précisées dans
-		<a href="/legal/terms">nos Conditions générales d'utilisation</a>.
+		<a href={resolve('/legal/terms')}>nos Conditions générales d'utilisation</a>.
 	</p>
 
 	<h2>7. Liens hypertextes</h2>
@@ -92,8 +93,8 @@
 	<h2>9. Données personnelles</h2>
 	<p>
 		Le traitement des données à caractère personnel collectées via la plateforme est décrit dans
-		notre <a href="/legal/privacy">Politique de confidentialité</a> et l'exercice de vos droits est
-		détaillé dans notre <a href="/legal/gdpr">page dédiée au RGPD</a>.
+		notre <a href={resolve('/legal/privacy')}>Politique de confidentialité</a> et l'exercice de vos droits est
+		détaillé dans notre <a href={resolve('/legal/gdpr')}>page dédiée au RGPD</a>.
 	</p>
 
 	<div class="callout">
@@ -157,7 +158,7 @@
 	<p>
 		Users may submit challenges, solutions, comments and other content via the platform. Such
 		content remains the property of its authors, who are solely responsible for it. Detailed
-		conditions for user content are set out in our <a href="/legal/terms">Terms of Service</a>.
+		conditions for user content are set out in our <a href={resolve('/legal/terms')}>Terms of Service</a>.
 	</p>
 
 	<h2>7. Hyperlinks</h2>
@@ -176,8 +177,8 @@
 	<h2>9. Personal data</h2>
 	<p>
 		The processing of personal data collected via the platform is described in our
-		<a href="/legal/privacy">Privacy Policy</a>, and your rights are detailed on our
-		<a href="/legal/gdpr">GDPR rights page</a>.
+		<a href={resolve('/legal/privacy')}>Privacy Policy</a>, and your rights are detailed on our
+		<a href={resolve('/legal/gdpr')}>GDPR rights page</a>.
 	</p>
 
 	<div class="callout">

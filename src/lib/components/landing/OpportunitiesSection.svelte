@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 	import { scrollReveal } from '$lib/utils/animations';
 	import Badge from '$components/ui/Badge.svelte';
@@ -30,7 +31,7 @@
 
 			<!-- ═══ CARD 01 — BOUNTIES ═══ -->
 			<a
-				href="/bounties"
+				href={resolve('/bounties')}
 				use:scrollReveal
 				class="group rounded-2xl border-2 border-cat-craft bg-surface-craft overflow-hidden transition-colors duration-200 hover:border-primary/40 flex flex-col"
 			>
@@ -66,7 +67,7 @@
 
 			<!-- ═══ CARD 02 — CERTIFICATIONS ═══ -->
 			<a
-				href="/certifications"
+				href={resolve('/certifications')}
 				use:scrollReveal
 				class="group rounded-2xl border-2 border-cat-meta bg-surface-meta overflow-hidden transition-colors duration-200 hover:border-accent/40 flex flex-col"
 			>
@@ -110,7 +111,7 @@
 
 			<!-- ═══ CARD 03 — MENTORSHIP ═══ -->
 			<a
-				href="/mentors"
+				href={resolve('/mentors')}
 				use:scrollReveal
 				class="group rounded-2xl border-2 border-cat-share bg-surface-share overflow-hidden transition-colors duration-200 hover:border-primary/40 flex flex-col"
 			>

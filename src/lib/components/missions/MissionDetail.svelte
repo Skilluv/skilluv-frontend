@@ -140,12 +140,15 @@
 			</Button>
 		</div>
 	{:else if mission}
+		<!-- basePath is a prop resolved by the domain board that renders this. -->
+		<!-- eslint-disable svelte/no-navigation-without-resolve -->
 		<a
 			href={basePath}
 			class="text-sm text-text-muted underline-offset-4 hover:text-text-primary hover:underline"
 		>
 			{i18n.t('missions.backToList')}
 		</a>
+		<!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 		<header class="mt-3">
 			<div class="flex flex-wrap items-center gap-2">

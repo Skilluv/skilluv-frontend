@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
@@ -92,7 +93,7 @@
 
 	onMount(() => {
 		if (!auth.isAuthenticated) {
-			goto('/auth/login?redirect=/feed');
+			goto(resolve('/auth/login?redirect=/feed'));
 			return;
 		}
 		void load();

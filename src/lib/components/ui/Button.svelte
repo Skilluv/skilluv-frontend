@@ -46,9 +46,13 @@
 </script>
 
 {#if href && !disabled}
+	<!-- A pass-through: href is whatever the caller gives, and the caller is
+	     where the destination is known and resolved. -->
+	<!-- eslint-disable svelte/no-navigation-without-resolve -->
 	<a {href} class={classes} {...(rest as HTMLAnchorAttributes)}>
 		{@render children()}
 	</a>
+	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 {:else}
 	<button class={classes} disabled={disabled || loading} {...rest}>
 		{#if loading}

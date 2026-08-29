@@ -13,6 +13,7 @@
 	 * whose planted flag differs only in case — which is a bug nobody would
 	 * find, because the person hitting it would assume they were wrong.
 	 */
+	import { resolve } from '$app/paths';
 	import { Flag } from '@lucide/svelte';
 	import { securityApi } from '$api/security';
 	import { SkilluError } from '$api/client';
@@ -114,7 +115,7 @@
 					{/if}
 					{#if outcome.attestation_code}
 						<a
-							href="/attestations/verify/{outcome.attestation_code}"
+							href={resolve(`/attestations/verify/${outcome.attestation_code}`)}
 							class="text-accent hover:underline"
 						>
 							{i18n.t('securityPractice.attestationIssued')}

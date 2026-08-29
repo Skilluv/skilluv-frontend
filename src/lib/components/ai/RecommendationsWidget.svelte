@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
@@ -119,7 +120,7 @@
 					{#each recos as r (r.challenge_id)}
 						{@const g = growthLabel(r.growth_category)}
 						<a
-							href={`/challenges/${r.challenge_id}`}
+							href={resolve(`/challenges/${r.challenge_id}`)}
 							class="flex items-center gap-3 rounded-xl border border-border bg-surface-overlay p-3 hover:border-primary hover:bg-primary/5 transition-colors"
 						>
 							<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-lg text-primary">◎</div>

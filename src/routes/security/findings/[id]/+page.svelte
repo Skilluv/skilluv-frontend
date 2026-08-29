@@ -13,6 +13,7 @@
 	 * the page says so in as many words rather than rendering a blank heading
 	 * that reads like a bug.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { ExternalLink, Lock, ShieldCheck } from '@lucide/svelte';
@@ -122,7 +123,7 @@
 				<dt class="text-text-muted">{i18n.t('securityFinding.reportedBy')}</dt>
 				<dd class="text-text">
 					{#if finding.reporter.username}
-						<a href="/profile/{finding.reporter.username}" class="text-accent hover:underline">
+						<a href={resolve(`/profile/${finding.reporter.username}`)} class="text-accent hover:underline">
 							{finding.reporter.display_name ?? finding.reporter.username}
 						</a>
 					{:else}

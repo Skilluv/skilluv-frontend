@@ -14,6 +14,7 @@
 	 * Missions, availability and external portfolios are in the ticket but not
 	 * in the payload — their backend tickets (M-05, A-01) are still open.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { BadgeCheck, ExternalLink, RefreshCw, Trophy } from '@lucide/svelte';
 	import { designApi } from '$lib/api/design';
@@ -265,7 +266,7 @@
 									<a
 										href={artefact.artifact_url}
 										target="_blank"
-										rel="noopener noreferrer nofollow ugc"
+										rel="external noopener noreferrer nofollow ugc"
 										class="inline-flex shrink-0 items-center gap-1 text-text-muted hover:text-text-primary"
 									>
 										{i18n.t('designProfile.openArtifact')}
@@ -324,7 +325,7 @@
 									     attestation hash, while this is a 12-character
 									     `verification_code` on the attestations table. -->
 								<a
-									href="/attestations/verify/{attestation.verification_code}"
+									href={resolve(`/attestations/verify/${attestation.verification_code}`)}
 									class="text-xs text-text-muted underline-offset-4 hover:text-text-primary hover:underline"
 								>
 									{i18n.t('designProfile.verifyCta')}

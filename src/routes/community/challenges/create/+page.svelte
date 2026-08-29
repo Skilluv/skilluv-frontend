@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { communityApi } from '$api/community';
 	import { toast } from '$stores/toast.svelte';
@@ -41,7 +42,7 @@
 				submit_for_review: submitForReview
 			});
 			toast.success(submitForReview ? i18n.t('community.create.submitted') : i18n.t('community.create.draftSaved'));
-			goto('/community/challenges/mine');
+			goto(resolve('/community/challenges/mine'));
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : 'Erreur lors de la création.');
 		} finally {
@@ -55,7 +56,7 @@
 </svelte:head>
 
 <div class="mx-auto max-w-2xl px-4 py-12 sm:py-16">
-	<a href="/community/challenges" class="mb-6 inline-block text-sm text-text-muted hover:text-text-primary">← {i18n.t('common.actions.back')}</a>
+	<a href={resolve('/community/challenges')} class="mb-6 inline-block text-sm text-text-muted hover:text-text-primary">← {i18n.t('common.actions.back')}</a>
 	<h1 class="mb-3 text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
 		{i18n.t('community.create.title')}<span class="text-accent">.</span>
 	</h1>

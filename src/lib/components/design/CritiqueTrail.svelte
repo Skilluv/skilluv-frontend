@@ -209,7 +209,7 @@
 							<a
 								href={round.reviewed_artifact_url}
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="external noopener noreferrer"
 								class="mt-3 inline-flex items-center gap-1.5 text-sm text-accent hover:underline"
 							>
 								<ExternalLink size={14} />
@@ -342,7 +342,7 @@
 										<a
 											href={version.artifact_url}
 											target="_blank"
-											rel="noopener noreferrer"
+											rel="external noopener noreferrer"
 											class="mt-2 inline-flex items-center gap-1.5 text-sm text-accent hover:underline"
 										>
 											<ExternalLink size={14} />

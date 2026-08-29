@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { i18n } from '$lib/i18n';
@@ -164,7 +165,7 @@
 
 <div class="mx-auto max-w-4xl px-4 py-10 sm:py-14">
 	<nav class="mb-6 flex items-center gap-2 text-sm text-text-muted">
-		<a href="/forum" class="hover:text-text-primary">Forum</a>
+		<a href={resolve('/forum')} class="hover:text-text-primary">Forum</a>
 		<span>›</span>
 		<span class="text-text-primary truncate">{post?.title ?? '...'}</span>
 	</nav>

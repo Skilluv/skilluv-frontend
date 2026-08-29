@@ -57,12 +57,17 @@
 	data-testid="mission-card"
 >
 	<div class="flex flex-wrap items-start justify-between gap-2">
+		<!-- basePath is a prop: each domain board (ai, design, security) owns its
+		     own URL space and resolves the prefix before passing it in. The slug
+		     comes from the API, so the pair cannot be a literal here. -->
+		<!-- eslint-disable svelte/no-navigation-without-resolve -->
 		<a
 			href="{basePath}/{mission.slug}"
 			class="text-lg font-bold text-text-primary underline-offset-4 hover:underline"
 		>
 			{mission.title}
 		</a>
+		<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		<Badge variant={mission.urgency === 'critical' ? 'error' : 'default'} size="sm">
 			{label('urgencies', mission.urgency)}
 		</Badge>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	/** SKI-40 — open a learning cycle. */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { cohortsApi } from '$lib/api/cohorts';
@@ -67,7 +68,7 @@
 				is_public: isPublic
 			});
 			toast.success(i18n.t('cohorts.createdToast'));
-			await goto(`/cohorts/${res.data.cohort.id}`);
+			await goto(resolve(`/cohorts/${res.data.cohort.id}`));
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
 		} finally {

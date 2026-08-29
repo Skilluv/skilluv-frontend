@@ -157,7 +157,7 @@
 				<a
 					href={entry.evidence_url}
 					target="_blank"
-					rel="noopener noreferrer"
+					rel="external noopener noreferrer"
 					class="mt-1 block break-all text-sm text-accent hover:underline"
 				>
 					{entry.evidence_url}

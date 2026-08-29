@@ -11,6 +11,7 @@
 	 * the field is free text rather than a list of eleven languages we would
 	 * have picked ourselves.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { EyeOff, Timer } from '@lucide/svelte';
 	import { audioCastingsApi } from '$lib/api/audio';
@@ -117,7 +118,7 @@
 				{@const left = daysLeft(casting.audition_deadline)}
 				<li>
 					<a
-						href="/audio/castings/{casting.id}"
+						href={resolve(`/audio/castings/${casting.id}`)}
 						class="block rounded-2xl border border-border bg-surface-elevated p-5 transition-colors hover:border-accent/40"
 					>
 						<div class="mb-2 flex flex-wrap items-center gap-2">

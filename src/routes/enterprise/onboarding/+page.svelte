@@ -214,6 +214,8 @@
 	}
 
 	function finish() {
+		// nextDestination is chosen from internal literals by the step machine.
+		// eslint-disable-next-line svelte/no-navigation-without-resolve
 		goto(nextDestination);
 	}
 

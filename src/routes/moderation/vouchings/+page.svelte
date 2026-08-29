@@ -13,6 +13,7 @@
 	 * behind one capability: a gesture whose target cannot be found is
 	 * useless, and a listing without the gesture is a spectator sport.
 	 */
+	import { resolve } from '$app/paths';
 	import { AlertTriangle } from '@lucide/svelte';
 	import { vouchingsApi, type VouchingQueueParams } from '$lib/api/vouchings';
 	import { SkilluError } from '$lib/api/client';
@@ -260,7 +261,7 @@
 								<p class="mt-0.5 text-sm">
 									{#if row.voucher_username}
 										<a
-											href="/profile/{row.voucher_username}"
+											href={resolve(`/profile/${row.voucher_username}`)}
 											class="font-semibold text-text-primary hover:text-accent"
 										>
 											{partyName(row.voucher_display_name, row.voucher_username)}
@@ -282,7 +283,7 @@
 								<p class="mt-0.5 text-sm">
 									{#if row.vouched_username}
 										<a
-											href="/profile/{row.vouched_username}"
+											href={resolve(`/profile/${row.vouched_username}`)}
 											class="font-semibold text-text-primary hover:text-accent"
 										>
 											{partyName(row.vouched_display_name, row.vouched_username)}

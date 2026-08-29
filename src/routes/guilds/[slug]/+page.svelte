@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { i18n } from '$lib/i18n';
@@ -156,7 +157,7 @@
 
 <div class="mx-auto max-w-5xl px-4 py-10 sm:py-14">
 	<nav class="mb-6 flex items-center gap-2 text-sm text-text-muted">
-		<a href="/guilds" class="hover:text-text-primary">Guilds</a>
+		<a href={resolve('/guilds')} class="hover:text-text-primary">Guilds</a>
 		<span>›</span>
 		<span class="text-text-primary">{guild?.name ?? '...'}</span>
 	</nav>
@@ -399,7 +400,7 @@
 					>
 						{#each members as m (m.user_id)}
 							<a
-								href={`/profile/${m.username}`}
+								href={resolve(`/profile/${m.username}`)}
 								class="flex items-center gap-3 p-4 hover:bg-surface-overlay transition-colors"
 							>
 								<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg font-black text-primary shrink-0">

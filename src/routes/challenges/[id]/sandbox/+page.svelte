@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 	import { page } from '$app/stores';
 	import { challengesApi } from '$api/challenges';
@@ -237,7 +238,7 @@
 		<!-- Toolbar -->
 		<div class="flex items-center justify-between border-b border-border bg-surface-elevated px-4 py-2">
 			<div class="flex items-center gap-3">
-				<a href="/challenges" class="text-sm text-text-muted hover:text-text-primary">{i18n.t('challenges.sandbox.back')}</a>
+				<a href={resolve('/challenges')} class="text-sm text-text-muted hover:text-text-primary">{i18n.t('challenges.sandbox.back')}</a>
 				<span class="text-sm font-medium">{challenge.title}</span>
 				<Badge variant={challenge.skill_domain}>{challenge.skill_domain}</Badge>
 			</div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import Button from '$components/ui/Button.svelte';
@@ -119,7 +120,7 @@
 			auth.setUser(res.data.user);
 
 			// Redirige vers l'onboarding challenge
-			goto('/challenges/onboarding');
+			goto(resolve('/challenges/onboarding'));
 		} catch (err) {
 			if (err instanceof SkilluError) {
 				if (err.code === 'VALIDATION_ERROR') {
@@ -180,7 +181,7 @@
 
 		<p class="mt-8 text-center text-sm text-text-muted">
 			{i18n.t('auth.register.hasAccount')}
-			<a href="/auth/login" class="font-medium text-accent hover:underline">{i18n.t('auth.register.loginLink')}</a>
+			<a href={resolve('/auth/login')} class="font-medium text-accent hover:underline">{i18n.t('auth.register.loginLink')}</a>
 		</p>
 	</div>
 {:else}
@@ -278,14 +279,14 @@
 				<span>
 					{#if i18n.locale === 'fr'}
 						J'accepte les
-						<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">CGU</a>
+						<a href={resolve('/legal/terms')} target="_blank" rel="noopener" class="text-accent hover:underline">CGU</a>
 						et la
-						<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">politique de confidentialité</a>.
+						<a href={resolve('/legal/privacy')} target="_blank" rel="noopener" class="text-accent hover:underline">politique de confidentialité</a>.
 					{:else}
 						I accept the
-						<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">Terms of Service</a>
+						<a href={resolve('/legal/terms')} target="_blank" rel="noopener" class="text-accent hover:underline">Terms of Service</a>
 						and
-						<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">Privacy Policy</a>.
+						<a href={resolve('/legal/privacy')} target="_blank" rel="noopener" class="text-accent hover:underline">Privacy Policy</a>.
 					{/if}
 				</span>
 			</label>
@@ -300,7 +301,7 @@
 
 		<p class="mt-8 text-center text-sm text-text-muted">
 			{i18n.t('auth.register.hasAccount')}
-			<a href="/auth/login" class="font-medium text-accent hover:underline">{i18n.t('auth.register.loginLink')}</a>
+			<a href={resolve('/auth/login')} class="font-medium text-accent hover:underline">{i18n.t('auth.register.loginLink')}</a>
 		</p>
 	</div>
 {/if}

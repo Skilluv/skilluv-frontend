@@ -13,6 +13,7 @@
 	 * Approving is the company's gesture and lives in their workspace —
 	 * `/trials/hours/{id}/decision` requires an enterprise session.
 	 */
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { ArrowLeft, Check, Clock, X } from '@lucide/svelte';
 	import { opportunitiesApi } from '$lib/api/opportunities';
@@ -106,7 +107,7 @@
 
 <div class="mx-auto max-w-3xl px-4 py-8" data-testid="trial-hours-page">
 	<a
-		href="/dashboard/opportunities"
+		href={resolve('/dashboard/opportunities')}
 		class="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-text-primary"
 	>
 		<ArrowLeft size={14} strokeWidth={2} />

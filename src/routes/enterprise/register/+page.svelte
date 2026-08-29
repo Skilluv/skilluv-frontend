@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import CountrySelect from '$components/ui/CountrySelect.svelte';
@@ -227,7 +228,7 @@
 </svelte:head>
 
 <div class="flex min-h-[100vh] flex-col items-center justify-center px-4 py-12">
-	<a href="/" class="mb-8 flex items-center gap-2 text-3xl font-black tracking-tight">
+	<a href={resolve('/')} class="mb-8 flex items-center gap-2 text-3xl font-black tracking-tight">
 		<BrandLogo variant="mark" size={32} />
 		<span><span class="text-accent">Skill</span><span class="text-text-primary">uv</span></span>
 	</a>
@@ -371,7 +372,7 @@
 
 				<p class="mt-8 text-center text-sm text-text-muted">
 					{i18n.locale === 'fr' ? 'Vous avez déjà un compte ?' : 'Already have an account?'}
-					<a href="/auth/login" class="font-medium text-accent hover:underline">
+					<a href={resolve('/auth/login')} class="font-medium text-accent hover:underline">
 						{i18n.locale === 'fr' ? 'Se connecter' : 'Sign in'}
 					</a>
 				</p>
@@ -455,14 +456,14 @@
 						<span>
 							{#if i18n.locale === 'fr'}
 								J'accepte les
-								<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">CGU</a>
+								<a href={resolve('/legal/terms')} target="_blank" rel="noopener" class="text-accent hover:underline">CGU</a>
 								et la
-								<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">politique de confidentialité</a>.
+								<a href={resolve('/legal/privacy')} target="_blank" rel="noopener" class="text-accent hover:underline">politique de confidentialité</a>.
 							{:else}
 								I accept the
-								<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">Terms of Use</a>
+								<a href={resolve('/legal/terms')} target="_blank" rel="noopener" class="text-accent hover:underline">Terms of Use</a>
 								and the
-								<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">Privacy Policy</a>.
+								<a href={resolve('/legal/privacy')} target="_blank" rel="noopener" class="text-accent hover:underline">Privacy Policy</a>.
 							{/if}
 						</span>
 					</label>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import Button from '$components/ui/Button.svelte';
@@ -37,7 +38,7 @@
 		try {
 			await authApi.resetPassword(token, password);
 			success = true;
-			setTimeout(() => goto('/auth/login'), 3000);
+			setTimeout(() => goto(resolve('/auth/login')), 3000);
 		} catch (err) {
 			if (err instanceof SkilluError) {
 				error = err.message;

@@ -329,7 +329,7 @@
 							<a
 								href={round.artifact_url}
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="external noopener noreferrer"
 								class="mt-2 inline-block break-all text-sm text-accent hover:underline"
 							>
 								{round.artifact_url}

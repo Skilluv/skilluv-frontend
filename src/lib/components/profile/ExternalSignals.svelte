@@ -94,7 +94,7 @@
 										<a
 											href={signal.url}
 											target="_blank"
-											rel="noopener noreferrer nofollow ugc"
+											rel="external noopener noreferrer nofollow ugc"
 											class="inline-flex items-center gap-1 text-sm text-text-primary underline-offset-4 hover:underline"
 										>
 											{signal.title}

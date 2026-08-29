@@ -171,7 +171,7 @@
 										<a
 											href={credential.evidence_url}
 											target="_blank"
-											rel="noopener noreferrer"
+											rel="external noopener noreferrer"
 											class="inline-flex items-center gap-1 text-xs text-accent hover:underline"
 										>
 											<ExternalLink size={12} />

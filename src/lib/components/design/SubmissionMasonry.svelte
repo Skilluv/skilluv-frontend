@@ -63,7 +63,7 @@
 				: 'border-border'}"
 		>
 			{#if isImage(submission.artifact_url)}
-				<a href={submission.artifact_url} target="_blank" rel="noopener noreferrer nofollow ugc">
+				<a href={submission.artifact_url} target="_blank" rel="external noopener noreferrer nofollow ugc">
 					<img
 						src={submission.artifact_url}
 						alt={submission.summary}
@@ -104,7 +104,7 @@
 						<a
 							href={submission.artifact_url}
 							target="_blank"
-							rel="noopener noreferrer nofollow ugc"
+							rel="external noopener noreferrer nofollow ugc"
 							class="inline-flex items-center gap-1 text-text-muted hover:text-text-primary"
 						>
 							{i18n.t('designContests.galleryOpenArtifact')}
@@ -114,7 +114,7 @@
 							<a
 								href={submission.secondary_url}
 								target="_blank"
-								rel="noopener noreferrer nofollow ugc"
+								rel="external noopener noreferrer nofollow ugc"
 								class="inline-flex items-center gap-1 text-text-muted hover:text-text-primary"
 							>
 								{i18n.t('designContests.gallerySecondary')}

@@ -338,7 +338,7 @@
 									<a
 										href={interview.meeting_url}
 										target="_blank"
-										rel="noopener noreferrer nofollow"
+										rel="external noopener noreferrer nofollow"
 										class="mt-2 inline-block text-sm text-accent hover:underline"
 									>
 										{i18n.t('opportunities.joinMeeting')}

@@ -90,7 +90,7 @@
 								<a
 									href={d.url as string}
 									target="_blank"
-									rel="noopener noreferrer nofollow ugc"
+									rel="external noopener noreferrer nofollow ugc"
 									class="inline-flex items-center gap-1 text-xs text-accent hover:underline"
 								>
 									{i18n.t('workAndSkills.openCta')}
@@ -111,12 +111,16 @@
 				<p class="text-xs text-text-muted">{i18n.t('workAndSkills.skillsHint')}</p>
 				<div class="flex flex-wrap gap-2">
 					{#each skills as s (s.slug ?? s.id ?? label(s))}
-						<a
-							href="/skills/{s.slug ?? ''}"
-							class="rounded-full border border-border bg-surface-overlay px-3 py-1 text-xs text-text hover:border-accent"
+						<!-- Not a link: there is no /skills route, and there never was
+						     on this branch. resolve() is what surfaced it — the chips
+						     had been pointing at a 404 for every visitor. The label is
+						     the information; an affordance that goes nowhere is worse
+						     than none. -->
+						<span
+							class="rounded-full border border-border bg-surface-overlay px-3 py-1 text-xs text-text"
 						>
 							{label(s)}
-						</a>
+						</span>
 					{/each}
 				</div>
 			</div>

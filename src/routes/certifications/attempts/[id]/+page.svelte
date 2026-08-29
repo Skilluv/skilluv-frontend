@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
@@ -52,7 +53,7 @@
 
 	onMount(() => {
 		if (!auth.isAuthenticated) {
-			goto(`/auth/login?redirect=/certifications/attempts/${attemptId}`);
+			goto(resolve(`/auth/login?redirect=/certifications/attempts/${attemptId}`));
 			return;
 		}
 		const iv = setInterval(() => (now = Date.now()), 1000);
@@ -189,7 +190,7 @@
 				<div class="space-y-2">
 					{#each started.challenge_ids as cid, i (i)}
 						<a
-							href={`/challenges/${cid}`}
+							href={resolve(`/challenges/${cid}`)}
 							class="flex items-center gap-3 rounded-xl border border-border bg-surface-overlay p-3 hover:border-primary hover:bg-primary/5 transition-colors"
 						>
 							<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-sm font-bold text-primary">

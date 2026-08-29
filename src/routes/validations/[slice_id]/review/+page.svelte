@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import {
@@ -49,7 +50,7 @@
 
 	async function load() {
 		if (!auth.isAuthenticated) {
-			await goto(`/auth/login?next=/validations/${data.sliceId}/review`);
+			await goto(resolve(`/auth/login?next=/validations/${data.sliceId}/review`));
 			return;
 		}
 		view = { status: 'loading' };
@@ -102,7 +103,7 @@
 		try {
 			await validationApi.reject(view.item.slice.id, { reason: feedback });
 			toast.success(i18n.t('p26.validation.toastRejected'));
-			await goto('/validations/queue');
+			await goto(resolve('/validations/queue'));
 		} catch (err) {
 			if (err instanceof SkilluError && err.status === 400) {
 				submitError = i18n.t('p26.validation.errClaimerSelf');
@@ -122,7 +123,7 @@
 <div class="mx-auto max-w-3xl px-4 py-8">
 	<div class="mb-4">
 		<a
-			href="/validations/queue"
+			href={resolve('/validations/queue')}
 			class="inline-flex items-center gap-1 text-sm text-text-muted hover:text-text-primary"
 		>
 			<ArrowLeft size={14} strokeWidth={2} />
@@ -219,7 +220,7 @@
 						<p class="truncate text-sm font-medium">{item.claimer_display_name}</p>
 						<a
 							class="truncate text-xs text-text-muted hover:text-primary"
-							href={`/profile/${item.claimer_username}`}
+							href={resolve(`/profile/${item.claimer_username}`)}
 						>
 							@{item.claimer_username}
 						</a>

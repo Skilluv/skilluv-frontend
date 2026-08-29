@@ -12,6 +12,7 @@
 	 * recorded as a break with no penalty, and hiding it would erase the one
 	 * honest move available to a voucher who changed their mind.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { vouchingsApi } from '$lib/api/vouchings';
 	import { SkilluError } from '$api/client';
@@ -130,7 +131,7 @@
 							<div class="mb-2 flex flex-wrap items-center gap-2">
 								{#if row.other_username}
 									<a
-										href="/profile/{row.other_username}"
+										href={resolve(`/profile/${row.other_username}`)}
 										class="text-sm font-semibold text-text-primary hover:text-accent"
 									>
 										{partyName(row)}
@@ -201,7 +202,7 @@
 							<div class="mb-2 flex flex-wrap items-center gap-2">
 								{#if row.other_username}
 									<a
-										href="/profile/{row.other_username}"
+										href={resolve(`/profile/${row.other_username}`)}
 										class="text-sm font-semibold text-text-primary hover:text-accent"
 									>
 										{i18n.t('vouchings.vouchedBy', { name: partyName(row) })}

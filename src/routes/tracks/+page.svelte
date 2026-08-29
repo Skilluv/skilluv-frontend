@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { tracksApi, type Track } from '$api/tracks';
 	import { SkilluError } from '$api/client';
@@ -50,7 +51,7 @@
 		<div class="grid gap-4 sm:grid-cols-2">
 			{#each tracks as track (track.id)}
 				<a
-					href={`/tracks/${track.slug}`}
+					href={resolve(`/tracks/${track.slug}`)}
 					data-testid="track-card"
 					class="flex flex-col rounded-2xl border border-border bg-surface-elevated p-5 transition-colors hover:border-accent"
 				>

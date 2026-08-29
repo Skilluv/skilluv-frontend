@@ -42,12 +42,16 @@
 <span class="inline-flex min-w-0 flex-wrap items-center gap-2">
 	<Badge size="sm">{i18n.t(`bookmarks.targetTypes.${targetType}`)}</Badge>
 	{#if href}
+		<!-- The destination is computed from the saved item's type and id by
+		     hrefFor() above; the caller has no literal to resolve. -->
+		<!-- eslint-disable svelte/no-navigation-without-resolve -->
 		<a
 			{href}
 			class="truncate text-sm font-semibold text-text-primary underline-offset-4 hover:underline"
 		>
 			{title}
 		</a>
+		<!-- eslint-enable svelte/no-navigation-without-resolve -->
 	{:else}
 		<span class="truncate text-sm font-semibold text-text-primary">{title}</span>
 	{/if}

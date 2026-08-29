@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import {
@@ -72,7 +73,7 @@
 
 	async function load() {
 		if (!auth.isAuthenticated) {
-			await goto('/auth/login?next=/settings/my-validator-applications');
+			await goto(resolve('/auth/login?next=/settings/my-validator-applications'));
 			return;
 		}
 		view = { status: 'loading' };

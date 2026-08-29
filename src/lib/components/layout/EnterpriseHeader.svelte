@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { auth } from '$lib/stores/auth.svelte';
 	import { i18n } from '$lib/i18n';
 	import { theme } from '$lib/stores/theme.svelte';
@@ -58,7 +59,7 @@
 >
 	<!-- Left: Skilluv logo + enterprise workspace switcher -->
 	<div class="flex items-center gap-3">
-		<a href="/enterprise/dashboard" class="flex items-center gap-2 text-lg font-black tracking-tight">
+		<a href={resolve('/enterprise/dashboard')} class="flex items-center gap-2 text-lg font-black tracking-tight">
 			<BrandLogo variant="mark" size={24} />
 			<span>
 				<span class="text-accent">Skill</span><span class="text-text-primary">uv</span>
@@ -143,7 +144,7 @@
 
 		<!-- Notifications -->
 		<a
-			href="/notifications"
+			href={resolve('/notifications')}
 			class="relative flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
 			aria-label="Notifications"
 		>
@@ -176,7 +177,7 @@
 					class="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-surface-elevated p-1.5 shadow-lg"
 				>
 					<a
-						href="/enterprise/settings/security"
+						href={resolve('/enterprise/settings/security')}
 						class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
 					>
 						<Settings size={14} strokeWidth={2} />

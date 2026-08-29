@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { walletApi } from '$lib/api/wallet';
@@ -20,7 +21,7 @@
 			loading = false;
 		}
 		if (verified) {
-			setTimeout(() => goto('/wallet'), 2000);
+			setTimeout(() => goto(resolve('/wallet')), 2000);
 		}
 	});
 </script>

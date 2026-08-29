@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
@@ -390,7 +391,7 @@
 									</div>
 									<div class="min-w-0 flex-1">
 										<a
-											href="/profile/{entry.username}"
+											href={resolve(`/profile/${entry.username}`)}
 											class="block truncate text-sm font-semibold hover:text-primary"
 										>
 											{entry.display_name}

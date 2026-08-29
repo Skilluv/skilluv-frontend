@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { gsap, ScrollTrigger, scrollReveal } from '$lib/utils/animations';
@@ -115,7 +116,7 @@
 				{@const dim = activeKey !== null && activeKey !== d.key}
 				<li>
 					<a
-						href="/challenges?domain={d.key}"
+						href={resolve(`/challenges?domain=${d.key}`)}
 						data-testid="discipline-name"
 						data-reveal
 						onmouseenter={() => (activeKey = d.key)}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import {
@@ -178,7 +179,7 @@
 					{i18n.t('p26.verify.contributor')}
 				</h2>
 				<a
-					href={`/profile/${valid.challenger.username}`}
+					href={resolve(`/profile/${valid.challenger.username}`)}
 					class="flex items-center gap-3 rounded-xl p-2 -m-2 hover:bg-surface-overlay transition-colors"
 				>
 					{#if valid.challenger.avatar_url}
@@ -206,7 +207,7 @@
 					{i18n.t('p26.verify.validatedBy')}
 				</h2>
 				<a
-					href={`/profile/${valid.validator.username}`}
+					href={resolve(`/profile/${valid.validator.username}`)}
 					class="flex items-center gap-3 rounded-xl p-2 -m-2 hover:bg-surface-overlay transition-colors"
 				>
 					{#if valid.validator.avatar_url}

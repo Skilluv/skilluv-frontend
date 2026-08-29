@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { validationApi, type ValidationQueueItem } from '$api/validation';
@@ -53,7 +54,7 @@
 	async function load() {
 		view = { status: 'loading' };
 		if (!auth.isAuthenticated) {
-			await goto('/auth/login?next=/validations/queue');
+			await goto(resolve('/auth/login?next=/validations/queue'));
 			return;
 		}
 		try {
@@ -170,7 +171,7 @@
 				<article class="flex flex-col gap-3 rounded-2xl border border-border bg-surface-elevated p-5">
 					<div class="flex items-start justify-between gap-3">
 						<a
-							href={`/slices/${item.slice.id}`}
+							href={resolve(`/slices/${item.slice.id}`)}
 							class="font-heading text-lg font-semibold leading-tight hover:text-primary"
 							style:font-family="'Fraunces Variable', Georgia, serif"
 						>

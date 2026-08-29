@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
@@ -143,7 +144,7 @@
 						<Badge variant={diff.variant} size="sm">{diff.label}</Badge>
 					</div>
 					<h2 class="mb-2 text-lg font-semibold leading-snug group-hover:text-primary transition-colors">
-						<a href="/bounties/{b.id}" class="line-clamp-2">{b.title}</a>
+						<a href={resolve(`/bounties/${b.id}`)} class="line-clamp-2">{b.title}</a>
 					</h2>
 					<p class="mb-4 line-clamp-2 text-sm text-text-muted">{b.description}</p>
 

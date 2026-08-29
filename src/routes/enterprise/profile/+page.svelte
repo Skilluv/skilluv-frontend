@@ -242,7 +242,7 @@
 							<a
 								href={website}
 								target="_blank"
-								rel="noopener"
+								rel="external noopener"
 								class="text-xs text-primary hover:underline font-mono"
 							>
 								{website.replace(/^https?:\/\//, '')}

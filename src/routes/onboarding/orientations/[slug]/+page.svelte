@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { orientationsApi } from '$lib/api/orientations';
@@ -50,7 +51,7 @@
 
 <div class="mx-auto max-w-4xl px-4 py-10">
 	<a
-		href="/onboarding/orientations"
+		href={resolve('/onboarding/orientations')}
 		class="mb-6 inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-text-primary"
 	>
 		<ChevronLeft size={16} strokeWidth={2} />
@@ -163,7 +164,7 @@
 			</section>
 
 			<div class="mt-8 flex items-center justify-end">
-				<Button variant="primary" onclick={() => goto('/onboarding/orientations')}>
+				<Button variant="primary" onclick={() => goto(resolve('/onboarding/orientations'))}>
 					{i18n.t('orientations.detail.pickCta')}
 				</Button>
 			</div>

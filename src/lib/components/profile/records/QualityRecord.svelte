@@ -109,7 +109,7 @@
 										<a
 											href={bug.fix_url}
 											target="_blank"
-											rel="noopener noreferrer nofollow ugc"
+											rel="external noopener noreferrer nofollow ugc"
 											class="ml-auto inline-flex items-center gap-1 hover:text-text-primary"
 										>
 											{i18n.t('domainRecord.quality.seeTheFix')}
@@ -150,7 +150,7 @@
 									<a
 										href={run.report_url}
 										target="_blank"
-										rel="noopener noreferrer nofollow ugc"
+										rel="external noopener noreferrer nofollow ugc"
 										class="ml-auto text-xs text-text-muted hover:text-text-primary"
 									>
 										{i18n.t('domainRecord.openReport')}

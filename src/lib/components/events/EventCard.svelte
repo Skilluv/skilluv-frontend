@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import type { SkilluvEvent } from '$lib/api/badge_events';
 	import Badge from '$lib/components/ui/Badge.svelte';
 	import { i18n } from '$lib/i18n';
@@ -35,7 +36,7 @@
 </script>
 
 <a
-	href="/events/{event.slug}"
+	href={resolve(`/events/${event.slug}`)}
 	class="group flex h-full flex-col rounded-2xl border border-border bg-surface-elevated p-5 transition-colors hover:border-accent"
 >
 	<header class="mb-3 flex items-start justify-between gap-2">

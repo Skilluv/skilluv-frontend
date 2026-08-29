@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { enterpriseApi } from '$api/enterprise';
 	import { SkilluError } from '$api/client';
 	import Badge from '$components/ui/Badge.svelte';
@@ -76,7 +77,7 @@
 					<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-overlay font-bold text-text-muted">
 						{bk.display_name.charAt(0).toUpperCase()}
 					</div>
-					<a href="/profile/{bk.username}" class="flex-1">
+					<a href={resolve(`/profile/${bk.username}`)} class="flex-1">
 						<p class="font-medium hover:text-accent">{bk.display_name}</p>
 						<div class="flex items-center gap-2 text-xs">
 							<span class="capitalize {titleColors[bk.title]}">{bk.title}</span>

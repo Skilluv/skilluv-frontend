@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
@@ -36,7 +37,7 @@
 
 	onMount(() => {
 		if (!auth.isAuthenticated) {
-			goto('/auth/login?redirect=/diplomas/my');
+			goto(resolve('/auth/login?redirect=/diplomas/my'));
 			return;
 		}
 		void load();
@@ -113,7 +114,7 @@
 									{i18n.locale === 'fr' ? 'Copier le lien' : 'Copy link'}
 								</button>
 								<a
-									href={`/diplomas/verify/${d.verification_code}`}
+									href={resolve(`/diplomas/verify/${d.verification_code}`)}
 									class="text-xs underline hover:text-primary"
 								>
 									{i18n.locale === 'fr' ? 'Aperçu →' : 'Preview →'}

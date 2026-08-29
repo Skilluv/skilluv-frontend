@@ -14,6 +14,7 @@
 	 * `top_severity` arrives as a number, 5 for critical down to 1. It is a
 	 * sort key, not a label, and is turned back into a word rather than printed.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { ExternalLink, Trophy } from '@lucide/svelte';
 	import { securityApi, severityFromRank } from '$api/security';
@@ -155,7 +156,7 @@
 								<div class="min-w-0">
 									{#if named}
 										<a
-											href="/profile/{row.reporter.username}"
+											href={resolve(`/profile/${row.reporter.username}`)}
 											class="truncate text-sm font-bold text-text hover:underline"
 										>
 											{row.reporter.display_name ?? row.reporter.username}
@@ -200,7 +201,7 @@
 					{#each board.recent_findings as finding (finding.id)}
 						<li class="rounded-xl border border-border bg-surface-elevated p-4">
 							<div class="flex flex-wrap items-start justify-between gap-2">
-								<a href="/security/findings/{finding.id}" class="text-sm font-bold text-text hover:underline">
+								<a href={resolve(`/security/findings/${finding.id}`)} class="text-sm font-bold text-text hover:underline">
 									{finding.title}
 								</a>
 								<Badge size="sm">{severityLabel(finding.severity_tier)}</Badge>
@@ -212,7 +213,7 @@
 									<a
 										href={finding.writeup_url}
 										target="_blank"
-										rel="noopener noreferrer"
+										rel="external noopener noreferrer"
 										class="inline-flex items-center gap-1 text-accent hover:underline"
 									>
 										<ExternalLink size={12} />

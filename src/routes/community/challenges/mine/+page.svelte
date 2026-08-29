@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { communityApi } from '$api/community';
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
@@ -38,7 +39,7 @@
 <div class="mx-auto max-w-3xl px-4 py-12 sm:py-16">
 	<div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 		<div>
-			<a href="/community/challenges" class="mb-3 inline-block text-sm text-text-muted hover:text-text-primary">← {i18n.t('common.nav.community')}</a>
+			<a href={resolve('/community/challenges')} class="mb-3 inline-block text-sm text-text-muted hover:text-text-primary">← {i18n.t('common.nav.community')}</a>
 			<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
 				{i18n.t('community.mine.title')}<span class="text-accent">.</span>
 			</h1>

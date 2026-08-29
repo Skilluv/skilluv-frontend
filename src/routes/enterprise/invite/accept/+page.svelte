@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
@@ -40,7 +41,7 @@
 		try {
 			await enterpriseApi.acceptInvite(token);
 			phase = 'done';
-			setTimeout(() => goto('/enterprise/dashboard'), 1500);
+			setTimeout(() => goto(resolve('/enterprise/dashboard')), 1500);
 		} catch (e) {
 			// The backend refuses (403) when the logged-in user's email doesn't
 			// match the invited email. That's a very specific UX problem — the
@@ -64,7 +65,9 @@
 			// Best-effort — the auth store already clears local state on failure.
 		}
 		goto(
-			`/auth/login?redirect=${encodeURIComponent('/enterprise/invite/accept?token=' + token)}`
+			resolve(
+				`/auth/login?redirect=${encodeURIComponent('/enterprise/invite/accept?token=' + token)}`
+			)
 		);
 	}
 </script>
@@ -75,7 +78,7 @@
 
 <div class="flex min-h-[100vh] flex-col items-center justify-center px-4 py-12">
 	<!-- Logo — même style que /auth/+layout.svelte -->
-	<a href="/" class="mb-10 flex items-center gap-2 text-3xl font-black tracking-tight">
+	<a href={resolve('/')} class="mb-10 flex items-center gap-2 text-3xl font-black tracking-tight">
 		<BrandLogo variant="mark" size={32} />
 		<span><span class="text-accent">Skill</span><span class="text-text-primary">uv</span></span>
 	</a>

@@ -110,7 +110,7 @@
 										<a
 											href={objective.evidence_url}
 											target="_blank"
-											rel="noopener noreferrer nofollow ugc"
+											rel="external noopener noreferrer nofollow ugc"
 											class="ml-auto inline-flex items-center gap-1 text-xs text-text-muted hover:text-text-primary"
 										>
 											{i18n.t('domainRecord.ops.evidence')}

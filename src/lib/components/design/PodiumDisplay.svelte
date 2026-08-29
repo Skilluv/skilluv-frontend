@@ -11,6 +11,7 @@
 	 * and falls back to their id — dropping the row would promote whoever came
 	 * second into a place they did not win.
 	 */
+	import { resolve } from '$app/paths';
 	import { Trophy } from '@lucide/svelte';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
@@ -62,7 +63,7 @@
 				{/if}
 				{#if entry.username}
 					<a
-						href="/profile/{entry.username}"
+						href={resolve(`/profile/${entry.username}`)}
 						class="max-w-full truncate text-sm font-bold text-text hover:underline"
 						data-testid="podium-name"
 					>

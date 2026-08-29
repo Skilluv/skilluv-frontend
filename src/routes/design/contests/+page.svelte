@@ -11,6 +11,7 @@
 	 * were assumed absent when this page was written; they were not, they were
 	 * simply unconsumed.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { listDesignContests } from '$lib/api/design';
 	import { SkilluError } from '$api/client';
@@ -76,21 +77,21 @@
 		     else on the site links to them. -->
 		<div class="mt-3 flex flex-wrap gap-4 text-sm">
 			<a
-				href="/design/awards"
+				href={resolve('/design/awards')}
 				class="text-accent underline-offset-4 hover:underline"
 				data-testid="design-awards-link"
 			>
 				{i18n.t('designAwards.title')}
 			</a>
 			<a
-				href="/design/series"
+				href={resolve('/design/series')}
 				class="text-accent underline-offset-4 hover:underline"
 				data-testid="design-series-link"
 			>
 				{i18n.t('designSeries.title')}
 			</a>
 			<a
-				href="/design/toolkit"
+				href={resolve('/design/toolkit')}
 				class="text-accent underline-offset-4 hover:underline"
 				data-testid="design-toolkit-link"
 			>
@@ -137,7 +138,7 @@
 
 	<p class="mt-8 border-t border-border pt-6 text-sm text-text-muted">
 		{i18n.t('designContests.awardsNotice')}
-		<a href="/design/awards" class="ml-1 text-accent underline-offset-4 hover:underline">
+		<a href={resolve('/design/awards')} class="ml-1 text-accent underline-offset-4 hover:underline">
 			{i18n.t('designAwards.title')}
 		</a>
 	</p>

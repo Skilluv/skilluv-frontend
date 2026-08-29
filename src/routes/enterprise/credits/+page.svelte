@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
@@ -155,7 +156,7 @@
 
 	onMount(() => {
 		if (!auth.isAuthenticated) {
-			goto('/auth/login?redirect=/enterprise/credits');
+			goto(resolve('/auth/login?redirect=/enterprise/credits'));
 			return;
 		}
 		void loadAll();
@@ -169,7 +170,7 @@
 <div class="mx-auto max-w-6xl px-4 py-10 sm:py-14">
 	<!-- Breadcrumb -->
 	<nav class="mb-6 flex items-center gap-2 text-sm text-text-muted">
-		<a href="/enterprise/dashboard" class="hover:text-text-primary">
+		<a href={resolve('/enterprise/dashboard')} class="hover:text-text-primary">
 			{i18n.locale === 'fr' ? 'Espace entreprise' : 'Enterprise space'}
 		</a>
 		<span>›</span>
@@ -189,7 +190,7 @@
 					: 'Each credit = one talent reached. Automatic 50% refund if declined or no reply after 30 days.'}
 			</p>
 		</div>
-		<a href="/enterprise/credits/invoices" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+		<a href={resolve('/enterprise/credits/invoices')} class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
 			{i18n.locale === 'fr' ? 'Factures' : 'Invoices'}
 			<ArrowRight size={14} strokeWidth={2} />
 		</a>
@@ -250,7 +251,7 @@
 						{i18n.locale === 'fr' ? 'Ajoutez des crédits.' : 'Add credits.'}
 					</h2>
 				</div>
-				<a href="/pricing" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+				<a href={resolve('/pricing')} class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
 					{i18n.locale === 'fr' ? 'Voir tous les tarifs' : 'See all pricing'}
 					<ArrowRight size={14} strokeWidth={2} />
 				</a>
@@ -359,7 +360,7 @@
 					{i18n.locale === 'fr' ? 'Vos mouvements.' : 'Your movements.'}
 				</h2>
 			</div>
-			<a href="/enterprise/credits/invoices" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+			<a href={resolve('/enterprise/credits/invoices')} class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
 				{i18n.locale === 'fr' ? 'Voir les factures' : 'See invoices'}
 				<ArrowRight size={14} strokeWidth={2} />
 			</a>

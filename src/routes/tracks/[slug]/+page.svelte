@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { tracksApi, type Track, type UserTrack } from '$api/tracks';
@@ -79,7 +80,7 @@
 
 <div class="mx-auto max-w-3xl px-4 py-8">
 	<a
-		href="/tracks"
+		href={resolve('/tracks')}
 		class="mb-6 inline-flex items-center gap-1 text-sm text-text-muted transition-colors hover:text-text-primary"
 	>
 		<ArrowLeft size={14} strokeWidth={2} />

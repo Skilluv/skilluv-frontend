@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
@@ -62,7 +63,7 @@
 		starting = true;
 		try {
 			await challengesApi.start(challenge.id);
-			goto(`/challenges/${challenge.id}/sandbox`);
+			goto(resolve(`/challenges/${challenge.id}/sandbox`));
 		} catch (err) {
 			if (err instanceof SkilluError) error = err.message;
 			else error = i18n.t('errors.generic');
@@ -118,7 +119,7 @@
 	{:else if challenge}
 		<!-- Back link -->
 		<div class="mb-6">
-			<a href="/challenges" class="text-sm text-text-muted transition-colors duration-200 hover:text-text-primary">
+			<a href={resolve('/challenges')} class="text-sm text-text-muted transition-colors duration-200 hover:text-text-primary">
 				{i18n.t('challenges.detail.backToCatalogue')}
 			</a>
 		</div>
@@ -256,7 +257,7 @@
 							<a
 								href={challenge.security_target_url}
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="external noopener noreferrer"
 								class="break-all text-accent hover:underline"
 								data-testid="ctf-target-url"
 							>

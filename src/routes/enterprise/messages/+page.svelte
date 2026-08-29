@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { contactApi } from '$api/contact';
 	import { SkilluError } from '$api/client';
 	import Skeleton from '$components/ui/Skeleton.svelte';
@@ -62,7 +63,7 @@
 		<div class="flex flex-col gap-2">
 			{#each conversations as conv (conv.id)}
 				<a
-					href="/enterprise/messages/{conv.id}"
+					href={resolve(`/enterprise/messages/${conv.id}`)}
 					class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4 transition-all hover:border-primary/30
 						{conv.unread_count > 0 ? 'border-l-4 border-l-accent' : ''}"
 				>

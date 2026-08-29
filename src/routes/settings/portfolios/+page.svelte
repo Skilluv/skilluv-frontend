@@ -249,7 +249,7 @@
 								<a
 									href={row.profile_url}
 									target="_blank"
-									rel="noopener noreferrer"
+									rel="external noopener noreferrer"
 									class="inline-flex items-center gap-1 text-sm text-accent hover:underline"
 								>
 									{row.handle}

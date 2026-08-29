@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { SkilluError } from '$lib/api/client';
@@ -141,7 +142,7 @@
 
 <div class="mx-auto max-w-3xl px-4 py-8" data-testid="notification-preferences-page">
 	<a
-		href="/settings"
+		href={resolve('/settings')}
 		class="mb-6 inline-flex items-center gap-1 text-sm text-text-muted transition-colors hover:text-text-primary"
 	>
 		<ArrowLeft size={14} strokeWidth={2} />

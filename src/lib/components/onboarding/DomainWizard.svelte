@@ -162,6 +162,9 @@
 		try {
 			await domainProfileApi.put(domain, filledAnswers());
 			toast.success(i18n.t('domainWizard.savedToast'));
+			// doneHref is a prop: each domain onboarding page owns where its
+			// wizard finishes, and resolves it before passing it in.
+			// eslint-disable-next-line svelte/no-navigation-without-resolve
 			await goto(doneHref);
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
@@ -174,6 +177,9 @@
 		skipping = true;
 		try {
 			await domainProfileApi.skip(domain);
+			// doneHref is a prop: each domain onboarding page owns where its
+			// wizard finishes, and resolves it before passing it in.
+			// eslint-disable-next-line svelte/no-navigation-without-resolve
 			await goto(doneHref);
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));

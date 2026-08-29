@@ -16,6 +16,7 @@
 	 * a dead button: `redeem_download` answers storage keys, not URLs. That is
 	 * SKI-330.
 	 */
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { ArrowLeft, Download, Star } from '@lucide/svelte';
 	import { marketplaceApi } from '$lib/api/marketplace';
@@ -167,7 +168,7 @@
 
 <div class="mx-auto max-w-4xl px-4 py-8">
 	<a
-		href="/marketplace"
+		href={resolve('/marketplace')}
 		class="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-text-primary"
 	>
 		<ArrowLeft size={14} strokeWidth={2} />

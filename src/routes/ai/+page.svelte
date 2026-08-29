@@ -14,6 +14,7 @@
 	 * to be read by somebody deciding whether this platform produces anything
 	 * real, and a pending submission answers that wrongly.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { Download, ExternalLink, Heart, Timer } from '@lucide/svelte';
 	import { aiDomainApi } from '$lib/api/ai_domain';
@@ -172,14 +173,14 @@
 						</div>
 
 						<a
-							href="/slices/{artifact.slice_id}"
+							href={resolve(`/slices/${artifact.slice_id}`)}
 							class="text-sm font-semibold text-text-primary hover:text-accent"
 						>
 							{artifact.title}
 						</a>
 
 						<p class="mt-1 text-xs text-text-muted">
-							<a href="/profile/{artifact.author_username}" class="hover:text-text-primary">
+							<a href={resolve(`/profile/${artifact.author_username}`)} class="hover:text-text-primary">
 								{artifact.author_username}
 							</a>
 							{#if artifact.orientation_slug}
@@ -219,7 +220,7 @@
 								<a
 									href={artifact.hosting_url}
 									target="_blank"
-									rel="noopener noreferrer nofollow ugc"
+									rel="external noopener noreferrer nofollow ugc"
 									class="ml-auto inline-flex items-center gap-1 hover:text-text-primary"
 								>
 									{i18n.t('aiDomain.openHub')}
@@ -273,7 +274,7 @@
 						<a
 							href={competition.url}
 							target="_blank"
-							rel="noopener noreferrer nofollow ugc"
+							rel="external noopener noreferrer nofollow ugc"
 							class="inline-flex items-center gap-1.5 text-sm font-semibold text-text-primary hover:text-accent"
 						>
 							{competition.title}

@@ -7,6 +7,7 @@
 	 * than a mentoring booking, and the copy says so, since the two would
 	 * otherwise read as the same product.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { Clock } from '@lucide/svelte';
 	import { talentOffersApi } from '$lib/api/talent_offers';
@@ -165,7 +166,7 @@
 					<div class="flex flex-wrap items-start justify-between gap-2">
 						<div class="min-w-0">
 							<a
-								href="/profile/{offer.username}"
+								href={resolve(`/profile/${offer.username}`)}
 								class="text-base font-bold text-text-primary underline-offset-4 hover:underline"
 							>
 								{offer.display_name}

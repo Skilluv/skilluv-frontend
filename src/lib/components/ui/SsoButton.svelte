@@ -27,10 +27,14 @@
 </script>
 
 {#if href}
+	<!-- A pass-through: href is the identity provider's start URL, which is
+	     external and not an app route at all. -->
+	<!-- eslint-disable svelte/no-navigation-without-resolve -->
 	<a {href} class={cls}>
 		<BrandIcon name={provider} size={16} />
 		{displayLabel}
 	</a>
+	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 {:else}
 	<button type="button" {onclick} class={cls}>
 		<BrandIcon name={provider} size={16} />

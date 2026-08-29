@@ -149,7 +149,7 @@
 									<a
 										href={o.evidence_url}
 										target="_blank"
-										rel="noopener noreferrer nofollow ugc"
+										rel="external noopener noreferrer nofollow ugc"
 										class="ml-auto text-accent hover:underline"
 									>
 										{i18n.t('ops.evidence')}

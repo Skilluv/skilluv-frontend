@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { orientationsApi } from '$lib/api/orientations';
 	import { auth } from '$lib/stores/auth.svelte';
@@ -80,7 +81,7 @@
 				{i18n.t('orientations.catalog.savedSubtitle')}
 			</p>
 			<div class="mt-6">
-				<Button variant="primary" onclick={() => goto('/challenges/onboarding')}>
+				<Button variant="primary" onclick={() => goto(resolve('/challenges/onboarding'))}>
 					{i18n.t('orientations.catalog.continueCta')}
 				</Button>
 			</div>

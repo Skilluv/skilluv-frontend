@@ -265,7 +265,7 @@
 						<a
 							href={moodboard}
 							target="_blank"
-							rel="noopener noreferrer"
+							rel="external noopener noreferrer"
 							class="mt-4 inline-flex items-center gap-1.5 text-sm text-accent underline-offset-4 hover:underline"
 						>
 							{i18n.t('designContests.moodboardCta')}

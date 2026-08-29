@@ -12,6 +12,7 @@
 	 * shape, and a domain somebody has never worked in answers 404, which is
 	 * how the section knows not to render.
 	 */
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 	import CraftScoreBlock from './CraftScoreBlock.svelte';
 	import type { CraftScoreValue, DomainAttestation, DomainOrientation } from '$types';
@@ -81,7 +82,7 @@
 							<!-- Not `/verify/[hash]`: that route resolves a 64-hex slice
 							     attestation hash, and this is a short verification code. -->
 							<a
-								href="/attestations/verify/{attestation.verification_code}"
+								href={resolve(`/attestations/verify/${attestation.verification_code}`)}
 								class="text-xs text-text-muted underline-offset-4 hover:text-text-primary hover:underline"
 							>
 								{i18n.t('craftProfile.verifyCta')}

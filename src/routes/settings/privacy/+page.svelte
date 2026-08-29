@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { privacyApi } from '$lib/api/privacy';
@@ -89,7 +90,7 @@
 			);
 			deleteModalOpen = false;
 			await auth.logout();
-			await goto('/');
+			await goto(resolve('/'));
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
 		} finally {

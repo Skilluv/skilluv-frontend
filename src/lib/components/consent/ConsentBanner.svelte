@@ -9,6 +9,7 @@
 	 * - "Personnaliser" ouvre ConsentModal.
 	 * - Réutilise Button (design system v0.2.0).
 	 */
+	import { resolve } from '$app/paths';
 	import Button from '$lib/components/ui/Button.svelte';
 	import ConsentModal from './ConsentModal.svelte';
 	import { consent } from '$lib/stores/consent.svelte';
@@ -59,7 +60,7 @@
 					<p class="mt-1 text-sm text-text-muted">
 						{i18n.t('consent.banner.body')}
 						<a
-							href="/legal/privacy"
+							href={resolve('/legal/privacy')}
 							class="underline decoration-dotted underline-offset-4 hover:text-text-primary"
 						>
 							{i18n.t('consent.banner.privacyLink')}

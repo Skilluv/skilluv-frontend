@@ -1,17 +1,18 @@
 <script lang="ts">
+	import type { ResolvedPathname } from '$app/types';
 	import { onMount, type Component } from 'svelte';
 	import type { Snippet } from 'svelte';
 	import { page } from '$app/stores';
 
-	interface NavItem {
-		href: string;
+	export interface NavItem {
+		href: ResolvedPathname;
 		icon: Component;
 		label: string;
 		description?: string;
 		badge?: string;
 	}
 
-	interface NavGroup {
+	export interface NavGroup {
 		title?: string;
 		items: NavItem[];
 	}
@@ -106,6 +107,10 @@
 					<div class="space-y-0.5">
 						{#each group.items as item (item.href)}
 							{@const isCurrentPage = item.href === activeHref}
+							<!-- Resolved where the literal is written, so the route is checked
+							     against the app's real routes there. The base path is applied
+							     exactly once and must not be applied again here. -->
+							<!-- eslint-disable svelte/no-navigation-without-resolve -->
 							<a
 								href={item.href}
 								onclick={close}
@@ -129,6 +134,7 @@
 									{/if}
 								</div>
 							</a>
+							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 						{/each}
 					</div>
 					{#if gi < groups.length - 1}

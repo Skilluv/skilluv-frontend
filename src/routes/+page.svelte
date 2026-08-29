@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { auth } from '$lib/stores/auth.svelte';
 	import { i18n } from '$lib/i18n';
 	import JsonLd from '$lib/components/seo/JsonLd.svelte';
@@ -50,7 +51,7 @@
 
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			<a
-				href="/challenges"
+				href={resolve('/challenges')}
 				class="group rounded-2xl border border-border bg-surface-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30"
 			>
 				<div class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent mb-4 transition-transform duration-300 group-hover:scale-110">
@@ -63,7 +64,7 @@
 			</a>
 
 			<a
-				href="/profile/{auth.user?.username}"
+				href={resolve(`/profile/${auth.user?.username}`)}
 				class="group rounded-2xl border border-border bg-surface-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/30"
 			>
 				<div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mb-4 transition-transform duration-300 group-hover:scale-110">
@@ -76,7 +77,7 @@
 			</a>
 
 			<a
-				href="/leaderboards"
+				href={resolve('/leaderboards')}
 				class="group rounded-2xl border border-border bg-surface-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-warning/30"
 			>
 				<div class="flex h-12 w-12 items-center justify-center rounded-xl bg-warning/10 text-warning mb-4 transition-transform duration-300 group-hover:scale-110">
@@ -92,15 +93,20 @@
 		<!-- Community shortcuts -->
 		<div class="mt-8 grid gap-3 sm:grid-cols-4">
 			{#each [
-				{ href: '/feed', icon: '◎', fr: 'Fil', en: 'Feed' },
-				{ href: '/forum', icon: '◈', fr: 'Forum', en: 'Forum' },
-				{ href: '/guilds', icon: '⬢', fr: 'Guildes', en: 'Guilds' },
-				{ href: '/messages', icon: '◎', fr: 'Messages', en: 'Messages' }
+				{ href: resolve('/feed'), icon: '◎', fr: 'Fil', en: 'Feed' },
+				{ href: resolve('/forum'), icon: '◈', fr: 'Forum', en: 'Forum' },
+				{ href: resolve('/guilds'), icon: '⬢', fr: 'Guildes', en: 'Guilds' },
+				{ href: resolve('/messages'), icon: '◎', fr: 'Messages', en: 'Messages' }
 			] as short (short.href)}
+				<!-- Resolved where the literal is written, so the route is checked
+				     against the app's real routes there. The base path is applied
+				     exactly once and must not be applied again here. -->
+				<!-- eslint-disable svelte/no-navigation-without-resolve -->
 				<a href={short.href} class="flex items-center gap-3 rounded-xl border border-border bg-surface-elevated p-4 hover:border-primary/40 hover:-translate-y-0.5 transition-all">
 					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">{short.icon}</div>
 					<span class="font-semibold">{i18n.locale === 'fr' ? short.fr : short.en}</span>
 				</a>
+				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			{/each}
 		</div>
 

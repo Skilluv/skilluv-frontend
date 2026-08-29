@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
@@ -35,7 +36,7 @@
 
 	onMount(() => {
 		if (!auth.isAuthenticated) {
-			goto('/auth/login?redirect=/messages');
+			goto(resolve('/auth/login?redirect=/messages'));
 			return;
 		}
 		void load();
@@ -74,7 +75,7 @@
 		<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
 			{#each convs as c (c.id)}
 				<a
-					href={`/messages/${c.id}`}
+					href={resolve(`/messages/${c.id}`)}
 					class="flex items-center gap-4 p-4 hover:bg-surface-overlay transition-colors"
 				>
 					<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-lg font-black text-primary relative">

@@ -167,7 +167,7 @@
 					<a
 						href={row.url}
 						target="_blank"
-						rel="noopener noreferrer nofollow"
+						rel="external noopener noreferrer nofollow"
 						class="mt-1 inline-flex items-center gap-1.5 text-sm text-accent hover:underline"
 					>
 						<ExternalLink size={13} strokeWidth={2} />

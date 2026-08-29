@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { auth } from '$lib/stores/auth.svelte';
 	import { i18n } from '$lib/i18n';
@@ -15,12 +16,16 @@
 >
 	<div class="flex items-center justify-around py-2">
 		{#each [
-			{ href: '/', label: i18n.t('common.nav.home'), icon: 'home' },
-			{ href: '/challenges', label: i18n.t('common.nav.challenges'), icon: 'challenge' },
+			{ href: resolve('/'), label: i18n.t('common.nav.home'), icon: 'home' },
+			{ href: resolve('/challenges'), label: i18n.t('common.nav.challenges'), icon: 'challenge' },
 			{ href: `/profile/${auth.user?.username}`, label: i18n.t('common.nav.profile'), icon: 'profile' },
-			{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards'), icon: 'leaderboard' }
+			{ href: resolve('/leaderboards'), label: i18n.t('common.nav.leaderboards'), icon: 'leaderboard' }
 		] as item (item.href)}
 			{@const active = isActive(item.href, $page.url.pathname)}
+			<!-- Resolved where the literal is written, so the route is checked
+			     against the app's real routes there. The base path is applied
+			     exactly once and must not be applied again here. -->
+			<!-- eslint-disable svelte/no-navigation-without-resolve -->
 			<a
 				href={item.href}
 				class="flex flex-col items-center gap-0.5 px-3 py-1 text-xs transition-colors {active
@@ -48,6 +53,7 @@
 				{/if}
 				<span>{item.label}</span>
 			</a>
+			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		{/each}
 	</div>
 </nav>

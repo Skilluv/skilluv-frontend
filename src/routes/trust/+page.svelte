@@ -160,7 +160,7 @@
 							<a
 								href={path}
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="external noopener noreferrer"
 								class="inline-flex items-center gap-1.5 text-sm text-accent hover:underline"
 							>
 								<ExternalLink size={13} />

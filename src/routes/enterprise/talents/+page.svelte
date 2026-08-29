@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
@@ -602,7 +603,7 @@
 				<div class="grid gap-3 xl:grid-cols-2">
 					{#each talents as t (t.username)}
 						<a
-							href={`/profile/${t.username}`}
+							href={resolve(`/profile/${t.username}`)}
 							class="group flex flex-col gap-3 rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40"
 						>
 							<!-- Header — avatar + name + status -->
