@@ -313,11 +313,16 @@ describe('enterpriseTypesApi', () => {
 // --- P17.6 badge events ---
 
 describe('badgeEventsApi', () => {
-	it('list() reads /badge-events', async () => {
-		fetchMock.mockResolvedValue(ok([]));
+	// These three used to assert `/badge-events/**`, which no endpoint has ever
+	// served. They passed for as long as the feature was broken, because they
+	// checked what the client did rather than what the server answers — which
+	// is the failure mode a path test exists to prevent and the reason these
+	// now name the routes `routes::events` registers (SKI-352).
+	it('list() reads /events, the route that exists', async () => {
+		fetchMock.mockResolvedValue(ok({ events: [] }));
 		const { badgeEventsApi } = await import('../../src/lib/api/badge_events');
 		await badgeEventsApi.list();
-		expect(fetchMock).toHaveBeenCalledWith('/api/badge-events', expect.anything());
+		expect(fetchMock).toHaveBeenCalledWith('/api/events', expect.anything());
 	});
 
 	it('join() posts to the slug join route', async () => {
@@ -325,9 +330,16 @@ describe('badgeEventsApi', () => {
 		const { badgeEventsApi } = await import('../../src/lib/api/badge_events');
 		await badgeEventsApi.join('skilluv-fest-2026');
 		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/badge-events/skilluv-fest-2026/join',
+			'/api/events/skilluv-fest-2026/join',
 			expect.objectContaining({ method: 'POST' })
 		);
+	});
+
+	it('myEvents() reads /users/me/events', async () => {
+		fetchMock.mockResolvedValue(ok({ events: [] }));
+		const { badgeEventsApi } = await import('../../src/lib/api/badge_events');
+		await badgeEventsApi.myEvents();
+		expect(fetchMock).toHaveBeenCalledWith('/api/users/me/events', expect.anything());
 	});
 });
 
