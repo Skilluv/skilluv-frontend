@@ -24,6 +24,16 @@ export interface RateItemRequest {
  * download token into something a browser can fetch.
  */
 export const marketplaceApi = {
+	/**
+	 * Ask for an upload slot.
+	 *
+	 * The file goes to object storage, not through this API — so this returns
+	 * where to put it rather than taking the bytes.
+	 */
+	requestUpload(body: Record<string, unknown>) {
+		return api.post<ApiResponse<Record<string, unknown>>>('/marketplace/uploads', body);
+	},
+
 	/** Published items only. `domain` narrows to one discipline. */
 	browse(domain?: string) {
 		return api.get<ApiResponse<{ items: MarketplaceItem[] }>>('/marketplace/items', { domain });
@@ -53,8 +63,13 @@ export const marketplaceApi = {
 	/**
 	 * Redeem a download token.
 	 *
-	 * Takes the path the purchase handed back, which already carries `/api`,
-	 * so the prefix is stripped before it goes through the client.
+	 * Takes the path the purchase handed back — `/api/marketplace/downloads/{token}`
+	 * — which already carries `/api`, so the prefix is stripped before it goes
+	 * through the client.
+	 *
+	 * Server-provided rather than built here on purpose: the token is
+	 * single-purpose and belongs to one purchase, and a client assembling the
+	 * URL would be guessing at something it was handed.
 	 */
 	download(downloadUrl: string) {
 		return api.get<ApiResponse<MarketplaceDownload>>(downloadUrl.replace(/^\/api/, ''));

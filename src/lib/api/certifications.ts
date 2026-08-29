@@ -74,6 +74,30 @@ export interface MyDiploma {
 // --- API ---
 
 export const certificationsApi = {
+	/** The certification programmes on offer. */
+	programs() {
+		return api.get<ApiResponse<{ programs: unknown[] }>>('/certifications/programs');
+	},
+
+	/** Certifications currently live — held, unexpired, unrevoked. */
+	live() {
+		return api.get<ApiResponse<{ certifications: unknown[] }>>('/certifications/live');
+	},
+
+	/**
+	 * Ask to be certified.
+	 *
+	 * Paying does not certify — an audit decides, and a failure leaves the
+	 * money spent. The backend says so in the response, and any surface has to
+	 * repeat it before the payment rather than after the verdict.
+	 */
+	requestCertification(body: Record<string, unknown>) {
+		return api.post<ApiResponse<{ note?: string; [k: string]: unknown }>>(
+			'/certifications/request',
+			body
+		);
+	},
+
 	list() {
 		return api.get<ApiResponse<{ certifications: Certification[] }>>('/certifications');
 	},

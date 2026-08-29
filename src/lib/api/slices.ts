@@ -175,6 +175,61 @@ export interface SlicesListParams {
 // --- API ---
 
 export const slicesApi = {
+	/**
+	 * Claim a slice for a team rather than for yourself.
+	 *
+	 * Distinct from `claim`, and the distinction is who the attestation names.
+	 * A slice claimed as a team credits the team; offering one button for both
+	 * would let somebody take individual credit for shared work by accident.
+	 */
+	claimAsTeam(sliceId: string, teamId: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/slices/${encodeURIComponent(sliceId)}/claim-as-team`,
+			{ team_id: teamId }
+		);
+	},
+
+	/** Give it back, on the team's behalf. */
+	unclaimAsTeam(sliceId: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/slices/${encodeURIComponent(sliceId)}/unclaim-team`,
+			{}
+		);
+	},
+
+	/**
+	 * A steward's inbox for one project: what is waiting on their word.
+	 *
+	 * Stewardship is per project, so this is addressed by project rather than
+	 * by person — somebody can steward one repository and not another.
+	 */
+	stewardInbox(projectId: string) {
+		return api.get<ApiResponse<{ slices: unknown[] }>>(
+			`/stewards/${encodeURIComponent(projectId)}/inbox`
+		);
+	},
+
+	/** Publish a slice, as its steward. */
+	publish(sliceId: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/slices/${encodeURIComponent(sliceId)}/publish`,
+			{}
+		);
+	},
+
+	/**
+	 * Refuse one, with a reason.
+	 *
+	 * The reason is the whole of it: a slice rejected without one tells its
+	 * author nothing they can act on, and they wrote it in good faith.
+	 */
+	reject(sliceId: string, reason?: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/slices/${encodeURIComponent(sliceId)}/reject`,
+			reason ? { reason } : {}
+		);
+	},
+
 	list(params?: SlicesListParams) {
 		return api.get<ApiResponse<{ slices: Slice[]; page: number; per_page: number }>>(
 			'/slices',

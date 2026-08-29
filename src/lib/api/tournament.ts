@@ -72,6 +72,52 @@ export const tournamentApi = {
 		>('/tournaments/feed');
 	},
 
+	/** One season, by slug. */
+	season(slug: string) {
+		return api.get<ApiResponse<Season>>(`/seasons/${encodeURIComponent(slug)}`);
+	},
+
+	/**
+	 * Make a season the running one.
+	 *
+	 * There is one active season at a time, so activating a season ends the
+	 * previous one. That is not obvious from the verb, and any surface offering
+	 * it has to say so before the click rather than after.
+	 */
+	activateSeason(slug: string) {
+		return api.post<ApiResponse<Season>>(
+			`/seasons/${encodeURIComponent(slug)}/activate`,
+			{}
+		);
+	},
+
+	/** Who stewards a project. */
+	projectStewards(projectId: string) {
+		return api.get<ApiResponse<{ stewards: unknown[] }>>(
+			`/projects/${encodeURIComponent(projectId)}/stewards`
+		);
+	},
+
+	addSteward(projectId: string, body: Record<string, unknown>) {
+		return api.post<ApiResponse<unknown>>(
+			`/projects/${encodeURIComponent(projectId)}/stewards`,
+			body
+		);
+	},
+
+	/**
+	 * Remove one, by user and role.
+	 *
+	 * Keyed on the role as well as the person: somebody can steward a project
+	 * in two capacities, and dropping both when only one was meant would take
+	 * away a permission nobody asked to remove.
+	 */
+	removeSteward(projectId: string, userId: string, role: string) {
+		return api.delete<void>(
+			`/projects/${encodeURIComponent(projectId)}/stewards/${encodeURIComponent(userId)}/${encodeURIComponent(role)}`
+		);
+	},
+
 	currentSeason() {
 		return api.get<ApiResponse<Season>>('/seasons/current');
 	},

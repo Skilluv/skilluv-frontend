@@ -87,6 +87,39 @@ function backendOrigin(): string {
 }
 
 export const attestationApi = {
+	/** Every attestation somebody holds. Public, by user id. */
+	forUser(userId: string) {
+		return api.get<ApiResponse<{ attestations: unknown[] }>>(
+			`/users/${encodeURIComponent(userId)}/attestations`
+		);
+	},
+
+	/**
+	 * Issue a compagnonnage attestation.
+	 *
+	 * The one kind a person issues about another person rather than the
+	 * platform issuing about work. It is somebody putting their name behind
+	 * somebody else, which is why it is a deliberate act with its own endpoint.
+	 */
+	issueCompagnonnage(body: Record<string, unknown>) {
+		return api.post<ApiResponse<unknown>>('/attestations/compagnonnage', body);
+	},
+
+	/**
+	 * Revoke one.
+	 *
+	 * Revoked rather than deleted: a verification link that has been shared
+	 * must keep answering, and answering "revoked" is the whole point. Deleting
+	 * would turn a withdrawn claim into a broken link, which reads as a
+	 * platform fault rather than as a withdrawal.
+	 */
+	revoke(id: string, reason?: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/attestations/${encodeURIComponent(id)}/revoke`,
+			reason ? { reason } : {}
+		);
+	},
+
 	/**
 	 * Verification payload.
 	 *
@@ -168,3 +201,19 @@ export const attestationApi = {
 		return `${backendOrigin()}/api/attestations/verify/${encodeURIComponent(code)}/certificate.svg`;
 	}
 };
+
+/**
+ * The share card and the certificate for a verification code.
+ *
+ * Addresses rather than calls: both are images the browser renders from an
+ * `<img>` or Open Graph tag. Fetching them into a blob would work and would
+ * also mean the card never appears in a link preview, which is the only place
+ * it earns its existence.
+ */
+export function verifyCardUrl(code: string, baseUrl = '/api'): string {
+	return `${baseUrl}/attestations/verify/${encodeURIComponent(code)}/card.png`;
+}
+
+export function verifyCertificateUrl(code: string, baseUrl = '/api'): string {
+	return `${baseUrl}/attestations/verify/${encodeURIComponent(code)}/certificate.svg`;
+}
