@@ -1511,6 +1511,116 @@ export const en: Translations = {
 			'Cost work is recorded against the slice or project it changed, and the saving is only attested once the service is verified to still meet its objective.'
 	},
 
+	game: {
+		title: 'Game',
+		subtitle: 'The creators put forward this week, and the mods you have registered.',
+		empty: 'Nothing here yet.',
+		emptyHint: 'Featured creators are picked weekly, and mods appear once you register one.',
+		featuredTitle: 'Creators of the week',
+		weekOf: 'Week of {date}',
+		projectsHighlighted: '{n} projects highlighted',
+		modsTitle: 'Your mods',
+		modsHint:
+			'A mod lives where its game’s community already is. Skilluv records that it exists rather than hosting a copy, and the download figure is the one you read on that host.',
+		noMods: 'No mod registered.',
+		registerCta: 'Register a mod',
+		modTitlePlaceholder: 'Name of your mod',
+		targetGamePlaceholder: 'Which game',
+		targetPlatformPlaceholder: 'Which platform',
+		modDescriptionPlaceholder: 'What it changes',
+		saveCta: 'Register it',
+		cancelCta: 'Cancel',
+		modRegistered: 'Mod registered.',
+		openOnHost: 'Open where it is hosted',
+		declaredDownloads: '{n} downloads, declared',
+		whereTheRestIs:
+			'Playtests and the validation gate are on the slice they judge. A jam is read on its tournament. A project’s composition is on the project.'
+	},
+
+	playtest: {
+		title: 'Playtests',
+		gateReading: '{n} playtests, {avg}/5 on fun',
+		gateMet: 'Meets the gate',
+		gateNotYet: 'Not through the gate yet',
+		fun: 'fun {n}/5',
+		clarity: 'clarity {n}/5',
+		minutes: '{n} min played',
+		wouldPlayAgain: 'Would play again',
+		wouldPlayAgainLabel: 'I would play it again',
+		funLabel: 'Fun',
+		clarityLabel: 'Clarity',
+		difficultyLabel: 'Difficulty',
+		difficulty: {
+			too_easy: 'Too easy',
+			just_right: 'About right',
+			too_hard: 'Too hard'
+		},
+		bugsPlaceholder: 'Anything broken? (optional)',
+		suggestionsPlaceholder: 'Anything you would change? (optional)',
+		openCta: 'Record a playtest',
+		sendCta: 'Send it',
+		cancelCta: 'Cancel',
+		recorded: 'Playtest recorded.'
+	},
+
+	leadership: {
+		title: 'Retrospectives',
+		subtitle: 'What you facilitated, and what actually came of it.',
+		empty: 'No retrospective recorded.',
+		emptyHint: 'A retrospective is evidence of leadership only once its actions are resolved.',
+		participants: '{n} people',
+		shared: 'Shared with the room',
+		notShared: 'Not shared back yet',
+		showActions: 'Actions',
+		hideActions: 'Hide actions',
+		noActions: 'No action recorded. Without them this was a meeting.',
+		done: 'Done',
+		late: 'Late',
+		abandonedBecause: 'dropped — {reason}',
+		markDoneCta: 'Mark done',
+		newActionPlaceholder: 'What is to be done',
+		addActionCta: 'Add',
+		actionAdded: 'Action added.',
+		actionDone: 'Action closed.',
+		actionAbandoned: 'Action dropped.',
+		whereTheRestIs:
+			'Redaction, reach and cohorts are addressed by a slice or a cohort, so they are on those pages.'
+	},
+
+	leadershipArtefact: {
+		title: 'Redaction and reach',
+		acknowledged: 'Agreed {date}',
+		pending: 'Not agreed yet',
+		acknowledgeCta: 'My project agreed to this',
+		acknowledgedToast: 'Acknowledged.',
+		declareCta: 'Declare it anonymised',
+		declaredToast: 'Declared. A reviewer confirms next.',
+		confirmCta: 'Confirm the anonymisation',
+		confirmedToast: 'Confirmed.',
+		adoptionCta: 'Record an adoption',
+		adoptionToast: 'Adoption recorded.',
+		redactionNote:
+			'Anonymising takes two people: the author declares it, somebody else reads it and confirms they recognised nobody.'
+	},
+
+	cohortOutcomes: {
+		title: 'Outcomes',
+		nothingRecorded: 'No outcome recorded yet — which is not the same as nobody finishing.',
+		pickMember: 'Pick a member',
+		pickReason: 'Why they left',
+		reasons: {},
+		graduateCta: 'Graduate',
+		graduated: 'Graduated.',
+		departureCta: 'Record a departure',
+		departureRecorded: 'Departure recorded.',
+		departureNote:
+			'A cohort that only records graduations reports a hundred per cent forever. Leaving for a job is not dropping out, which is why the reason is asked for.',
+		leadCta: 'Take the lead',
+		ledToast: 'Recorded.',
+		concludeCta: 'Conclude the cohort',
+		concludedToast: 'Cohort concluded.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'AI record',

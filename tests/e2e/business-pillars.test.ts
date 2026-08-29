@@ -99,3 +99,31 @@ test.describe('Domain workbenches', () => {
 		}
 	});
 });
+
+/**
+ * Game and leadership — the two largest gaps of the sweep, sixteen and fifteen
+ * endpoints with a single reader between them.
+ */
+test.describe('Game and leadership', () => {
+	test('the game page renders', async ({ page }) => {
+		await gotoHydrated(page, '/game');
+		await expect(page.getByTestId('game-page')).toBeVisible();
+		await expect(page.locator('h1')).toBeVisible();
+	});
+
+	test('the leadership workbench renders', async ({ page }) => {
+		await gotoHydrated(page, '/leadership');
+		await expect(page.getByTestId('leadership-page')).toBeVisible();
+		await expect(page.locator('h1')).toBeVisible();
+	});
+
+	test('no i18n key leaks on either', async ({ page }) => {
+		for (const path of ['/game', '/leadership']) {
+			await gotoHydrated(page, path);
+			const body = await page.locator('body').innerText();
+			expect(body, `raw i18n key leaked on ${path}`).not.toMatch(
+				/\b(game|playtest|leadership|leadershipArtefact|cohortOutcomes)\.[a-zA-Z]+/
+			);
+		}
+	});
+});

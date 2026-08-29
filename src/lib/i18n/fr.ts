@@ -1530,6 +1530,119 @@ export const fr: Translations = {
 			'Le travail sur les coûts s’enregistre contre la slice ou le projet qu’il a changé, et l’économie n’est attestée qu’une fois vérifié que le service tient toujours son objectif.'
 	},
 
+	game: {
+		title: 'Jeu',
+		subtitle: 'Les créateurs mis en avant cette semaine, et les mods que tu as enregistrés.',
+		empty: 'Rien ici pour le moment.',
+		emptyHint:
+			'Les créateurs sont mis en avant chaque semaine, et les mods apparaissent quand tu en enregistres un.',
+		featuredTitle: 'Créateurs de la semaine',
+		weekOf: 'Semaine du {date}',
+		projectsHighlighted: '{n} projets mis en avant',
+		modsTitle: 'Tes mods',
+		modsHint:
+			'Un mod vit là où la communauté de son jeu se trouve déjà. Skilluv enregistre qu’il existe plutôt que d’en héberger une copie, et le nombre de téléchargements est celui que tu lis sur cet hébergeur.',
+		noMods: 'Aucun mod enregistré.',
+		registerCta: 'Enregistrer un mod',
+		modTitlePlaceholder: 'Nom de ton mod',
+		targetGamePlaceholder: 'Quel jeu',
+		targetPlatformPlaceholder: 'Quelle plateforme',
+		modDescriptionPlaceholder: 'Ce qu’il change',
+		saveCta: 'Enregistrer',
+		cancelCta: 'Annuler',
+		modRegistered: 'Mod enregistré.',
+		openOnHost: 'Ouvrir là où il est hébergé',
+		declaredDownloads: '{n} téléchargements, déclarés',
+		whereTheRestIs:
+			'Les playtests et la porte de validation sont sur la slice qu’ils jugent. Une jam se lit sur son tournoi. La composition d’un projet est sur le projet.'
+	},
+
+	playtest: {
+		title: 'Playtests',
+		gateReading: '{n} playtests, {avg}/5 sur le plaisir',
+		gateMet: 'Passe la porte',
+		gateNotYet: 'Pas encore passé la porte',
+		fun: 'plaisir {n}/5',
+		clarity: 'clarté {n}/5',
+		minutes: '{n} min jouées',
+		wouldPlayAgain: 'Y rejouerait',
+		wouldPlayAgainLabel: 'J’y rejouerais',
+		funLabel: 'Plaisir',
+		clarityLabel: 'Clarté',
+		difficultyLabel: 'Difficulté',
+		difficulty: {
+			too_easy: 'Trop facile',
+			just_right: 'Bien dosé',
+			too_hard: 'Trop dur'
+		},
+		bugsPlaceholder: 'Quelque chose de cassé ? (facultatif)',
+		suggestionsPlaceholder: 'Quelque chose à changer ? (facultatif)',
+		openCta: 'Enregistrer un playtest',
+		sendCta: 'Envoyer',
+		cancelCta: 'Annuler',
+		recorded: 'Playtest enregistré.'
+	},
+
+	leadership: {
+		title: 'Rétrospectives',
+		subtitle: 'Ce que tu as animé, et ce qui en est réellement sorti.',
+		empty: 'Aucune rétrospective enregistrée.',
+		emptyHint:
+			'Une rétrospective n’est une preuve de leadership qu’une fois ses actions résolues.',
+		participants: '{n} personnes',
+		shared: 'Partagée avec le groupe',
+		notShared: 'Pas encore repartagée',
+		showActions: 'Actions',
+		hideActions: 'Masquer les actions',
+		noActions: 'Aucune action enregistrée. Sans elles, c’était une réunion.',
+		done: 'Faite',
+		late: 'En retard',
+		abandonedBecause: 'abandonnée — {reason}',
+		markDoneCta: 'Marquer faite',
+		newActionPlaceholder: 'Ce qui est à faire',
+		addActionCta: 'Ajouter',
+		actionAdded: 'Action ajoutée.',
+		actionDone: 'Action close.',
+		actionAbandoned: 'Action abandonnée.',
+		whereTheRestIs:
+			'L’anonymisation, la portée et les cohortes s’adressent par une slice ou une cohorte : elles sont sur ces pages.'
+	},
+
+	leadershipArtefact: {
+		title: 'Anonymisation et portée',
+		acknowledged: 'Confirmé le {date}',
+		pending: 'Pas encore confirmé',
+		acknowledgeCta: 'Mon projet l’a bien adopté',
+		acknowledgedToast: 'Confirmé.',
+		declareCta: 'Déclarer anonymisé',
+		declaredToast: 'Déclaré. Un relecteur confirme ensuite.',
+		confirmCta: 'Confirmer l’anonymisation',
+		confirmedToast: 'Confirmé.',
+		adoptionCta: 'Enregistrer une reprise',
+		adoptionToast: 'Reprise enregistrée.',
+		redactionNote:
+			'Anonymiser demande deux personnes : l’auteur le déclare, quelqu’un d’autre le lit et confirme n’avoir reconnu personne.'
+	},
+
+	cohortOutcomes: {
+		title: 'Résultats',
+		nothingRecorded:
+			'Aucun résultat enregistré — ce n’est pas la même chose que personne n’a terminé.',
+		pickMember: 'Choisis un membre',
+		pickReason: 'Pourquoi il est parti',
+		reasons: {},
+		graduateCta: 'Diplômer',
+		graduated: 'Diplômé.',
+		departureCta: 'Enregistrer un départ',
+		departureRecorded: 'Départ enregistré.',
+		departureNote:
+			'Une cohorte qui n’enregistre que des diplômés affiche cent pour cent pour toujours. Partir pour un emploi n’est pas abandonner, et c’est pour ça qu’on demande la raison.',
+		leadCta: 'Prendre la conduite',
+		ledToast: 'Enregistré.',
+		concludeCta: 'Clore la cohorte',
+		concludedToast: 'Cohorte close.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'Parcours IA',

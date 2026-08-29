@@ -20,6 +20,7 @@
 	import Input from '$components/ui/Input.svelte';
 	import Modal from '$components/ui/Modal.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import { CohortOutcomes } from '$components/leadership';
 	import type {
 		CohortDetail,
 		CohortMemberListing,
@@ -425,6 +426,17 @@
 							</li>
 						{/each}
 					</ul>
+				</section>
+
+				<!-- What became of this cohort. Readable by anybody who can read
+				     the cohort, because its record is what somebody weighing
+				     joining actually wants. The lead's acts are the lead's. -->
+				<section class="rounded-2xl border border-border bg-surface-elevated p-6">
+					<CohortOutcomes
+						cohortId={cohortId}
+						isOrganizer={isOrganizer}
+						members={members.map((m) => ({ user_id: m.user_id, display_name: m.display_name }))}
+					/>
 				</section>
 			</div>
 		</div>

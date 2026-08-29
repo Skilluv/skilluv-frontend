@@ -14,6 +14,8 @@
 	import { AudioDelivery, AudioSources, ProjectCredits } from '$components/audio';
 	import { CritiqueTrail, SubmitVersion } from '$components/design';
 	import { TestRuns } from '$components/quality';
+	import { PlaytestPanel } from '$components/game';
+	import { ArtefactPanel } from '$components/leadership';
 	import { ExternalLink, Check, GitBranch, ShieldCheck } from '@lucide/svelte';
 
 	interface Props {
@@ -437,6 +439,20 @@
 			     a page of numbers. -->
 			<div class="mt-4">
 				<TestRuns sliceId={slice.id} />
+			</div>
+
+			<!-- The playtest record and the gate it stands against. A game slice
+			     is validated on whether enough people played it and said it was
+			     fun, so this is the evidence — and it renders nothing on a slice
+			     that is not a game. -->
+			<div class="mt-4">
+				<PlaytestPanel sliceId={slice.id} isMine={isMine} />
+			</div>
+
+			<!-- What a leadership artefact is evidence of: not that a document
+			     was written, but that something happened because of it. -->
+			<div class="mt-4">
+				<ArtefactPanel sliceId={slice.id} isMine={isMine} />
 			</div>
 
 			<!-- Diary -->

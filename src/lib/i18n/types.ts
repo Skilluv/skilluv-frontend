@@ -1673,6 +1673,112 @@ export interface Translations
 		costWorkNote: string;
 	};
 
+	/** The game domain. */
+	game: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		featuredTitle: string;
+		weekOf: string;
+		projectsHighlighted: string;
+		modsTitle: string;
+		modsHint: string;
+		noMods: string;
+		registerCta: string;
+		modTitlePlaceholder: string;
+		targetGamePlaceholder: string;
+		targetPlatformPlaceholder: string;
+		modDescriptionPlaceholder: string;
+		saveCta: string;
+		cancelCta: string;
+		modRegistered: string;
+		openOnHost: string;
+		declaredDownloads: string;
+		whereTheRestIs: string;
+	};
+
+	/** Playtests on a game slice. */
+	playtest: {
+		title: string;
+		gateReading: string;
+		gateMet: string;
+		gateNotYet: string;
+		fun: string;
+		clarity: string;
+		minutes: string;
+		wouldPlayAgain: string;
+		wouldPlayAgainLabel: string;
+		funLabel: string;
+		clarityLabel: string;
+		difficultyLabel: string;
+		difficulty: { too_easy: string; just_right: string; too_hard: string };
+		bugsPlaceholder: string;
+		suggestionsPlaceholder: string;
+		openCta: string;
+		sendCta: string;
+		cancelCta: string;
+		recorded: string;
+	};
+
+	/** The leadership workbench. */
+	leadership: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		participants: string;
+		shared: string;
+		notShared: string;
+		showActions: string;
+		hideActions: string;
+		noActions: string;
+		done: string;
+		late: string;
+		abandonedBecause: string;
+		markDoneCta: string;
+		newActionPlaceholder: string;
+		addActionCta: string;
+		actionAdded: string;
+		actionDone: string;
+		actionAbandoned: string;
+		whereTheRestIs: string;
+	};
+
+	/** A leadership artefact on its slice. */
+	leadershipArtefact: {
+		title: string;
+		acknowledged: string;
+		pending: string;
+		acknowledgeCta: string;
+		acknowledgedToast: string;
+		declareCta: string;
+		declaredToast: string;
+		confirmCta: string;
+		confirmedToast: string;
+		adoptionCta: string;
+		adoptionToast: string;
+		redactionNote: string;
+	};
+
+	/** What became of a cohort. */
+	cohortOutcomes: {
+		title: string;
+		nothingRecorded: string;
+		pickMember: string;
+		pickReason: string;
+		reasons: Record<string, string>;
+		graduateCta: string;
+		graduated: string;
+		departureCta: string;
+		departureRecorded: string;
+		departureNote: string;
+		leadCta: string;
+		ledToast: string;
+		concludeCta: string;
+		concludedToast: string;
+	};
+
 	craftProfile: {
 		titles: {
 			ai: string;
