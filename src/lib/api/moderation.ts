@@ -31,7 +31,12 @@ export interface MuteRecord {
 /** Body de POST /community/challenges/{id}/reject.
  * Backend key is `feedback` (min 8 chars), pas `reason`. */
 export interface CommunityRejectBody {
-	feedback: string;
+	/**
+	 * The backend field is `reason`, not `feedback`. Sending `feedback` failed
+	 * with 422 `missing field reason`, so rejecting a community challenge was
+	 * impossible.
+	 */
+	reason: string;
 }
 
 /** Body de POST /fraud/deliverables/{id}/mark-valid | revoke. */
@@ -59,6 +64,13 @@ export interface CommunityReviewItem {
 }
 
 export const moderationApi = {
+	/** One external signal, for a moderator deciding on it. */
+	externalSignal(id: string) {
+		return api.get<ApiResponse<{ signal: unknown }>>(
+			`/moderation/external-signals/${encodeURIComponent(id)}`
+		);
+	},
+
 	forum: {
 		/** POST /forum/posts/{id}/moderate — hide/unhide/lock/unlock. */
 		moderatePost(postId: string, body: ForumModerateBody) {

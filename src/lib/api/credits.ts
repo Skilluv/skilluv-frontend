@@ -30,6 +30,8 @@ export interface CreditTransaction {
 export interface CheckoutSessionResponse {
 	session_id: string;
 	checkout_url: string;
+	/** Our identifier for the charge. */
+	payment_id: string;
 }
 
 export interface PromoRedeemResult {

@@ -8,9 +8,40 @@
 	import { mentorshipApi, type MentorshipSession, type SessionStatus } from '$api/mentorship';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import Modal from '$components/ui/Modal.svelte';
+	import { disputesApi } from '$api/disputes';
 
 	let sessions = $state<MentorshipSession[]>([]);
 	let loading = $state(true);
+
+	/**
+	 * The session a dispute is being opened on.
+	 *
+	 * Only the mentee sees this: the money is theirs until the release
+	 * window closes, and the backend refuses anyone else.
+	 */
+	let disputing = $state<MentorshipSession | null>(null);
+	let disputeReason = $state('');
+	let raising = $state(false);
+
+	async function raiseDispute() {
+		if (!disputing || !disputeReason.trim()) return;
+		raising = true;
+		try {
+			await disputesApi.raise({
+				subject_type: 'mentorship_session',
+				subject_id: disputing.id,
+				reason: disputeReason.trim()
+			});
+			toast.success(i18n.t('disputes.raised'));
+			disputing = null;
+			disputeReason = '';
+		} catch (e) {
+			toast.error(e instanceof SkilluError ? e.message : i18n.t('errors.generic'));
+		} finally {
+			raising = false;
+		}
+	}
 
 	async function load() {
 		loading = true;
@@ -170,6 +201,20 @@
 									<Button variant="ghost" size="sm" onclick={() => complete(s.id)}>
 										{i18n.locale === 'fr' ? 'Marquer complétée' : 'Mark completed'}
 									</Button>
+								{:else}
+									<!-- The escrow window promised the mentee recourse; without
+									     this button there was no way to use it. The backend
+									     refuses once the window has closed. -->
+									<Button
+										variant="ghost"
+										size="sm"
+										onclick={() => {
+											disputing = s;
+											disputeReason = '';
+										}}
+									>
+										{i18n.t('disputes.actions.raise')}
+									</Button>
 								{/if}
 							{/if}
 						</div>
@@ -179,3 +224,34 @@
 		{/if}
 	{/if}
 </div>
+
+<Modal
+	open={disputing !== null}
+	title={i18n.t('disputes.raiseTitle')}
+	onclose={() => (disputing = null)}
+	size="md"
+>
+	<p class="mb-3 text-sm text-text-muted">{i18n.t('disputes.raiseHint')}</p>
+	<textarea
+		bind:value={disputeReason}
+		rows="5"
+		data-testid="dispute-reason"
+		class="w-full rounded-xl border border-border bg-surface p-3 text-sm"
+		placeholder={i18n.t('disputes.raisePlaceholder')}
+	></textarea>
+
+	{#snippet actions()}
+		<Button variant="ghost" size="sm" onclick={() => (disputing = null)}>
+			{i18n.t('common.actions.cancel')}
+		</Button>
+		<Button
+			variant="primary"
+			size="sm"
+			disabled={!disputeReason.trim()}
+			loading={raising}
+			onclick={raiseDispute}
+		>
+			{i18n.t('disputes.actions.raise')}
+		</Button>
+	{/snippet}
+</Modal>

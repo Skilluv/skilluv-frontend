@@ -12,13 +12,13 @@ import type { UserPrivate } from '$lib/types';
  * every entry point aligned.
  *
  * Rules:
- *   - admin       → bounced to /auth/login (admins belong on admin.skilluv.com)
+ *   - admin       → bounced to /auth/login (admins belong on admin.skill-uv.com)
  *   - enterprise / recruiter → /enterprise/dashboard
  *   - candidate   → / when the profile is active, /challenges/onboarding otherwise
  *
  * Admin case: an admin account must never end up on the public shell — see
  * hooks.server.ts. Returning the login page with an explicit error param
- * lets the login page surface a "please use admin.skilluv.com" message
+ * lets the login page surface a "please use admin.skill-uv.com" message
  * without a race with the SSR redirect.
  */
 export function postLoginDestination(user: UserPrivate): string {

@@ -27,6 +27,54 @@ export interface SocialComment {
 // --- API ---
 
 export const socialApi = {
+	/**
+	 * A reaction summary for one target: the counts, and whether you are in
+	 * them.
+	 *
+	 * Read rather than derived from the reaction list, because the list can be
+	 * long and the summary is what a card renders — counting client-side would
+	 * mean fetching every reaction to show a number.
+	 */
+	reactionSummary(targetType: string, targetId: string) {
+		return api.get<ApiResponse<{ summary: unknown }>>(
+			`/social/reactions/${encodeURIComponent(targetType)}/${encodeURIComponent(targetId)}/summary`
+		);
+	},
+
+	/** Comments on one target. */
+	comments(targetType: string, targetId: string) {
+		return api.get<ApiResponse<{ comments: unknown[] }>>(
+			`/social/comments/${encodeURIComponent(targetType)}/${encodeURIComponent(targetId)}`
+		);
+	},
+
+	/** The tags attached to one target. */
+	tagsOn(targetType: string, targetId: string) {
+		return api.get<ApiResponse<{ tags: unknown[] }>>(
+			`/social/tag-map/${encodeURIComponent(targetType)}/${encodeURIComponent(targetId)}`
+		);
+	},
+
+	/** Every tag the platform knows. Public. */
+	tags() {
+		return api.get<ApiResponse<{ tags: unknown[] }>>('/tags');
+	},
+
+	/** Attach a tag to something. */
+	attachTag(body: { tag_id: string; target_type: string; target_id: string }) {
+		return api.post<ApiResponse<unknown>>('/social/tag-map', body);
+	},
+
+	/**
+	 * Detach one.
+	 *
+	 * A DELETE with a body, which the client supports — the alternative would
+	 * be a tag-map id the caller does not hold.
+	 */
+	detachTag(body: { tag_id: string; target_type: string; target_id: string }) {
+		return api.delete<void>('/social/tag-map', body);
+	},
+
 	listComments(targetType: TargetType, targetId: string) {
 		return api.get<ApiResponse<{ comments: SocialComment[] }>>('/social/comments', {
 			target_type: targetType,

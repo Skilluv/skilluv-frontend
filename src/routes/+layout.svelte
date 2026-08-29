@@ -19,8 +19,6 @@
 	import OrientationPromptBanner from '$lib/components/orientations/OrientationPromptBanner.svelte';
 	import { observability } from '$lib/observability';
 	import KeysSprite from '$lib/components/badges/primitives/keys-sprite.svelte';
-	// Terminal mode désactivé pour l'instant — composants conservés sous src/lib/components/terminal/*
-	// pour réactivation future. Voir TerminalEmulator.svelte / TerminalConfirm.svelte / commands.ts.
 
 	let { data, children } = $props();
 
@@ -35,7 +33,7 @@
 	// (Navbar / EmailVerificationBanner / Footer / BottomBar) est masqué —
 	// l'espace entreprise apporte son propre header + sidebar. On garde la
 	// Toast / PWA / auth store logic qui restent globaux. L'admin a son
-	// propre frontend sur admin.skilluv.com, plus rien à gérer ici.
+	// propre frontend sur admin.skill-uv.com, plus rien à gérer ici.
 	let isWorkspace = $derived(
 		$page.url.pathname.startsWith('/enterprise/') && !isBareLayout
 	);
@@ -51,16 +49,53 @@
 		return seg ?? 'home';
 	});
 
-	// Hydrate auth depuis les donnees SSR — includes the `hasPasskey` flag so
-	// the enterprise layout guard can honour "TOTP OR passkey" as satisfying
-	// the 2FA gate on the very first client render (no /auth/me round-trip
-	// needed).
-	$effect(() => {
+	// Plain variable, deliberately not `$state`: the effect below must not track
+	// it. Without this guard the effect re-applied `data.user` on every pass and
+	// wiped the orientations loaded moments earlier by refreshOrientations(),
+	// leaving soft-blocked pages stuck on "no orientation".
+	let seededIdentity: string | null = null;
+
+	// Hydrates auth from SSR data, including `hasPasskey` so the enterprise
+	// layout guard can honour "TOTP OR passkey" on the very first client render
+	// (no /auth/me round-trip needed).
+	function syncAuthFromServer() {
+		if (data.authProbe === 'unknown' && auth.user) {
+			// SKI-102: on `unknown` (backend 5xx or timeout on the SSR /auth/me
+			// fetch) the store must NOT be reset. The access_token cookie is
+			// still there and the session is probably valid; resetting would
+			// strip navbar + sidebar from a legitimate user. A real logout comes
+			// through authProbe === 'unauthenticated'.
+			return;
+		}
+		const identity = `${data.user?.id ?? 'anon'}|${data.authProbe}|${data.hasPasskey ?? false}`;
+		if (identity === seededIdentity) return;
+		seededIdentity = identity;
 		auth.setUser(data.user);
 		auth.hasPasskey = data.hasPasskey ?? false;
-	});
+		// The user comes from SSR, not from `auth.init()`, so capabilities and
+		// orientations must be loaded explicitly. Idempotent in the store.
+		void auth.hydrateSessionExtras();
+	}
 
-	// Initialise theme + langue côté client
+	// Seed synchronously, while the layout script runs, hence before child
+	// pages mount. Pages guarded by
+	// `onMount(() => { if (!auth.isAuthenticated) goto('/auth/login') })` run
+	// before the layout's effects: seeding only from the effect bounced
+	// authenticated users to /auth/login on a direct page load.
+	syncAuthFromServer();
+
+	// The effect still covers later navigations, where `data` changes without
+	// re-running the layout script.
+	$effect(syncAuthFromServer);
+
+	// Resolve the locale synchronously, for the same reason the session is seeded
+	// synchronously above: effects run after the tree has mounted, so a child
+	// reading `i18n.locale` in its own onMount saw the default rather than the
+	// stored or browser locale. That is how a French visitor landed on English
+	// error messages. No-op on the server.
+	i18n.init();
+
+	// Initialise theme côté client
 	$effect(() => {
 		theme.init();
 		i18n.init();

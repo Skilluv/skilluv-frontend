@@ -2,6 +2,46 @@
 // Types Skilluv — basés sur API-ROUTES.md + MVP.md P16-P25
 // ============================================
 
+// Post-MVP tiers 1-3 (SKI-36 … SKI-47) live in their own module and are
+// re-exported here, so `$types` stays the single import surface.
+export * from './postmvp';
+
+// Skilluv Design (SKI-182 … SKI-268). Contests and missions live on the
+// tournament and mission endpoints, so their types are here rather than in a
+// `design`-prefixed silo that would hide the reuse.
+export * from './design';
+
+// Voice castings — the audio domain's own hiring loop.
+export * from './audio';
+
+// The AI domain of work, which is not the assistant. See `ai_domain.ts`.
+export * from './ai_domain';
+
+// The creators marketplace — a whole business pillar the front ignored.
+export * from './marketplace';
+
+// What is waiting for you: the `/users/me/**` reads `/dashboard` had no home for.
+export * from './dashboard';
+
+// What companies are asking of you — the talent half of the TALENT pillar.
+export * from './opportunities';
+
+// The per-domain onboarding wizard, rendered from what the backend serves.
+export * from './domain_wizard';
+
+// The five craft records served with a nested score — code, quality, ops,
+// leadership, security. See `domain_profiles.ts` on why that is a third shape.
+export * from './domain_profiles';
+
+// Craft records for the domains served by a flat `{domain}-profile`
+// endpoint (ai, audio). One shape on purpose — see `craft.ts`.
+export * from './craft';
+
+// Skilluv Cyber (SKI-116 … SKI-284). Shares `/missions` and the tournament
+// routes with design, for the same reason: a mission is a mission and a
+// competition is a competition, whatever the subject.
+export * from './security';
+
 // Réutilisation source de vérité unique pour les types badge/rang.
 // Voir src/lib/components/badges/types.ts pour les définitions primitives.
 import type {
@@ -17,7 +57,32 @@ export { RANK_NAMES } from '$lib/components/badges/types';
 
 // --- Enums ---
 
-export type SkillDomain = 'code' | 'design' | 'game' | 'security';
+/**
+ * The eleven disciplines Skilluv opens with.
+ *
+ * This is the target catalogue, not a snapshot of what the backend serves
+ * today: `quality`, `leadership`, `audio`, `communication` and `education` are
+ * specified and not yet live. The public pages describe the full scope on
+ * purpose — they are written for the January 2027 opening, and a UI that only
+ * knows today's domains would go stale the week the next one ships.
+ *
+ * `soft_skills` is the legacy domain being split into `communication` and
+ * `education`. Kept so historical profiles keep rendering.
+ */
+export type SkillDomain =
+	| 'code'
+	| 'design'
+	| 'game'
+	| 'security'
+	| 'ai'
+	| 'ops'
+	| 'quality'
+	| 'leadership'
+	| 'audio'
+	| 'communication'
+	| 'education'
+	/** @deprecated split into `communication` + `education`. */
+	| 'soft_skills';
 
 /** @deprecated Remplacé par Rank (5 valeurs) — voir MVP §0.7. Reste supporté 6 mois pour portfolios historiques. */
 export type Title = 'apprenti' | 'artisan' | 'maitre' | 'legende';
@@ -29,7 +94,8 @@ export type ChallengeMode = 'solo' | 'team';
 export type ChallengeTone = 'serious' | 'fun' | 'educational';
 export type ChallengeStatus = 'draft' | 'published' | 'archived';
 export type CommunityStatus = 'draft' | 'review' | 'approved' | 'rejected' | null;
-export type LeaderboardDomain = 'global' | 'code' | 'design' | 'game' | 'security';
+/** Derive du catalogue : fige a quatre domaines, il ignorait les sept autres. */
+export type LeaderboardDomain = 'global' | SkillDomain;
 export type LeaderboardPeriod = 'alltime' | 'weekly' | 'monthly';
 export type ReportTargetType = 'user' | 'challenge' | 'message' | 'enterprise';
 export type ReportReason = 'spam' | 'harassment' | 'inappropriate' | 'cheating' | 'fake_profile' | 'other';
@@ -40,20 +106,6 @@ export type UserRole = 'user' | 'recruiter' | 'enterprise' | 'admin';
 export type ThemeBase = 'forge' | 'vesperal' | 'arena' | 'scriptorium' | 'sakura';
 export type ThemeMode = 'dark' | 'light';
 export type Theme = ThemeBase | `${ThemeBase}-light`;
-
-export type NotificationType =
-	| 'interest_request_received'
-	| 'interest_accepted'
-	| 'interest_declined'
-	| 'new_message'
-	| 'challenge_approved'
-	| 'challenge_rejected'
-	| 'account_banned'
-	| 'account_unbanned'
-	| 'rank_promotion'
-	| 'badge_earned'
-	| 'team_slot_match'
-	| 'payout_status_change';
 
 /** Capabilities P18.4 — sources de permissions user (mentor, curator, etc.). */
 export type Capability =
@@ -135,11 +187,19 @@ export interface UserPrivate {
 }
 
 export interface UserPublic {
-	/** User id — surfaced so enterprise flows can reference the target
-	 * user (add to a list, open messaging, promote to pipeline, etc.).
-	 * Backend returns it in the public projection for authenticated
-	 * enterprise/recruiter callers; kept optional to preserve backward
-	 * compatibility with candidate-facing consumers. */
+	/**
+	 * User id, always present since SKI-300.
+	 *
+	 * Four public sections (timeline, skill tree, external signals,
+	 * vouchings) are addressed by UUID, and this projection is the only
+	 * place a visitor can resolve a username to one — before SKI-300 the
+	 * front could render them on your own profile, where the id came from
+	 * the auth store, and on nobody else's. Handing it out is safe because
+	 * a hidden or banned profile is a 404 before this point.
+	 *
+	 * Kept optional so a stale payload degrades to a hidden section rather
+	 * than a request with an empty id.
+	 */
 	id?: string;
 	username: string;
 	display_name: string;
@@ -157,9 +217,68 @@ export interface UserPublic {
 	member_since: string;
 }
 
+/** One question of a defensive lab, stripped of its answer. */
+export interface LabQuestion {
+	/** The id to answer under. */
+	id: string;
+	/** `text` or `choice`. */
+	kind?: string | null;
+	question: string;
+	/** The options for a `choice` question; empty for a `text` one. */
+	choices?: string[];
+	/** Whether the answer is compared as typed. False for almost everything —
+	 * most answers here are an address, a tool name or a count. */
+	case_sensitive?: boolean;
+}
+
 export interface Challenge {
 	id: string;
 	title: string;
+	/**
+	 * Which cyber discipline a security challenge is — `ctf_flag`,
+	 * `defensive_lab`, `machine_walkthrough`, `training_ground`,
+	 * `analysis_exercise`, `audit_exercise`. Null on every non-security
+	 * challenge.
+	 *
+	 * Optional rather than required on purpose: the backend serialises it from
+	 * the fix batch onward, and reading it optionally means `/ctf` and
+	 * `/blue-lab` degrade to an empty list against an older deployment instead
+	 * of throwing. Until it arrives, a client cannot tell a CTF target from a
+	 * lab, which is why neither page could list before.
+	 */
+	security_kind?: string | null;
+	/** The cyber difficulty tier, alongside `security_kind`. Null off-domain. */
+	security_difficulty_tier?: string | null;
+	/**
+	 * Where a CTF target lives, and what shape its flag has — SKI-339.
+	 *
+	 * Both null on every kind but `ctf_flag`. The format matters more than it
+	 * looks: the comparison is case-sensitive after trimming, attempts are
+	 * capped per hour, and `submit_flag` already returns the shape as a hint on
+	 * a wrong answer. Announcing it up front is strictly better than teaching
+	 * it by refusal.
+	 *
+	 * `security_flag_hash` is not here and must never be: it is the answer.
+	 */
+	security_target_url?: string | null;
+	security_flag_format?: string | null;
+	/**
+	 * A defensive lab's questions, as a client is served them — SKI-332.
+	 *
+	 * The stored rows carry an `expected_answer_hash` and an author's `hint`
+	 * and neither is here: the hash of a short answer is a wordlist away from
+	 * the answer, and a hint shown before the first attempt is just a shorter
+	 * question. Hints arrive in the outcome, for the questions actually got
+	 * wrong.
+	 */
+	security_lab_questions?: LabQuestion[] | null;
+	/** Said before the download starts: a memory image on a metered
+	 * connection is a decision, not a click. */
+	security_lab_artifact_bytes?: number | null;
+	/** The share that has to be right, announced rather than discovered. */
+	security_lab_pass_percent?: number | null;
+	/** Attempts before the cooling-off period, for the same reason. */
+	security_lab_max_attempts?: number | null;
 	description: string;
 	instructions: string;
 	skill_domain: SkillDomain;
@@ -200,12 +319,32 @@ export interface Submission {
 export interface Notification {
 	id: string;
 	user_id: string;
-	notification_type: NotificationType;
+	/**
+	 * Legacy discriminant. Deliberately open: the backend catalogue now writes
+	 * dotted names (`payout.sent`) and grows without a frontend release. A
+	 * closed union here would be a type that lies about the payload.
+	 */
+	notification_type: string;
+	/** Dotted catalogue identifier. Absent on rows written before the catalogue. */
+	kind: string | null;
 	title: string;
 	body: string | null;
 	data: unknown | null;
 	read: boolean;
+	/** How many events this row stands for. At least one. */
+	group_count: number;
+	/** Most recent distinct people involved, newest first, capped at four. */
+	group_actors: NotificationActor[];
 	created_at: string;
+	/** When the row last absorbed an event. Drives the sort order. */
+	updated_at: string | null;
+}
+
+/** One person folded into a grouped notification. */
+export interface NotificationActor {
+	id?: string;
+	username?: string;
+	avatar_url?: string | null;
 }
 
 export interface Message {

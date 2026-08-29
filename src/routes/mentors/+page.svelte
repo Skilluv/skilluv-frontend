@@ -9,6 +9,7 @@
 	import { mentorshipApi, type MentorSummary } from '$api/mentorship';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import { MentoringProducts } from '$components/mentors';
 
 	let mentors = $state<MentorSummary[]>([]);
 	let loading = $state(true);
@@ -204,5 +205,12 @@
 				</div>
 			{/each}
 		</div>
+	</div>
+
+	<!-- What is sold around mentoring: subscriptions and their usage, the slots
+	     a mentor offers, and the hours somebody gave for nothing. Kept apart
+	     from the pairing itself, which is what the rest of this page is. -->
+	<div class="mx-auto mt-8 max-w-4xl px-4">
+		<MentoringProducts />
 	</div>
 </section>

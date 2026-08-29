@@ -1,4 +1,5 @@
 import type { ApiErrorBody } from '$lib/types';
+import { apiBase } from './origin';
 
 /**
  * Erreur API Skilluv typée
@@ -32,10 +33,12 @@ export class SkilluError extends Error {
 }
 
 /**
- * Crée un client API typé.
+ * Builds a typed API client.
  *
- * - Client-side : createApiClient() → utilise /api (proxy Vite/Caddy)
- * - Server-side (SSR) : createApiClient(fetch, 'http://localhost:3001/api')
+ * The default base comes from `apiBase()`: a relative `/api` unless
+ * `PUBLIC_API_ORIGIN` names an absolute one, which is what a backend on its
+ * own subdomain needs. Pass a base explicitly for SSR, where a relative path
+ * has no meaning at all.
  */
 /**
  * Single in-flight refresh promise: parallel 401s all await the same refresh call,
@@ -100,7 +103,7 @@ async function sleep(ms: number): Promise<void> {
 
 export function createApiClient(
 	customFetch: typeof fetch = fetch,
-	baseUrl: string = '/api'
+	baseUrl: string = apiBase()
 ) {
 	async function fire(url: string, options?: RequestInit): Promise<Response> {
 		// Double-submit CSRF: echo the non-httpOnly `csrf_token` cookie into the header on
@@ -240,7 +243,17 @@ export function createApiClient(
 	}
 
 	return {
-		get<T>(path: string, params?: Record<string, string | number | boolean | undefined>): Promise<T> {
+		/**
+		 * `init` exists for the handful of reads whose answer depends on a
+		 * header rather than on the path — `/guides` picks its locale from
+		 * `Accept-Language`, and nothing else here sets one. Kept optional and
+		 * last so every existing call is untouched.
+		 */
+		get<T>(
+			path: string,
+			params?: Record<string, string | number | boolean | undefined>,
+			init?: RequestInit
+		): Promise<T> {
 			let url = path;
 			if (params) {
 				const searchParams = new URLSearchParams();
@@ -250,7 +263,7 @@ export function createApiClient(
 				const qs = searchParams.toString();
 				if (qs) url += `?${qs}`;
 			}
-			return request<T>(url);
+			return request<T>(url, init);
 		},
 
 		post<T>(path: string, body?: unknown): Promise<T> {

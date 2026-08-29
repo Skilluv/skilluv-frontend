@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { BadgeEvent } from '$lib/types';
+	import type { SkilluvEvent } from '$lib/api/badge_events';
 	import Badge from '$lib/components/ui/Badge.svelte';
 	import { i18n } from '$lib/i18n';
 	import { Calendar } from '@lucide/svelte';
 
 	interface Props {
-		event: BadgeEvent;
+		event: SkilluvEvent;
 		compact?: boolean;
 	}
 

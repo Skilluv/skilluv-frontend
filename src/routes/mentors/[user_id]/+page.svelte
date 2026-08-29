@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
@@ -10,6 +11,7 @@
 	import { mentorshipApi, type MentorProfile } from '$api/mentorship';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import InlinePaymentModal from '$components/payments/InlinePaymentModal.svelte';
 
 	let userId = $derived(page.params.user_id ?? '');
 	let mentor = $state<MentorProfile | null>(null);
@@ -22,6 +24,10 @@
 	let bookDuration = $state(60);
 	let bookNotes = $state('');
 	let booking = $state(false);
+	let showPayment = $state(false);
+	let paymentId = $state('');
+	let checkoutUrl = $state('');
+	let bookedSessionId = $state('');
 
 	async function load() {
 		loading = true;
@@ -61,9 +67,17 @@
 				duration_minutes: bookDuration,
 				mentee_notes: bookNotes.trim() || undefined
 			});
-			window.location.href = res.data.checkout_url;
+			// The redirect is no longer the default path: the payment modal
+			// offers the operators that confirm on the phone first, and
+			// keeps the provider's page as a way out for card payments.
+			paymentId = res.data.payment_id;
+			checkoutUrl = res.data.checkout_url;
+			bookedSessionId = res.data.session_id;
+			showBook = false;
+			showPayment = true;
 		} catch (e) {
 			toast.error(e instanceof SkilluError ? e.message : 'Erreur');
+		} finally {
 			booking = false;
 		}
 	}
@@ -252,8 +266,20 @@
 				{i18n.locale === 'fr' ? 'Annuler' : 'Cancel'}
 			</Button>
 			<Button variant="accent" loading={booking}>
-				{i18n.locale === 'fr' ? 'Continuer vers Stripe' : 'Continue to Stripe'}
+				{i18n.locale === 'fr' ? 'Continuer vers le paiement' : 'Continue to payment'}
 			</Button>
 		</div>
 	</form>
 </Modal>
+
+<InlinePaymentModal
+	open={showPayment}
+	{paymentId}
+	{checkoutUrl}
+	currency="EUR"
+	onclose={() => (showPayment = false)}
+	onsettled={() => {
+		showPayment = false;
+		goto(`/mentorship/sessions/${bookedSessionId}`);
+	}}
+/>

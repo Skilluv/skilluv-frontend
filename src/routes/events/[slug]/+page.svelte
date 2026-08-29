@@ -4,7 +4,7 @@
 	import { SkilluError } from '$lib/api/client';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$lib/stores/auth.svelte';
-	import type { BadgeEvent } from '$lib/types';
+	import type { EventDetail } from '$lib/api/badge_events';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
@@ -13,7 +13,9 @@
 
 	let slug = $derived($page.params.slug ?? '');
 
-	let event = $state<BadgeEvent | null>(null);
+	let detail = $state<EventDetail | null>(null);
+	/** The event itself, which is what almost everything on the page reads. */
+	let event = $derived(detail?.event ?? null);
 	let joined = $state(false);
 	let loading = $state(true);
 	let joining = $state(false);
@@ -31,14 +33,14 @@
 				badgeEventsApi.detail(s),
 				auth.isAuthenticated ? badgeEventsApi.myEvents() : Promise.resolve(null)
 			]);
-			if (detailRes.status === 'fulfilled') event = detailRes.value.data;
+			if (detailRes.status === 'fulfilled') detail = detailRes.value.data;
 			else if (detailRes.reason instanceof SkilluError && detailRes.reason.code === 'RESOURCE_NOT_FOUND') {
 				error = i18n.t('errors.notFoundMessage');
 			} else {
 				error = i18n.t('events.loadError');
 			}
 			if (myRes.status === 'fulfilled' && myRes.value) {
-				joined = myRes.value.data.some((m) => m.event.slug === s);
+				joined = (myRes.value.data?.events ?? []).some((m) => m.event_slug === s);
 			}
 		} finally {
 			loading = false;

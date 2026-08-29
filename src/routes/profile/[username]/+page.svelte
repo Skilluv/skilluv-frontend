@@ -8,7 +8,21 @@
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import SkillTree from '$components/profile/SkillTree.svelte';
+	import Timeline from '$components/profile/Timeline.svelte';
+	import ExternalSignals from '$components/profile/ExternalSignals.svelte';
+	import Vouchings from '$components/profile/Vouchings.svelte';
+	import { DesignSection, IterationStories } from '$components/design';
+	import CraftSection from '$components/profile/CraftSection.svelte';
+	import {
+		CodeRecord,
+		QualityRecord,
+		OpsRecord,
+		LeadershipRecord,
+		SecurityRecord
+	} from '$components/profile/records';
 	import Heatmap from '$components/profile/Heatmap.svelte';
+	import TakeItWithYou from '$components/profile/TakeItWithYou.svelte';
+	import WorkAndSkills from '$components/profile/WorkAndSkills.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import JsonLd from '$lib/components/seo/JsonLd.svelte';
@@ -17,7 +31,6 @@
 	import { onMount } from 'svelte';
 	import type {
 		UserPublic,
-		SkillNode,
 		HeatmapEntry,
 		UserBadgesResponse,
 		UserOrientation,
@@ -28,6 +41,9 @@
 	import BadgesWall from '$lib/components/badges/BadgesWall.svelte';
 	import { OrientationList } from '$lib/components/orientations';
 	import { ContributionSection } from '$lib/components/capabilities';
+	import BadgesSection from '$lib/components/profile/BadgesSection.svelte';
+	import { projectsApi } from '$api/projects';
+	import { ReportButton } from '$components/moderation';
 
 	onMount(() => {
 		void geo.ensureCountries();
@@ -37,16 +53,30 @@
 
 	let user = $state<UserPublic | null>(null);
 	let stats = $state<{ challenges_completed: number; total_fragments: number; streak_current: number; trust_score: number } | null>(null);
-	let skillTree = $state<SkillNode[]>([]);
 	let heatmap = $state<HeatmapEntry[]>([]);
 	let badges = $state<{ slug: string; name: string; icon: string; category: string; earned_at: string }[]>([]);
 	let badgesData = $state<UserBadgesResponse | null>(null);
 	let orientations = $state<UserOrientation[]>([]);
 	let publicCapabilities = $state<UserCapability[]>([]);
+	// Repos this user maintains, for the per-repo README badges. Only those with
+	// GitHub coordinates can carry one.
+	let ownedProjects = $state<
+		{ slug: string; github_repo_owner: string; github_repo_name: string; name: string }[]
+	>([]);
 	let loading = $state(true);
 	let error = $state('');
 
 	let isOwnProfile = $derived(auth.user?.username === username);
+
+	/**
+	 * The user's UUID, needed by every id-addressed section (timeline, skill
+	 * tree, badges…). Since SKI-300 `/profile/{username}` returns it to every
+	 * caller, so those sections render on anyone's profile and not only on
+	 * your own. The auth-store fallback stays for your own page, and an
+	 * absent id still hides the sections rather than firing a request with an
+	 * empty one.
+	 */
+	let profileUserId = $derived(isOwnProfile ? (auth.user?.id ?? user?.id) : user?.id);
 
 	const titleColors: Record<string, string> = {
 		apprenti: 'text-text-muted',
@@ -86,25 +116,36 @@
 		badgesData = null;
 		orientations = [];
 		publicCapabilities = [];
+		ownedProjects = [];
 		try {
 			const res = await profileApi.getPublic(name);
 			user = res.data.user;
 			stats = res.data.stats;
-			skillTree = res.data.skill_tree ?? [];
 			heatmap = res.data.heatmap_summary ?? [];
 			badges = res.data.badges ?? [];
 
 			// P17/P16/P18.4 — chargements enrichis, tolérants aux 404 tant que le
 			// backend n'a pas encore les endpoints publics correspondants.
 			if (user?.id) {
-				const [badgesRes, orientationsRes, capabilitiesRes] = await Promise.allSettled([
+				const [badgesRes, orientationsRes, capabilitiesRes, projectsRes] = await Promise.allSettled([
 					badgesApi.forUser(user.id),
 					orientationsApi.forUser(user.id),
-					capabilitiesApi.forUser(user.id)
+					capabilitiesApi.forUser(user.id),
+					projectsApi.forUser(name)
 				]);
 				if (badgesRes.status === 'fulfilled') badgesData = badgesRes.value.data;
 				if (orientationsRes.status === 'fulfilled') orientations = orientationsRes.value.data;
 				if (capabilitiesRes.status === 'fulfilled') publicCapabilities = capabilitiesRes.value.data;
+				if (projectsRes.status === 'fulfilled') {
+					ownedProjects = (projectsRes.value.data.projects ?? [])
+						.filter((pr) => pr.github_repo_owner && pr.github_repo_name && !pr.archived_at)
+						.map((pr) => ({
+							slug: pr.slug,
+							name: pr.name,
+							github_repo_owner: pr.github_repo_owner as string,
+							github_repo_name: pr.github_repo_name as string
+						}));
+				}
 			}
 		} catch (err) {
 			if (err instanceof SkilluError) {
@@ -167,7 +208,9 @@
 
 	{:else if error}
 		<div class="py-16 text-center">
-			<p class="text-4xl font-bold text-text-muted mb-2">404</p>
+			<!-- A real heading, not a styled paragraph: the error state used to
+			     leave the page without any heading at all. -->
+			<h1 class="text-4xl font-bold text-text-muted mb-2">404</h1>
 			<p class="text-text-muted mb-6">{error}</p>
 			<Button variant="secondary" href="/leaderboards">{i18n.t('errors.backHome')}</Button>
 		</div>
@@ -181,7 +224,7 @@
 					<!-- Avatar -->
 					<div class="shrink-0 h-16 w-16 rounded-full bg-surface-overlay flex items-center justify-center text-2xl font-bold {titleColors[user.title]}">
 						{#if user.avatar_url}
-							<img src={user.avatar_url} alt={user.display_name} class="h-16 w-16 rounded-full object-cover" />
+							<img src={user.avatar_url} alt={user.display_name} width="64" height="64" class="h-16 w-16 rounded-full object-cover" />
 						{:else}
 							{user.display_name.charAt(0).toUpperCase()}
 						{/if}
@@ -324,19 +367,34 @@
 					</div>
 				{/if}
 
-				<!-- Skill tree -->
-				{#if skillTree.length > 0}
+				<!-- SKI-47 — the taxonomy with prerequisites, not the fragment
+				     roll-up: the point of a tree is showing what is blocked. -->
+				{#if profileUserId}
 					<div class="rounded-xl border border-border bg-surface-elevated overflow-hidden">
 						<div class="px-5 py-3 border-b border-border">
 							<span class="text-xs font-bold uppercase tracking-wider text-text-muted">{i18n.t('profile.sections.skills')}</span>
 						</div>
 						<div class="p-5">
-							<SkillTree tree={skillTree} />
+							<SkillTree userId={profileUserId} />
 						</div>
 					</div>
 				{:else}
 					<div class="rounded-xl border border-border bg-surface-elevated p-8 text-center">
 						<p class="text-sm text-text-muted">{i18n.t('profile.noSkills')}</p>
+					</div>
+				{/if}
+
+				<!-- SKI-39 — chronological history, for recruiters and for pride. -->
+				{#if profileUserId}
+					<div class="rounded-xl border border-border bg-surface-elevated overflow-hidden">
+						<div class="px-5 py-3 border-b border-border">
+							<span class="text-xs font-bold uppercase tracking-wider text-text-muted">
+								{i18n.t('timeline.title')}
+							</span>
+						</div>
+						<div class="p-5">
+							<Timeline userId={profileUserId} isOwn={isOwnProfile} />
+						</div>
 					</div>
 				{/if}
 			</div>
@@ -350,6 +408,76 @@
 					viewer={isOwnProfile ? 'own' : 'public'}
 				/>
 
+				<!-- The two public exports, which had no surface at all: the
+				     record as one JSON file, and the rank badge for a README.
+				     Shown on anybody's profile because both endpoints are public
+				     — the point of a portable record is that whoever is
+				     evaluating somebody can take it too. -->
+				<div class="mb-4">
+					<TakeItWithYou {username} />
+				</div>
+
+				<!-- A platform with a reporting endpoint and no way to report is one
+				     that looks like it takes harassment seriously and does not: the
+				     person being harassed finds nothing to click. Not shown on your
+				     own profile. -->
+				{#if profileUserId && !isOwnProfile}
+					<div class="mb-4">
+						<ReportButton targetType="user" targetId={profileUserId} />
+					</div>
+				{/if}
+
+				<!-- The work itself and the skills counted from it. Keyed on the user
+				     id, which both endpoints take rather than the username. -->
+				{#if profileUserId}
+					<div class="mb-4">
+						<WorkAndSkills userId={profileUserId} />
+					</div>
+				{/if}
+
+				<!-- SKI-253 — the design record. Addressed by username, so unlike
+				     the sections above it needs no UUID. -->
+				<DesignSection {username} isOwn={isOwnProfile} />
+
+				<!-- A-04 — the rounds a finished image cannot show. Sits directly
+				     under the design record it belongs to, and renders nothing when
+				     the account has no work that took three rounds or more. -->
+				<div class="mt-4">
+					<IterationStories {username} />
+				</div>
+
+				<!-- The AI and audio records, same shape and same addressing. Each
+				     renders nothing at all when this person has no work in that
+				     domain, so a code-only profile is unchanged. -->
+				<CraftSection domain="ai" {username} />
+				<CraftSection domain="audio" {username} />
+				<!-- SKI-321. `/users/{username}/{domain}-profile` serves ten
+				     disciplines and the profile rendered eight; these two had a
+				     live endpoint and no reader. Each renders nothing at all for
+				     an account with no work in it, so a profile that was not
+				     about teaching or translating is unchanged. -->
+				<CraftSection domain="communication" {username} />
+				<CraftSection domain="education" {username} />
+
+				<!-- The five records served with a nested score. Same rule as
+				     above: a domain this person has never worked in answers 404
+				     and renders nothing. -->
+				<CodeRecord {username} isOwn={isOwnProfile} />
+				<QualityRecord {username} />
+				<OpsRecord {username} />
+				<LeadershipRecord {username} />
+				<SecurityRecord {username} />
+
+				<!-- SKI-46 — who staked their own rank on this person. -->
+				{#if profileUserId}
+					<Vouchings userId={profileUserId} isOwn={isOwnProfile} />
+				{/if}
+
+				<!-- SKI-42 — declared context, kept visually apart from the proofs above. -->
+				{#if profileUserId}
+					<ExternalSignals userId={profileUserId} />
+				{/if}
+
 				<div class="rounded-xl border border-border bg-surface-elevated p-5">
 					<p class="text-xs text-text-muted mb-1">{i18n.locale === 'fr' ? 'Membre depuis' : 'Member since'}</p>
 					<p class="text-sm font-medium">{new Date(user.member_since).toLocaleDateString(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', { month: 'long', year: 'numeric' })}</p>
@@ -359,6 +487,11 @@
 
 		<div class="mt-6">
 			<BadgesWall badges={badgesData} isOwn={isOwnProfile} />
+		</div>
+
+		<!-- SKI-104 — Badges Skilluv (personnel + repos maintenus si dispo) -->
+		<div class="mt-6">
+			<BadgesSection {username} isOwner={isOwnProfile} {ownedProjects} />
 		</div>
 	{/if}
 </div>

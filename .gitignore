@@ -16,6 +16,8 @@ vite.config.ts.timestamp-*
 # Tests
 test-results
 playwright-report
+# Playwright storage state + plaintext test-account credentials.
+tests/e2e/.auth/
 
 # OS
 .DS_Store
@@ -36,7 +38,8 @@ Thumbs.db
 
 
 # Documentation
-docs/
+docs/*
+!docs/LIGHTHOUSE-AUDIT-*.md
 
 # BMAD workflow
 _bmad/
@@ -48,3 +51,12 @@ design-artifacts/
 # AI coding assistant caches
 .claude/
 .claude.*
+# Lighthouse audit output
+lighthouse-report/
+
+# Axe audit output
+axe-report/
+
+# Bundle analyzer output
+bundle-report.html
+stats.html

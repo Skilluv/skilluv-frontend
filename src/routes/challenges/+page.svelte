@@ -8,6 +8,7 @@
 	import Pagination from '$components/ui/Pagination.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import type { Challenge, SkillDomain } from '$types';
+	import { PUBLIC_DOMAINS, domainStyle } from '$lib/utils/domains';
 
 	let challenges = $state<{ challenge: Challenge; locked: boolean }[]>([]);
 	let loading = $state(true);
@@ -18,12 +19,11 @@
 	let filterDomain = $state<SkillDomain | ''>('');
 	let filterDifficulty = $state<number | 0>(0);
 
+	// Driven by the catalogue: this listed four domains and duplicated their
+	// colours, so seven disciplines had no filter at all.
 	const domains: { value: SkillDomain | ''; dot: string }[] = [
 		{ value: '', dot: '' },
-		{ value: 'code', dot: 'bg-blue-500' },
-		{ value: 'design', dot: 'bg-pink-500' },
-		{ value: 'game', dot: 'bg-green-500' },
-		{ value: 'security', dot: 'bg-red-500' }
+		...PUBLIC_DOMAINS.map((d) => ({ value: d as SkillDomain | '', dot: domainStyle(d).dot }))
 	];
 
 	const difficultyValues = [0, 1, 2, 3, 4, 5];

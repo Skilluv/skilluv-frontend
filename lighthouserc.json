@@ -6,22 +6,25 @@
 			"url": [
 				"http://localhost:4173/",
 				"http://localhost:4173/challenges",
-				"http://localhost:4173/pricing"
+				"http://localhost:4173/pricing",
+				"http://localhost:4173/for-maintainers",
+				"http://localhost:4173/verify/000000000000000000000000000000000000000000000000000000000deadbeef"
 			],
-			"numberOfRuns": 1,
+			"numberOfRuns": 3,
 			"settings": {
 				"preset": "desktop",
 				"emulatedFormFactor": "mobile",
 				"throttlingMethod": "simulate",
-				"onlyCategories": ["performance", "accessibility", "best-practices", "seo"]
+				"onlyCategories": ["performance", "accessibility", "best-practices", "seo"],
+				"skipAudits": ["uses-http2"]
 			}
 		},
 		"assert": {
 			"assertions": {
 				"categories:performance": ["warn", { "minScore": 0.7 }],
-				"categories:accessibility": ["error", { "minScore": 0.9 }],
-				"categories:best-practices": ["warn", { "minScore": 0.85 }],
-				"categories:seo": ["warn", { "minScore": 0.85 }]
+				"categories:accessibility": ["error", { "minScore": 1.0 }],
+				"categories:best-practices": ["warn", { "minScore": 0.9 }],
+				"categories:seo": ["warn", { "minScore": 0.9 }]
 			}
 		},
 		"upload": {

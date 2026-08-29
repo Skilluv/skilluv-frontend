@@ -9,6 +9,7 @@
 	import { pricingApi, type PricingResponse } from '$api/pricing';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import InlinePaymentModal from '$components/payments/InlinePaymentModal.svelte';
 	import { type Component } from 'svelte';
 	import {
 		ArrowUp, ArrowDown, ArrowRight, RotateCcw, Sparkles, Hexagon,
@@ -20,6 +21,9 @@
 	let pricing = $state<PricingResponse | null>(null);
 	let loading = $state(true);
 	let purchasing = $state<string | null>(null);
+	let showPayment = $state(false);
+	let paymentId = $state('');
+	let checkoutUrl = $state('');
 	let promoCode = $state('');
 	let promoBusy = $state(false);
 
@@ -68,11 +72,15 @@
 		purchasing = slug;
 		try {
 			const res = await creditsApi.createCheckout(slug);
-			// Redirect vers Stripe Checkout
-			window.location.href = res.data.checkout_url;
+			// The modal offers the operators that confirm on the phone
+			// first; the provider's page stays reachable for cards.
+			paymentId = res.data.payment_id;
+			checkoutUrl = res.data.checkout_url;
+			showPayment = true;
 		} catch (e) {
-			purchasing = null;
 			toast.error(e instanceof SkilluError ? e.message : 'Erreur');
+		} finally {
+			purchasing = null;
 		}
 	}
 
@@ -407,3 +415,14 @@
 		{/if}
 	</section>
 </div>
+
+<InlinePaymentModal
+	open={showPayment}
+	{paymentId}
+	{checkoutUrl}
+	onclose={() => (showPayment = false)}
+	onsettled={() => {
+		showPayment = false;
+		loadAll();
+	}}
+/>

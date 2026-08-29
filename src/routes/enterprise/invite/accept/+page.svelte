@@ -7,6 +7,7 @@
 	import { enterpriseApi } from '$api/enterprise';
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
+	import BrandLogo from '$components/layout/BrandLogo.svelte';
 
 	type Phase =
 		| 'loading'
@@ -75,7 +76,7 @@
 <div class="flex min-h-[100vh] flex-col items-center justify-center px-4 py-12">
 	<!-- Logo — même style que /auth/+layout.svelte -->
 	<a href="/" class="mb-10 flex items-center gap-2 text-3xl font-black tracking-tight">
-		<img src="/favicon.svg" alt="" class="h-8 w-8" />
+		<BrandLogo variant="mark" size={32} />
 		<span><span class="text-accent">Skill</span><span class="text-text-primary">uv</span></span>
 	</a>
 

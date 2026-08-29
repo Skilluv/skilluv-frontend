@@ -8,7 +8,10 @@ const STORAGE_KEY = 'skilluv-locale';
 const translations: Record<Locale, Translations> = { fr, en };
 
 class I18nState {
-	locale = $state<Locale>('fr');
+	// English is the default: it is what SSR renders, so it is what crawlers and
+	// first-time visitors see. French remains a first-class locale, reached by
+	// browser preference or an explicit choice.
+	locale = $state<Locale>('en');
 
 	get direction(): 'ltr' | 'rtl' {
 		return 'ltr';
@@ -20,8 +23,10 @@ class I18nState {
 		if (stored === 'fr' || stored === 'en') {
 			this.locale = stored;
 		} else {
+			// Only a French-speaking browser gets French; everything else, including
+			// languages we do not translate, lands on English.
 			const browserLang = navigator.language.slice(0, 2).toLowerCase();
-			this.locale = browserLang === 'en' ? 'en' : 'fr';
+			this.locale = browserLang === 'fr' ? 'fr' : 'en';
 		}
 		this.applyDom();
 	}

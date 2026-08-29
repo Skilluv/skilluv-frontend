@@ -8,7 +8,9 @@
 	import Select from '$components/ui/Select.svelte';
 	import { pricingApi, type PricingResponse } from '$api/pricing';
 	import { SkilluError } from '$api/client';
+	import { CONTACT_EMAIL } from '$lib/config/social';
 	import { Sparkles, Coins, Package, Boxes, Gem, ThumbsDown, Timer, Check, X } from '@lucide/svelte';
+	import { ProgrammaticPlans } from '$components/pricing';
 
 	let data = $state<PricingResponse | null>(null);
 	let loading = $state(true);
@@ -172,9 +174,12 @@
 			{/each}
 		</div>
 	{:else if error}
-		<div class="rounded-2xl border border-error/30 bg-error/10 p-6 text-center">
-			<p class="text-error">{error}</p>
-			<button class="mt-4 text-sm underline" onclick={load}>
+		<div class="rounded-2xl border border-error bg-error p-6 text-center">
+			<p class="font-semibold text-error-fg">{error}</p>
+			<button
+				class="mt-4 rounded-lg bg-error-fg px-3 py-1 text-sm font-semibold text-error hover:brightness-95"
+				onclick={load}
+			>
 				{i18n.locale === 'fr' ? 'Réessayer' : 'Retry'}
 			</button>
 		</div>
@@ -330,6 +335,56 @@
 {/if}
 
 <!-- ============================================
+     AUTRES LIGNES — sur devis, pas en libre-service
+     ============================================
+     Le modele compte plusieurs sources de revenus cote entreprise ; la page
+     n'en montrait qu'une. Celles-ci se negocient, donc elles sont presentees
+     avec leurs termes commerciaux et sans prix affiche : annoncer un tarif
+     pour une prestation cadree au cas par cas serait faux. -->
+<section class="mx-auto max-w-6xl px-4 py-20 sm:py-24">
+	<h2 class="mb-5 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+		{i18n.t('otherLines.title')}<br />
+		<span class="text-accent">{i18n.t('otherLines.titleAccent')}</span>
+	</h2>
+	<p class="mb-12 max-w-2xl text-base text-text-muted sm:text-lg">
+		{i18n.t('otherLines.subtitle')}
+	</p>
+
+	<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		{#each [
+			{ key: 'talent', icon: Gem },
+			{ key: 'work', icon: Coins },
+			{ key: 'brand', icon: Sparkles },
+			{ key: 'data', icon: Boxes },
+			{ key: 'ecosystem', icon: Package },
+			{ key: 'consult', icon: Timer },
+			{ key: 'finance', icon: Coins }
+		] as line (line.key)}
+			<div class="flex flex-col gap-3 rounded-2xl border border-border bg-surface-elevated p-6">
+				<div class="flex items-center gap-3">
+					<span class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+						<line.icon size={20} strokeWidth={2} />
+					</span>
+					<span class="ml-auto rounded-full border border-border px-2.5 py-0.5 text-[10px] uppercase tracking-widest text-text-muted">
+						{i18n.t(`otherLines.${line.key}Who`)}
+					</span>
+				</div>
+				<p class="text-lg font-bold">{i18n.t(`otherLines.${line.key}Title`)}</p>
+				<p class="text-sm leading-relaxed text-text-muted">
+					{i18n.t(`otherLines.${line.key}Body`)}
+				</p>
+			</div>
+		{/each}
+	</div>
+
+	<div class="mt-8">
+		<Button variant="secondary" size="lg" href="mailto:{CONTACT_EMAIL}">
+			{i18n.t('otherLines.cta')}
+		</Button>
+	</div>
+</section>
+
+<!-- ============================================
      COMPARAISON — Skilluv vs Classique
      ============================================ -->
 <section class="mx-auto max-w-6xl px-4 py-20 sm:py-24">
@@ -351,7 +406,7 @@
 			</ul>
 		</div>
 		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
-			<p class="mb-4 text-xs font-bold uppercase tracking-wider text-primary">Skilluv</p>
+			<p class="mb-4 text-xs font-bold uppercase tracking-wider text-accent">Skilluv</p>
 			<ul class="space-y-3 text-sm">
 				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Pay-as-you-go. Aucun abonnement caché.' : 'Pay-as-you-go. No hidden subscription.'}</li>
 				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Vous ne payez que les tentatives réelles' : 'You only pay for real attempts'}</li>
@@ -360,7 +415,15 @@
 				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Prix locaux : EUR, USD, NGN, XOF, MAD…' : 'Local prices: EUR, USD, NGN, XOF, MAD…'}</li>
 			</ul>
 		</div>
+	
+	<!-- The two plans nobody buys on a whim: programmatic access to the talent
+	     score, and corporate learning seats. Under the human pricing rather than
+	     beside it — somebody comparing subscriptions is not the person buying an
+	     API key. -->
+	<div class="mx-auto mt-10 max-w-4xl px-4">
+		<ProgrammaticPlans />
 	</div>
+</div>
 </section>
 
 <!-- ============================================

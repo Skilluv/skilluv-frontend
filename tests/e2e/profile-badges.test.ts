@@ -1,5 +1,6 @@
 import { test, expect, type Page, type Route } from '@playwright/test';
 import { expectNoSeriousA11yViolations } from './utils/a11y';
+import { gotoHydrated } from './utils/hydration';
 
 test.beforeEach(async ({ page }) => {
 	await page.addInitScript(() => {
@@ -128,7 +129,10 @@ test.describe('Profile page — badges wall', () => {
 	test.beforeEach(async ({ page }) => {
 		await mockApi(page, [
 			{
-				path: '/profile/public/kofi',
+				// The public endpoint is `/profile/{username}`. `/profile/public/...`
+				// predates the backend contract realignment and matched nothing,
+				// leaving the page empty.
+				path: '/profile/kofi',
 				handler: (route) =>
 					route.fulfill({
 						status: 200,
@@ -164,6 +168,19 @@ test.describe('Profile page — badges wall', () => {
 					})
 			},
 			{
+				// The generic `{data:{}}` fallback passed an object where the geo
+				// store expects an array.
+				path: '/geo/countries',
+				handler: (route) =>
+					route.fulfill({
+						status: 200,
+						contentType: 'application/json',
+						body: JSON.stringify({
+							data: [{ iso2: 'BJ', iso3: 'BEN', name: 'Bénin', dial_code: '229' }]
+						})
+					})
+			},
+			{
 				path: '/auth/me',
 				handler: (route) =>
 					route.fulfill({
@@ -179,7 +196,7 @@ test.describe('Profile page — badges wall', () => {
 	});
 
 	test('renders identity header, rank chevron and skill patches', async ({ page }) => {
-		await page.goto('/profile/kofi');
+		await gotoHydrated(page, '/profile/kofi');
 		await expect(page.getByRole('heading', { name: 'Kofi Adjovi' })).toBeVisible();
 		await expectNoSeriousA11yViolations(page);
 		await expect(page.getByRole('heading', { name: 'Rang' })).toBeVisible();
@@ -190,7 +207,7 @@ test.describe('Profile page — badges wall', () => {
 	});
 
 	test('renders medals section and counters', async ({ page }) => {
-		await page.goto('/profile/kofi');
+		await gotoHydrated(page, '/profile/kofi');
 		await expect(page.getByRole('heading', { name: 'Médailles' })).toBeVisible();
 		await expect(page.getByLabel(/Médaille Season 2 champion — legendary/i)).toBeVisible();
 		await expect(page.getByText('12').first()).toBeVisible();
@@ -199,7 +216,7 @@ test.describe('Profile page — badges wall', () => {
 	});
 
 	test('renders orientation list and contribution section', async ({ page }) => {
-		await page.goto('/profile/kofi');
+		await gotoHydrated(page, '/profile/kofi');
 		await expect(page.getByRole('heading', { name: 'Orientations métier' })).toBeVisible();
 		await expect(page.getByText('Dev frontend')).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Comment cette personne contribue' })).toBeVisible();

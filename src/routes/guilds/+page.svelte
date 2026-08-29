@@ -54,13 +54,13 @@
 				? "Rejoignez une guilde pour combattre, apprendre, cultiver. Guildes MMO au style écurie F1 : bannière, tag, chef, wars. Classement live sur la somme des fragments."
 				: 'Join a guild to fight, learn, cultivate. MMO-style guilds F1-team-inspired: banner, tag, leader, wars. Live ranking on total fragments.'}
 		</p>
-		{#if auth.isAuthenticated}
-			<div class="mt-8 flex flex-wrap gap-3">
-				<Button variant="accent" size="lg" href="/guilds/new">
-					{i18n.locale === 'fr' ? '+ Créer une guilde' : '+ Create a guild'}
-				</Button>
-			</div>
-		{/if}
+		<a
+			href="/guilds/new"
+			data-testid="guild-create-cta"
+			class="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-primary/90"
+		>
+			{i18n.t('guilds.create.cta')}
+		</a>
 	</div>
 </section>
 
@@ -90,11 +90,9 @@
 				: 'Be the first to found a guild — invite your fellows and pick your keys together.'}
 		>
 			{#snippet action()}
-				{#if auth.isAuthenticated}
-					<Button variant="accent" href="/guilds/new">
-						{i18n.locale === 'fr' ? 'Fonder une guilde' : 'Found a guild'}
-					</Button>
-				{/if}
+				<Button variant="primary" href="/guilds/new" data-testid="guild-create-cta-empty">
+					{i18n.t('guilds.create.cta')}
+				</Button>
 			{/snippet}
 		</EmptyState>
 	{:else}
@@ -102,6 +100,7 @@
 			{#each guilds as g, i}
 				<a
 					href={`/guilds/${g.slug}`}
+					data-testid="guild-card"
 					class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
 				>
 					<!-- Rank -->
@@ -123,7 +122,7 @@
 					<div class="min-w-0 flex-1">
 						<div class="flex items-center gap-2">
 							<h3 class="text-lg font-bold truncate">{g.name}</h3>
-							{#if g.total_wars_won > 0}
+							{#if (g.total_wars_won ?? 0) > 0}
 								<Badge variant="warning" size="sm">▲ {g.total_wars_won}W</Badge>
 							{/if}
 						</div>
@@ -134,7 +133,7 @@
 
 					<!-- Stats -->
 					<div class="hidden sm:block text-right shrink-0">
-						<div class="text-2xl font-black text-primary">{g.total_fragments.toLocaleString()}</div>
+						<div class="text-2xl font-black text-primary">{(g.total_fragments ?? 0).toLocaleString()}</div>
 						<div class="text-xs text-text-muted">
 							{g.member_count} {i18n.locale === 'fr' ? 'membres' : 'members'}
 						</div>

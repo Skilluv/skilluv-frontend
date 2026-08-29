@@ -12,7 +12,7 @@ const api = createApiClient();
 
 // --- Types réponses spécifiques ---
 
-interface ChallengeListItem {
+export interface ChallengeListItem {
 	challenge: Challenge;
 	locked: boolean;
 }
@@ -73,9 +73,19 @@ export const challengesApi = {
 	},
 
 	/** Catalogue paginé avec filtres */
+	/**
+	 * The public catalogue.
+	 *
+	 * `security_kind` narrows to one cyber discipline and implies
+	 * `domain=security`, since only a security challenge carries one. The
+	 * server validates the value at runtime rather than only in its schema: a
+	 * filter that silently accepted a typo would answer an empty list, which
+	 * reads as "no CTFs exist".
+	 */
 	list(params?: {
 		domain?: SkillDomain;
 		difficulty?: number;
+		security_kind?: string;
 		page?: number;
 		per_page?: number;
 	}) {

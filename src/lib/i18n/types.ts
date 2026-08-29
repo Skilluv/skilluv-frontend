@@ -1,4 +1,20 @@
-export interface Translations {
+import type { DesignTranslations } from './design.types';
+import type { DesignWorkflowTranslations } from './design_workflow.types';
+import type { PortfolioTranslations } from './portfolios.types';
+import type { SecurityTranslations } from './security.types';
+import type { PostMvpTranslations } from './postmvp.types';
+
+/**
+ * The Post-MVP namespaces (SKI-36 … SKI-47) are declared in
+ * `postmvp.types.ts` and folded in here, so `i18n.t('goals.title')` type-checks
+ * exactly like an MVP key while the two sets stay separately readable.
+ */
+export interface Translations
+	extends PostMvpTranslations,
+		DesignTranslations,
+		DesignWorkflowTranslations,
+		SecurityTranslations,
+		PortfolioTranslations {
 	common: {
 		actions: {
 			save: string;
@@ -16,6 +32,7 @@ export interface Translations {
 			create: string;
 			loading: string;
 			sending: string;
+			loadMore: string;
 		};
 		nav: {
 			home: string;
@@ -34,6 +51,14 @@ export interface Translations {
 			design: string;
 			game: string;
 			security: string;
+			ai: string;
+			ops: string;
+			quality: string;
+			leadership: string;
+			audio: string;
+			communication: string;
+			education: string;
+			soft_skills: string;
 		};
 		titles: {
 			apprenti: string;
@@ -67,6 +92,136 @@ export interface Translations {
 		votes: string;
 		page: string;
 	};
+	launch: {
+		eyebrow: string;
+		date: string;
+		badge: string;
+		countdown: string;
+		soon: string;
+		open: string;
+		cta: string;
+		note: string;
+	};
+	commonExtra: {
+		exampleLabel: string;
+	},
+	board: {
+		title: string;
+		titleAccent: string;
+		subtitle: string;
+		rowThem: string;
+		rowUs: string;
+		bootcampsLabel: string;
+		bootcampsThem: string;
+		bootcampsUs: string;
+		practiceLabel: string;
+		practiceThem: string;
+		practiceUs: string;
+		jobsLabel: string;
+		jobsThem: string;
+		jobsUs: string;
+		freelanceLabel: string;
+		freelanceThem: string;
+		freelanceUs: string;
+		offshoreLabel: string;
+		offshoreThem: string;
+		offshoreUs: string;
+		cta: string;
+		loadError: string;
+	};
+	openMissions: {
+		title: string;
+		titleAccent: string;
+		subtitle: string;
+		emptyTitle: string;
+		emptyBody: string;
+		emptyCta: string;
+		allCta: string;
+		reward: string;
+		minutes: string;
+	};
+	ranks: {
+		title: string;
+		titleAccent: string;
+		subtitle: string;
+		apprentiMeaning: string;
+		rangerMeaning: string;
+		artisanMeaning: string;
+		maitreMeaning: string;
+		doyenMeaning: string;
+		note: string;
+	};
+	otherLines: {
+		title: string;
+		titleAccent: string;
+		subtitle: string;
+		talentTitle: string;
+		talentBody: string;
+		talentWho: string;
+		workTitle: string;
+		workBody: string;
+		workWho: string;
+		brandTitle: string;
+		brandBody: string;
+		brandWho: string;
+		dataTitle: string;
+		dataBody: string;
+		dataWho: string;
+		ecosystemTitle: string;
+		ecosystemBody: string;
+		ecosystemWho: string;
+		consultTitle: string;
+		consultBody: string;
+		consultWho: string;
+		financeTitle: string;
+		financeBody: string;
+		financeWho: string;
+		cta: string;
+	};
+	howItWorks: {
+		title: string;
+		subtitle: string;
+		step1Title: string;
+		step1Body: string;
+		step2Title: string;
+		step2Body: string;
+		step3Title: string;
+		step3Body: string;
+		step4Title: string;
+		step4Body: string;
+		freeTitle: string;
+		freeBody: string;
+		gradationLabel: string;
+		gradation1Scope: string;
+		gradation1Body: string;
+		gradation2Scope: string;
+		gradation2Body: string;
+		gradation3Scope: string;
+		gradation3Body: string;
+		trackHours: string;
+		reviewLabel: string;
+		reviewAsk: string;
+		reviewReply: string;
+		reviewOutcome: string;
+		profileLabel: string;
+	};
+	disciplines: {
+		sectionTitleLine1: string;
+		sectionTitleLine2: string;
+		sectionSubtitle: string;
+		lead: string;
+		code: { label: string; desc: string };
+		design: { label: string; desc: string };
+		security: { label: string; desc: string };
+		game: { label: string; desc: string };
+		ai: { label: string; desc: string };
+		ops: { label: string; desc: string };
+		quality: { label: string; desc: string };
+		leadership: { label: string; desc: string };
+		audio: { label: string; desc: string };
+		communication: { label: string; desc: string };
+		education: { label: string; desc: string };
+	};
 	landing: {
 		title: string;
 		titleAccent: string;
@@ -93,6 +248,9 @@ export interface Translations {
 			codeDesc: string;
 			designDesc: string;
 			gameDesc: string;
+			aiDesc: string;
+			opsDesc: string;
+			softSkillsDesc: string;
 			securityDesc: string;
 			changeDomain: string;
 			createAccount: string;
@@ -400,8 +558,79 @@ export interface Translations {
 			account_unbanned: string;
 		};
 	};
+	mentions: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		markAllRead: string;
+		allRead: string;
+		loadError: string;
+		retry: string;
+		sources: {
+			forum_post: string;
+			comment: string;
+			slice_diary: string;
+			message: string;
+		};
+	};
 	settings: {
 		title: string;
+		notifications: {
+			title: string;
+			subtitle: string;
+			channels: { inApp: string; push: string; email: string };
+			channelsHint: string;
+			fixed: string;
+			fixedHint: string;
+			/**
+			 * Une entree par categorie du catalogue backend. L'ecran retombe
+			 * sur le nom brut quand une categorie apparait sans traduction,
+			 * donc ajouter un type cote backend ne casse pas cette page.
+			 */
+			categories: {
+				payments: string;
+				account: string;
+				mentorship: string;
+				social: string;
+				guild: string;
+				learning: string;
+				enterprise: string;
+				digest: string;
+				lifecycle: string;
+				admin: string;
+			};
+			saved: string;
+			savedPartial: string;
+			resetAll: string;
+			resetDone: string;
+			quiet: {
+				title: string;
+				subtitle: string;
+				start: string;
+				end: string;
+				timezone: string;
+				timezoneDetected: string;
+				transactional: string;
+				enable: string;
+				clear: string;
+				saved: string;
+				cleared: string;
+			};
+		};
+		emailPrefs: {
+			title: string;
+			subtitle: string;
+			digestWeekly: string;
+			digestWeeklyDesc: string;
+			streakReminder: string;
+			streakReminderDesc: string;
+			marketing: string;
+			marketingDesc: string;
+			transactional: string;
+			saved: string;
+			loadError: string;
+		};
 		theme: {
 			title: string;
 			forge: string;
@@ -425,6 +654,26 @@ export interface Translations {
 			displayName: string;
 			bio: string;
 			bioHint: string;
+			subtitle: string;
+			domain: string;
+			country: string;
+			city: string;
+			saved: string;
+		};
+		availability: {
+			title: string;
+			subtitle: string;
+			openLabel: string;
+			openHint: string;
+			lookingFor: string;
+			lookingForPh: string;
+			salaryMin: string;
+			salaryMax: string;
+			visibility: string;
+			visibilityPrivate: string;
+			visibilityRecruiters: string;
+			visibilityPublic: string;
+			saved: string;
 		};
 		password: {
 			title: string;
@@ -577,6 +826,93 @@ export interface Translations {
 		retryBtn: string;
 		generic: string;
 	};
+	attestationVerify: {
+		title: string;
+		subtitle: string;
+		checking: string;
+		validTitle: string;
+		validBody: string;
+		revokedTitle: string;
+		revokedBody: string;
+		revokedOn: string;
+		revokeReason: string;
+		notFoundTitle: string;
+		notFoundBody: string;
+		issuedOn: string;
+		expiresOn: string;
+		expired: string;
+		typeLabel: string;
+		issuerLabel: string;
+		issuerSkilluv: string;
+		issuerOrg: string;
+		codeLabel: string;
+		copyCode: string;
+		copiedToast: string;
+		shareCta: string;
+		sharedToast: string;
+		holderCta: string;
+		fallbackError: string;
+		certificateTitle: string;
+		certificateAlt: string;
+		certificateDownload: string;
+	};
+	disputes: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyBody: string;
+		decision: string;
+		payerHint: string;
+		recipientHint: string;
+		contestedHint: string;
+		contestTitle: string;
+		contestHint: string;
+		contestPlaceholder: string;
+		status: {
+			open: string;
+			contested: string;
+			refunded: string;
+			released: string;
+			withdrawn: string;
+		};
+		actions: {
+			raise: string;
+			concede: string;
+			contest: string;
+			withdraw: string;
+		};
+		done: {
+			concede: string;
+			contest: string;
+			withdraw: string;
+		};
+		subjects: {
+			mentorship_session: string;
+			bounty_slice: string;
+			certification_purchase: string;
+			credit_pack: string;
+		};
+		raiseTitle: string;
+		raiseHint: string;
+		raisePlaceholder: string;
+		raised: string;
+	};
+	payments: {
+		title: string;
+		operator: string;
+		phone: string;
+		phoneHint: string;
+		inlineHint: string;
+		pay: string;
+		waiting: string;
+		waitingHint: string;
+		done: string;
+		background: string;
+		failed: string;
+		noInline: string;
+		otherMethod: string;
+		closeWhileWaiting: string;
+	};
 	wallet: {
 		title: string;
 		subtitle: string;
@@ -676,6 +1012,47 @@ export interface Translations {
 			confirmRejectTitle: string;
 			confirmRejectBody: string;
 		};
+		vouchings: {
+			title: string;
+			subtitle: string;
+			statuses: {
+				live: string;
+				broken: string;
+				expired: string;
+			};
+			queueEmpty: string;
+			flagged: string;
+			flaggedHint: string;
+			voucherLabel: string;
+			vouchedLabel: string;
+			rankAtStake: string;
+			openedOn: string;
+			untilLabel: string;
+			brokenOn: string;
+			breakReason: string;
+			breakCta: string;
+			confirmBreakTitle: string;
+			confirmBreakBody: string;
+			brokeWithPenalty: string;
+			brokeWithoutPenalty: string;
+			total: string;
+			loadMore: string;
+			noAccess: string;
+		};
+		externalSignals: {
+			title: string;
+			subtitle: string;
+			queueEmpty: string;
+			declaredOn: string;
+			openLink: string;
+			verifyCta: string;
+			rejectCta: string;
+			confirmRejectTitle: string;
+			confirmRejectBody: string;
+			verifiedToast: string;
+			rejectedToast: string;
+			noAccess: string;
+		};
 		plagiarism: {
 			title: string;
 			subtitle: string;
@@ -691,6 +1068,1043 @@ export interface Translations {
 			confirmRevokeBody: string;
 			noAccess: string;
 		};
+	};
+	/**
+	 * Craft records for the domains served by a flat `{domain}-profile`
+	 * endpoint. One namespace, because the backend returns one shape.
+	 */
+	/** `content_guides`, every discipline — onboarding, toolkits, templates. */
+	/** Voice castings — the audio domain's own hiring loop. */
+	/** The files of an audio delivery, and what was measured on them. */
+	/** Who is credited on a project, from the attestations that carry it. */
+	/** The AI domain of work — artefacts published here, contests elsewhere. */
+	/** The per-domain onboarding wizard, rendered from what the backend serves. */
+	domainWizard: {
+		titles: { ai: string; security: string };
+		subtitles: { ai: string; security: string };
+		notAClaim: string;
+		progressLabel: string;
+		stepOf: string;
+		pickUpTo: string;
+		maxSelections: string;
+		back: string;
+		next: string;
+		skipQuestion: string;
+		finish: string;
+		skipAll: string;
+		savedToast: string;
+		noQuestions: string;
+		questions: {
+			level: string;
+			weekly_hours: string;
+			goal: string;
+			compute: string;
+			main_frameworks: string;
+			huggingface_username: string;
+			preferred_families: string;
+		};
+		hints: {
+			compute: string;
+			huggingface_username: string;
+			preferred_families: string;
+		};
+		options: {
+			level: {
+				debutant: string;
+				apprentissage: string;
+				practitioner: string;
+				senior: string;
+				researcher: string;
+			};
+			weekly_hours: { lt3: string; '3_10': string; gt10: string; fulltime: string };
+			goal: {
+				learning: string;
+				portfolio: string;
+				paid_missions: string;
+				academic_research: string;
+				startup: string;
+			};
+			compute: {
+				none: string;
+				personal_gpu: string;
+				cloud_small: string;
+				cloud_large: string;
+				enterprise: string;
+			};
+			main_frameworks: {
+				pytorch: string;
+				jax: string;
+				tensorflow: string;
+				candle: string;
+				mlx: string;
+				other: string;
+			};
+		};
+	};
+	/** The creators marketplace. */
+	marketplace: {
+		title: string;
+		subtitle: string;
+		allDomains: string;
+		empty: string;
+		emptyBody: string;
+		notFound: string;
+		backToList: string;
+		draft: string;
+		downloadsCount: string;
+		commissionNotice: string;
+		creatorReceives: string;
+		platformKeeps: string;
+		buyCta: string;
+		signInToBuy: string;
+		yourItem: string;
+		publishCta: string;
+		publishedToast: string;
+		boughtToast: string;
+		purchasedTitle: string;
+		tokenTerms: string;
+		redeemCta: string;
+		notFetchableYet: string;
+		rateCta: string;
+		rateTitle: string;
+		rateHint: string;
+		reviewLabel: string;
+		reviewPlaceholder: string;
+		rateSubmit: string;
+		ratedToast: string;
+		licenses: {
+			personal_use: string;
+			commercial: string;
+			extended_commercial: string;
+		};
+	};
+	aiDomain: {
+		title: string;
+		onboardingCta: string;
+		subtitle: string;
+		artifactsTitle: string;
+		artifactsHint: string;
+		artifactsEmpty: string;
+		artifactsEmptyBody: string;
+		allSubtypes: string;
+		subtypes: {
+			ml_model: string;
+			dataset: string;
+			llm_agent: string;
+			data_pipeline: string;
+			ai_service_api: string;
+			ai_research_paper: string;
+		};
+		openHub: string;
+		competitionsTitle: string;
+		competitionsHint: string;
+		competitionsEmpty: string;
+		closesIn: string;
+		rolling: string;
+	};
+	projectCredits: {
+		title: string;
+		verifyCta: string;
+	};
+	audioDelivery: {
+		title: string;
+		empty: string;
+		roleLabel: string;
+		roles: {
+			master: string;
+			stem: string;
+			preview: string;
+			project_archive: string;
+			documentation: string;
+		};
+		analysis: {
+			pending: string;
+			running: string;
+			done: string;
+			skipped: string;
+			failed: string;
+		};
+		analysisFailed: string;
+		mono: string;
+		channels: string;
+		listenCta: string;
+		linkExpires: string;
+		uploadCta: string;
+		uploadedToast: string;
+	};
+	/** What a delivery was built from, and the statement that the list is whole. */
+	audioSources: {
+		title: string;
+		empty: string;
+		addCta: string;
+		declaredComplete: string;
+		notDeclared: string;
+		completeCta: string;
+		completedToast: string;
+		declaredToast: string;
+		purchasedFrom: string;
+		noCommercial: string;
+		openSource: string;
+		attributionRequired: string;
+		reopensNotice: string;
+		formTitle: string;
+		formKind: string;
+		formName: string;
+		formNamePlaceholder: string;
+		formUrl: string;
+		formLicence: string;
+		formAttribution: string;
+		formAttributionPlaceholder: string;
+		formSubmit: string;
+		kinds: {
+			original: string;
+			public_domain: string;
+			creative_commons: string;
+			royalty_free: string;
+			licensed_commercial: string;
+			third_party_work: string;
+		};
+	};
+	castings: {
+		title: string;
+		subtitle: string;
+		detailTitle: string;
+		languageFilter: string;
+		languagePlaceholder: string;
+		languageHint: string;
+		filterCta: string;
+		blindLabel: string;
+		blindNotice: string;
+		maxSeconds: string;
+		closesToday: string;
+		closesIn: string;
+		deadline: string;
+		empty: string;
+		emptyBody: string;
+		notFound: string;
+		backToList: string;
+		briefTitle: string;
+		sampleLineTitle: string;
+		sampleLineHint: string;
+		takesTitle: string;
+		noTakes: string;
+		noPlaybackNotice: string;
+		auditionCta: string;
+		chooseCta: string;
+		notYours: string;
+		selectedToast: string;
+		auditionSentToast: string;
+		formTitle: string;
+		formHint: string;
+		formUrl: string;
+		formNotes: string;
+		formNotesPlaceholder: string;
+		formReplaceNotice: string;
+		formSubmit: string;
+		statuses: {
+			open: string;
+			reviewing: string;
+			selected: string;
+			cancelled: string;
+		};
+	};
+	guides: {
+		title: string;
+		subtitle: string;
+		allDomains: string;
+		allKinds: string;
+		kinds: {
+			onboarding: string;
+			toolkit: string;
+			writeup_template: string;
+			brief_template: string;
+		};
+		briefNotice: string;
+		empty: string;
+		emptyBody: string;
+		notFound: string;
+		backToList: string;
+		otherLocaleNotice: string;
+	};
+	/** The five craft records served with a nested score. */
+	/** The dashboard home: what to do next, what is waiting on you. */
+	/** What companies are asking of you â the talent side of recruitment. */
+	opportunities: {
+		title: string;
+		waiting: string;
+		nothingWaiting: string;
+		empty: string;
+		emptyWithPosting: string;
+		emptyNoPosting: string;
+		pitchesTitle: string;
+		pitchesHint: string;
+		opened: string;
+		interested: string;
+		notInterested: string;
+		answeredToast: string;
+		declineTitle: string;
+		declineHint: string;
+		declinePlaceholder: string;
+		declineSubmit: string;
+		campaignsTitle: string;
+		interviewsTitle: string;
+		pickASlot: string;
+		joinMeeting: string;
+		declineInterview: string;
+		slotConfirmedToast: string;
+		declinedToast: string;
+		trialsTitle: string;
+		trialsHint: string;
+		until: string;
+		approvedHours: string;
+		pendingHours: string;
+		openTrial: string;
+		postingTitle: string;
+		remoteOnly: string;
+		notLookingFor: string;
+		pitchesLeft: string;
+	};
+	/** One trial period and the days claimed on it. */
+	trialHours: {
+		title: string;
+		back: string;
+		approvedTotal: string;
+		pendingTotal: string;
+		empty: string;
+		approved: string;
+		rejected: string;
+		pending: string;
+		rejectionReason: string;
+		claimCta: string;
+		claimTitle: string;
+		claimSubmit: string;
+		claimedToast: string;
+		formDate: string;
+		formHours: string;
+		formSummary: string;
+		formSummaryPlaceholder: string;
+		formSummaryHint: string;
+	};
+	dashboardHome: {
+		title: string;
+		greeting: string;
+		waitingOnYou: string;
+		nothingWaiting: string;
+		invitationsTitle: string;
+		closesOn: string;
+		invitedOn: string;
+		openContest: string;
+		nextTitle: string;
+		cachedNotice: string;
+		nextEmpty: string;
+		nextEmptyBody: string;
+		suggestionsUnavailable: string;
+		pickAnOrientation: string;
+		difficulty: string;
+		estimatedHours: string;
+		formats: { individual: string; contest: string };
+		partOfTitle: string;
+		eventsTitle: string;
+		contribution: string;
+		mentoringTitle: string;
+		asMentor: string;
+		asMentee: string;
+		periodEnds: string;
+		notRenewing: string;
+		stewardshipsTitle: string;
+		since: string;
+		yoursTitle: string;
+		shortcuts: {
+			opportunities: string;
+			bookmarks: string;
+			notes: string;
+			goals: string;
+			vouchings: string;
+			slices: string;
+			teams: string;
+		};
+	};
+	domainRecord: {
+		titles: {
+			code: string;
+			quality: string;
+			ops: string;
+			leadership: string;
+			security: string;
+		};
+		primary: string;
+		until: string;
+		openReport: string;
+		targetDomainsTitle: string;
+		credentialsTitle: string;
+		credentialsHint: string;
+		code: {
+			storedDiffers: string;
+			languagesTitle: string;
+			packagesTitle: string;
+			readOn: string;
+			missionsTitle: string;
+			portfoliosTitle: string;
+			portfolioVerified: string;
+			portfolioDeclared: string;
+		};
+		quality: {
+			bugsTitle: string;
+			bugsHint: string;
+			severityUnreviewed: string;
+			seeTheFix: string;
+			testRunsTitle: string;
+			testRunsHint: string;
+			testCount: string;
+		};
+		ops: {
+			objectivesTitle: string;
+			objectivesHint: string;
+			objectiveFigures: string;
+			met: string;
+			missed: string;
+			evidence: string;
+			incidentsTitle: string;
+			detect: string;
+			resolve: string;
+			postmortem: string;
+			costTitle: string;
+			sloKept: string;
+			sloBroken: string;
+		};
+		leadership: {
+			artefactsTitle: string;
+			adopted: string;
+			confidentialTitle: string;
+			confidentialHint: string;
+			cohortsTitle: string;
+			cohortFigures: string;
+			leftForWork: string;
+			ledToEnd: string;
+			retrosTitle: string;
+			retrosHint: string;
+			retroFigures: string;
+			followedThrough: string;
+		};
+		security: {
+			findingsTitle: string;
+			findingsHint: string;
+			underEmbargo: string;
+			writeup: string;
+			practiceTitle: string;
+			credentialChecked: string;
+			credentialDeclared: string;
+			elsewhereTitle: string;
+			figuresDeclared: string;
+		};
+	};
+	/** SKI-327 — the solicitations inbox. */
+	requests: {
+		title: string;
+		subtitle: string;
+		waitingCount: string;
+		empty: string;
+		emptyHint: string;
+		onboardingsTitle: string;
+		onboardingMonths: string;
+		onboardingConsent: string;
+		asJunior: string;
+		asMentor: string;
+		since: string;
+		placementsTitle: string;
+		placementTerms: string;
+		placementConsent: string;
+		assessmentsTitle: string;
+		assessmentsHint: string;
+		replyOpenCta: string;
+		replyCta: string;
+		replySent: string;
+		cancelCta: string;
+		betaTitle: string;
+		betaHint: string;
+		betaWeeks: string;
+		joinCta: string;
+		joined: string;
+		acceptCta: string;
+		declineCta: string;
+		accepted: string;
+		declined: string;
+		unlistedNote: string;
+		unlistedCta: string;
+	};
+
+	/** SKI-328 — advances on an issued invoice. */
+	advances: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		whereCta: string;
+		ofExpected: string;
+		fee: string;
+	};
+
+	/** SKI-328 — what the platform may do with a record, and what it pays. */
+	dataConsent: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		commercial: string;
+		on: string;
+		revenueShare: string;
+		agreeCta: string;
+		withdrawCta: string;
+		agreed: string;
+		withdrawn: string;
+	};
+
+	/** SKI-326 — what a brand will pay a creator for. */
+	creator: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		campaignsTitle: string;
+		campaignsHint: string;
+		perPiece: string;
+		pot: string;
+		piecesLeftApprox: string;
+		until: string;
+		writeCta: string;
+		pieceTitlePlaceholder: string;
+		sendCta: string;
+		cancelCta: string;
+		pieceSent: string;
+		pieceSentWithPot: string;
+		ambassadorsTitle: string;
+		ambassadorsHint: string;
+		perMonth: string;
+		commitment: string;
+		minimumRank: string;
+		swag: string;
+		previewAccess: string;
+		acceptCta: string;
+		declineCta: string;
+		joined: string;
+		declined: string;
+	};
+
+	/** SKI-325 — studios, living labs and proposals. */
+	work: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		studiosTitle: string;
+		studiosHint: string;
+		dayRate: string;
+		maxMembers: string;
+		labsTitle: string;
+		labsHint: string;
+		monthlyPool: string;
+		communityTarget: string;
+		joinCta: string;
+		labJoined: string;
+		proposalsTitle: string;
+		proposalsHint: string;
+		budgetEstimate: string;
+		acceptCta: string;
+		declineCta: string;
+		proposalAccepted: string;
+		proposalDeclined: string;
+	};
+
+	/** The quality workbench. */
+	quality: {
+		title: string;
+		subtitle: string;
+		tabMine: string;
+		tabQueue: string;
+		tabPublished: string;
+		queueHint: string;
+		empty: { mine: string; queue: string; published: string };
+		emptyHint: string;
+		wasFiledAs: string;
+		seeTheFix: string;
+		fixConfirmed: string;
+		fixUnconfirmed: string;
+		confirmFixCta: string;
+		awaitingReview: string;
+		acceptCta: string;
+		regradeTo: string;
+		reviewed: string;
+		testRunsLiveOnSlices: string;
+	};
+
+	/** Test runs imported against a slice. */
+	testRuns: {
+		title: string;
+		verified: string;
+		unverified: string;
+		verifyCta: string;
+		counts: string;
+		figuresFrom: string;
+		openReport: string;
+	};
+
+	/** The ops workbench. */
+	ops: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		objectivesTitle: string;
+		objectivesHint: string;
+		targetOver: string;
+		running: string;
+		met: string;
+		missed: string;
+		verified: string;
+		selfReported: string;
+		observedOutside: string;
+		evidence: string;
+		incidentsTitle: string;
+		incidentsHint: string;
+		ongoing: string;
+		minutes: string;
+		timeToDetect: string;
+		timeToResolve: string;
+		postmortemPublished: string;
+		postmortemMissing: string;
+		costWorkNote: string;
+	};
+
+	/** The game domain. */
+	game: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		featuredTitle: string;
+		weekOf: string;
+		projectsHighlighted: string;
+		modsTitle: string;
+		modsHint: string;
+		noMods: string;
+		registerCta: string;
+		modTitlePlaceholder: string;
+		targetGamePlaceholder: string;
+		targetPlatformPlaceholder: string;
+		modDescriptionPlaceholder: string;
+		saveCta: string;
+		cancelCta: string;
+		modRegistered: string;
+		openOnHost: string;
+		declaredDownloads: string;
+		whereTheRestIs: string;
+	};
+
+	/** Playtests on a game slice. */
+	playtest: {
+		title: string;
+		gateReading: string;
+		gateMet: string;
+		gateNotYet: string;
+		fun: string;
+		clarity: string;
+		minutes: string;
+		wouldPlayAgain: string;
+		wouldPlayAgainLabel: string;
+		funLabel: string;
+		clarityLabel: string;
+		difficultyLabel: string;
+		difficulty: { too_easy: string; just_right: string; too_hard: string };
+		bugsPlaceholder: string;
+		suggestionsPlaceholder: string;
+		openCta: string;
+		sendCta: string;
+		cancelCta: string;
+		recorded: string;
+	};
+
+	/** The leadership workbench. */
+	leadership: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		participants: string;
+		shared: string;
+		notShared: string;
+		showActions: string;
+		hideActions: string;
+		noActions: string;
+		done: string;
+		late: string;
+		abandonedBecause: string;
+		markDoneCta: string;
+		newActionPlaceholder: string;
+		addActionCta: string;
+		actionAdded: string;
+		actionDone: string;
+		actionAbandoned: string;
+		whereTheRestIs: string;
+	};
+
+	/** A leadership artefact on its slice. */
+	leadershipArtefact: {
+		title: string;
+		acknowledged: string;
+		pending: string;
+		acknowledgeCta: string;
+		acknowledgedToast: string;
+		declareCta: string;
+		declaredToast: string;
+		confirmCta: string;
+		confirmedToast: string;
+		adoptionCta: string;
+		adoptionToast: string;
+		redactionNote: string;
+	};
+
+	/** What became of a cohort. */
+	cohortOutcomes: {
+		title: string;
+		nothingRecorded: string;
+		pickMember: string;
+		pickReason: string;
+		reasons: Record<string, string>;
+		graduateCta: string;
+		graduated: string;
+		departureCta: string;
+		departureRecorded: string;
+		departureNote: string;
+		leadCta: string;
+		ledToast: string;
+		concludeCta: string;
+		concludedToast: string;
+	};
+
+	/** The project catalogue. */
+	projects: {
+		title: string;
+		subtitle: string;
+		tabCurated: string;
+		tabLooking: string;
+		tabRecommended: string;
+		hint: { curated: string; looking: string; recommended: string };
+		empty: { curated: string; looking: string; recommended: string };
+		curatedBadge: string;
+		lookingBadge: string;
+		oss: string;
+		repo: string;
+		starCta: string;
+		starred: string;
+		unstarred: string;
+		matchedBecause: string;
+		interestIsNotMembership: string;
+	};
+
+	/** The applicant tracker, enterprise side. */
+	ats: {
+		title: string;
+		subtitle: string;
+		plansTitle: string;
+		currentPlan: string;
+		noPlan: string;
+		currentBadge: string;
+		chooseCta: string;
+		subscribed: string;
+		unlimited: string;
+		maxOpenings: string;
+		maxCandidates: string;
+		retention: string;
+		openingsTitle: string;
+		noOpenings: string;
+		noOpeningsHint: string;
+		liveTitle: string;
+		closedTitle: string;
+		positions: string;
+		remoteOk: string;
+		closeCta: string;
+		closed: string;
+		scopeNote: string;
+	};
+
+	/** OAuth providers linked to an account. */
+	linkedAccounts: {
+		title: string;
+		subtitle: string;
+		none: string;
+		linkedOn: string;
+		linkCta: string;
+		unlinkCta: string;
+		unlinked: string;
+		lastOne: string;
+		lastOneNote: string;
+	};
+
+	/** The declared half of a profile: jobs, schools, languages. */
+	cv: {
+		title: string;
+		subtitle: string;
+		declaredNote: string;
+		experiencesTitle: string;
+		educationsTitle: string;
+		languagesTitle: string;
+		addCta: string;
+		saveCta: string;
+		removeCta: string;
+		removed: string;
+		current: string;
+		present: string;
+		leaveEndEmpty: string;
+		companyPlaceholder: string;
+		titlePlaceholder: string;
+		schoolPlaceholder: string;
+		degreePlaceholder: string;
+		setLanguageCta: string;
+		experienceAdded: string;
+		educationAdded: string;
+		languageSet: string;
+	};
+
+	/** The review queue: tasks and beginner verifications. */
+	reviewQueue: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		tasksTitle: string;
+		seniority: string;
+		claimCta: string;
+		claimed: string;
+		minutesLeft: string;
+		hoursLeft: string;
+		pastSla: string;
+		verificationsTitle: string;
+		verificationsHint: string;
+	};
+
+	/** The discovery page. */
+	explore: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		sponsoredTitle: string;
+		sponsoredHint: string;
+		sponsoredBadge: string;
+		forYouTitle: string;
+		forYouHint: string;
+		shelves: Record<string, string>;
+	};
+
+	/** The way into code work. */
+	codeDiscovery: {
+		title: string;
+		subtitle: string;
+		firstIssuesTitle: string;
+		firstIssuesHint: string;
+		languagePlaceholder: string;
+		filterCta: string;
+		noIssues: string;
+		noIssuesHint: string;
+		openIssue: string;
+		ecosystemsTitle: string;
+		topLanguagesTitle: string;
+		topLanguagesHint: string;
+	};
+
+	/** Hiring contests, candidate side. */
+	contests: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		acceptCta: string;
+		declineCta: string;
+		enterCta: string;
+		submitCta: string;
+		cancelCta: string;
+		notesPlaceholder: string;
+		accepted: string;
+		declined: string;
+		submitted: string;
+		enterpriseNote: string;
+	};
+
+	/** Devices and public-feed consent. */
+	deviceFeed: {
+		devicesTitle: string;
+		devicesSubtitle: string;
+		noDevices: string;
+		removeDeviceCta: string;
+		deviceRemoved: string;
+		feedTitle: string;
+		feedSubtitle: string;
+		withdrawCta: string;
+		withdrawConfirm: string;
+		withdrawConfirmCta: string;
+		withdrawn: string;
+		cancelCta: string;
+	};
+
+	/** Benchmarks and safety reports on a slice. */
+	evidence: {
+		benchmarksTitle: string;
+		reproducedOn: string;
+		notReproduced: string;
+		reproduceCta: string;
+		reproducedToast: string;
+		safetyTitle: string;
+		safetyHint: string;
+		seenAgain: string;
+		sawItTooCta: string;
+		disclosesOn: string;
+	};
+
+	/** The GitHub link. */
+	githubLink: {
+		title: string;
+		subtitle: string;
+		repoCount: string;
+		connectCta: string;
+		reconnectCta: string;
+		syncCta: string;
+		synced: string;
+		cvCta: string;
+		disconnectCta: string;
+		disconnectNote: string;
+		disconnectConfirmCta: string;
+		disconnected: string;
+		cancelCta: string;
+		syncNote: string;
+	};
+
+	/** Code portfolios and review languages. */
+	declaredCraft: {
+		portfoliosTitle: string;
+		portfoliosHint: string;
+		platformPlaceholder: string;
+		handlePlaceholder: string;
+		reviewLanguagesTitle: string;
+		reviewLanguagesHint: string;
+		notePlaceholder: string;
+		addCta: string;
+		removeCta: string;
+		removed: string;
+		portfolioAdded: string;
+		languageAdded: string;
+	};
+
+	/** What is sold around mentoring. */
+	mentoringProducts: {
+		subscriptionsTitle: string;
+		usage: string;
+		cancelCta: string;
+		cancelled: string;
+		cancelNote: string;
+		slotsTitle: string;
+		slotsHint: string;
+		openSlotCta: string;
+		slotOpened: string;
+		programsTitle: string;
+		empty: string;
+	};
+
+	/** A cohort's teaching record. */
+	educationOutcomes: {
+		title: string;
+		recorded: string;
+		noneRecorded: string;
+		adoptions: string;
+		clearedNote: string;
+		clearedCta: string;
+		clearedConfirmCta: string;
+		clearedDeclared: string;
+		cancelCta: string;
+	};
+
+	/** Deliverables and counted skills on a profile. */
+	workAndSkills: {
+		deliverablesTitle: string;
+		openCta: string;
+		skillsTitle: string;
+		skillsHint: string;
+	};
+
+	/** API and corporate learning plans. */
+	programmaticPlans: {
+		apiTitle: string;
+		apiSubtitle: string;
+		monthlyQuota: string;
+		dailyCeiling: string;
+		attributionRequired: string;
+		sla: string;
+		unlimited: string;
+		learningTitle: string;
+		learningSubtitle: string;
+		perSeat: string;
+	};
+
+	/** The assistant's long-running jobs. */
+	assistantJobs: {
+		title: string;
+		subtitle: string;
+		reviewCta: string;
+		recommendCta: string;
+		working: string;
+		gaveUp: string;
+		notAValidation: string;
+	};
+
+	/** Reporting somebody or something. */
+	report: {
+		cta: string;
+		title: string;
+		reasonLabel: string;
+		reasons: Record<string, string>;
+		detailsPlaceholder: string;
+		whatHappensNext: string;
+		sendCta: string;
+		cancelCta: string;
+		closeCta: string;
+		sent: string;
+	};
+
+	/** The very first run. */
+	firstRun: {
+		title: string;
+		subtitle: string;
+		startCta: string;
+		started: string;
+	};
+
+	craftProfile: {
+		titles: {
+			ai: string;
+			audio: string;
+			communication: string;
+			education: string;
+		};
+		craftScoreTitle: string;
+		tierLabel: string;
+		cappedNotice: string;
+		nextTierAt: string;
+		breakdownTitle: string;
+		tradesTitle: string;
+		attestationsTitle: string;
+		verifyCta: string;
+		highlightsTitle: string;
+		highlightsHint: string;
+		languagesTitle: string;
+		languagesHint: string;
+		readFirstTitle: string;
+		views: string;
+		engagement: string;
+		cohortsTitle: string;
+		learners: string;
+		completed: string;
+		noOutcomes: string;
+		taughtTitle: string;
+		adoptions: string;
+		openWork: string;
+		notAClaim: string;
 	};
 	events: {
 		title: string;
@@ -710,6 +2124,7 @@ export interface Translations {
 		startsOn: string;
 		endsOn: string;
 		stampEarned: string;
+		counted: string;
 	};
 	privacyPage: {
 		title: string;
@@ -773,7 +2188,131 @@ export interface Translations {
 			receivedFallback: string;
 		};
 	};
+	notifTypes: {
+		slice_claimed: string;
+		slice_fork_created: string;
+		slice_pr_submitted: string;
+		slice_pr_submitted_announced: string;
+		slice_ci_green: string;
+		validation_picked_up_by_you: string;
+		validation_picked_up_by_other: string;
+		slice_validated: string;
+		slice_rejected: string;
+		slice_merged_upstream: string;
+		slice_pr_rejected_upstream: string;
+		validator_application_status_changed: string;
+		validator_invitation_received: string;
+		slice_upstream_closed: string;
+		maintainer_digest_confirmation_sent: string;
+		maintainer_digest_subscribed: string;
+		statusApproved: string;
+		statusRejected: string;
+		groupedCount: string;
+		groupedEvents: string;
+		actorsAndOthers: string;
+		actorsLast: string;
+	};
+	notifActions: {
+		seeReasons: string;
+		accept: string;
+		decline: string;
+		downloadPdf: string;
+		shareBadge: string;
+		seeInvitation: string;
+		declineConfirm: string;
+		acceptedOutcome: string;
+		declinedOutcome: string;
+	};
+	guilds: {
+		tabsLabel: string;
+		tabComposition: string;
+		tabWars: string;
+		tabMembers: string;
+		tabApplications: string;
+		tabInvitations: string;
+		manage: {
+			applicationsEmpty: string;
+			invitationsEmpty: string;
+			accept: string;
+			reject: string;
+			revoke: string;
+			revokeConfirm: string;
+			applicationAccepted: string;
+			applicationRejected: string;
+			invitationRevoked: string;
+			linkInvitation: string;
+			expiresOn: string;
+		};
+		roleOwner: string;
+		roleOfficer: string;
+		roleMember: string;
+		warsEmpty: string;
+		membersEmpty: string;
+		warStatus: {
+			proposed: string;
+			accepted: string;
+			declined: string;
+			concluded: string;
+		};
+		create: {
+			cta: string;
+			title: string;
+			subtitle: string;
+			rule: string;
+			name: string;
+			namePlaceholder: string;
+			slug: string;
+			slugHint: string;
+			tag: string;
+			tagHint: string;
+			description: string;
+			color: string;
+			cofounders: string;
+			cofoundersHint: string;
+			cofounderPlaceholder: string;
+			addCofounder: string;
+			removeCofounder: string;
+			cofounderCount: string;
+			cofounderNotFound: string;
+			cofounderDuplicate: string;
+			cofounderSelf: string;
+			cofounderFull: string;
+			submit: string;
+			needThree: string;
+			created: string;
+		};
+	};
+	tracks: {
+		title: string;
+		subtitle: string;
+		estimatedHours: string;
+		emptyTitle: string;
+		emptyBody: string;
+		enrollCta: string;
+		loginToEnroll: string;
+		enrolledBadge: string;
+		completedBadge: string;
+		inProgressBadge: string;
+		enrolledToast: string;
+		startedOn: string;
+		viewCta: string;
+		browseCta: string;
+		dashboardTitle: string;
+		dashboardSubtitle: string;
+		dashboardEmptyTitle: string;
+		dashboardEmptyBody: string;
+	};
 	teams: {
+		dashboard: {
+			title: string;
+			subtitle: string;
+			findSlotCta: string;
+			viewCta: string;
+			memberCount: string;
+			capacity: string;
+			emptyTitle: string;
+			emptyBody: string;
+		};
 		marketplace: {
 			title: string;
 			subtitle: string;
@@ -935,6 +2474,330 @@ export interface Translations {
 			plagiarismQueue: string;
 			mentorZone: string;
 			juryTournament: string;
+			vouchingQueue: string;
+			externalSignalQueue: string;
+		};
+	};
+	p26: {
+		verify: {
+			seoTitleValid: string;
+			seoTitleDefault: string;
+			seoDescValid: string;
+			seoDescDefault: string;
+			fallbackError: string;
+			errorTitle: string;
+			backHome: string;
+			notFoundTitle: string;
+			invalidBadge: string;
+			verifiedTitle: string;
+			verifiedBadge: string;
+			issuedOn: string;
+			contributor: string;
+			validatedBy: string;
+			contribution: string;
+			difficultyBadge: string;
+			mergedUpstream: string;
+			repoLabel: string;
+			viewPr: string;
+			downloadPdf: string;
+			share: string;
+			attestationId: string;
+			reasonMalformed: string;
+			reasonUnknown: string;
+			copyToast: string;
+			copyPrompt: string;
+		};
+		forMaintainers: {
+			seoTitle: string;
+			seoDesc: string;
+			ogDesc: string;
+			title: string;
+			subtitle: string;
+			whatSkilluvTitle: string;
+			whatSkilluvBullet1: string;
+			whatSkilluvBullet2Prefix: string;
+			whatSkilluvBullet2Suffix: string;
+			whatSkilluvBullet3: string;
+			whatReceiveTitle: string;
+			whatReceiveBullet1: string;
+			whatReceiveBullet2: string;
+			whatReceiveBullet3: string;
+			badgeTitle: string;
+			badgeNew: string;
+			badgeDesc: string;
+			badgeAlt: string;
+			copyBtn: string;
+			copyAria: string;
+			badgeMarkdownAria: string;
+			copyToast: string;
+			copyPrompt: string;
+			faqTitle: string;
+			faqQ1: string;
+			faqA1: string;
+			faqQ2: string;
+			faqA2: string;
+			faqQ3: string;
+			faqA3: string;
+			formTitle: string;
+			successTitle: string;
+			successMessage: string;
+			githubLabel: string;
+			githubPh: string;
+			emailLabel: string;
+			emailPh: string;
+			reposLabel: string;
+			reposHint: string;
+			reposPh: string;
+			optInLabel: string;
+			submitBtn: string;
+			errInvalidGithub: string;
+			errInvalidEmail: string;
+			errReposMin: string;
+			errReposFormat: string;
+			errReposMax: string;
+			errOptIn: string;
+			errGeneric: string;
+		};
+		maintainerDigest: {
+			confirmSeoTitle: string;
+			confirmLoading: string;
+			confirmSuccessTitle: string;
+			confirmSuccessBody: string;
+			confirmBackHome: string;
+			confirmInvalidTitle: string;
+			confirmInvalidFallback: string;
+			confirmFailed: string;
+			confirmSubscribeAgain: string;
+			unsubSeoTitle: string;
+			unsubLoading: string;
+			unsubSuccessTitle: string;
+			unsubSuccessBody: string;
+			unsubInvalidTitle: string;
+			unsubInvalidFallback: string;
+			unsubFailed: string;
+			unsubBackHome: string;
+		};
+		slice: {
+			status: {
+				open: string;
+				claimed: string;
+				in_progress: string;
+				submitted: string;
+				ci_green: string;
+				pending_validation: string;
+				validated: string;
+				merged: string;
+				closed: string;
+				expired: string;
+			};
+			rankGte: string;
+			difficultyBadge: string;
+			daysLeft: string;
+			expired: string;
+			issueGithub: string;
+			yourFork: string;
+			viewPr: string;
+			acceptanceTitle: string;
+			workflowTitle: string;
+			workflowInterrupted: string;
+			rejectTitle: string;
+			claimGateBlocked: string;
+			claimBtn: string;
+			loginToClaim: string;
+			submitPrTitle: string;
+			prUrlLabel: string;
+			prUrlPh: string;
+			announceLabel: string;
+			announceHint: string;
+			sendPrBtn: string;
+			unclaimBtn: string;
+			ciPending: string;
+			ciGreen: string;
+			pendingReview: string;
+			pendingReviewBy: string;
+			attestationGenerated: string;
+			mergedUpstream: string;
+			downloadAttestationPdf: string;
+			verifyPublic: string;
+			attestationIdLabel: string;
+			confirmRelease: string;
+			toastReserved: string;
+			toastReleased: string;
+			toastPrSent: string;
+			toastReserveError: string;
+			toastReleaseError: string;
+			toastSendError: string;
+			widgets: {
+				activeTitle: string;
+				activeEmpty: string;
+				activeCountSingular: string;
+				activeCountPlural: string;
+				diaryTitle: string;
+				diaryTextareaPh: string;
+				diaryPublicLabel: string;
+				diaryPublishBtn: string;
+				diaryEmpty: string;
+				diaryPublicBadge: string;
+				diaryPrivateBadge: string;
+				diaryToastPublished: string;
+				diaryToastError: string;
+			};
+		};
+		dashboardSlices: {
+			seoTitle: string;
+			title: string;
+			subtitle: string;
+			tabActive: string;
+			tabDone: string;
+			tabArchived: string;
+			difficultyBadge: string;
+			rankBadge: string;
+			viewBtn: string;
+			claimBtn: string;
+			detailBtn: string;
+			emptyActiveTitle: string;
+			emptyActiveBody: string;
+			emptyActiveCta: string;
+			emptyDoneTitle: string;
+			emptyArchivedTitle: string;
+			recoTitle: string;
+			recoBasedOnRank: string;
+			recoMedian: string;
+			recoEmptyTitle: string;
+			recoEmptyBody: string;
+			toastReserved: string;
+			toastGateBlocked: string;
+			toastReserveError: string;
+		};
+		validation: {
+			queueSeoTitle: string;
+			queueTitle: string;
+			queueSubtitle: string;
+			filterAll: string;
+			filterMine: string;
+			notValidatorTitle: string;
+			notValidatorBody: string;
+			applyCta: string;
+			retryBtn: string;
+			emptyTitle: string;
+			emptyBody: string;
+			difficultyBadge: string;
+			viewPr: string;
+			reviewBtn: string;
+			pickupBtn: string;
+			toastPickedUp: string;
+			toastTakenByOther: string;
+			toastPickupError: string;
+			toastLoadError: string;
+			reviewSeoTitle: string;
+			backToQueue: string;
+			notFoundTitle: string;
+			notFoundBody: string;
+			reviewLoadError: string;
+			statusBadge: string;
+			approvedTitle: string;
+			approvedFragments: string;
+			attestationIdLabel: string;
+			downloadPdf: string;
+			warningPublicApprove: string;
+			reviewPrTitle: string;
+			reviewIframeHint: string;
+			openPrOnGithub: string;
+			verdictTitle: string;
+			feedbackLabel: string;
+			feedbackPh: string;
+			feedbackCounter: string;
+			rejectBtn: string;
+			approveBtn: string;
+			errClaimerSelf: string;
+			errApprove: string;
+			errReject: string;
+			toastRejected: string;
+		};
+		validatorApplication: {
+			newSeoTitle: string;
+			backToApplications: string;
+			newTitle: string;
+			newSubtitle: string;
+			domainLabel: string;
+			thresholdsTitle: string;
+			thresholdsUnavailable: string;
+			thresholdsLoading: string;
+			rankLine: string;
+			rankMiss: string;
+			prsLine: string;
+			prsMiss: string;
+			reposLine: string;
+			reposMiss: string;
+			tenureLine: string;
+			tenureMiss: string;
+			motivationLabel: string;
+			motivationPh: string;
+			motivationCounter: string;
+			applyBtn: string;
+			toastApplySuccess: string;
+			toastApplyCriteria: string;
+			toastApplyError: string;
+			listSeoTitle: string;
+			listTitle: string;
+			listNewBtn: string;
+			listFilterAll: string;
+			listFilterPending: string;
+			listFilterAccepted: string;
+			listFilterRejected: string;
+			listFilterWithdrawn: string;
+			statusPending: string;
+			statusAccepted: string;
+			statusRejected: string;
+			statusWithdrawn: string;
+			originAdminInvite: string;
+			originApplication: string;
+			adminNote: string;
+			createdOn: string;
+			updatedOn: string;
+			acceptInvitationBtn: string;
+			viewDetailBtn: string;
+			withdrawBtn: string;
+			listEmptyTitle: string;
+			listEmptyBody: string;
+			listApplyCta: string;
+			listEmptyFilterTitle: string;
+			listLoadError: string;
+			toastWithdrawn: string;
+			toastAccepted: string;
+			toastError: string;
+			inviteSeoTitle: string;
+			inviteBackLink: string;
+			inviteNotFoundTitle: string;
+			inviteNotFoundBody: string;
+			inviteError: string;
+			inviteTitle: string;
+			inviteBadge: string;
+			invitePendingBadge: string;
+			inviteBody: string;
+			inviteReasonTitle: string;
+			inviteNoNote: string;
+			inviteReceivedOn: string;
+			inviteAcceptBtn: string;
+			inviteDeclineBtn: string;
+			toastInviteAccepted: string;
+			toastInviteDeclined: string;
+		};
+		badges: {
+			ariaLabel: string;
+			sectionLabel: string;
+			personalTitle: string;
+			personalDesc: string;
+			personalAlt: string;
+			notGenerated: string;
+			markdownLabel: string;
+			htmlLabel: string;
+			copyBtn: string;
+			reposTitle: string;
+			reposDesc: string;
+			repoBadgeAlt: string;
+			copyToastSuccess: string;
+			copyToastError: string;
 		};
 	};
 }

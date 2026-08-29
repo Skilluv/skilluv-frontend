@@ -8,7 +8,7 @@ The Skilluv team takes security seriously. If you discover a security vulnerabil
 
 ### How to report
 
-Send a detailed report to **security@skilluv.com** (or, if that inbox is not yet active, to the maintainer's email listed on the GitHub profile).
+Send a detailed report to **security@skill-uv.com** (or, if that inbox is not yet active, to the maintainer's email listed on the GitHub profile).
 
 Alternatively, use GitHub's [Private Vulnerability Reporting](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability) feature on this repository.
 

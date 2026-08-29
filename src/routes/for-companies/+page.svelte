@@ -272,7 +272,7 @@
 					<span class="text-sm font-semibold text-accent">
 						Certifications
 					</span>
-					<span class="ml-auto text-xs text-text-muted">4 823 {i18n.locale === 'fr' ? 'signés' : 'signed'}</span>
+					<span class="ml-auto text-xs text-text-muted">{i18n.t('commonExtra.exampleLabel')}</span>
 				</div>
 				<div class="p-5 flex-1 flex flex-col">
 					<p class="text-sm text-text-muted leading-relaxed mb-5">
@@ -284,7 +284,7 @@
 						<p class="text-[10px] uppercase tracking-widest text-text-muted mb-0.5">
 							{i18n.locale === 'fr' ? 'Code vérifiable' : 'Verifiable code'}
 						</p>
-						<p class="font-mono text-sm font-bold text-accent">#SLV-2026-R7X4</p>
+						<p class="font-mono text-sm font-bold text-accent">#ABCD1234</p>
 					</div>
 				</div>
 			</a>
@@ -308,7 +308,7 @@
 						<p class="text-[10px] uppercase tracking-widest text-text-muted mb-0.5">
 							{i18n.locale === 'fr' ? 'Numéro facture' : 'Invoice number'}
 						</p>
-						<p class="font-mono text-sm font-bold text-primary">SKL-2026-00042</p>
+						<p class="font-mono text-sm font-bold text-primary">ABCD1234</p>
 					</div>
 				</div>
 			</a>

@@ -1,4 +1,4 @@
-import type { UserPrivate, SkillDomain } from '$lib/types';
+import type { ApiResponse, UserPrivate, SkillDomain } from '$lib/types';
 import { createApiClient } from './client';
 
 const api = createApiClient();
@@ -111,6 +111,17 @@ interface SessionsResponse {
 // --- Fonctions API ---
 
 export const authApi = {
+	/**
+	 * Confirm an email change from the link sent to the new address.
+	 *
+	 * The confirmation goes to the *new* address on purpose: proving you can
+	 * receive mail there is the whole check, and a confirmation sent to the old
+	 * one would only prove you still hold what you already had.
+	 */
+	confirmEmailChange(token: string) {
+		return api.post<ApiResponse<unknown>>('/auth/change-email/confirm', { token });
+	},
+
 	register(data: RegisterRequest) {
 		return api.post<AuthResponse>('/auth/register', data);
 	},

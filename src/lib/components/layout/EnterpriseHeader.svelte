@@ -15,6 +15,7 @@
 	} from '@lucide/svelte';
 	import LogoutConfirmModal from './LogoutConfirmModal.svelte';
 	import EnterpriseSwitcher from './EnterpriseSwitcher.svelte';
+	import BrandLogo from '$components/layout/BrandLogo.svelte';
 
 	// Header dedicated to the enterprise workspace — no candidate-oriented
 	// links (challenges, forum, guilds, leaderboards, etc.). Owners and
@@ -58,7 +59,7 @@
 	<!-- Left: Skilluv logo + enterprise workspace switcher -->
 	<div class="flex items-center gap-3">
 		<a href="/enterprise/dashboard" class="flex items-center gap-2 text-lg font-black tracking-tight">
-			<img src="/favicon.svg" alt="" class="h-6 w-6" />
+			<BrandLogo variant="mark" size={24} />
 			<span>
 				<span class="text-accent">Skill</span><span class="text-text-primary">uv</span>
 			</span>

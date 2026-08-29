@@ -8,6 +8,7 @@
 	import type { LeaderboardEntry, LeaderboardDomain, LeaderboardPeriod } from '$types';
 	import { onMount } from 'svelte';
 	import { Trophy } from '@lucide/svelte';
+	import { PUBLIC_DOMAINS, domainStyle, rankColor } from '$lib/utils/domains';
 
 	let domain = $state<LeaderboardDomain>('global');
 	let period = $state<LeaderboardPeriod>('alltime');
@@ -36,20 +37,10 @@
 
 	const domains: { value: LeaderboardDomain; dot: string }[] = [
 		{ value: 'global', dot: '' },
-		{ value: 'code', dot: 'bg-blue-500' },
-		{ value: 'design', dot: 'bg-pink-500' },
-		{ value: 'game', dot: 'bg-green-500' },
-		{ value: 'security', dot: 'bg-red-500' }
+		...PUBLIC_DOMAINS.map((d) => ({ value: d as LeaderboardDomain, dot: domainStyle(d).dot }))
 	];
 
 	const periods: LeaderboardPeriod[] = ['alltime', 'monthly', 'weekly'];
-
-	const titleColors: Record<string, string> = {
-		apprenti: 'text-text-muted',
-		artisan: 'text-blue-400',
-		maitre: 'text-purple-400',
-		legende: 'text-amber-400'
-	};
 
 	$effect(() => {
 		loadLeaderboard();
@@ -227,7 +218,7 @@
 						<div class="min-w-0">
 							<p class="text-sm font-semibold truncate {isMe ? 'text-accent' : ''}">{entry.display_name}</p>
 							<div class="flex items-center gap-1.5 sm:hidden">
-								<span class="text-[11px] capitalize {titleColors[entry.title]}">{i18n.t(`common.titles.${entry.title}`)}</span>
+								<span class="text-[11px] capitalize {rankColor(entry.title)}">{i18n.t(`common.titles.${entry.title}`)}</span>
 								{#if entry.golden_stars > 0}
 									<span class="text-[11px] text-amber-400">{'★'.repeat(Math.min(entry.golden_stars, 3))}</span>
 								{/if}
@@ -237,7 +228,7 @@
 
 					<!-- Title (desktop) -->
 					<div class="hidden sm:flex items-center gap-1.5">
-						<span class="text-xs capitalize {titleColors[entry.title]}">{i18n.t(`common.titles.${entry.title}`)}</span>
+						<span class="text-xs capitalize {rankColor(entry.title)}">{i18n.t(`common.titles.${entry.title}`)}</span>
 						{#if entry.golden_stars > 0}
 							<span class="text-xs text-amber-400">{'★'.repeat(Math.min(entry.golden_stars, 3))}</span>
 						{/if}

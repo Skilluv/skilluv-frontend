@@ -84,7 +84,7 @@ describe('badgeEventsApi lifecycle', () => {
 		fetchMock
 			.mockResolvedValueOnce(ok([]))
 			.mockResolvedValueOnce(ok({ id: 'e1', slug: 'fest' }))
-			.mockResolvedValueOnce(ok({ event: { slug: 'fest' }, joined_at: '2026-07-16', stamp_earned: false }))
+			.mockResolvedValueOnce(ok({ joined: true, event_slug: 'fest', role: 'participant' }))
 			.mockResolvedValueOnce(ok([]));
 
 		const { badgeEventsApi } = await import('../../src/lib/api/badge_events');
@@ -93,11 +93,11 @@ describe('badgeEventsApi lifecycle', () => {
 		await badgeEventsApi.join('fest');
 		await badgeEventsApi.myEvents();
 
-		expect(fetchMock.mock.calls[0][0]).toBe('/api/badge-events');
-		expect(fetchMock.mock.calls[1][0]).toBe('/api/badge-events/fest');
-		expect(fetchMock.mock.calls[2][0]).toBe('/api/badge-events/fest/join');
+		expect(fetchMock.mock.calls[0][0]).toBe('/api/events');
+		expect(fetchMock.mock.calls[1][0]).toBe('/api/events/fest');
+		expect(fetchMock.mock.calls[2][0]).toBe('/api/events/fest/join');
 		expect(fetchMock.mock.calls[2][1].method).toBe('POST');
-		expect(fetchMock.mock.calls[3][0]).toBe('/api/users/me/badge-events');
+		expect(fetchMock.mock.calls[3][0]).toBe('/api/users/me/events');
 	});
 });
 

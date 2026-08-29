@@ -1,4 +1,5 @@
 import { test, expect, type Page, type Route } from '@playwright/test';
+import { gotoHydrated } from './utils/hydration';
 
 // ─── Test helpers ────────────────────────────────────────────────
 
@@ -69,9 +70,24 @@ function enterpriseUser(overrides: Partial<Record<string, unknown>> = {}) {
 
 // ─── Register: 3 steps ───────────────────────────────────────────
 
+/** Submits the login form, retrying until POST /auth/login actually fires. */
+async function submitAndExpectLoginPost(page: Page) {
+	const submit = page.locator('button[type="submit"]');
+	await expect(async () => {
+		const posted = page
+			.waitForRequest(
+				(r) => r.url().includes('/api/auth/login') && r.method() === 'POST',
+				{ timeout: 1500 }
+			)
+			.catch(() => null);
+		await submit.click();
+		expect(await posted, 'POST /auth/login fired').not.toBeNull();
+	}).toPass({ timeout: 20_000 });
+}
+
 test.describe('Enterprise register', () => {
 	test('step 1 shows personal info form and OAuth options', async ({ page }) => {
-		await page.goto('/enterprise/register');
+		await gotoHydrated(page, '/enterprise/register');
 		await expect(page.locator('input[autocomplete="given-name"]')).toBeVisible();
 		await expect(page.locator('input[autocomplete="family-name"]')).toBeVisible();
 		await expect(page.locator('input[autocomplete="username"]')).toBeVisible();
@@ -82,7 +98,7 @@ test.describe('Enterprise register', () => {
 	});
 
 	test('strict password policy is enforced client-side', async ({ page }) => {
-		await page.goto('/enterprise/register');
+		await gotoHydrated(page, '/enterprise/register');
 		await page.locator('input[autocomplete="given-name"]').fill('Alice');
 		await page.locator('input[autocomplete="family-name"]').fill('Owner');
 		await page.locator('input[autocomplete="username"]').fill('acme_owner');
@@ -118,7 +134,7 @@ test.describe('Enterprise register', () => {
 			}
 		]);
 
-		await page.goto('/enterprise/register');
+		await gotoHydrated(page, '/enterprise/register');
 
 		// Step 1
 		await page.locator('input[autocomplete="given-name"]').fill('Alice');
@@ -144,7 +160,15 @@ test.describe('Enterprise register', () => {
 		await page.getByRole('checkbox').last().check(); // last checkbox = terms
 		await page.getByRole('button', { name: /Créer/i }).click();
 
-		// Step 3 — dual gate: verify email + set up 2FA
+		// Step 3 - company type picker, inserted between account creation and
+		// the dual gate. The test used to skip it and never reached the final
+		// screen. "Passer pour l'instant" keeps the backend default.
+		await expect(
+			page.getByRole('heading', { name: "Quel type d'entreprise êtes-vous ?" })
+		).toBeVisible();
+		await page.getByRole('button', { name: "Passer pour l'instant" }).click();
+
+		// Step 4 — dual gate: verify email + set up 2FA
 		await expect(page.getByText(/Vérifie ton email/i)).toBeVisible();
 		await expect(page.getByText(/Active ton 2FA/i)).toBeVisible();
 		await expect(
@@ -222,12 +246,12 @@ test.describe('Enterprise login', () => {
 			}
 		]);
 
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await page.locator('input[autocomplete="username"]').fill('acme_owner');
 		await page.locator('input[type="password"]').fill('StrongPass123!');
 		// Multiple buttons match "Se connecter" (passkey + password submit). We
 		// want the form submit — target it by type.
-		await page.locator('button[type="submit"]').click();
+		await submitAndExpectLoginPost(page);
 
 		// The old code sent enterprise/recruiter users to /challenges/onboarding,
 		// the candidate onboarding page. Now the login helper picks the right
@@ -256,18 +280,25 @@ test.describe('Enterprise login', () => {
 					})
 			},
 			{
+				// The app does `window.location.href = startUrl`, a real document
+				// navigation. A `text/plain` response aborted it
+				// (net::ERR_ABORTED); HTML is required for the page to load.
 				path: '/enterprise/sso/acme/start',
 				handler: (route) =>
-					route.fulfill({ status: 200, contentType: 'text/plain', body: 'ok' })
+					route.fulfill({
+						status: 200,
+						contentType: 'text/html',
+						body: '<!doctype html><title>SSO</title><p>ok</p>'
+					})
 			}
 		]);
 
-		await page.goto('/auth/login');
+		await gotoHydrated(page, '/auth/login');
 		await page.locator('input[autocomplete="username"]').fill('recruiter@acme.com');
 		await page.locator('input[type="password"]').fill('SomePass123!');
 		// Multiple buttons match "Se connecter" (passkey + password submit). We
 		// want the form submit — target it by type.
-		await page.locator('button[type="submit"]').click();
+		await submitAndExpectLoginPost(page);
 
 		// The page should navigate to the SSO start URL rather than showing an error.
 		await page.waitForURL('**/enterprise/sso/acme/start', { timeout: 5000 });
@@ -299,7 +330,7 @@ test.describe('Enterprise UI polish', () => {
 			(window as unknown as { __PRESEED_USER__?: unknown }).__PRESEED_USER__ = user;
 		}, enterpriseUser());
 
-		await page.goto('/');
+		await gotoHydrated(page, '/');
 
 		// The badge is a small pill with the title in uppercase. On enterprise
 		// accounts it must not appear.

@@ -191,14 +191,14 @@ describe('walletApi', () => {
 		);
 	});
 
-	it('stripeWithdraw() posts amount + currency', async () => {
+	it('withdraw() poste montant + devise sur un endpoint unique', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ transaction_id: 't1', stripe_transfer_id: 'tr_1', amount_cents: 1000 })
+			ok({ amount: '10.00', currency: 'EUR', provider: 'stripe', reference: 'tr_1', status: 'completed' })
 		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.stripeWithdraw({ amount: '10.00', currency: 'EUR' });
+		await walletApi.withdraw({ amount: '10.00', currency: 'EUR', rail: 'bank_account' });
 		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/users/me/wallet/withdraw/stripe',
+			'/api/users/me/wallet/withdraw',
 			expect.objectContaining({
 				method: 'POST',
 				body: expect.stringContaining('"amount":"10.00"')
@@ -206,12 +206,14 @@ describe('walletApi', () => {
 		);
 	});
 
-	it('momoWithdraw() posts amount in XOF', async () => {
-		fetchMock.mockResolvedValue(ok({ transaction_id: 't2', momo_reference: 'ref_1' }));
+	it('withdraw() en XOF vise le meme endpoint', async () => {
+		fetchMock.mockResolvedValue(
+			ok({ amount: '5000', currency: 'XOF', provider: 'mtn', reference: 'ref_1', status: 'pending' })
+		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
-		await walletApi.momoWithdraw({ amount: '5000', currency: 'XOF' });
+		await walletApi.withdraw({ amount: '5000', currency: 'XOF', rail: 'mobile_money' });
 		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/users/me/wallet/withdraw/momo',
+			'/api/users/me/wallet/withdraw',
 			expect.objectContaining({
 				body: expect.stringContaining('"amount":"5000"')
 			})
@@ -311,11 +313,16 @@ describe('enterpriseTypesApi', () => {
 // --- P17.6 badge events ---
 
 describe('badgeEventsApi', () => {
-	it('list() reads /badge-events', async () => {
-		fetchMock.mockResolvedValue(ok([]));
+	// These three used to assert `/badge-events/**`, which no endpoint has ever
+	// served. They passed for as long as the feature was broken, because they
+	// checked what the client did rather than what the server answers — which
+	// is the failure mode a path test exists to prevent and the reason these
+	// now name the routes `routes::events` registers (SKI-352).
+	it('list() reads /events, the route that exists', async () => {
+		fetchMock.mockResolvedValue(ok({ events: [] }));
 		const { badgeEventsApi } = await import('../../src/lib/api/badge_events');
 		await badgeEventsApi.list();
-		expect(fetchMock).toHaveBeenCalledWith('/api/badge-events', expect.anything());
+		expect(fetchMock).toHaveBeenCalledWith('/api/events', expect.anything());
 	});
 
 	it('join() posts to the slug join route', async () => {
@@ -323,9 +330,16 @@ describe('badgeEventsApi', () => {
 		const { badgeEventsApi } = await import('../../src/lib/api/badge_events');
 		await badgeEventsApi.join('skilluv-fest-2026');
 		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/badge-events/skilluv-fest-2026/join',
+			'/api/events/skilluv-fest-2026/join',
 			expect.objectContaining({ method: 'POST' })
 		);
+	});
+
+	it('myEvents() reads /users/me/events', async () => {
+		fetchMock.mockResolvedValue(ok({ events: [] }));
+		const { badgeEventsApi } = await import('../../src/lib/api/badge_events');
+		await badgeEventsApi.myEvents();
+		expect(fetchMock).toHaveBeenCalledWith('/api/users/me/events', expect.anything());
 	});
 });
 
@@ -358,15 +372,18 @@ describe('moderationApi', () => {
 		);
 	});
 
-	it('community.rejectChallenge() sends `feedback` key', async () => {
+	// Verified against the backend on 2026-08-12: sending `feedback` returns
+	// 422 `missing field reason`. This test previously locked in the wrong key,
+	// which is why the broken payload went unnoticed.
+	it('community.rejectChallenge() sends the `reason` key', async () => {
 		fetchMock.mockResolvedValue(ok({}));
 		const { moderationApi } = await import('../../src/lib/api/moderation');
 		await moderationApi.community.rejectChallenge('ch-1', {
-			feedback: 'off-topic — align to the code domain'
+			reason: 'off-topic — align to the code domain'
 		});
 		expect(fetchMock).toHaveBeenCalledWith(
 			'/api/community/challenges/ch-1/reject',
-			expect.objectContaining({ body: expect.stringContaining('feedback') })
+			expect.objectContaining({ body: expect.stringContaining('reason') })
 		);
 	});
 

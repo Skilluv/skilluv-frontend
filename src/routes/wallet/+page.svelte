@@ -12,6 +12,7 @@
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import { Download } from '@lucide/svelte';
+	import { AdvancesPanel } from '$components/finance';
 
 	let wallet = $state<Wallet | null>(null);
 	let transactions = $state<WalletTransaction[]>([]);
@@ -64,10 +65,15 @@
 			<h1 class="text-3xl font-bold text-text-primary">{i18n.t('wallet.title')}</h1>
 			<p class="mt-2 max-w-3xl text-text-muted">{i18n.t('wallet.subtitle')}</p>
 		</div>
-		<Button variant="ghost" href={walletApi.statementCsvUrl()}>
-			<Download size={14} strokeWidth={2} />
-			{i18n.t('wallet.downloadStatement')}
-		</Button>
+		<div class="flex flex-wrap gap-2">
+			<Button variant="ghost" href="/disputes">
+				{i18n.t('disputes.title')}
+			</Button>
+			<Button variant="ghost" href={walletApi.statementCsvUrl()}>
+				<Download size={14} strokeWidth={2} />
+				{i18n.t('wallet.downloadStatement')}
+			</Button>
+		</div>
 	</header>
 
 	{#if loading}
@@ -101,7 +107,20 @@
 				</ul>
 			{/if}
 		</section>
+
 	{/if}
+
+	<!-- SKI-328. The wallet showed a balance and no way to reach money already
+	     earned but not yet paid: /users/me/advances was served and read by
+	     nothing.
+
+	     Outside the wallet's own branch on purpose. Advances are a separate
+	     endpoint, and a balance that fails to load is no reason to hide money
+	     somebody is owed — that is the moment they are most likely to be
+	     looking for it. -->
+	<div class="mt-6">
+		<AdvancesPanel />
+	</div>
 </div>
 
 <PayoutRequestModal open={modalOpen} {wallet} onClose={closeModal} onSubmitted={handleSubmitted} />

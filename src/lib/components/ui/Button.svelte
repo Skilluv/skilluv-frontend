@@ -7,6 +7,10 @@
 		size?: 'sm' | 'md' | 'lg';
 		loading?: boolean;
 		href?: string;
+		/** Anchor-only pass-through attributes (active when `href` is set) */
+		target?: HTMLAnchorAttributes['target'];
+		rel?: HTMLAnchorAttributes['rel'];
+		download?: HTMLAnchorAttributes['download'];
 		children: Snippet;
 	}
 

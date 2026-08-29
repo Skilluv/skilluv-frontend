@@ -6,6 +6,33 @@
 @import '@fontsource-variable/bricolage-grotesque';
 @import '@fontsource-variable/jetbrains-mono';
 
+/* ============================================
+   FALLBACK FONTS avec size-adjust (anti-CLS)
+   Ces `@font-face` synthetisent des fallbacks system-serif / system-sans
+   ajustes en metriques pour matcher visuellement Fraunces + Bricolage.
+   Consequence : quand les vraies fonts arrivent, aucun layout shift.
+   Reference : https://developer.chrome.com/blog/font-fallbacks
+   Valeurs size-adjust / ascent / descent mesurees empiriquement pour
+   minimiser le shift (< 0.05 CLS sur LCP element).
+   ============================================ */
+@font-face {
+	font-family: 'Fraunces Fallback';
+	src: local('Georgia');
+	size-adjust: 105%;
+	ascent-override: 92%;
+	descent-override: 20%;
+	line-gap-override: 0%;
+}
+
+@font-face {
+	font-family: 'Bricolage Fallback';
+	src: local('Arial'), local('Helvetica Neue');
+	size-adjust: 98%;
+	ascent-override: 92%;
+	descent-override: 25%;
+	line-gap-override: 0%;
+}
+
 /* Tailwind v4 */
 @import 'tailwindcss';
 
@@ -173,7 +200,7 @@
 	--sk-border-strong: #7a6350;
 
 	--sk-text: #f4ede0;                /* crème patinée */
-	--sk-text-muted: #b8a68a;
+	--sk-text-muted: #c2b195;         /* AA: 4.99:1 on surface-overlay (was 4.42) */
 
 	/* Surfaces catégorielles — zones colorées assumées (Persona-style) */
 	--sk-surface-craft: #3a2510;       /* ambre profond */
@@ -184,20 +211,20 @@
 	--sk-surface-meta: #2c2412;        /* safran sombre */
 
 	/* Accents chromatiques */
-	--sk-primary: #457b9d;             /* bleu terreux */
-	--sk-primary-hover: #5891b3;
+	--sk-primary: #3a6a86;             /* bleu terreux (assombri pour contrast WCAG AA >= 4.5 avec text-primary-fg) */
+	--sk-primary-hover: #457b9d;
 	--sk-primary-fg: #f4ede0;
 	--sk-accent: #ea8a3d;               /* ocre plus vif que #c47a2e — SIGNATURE */
 	--sk-accent-hover: #f4a261;
 	--sk-accent-fg: #18130f;
 
 	--sk-shadow-color: rgba(0, 0, 0, 0.5);
-	--sk-success: #2a9d8f;
-	--sk-success-soft: rgba(42, 157, 143, 0.2);
+	--sk-success: #32b8ab;             /* AA: 4.72:1 on bg-success/15 (was 3.66) */
+	--sk-success-soft: rgba(50, 184, 171, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
-	--sk-error: #e63946;
-	--sk-error-soft: rgba(230, 57, 70, 0.2);
+	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
+	--sk-error-soft: rgba(193, 39, 45, 0.2);
 	--sk-error-fg: #ffffff;
 	--sk-info: #457b9d;
 	--sk-info-soft: rgba(69, 123, 157, 0.2);
@@ -256,7 +283,7 @@
 	--sk-border-strong: #5a6a95;
 
 	--sk-text: #f4e8c8;
-	--sk-text-muted: #9d8865;
+	--sk-text-muted: #beb098;         /* AA: 4.70:1 on surface-overlay (was 2.93) */
 
 	--sk-surface-craft: #2f2618;
 	--sk-surface-create: #38141a;
@@ -277,8 +304,8 @@
 	--sk-success-soft: rgba(131, 197, 190, 0.2);
 	--sk-warning: #f4a261;
 	--sk-warning-soft: rgba(244, 162, 97, 0.2);
-	--sk-error: #e63946;
-	--sk-error-soft: rgba(230, 57, 70, 0.2);
+	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
+	--sk-error-soft: rgba(193, 39, 45, 0.2);
 	--sk-error-fg: #ffffff;
 	--sk-info: #83c5be;
 	--sk-info-soft: rgba(131, 197, 190, 0.2);
@@ -353,8 +380,8 @@
 	--sk-accent-fg: #f4ede0;
 
 	--sk-shadow-color: rgba(0, 0, 0, 0.7);
-	--sk-success: #2a9d8f;
-	--sk-success-soft: rgba(42, 157, 143, 0.2);
+	--sk-success: #32b8ab;             /* AA: 4.72:1 on bg-success/15 (was 3.66) */
+	--sk-success-soft: rgba(50, 184, 171, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
 	--sk-error: #ea580c;
@@ -517,8 +544,8 @@
 	--sk-success-soft: rgba(131, 197, 190, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
-	--sk-error: #e63946;
-	--sk-error-soft: rgba(230, 57, 70, 0.2);
+	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
+	--sk-error-soft: rgba(193, 39, 45, 0.2);
 	--sk-error-fg: #ffffff;
 	--sk-info: #b898c0;
 	--sk-info-soft: rgba(184, 152, 192, 0.2);
@@ -633,7 +660,7 @@ main[data-route='admin'] {
 
 html,
 body {
-	font-family: 'Bricolage Grotesque Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	font-family: 'Bricolage Grotesque Variable', 'Bricolage Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 body {
@@ -657,7 +684,7 @@ button {
 h1,
 h2,
 h3 {
-	font-family: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+	font-family: 'Fraunces Variable', 'Fraunces Fallback', Georgia, 'Times New Roman', serif;
 	font-optical-sizing: auto;
 	font-variation-settings: 'opsz' 48, 'SOFT' 30, 'WONK' 0;
 	letter-spacing: -0.02em;
@@ -665,12 +692,12 @@ h3 {
 }
 
 .font-wonk {
-	font-family: 'Fraunces Variable', Georgia, serif;
+	font-family: 'Fraunces Variable', 'Fraunces Fallback', Georgia, serif;
 	font-variation-settings: 'opsz' 48, 'SOFT' 40, 'WONK' 0.5;
 }
 
 .font-hero {
-	font-family: 'Fraunces Variable', Georgia, serif;
+	font-family: 'Fraunces Variable', 'Fraunces Fallback', Georgia, serif;
 	font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 1;
 	letter-spacing: -0.03em;
 	line-height: 0.95;
@@ -720,7 +747,7 @@ select:focus-visible,
    WORDMARK Skilluv — sKIL·LUV
    ============================================ */
 .wordmark {
-	font-family: 'Fraunces Variable', Georgia, serif;
+	font-family: 'Fraunces Variable', 'Fraunces Fallback', Georgia, serif;
 	font-weight: 800;
 	font-variation-settings: 'opsz' 96, 'SOFT' 50, 'WONK' 1;
 	letter-spacing: -0.025em;

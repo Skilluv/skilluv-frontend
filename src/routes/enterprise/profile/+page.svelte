@@ -226,7 +226,7 @@
 			<div class="p-5 flex items-start gap-4">
 				<div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-surface-overlay text-2xl font-black text-primary overflow-hidden">
 					{#if logoUrl}
-						<img src={logoUrl} alt={companyName} class="h-full w-full object-cover" />
+						<img src={logoUrl} alt={companyName} width="64" height="64" class="h-full w-full object-cover" />
 					{:else}
 						{companyName?.[0]?.toUpperCase() ?? '?'}
 					{/if}
@@ -323,7 +323,7 @@
 					<div class="flex items-center gap-4">
 						<div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-surface-overlay text-2xl font-black text-primary overflow-hidden border border-border">
 							{#if logoUrl}
-								<img src={logoUrl} alt="" class="h-full w-full object-cover" />
+								<img src={logoUrl} alt="" width="64" height="64" loading="lazy" class="h-full w-full object-cover" />
 							{:else}
 								{companyName?.[0]?.toUpperCase() ?? '?'}
 							{/if}

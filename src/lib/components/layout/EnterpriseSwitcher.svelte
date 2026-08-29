@@ -78,7 +78,7 @@
 				class="flex items-center gap-2 rounded-full border border-border bg-surface-overlay px-2.5 py-1 text-xs font-semibold text-text-primary"
 			>
 				{#if active?.logo_url}
-					<img src={active.logo_url} alt="" class="h-4 w-4 rounded object-cover" />
+					<img src={active.logo_url} alt="" width="16" height="16" class="h-4 w-4 rounded object-cover" />
 				{:else}
 					<Building2 size={12} strokeWidth={2.5} class="text-text-muted" />
 				{/if}
@@ -93,7 +93,7 @@
 				aria-expanded={open}
 			>
 				{#if active?.logo_url}
-					<img src={active.logo_url} alt="" class="h-4 w-4 rounded object-cover" />
+					<img src={active.logo_url} alt="" width="16" height="16" class="h-4 w-4 rounded object-cover" />
 				{:else}
 					<Building2 size={12} strokeWidth={2.5} class="text-text-muted" />
 				{/if}
@@ -120,7 +120,7 @@
 								: 'text-text-muted'} disabled:opacity-60"
 						>
 							{#if m.logo_url}
-								<img src={m.logo_url} alt="" class="h-6 w-6 rounded object-cover" />
+								<img src={m.logo_url} alt="" width="24" height="24" loading="lazy" class="h-6 w-6 rounded object-cover" />
 							{:else}
 								<div class="flex h-6 w-6 items-center justify-center rounded bg-surface-overlay text-[10px] font-black text-primary">
 									{m.company_name[0]?.toUpperCase() ?? '?'}

@@ -2,9 +2,12 @@ name: CI
 
 on:
   push:
-    branches: [master, main]
+    branches: [master, main, prep-prod]
   pull_request:
-    branches: [master, main]
+    # prep-prod is an integration branch that work merges into before it
+    # reaches main. Without it here, every pull request targeting prep-prod
+    # ran no check at all and merged unverified.
+    branches: [master, main, prep-prod]
 
 jobs:
   check:
@@ -27,7 +30,7 @@ jobs:
           curl -fsSL -o gitleaks.tar.gz "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz"
           tar -xzf gitleaks.tar.gz gitleaks && sudo mv gitleaks /usr/local/bin/
       - name: Secret scan -- source (SE-04)
-        run: gitleaks detect --source . --redact --verbose --exit-code 1
+        run: gitleaks detect --config .gitleaks.toml --source . --redact --verbose --exit-code 1
 
       - name: i18n parity + orphan-key check
         run: npm run i18n:check
@@ -43,7 +46,7 @@ jobs:
         # The client bundle is downloaded by every browser. SvelteKit keeps
         # $env/static/private out of client code; this catches anything of the
         # right shape that slips through.
-        run: gitleaks detect --source build --no-git --redact --verbose --exit-code 1
+        run: gitleaks detect --config .gitleaks.toml --source build --no-git --redact --verbose --exit-code 1
       - name: No source maps served to the browser (SE-04)
         # A .map in the client bundle ships the original source to the browser.
         # `build/client` is the only directory adapter-node serves publicly, so
@@ -77,9 +80,11 @@ jobs:
     name: Playwright end-to-end
     runs-on: ubuntu-latest
     needs: check
-    # Playwright currently requires a running backend (proxied /api/* calls).
-    # TODO: mock API calls or spin up backend services here. Non-blocking for now.
-    continue-on-error: true
+    # Blocking on purpose: the mocked suite no longer needs a real backend.
+    # Browser calls are intercepted by `page.route` and SSR auth is served by
+    # tests/e2e/utils/mock-backend.mjs, started as a webServer by
+    # playwright.config.ts. Do not reintroduce `continue-on-error`: that is what
+    # let 35 broken tests go unnoticed.
     steps:
       - uses: actions/checkout@v7
 
@@ -95,14 +100,105 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Playwright tests (unit + axe-core a11y assertions)
-        run: npx playwright test
+      # Mocked suite only: hermetic, no real backend. The parcours specs run in
+      # their own job below so a backend outage cannot redden this one.
+      - name: Playwright mocked suite
+        run: npx playwright test --project=legacy-chromium
 
       - name: Upload Playwright report
         if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  # Whether the shared test backend is configured.
+  #
+  # A job-level `if:` cannot read the `secrets` context, which is why the
+  # parcours job could not gate itself on the secret it needs and instead
+  # started, then failed on an empty URL. On a repository where those secrets
+  # have never been set that is a red check on every single run, and a check
+  # that is always red is a check everyone learns to ignore — worse than either
+  # thing it was choosing between.
+  #
+  # So the presence of the secret becomes an output, which a job-level `if:`
+  # *can* read. Not configured is then a genuine skip: grey, visibly not-run,
+  # and impossible to mistake for a pass.
+  preflight:
+    name: Detect optional CI secrets
+    runs-on: ubuntu-latest
+    outputs:
+      has_backend: ${{ steps.probe.outputs.has_backend }}
+    steps:
+      - id: probe
+        env:
+          E2E_API_BASE_URL: ${{ secrets.E2E_API_BASE_URL }}
+        run: |
+          if [ -n "$E2E_API_BASE_URL" ]; then
+            echo "has_backend=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_backend=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Parcours suite skipped::E2E_API_BASE_URL is not set, so the specs that exercise a real backend cannot run. Set E2E_API_BASE_URL, E2E_USER_* and E2E_ENTERPRISE_* to enable them."
+          fi
+
+  e2e-parcours:
+    name: Playwright parcours (real backend)
+    runs-on: ubuntu-latest
+    needs: [check, preflight]
+    # Runs only where the backend secrets exist, and never on a fork, which
+    # cannot read them anyway.
+    if: >-
+      needs.preflight.outputs.has_backend == 'true' &&
+      (github.event_name == 'push' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
+    env:
+      PUBLIC_API_BASE_URL: ${{ secrets.E2E_API_BASE_URL }}
+      API_URL: ${{ secrets.E2E_API_BASE_URL }}/api
+      E2E_USER_EMAIL: ${{ secrets.E2E_USER_EMAIL }}
+      E2E_USER_USERNAME: ${{ secrets.E2E_USER_USERNAME }}
+      E2E_USER_PASSWORD: ${{ secrets.E2E_USER_PASSWORD }}
+      E2E_ENTERPRISE_EMAIL: ${{ secrets.E2E_ENTERPRISE_EMAIL }}
+      E2E_ENTERPRISE_USERNAME: ${{ secrets.E2E_ENTERPRISE_USERNAME }}
+      E2E_ENTERPRISE_PASSWORD: ${{ secrets.E2E_ENTERPRISE_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      # The URL is known to be non-empty here — preflight gates on it — but a
+      # secret set to whitespace, or to something that is not a URL, would let
+      # every spec skip itself and report a green run. That is the failure this
+      # guards, so it stays.
+      - name: Verify backend configuration
+        run: |
+          case "$PUBLIC_API_BASE_URL" in
+            http://*|https://*) ;;
+            *)
+              echo "E2E_API_BASE_URL is set but is not an http(s) URL: '$PUBLIC_API_BASE_URL'" >&2
+              echo "The parcours specs would all skip and the run would look green." >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Playwright parcours suite
+        run: npx playwright test --project=parcours-chromium
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report-parcours
           path: playwright-report/
           retention-days: 7
 
@@ -126,8 +222,11 @@ jobs:
         run: npm run build
 
       - name: Run Lighthouse CI
+        # Assertion a11y = "error" a 100 -> ce job BLOQUE la PR sur regression
+        # a11y. Perf/best/seo restent en warn (variance mobile trop haute pour
+        # bloquer sans false positives).
         run: |
           npm install -g @lhci/cli@0.15.x
-          lhci autorun --config=./lighthouserc.json || true
+          lhci autorun --config=./lighthouserc.json
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

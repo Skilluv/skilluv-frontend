@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import Button from '$components/ui/Button.svelte';
+	import { observability } from '$lib/observability';
 	import Input from '$components/ui/Input.svelte';
 	import { auth } from '$stores/auth.svelte';
 	import { authApi } from '$api/auth';
@@ -139,10 +140,11 @@
 		} catch (err) {
 			// Anything the ceremony can throw ends up here. Firefox in
 			// particular tends to fail silently when WebAuthn isn't wired to
-			// the local platform authenticator, so we surface the raw browser
-			// message rather than swallowing it.
-			// eslint-disable-next-line no-console
-			console.error('[passkey enrolment]', err);
+			// the local platform authenticator, so on remonte via l'observability
+			// (Sentry en prod) + affichage user en dessous.
+			observability.captureException(err, {
+				tags: { source: 'enterprise-onboarding', step: 'passkey-enrolment' }
+			});
 			if (err instanceof SkilluError && err.code === 'WEBAUTHN_CEREMONY_CANCELLED') {
 				passkeyError =
 					i18n.locale === 'fr'

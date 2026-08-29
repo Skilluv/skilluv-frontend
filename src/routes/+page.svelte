@@ -12,7 +12,6 @@
 	import HowItWorks from '$lib/components/landing/HowItWorks.svelte';
 	import TrendingChallenges from '$lib/components/landing/TrendingChallenges.svelte';
 	import RecentActivity from '$lib/components/landing/RecentActivity.svelte';
-	import LeaderboardPreview from '$lib/components/landing/LeaderboardPreview.svelte';
 	import StatsSection from '$lib/components/landing/StatsSection.svelte';
 	import LevelUpSection from '$lib/components/landing/LevelUpSection.svelte';
 	import OpportunitiesSection from '$lib/components/landing/OpportunitiesSection.svelte';
@@ -26,7 +25,7 @@
 	<title>Skilluv — {i18n.t('landing.title')}</title>
 	<meta property="og:title" content="Skilluv — {i18n.t('landing.title')} {i18n.t('landing.titleAccent')}" />
 	<meta property="og:description" content={i18n.t('landing.subtitle')} />
-	<meta property="og:image" content="/og-image.svg" />
+	<meta property="og:image" content="/og-image.png" />
 </svelte:head>
 
 {#if auth.isAuthenticated}
@@ -119,7 +118,6 @@
 	<HowItWorks />
 	<TrendingChallenges />
 	<RecentActivity />
-	<LeaderboardPreview />
 	<StatsSection />
 	<LevelUpSection />
 	<OpportunitiesSection />

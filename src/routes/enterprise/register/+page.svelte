@@ -15,6 +15,7 @@
 	import { industryItems } from '$lib/data/industries';
 	import { Check, KeyRound, Mail, ShieldCheck } from '@lucide/svelte';
 	import SsoButton from '$components/ui/SsoButton.svelte';
+	import BrandLogo from '$components/layout/BrandLogo.svelte';
 
 	// --- State ---
 	// Steps: 1 personal → 2 company → 3 enterprise type → 4 done
@@ -228,7 +229,7 @@
 
 <div class="flex min-h-[100vh] flex-col items-center justify-center px-4 py-12">
 	<a href="/" class="mb-8 flex items-center gap-2 text-3xl font-black tracking-tight">
-		<img src="/favicon.svg" alt="" class="h-8 w-8" />
+		<BrandLogo variant="mark" size={32} />
 		<span><span class="text-accent">Skill</span><span class="text-text-primary">uv</span></span>
 	</a>
 

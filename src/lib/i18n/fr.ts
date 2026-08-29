@@ -1,29 +1,170 @@
+import { designFr } from './design.fr';
+import { designWorkflowFr } from './design_workflow.fr';
+import { portfoliosFr } from './portfolios.fr';
+import { securityFr } from './security.fr';
+import { postMvpFr } from './postmvp.fr';
 import type { Translations } from './types';
 
 export const fr: Translations = {
+	...postMvpFr,
+	...designFr,
+	...designWorkflowFr,
+	...securityFr,
+	...portfoliosFr,
 	common: {
 		actions: {
 			save: 'Sauvegarder', cancel: 'Annuler', delete: 'Supprimer', edit: 'Modifier',
 			search: 'Rechercher', retry: 'Réessayer', back: 'Retour', next: 'Suivant',
 			previous: 'Précédent', submit: 'Soumettre', confirm: 'Confirmer', close: 'Fermer',
-			create: 'Créer', loading: 'Chargement...', sending: 'Envoi...'
+			create: 'Créer', loading: 'Chargement...', sending: 'Envoi...',
+			loadMore: 'Voir plus'
 		},
 		nav: {
 			home: 'Accueil', challenges: 'Challenges', leaderboards: 'Classements',
 			profile: 'Profil', settings: 'Paramètres', notifications: 'Notifications',
 			login: 'Connexion', register: 'Commencer', logout: 'Déconnexion', community: 'Communauté'
 		},
-		domains: { code: 'Code', design: 'Design', game: 'Jeux Vidéo', security: 'Cybersécurité' },
+		domains: { code: 'Code', design: 'Design', game: 'Jeux Vidéo', security: 'Cybersécurité', ai: 'Intelligence artificielle', ops: 'Ops & Cloud', quality: 'Qualité & tests', leadership: 'Leadership', audio: 'Audio', communication: 'Communication', education: 'Enseignement', soft_skills: 'Communication & leadership' },
 		titles: { apprenti: 'Apprenti', ranger: 'Ranger', artisan: 'Artisan', maitre: 'Maître', doyen: 'Doyen', legende: 'Légende' },
 		difficulty: { 1: 'Débutant', 2: 'Facile', 3: 'Intermédiaire', 4: 'Avancé', 5: 'Expert' },
 		tone: { serious: 'Sérieux', fun: 'Loufoque', educational: 'Éducatif' },
 		time: { minutes: '{n} min', hours: '{n}h', noLimit: 'Libre', ago: 'il y a' },
 		fragments: 'fragments', streak: 'Streak', team: 'Équipe', votes: 'votes', page: 'Page'
 	},
+	launch: {
+		eyebrow: 'Ouverture',
+		date: '11 janvier 2027',
+		badge: 'Bêta le 11 janvier 2027',
+		countdown: 'dans {n} jours',
+		soon: 'très bientôt',
+		open: 'C’est ouvert',
+		cta: 'Prendre ma place',
+		note: 'Première saison complète en juin 2027.'
+	},
+	commonExtra: {
+		exampleLabel: 'Exemple',
+	},
+	board: {
+		title: 'Les autres attestent',
+		titleAccent: 'de ce que tu as appris.',
+		subtitle: 'Skilluv atteste de ce que tu as fabriqué.',
+		rowThem: 'Ce qu’ils font',
+		rowUs: 'Ce que fait Skilluv',
+		bootcampsLabel: 'Bootcamps',
+		bootcampsThem: 'Vendent une formation, se terminent par un diplôme maison',
+		bootcampsUs: 'Gratuit pour l’apprenant, se termine par un historique de fabrication publique',
+		practiceLabel: 'Plateformes d’exercices',
+		practiceThem: 'Problèmes artificiels, mesurent la résolution d’énigmes',
+		practiceUs: 'Projets réels, mesurent la capacité à livrer avec d’autres',
+		jobsLabel: 'Sites d’emploi',
+		jobsThem: 'Répertorient des déclarations',
+		jobsUs: 'Répertorient des preuves',
+		freelanceLabel: 'Places de marché freelance',
+		freelanceThem: 'Vendent du temps disponible',
+		freelanceUs: 'Construisent la compétence, puis la rendent visible',
+		offshoreLabel: 'Sous-traitance offshore',
+		offshoreThem: 'Placent des profils et gardent la relation',
+		offshoreUs: 'Rendent les talents autonomes et directement joignables',
+		cta: 'Créer mon compte',
+		loadError: 'Classement momentanément indisponible.'
+	},
+	openMissions: {
+		title: 'Les missions ouvertes',
+		titleAccent: 'Choisis la tienne.',
+		subtitle: 'Chacune porte sur un logiciel qui tourne, avec ses utilisateurs et ses exigences.',
+		emptyTitle: 'Le catalogue ouvre avec la bêta.',
+		emptyBody: 'Les premières missions arrivent le 11 janvier 2027. Prends ta place maintenant, tu seras prévenu le jour où elles s’ouvrent.',
+		emptyCta: 'Prendre ma place',
+		allCta: 'Toutes les missions',
+		reward: '+{n} fragments',
+		minutes: '{n} min'
+	},
+	ranks: {
+		title: 'Ton rang,',
+		titleAccent: 'tu le fabriques.',
+		subtitle: 'Cinq paliers, de l’Apprenti au Doyen. Ils ne se debloquent pas : ils se calculent sur ce que tu as reellement livre, et chacun remonte a la piece qui l’a valu.',
+		apprentiMeaning: 'Premiers gestes, encadres de pres.',
+		rangerMeaning: 'Tu livres seul sur des missions cadrees.',
+		artisanMeaning: 'Tu prends en charge une piece de bout en bout.',
+		maitreMeaning: 'Tu examines le travail des autres.',
+		doyenMeaning: 'Tu fixes le niveau attendu sur ta discipline.',
+		note: 'Rien n’est reserve a un rang. Les missions, les revues, les attestations et la visibilite aupres des entreprises sont ouvertes a tous, des le premier jour.'
+	},
+	otherLines: {
+		title: 'Sept lignes.',
+		titleAccent: 'Le talent n’en paie aucune.',
+		subtitle: 'Le contact talent s’achete en ligne, ci-dessus. Le reste se cadre avec vous : on en discute, on chiffre, on contractualise.',
+		talentTitle: 'Talent',
+		talentBody: 'Recherche sur preuves, contact a l’unite, listes courtes construites par nos soins, tournois de recrutement.',
+		talentWho: 'Entreprise',
+		workTitle: 'Work',
+		workBody: 'Primes sur vos issues, sous-traitance encadree, studios dedies, places de marche de missions par discipline.',
+		workWho: 'Entreprise',
+		brandTitle: 'Marque et evenements',
+		brandBody: 'Challenges a votre marque, hackathons, sponsoring de saison, campagnes aupres de la communaute.',
+		brandWho: 'Entreprise',
+		dataTitle: 'Data',
+		dataBody: 'Talent Score en API, licences, rapports sectoriels, marque blanche. Sous consentement explicite des talents.',
+		dataWho: 'Entreprise',
+		ecosystemTitle: 'Ecosysteme',
+		ecosystemBody: 'Place de marche creatrice, certification des reviewers, academie interne pour vos equipes.',
+		ecosystemWho: 'Entreprise et talent',
+		consultTitle: 'Conseil',
+		consultBody: 'Heure d’expertise avec un rang eleve, revue d’architecture par un pool senior, audit des competences d’une equipe.',
+		consultWho: 'Entreprise',
+		financeTitle: 'Finance',
+		financeBody: 'Avance sur mission en cours, prets adosses au parcours, assurance, fonds de soutien.',
+		financeWho: 'Talent',
+		cta: 'En parler'
+	},
+	howItWorks: {
+		title: 'Comment ça marche',
+		subtitle: 'Quatre temps, du premier geste à la preuve.',
+		step1Title: 'Tu choisis un parcours',
+		step1Body: 'Développement backend, design d’interface, pentest web, sound design. Des itinéraires définis, chacun avec les compétences qu’il exige.',
+		step2Title: 'Tu reçois des missions',
+		step2Body: 'Graduées, du premier geste à la prise en charge complète. Chacune porte sur un logiciel qui existe vraiment, avec ses utilisateurs et ses exigences de qualité.',
+		step3Title: 'Tu livres, on examine, tu recommences',
+		step3Body: 'Chaque contribution passe devant quelqu’un de plus avancé. On te demande de reprendre, on discute tes choix. Les échanges de revue sont archivés : ils font partie de la preuve autant que le résultat.',
+		step4Title: 'Tes preuves s’accumulent',
+		step4Body: 'Chaque livrable validé alimente ton profil public. Les rangs se calculent sur ce que tu as fabriqué, et chacun remonte à la pièce qui l’a valu.',
+		freeTitle: 'Et tu ne paies jamais.',
+		freeBody: 'Ni l’inscription, ni les missions, ni les revues, ni les attestations, ni la visibilité auprès des entreprises.',
+		gradationLabel: 'Une sequence, pas un exercice isole',
+		gradation1Scope: 'Premier geste',
+		gradation1Body: 'Corriger un message d’erreur trompeur.',
+		gradation2Scope: 'Contribution cadree',
+		gradation2Body: 'Ajouter le cas de test qui manquait, et le faire passer.',
+		gradation3Scope: 'Prise en charge',
+		gradation3Body: 'Porter une fonctionnalite de bout en bout, jusqu’a la revue.',
+		trackHours: '{n} h estimées',
+		reviewLabel: 'Extrait de revue',
+		reviewAsk: 'Reprends la gestion d’erreur ici. Que se passe-t-il si le fichier est vide ?',
+		reviewReply: 'Corrigé, et j’ai ajouté un cas de test pour ce cas précis.',
+		reviewOutcome: 'Validé après reprise',
+		profileLabel: 'Profil public'
+	},
+	disciplines: {
+		sectionTitleLine1: 'Onze disciplines',
+		sectionTitleLine2: 'Cent vingt parcours.',
+		sectionSubtitle: 'Chaque discipline a ses parcours, ses terrains et ses rangs.',
+		lead: 'Toutes mènent au même endroit : une preuve de ce que tu as fabriqué.',
+		code: { label: 'Code', desc: 'Backend, frontend, mobile, systèmes, embarqué.' },
+		design: { label: 'Design', desc: 'UI/UX, design systems, motion, illustration.' },
+		security: { label: 'Cybersécurité', desc: 'Pentest, red team, forensics, cryptographie.' },
+		game: { label: 'Jeux vidéo', desc: 'Programmation, game design, art et animation.' },
+		ai: { label: 'Intelligence artificielle', desc: 'Data, machine learning, MLOps, agents et RAG.' },
+		ops: { label: 'Ops & Cloud', desc: 'Cloud, CI/CD, conteneurs, fiabilité.' },
+		quality: { label: 'Qualité', desc: 'Tests et automatisation, sur les quatre terrains.' },
+		leadership: { label: 'Leadership', desc: 'Product, tech lead, production, management, mentorat.' },
+		audio: { label: 'Audio', desc: 'Composition, sound design, voix, intégration sonore.' },
+		communication: { label: 'Communication', desc: 'Documentation, evangelism, contenu, traduction.' },
+		education: { label: 'Enseignement', desc: 'Formation, conception de cursus, pédagogie du code.' }
+	},
 	landing: {
 		title: 'Prouve ce que tu sais faire.',
 		titleAccent: 'Pour de vrai.',
-		subtitle: 'Skilluv est la plateforme où les talents tech prouvent leurs compétences à travers des challenges concrets. Zéro CV. Zéro déclaratif. Que des preuves.',
+		subtitle: 'Une plateforme open source où l’on apprend en fabriquant. Chacun repart avec la preuve de ce qu’il a livré.',
 		cta: 'Commencer gratuitement',
 		ctaSecondary: 'Voir les challenges',
 		statDomains: 'Domaines',
@@ -46,6 +187,9 @@ export const fr: Translations = {
 			codeDesc: 'Développement web, mobile, backend, algorithmique...',
 			designDesc: 'UI/UX, graphisme, illustration, motion design...',
 			gameDesc: 'Game design, développement, 3D, narration...',
+			aiDesc: 'Data, machine learning, MLOps, agents et RAG...',
+			opsDesc: 'Cloud, CI/CD, conteneurs, fiabilité et observabilité...',
+			softSkillsDesc: 'Documentation technique, maintien de projets open source, mentorat...',
 			securityDesc: 'Pentesting, CTF, forensics, cryptographie...',
 			changeDomain: '← Changer de domaine',
 			createAccount: 'Crée ton compte',
@@ -304,8 +448,79 @@ export const fr: Translations = {
 			account_unbanned: 'Compte rétabli'
 		}
 	},
+	mentions: {
+		title: 'Mentions',
+		subtitle: 'Tous les endroits où on t’a cité.',
+		empty: 'Personne ne t’a encore cité.',
+		emptyHint: 'Quand quelqu’un écrit @{username}, ça apparaît ici.',
+		markAllRead: 'Tout marquer comme lu',
+		allRead: 'Tout est marqué comme lu.',
+		loadError: 'Impossible de charger tes mentions.',
+		retry: 'Réessayer',
+		sources: {
+			forum_post: 'Forum',
+			comment: 'Commentaire',
+			slice_diary: 'Carnet de bord',
+			message: 'Message'
+		}
+	},
 	settings: {
 		title: 'Paramètres',
+		notifications: {
+			title: 'Notifications',
+			subtitle: 'Choisis comment Skilluv te tient au courant.',
+			channels: { inApp: 'Sur le site', push: 'Push', email: 'Email' },
+			channelsHint:
+				'Sur le site : la cloche. Push : ton téléphone vibre. Email : ta boîte de réception.',
+			fixed: 'Toujours envoyé',
+			fixedHint:
+				'Certaines notifications concernent ton argent ou ton compte. Elles partent de toute façon, et te montrer un bouton qui ne fait rien serait un mensonge.',
+			categories: {
+				payments: 'Argent',
+				account: 'Compte',
+				mentorship: 'Mentorat',
+				social: 'Social',
+				guild: 'Guildes',
+				learning: 'Progression',
+				enterprise: 'Entreprises',
+				digest: 'Résumés',
+				lifecycle: 'Annonces produit',
+				admin: 'Modération'
+			},
+			saved: 'Préférences enregistrées',
+			savedPartial: 'Enregistré, mais {count} modification(s) ont été refusées.',
+			resetAll: 'Tout remettre par défaut',
+			resetDone: '{count} personnalisation(s) supprimée(s).',
+			quiet: {
+				title: 'Heures de silence',
+				subtitle:
+					'Pendant cette plage, ton téléphone ne vibre pas. La notification est écrite quand même : tu la retrouves dans la cloche.',
+				start: 'À partir de',
+				end: 'Jusque',
+				timezone: 'Fuseau horaire',
+				timezoneDetected: 'Détecté depuis ton navigateur.',
+				transactional:
+					'Un virement qui échoue passe outre : mieux vaut être réveillé que de le découvrir le lendemain.',
+				enable: 'Activer les heures de silence',
+				clear: 'Désactiver',
+				saved: 'Heures de silence enregistrées',
+				cleared: 'Heures de silence désactivées'
+			}
+		},
+		emailPrefs: {
+			title: 'Préférences email',
+			subtitle: 'Choisis les emails que tu reçois.',
+			digestWeekly: 'Résumé hebdomadaire',
+			digestWeeklyDesc: 'Ton activité de la semaine, une fois par semaine.',
+			streakReminder: 'Rappel de série',
+			streakReminderDesc: 'Un rappel quand ta série est sur le point de tomber.',
+			marketing: 'Annonces produit',
+			marketingDesc: 'Nouveautés et annonces. Désactivé par défaut.',
+			transactional:
+				'Les emails indispensables (vérification, mot de passe, sécurité, reçus de paiement) restent envoyés.',
+			saved: 'Préférences enregistrées',
+			loadError: 'Impossible de charger tes préférences email.'
+		},
 		theme: {
 			title: 'Thème', forge: 'Forge', forgeDesc: 'Ocre + terracotta — l\'atelier de l\'artisan',
 			vesperal: 'Vespéral', vesperalDesc: 'Bleu nuit + orange braise — la nuit à la lanterne',
@@ -316,7 +531,26 @@ export const fr: Translations = {
 		language: { title: 'Langue', fr: 'Français', en: 'English' },
 		profileSection: {
 			title: 'Profil', displayName: 'Nom d\'affichage',
-			bio: 'Bio', bioHint: 'Courte description visible sur ton profil'
+			bio: 'Bio', bioHint: 'Courte description visible sur ton profil',
+			subtitle: 'Ce que les autres voient de toi sur Skilluv.',
+			domain: 'Domaine principal',
+			country: 'Pays', city: 'Ville',
+			saved: 'Profil mis à jour.'
+		},
+		availability: {
+			title: 'Disponibilité',
+			subtitle: 'Indique aux recruteurs si tu es ouvert aux opportunités.',
+			openLabel: 'Ouvert aux opportunités',
+			openHint: 'Visible par les entreprises abonnées.',
+			lookingFor: 'Ce que tu cherches',
+			lookingForPh: 'ex. mission backend Rust, 3 jours/semaine',
+			salaryMin: 'Prétention min (EUR/an)',
+			salaryMax: 'Prétention max (EUR/an)',
+			visibility: 'Visibilité des prétentions',
+			visibilityPrivate: 'Privée',
+			visibilityRecruiters: 'Recruteurs vérifiés',
+			visibilityPublic: 'Publique',
+			saved: 'Disponibilité mise à jour.'
 		},
 		password: {
 			title: 'Mot de passe', current: 'Mot de passe actuel',
@@ -401,6 +635,93 @@ export const fr: Translations = {
 		backHome: 'Retour à l\'accueil',
 		retryBtn: 'Réessayer',
 		generic: 'Une erreur est survenue. Réessaie.'
+	},
+	attestationVerify: {
+		title: 'Vérification d’attestation',
+		subtitle: 'Ce que Skilluv a constaté, et qui peut le contredire.',
+		checking: 'Vérification en cours...',
+		validTitle: 'Attestation valide',
+		validBody: 'Ce document a été émis par Skilluv et n’a pas été révoqué.',
+		revokedTitle: 'Attestation révoquée',
+		revokedBody: 'Ce document a été émis puis retiré. Il ne vaut plus rien.',
+		revokedOn: 'Révoquée le {date}',
+		revokeReason: 'Motif : {reason}',
+		notFoundTitle: 'Code inconnu',
+		notFoundBody: 'Aucune attestation ne porte ce code. Vérifie la saisie.',
+		issuedOn: 'Émise le {date}',
+		expiresOn: 'Valable jusqu’au {date}',
+		expired: 'Expirée',
+		typeLabel: 'Type',
+		issuerLabel: 'Émetteur',
+		issuerSkilluv: 'Skilluv',
+		issuerOrg: 'Organisation partenaire',
+		codeLabel: 'Code de vérification',
+		copyCode: 'Copier le code',
+		copiedToast: 'Code copié.',
+		shareCta: 'Partager le lien',
+		sharedToast: 'Lien copié.',
+		holderCta: 'Voir le profil',
+		fallbackError: 'La vérification n’a pas abouti. Réessaie.',
+		certificateTitle: 'Le certificat',
+		certificateAlt: 'Certificat de {title}',
+		certificateDownload: 'Ouvrir le certificat'
+	},
+	disputes: {
+		title: 'Litiges',
+		subtitle: 'Un paiement gelé, et ce que chaque partie en dit.',
+		empty: 'Aucun litige',
+		emptyBody: 'Rien à contester, et personne ne conteste rien qui te concerne.',
+		decision: 'Décision',
+		payerHint: 'Retirer ta contestation libère l’argent vers le bénéficiaire.',
+		recipientHint: 'Sans réponse de ta part, un opérateur tranchera.',
+		contestedHint: 'Un opérateur examine le dossier. Vous serez tous deux prévenus.',
+		contestTitle: 'Contester',
+		contestHint: 'Explique ce qui s’est passé. Le payeur et l’opérateur liront ta réponse.',
+		contestPlaceholder: 'Ce que tu as livré, et quand.',
+		status: {
+			open: 'Ouvert',
+			contested: 'Contesté',
+			refunded: 'Remboursé',
+			released: 'Versé',
+			withdrawn: 'Retiré'
+		},
+		actions: {
+			raise: 'Signaler un problème',
+			concede: 'Rembourser',
+			contest: 'Contester',
+			withdraw: 'Retirer'
+		},
+		done: {
+			concede: 'Remboursement effectué.',
+			contest: 'Ta réponse est partie.',
+			withdraw: 'Litige retiré, argent libéré.'
+		},
+		subjects: {
+			mentorship_session: 'Session de mentorat',
+			bounty_slice: 'Prime',
+			certification_purchase: 'Certification',
+			credit_pack: 'Pack de crédits'
+		},
+		raiseTitle: 'Signaler un problème',
+		raiseHint: 'L’argent est gelé le temps que le bénéficiaire réponde. Dis ce qui n’a pas été.',
+		raisePlaceholder: 'La session n’a pas eu lieu.',
+		raised: 'Signalé. Le bénéficiaire doit répondre.'
+	},
+	payments: {
+		title: 'Payer',
+		operator: 'Opérateur',
+		phone: 'Numéro de téléphone',
+		phoneHint: 'Le numéro qui recevra la demande de confirmation.',
+		inlineHint: 'Tu confirmes sur ton téléphone. Tu ne quittes pas cette page.',
+		pay: 'Envoyer la demande',
+		waiting: 'Demande envoyée sur ton téléphone',
+		waitingHint: 'Valide-la sur ton téléphone. Tu peux fermer cette fenêtre : le paiement sera pris en compte de toute façon.',
+		done: 'Paiement confirmé.',
+		background: 'Toujours en attente chez ton opérateur. On continue de vérifier de notre côté, tu seras prévenu. Ne paie pas une deuxième fois.',
+		failed: 'Le paiement n’a pas abouti. Rien ne t’a été prélevé.',
+		noInline: 'Aucun opérateur ne permet de payer sans quitter la page depuis ton pays.',
+		otherMethod: 'Autre moyen de paiement',
+		closeWhileWaiting: 'Fermer'
 	},
 	wallet: {
 		title: 'Mon wallet',
@@ -501,6 +822,51 @@ export const fr: Translations = {
 			confirmRejectTitle: 'Rejeter ce challenge ?',
 			confirmRejectBody: 'L\'auteur recevra ta raison. Il pourra soumettre une version corrigée.'
 		},
+		vouchings: {
+			title: 'File des cautions',
+			subtitle:
+				"Qui a mis son propre rang derrière qui. Rompre une caution coûte un rang pendant quatre-vingt-dix jours au garant : le coût est affiché avant la décision.",
+			statuses: {
+				live: 'En cours',
+				broken: 'Rompues',
+				expired: 'Expirées'
+			},
+			queueEmpty: 'Aucune caution dans cet état.',
+			flagged: 'Signalé',
+			flaggedHint: "Le compte cautionné porte un livrable révoqué ou un soupçon de multi-comptes.",
+			voucherLabel: 'Garant',
+			vouchedLabel: 'Cautionné',
+			rankAtStake: 'Rang {rank}',
+			openedOn: 'Ouverte le {date}',
+			untilLabel: "Jusqu'au {date}",
+			brokenOn: 'Rompue le {date}',
+			breakReason: 'Motif : {reason}',
+			breakCta: 'Rompre',
+			confirmBreakTitle: 'Rompre cette caution ?',
+			confirmBreakBody:
+				"Le garant perd un rang pendant quatre-vingt-dix jours s'il en avait mis un en jeu. Le motif part au journal d'audit et ne pourra plus être modifié.",
+			brokeWithPenalty: "Caution rompue. {name} redescend à {rank} jusqu'au {date}.",
+			brokeWithoutPenalty: "Caution rompue. Rien n'était en jeu, aucun rang n'a bougé.",
+			total: '{n} dans cet état',
+			loadMore: 'Charger la suite',
+			noAccess: 'Page réservée aux détenteurs des capabilities community_moderator et plagiarism_reviewer.'
+		},
+		externalSignals: {
+			title: 'File des signaux externes',
+			subtitle:
+				"Comptes déclarés en attente de confirmation humaine. Confirmer dit que la personne possède le compte, jamais que Skilluv atteste du travail.",
+			queueEmpty: 'Aucun signal en attente.',
+			declaredOn: 'Déclaré le {date}',
+			openLink: 'Ouvrir le lien',
+			verifyCta: 'Confirmer la propriété',
+			rejectCta: 'Supprimer',
+			confirmRejectTitle: 'Supprimer ce signal ?',
+			confirmRejectBody:
+				"La déclaration est détruite définitivement. Le motif part au journal d'audit, seule trace qui restera.",
+			verifiedToast: 'Signal confirmé.',
+			rejectedToast: 'Signal supprimé.',
+			noAccess: 'Page réservée aux détenteurs des capabilities community_moderator et community_curator.'
+		},
 		plagiarism: {
 			title: 'File plagiat',
 			subtitle: 'Deliverables flaggés par le backend. Décide si le rendu reste valide ou est révoqué.',
@@ -516,6 +882,1118 @@ export const fr: Translations = {
 			confirmRevokeBody: 'Les fragments sont retirés et l\'auteur perd le badge associé.',
 			noAccess: 'Cette page est réservée aux plagiarism_reviewer.'
 		}
+	},
+	domainWizard: {
+		titles: { ai: 'Tes débuts en IA', security: 'Tes débuts en sécurité' },
+		subtitles: {
+			ai: "Six questions. Elles trient ce qu'on te recommande — rien ici ne compte comme une preuve.",
+			security:
+				"Quelques questions. Elles trient ce qu'on te recommande — rien ici ne compte comme une preuve, et rien n'autorise à tester quoi que ce soit."
+		},
+		notAClaim:
+			"Déclaré, jamais une affirmation. Le rang, les badges et le score de métier lisent du travail vérifié, et aucune de ces réponses n'en est un.",
+		progressLabel: 'Progression',
+		stepOf: 'Question {n} sur {total}',
+		pickUpTo: 'Jusqu’à {n}.',
+		maxSelections: '{n} réponses au maximum. Retires-en une pour en ajouter une autre.',
+		back: 'Retour',
+		next: 'Suivant',
+		skipQuestion: 'Passer celle-ci',
+		finish: 'Terminer',
+		skipAll: 'Tout passer',
+		savedToast: 'Enregistré.',
+		noQuestions: 'Ce domaine ne demande rien pour l’instant.',
+		questions: {
+			level: 'Tu en es où ?',
+			weekly_hours: 'Combien de temps par semaine ?',
+			goal: 'Tu viens pour quoi ?',
+			compute: 'Tu peux faire tourner quoi, concrètement ?',
+			main_frameworks: 'Tu travailles avec quoi ?',
+			huggingface_username: 'Ton pseudo HuggingFace',
+			preferred_families: 'Quels métiers t’intéressent ?'
+		},
+		hints: {
+			compute:
+				"Celle-ci décide de ce qu'on te montre : recommander un fine-tune de soixante-dix milliards de paramètres à quelqu'un sur Colab gratuit lui fait perdre sa semaine.",
+			huggingface_username:
+				"Un lien qu'un lecteur peut suivre. Tes modèles là-bas ne sont pas importés — un modèle compte ici quand il arrive comme du travail qui a été relu.",
+			preferred_families: 'Du tri, pas un engagement. Tu peux travailler en dehors.'
+		},
+		options: {
+			level: {
+				debutant: 'Débutant',
+				apprentissage: 'En apprentissage',
+				practitioner: 'Praticien',
+				senior: 'Senior',
+				researcher: 'Chercheur'
+			},
+			weekly_hours: {
+				lt3: 'Moins de 3h',
+				'3_10': '3 à 10h',
+				gt10: 'Plus de 10h',
+				fulltime: 'Temps plein'
+			},
+			goal: {
+				learning: 'Apprendre',
+				portfolio: 'Me construire un portfolio',
+				paid_missions: 'Du travail payé',
+				academic_research: 'De la recherche académique',
+				startup: 'Fonder quelque chose'
+			},
+			compute: {
+				none: 'Colab ou Kaggle gratuit',
+				personal_gpu: 'Une carte à moi',
+				cloud_small: 'Cloud, moins de 500 $ par mois',
+				cloud_large: 'Cloud, plus de 500 $ par mois',
+				enterprise: 'Le cluster d’un employeur'
+			},
+			main_frameworks: {
+				pytorch: 'PyTorch',
+				jax: 'JAX',
+				tensorflow: 'TensorFlow',
+				candle: 'Candle',
+				mlx: 'MLX',
+				other: 'Autre chose'
+			}
+		}
+	},
+	marketplace: {
+		title: 'Marché des créateurs',
+		subtitle:
+			"Templates, boilerplates, kits et samples, faits par les gens d'ici. Ce que tu as le droit d'en faire est sur la carte, pas enfoui dans la description.",
+		allDomains: 'Toutes les disciplines',
+		empty: 'Rien en vente',
+		emptyBody: 'Aucun item publié sous ce filtre pour l’instant.',
+		notFound: "Cet item n'existe pas, ou n'est pas publié.",
+		backToList: 'Tous les items',
+		draft: 'Brouillon',
+		downloadsCount: '{n} téléchargements',
+		commissionNotice:
+			"Skilluv garde {low}% en dessous de {threshold} € et {high}% au-dessus. Encaisser un paiement, héberger des fichiers et traiter un litige coûtent à peu près pareil quel que soit le prix — un taux unique rendrait les petits items plus chers à traiter qu'ils ne rapportent, et ce sont les petits items qui donnent envie de parcourir un marché.",
+		creatorReceives: 'Le créateur touche {amount}',
+		platformKeeps: 'Skilluv garde {amount}',
+		buyCta: 'Acheter',
+		signInToBuy: 'Se connecter pour acheter',
+		yourItem: 'Le tien. On n’achète pas son propre item.',
+		publishCta: 'Le publier',
+		publishedToast: 'Publié.',
+		boughtToast: 'Acheté.',
+		purchasedTitle: 'Acheté',
+		tokenTerms: 'Le lien vit {hours} heures et peut être utilisé {n} fois.',
+		redeemCta: 'Récupérer les fichiers',
+		notFetchableYet:
+			"Ce sont des noms de stockage, pas encore des liens — l'endpoint de téléchargement ne rend pas d'URL utilisable. Ton achat tient ; demande-nous et on t'envoie les fichiers.",
+		rateCta: 'Noter',
+		rateTitle: 'Noter cet item',
+		rateHint: 'Tu l’as acheté, donc ta note compte. De un à cinq.',
+		reviewLabel: 'Quelques mots',
+		reviewPlaceholder: 'À quoi ça a servi, et à quoi non.',
+		rateSubmit: 'Envoyer',
+		ratedToast: 'Merci — note enregistrée.',
+		licenses: {
+			personal_use: 'Usage personnel',
+			commercial: 'Usage commercial',
+			extended_commercial: 'Commercial étendu'
+		}
+	},
+	aiDomain: {
+		title: 'L’IA sur Skilluv',
+		onboardingCta: 'Régler mes recommandations',
+		subtitle:
+			"Ce que les gens d'ici ont réellement publié, et ce qui vaut la peine d'être tenté ailleurs en ce moment. L'assistant est autre chose et vit sur sa propre page.",
+		artifactsTitle: 'Artefacts publiés',
+		artifactsHint:
+			"Uniquement du travail vérifié. Une soumission en attente répondrait de travers à la question pour laquelle cette liste existe.",
+		artifactsEmpty: 'Rien de publié pour l’instant',
+		artifactsEmptyBody: 'Aucun artefact vérifié sous ce filtre.',
+		allSubtypes: 'Tout',
+		subtypes: {
+			ml_model: 'Modèle',
+			dataset: 'Jeu de données',
+			llm_agent: 'Agent',
+			data_pipeline: 'Pipeline',
+			ai_service_api: 'Service',
+			ai_research_paper: 'Article'
+		},
+		openHub: 'Sur son hub',
+		competitionsTitle: 'À tenter',
+		competitionsHint:
+			"Compétitions et classements hors Skilluv, choisis par un curateur qui dit pourquoi celle-ci et pas les quarante autres.",
+		competitionsEmpty: 'Rien d’ouvert en ce moment.',
+		closesIn: 'Ferme dans {n} jours',
+		rolling: 'En continu'
+	},
+	projectCredits: {
+		title: 'Crédits sur ce projet',
+		verifyCta: 'Vérifier'
+	},
+	audioDelivery: {
+		title: 'Livraison audio',
+		empty: 'Rien de livré pour l’instant.',
+		roleLabel: 'Rôle du fichier',
+		roles: {
+			master: 'Masters',
+			stem: 'Stems',
+			preview: 'Extraits',
+			project_archive: 'Fichiers de projet',
+			documentation: 'Documentation'
+		},
+		analysis: {
+			pending: 'Pas encore mesuré',
+			running: 'Mesure en cours',
+			done: 'Rien de mesurable sur ce fichier',
+			skipped: 'Non mesuré',
+			failed: 'La mesure a échoué'
+		},
+		analysisFailed: 'La mesure a échoué sur ce fichier',
+		mono: 'mono',
+		channels: '{n} canaux',
+		listenCta: 'Écouter',
+		linkExpires: 'Ce lien expire vite — recharge la page pour en obtenir un autre.',
+		uploadCta: 'Ajouter un fichier',
+		uploadedToast: 'Fichier stocké. Les mesures tournent par balayage et ne sont pas encore là.'
+	},
+	audioSources: {
+		title: 'Sources et licences',
+		empty: 'Aucune source tierce listée.',
+		addCta: 'Ajouter une source',
+		declaredComplete: 'Déclarée complète le {date}',
+		notDeclared:
+			"Personne n'a déclaré cette liste complète. Une liste vide n'est pas la même chose qu'un morceau original : l'attestation lit la déclaration, pas le compte.",
+		completeCta: 'Cette liste est complète',
+		completedToast: 'Déclaration enregistrée.',
+		declaredToast: 'Source ajoutée. La déclaration de complétude a été effacée.',
+		purchasedFrom: 'Acheté chez {name}',
+		noCommercial: 'Usage commercial non autorisé',
+		openSource: 'Ouvrir la source',
+		attributionRequired: 'Une licence Creative Commons exige sa ligne de crédit, mot pour mot.',
+		reopensNotice:
+			"Ajouter une source après avoir déclaré la liste complète efface cette déclaration — elle a cessé d'être vraie.",
+		formTitle: 'Déclarer une source',
+		formKind: 'Comment tu te l’es procurée',
+		formName: 'Ce que c’est',
+		formNamePlaceholder: 'Pack Splice, prise de son, banque de samples…',
+		formUrl: 'D’où ça vient',
+		formLicence: 'Identifiant de licence',
+		formAttribution: 'Ligne de crédit',
+		formAttributionPlaceholder: 'Telle qu’elle doit apparaître, mot pour mot.',
+		formSubmit: 'Déclarer',
+		kinds: {
+			original: 'Original',
+			public_domain: 'Domaine public',
+			creative_commons: 'Creative Commons',
+			royalty_free: 'Libre de droits',
+			licensed_commercial: 'Licence négociée',
+			third_party_work: 'Œuvre de tiers'
+		}
+	},
+	castings: {
+		title: 'Castings voix',
+		subtitle:
+			"Des appels à une voix : un personnage, une réplique que tout le monde enregistre, une date. À l'aveugle par défaut — les noms restent dehors jusqu'à ce que quelqu'un soit choisi.",
+		detailTitle: 'Casting voix',
+		languageFilter: 'Langue',
+		languagePlaceholder: 'fr-BE',
+		languageHint: "Correspondance exacte. Ici l'accent fait partie du brief.",
+		filterCta: 'Filtrer',
+		blindLabel: 'À l’aveugle',
+		blindNotice:
+			'Les noms sont retenus jusqu’au choix d’une voix. Les numéros sont stables sur cette page : on peut parler de « la troisième prise ».',
+		maxSeconds: '{n}s max',
+		closesToday: "Ferme aujourd'hui",
+		closesIn: 'Ferme dans {n} jours',
+		deadline: "Auditions jusqu'au {date}",
+		empty: 'Aucun casting ouvert',
+		emptyBody: "Rien ne prend d'audition en ce moment, en tout cas dans cette langue.",
+		notFound: "Ce casting n'existe pas.",
+		backToList: 'Tous les castings',
+		briefTitle: 'Le personnage',
+		sampleLineTitle: 'La réplique',
+		sampleLineHint:
+			'Tout le monde enregistre celle-ci : c’est ce qui rend les prises comparables.',
+		takesTitle: 'Prises ({n})',
+		noTakes: "Personne n'a encore auditionné.",
+		noPlaybackNotice:
+			'Les prises ne sont pas écoutables ici : une audition est stockée derrière un lien signé de courte durée que cette liste ne transporte pas.',
+		auditionCta: 'Envoyer une prise',
+		chooseCta: 'Choisir cette voix',
+		notYours: 'Seul celui qui a ouvert ce casting peut choisir une voix.',
+		selectedToast: 'Voix choisie. Les noms sont désormais publics.',
+		auditionSentToast: 'Prise envoyée.',
+		formTitle: 'Envoyer une prise',
+		formHint:
+			'Enregistre la réplique et donne le lien du fichier. Tout ce qui est accessible publiquement convient.',
+		formUrl: 'Lien vers la prise',
+		formNotes: 'Notes',
+		formNotesPlaceholder: 'Ce que tu as cherché, les choix que tu as faits.',
+		formReplaceNotice:
+			'Une deuxième prise remplace la première — c’est toi qui choisis ce qui est écouté.',
+		formSubmit: 'Envoyer',
+		statuses: {
+			open: 'Ouvert',
+			reviewing: 'En écoute',
+			selected: 'Voix choisie',
+			cancelled: 'Annulé'
+		}
+	},
+	guides: {
+		title: 'Guides et modèles',
+		subtitle:
+			"Par où commencer dans un métier, quoi installer, et les documents que le travail demande d'écrire. Un seul catalogue, toutes les disciplines.",
+		allDomains: 'Toutes les disciplines',
+		allKinds: 'Tout pour les contributeurs',
+		kinds: {
+			onboarding: 'Débuter',
+			toolkit: 'Outillage',
+			writeup_template: 'Modèle de compte rendu',
+			brief_template: 'Modèle de brief'
+		},
+		briefNotice:
+			"Un brief s'écrit par celui qui commande le travail, avant qu'il commence — ces modèles sont pour les entreprises, pas pour les contributeurs.",
+		empty: 'Aucun guide ici pour l’instant',
+		emptyBody: 'Rien de publié pour ce filtre. Essaie une autre discipline.',
+		notFound: "Ce guide n'existe pas, ou n'est pas publié.",
+		backToList: 'Tous les guides',
+		otherLocaleNotice:
+			"Servi en {locale} : ce guide n'a pas encore été traduit dans ta langue."
+	},
+	opportunities: {
+		title: 'Ce qu’on te demande',
+		waiting: '{n} en attente d’une réponse de toi.',
+		nothingWaiting: 'Rien n’attend de réponse.',
+		empty: 'Personne ne demande rien pour l’instant',
+		emptyWithPosting:
+			'Ton annonce est en ligne. Les entreprises la voient quand elles cherchent ce que tu fais.',
+		emptyNoPosting:
+			'Publie ce que tu cherches et les entreprises pourront te pitcher, au lieu de l’inverse.',
+		pitchesTitle: 'Des entreprises te pitchent',
+		pitchesHint:
+			'Elles ont dépensé des crédits pour écrire ça. Ouvrir un pitch leur dit qu’il a été lu — rien de plus.',
+		opened: 'ouvert',
+		interested: 'Ça m’intéresse',
+		notInterested: 'Pas intéressé',
+		answeredToast: 'Réponse envoyée.',
+		declineTitle: 'Décliner celui-ci',
+		declineHint:
+			'Le motif est facultatif. Dix pitchs ne doivent pas dix explications.',
+		declinePlaceholder: 'Pas le bon moment, mauvaise stack, salaire trop bas…',
+		declineSubmit: 'Décliner',
+		campaignsTitle: 'Campagnes où tu es en shortlist',
+		interviewsTitle: 'Entretiens',
+		pickASlot: 'Choisis un créneau qui te va.',
+		joinMeeting: 'Rejoindre',
+		declineInterview: 'Aucun ne me va',
+		slotConfirmedToast: 'Créneau confirmé.',
+		declinedToast: 'Décliné.',
+		trialsTitle: 'Périodes d’essai',
+		trialsHint:
+			'Les heures approuvées te sont dues. Les heures en attente sont une déclaration que personne n’a encore regardée.',
+		until: 'jusqu’au {date}',
+		approvedHours: '{n} h approuvées',
+		pendingHours: '{n} h en attente',
+		openTrial: 'Ouvrir',
+		postingTitle: 'Ce que tu as publié',
+		remoteOnly: 'remote uniquement',
+		notLookingFor: 'Pas intéressé par : {text}',
+		pitchesLeft: 'Il reste {n} pitchs d’entreprises ce mois-ci.'
+	},
+	trialHours: {
+		title: 'Journées déclarées',
+		back: 'Retour',
+		approvedTotal: '{n} h approuvées',
+		pendingTotal: '{n} h en attente',
+		empty: 'Rien de déclaré pour l’instant.',
+		approved: 'Approuvée',
+		rejected: 'Refusée',
+		pending: 'En attente',
+		rejectionReason: 'Motif : {reason}',
+		claimCta: 'Déclarer une journée',
+		claimTitle: 'Déclarer une journée',
+		claimSubmit: 'Déclarer',
+		claimedToast: 'Journée déclarée.',
+		formDate: 'Jour travaillé',
+		formHours: 'Heures',
+		formSummary: 'Ce que tu as fait',
+		formSummaryPlaceholder: 'Concrètement, et de façon vérifiable.',
+		formSummaryHint: 'C’est là-dessus que le client approuve.'
+	},
+	dashboardHome: {
+		title: 'Ton tableau de bord',
+		greeting: 'Salut, {name}',
+		waitingOnYou: '{n} chose attend une réponse de toi.',
+		nothingWaiting: 'Rien n’attend après toi.',
+		invitationsTitle: 'En attente de toi',
+		closesOn: 'ferme le {date}',
+		invitedOn: 'invité le {date}',
+		openContest: 'Ouvrir le contest',
+		nextTitle: 'À faire ensuite',
+		cachedNotice: 'Rafraîchi toutes les heures',
+		nextEmpty: 'Rien à suggérer pour l’instant',
+		nextEmptyBody: 'Termine un challenge ou deux et ça se remplit.',
+		suggestionsUnavailable: 'Les suggestions ont besoin d’une discipline pour travailler.',
+		pickAnOrientation: 'Choisir un métier',
+		difficulty: 'difficulté {n}',
+		estimatedHours: '~{n}h',
+		formats: { individual: 'Brief solo', contest: 'Contest' },
+		partOfTitle: 'Ce dont tu fais partie',
+		eventsTitle: 'Événements',
+		contribution: 'Contribution',
+		mentoringTitle: 'Mentorat',
+		asMentor: 'Comme mentor',
+		asMentee: 'Comme mentoré',
+		periodEnds: 'Court jusqu’au {date}',
+		notRenewing: 'ne se renouvelle pas',
+		stewardshipsTitle: 'Projets dont tu es steward',
+		since: 'depuis le {date}',
+		yoursTitle: 'À toi',
+		shortcuts: {
+			opportunities: 'Ce qu’on te demande',
+			bookmarks: 'Signets',
+			notes: 'Notes',
+			goals: 'Objectifs',
+			vouchings: 'Cautions',
+			slices: 'Mes challenges',
+			teams: 'Équipes'
+		}
+	},
+	domainRecord: {
+		titles: {
+			code: 'Parcours code',
+			quality: 'Parcours qualité',
+			ops: 'Parcours ops',
+			leadership: 'Parcours leadership',
+			security: 'Parcours sécurité'
+		},
+		primary: 'principal',
+		until: "jusqu'au {date}",
+		openReport: 'Rapport',
+		targetDomainsTitle: 'Ce que le travail visait',
+		credentialsTitle: 'Certifications',
+		credentialsHint:
+			"Délivrées par quelqu'un d'autre. Listées à part des attestations : l'une est une chose dont Skilluv répond, l'autre une chose dont Skilluv a vérifié le lien.",
+		code: {
+			storedDiffers:
+				"Les classements trient encore sur {n} — le balayage horaire n'a pas rattrapé.",
+			languagesTitle: 'Langages',
+			packagesTitle: 'Paquets publiés',
+			readOn: 'lu le {date}',
+			missionsTitle: 'Missions livrées',
+			portfoliosTitle: 'Comptes ailleurs',
+			portfolioVerified: 'propriété prouvée',
+			portfolioDeclared: 'déclaré'
+		},
+		quality: {
+			bugsTitle: 'Défauts confirmés',
+			bugsHint:
+				"Uniquement ceux dont le correctif est parti et a été re-vérifié. Le correctif est en lien ; la reproduction non, volontairement.",
+			severityUnreviewed: 'sévérité non revue',
+			seeTheFix: 'Voir le correctif',
+			testRunsTitle: 'Exécutions de tests vérifiées',
+			testRunsHint:
+				"Vérifiées par un relecteur. Un badge vert sur son propre dépôt n'en est pas une.",
+			testCount: '{total} tests, {failed} en échec'
+		},
+		ops: {
+			objectivesTitle: 'Objectifs tenus',
+			objectivesHint:
+				"Chacun avec le chiffre et sa source, pour qu'on puisse aller vérifier.",
+			objectiveFigures: '{achieved}% pour {target}% visés sur {days} jours',
+			met: 'Tenu',
+			missed: 'Manqué',
+			evidence: 'Source',
+			incidentsTitle: 'Incidents',
+			detect: 'détecté en {v}',
+			resolve: 'résolu en {v}',
+			postmortem: 'post-mortem {date}',
+			costTitle: 'Travail sur les coûts',
+			sloKept: 'objectif toujours tenu',
+			sloBroken: 'objectif plus tenu'
+		},
+		leadership: {
+			artefactsTitle: 'Documents',
+			adopted: 'Adopté',
+			confidentialTitle: 'Travail confidentiel',
+			confidentialHint:
+				"Quel genre, à quelle échelle, dans quel secteur — et jamais quoi ni où. Dit dans l'abstrait parce que le reste ne nous appartient pas.",
+			cohortsTitle: 'Cohortes menées',
+			cohortFigures: '{graduated} arrivés au bout sur {joined}',
+			leftForWork: '· {n} partis pour un poste',
+			ledToEnd: 'Menée jusqu’au bout',
+			retrosTitle: 'Rétrospectives',
+			retrosHint: 'Et si les actions ont réellement atterri.',
+			retroFigures: '{resolved} actions résolues sur {total}',
+			followedThrough: 'Suivi jusqu’au bout'
+		},
+		security: {
+			findingsTitle: 'Findings confirmées',
+			findingsHint:
+				"Une finding encore sous embargo arrive sans son titre, et datée au mois : un titre est la moitié de la divulgation, et une date précise réduit la fenêtre.",
+			underEmbargo: 'Titre retenu jusqu’à la divulgation',
+			writeup: 'Writeup',
+			practiceTitle: 'Entraînement résolu',
+			credentialChecked: 'vérifiée',
+			credentialDeclared: 'déclarée',
+			elsewhereTitle: 'Réputation ailleurs',
+			figuresDeclared: 'chiffres déclarés'
+		}
+	},
+	requests: {
+		title: 'Ce qu’on te demande',
+		subtitle: 'Tout ce qui attend une réponse de ta part, au même endroit.',
+		waitingCount: '{n} en attente de toi',
+		empty: 'Rien ne t’attend.',
+		emptyHint:
+			'Les accompagnements, placements, bilans et programmes bêta apparaissent ici.',
+		onboardingsTitle: 'Accompagnements',
+		onboardingMonths: 'Accompagnement de {n} mois',
+		onboardingConsent:
+			'Ton employeur l’a payé. Ce n’est pas la même chose que ton accord — accepter le démarre et verse sa part à ton mentor.',
+		asJunior: 'Tu es le junior',
+		asMentor: 'Tu es le mentor',
+		since: 'Depuis le {date}',
+		placementsTitle: 'Placements',
+		placementTerms: '{months} mois, garantie de {guarantee} mois',
+		placementConsent:
+			'Cela engage des mois de ta vie professionnelle, et une période de garantie après. Lis les conditions avant d’accepter.',
+		assessmentsTitle: 'Écrit sur toi',
+		assessmentsHint:
+			'Une conclusion à laquelle personne ne peut répondre est un verdict. Tu peux répondre, et ta réponse voyage avec elle.',
+		replyOpenCta: 'Répondre',
+		replyCta: 'Envoyer la réponse',
+		replySent: 'Réponse enregistrée.',
+		cancelCta: 'Annuler',
+		betaTitle: 'Programmes bêta en recrutement',
+		betaHint: 'Ouverts à tous, pas adressés à toi en particulier.',
+		betaWeeks: '{n} semaines',
+		joinCta: 'Rejoindre',
+		joined: 'Tu en fais partie.',
+		acceptCta: 'Accepter',
+		declineCta: 'Refuser',
+		accepted: 'Accepté.',
+		declined: 'Refusé.',
+		unlistedNote:
+			'Les consultations et les engagements peuvent recevoir une réponse mais ne sont pas listés : rien n’indique à cette page auxquels tu as été invité, donc leur absence ici ne veut pas dire que personne n’a demandé.',
+		unlistedCta: 'Regarde tes notifications'
+	},
+
+	advances: {
+		title: 'Avances',
+		subtitle:
+			'De l’argent que tu as gagné et qui ne t’a pas encore été versé, tiré en avance contre des frais.',
+		empty: 'Aucune avance demandée.',
+		whereCta: 'Voir tes missions',
+		ofExpected: '{percent} de {total} attendus',
+		fee: 'Frais {amount} ({percent})'
+	},
+
+	dataConsent: {
+		title: 'À quoi ton parcours peut servir',
+		subtitle:
+			'Chaque usage est demandé séparément, et ceux qui rapportent de l’argent le disent et disent quelle est ta part.',
+		empty: 'Rien n’est demandé de ton parcours.',
+		commercial: 'Rapporte de l’argent',
+		on: 'Accepté',
+		revenueShare: 'Ta part : {percent}',
+		agreeCta: 'Accepter',
+		withdrawCta: 'Retirer',
+		agreed: 'Accepté.',
+		withdrawn: 'Retiré.'
+	},
+
+	creator: {
+		title: 'Payé pour ton audience',
+		subtitle: 'Ce que les marques paient en ce moment, et exactement ce que chacune paie.',
+		empty: 'Rien d’ouvert pour le moment.',
+		emptyHint:
+			'Les campagnes et les programmes ambassadeurs arrivent par vagues plutôt qu’en continu.',
+		campaignsTitle: 'Campagnes de lancement',
+		campaignsHint:
+			'Payé à la pièce, sur une cagnotte qui s’épuise. Regarde ce qu’il en reste avant d’écrire.',
+		perPiece: '{amount} par pièce',
+		pot: 'cagnotte de {amount}',
+		piecesLeftApprox: 'environ {n} pièces restantes',
+		until: 'jusqu’au {date}',
+		writeCta: 'Proposer une pièce',
+		pieceTitlePlaceholder: 'Titre de ta pièce',
+		sendCta: 'Envoyer',
+		cancelCta: 'Annuler',
+		pieceSent: 'Pièce envoyée.',
+		pieceSentWithPot:
+			'Pièce envoyée. Environ {n} autres peuvent encore être payées sur cette cagnotte.',
+		ambassadorsTitle: 'Programmes ambassadeurs',
+		ambassadorsHint:
+			'Ce sont des mois, pas un post : une bourse mensuelle contre un quota mensuel. Lis l’engagement avant d’accepter.',
+		perMonth: '{amount} par mois',
+		commitment: '{months} mois, {n} livrables par mois',
+		minimumRank: 'à partir du rang {rank}',
+		swag: 'goodies inclus',
+		previewAccess: 'accès anticipé aux produits',
+		acceptCta: 'Accepter',
+		declineCta: 'Refuser',
+		joined: 'Tu en fais partie.',
+		declined: 'Refusé.'
+	},
+
+	work: {
+		title: 'Autres façons de travailler',
+		subtitle:
+			'Équipes permanentes, laboratoires vivants, et du travail proposé avant que quiconque l’ait commandé.',
+		empty: 'Rien d’ouvert pour le moment.',
+		emptyHint:
+			'Les studios se forment, les labs ouvrent et les propositions se publient par vagues plutôt qu’en continu.',
+		studiosTitle: 'Studios',
+		studiosHint:
+			'Une équipe permanente qui vend des jours. Ici tu rejoins des gens, pas une tâche.',
+		dayRate: '{amount} par jour',
+		maxMembers: 'jusqu’à {n} membres',
+		labsTitle: 'Laboratoires vivants',
+		labsHint:
+			'Une entreprise paie une communauté pour continuer d’utiliser son produit et lui en rendre compte. L’argent est une cagnotte mensuelle partagée, donc ta part dépend de qui d’autre rejoint.',
+		monthlyPool: '{amount} par mois, partagés',
+		communityTarget: '{n} contributeurs recherchés',
+		joinCta: 'Rejoindre',
+		labJoined: 'Tu en fais partie.',
+		proposalsTitle: 'Propositions',
+		proposalsHint:
+			'Celle-ci fonctionne à l’envers : quelqu’un a repéré un problème et cherche l’entreprise, au lieu qu’une entreprise arrive déjà décidée. Ce n’est pas une offre d’emploi.',
+		budgetEstimate: 'environ {amount}',
+		acceptCta: 'Accepter',
+		declineCta: 'Refuser',
+		proposalAccepted: 'Accepté.',
+		proposalDeclined: 'Refusé.'
+	},
+
+	quality: {
+		title: 'Défauts',
+		subtitle: 'Ce que tu as signalé, ce que tu peux juger, et ce que la plateforme a publié.',
+		tabMine: 'Les miens',
+		tabQueue: 'À relire',
+		tabPublished: 'Publiés',
+		queueHint:
+			'Tu peux relire ceux-ci à cause du métier auquel ils appartiennent, pas à cause d’un rôle. La trace dit quel métier a décidé.',
+		empty: {
+			mine: 'Tu n’as pas encore signalé de défaut.',
+			queue: 'Rien n’attend ta relecture.',
+			published: 'Aucun rapport publié.'
+		},
+		emptyHint:
+			'Un rapport de défaut porte les étapes, ce que tu attendais, et ce qui s’est passé à la place.',
+		wasFiledAs: 'déposé en {severity}',
+		seeTheFix: 'Voir le correctif',
+		fixConfirmed: 'Correctif confirmé',
+		fixUnconfirmed: 'Correctif en attente de confirmation',
+		confirmFixCta: 'Confirmer que le correctif est parti',
+		awaitingReview: 'en attente de relecture',
+		acceptCta: 'Accepter',
+		regradeTo: 'Accepter en {severity}',
+		reviewed: 'Relu.',
+		testRunsLiveOnSlices:
+			'Les campagnes de test se lisent sur la slice contre laquelle elles ont tourné, à côté du travail dont elles sont la preuve.'
+	},
+
+	testRuns: {
+		title: 'Campagnes de test',
+		verified: 'Vérifiée',
+		unverified: 'Non vérifiée',
+		verifyCta: 'Vérifier ces chiffres',
+		counts: '{total} tests, {failed} en échec, {skipped} ignorés',
+		figuresFrom: 'chiffres depuis {source}',
+		openReport: 'Ouvrir le rapport'
+	},
+
+	ops: {
+		title: 'Exploitation',
+		subtitle: 'Les objectifs de service que tu as pris, les incidents que tu as menés, et ce qu’ils coûtent.',
+		empty: 'Rien d’enregistré pour le moment.',
+		emptyHint:
+			'Un objectif appartient à une slice ou à un projet — une cible toute seule ne promet rien.',
+		objectivesTitle: 'Objectifs de service',
+		objectivesHint: 'Une promesse prise à l’avance et jugée une fois sa fenêtre close.',
+		targetOver: '{target}% sur {days} jours',
+		running: 'En cours',
+		met: 'Tenu',
+		missed: 'Manqué',
+		verified: 'Vérifié',
+		selfReported: 'clôturé par son propriétaire, pas encore contrôlé',
+		observedOutside: 'observé de l’extérieur',
+		evidence: 'Preuve',
+		incidentsTitle: 'Incidents',
+		incidentsHint:
+			'Ce qui vaut d’être lu, c’est le postmortem et ce qui a été fait après, pas la panne.',
+		ongoing: 'En cours',
+		minutes: '{n} min',
+		timeToDetect: 'détecté en {d}',
+		timeToResolve: 'résolu en {d}',
+		postmortemPublished: 'Postmortem publié',
+		postmortemMissing: 'Pas encore de postmortem',
+		costWorkNote:
+			'Le travail sur les coûts s’enregistre contre la slice ou le projet qu’il a changé, et l’économie n’est attestée qu’une fois vérifié que le service tient toujours son objectif.'
+	},
+
+	game: {
+		title: 'Jeu',
+		subtitle: 'Les créateurs mis en avant cette semaine, et les mods que tu as enregistrés.',
+		empty: 'Rien ici pour le moment.',
+		emptyHint:
+			'Les créateurs sont mis en avant chaque semaine, et les mods apparaissent quand tu en enregistres un.',
+		featuredTitle: 'Créateurs de la semaine',
+		weekOf: 'Semaine du {date}',
+		projectsHighlighted: '{n} projets mis en avant',
+		modsTitle: 'Tes mods',
+		modsHint:
+			'Un mod vit là où la communauté de son jeu se trouve déjà. Skilluv enregistre qu’il existe plutôt que d’en héberger une copie, et le nombre de téléchargements est celui que tu lis sur cet hébergeur.',
+		noMods: 'Aucun mod enregistré.',
+		registerCta: 'Enregistrer un mod',
+		modTitlePlaceholder: 'Nom de ton mod',
+		targetGamePlaceholder: 'Quel jeu',
+		targetPlatformPlaceholder: 'Quelle plateforme',
+		modDescriptionPlaceholder: 'Ce qu’il change',
+		saveCta: 'Enregistrer',
+		cancelCta: 'Annuler',
+		modRegistered: 'Mod enregistré.',
+		openOnHost: 'Ouvrir là où il est hébergé',
+		declaredDownloads: '{n} téléchargements, déclarés',
+		whereTheRestIs:
+			'Les playtests et la porte de validation sont sur la slice qu’ils jugent. Une jam se lit sur son tournoi. La composition d’un projet est sur le projet.'
+	},
+
+	playtest: {
+		title: 'Playtests',
+		gateReading: '{n} playtests, {avg}/5 sur le plaisir',
+		gateMet: 'Passe la porte',
+		gateNotYet: 'Pas encore passé la porte',
+		fun: 'plaisir {n}/5',
+		clarity: 'clarté {n}/5',
+		minutes: '{n} min jouées',
+		wouldPlayAgain: 'Y rejouerait',
+		wouldPlayAgainLabel: 'J’y rejouerais',
+		funLabel: 'Plaisir',
+		clarityLabel: 'Clarté',
+		difficultyLabel: 'Difficulté',
+		difficulty: {
+			too_easy: 'Trop facile',
+			just_right: 'Bien dosé',
+			too_hard: 'Trop dur'
+		},
+		bugsPlaceholder: 'Quelque chose de cassé ? (facultatif)',
+		suggestionsPlaceholder: 'Quelque chose à changer ? (facultatif)',
+		openCta: 'Enregistrer un playtest',
+		sendCta: 'Envoyer',
+		cancelCta: 'Annuler',
+		recorded: 'Playtest enregistré.'
+	},
+
+	leadership: {
+		title: 'Rétrospectives',
+		subtitle: 'Ce que tu as animé, et ce qui en est réellement sorti.',
+		empty: 'Aucune rétrospective enregistrée.',
+		emptyHint:
+			'Une rétrospective n’est une preuve de leadership qu’une fois ses actions résolues.',
+		participants: '{n} personnes',
+		shared: 'Partagée avec le groupe',
+		notShared: 'Pas encore repartagée',
+		showActions: 'Actions',
+		hideActions: 'Masquer les actions',
+		noActions: 'Aucune action enregistrée. Sans elles, c’était une réunion.',
+		done: 'Faite',
+		late: 'En retard',
+		abandonedBecause: 'abandonnée — {reason}',
+		markDoneCta: 'Marquer faite',
+		newActionPlaceholder: 'Ce qui est à faire',
+		addActionCta: 'Ajouter',
+		actionAdded: 'Action ajoutée.',
+		actionDone: 'Action close.',
+		actionAbandoned: 'Action abandonnée.',
+		whereTheRestIs:
+			'L’anonymisation, la portée et les cohortes s’adressent par une slice ou une cohorte : elles sont sur ces pages.'
+	},
+
+	leadershipArtefact: {
+		title: 'Anonymisation et portée',
+		acknowledged: 'Confirmé le {date}',
+		pending: 'Pas encore confirmé',
+		acknowledgeCta: 'Mon projet l’a bien adopté',
+		acknowledgedToast: 'Confirmé.',
+		declareCta: 'Déclarer anonymisé',
+		declaredToast: 'Déclaré. Un relecteur confirme ensuite.',
+		confirmCta: 'Confirmer l’anonymisation',
+		confirmedToast: 'Confirmé.',
+		adoptionCta: 'Enregistrer une reprise',
+		adoptionToast: 'Reprise enregistrée.',
+		redactionNote:
+			'Anonymiser demande deux personnes : l’auteur le déclare, quelqu’un d’autre le lit et confirme n’avoir reconnu personne.'
+	},
+
+	cohortOutcomes: {
+		title: 'Résultats',
+		nothingRecorded:
+			'Aucun résultat enregistré — ce n’est pas la même chose que personne n’a terminé.',
+		pickMember: 'Choisis un membre',
+		pickReason: 'Pourquoi il est parti',
+		reasons: {},
+		graduateCta: 'Diplômer',
+		graduated: 'Diplômé.',
+		departureCta: 'Enregistrer un départ',
+		departureRecorded: 'Départ enregistré.',
+		departureNote:
+			'Une cohorte qui n’enregistre que des diplômés affiche cent pour cent pour toujours. Partir pour un emploi n’est pas abandonner, et c’est pour ça qu’on demande la raison.',
+		leadCta: 'Prendre la conduite',
+		ledToast: 'Enregistré.',
+		concludeCta: 'Clore la cohorte',
+		concludedToast: 'Cohorte close.'
+	},
+
+	projects: {
+		title: 'Projets',
+		subtitle:
+			'Ce que Skilluv soutient, ce qui cherche de l’aide, et ce qui correspond à ton parcours.',
+		tabCurated: 'Sélectionnés',
+		tabLooking: 'Cherchent de l’aide',
+		tabRecommended: 'Pour toi',
+		hint: {
+			curated:
+				'Skilluv y a mis son nom. Ce n’est pas quelque chose qu’un projet peut s’attribuer lui-même.',
+			looking: 'Ceux-ci le disent eux-mêmes — un indicateur posé par leur propre propriétaire.',
+			recommended:
+				'Rapprochés de ton travail vérifié, et chacun dit ce qui a produit la correspondance.'
+		},
+		empty: {
+			curated: 'Aucun projet sélectionné pour le moment.',
+			looking: 'Personne ne cherche d’aide en ce moment.',
+			recommended: 'Rien ne correspond encore à ton parcours.'
+		},
+		curatedBadge: 'Sélectionné',
+		lookingBadge: 'Cherche des contributeurs',
+		oss: 'open source',
+		repo: 'Dépôt',
+		starCta: 'Suivre ce projet',
+		starred: 'Suivi.',
+		unstarred: 'Plus suivi.',
+		matchedBecause: 'Correspondance sur {domains} — {n} contributions vérifiées là-bas.',
+		interestIsNotMembership:
+			'Suivre un projet t’en donne des nouvelles. Ça ne t’y met pas — seul son propriétaire ajoute des contributeurs.'
+	},
+
+	ats: {
+		title: 'Suivi des candidatures',
+		subtitle: 'Tes postes et leurs pipelines. Personne hors de ton entreprise ne peut les lire.',
+		plansTitle: 'Formules',
+		currentPlan: 'Tu es sur {plan}.',
+		noPlan:
+			'Aucune formule choisie — y compris la gratuite, qui se réclame comme les autres.',
+		currentBadge: 'Actuelle',
+		chooseCta: 'Choisir',
+		subscribed: 'Formule prise.',
+		unlimited: 'illimité',
+		maxOpenings: '{n} postes ouverts',
+		maxCandidates: '{n} candidats par poste',
+		retention: 'Données conservées {n} jours',
+		openingsTitle: 'Postes',
+		noOpenings: 'Aucun poste pour le moment.',
+		noOpeningsHint: 'Un poste est ce à quoi un pipeline se rattache.',
+		liveTitle: 'Ouverts',
+		closedTitle: 'Fermés',
+		positions: '{n} postes',
+		remoteOk: 'télétravail accepté',
+		closeCta: 'Fermer',
+		closed: 'Poste fermé.',
+		scopeNote:
+			'Tout ici appartient à ton entreprise. Skilluv le stocke et ne le lit pas : il n’existe aucune vue admin de ton pipeline ni de listing inter-entreprises.'
+	},
+
+	linkedAccounts: {
+		title: 'Comptes liés',
+		subtitle: 'Les fournisseurs d’identité avec lesquels tu peux te connecter.',
+		none: 'Aucun fournisseur lié.',
+		linkedOn: 'lié le {date}',
+		linkCta: 'Lier {provider}',
+		unlinkCta: 'Délier',
+		unlinked: 'Fournisseur délié.',
+		lastOne: 'Ton seul accès',
+		lastOneNote:
+			'C’est le seul fournisseur du compte, donc le délier n’est pas proposé — tu pourrais ne plus pouvoir te connecter.'
+	},
+
+	cv: {
+		title: 'Ce que tu dis de toi',
+		subtitle: 'Où tu as travaillé, où tu as étudié, ce que tu parles.',
+		declaredNote:
+			'Rien sur cette page n’est vérifié, et rien n’alimente un rang, un score ou un résultat de recherche. C’est à ça que servent les attestations — et c’est justement parce que cette partie est visiblement déclarée que le reste de ton profil vaut quelque chose.',
+		experiencesTitle: 'Expérience',
+		educationsTitle: 'Formation',
+		languagesTitle: 'Langues',
+		addCta: 'Ajouter',
+		saveCta: 'Enregistrer',
+		removeCta: 'Retirer',
+		removed: 'Retiré.',
+		current: 'En cours',
+		present: 'aujourd’hui',
+		leaveEndEmpty: 'Laisse la date de fin vide si tu y es toujours.',
+		companyPlaceholder: 'Entreprise',
+		titlePlaceholder: 'Ton intitulé',
+		schoolPlaceholder: 'École',
+		degreePlaceholder: 'Diplôme (facultatif)',
+		setLanguageCta: 'Définir',
+		experienceAdded: 'Expérience ajoutée.',
+		educationAdded: 'Formation ajoutée.',
+		languageSet: 'Langue définie.'
+	},
+
+	reviewQueue: {
+		title: 'En attente de toi',
+		subtitle:
+			'Du travail qui attend un verdict, et des débutants qui attendent qu’on leur dise que le leur compte.',
+		empty: 'Rien ne t’attend.',
+		emptyHint: 'Les tâches apparaissent ici quand elles correspondent à ce que tu peux relire.',
+		tasksTitle: 'Tâches de relecture',
+		seniority: 'demande {level}',
+		claimCta: 'La prendre',
+		claimed: 'Prise.',
+		minutesLeft: 'à toi pour {n} min',
+		hoursLeft: 'à toi pour {n}h',
+		pastSla: 'Quelqu’un attend au-delà de ce qu’on lui a promis.',
+		verificationsTitle: 'Vérifications débutants',
+		verificationsHint:
+			'Ce n’est pas un test de compétence. Quelqu’un explique sa propre soumission, ce qu’une personne qui l’a copiée ne peut pas faire — c’est donc ce qui permet à son travail de compter.'
+	},
+
+	explore: {
+		title: 'Ce qui se passe sur Skilluv',
+		subtitle:
+			'Tout ce qui est en cours — et, une fois que tu as un parcours, ce qui lui correspond.',
+		empty: 'Rien à montrer pour le moment.',
+		emptyHint: 'Les challenges, projets et événements apparaissent ici à leur ouverture.',
+		sponsoredTitle: 'Sponsorisé',
+		sponsoredHint: 'Une entreprise a payé pour que ce soit là. On préfère le dire.',
+		sponsoredBadge: 'Sponsorisé',
+		forYouTitle: 'Pour toi',
+		forYouHint: 'Lu depuis ton travail vérifié, donc ça se remplit à mesure que tu fais des choses.',
+		shelves: {}
+	},
+
+	codeDiscovery: {
+		title: 'Commencer par le code',
+		subtitle: 'Des issues pour se faire la main, et ce qu’on écrit vraiment ici.',
+		firstIssuesTitle: 'Premières issues',
+		firstIssuesHint:
+			'La seule liste ici qui ne suppose rien de toi. Aucun parcours requis, et jamais triée par le standing de qui que ce soit.',
+		languagePlaceholder: 'Langage',
+		filterCta: 'Filtrer',
+		noIssues: 'Aucune issue ne correspond.',
+		noIssuesHint: 'Essaie un autre langage, ou enlève le filtre.',
+		openIssue: 'Ouvrir',
+		ecosystemsTitle: 'Écosystèmes',
+		topLanguagesTitle: 'Les plus écrits',
+		topLanguagesHint:
+			'Compté depuis les dépôts synchronisés — ce que les gens écrivent vraiment, pas ce qu’ils disent écrire.'
+	},
+
+	contests: {
+		title: 'Concours de recrutement',
+		subtitle: 'Un brief, une échéance, et une entreprise qui lit ce que tu rends.',
+		empty: 'Aucun concours ouvert.',
+		emptyHint: 'Ils fonctionnent par salves plutôt qu’en continu.',
+		acceptCta: 'Accepter l’invitation',
+		declineCta: 'Refuser',
+		enterCta: 'Participer',
+		submitCta: 'Rendre',
+		cancelCta: 'Annuler',
+		notesPlaceholder: 'Ce que le lecteur devrait savoir (facultatif)',
+		accepted: 'Accepté.',
+		declined: 'Refusé.',
+		submitted: 'Rendu.',
+		enterpriseNote:
+			'Le jugement, les embauches et les résultats sont du côté entreprise et vivent dans la console entreprise.'
+	},
+
+	deviceFeed: {
+		devicesTitle: 'Appareils',
+		devicesSubtitle: 'Les appareils qui peuvent t’envoyer des notifications.',
+		noDevices: 'Aucun appareil enregistré.',
+		removeDeviceCta: 'Retirer',
+		deviceRemoved: 'Appareil retiré.',
+		feedTitle: 'Fil public',
+		feedSubtitle: 'Ce que la plateforme montre publiquement de ce que tu fais.',
+		withdrawCta: 'Me retirer du fil public',
+		withdrawConfirm:
+			'Ceci te retire entièrement du fil public. Ce n’est pas une préférence — rien de ce que tu fais n’y sera publié.',
+		withdrawConfirmCta: 'Me retirer',
+		withdrawn: 'Tu es hors du fil public.',
+		cancelCta: 'Annuler'
+	},
+
+	evidence: {
+		benchmarksTitle: 'Benchmarks',
+		reproducedOn: 'reproduit le {date}',
+		notReproduced: 'Personne ne l’a reproduit',
+		reproduceCta: 'Je l’ai lancé aussi',
+		reproducedToast: 'Enregistré.',
+		safetyTitle: 'Signalements de sûreté',
+		safetyHint:
+			'En publier un le jour où il est trouvé aide celui qui voulait s’en servir, donc chacun porte la date à laquelle il devient lisible.',
+		seenAgain: 'Vu par quelqu’un d’autre',
+		sawItTooCta: 'Je l’ai vu aussi',
+		disclosesOn: 'lisible à partir du {date}'
+	},
+
+	githubLink: {
+		title: 'GitHub',
+		subtitle: 'Les dépôts synchronisés et les chiffres de contribution qu’on y lit.',
+		repoCount: '{n} dépôts synchronisés',
+		connectCta: 'Connecter GitHub',
+		reconnectCta: 'Reconnecter',
+		syncCta: 'Synchroniser maintenant',
+		synced: 'Synchronisé.',
+		cvCta: 'Ouvrir ton CV généré',
+		disconnectCta: 'Déconnecter',
+		disconnectNote:
+			'Les attestations déjà émises depuis ce travail restent. Déconnecter arrête les synchronisations futures ; ça n’efface pas ton parcours.',
+		disconnectConfirmCta: 'Déconnecter',
+		disconnected: 'Déconnecté.',
+		cancelCta: 'Annuler',
+		syncNote:
+			'Skilluv synchronise quand tu le demandes plutôt qu’en continu — il ne lit pas ton GitHub plus souvent que tu ne le veux.'
+	},
+
+	declaredCraft: {
+		portfoliosTitle: 'Portfolios de code',
+		portfoliosHint: 'npm, crates, PyPI — là où tu publies sous ton nom.',
+		platformPlaceholder: 'npm',
+		handlePlaceholder: 'ton identifiant là-bas',
+		reviewLanguagesTitle: 'Langues dans lesquelles tu relis',
+		reviewLanguagesHint:
+			'Rien ici ne teste ton niveau, et un quiz produirait un chiffre qui ressemble à une preuve. Ce que ça achète, c’est la responsabilité : c’est signé, et chaque relecture que tu fais dessous le porte.',
+		notePlaceholder: 'Ce que ton niveau couvre vraiment (facultatif, et c’est la partie utile)',
+		addCta: 'Ajouter',
+		removeCta: 'Retirer',
+		removed: 'Retiré.',
+		portfolioAdded: 'Portfolio ajouté.',
+		languageAdded: 'Langue déclarée.'
+	},
+
+	mentoringProducts: {
+		subscriptionsTitle: 'Tes abonnements mentor',
+		usage: '{used} sur {included} ce mois-ci',
+		cancelCta: 'Arrêter le renouvellement',
+		cancelled: 'Renouvellement arrêté.',
+		cancelNote:
+			'Arrêter le renouvellement ne coupe pas ton accès — tu as payé cette période et tu la gardes.',
+		slotsTitle: 'Tes disponibilités',
+		slotsHint:
+			'Proposées dans ton propre fuseau, pour qu’un mentoré ailleurs ne devine pas ce que l’heure voulait dire.',
+		openSlotCta: 'Ouvrir le créneau',
+		slotOpened: 'Créneau ouvert.',
+		programsTitle: 'Programmes de mentorat',
+		empty: 'Aucun abonnement ni programme pour le moment.'
+	},
+
+	educationOutcomes: {
+		title: 'Parcours pédagogique',
+		recorded: '{n} résultats d’apprenants enregistrés',
+		noneRecorded:
+			'Aucun résultat enregistré — ce n’est pas la même chose que personne n’a terminé.',
+		adoptions: 'Repris par {n} autres formateurs',
+		clearedNote:
+			'Enseigner produit des données sur des gens qui n’ont jamais rejoint Skilluv. Déclarer les données effacées atteste que tu les as supprimées.',
+		clearedCta: 'Déclarer les données apprenants effacées',
+		clearedConfirmCta: 'Je les ai supprimées',
+		clearedDeclared: 'Enregistré.',
+		cancelCta: 'Annuler'
+	},
+
+	workAndSkills: {
+		deliverablesTitle: 'Ce qu’il a livré',
+		openCta: 'Ouvrir',
+		skillsTitle: 'Compétences',
+		skillsHint: 'Comptées depuis du travail vérifié, pas depuis un formulaire.'
+	},
+
+	programmaticPlans: {
+		apiTitle: 'API Talent Score',
+		apiSubtitle: 'Lire les scores par programme, sous une licence avec des conditions.',
+		monthlyQuota: '{n} appels par mois',
+		dailyCeiling: '{n} par jour',
+		attributionRequired: 'Attribution obligatoire',
+		sla: 'SLA',
+		unlimited: 'Illimité',
+		learningTitle: 'Formation entreprise',
+		learningSubtitle: 'Des places pour une équipe, facturées à la place.',
+		perSeat: '{amount} par place'
+	},
+
+	assistantJobs: {
+		title: 'Travail plus long',
+		subtitle: 'Une relecture de code ou des recommandations. Les deux prennent un moment.',
+		reviewCta: 'Relire ce dépôt',
+		recommendCta: 'Me recommander quelque chose',
+		working: 'En cours — ça prend un moment, pas un instant.',
+		gaveUp:
+			'Aucune réponse n’est revenue à temps. Réessaie, ou vérifie que le dépôt est accessible.',
+		notAValidation:
+			'Ce n’est pas une validation et ça ne le devient jamais. C’est un humain qui décide si un travail compte.'
+	},
+
+	report: {
+		cta: 'Signaler',
+		title: 'Signaler',
+		reasonLabel: 'Ce qui ne va pas',
+		reasons: {
+			harassment: 'Harcèlement ou abus',
+			inappropriate: 'Contenu inapproprié',
+			spam: 'Spam',
+			cheating: 'Triche',
+			fake_profile: 'Faux profil',
+			other: 'Autre chose'
+		},
+		detailsPlaceholder: 'Ce qu’un modérateur devrait savoir (facultatif)',
+		whatHappensNext:
+			'Un modérateur lit ce signalement. On ne te dira pas que le contenu a été retiré, parce que c’est sa décision et pas une promesse qu’on peut faire.',
+		sendCta: 'Envoyer le signalement',
+		cancelCta: 'Annuler',
+		closeCta: 'Fermer',
+		sent: 'Signalement envoyé.'
+	},
+
+	firstRun: {
+		title: 'Bonjour Skilluv',
+		subtitle: 'Cinq minutes pour régler ce que la plateforme te montre en premier.',
+		startCta: 'Commencer',
+		started: 'C’est parti.'
+	},
+
+	craftProfile: {
+		titles: {
+			ai: 'Parcours IA',
+			audio: 'Parcours audio',
+			communication: 'Parcours communication',
+			education: 'Parcours pédagogie'
+		},
+		craftScoreTitle: 'Score de métier',
+		tierLabel: 'Palier {name}',
+		cappedNotice: 'Plafond atteint',
+		nextTierAt: 'Palier suivant à {n}',
+		breakdownTitle: 'Ce qui a compté',
+		tradesTitle: 'Métiers avec du travail vérifié',
+		attestationsTitle: 'Attestations',
+		verifyCta: 'Vérifier',
+		highlightsTitle: 'À écouter en premier',
+		highlightsHint:
+			"Travaux publiés. Écouter un master passe par la slice à laquelle il appartient, sur un lien qui expire.",
+		openWork: 'Ouvrir',
+		languagesTitle: 'Langues traduites vers',
+		languagesHint:
+			"Compté depuis les traductions validées, pas depuis ce que quelqu'un dit parler. Les langues dans lesquelles il propose de relire sont une liste séparée, déclarée.",
+		readFirstTitle: 'À lire en premier',
+		views: '{n} lectures',
+		engagement: '{n} réactions',
+		cohortsTitle: 'Cohortes encadrées',
+		learners: '{n} apprenants',
+		completed: '{n} sur {of} terminés',
+		noOutcomes: 'Aucun résultat enregistré',
+		taughtTitle: 'Pédagogie publiée',
+		adoptions: 'reprise par {n} autres formateurs',
+		notAClaim:
+			"Un score de métier compte du travail vérifié. Ce n'est pas une affirmation sur ce qui a été fait ailleurs."
 	},
 	events: {
 		title: 'Événements Skilluv',
@@ -534,7 +2012,8 @@ export const fr: Translations = {
 		myEventsEmpty: 'Tu n\'as pas encore rejoint d\'événement.',
 		startsOn: 'Démarre le {date}',
 		endsOn: 'Se termine le {date}',
-		stampEarned: 'Timbre gagné'
+		stampEarned: 'Timbre gagné',
+		counted: 'Contribution comptée'
 	},
 	privacyPage: {
 		title: 'Confidentialité & données',
@@ -598,7 +2077,131 @@ export const fr: Translations = {
 			receivedFallback: 'Nouvelle notification'
 		}
 	},
+	notifTypes: {
+		slice_claimed: 'Tu as claim la slice {title}. 7 jours pour livrer.',
+		slice_fork_created: 'Ton fork est prêt : {url}',
+		slice_pr_submitted: 'PR {url} enregistrée, en attente CI',
+		slice_pr_submitted_announced: 'Commentaire posté sur ta PR',
+		slice_ci_green: 'Ta PR a passé la CI, en attente de validation Skilluv',
+		validation_picked_up_by_you: 'Tu as pris en charge la validation de la PR de @{user}',
+		validation_picked_up_by_other: 'Ta PR est en cours de review par @{user}',
+		slice_validated: 'Ta PR a été validée. Attestation générée. Fragments crédités.',
+		slice_rejected: 'Ta PR a été refusée par @{user}. Raison : {reason}',
+		slice_merged_upstream: 'Ta PR a été mergée sur {repo}. Bonus de {n} fragments.',
+		slice_pr_rejected_upstream: 'Ta PR a été fermée upstream sans merge. Tu peux reprendre la slice ou passer à autre chose.',
+		validator_application_status_changed: 'Ta candidature validateur ({domain}) a été {status}',
+		validator_invitation_received: 'Skilluv t’invite à devenir validateur {domain}. Raison : {notes}',
+		slice_upstream_closed: 'L’issue upstream {url} a été fermée. Ta claim a été relâchée.',
+		maintainer_digest_confirmation_sent: 'Email de confirmation envoyé',
+		maintainer_digest_subscribed: 'Ton abonnement digest est confirmé',
+		statusApproved: 'acceptée',
+		statusRejected: 'refusée',
+		groupedCount: '{n} notifications sur ce challenge',
+		groupedEvents: '{n} fois',
+		actorsAndOthers: '{names} et {n} autres',
+		actorsLast: '{names} et {last}'
+	},
+	notifActions: {
+		seeReasons: 'Voir raisons et reclaim',
+		accept: 'Accepter',
+		decline: 'Refuser',
+		downloadPdf: 'Télécharger PDF',
+		shareBadge: 'Partager mon badge',
+		seeInvitation: 'Voir le détail',
+		declineConfirm: 'Refuser cette invitation ? Elle ne pourra pas être reprise.',
+		acceptedOutcome: 'Invitation acceptée',
+		declinedOutcome: 'Invitation refusée'
+	},
+	guilds: {
+		tabsLabel: 'Sections de la guilde',
+		tabComposition: 'Composition',
+		tabWars: 'Guerres',
+		tabMembers: 'Membres',
+		tabApplications: 'Candidatures',
+		tabInvitations: 'Invitations',
+		manage: {
+			applicationsEmpty: 'Aucune candidature en attente.',
+			invitationsEmpty: 'Aucune invitation en attente.',
+			accept: 'Accepter',
+			reject: 'Refuser',
+			revoke: 'Revoquer',
+			revokeConfirm: 'Revoquer cette invitation ? Le lien cessera de fonctionner immediatement.',
+			applicationAccepted: 'Candidature acceptee.',
+			applicationRejected: 'Candidature refusee.',
+			invitationRevoked: 'Invitation revoquee.',
+			linkInvitation: 'Invitation par lien',
+			expiresOn: 'Expire le {date}'
+		},
+		roleOwner: 'Fondateur',
+		roleOfficer: 'Officier',
+		roleMember: 'Membre',
+		warsEmpty: 'Aucune guerre pour le moment.',
+		membersEmpty: 'Aucun membre pour le moment.',
+		warStatus: {
+			proposed: 'Proposee',
+			accepted: 'Acceptee',
+			declined: 'Refusee',
+			concluded: 'Terminee'
+		},
+		create: {
+			cta: 'Fonder une guilde',
+			title: 'Fonder une guilde',
+			subtitle: 'Une guilde ne se fonde pas seul.',
+			rule: 'Il faut exactement 3 cofondateurs en plus de toi. Choisis-les avant de commencer : le backend refuse toute autre composition.',
+			name: 'Nom',
+			namePlaceholder: 'Les Forgerons du Nord',
+			slug: 'Identifiant',
+			slugHint: 'Lettres minuscules, chiffres et tirets. Sert d’adresse : /guilds/mon-identifiant',
+			tag: 'Tag',
+			tagHint: '2 a 5 caracteres, affiche a cote du nom des membres.',
+			description: 'Description',
+			color: 'Couleur de banniere',
+			cofounders: 'Cofondateurs',
+			cofoundersHint: 'Saisis un pseudo Skilluv et valide. Il en faut exactement 3.',
+			cofounderPlaceholder: 'pseudo',
+			addCofounder: 'Ajouter',
+			removeCofounder: 'Retirer {username}',
+			cofounderCount: '{n} / 3 cofondateurs',
+			cofounderNotFound: 'Aucun compte ne porte ce pseudo.',
+			cofounderDuplicate: 'Ce compte est deja dans la liste.',
+			cofounderSelf: 'Tu es deja fondateur, inutile de t’ajouter.',
+			cofounderFull: 'Tu as deja 3 cofondateurs.',
+			submit: 'Fonder la guilde',
+			needThree: 'Il faut exactement 3 cofondateurs pour fonder une guilde.',
+			created: 'Guilde fondee.'
+		}
+	},
+	tracks: {
+		title: 'Parcours',
+		subtitle: 'Des itineraires guides pour passer des bases a une contribution reelle.',
+		estimatedHours: '{n} h estimees',
+		emptyTitle: 'Aucun parcours disponible',
+		emptyBody: 'Les parcours arrivent bientot. Reviens plus tard.',
+		enrollCta: 'Rejoindre ce parcours',
+		loginToEnroll: 'Se connecter pour rejoindre',
+		enrolledBadge: 'Inscrit',
+		completedBadge: 'Termine',
+		inProgressBadge: 'En cours',
+		enrolledToast: 'Inscrit au parcours',
+		startedOn: 'Demarre le {date}',
+		viewCta: 'Voir',
+		browseCta: 'Parcourir le catalogue',
+		dashboardTitle: 'Mes parcours',
+		dashboardSubtitle: 'Les parcours que tu as rejoints.',
+		dashboardEmptyTitle: 'Tu n\'as rejoint aucun parcours',
+		dashboardEmptyBody: 'Choisis un parcours pour structurer ta progression.'
+	},
 	teams: {
+		dashboard: {
+			title: 'Mes équipes',
+			subtitle: 'Les équipes dont tu fais partie sur les challenges collectifs.',
+			findSlotCta: 'Trouver un slot',
+			viewCta: 'Voir',
+			memberCount: '{n} membre(s)',
+			capacity: 'max {max}',
+			emptyTitle: 'Tu ne fais partie d\'aucune équipe',
+			emptyBody: 'Rejoins un slot ouvert sur le marché des équipes pour démarrer un challenge collectif.'
+		},
 		marketplace: {
 			title: 'Marché des équipes',
 			subtitle: 'Rejoins un slot ouvert sur un challenge team. Skilluv te matche selon tes orientations et tes compétences prouvées.',
@@ -759,7 +2362,331 @@ export const fr: Translations = {
 			pendingCurator: 'File curator',
 			plagiarismQueue: 'Review plagiat',
 			mentorZone: 'Espace mentor',
-			juryTournament: 'Jury tournoi'
+			juryTournament: 'Jury tournoi',
+			vouchingQueue: 'File des cautions',
+			externalSignalQueue: 'Signaux externes'
+		}
+	},
+	p26: {
+		verify: {
+			seoTitleValid: 'Attestation Skilluv verifiee — {name}',
+			seoTitleDefault: 'Attestation Skilluv',
+			seoDescValid: 'Attestation Skilluv de {name} pour une contribution validee',
+			seoDescDefault: 'Verifiez une attestation Skilluv.',
+			fallbackError: 'Impossible de charger cette attestation.',
+			errorTitle: 'Erreur de chargement',
+			backHome: 'Retour a skill-uv.com',
+			notFoundTitle: 'Attestation introuvable',
+			invalidBadge: 'invalide',
+			verifiedTitle: 'Attestation Skilluv verifiee',
+			verifiedBadge: 'verified',
+			issuedOn: 'Delivree le {date}',
+			contributor: 'Contributeur',
+			validatedBy: 'Validee par',
+			contribution: 'Contribution',
+			difficultyBadge: 'difficulte {n}/5',
+			mergedUpstream: 'Merge upstream',
+			repoLabel: 'Repo :',
+			viewPr: 'Voir la PR',
+			downloadPdf: 'Telecharger le PDF',
+			share: 'Partager',
+			attestationId: 'Attestation ID',
+			reasonMalformed: 'Ce lien ne correspond pas au format d’une attestation Skilluv.',
+			reasonUnknown: 'Aucune attestation ne correspond a ce hash. Elle a peut-etre ete revoquee ou n’a jamais existe.',
+			copyToast: 'Lien copie dans le presse-papiers',
+			copyPrompt: 'Copiez ce lien :'
+		},
+		forMaintainers: {
+			seoTitle: 'Skilluv — Digest hebdo pour maintainers OSS',
+			seoDesc: 'Recevez chaque semaine un resume des contributions Skilluv sur vos repos open-source. Zero spam, unsubscribe en un clic.',
+			ogDesc: 'Un email hebdomadaire, les contributions Skilluv sur vos repos. Zero spam.',
+			title: 'Vos contributeurs Skilluv, resumes une fois par semaine',
+			subtitle: 'Un digest hebdo, zero spam, unsubscribe en un clic.',
+			whatSkilluvTitle: 'Ce que fait Skilluv',
+			whatSkilluvBullet1: 'Notre communaute (afro-francophone, autodidactes, reconvertis) contribue a des OSS externes.',
+			whatSkilluvBullet2Prefix: 'Sur les issues que vous labellisez',
+			whatSkilluvBullet2Suffix: '(ou celles publiques comme',
+			whatSkilluvBullet3: 'On valide leur travail avant merge — la validation Skilluv est un pre-filtre qualite.',
+			whatReceiveTitle: 'Ce que vous recevez',
+			whatReceiveBullet1: 'Digest hebdomadaire des PRs Skilluv sur vos repos (nb claims, PRs submit, PRs validated).',
+			whatReceiveBullet2: 'Zero spam : un email/semaine, avec unsubscribe en 1 clic.',
+			whatReceiveBullet3: 'Confidentialite : votre email n’est jamais partage.',
+			badgeTitle: 'Notre badge Skilluv',
+			badgeNew: 'nouveau',
+			badgeDesc: 'Ajoutez ce badge a votre README pour signaler que votre projet accueille les contributions Skilluv.',
+			badgeAlt: 'Badge Skilluv validated',
+			copyBtn: 'Copier',
+			copyAria: 'Copier le snippet',
+			badgeMarkdownAria: 'Snippet Markdown du badge Skilluv, defilable au clavier',
+			copyToast: 'Snippet copie',
+			copyPrompt: 'Copiez ce snippet :',
+			faqTitle: 'FAQ',
+			faqQ1: 'Comment Skilluv sait sur quels repos je bosse ?',
+			faqA1: 'Vous les listez a l’inscription. Vous pouvez modifier votre liste a tout moment.',
+			faqQ2: 'Puis-je m’abonner sans avoir de repo Skilluv-labelise ?',
+			faqA2: 'Oui — le digest sera vide en attendant que vous ajoutiez le label skilluv-challenge sur vos issues.',
+			faqQ3: 'Comment se desabonner ?',
+			faqA3: 'Un lien dans chaque email, ou l’URL /maintainer-digest/unsubscribe/{token} recue a l’inscription.',
+			formTitle: 'S’abonner',
+			successTitle: 'Confirmation demandee',
+			successMessage: 'Email de confirmation envoye a {email}. Cliquez sur le lien dans l’email pour activer votre abonnement.',
+			githubLabel: 'Login GitHub',
+			githubPh: 'ex. torvalds',
+			emailLabel: 'Email',
+			emailPh: 'you@example.com',
+			reposLabel: 'Repos',
+			reposHint: 'Format : owner/name — separer par virgules (max 50)',
+			reposPh: 'skilluv/skilluv-backend, skilluv/skilluv-frontend',
+			optInLabel: 'J’accepte de recevoir le digest hebdomadaire.',
+			submitBtn: 'Recevoir le digest hebdomadaire',
+			errInvalidGithub: 'Login GitHub invalide.',
+			errInvalidEmail: 'Email invalide.',
+			errReposMin: 'Renseignez au moins un repo au format owner/name.',
+			errReposFormat: 'Format invalide pour : {list}',
+			errReposMax: 'Maximum 50 repos.',
+			errOptIn: 'Vous devez accepter de recevoir le digest.',
+			errGeneric: 'Une erreur est survenue.'
+		},
+		maintainerDigest: {
+			confirmSeoTitle: 'Confirmation abonnement — Skilluv',
+			confirmLoading: 'Confirmation en cours...',
+			confirmSuccessTitle: 'Abonnement confirme pour {email}. Merci !',
+			confirmSuccessBody: 'Vous recevrez votre premier digest hebdomadaire prochainement.',
+			confirmBackHome: 'Retour a l’accueil',
+			confirmInvalidTitle: 'Ce lien de confirmation est invalide ou expire.',
+			confirmInvalidFallback: 'Ce lien de confirmation est invalide ou expire.',
+			confirmFailed: 'Confirmation echouee.',
+			confirmSubscribeAgain: 'S’abonner a nouveau',
+			unsubSeoTitle: 'Desabonnement — Skilluv',
+			unsubLoading: 'Desabonnement en cours...',
+			unsubSuccessTitle: 'Desabonne. Nous ne vous enverrons plus de digest.',
+			unsubSuccessBody: 'Vous ne recevrez plus d’emails du digest hebdomadaire ({email}).',
+			unsubInvalidTitle: 'Ce lien est invalide.',
+			unsubInvalidFallback: 'Ce lien est invalide.',
+			unsubFailed: 'Desabonnement echoue.',
+			unsubBackHome: 'Retour a l’accueil'
+		},
+		slice: {
+			status: {
+				open: 'Ouvert',
+				claimed: 'Reserve',
+				in_progress: 'En cours',
+				submitted: 'PR soumise',
+				ci_green: 'CI verte',
+				pending_validation: 'En validation',
+				validated: 'Validee',
+				merged: 'Merge upstream',
+				closed: 'Ferme',
+				expired: 'Expire'
+			},
+			rankGte: 'rank ≥ {rank}',
+			difficultyBadge: 'difficulte {n}/5',
+			daysLeft: 'Reste {n}j',
+			expired: 'Expire',
+			issueGithub: 'Issue GitHub',
+			yourFork: 'Ton fork',
+			viewPr: 'Voir la PR',
+			acceptanceTitle: "Criteres d'acceptation",
+			workflowTitle: 'Workflow',
+			workflowInterrupted: 'Workflow interrompu ({status}).',
+			rejectTitle: 'PR non validee',
+			claimGateBlocked: 'Ton rank ou orientation ne correspond pas encore a cette slice.',
+			claimBtn: 'Claim ce challenge',
+			loginToClaim: 'Se connecter pour claim',
+			submitPrTitle: 'Soumettre ta PR',
+			prUrlLabel: 'URL de la Pull Request',
+			prUrlPh: 'https://github.com/owner/repo/pull/123',
+			announceLabel: 'Annoncer publiquement sur la PR que je contribue via Skilluv',
+			announceHint: 'Un commentaire sera poste sur ta PR sous ton nom.',
+			sendPrBtn: 'Envoyer la PR',
+			unclaimBtn: 'Unclaim',
+			ciPending: 'En attente CI',
+			ciGreen: 'CI verte, en attente validation',
+			pendingReview: 'En cours de review',
+			pendingReviewBy: 'par un valideur Skilluv.',
+			attestationGenerated: 'Attestation generee',
+			mergedUpstream: 'Merge upstream',
+			downloadAttestationPdf: "Telecharger le PDF de l'attestation",
+			verifyPublic: 'Verifier publiquement',
+			attestationIdLabel: 'Attestation ID :',
+			confirmRelease: 'Liberer ce challenge ?',
+			toastReserved: 'Challenge reserve',
+			toastReleased: 'Challenge libere',
+			toastPrSent: 'PR soumise',
+			toastReserveError: 'Reservation impossible',
+			toastReleaseError: 'Operation impossible',
+			toastSendError: 'Envoi impossible',
+			widgets: {
+				activeTitle: 'Actifs cette semaine',
+				activeEmpty: 'Aucun Skilluver actif recemment.',
+				activeCountSingular: '{n} Skilluver actif',
+				activeCountPlural: '{n} Skilluvers actifs',
+				diaryTitle: 'Carnet de bord',
+				diaryTextareaPh: 'Ou en es-tu ? Blocages, decouvertes, prochaine etape...',
+				diaryPublicLabel: 'Public (visible par tous)',
+				diaryPublishBtn: 'Publier',
+				diaryEmpty: "Aucune entree pour l'instant.",
+				diaryPublicBadge: 'Public',
+				diaryPrivateBadge: 'Prive',
+				diaryToastPublished: 'Entree publiee',
+				diaryToastError: 'Publication impossible'
+			}
+		},
+		dashboardSlices: {
+			seoTitle: 'Mes challenges — Skilluv',
+			title: 'Mes challenges',
+			subtitle: 'Tes contributions en cours, terminees ou archivees.',
+			tabActive: 'Actifs',
+			tabDone: 'Completes',
+			tabArchived: 'Archives',
+			difficultyBadge: 'difficulte {n}/5',
+			rankBadge: 'rank {rank}',
+			viewBtn: 'Voir',
+			claimBtn: 'Claim',
+			detailBtn: 'Detail',
+			emptyActiveTitle: 'Aucun challenge en cours',
+			emptyActiveBody: 'Decouvre les challenges recommandes pour toi ci-dessous.',
+			emptyActiveCta: 'Voir les recommandations',
+			emptyDoneTitle: 'Aucune contribution validee pour le moment',
+			emptyArchivedTitle: 'Rien ici',
+			recoTitle: 'Recommandes pour toi',
+			recoBasedOnRank: 'Base sur ton rank',
+			recoMedian: 'et tes derniers challenges (difficulty mediane : {n}/5)',
+			recoEmptyTitle: "Aucune recommandation pour l'instant",
+			recoEmptyBody: 'Ton rank et tes orientations determinent les slices proposees.',
+			toastReserved: 'Challenge reserve',
+			toastGateBlocked: 'Ton rank ou orientation ne correspond pas encore.',
+			toastReserveError: 'Reservation impossible'
+		},
+		validation: {
+			queueSeoTitle: 'File de validation — Skilluv',
+			queueTitle: 'File de validation',
+			queueSubtitle: 'Les PRs en attente de validation dans tes domaines.',
+			filterAll: 'Toutes',
+			filterMine: 'Prises par moi',
+			notValidatorTitle: "Tu n'es pas encore validateur",
+			notValidatorBody: 'Pour acceder a la file, il faut candidater comme validateur sur au moins un domaine.',
+			applyCta: 'Candidater',
+			retryBtn: 'Reessayer',
+			emptyTitle: 'Aucune PR a valider dans tes domaines',
+			emptyBody: 'Reviens plus tard, la file se remplit automatiquement.',
+			difficultyBadge: 'difficulte {n}',
+			viewPr: 'Voir la PR',
+			reviewBtn: 'Reviewer',
+			pickupBtn: 'Prendre en charge',
+			toastPickedUp: 'Challenge pris en charge.',
+			toastTakenByOther: 'Ce challenge a ete pris par un autre validateur.',
+			toastPickupError: 'Erreur lors du pick-up.',
+			toastLoadError: 'Impossible de charger la file.',
+			reviewSeoTitle: 'Reviewer une PR — Skilluv',
+			backToQueue: 'Retour a la queue',
+			notFoundTitle: 'Introuvable',
+			notFoundBody: "Ce challenge n'existe pas dans ta file de validation. Il a peut-etre deja ete traite.",
+			reviewLoadError: 'Impossible de charger la review.',
+			statusBadge: 'status {status}',
+			approvedTitle: 'Validation approuvee',
+			approvedFragments: "{n} fragments credites. L'attestation est publique.",
+			attestationIdLabel: 'Attestation ID : {hash}',
+			downloadPdf: 'Telecharger le PDF',
+			warningPublicApprove: 'En approvant, tu genereras une attestation qui sera publique via /verify/{hash} et telechargeable en PDF. Les fragments seront credites au challenger et a toi.',
+			reviewPrTitle: 'Reviewer la PR',
+			reviewIframeHint: "L'iframe est bloque par GitHub — utilise ce bouton pour ouvrir la PR dans un nouvel onglet.",
+			openPrOnGithub: 'Ouvrir la PR sur GitHub',
+			verdictTitle: 'Ton verdict',
+			feedbackLabel: 'Feedback (obligatoire pour rejeter, 1-2000 caracteres)',
+			feedbackPh: 'Explique ce qui va (ou pas) dans cette PR.',
+			feedbackCounter: '{n}/2000',
+			rejectBtn: 'Rejeter',
+			approveBtn: 'Approuver',
+			errClaimerSelf: 'Impossible : tu es le claimer de cette PR.',
+			errApprove: 'Erreur lors de l approbation.',
+			errReject: 'Erreur lors du rejet.',
+			toastRejected: 'PR rejetee.'
+		},
+		validatorApplication: {
+			newSeoTitle: 'Devenir validateur — Skilluv',
+			backToApplications: 'Mes candidatures',
+			newTitle: 'Devenir validateur Skilluv',
+			newSubtitle: "Les validateurs verifient les PRs Skilluv avant qu'elles soient marquees comme validees. Chaque validation te credite en fragments et augmente ta reputation.",
+			domainLabel: 'Domaine',
+			thresholdsTitle: 'Seuils requis',
+			thresholdsUnavailable: "Chargement des stats indisponible pour l'instant. Tu peux candidater — le back verifiera les criteres.",
+			thresholdsLoading: 'Chargement...',
+			rankLine: 'Rank Artisan minimum',
+			rankMiss: 'Tu es {rank}, il faut Artisan.',
+			prsLine: '{n} PRs validees sur {domain}',
+			prsMiss: "{n} pour l'instant.",
+			reposLine: '{n} repos couverts',
+			reposMiss: "{n} pour l'instant.",
+			tenureLine: "{n} jours d'anciennete",
+			tenureMiss: "{n} jours pour l'instant.",
+			motivationLabel: 'Motivation (optionnel)',
+			motivationPh: 'Pourquoi veux-tu devenir validateur sur ce domaine ?',
+			motivationCounter: '{n}/500',
+			applyBtn: 'Candidater',
+			toastApplySuccess: 'Candidature envoyee.',
+			toastApplyCriteria: 'Un critere n est pas rempli. Verifie les seuils ci-dessus.',
+			toastApplyError: 'Erreur lors de l envoi.',
+			listSeoTitle: 'Mes candidatures validateur — Skilluv',
+			listTitle: 'Mes candidatures validateur',
+			listNewBtn: 'Nouvelle candidature',
+			listFilterAll: 'Toutes',
+			listFilterPending: 'En attente',
+			listFilterAccepted: 'Acceptees',
+			listFilterRejected: 'Refusees',
+			listFilterWithdrawn: 'Retirees',
+			statusPending: 'En attente',
+			statusAccepted: 'Acceptee',
+			statusRejected: 'Refusee',
+			statusWithdrawn: 'Retiree',
+			originAdminInvite: 'Invitation admin',
+			originApplication: 'Candidature',
+			adminNote: 'Note admin',
+			createdOn: 'Cree le {date}',
+			updatedOn: 'maj {date}',
+			acceptInvitationBtn: "Accepter l'invitation",
+			viewDetailBtn: 'Voir le detail',
+			withdrawBtn: 'Retirer',
+			listEmptyTitle: "Aucune candidature pour l'instant",
+			listEmptyBody: "Candidate sur un domaine ou tu maitrises pour rejoindre l'equipe de validateurs.",
+			listApplyCta: 'Candidater',
+			listEmptyFilterTitle: 'Aucune candidature dans ce filtre.',
+			listLoadError: 'Impossible de charger.',
+			toastWithdrawn: 'Candidature retiree.',
+			toastAccepted: 'Invitation acceptee.',
+			toastError: 'Erreur.',
+			inviteSeoTitle: 'Invitation validateur — Skilluv',
+			inviteBackLink: 'Mes candidatures',
+			inviteNotFoundTitle: 'Introuvable',
+			inviteNotFoundBody: "Cette invitation n'existe pas ou n'est plus disponible.",
+			inviteError: 'Erreur.',
+			inviteTitle: 'Invitation admin — Devenir validateur {domain}',
+			inviteBadge: 'Invitation admin',
+			invitePendingBadge: 'En attente',
+			inviteBody: "Un admin Skilluv t'invite a rejoindre l'equipe de validateurs {domain}.",
+			inviteReasonTitle: "Raison de l'invitation",
+			inviteNoNote: "L'admin n'a pas laisse de note.",
+			inviteReceivedOn: 'Recu le {date}',
+			inviteAcceptBtn: 'Accepter',
+			inviteDeclineBtn: 'Refuser',
+			toastInviteAccepted: 'Invitation acceptee.',
+			toastInviteDeclined: 'Invitation refusee.'
+		},
+		badges: {
+			ariaLabel: 'Badges Skilluv',
+			sectionLabel: 'Badges Skilluv',
+			personalTitle: 'Badge Skilluv',
+			personalDesc: 'Colle ce badge dans ton profil GitHub, ton CV ou LinkedIn pour montrer ta communaute Skilluv.',
+			personalAlt: 'Skilluv badge {username}',
+			notGenerated: 'Badge pas encore genere',
+			markdownLabel: 'Markdown',
+			htmlLabel: 'HTML',
+			copyBtn: 'Copier',
+			reposTitle: 'Badges Skilluv pour tes repos',
+			reposDesc: 'Ajoute ces badges au README de tes repos pour montrer la communaute Skilluv active.',
+			repoBadgeAlt: 'Skilluv badge {repo}',
+			copyToastSuccess: 'Copie',
+			copyToastError: 'Impossible de copier'
 		}
 	}
 };

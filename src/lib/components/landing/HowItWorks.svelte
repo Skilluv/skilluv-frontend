@@ -1,22 +1,36 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import { scrollReveal } from '$lib/utils/animations';
-	import { domainStyle, titleColor } from '$lib/utils/domains';
-	import type { SkillDomain, Title } from '$lib/types';
+	import { domainStyle } from '$lib/utils/domains';
+	import type { SkillDomain } from '$lib/types';
 
-	const stepDomains: { key: SkillDomain; labelFr: string; labelEn: string; stack: string }[] = [
-		{ key: 'code', labelFr: 'Code', labelEn: 'Code', stack: 'Rust, TypeScript, Go...' },
-		{ key: 'design', labelFr: 'Design', labelEn: 'Design', stack: 'UI/UX, Motion, SVG...' },
-		{ key: 'game', labelFr: 'Jeux Vidéo', labelEn: 'Game Dev', stack: 'Unity, Godot, Unreal...' },
-		{ key: 'security', labelFr: 'Sécurité', labelEn: 'Security', stack: 'CTF, Pentest, Crypto...' }
+	/**
+	 * The four beats of a contributor's path, taken from `business-docs/00-socle`
+	 * section 5.
+	 *
+	 * The previous version described a different product: "code in our sandbox,
+	 * submit, get instant results", with a mini terminal printing "tests passed
+	 * 3/3". That is automated grading on a fictional exercise — precisely what
+	 * Skilluv does not do. The work sits on software that exists, and a person
+	 * examines it. Step three shows that review, because it is the part nothing
+	 * else on the site made visible and it is where the standard is actually set.
+	 */
+
+	// Real tracks, as served by GET /api/tracks.
+	const tracks: { name: string; domain: SkillDomain; hours: number }[] = [
+		{ name: 'Backend Foundations', domain: 'code', hours: 80 },
+		{ name: 'Frontend Foundations', domain: 'code', hours: 60 },
+		{ name: 'Design Foundations', domain: 'design', hours: 40 },
+		{ name: 'Security Foundations', domain: 'security', hours: 50 }
 	];
 
-	const progressionLevels: { title: Title; titleFr: string; titleEn: string; fragments: string; bar: string }[] = [
-		{ title: 'apprenti', titleFr: 'Apprenti', titleEn: 'Apprentice', fragments: '0', bar: 'w-full' },
-		{ title: 'artisan', titleFr: 'Artisan', titleEn: 'Artisan', fragments: '500', bar: 'w-3/4' },
-		{ title: 'maitre', titleFr: 'Maître', titleEn: 'Master', fragments: '2 000', bar: 'w-1/2' },
-		{ title: 'legende', titleFr: 'Légende', titleEn: 'Legend', fragments: '5 000', bar: 'w-1/4' }
-	];
+	// The gradation, which is what step 02 is actually about: assignments arrive
+	// as a sequence of widening scope, not as one card off a catalogue.
+	const gradation = $derived([
+		{ scope: i18n.t('howItWorks.gradation1Scope'), body: i18n.t('howItWorks.gradation1Body') },
+		{ scope: i18n.t('howItWorks.gradation2Scope'), body: i18n.t('howItWorks.gradation2Body') },
+		{ scope: i18n.t('howItWorks.gradation3Scope'), body: i18n.t('howItWorks.gradation3Body') }
+	]);
 
 	const codeStyle = domainStyle('code');
 </script>
@@ -24,153 +38,192 @@
 <section class="py-16 sm:py-24 lg:py-32">
 	<div class="mx-auto max-w-7xl px-4">
 		<div use:scrollReveal class="mb-12 sm:mb-20">
-			<h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight mb-4 sm:mb-5">
-				{i18n.locale === 'fr' ? 'Comment ça marche' : 'How does it work'}<span class="text-accent">?</span>
+			<h2
+				class="mb-4 text-4xl font-black leading-[1.05] tracking-tight sm:mb-5 sm:text-5xl lg:text-6xl xl:text-7xl"
+			>
+				{i18n.t('howItWorks.title')}<span class="text-accent">?</span>
 			</h2>
-			<p class="text-text-muted text-base sm:text-xl max-w-xl">
-				{i18n.locale === 'fr'
-					? 'De zéro à légende en 4 étapes.'
-					: 'From zero to legend in 4 steps.'}
+			<p class="max-w-xl text-base text-text-muted sm:text-xl">
+				{i18n.t('howItWorks.subtitle')}
 			</p>
 		</div>
 
 		<div class="space-y-16 sm:space-y-24 lg:space-y-32">
-
-			<!-- Step 1 : Choisis ton domaine -->
-			<div use:scrollReveal class="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
+			<!-- 01 — pick a track -->
+			<div use:scrollReveal class="grid items-center gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-20">
 				<div>
-					<span class="text-[5rem] sm:text-[8rem] lg:text-[12rem] font-black text-border/40 leading-[0.8] tracking-tighter select-none">01</span>
-					<h3 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight mt-3 sm:mt-4 mb-3 sm:mb-4">
-						{i18n.locale === 'fr' ? 'Choisis ton domaine' : 'Pick your domain'}
+					<span
+						class="select-none text-[5rem] font-black leading-[0.8] tracking-tighter text-border/40 sm:text-[8rem] lg:text-[12rem]"
+						>01</span
+					>
+					<h3
+						class="mb-3 mt-3 text-2xl font-black tracking-tight sm:mb-4 sm:mt-4 sm:text-3xl lg:text-4xl xl:text-5xl"
+					>
+						{i18n.t('howItWorks.step1Title')}
 					</h3>
-					<p class="text-text-muted text-lg leading-relaxed">
-						{i18n.locale === 'fr'
-							? 'Code, Design, Game ou Security. Commence par ce qui te passionne, explore le reste ensuite.'
-							: 'Code, Design, Game, or Security. Start with what excites you, explore the rest later.'}
-					</p>
+					<p class="text-lg leading-relaxed text-text-muted">{i18n.t('howItWorks.step1Body')}</p>
 				</div>
-				<!-- Mini domain picker -->
-				<div class="grid grid-cols-2 gap-3">
-					{#each stepDomains as d, i}
-						{@const ds = domainStyle(d.key)}
-						{@const cats = ['bg-surface-craft border-cat-craft', 'bg-surface-create border-cat-create', 'bg-surface-meta border-cat-meta', 'bg-surface-operate border-cat-operate']}
-						<div class="rounded-2xl border-2 {cats[i]} p-5 transition-colors duration-200 {ds.hoverBorder}">
-							<div class="h-3 w-3 rounded-sm {ds.dot} mb-3"></div>
-							<p class="text-sm font-semibold">{i18n.locale === 'fr' ? d.labelFr : d.labelEn}</p>
-							<p class="text-xs text-text-muted mt-1">{d.stack}</p>
-						</div>
+
+				<ul class="flex flex-col gap-2">
+					{#each tracks as t (t.name)}
+						{@const ds = domainStyle(t.domain)}
+						<li
+							class="flex items-center gap-3 rounded-2xl border border-border bg-surface-elevated px-5 py-4"
+						>
+							<span class="h-2.5 w-2.5 shrink-0 rounded-sm {ds.dot}"></span>
+							<span class="flex-1 text-sm font-semibold">{t.name}</span>
+							<span class="shrink-0 text-xs text-text-muted">
+								{i18n.t('howItWorks.trackHours', { n: t.hours })}
+							</span>
+						</li>
 					{/each}
-				</div>
+				</ul>
 			</div>
 
-			<!-- Step 2 : Releve les challenges -->
-			<div use:scrollReveal class="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
-				<!-- Mini sandbox (left on desktop for alternating) -->
-				<div class="order-2 lg:order-1 rounded-2xl border-2 border-cat-craft bg-surface-craft overflow-hidden">
-					<div class="flex items-center gap-2 border-b border-border px-4 py-2.5">
-						<div class="h-2.5 w-2.5 rounded-full bg-error/60"></div>
-						<div class="h-2.5 w-2.5 rounded-full bg-warning/60"></div>
-						<div class="h-2.5 w-2.5 rounded-full bg-success/60"></div>
-						<span class="ml-2 text-[11px] text-text-muted font-mono">challenge.rs</span>
+			<!-- 02 — assignments on real software -->
+			<div use:scrollReveal class="grid items-center gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-20">
+				<div
+					class="order-2 overflow-hidden rounded-2xl border-2 border-cat-craft bg-surface-craft lg:order-1"
+				>
+					<div class="border-b border-border px-5 py-3">
+						<span class="text-xs font-bold uppercase tracking-widest text-text-muted">
+							{i18n.t('howItWorks.gradationLabel')}
+						</span>
 					</div>
-					<div class="p-5 font-mono text-xs leading-relaxed text-text-muted">
-						<p><span class="text-primary">fn</span> <span class="text-accent">reverse</span>(s: &str) -> String {'{'}</p>
-						<p class="pl-4">s.chars().rev().collect()</p>
-						<p>{'}'}</p>
-						<p class="mt-3 border-t border-border pt-3 text-success">
-							> {i18n.locale === 'fr' ? 'Tests passés : 3/3' : 'Tests passed: 3/3'}
-						</p>
-						<p class="text-accent">+ 120 fragments</p>
-					</div>
+					<ol class="divide-y divide-border">
+						{#each gradation as step, idx (step.scope)}
+							<li class="flex gap-4 p-5">
+								<span class="mt-1 flex shrink-0 flex-col gap-1" aria-hidden="true">
+									{#each Array(idx + 1) as _, bar (bar)}
+										<span class="block h-1 w-6 rounded-full {codeStyle.dot}"></span>
+									{/each}
+								</span>
+								<span class="min-w-0">
+									<span class="block text-sm font-bold {codeStyle.text}">{step.scope}</span>
+									<span class="block text-sm text-text-muted">{step.body}</span>
+								</span>
+							</li>
+						{/each}
+					</ol>
 				</div>
+
 				<div class="order-1 lg:order-2">
-					<span class="text-[5rem] sm:text-[8rem] lg:text-[12rem] font-black text-border/40 leading-[0.8] tracking-tighter select-none">02</span>
-					<h3 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight mt-3 sm:mt-4 mb-3 sm:mb-4">
-						{i18n.locale === 'fr' ? 'Relève les challenges' : 'Take on challenges'}
+					<span
+						class="select-none text-[5rem] font-black leading-[0.8] tracking-tighter text-border/40 sm:text-[8rem] lg:text-[12rem]"
+						>02</span
+					>
+					<h3
+						class="mb-3 mt-3 text-2xl font-black tracking-tight sm:mb-4 sm:mt-4 sm:text-3xl lg:text-4xl xl:text-5xl"
+					>
+						{i18n.t('howItWorks.step2Title')}
 					</h3>
-					<p class="text-text-muted text-lg leading-relaxed">
-						{i18n.locale === 'fr'
-							? 'Des vrais problèmes, pas des QCM. Code dans notre sandbox, soumets, et découvre ton résultat instantanément.'
-							: 'Real problems, not quizzes. Code in our sandbox, submit, and get instant results.'}
-					</p>
+					<p class="text-lg leading-relaxed text-text-muted">{i18n.t('howItWorks.step2Body')}</p>
 				</div>
 			</div>
 
-			<!-- Step 3 : Gagne des fragments -->
-			<div use:scrollReveal class="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
+			<!-- 03 — the review, which is where the bar is set -->
+			<div use:scrollReveal class="grid items-center gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-20">
 				<div>
-					<span class="text-[5rem] sm:text-[8rem] lg:text-[12rem] font-black text-border/40 leading-[0.8] tracking-tighter select-none">03</span>
-					<h3 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight mt-3 sm:mt-4 mb-3 sm:mb-4">
-						{i18n.locale === 'fr' ? 'Gagne des fragments' : 'Earn fragments'}
+					<span
+						class="select-none text-[5rem] font-black leading-[0.8] tracking-tighter text-border/40 sm:text-[8rem] lg:text-[12rem]"
+						>03</span
+					>
+					<h3
+						class="mb-3 mt-3 text-2xl font-black tracking-tight sm:mb-4 sm:mt-4 sm:text-3xl lg:text-4xl xl:text-5xl"
+					>
+						{i18n.t('howItWorks.step3Title')}
 					</h3>
-					<p class="text-text-muted text-lg leading-relaxed">
-						{i18n.locale === 'fr'
-							? 'Chaque challenge réussi te rapporte des fragments. Monte de niveau et débloque de nouveaux titres.'
-							: 'Every completed challenge earns you fragments. Level up and unlock new titles.'}
-					</p>
+					<p class="text-lg leading-relaxed text-text-muted">{i18n.t('howItWorks.step3Body')}</p>
 				</div>
-				<!-- Mini progression -->
-				<div class="space-y-3">
-					{#each progressionLevels as level, i}
-						{@const colorClass = titleColor(level.title)}
-						{@const cats = ['bg-surface-understand border-cat-understand', 'bg-surface-craft border-cat-craft', 'bg-surface-create border-cat-create', 'bg-surface-meta border-cat-meta']}
-						<div class="rounded-2xl border-2 {cats[i]} p-4">
-							<div class="flex items-center justify-between mb-2">
-								<span class="text-sm font-semibold {colorClass}">{i18n.locale === 'fr' ? level.titleFr : level.titleEn}</span>
-								<span class="text-xs text-text-muted">{level.fragments} fragments</span>
-							</div>
-							<div class="h-1.5 rounded-full bg-surface-overlay">
-								<div class="h-full rounded-full bg-current {colorClass} {level.bar} transition-all duration-500"></div>
-							</div>
-						</div>
-					{/each}
+
+				<div class="overflow-hidden rounded-2xl border-2 border-cat-share bg-surface-share">
+					<div class="flex items-center gap-3 border-b border-border px-5 py-3">
+						<span class="text-xs font-bold uppercase tracking-widest text-text-muted">
+							{i18n.t('howItWorks.reviewLabel')}
+						</span>
+						<span class="ml-auto font-mono text-xs text-text-muted">{i18n.t('commonExtra.exampleLabel')}</span>
+					</div>
+					<div class="flex flex-col gap-4 p-5">
+						<p class="border-l-2 border-accent pl-4 text-sm leading-relaxed">
+							{i18n.t('howItWorks.reviewAsk')}
+						</p>
+						<p class="border-l-2 border-border pl-4 text-sm leading-relaxed text-text-muted">
+							{i18n.t('howItWorks.reviewReply')}
+						</p>
+						<p class="flex items-center gap-2 border-t border-border pt-3 text-xs font-bold text-success">
+							<span class="h-1.5 w-1.5 rounded-full bg-success"></span>
+							{i18n.t('howItWorks.reviewOutcome')}
+						</p>
+					</div>
 				</div>
 			</div>
 
-			<!-- Step 4 : Prouve. Pour de vrai. -->
-			<div use:scrollReveal class="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
-				<!-- Mini profile card -->
-				<div class="order-2 lg:order-1 rounded-2xl border-2 border-cat-share bg-surface-share p-6">
-					<div class="flex items-center gap-4 mb-4">
-						<div class="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center text-accent font-bold text-lg">K</div>
+			<!-- 04 — the proof that comes out of it -->
+			<div use:scrollReveal class="grid items-center gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-20">
+				<div
+					class="order-2 rounded-2xl border-2 border-cat-share bg-surface-share p-6 lg:order-1"
+				>
+					<p class="mb-3 text-[10px] uppercase tracking-widest text-text-muted">
+						{i18n.t('howItWorks.profileLabel')} · {i18n.t('commonExtra.exampleLabel')}
+					</p>
+					<div class="mb-4 flex items-center gap-4">
+						<div
+							class="flex h-12 w-12 items-center justify-center rounded-full bg-accent/20 text-lg font-bold text-accent"
+						>
+							A
+						</div>
 						<div>
-							<p class="font-semibold">Kira_x42</p>
-							<p class="text-xs text-text-muted">{i18n.locale === 'fr' ? 'Artisan' : 'Artisan'} &#9733;</p>
+							<p class="font-semibold">A. Diallo</p>
+							<p class="text-xs text-text-muted">{i18n.t('common.titles.artisan')}</p>
 						</div>
 					</div>
 					<div class="grid grid-cols-3 gap-3 text-center">
 						<div class="rounded-lg bg-surface-overlay p-3">
 							<p class="text-lg font-bold text-primary">1 247</p>
-							<p class="text-[11px] text-text-muted">Fragments</p>
+							<p class="text-[11px] text-text-muted">{i18n.t('common.fragments')}</p>
 						</div>
 						<div class="rounded-lg bg-surface-overlay p-3">
 							<p class="text-lg font-bold text-accent">23</p>
-							<p class="text-[11px] text-text-muted">Challenges</p>
+							<p class="text-[11px] text-text-muted">{i18n.t('profile.stats.challenges')}</p>
 						</div>
 						<div class="rounded-lg bg-surface-overlay p-3">
-							<p class="text-lg font-bold text-success">12j</p>
-							<p class="text-[11px] text-text-muted">Streak</p>
+							<p class="text-lg font-bold text-success">12</p>
+							<p class="text-[11px] text-text-muted">{i18n.t('common.streak')}</p>
 						</div>
 					</div>
 					<div class="mt-4 flex gap-2">
-						<span class="rounded-full {codeStyle.bgSoft} px-2.5 py-0.5 text-[11px] font-medium {codeStyle.text}">Rust</span>
-						<span class="rounded-full {codeStyle.bgSoft} px-2.5 py-0.5 text-[11px] font-medium {codeStyle.text}">TypeScript</span>
-						<span class="rounded-full {codeStyle.bgSoft} px-2.5 py-0.5 text-[11px] font-medium {codeStyle.text}">Go</span>
+						{#each ['Rust', 'TypeScript', 'Go'] as skill (skill)}
+							<span
+								class="rounded-full {codeStyle.bgSoft} px-2.5 py-0.5 text-[11px] font-medium {codeStyle.text}"
+								>{skill}</span
+							>
+						{/each}
 					</div>
 				</div>
+
 				<div class="order-1 lg:order-2">
-					<span class="text-[5rem] sm:text-[8rem] lg:text-[12rem] font-black text-border/40 leading-[0.8] tracking-tighter select-none">04</span>
-					<h3 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight mt-3 sm:mt-4 mb-3 sm:mb-4">
-						{i18n.locale === 'fr' ? 'Prouve. Pour de vrai.' : 'Prove it. For real.'}
+					<span
+						class="select-none text-[5rem] font-black leading-[0.8] tracking-tighter text-border/40 sm:text-[8rem] lg:text-[12rem]"
+						>04</span
+					>
+					<h3
+						class="mb-3 mt-3 text-2xl font-black tracking-tight sm:mb-4 sm:mt-4 sm:text-3xl lg:text-4xl xl:text-5xl"
+					>
+						{i18n.t('howItWorks.step4Title')}
 					</h3>
-					<p class="text-text-muted text-lg leading-relaxed">
-						{i18n.locale === 'fr'
-							? 'Ton profil se construit automatiquement. Pas de CV, pas de blabla. Juste tes preuves visibles par tous.'
-							: 'Your profile builds itself. No resume, no fluff. Just your proof visible to everyone.'}
-					</p>
+					<p class="text-lg leading-relaxed text-text-muted">{i18n.t('howItWorks.step4Body')}</p>
 				</div>
 			</div>
+		</div>
 
+		<!-- The founding principle, stated plainly rather than buried in a step. -->
+		<div use:scrollReveal class="mt-16 border-t border-border pt-10 sm:mt-24">
+			<p class="text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
+				{i18n.t('howItWorks.freeTitle')}
+			</p>
+			<p class="mt-3 max-w-2xl text-base text-text-muted sm:text-lg">
+				{i18n.t('howItWorks.freeBody')}
+			</p>
 		</div>
 	</div>
 </section>

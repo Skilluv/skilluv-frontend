@@ -23,6 +23,9 @@ services:
       HOST: 0.0.0.0
       ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000}
       API_URL: ${API_URL:-http://host.docker.internal:3001/api}
+      # Browser-facing origin. Empty keeps the clients relative, which only
+      # works when something in front routes /api to the backend.
+      PUBLIC_API_ORIGIN: ${PUBLIC_API_ORIGIN:-}
       PUBLIC_SENTRY_DSN: ${PUBLIC_SENTRY_DSN:-}
       PUBLIC_POSTHOG_KEY: ${PUBLIC_POSTHOG_KEY:-}
       PUBLIC_POSTHOG_HOST: ${PUBLIC_POSTHOG_HOST:-https://eu.i.posthog.com}

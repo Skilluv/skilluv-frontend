@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { moderationApi, type FlaggedDeliverable } from '$lib/api/moderation';
 	import { SkilluError } from '$lib/api/client';
 	import { i18n } from '$lib/i18n';
@@ -38,12 +37,19 @@
 
 	let allowed = $derived(auth.can('plagiarism_reviewer') || auth.can('admin'));
 
-	onMount(async () => {
-		if (!allowed) {
+	// Same as /community/curator: capabilities load after mount, so a one-shot
+	// check in `onMount` denied access to a legitimate reviewer.
+	let queueRequested = false;
+	$effect(() => {
+		if (!auth.capabilitiesLoaded) return;
+		if (allowed) {
+			if (!queueRequested) {
+				queueRequested = true;
+				void load();
+			}
+		} else {
 			loading = false;
-			return;
 		}
-		await load();
 	});
 
 	async function load() {
@@ -126,7 +132,14 @@
 		<p class="mt-2 text-text-muted">{i18n.t('moderation.plagiarism.subtitle')}</p>
 	</header>
 
-	{#if !allowed}
+	<!-- Same as /community/curator: no refusal before capabilities are known. -->
+	{#if !auth.capabilitiesLoaded}
+		<div class="space-y-3">
+			{#each Array(3) as _}
+				<Skeleton class="h-32 w-full" rounded="xl" />
+			{/each}
+		</div>
+	{:else if !allowed}
 		<div class="rounded-2xl border border-warning/40 bg-warning/5 p-6 text-center" role="alert">
 			<p class="text-sm text-text-primary">{i18n.t('moderation.plagiarism.noAccess')}</p>
 		</div>

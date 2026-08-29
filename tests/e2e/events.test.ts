@@ -1,6 +1,7 @@
 import { test, expect, type Page, type Route } from '@playwright/test';
+import { gotoHydrated } from './utils/hydration';
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, context }) => {
 	await page.addInitScript(() => {
 		try {
 			localStorage.setItem('skilluv-locale', 'fr');
@@ -8,6 +9,11 @@ test.beforeEach(async ({ page }) => {
 			// storage unavailable
 		}
 	});
+	// Auth is resolved during SSR: without this cookie the page renders as an
+	// anonymous visitor and the join button stays disabled.
+	await context.addCookies([
+		{ name: 'access_token', value: 'challenger', domain: 'localhost', path: '/' }
+	]);
 });
 
 type ApiRoute = { path: string; handler: (route: Route) => Promise<void> | void };
@@ -58,30 +64,59 @@ const talent = {
 	created_at: '2026-01-01'
 };
 
-const eventsPayload = {
-	data: [
-		{
-			id: 'e1',
-			slug: 'skilluv-fest-2026',
-			name: 'Skilluv Fest 2026',
-			description: 'Le hackathon flagship de l\'année.',
-			starts_at: '2026-07-01',
-			ends_at: '2026-07-31',
-			visual_theme: {},
-			is_partner: false
-		},
-		{
-			id: 'e2',
-			slug: 'hacktoberfest',
-			name: 'Hacktoberfest',
-			description: 'Contribuez open-source pendant octobre.',
-			starts_at: '2026-10-01',
-			ends_at: '2026-10-31',
-			visual_theme: {},
-			is_partner: true
-		}
-	]
-};
+/**
+ * Dates relative to run time. The fixture was pinned to July 2026, so the event
+ * eventually became "finished" and the page stopped showing the join button:
+ * the test failed by ageing, not by regression.
+ */
+const DAY_MS = 86_400_000;
+const isoInDays = (n: number) => new Date(Date.now() + n * DAY_MS).toISOString().slice(0, 10);
+
+/**
+ * The rows `GET /events` actually returns.
+ *
+ * These used to be mocked at `/badge-events`, a prefix nothing has ever
+ * served — so the suite passed while the page was broken (SKI-352). The shape
+ * here is `routes::events`: an event carries its type, its location, its
+ * participant ceiling and its showcase page, and the list is wrapped in
+ * `{ events }` rather than being the payload itself.
+ */
+const eventRows = [
+	{
+		id: 'e1',
+		slug: 'skilluv-fest-2026',
+		name: 'Skilluv Fest 2026',
+		description: 'Le hackathon flagship de l\'année.',
+		event_type: 'hackathon',
+		domain_focus: ['code'],
+		location_type: 'online',
+		location_details: {},
+		max_participants: null,
+		showcase_page_url: null,
+		status: 'published',
+		starts_at: isoInDays(-1),
+		ends_at: isoInDays(30),
+		visual_theme: {},
+		is_partner: false
+	},
+	{
+		id: 'e2',
+		slug: 'hacktoberfest',
+		name: 'Hacktoberfest',
+		description: 'Contribuez open-source pendant octobre.',
+		event_type: 'partner',
+		domain_focus: ['code'],
+		location_type: 'online',
+		location_details: {},
+		max_participants: null,
+		showcase_page_url: null,
+		status: 'published',
+		starts_at: isoInDays(60),
+		ends_at: isoInDays(90),
+		visual_theme: {},
+		is_partner: true
+	}
+];
 
 test.describe('Events pages', () => {
 	test.beforeEach(async ({ page }) => {
@@ -116,40 +151,46 @@ test.describe('Events pages', () => {
 					})
 			},
 			{
-				path: '/badge-events',
+				path: '/users/me/events',
 				handler: (route) =>
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
-						body: JSON.stringify(eventsPayload)
+						body: JSON.stringify({ data: { events: [] } })
 					})
 			},
 			{
-				path: '/users/me/badge-events',
+				// Must stay AFTER `/users/me/events`: matching is by suffix, so this
+				// route would otherwise capture the personal listing.
+				path: '/events',
 				handler: (route) =>
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
-						body: JSON.stringify({ data: [] })
+						body: JSON.stringify({ data: { events: eventRows } })
 					})
 			},
 			{
-				path: '/badge-events/skilluv-fest-2026',
-				handler: (route) =>
-					route.fulfill({
-						status: 200,
-						contentType: 'application/json',
-						body: JSON.stringify({ data: eventsPayload.data[0] })
-					})
-			},
-			{
-				path: '/badge-events/skilluv-fest-2026/join',
+				// The detail carries who is backing it and where to watch, not just
+				// the event.
+				path: '/events/skilluv-fest-2026',
 				handler: (route) =>
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
 						body: JSON.stringify({
-							data: { event: eventsPayload.data[0], joined_at: '2026-07-16', stamp_earned: false }
+							data: { event: eventRows[0], participants: 12, sponsors: [], livestreams: [] }
+						})
+					})
+			},
+			{
+				path: '/events/skilluv-fest-2026/join',
+				handler: (route) =>
+					route.fulfill({
+						status: 200,
+						contentType: 'application/json',
+						body: JSON.stringify({
+							data: { joined: true, event_slug: 'skilluv-fest-2026', role: 'participant' }
 						})
 					})
 			}
@@ -157,7 +198,7 @@ test.describe('Events pages', () => {
 	});
 
 	test('lists active + upcoming events with correct badges', async ({ page }) => {
-		await page.goto('/events');
+		await gotoHydrated(page, '/events');
 		await expect(page.getByRole('heading', { name: 'Événements Skilluv' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Skilluv Fest 2026' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Hacktoberfest' })).toBeVisible();
@@ -165,7 +206,7 @@ test.describe('Events pages', () => {
 	});
 
 	test('event detail joins successfully', async ({ page }) => {
-		await page.goto('/events/skilluv-fest-2026');
+		await gotoHydrated(page, '/events/skilluv-fest-2026');
 		await expect(page.getByRole('heading', { name: 'Skilluv Fest 2026' })).toBeVisible();
 		await page.getByRole('button', { name: /Rejoindre l'événement/i }).click();
 		await expect(page.getByRole('button', { name: 'Déjà rejoint' })).toBeVisible();

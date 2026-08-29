@@ -9,11 +9,15 @@
 	import { certificationsApi, type Certification } from '$api/certifications';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
+	import InlinePaymentModal from '$components/payments/InlinePaymentModal.svelte';
 
 	let certs = $state<Certification[]>([]);
 	let loading = $state(true);
 	let purchasing = $state<string | null>(null);
 	let filterDomain = $state<string>('all');
+	let showPayment = $state(false);
+	let paymentId = $state('');
+	let checkoutUrl = $state('');
 
 	async function load() {
 		loading = true;
@@ -35,12 +39,18 @@
 		purchasing = slug;
 		try {
 			const res = await certificationsApi.purchase(slug);
-			if (res.data.checkout_url) {
+			if (res.data.payment_id) {
+				// The modal offers the operators that confirm on the phone
+				// first; the provider's page stays reachable for cards.
+				paymentId = res.data.payment_id;
+				checkoutUrl = res.data.checkout_url ?? '';
+				showPayment = true;
+			} else if (res.data.checkout_url) {
 				window.location.href = res.data.checkout_url;
 			} else if (res.data.message) {
 				toast.info(res.data.message);
-				purchasing = null;
 			}
+			purchasing = null;
 		} catch (e) {
 			purchasing = null;
 			toast.error(e instanceof SkilluError ? e.message : 'Erreur');
@@ -242,3 +252,15 @@
 		</div>
 	</div>
 </section>
+
+<InlinePaymentModal
+	open={showPayment}
+	{paymentId}
+	{checkoutUrl}
+	currency="EUR"
+	onclose={() => (showPayment = false)}
+	onsettled={() => {
+		showPayment = false;
+		load();
+	}}
+/>

@@ -1,4 +1,5 @@
 import { test, expect, type Page, type Route } from '@playwright/test';
+import { gotoHydrated } from './utils/hydration';
 
 test.beforeEach(async ({ page }) => {
 	await page.addInitScript(() => {
@@ -160,7 +161,7 @@ test.describe('Onboarding orientations flow', () => {
 	});
 
 	test('renders catalog with all orientations', async ({ page }) => {
-		await page.goto('/onboarding/orientations');
+		await gotoHydrated(page, '/onboarding/orientations');
 		await expect(page.getByRole('heading', { name: 'Ton parcours Skilluv' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Dev frontend' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Analyste sécurité' })).toBeVisible();
@@ -168,23 +169,27 @@ test.describe('Onboarding orientations flow', () => {
 	});
 
 	test('filters catalog by domain', async ({ page }) => {
-		await page.goto('/onboarding/orientations');
+		await gotoHydrated(page, '/onboarding/orientations');
 		await page.getByLabel('Filtrer par domaine').selectOption('code');
 		await expect(page.getByRole('heading', { name: 'Dev frontend' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Analyste sécurité' })).toHaveCount(0);
 	});
 
 	test('enforces the 3-orientation cap', async ({ page }) => {
-		await page.goto('/onboarding/orientations');
+		await gotoHydrated(page, '/onboarding/orientations');
 		await page.getByRole('button', { name: /Dev frontend/i }).click();
 		await page.getByRole('button', { name: /Analyste sécurité/i }).click();
 		await page.getByRole('button', { name: /Game designer/i }).click();
 		await expect(page.getByRole('heading', { name: 'Ta sélection' })).toBeVisible();
-		await expect(page.getByText('Dev frontend')).toBeVisible();
+		// "Dev frontend" also appears on the picker card; assert inside the
+		// summary, which is what this test is about.
+		await expect(
+			page.getByLabel('Ta sélection').getByText('Dev frontend')
+		).toBeVisible();
 	});
 
 	test('submits selection and shows confirmation', async ({ page }) => {
-		await page.goto('/onboarding/orientations');
+		await gotoHydrated(page, '/onboarding/orientations');
 		await page.getByRole('button', { name: /Dev frontend/i }).click();
 		await page.getByRole('button', { name: 'Valider mes orientations' }).click();
 		await expect(page.getByRole('status')).toContainText(/Orientations enregistrées/i);
