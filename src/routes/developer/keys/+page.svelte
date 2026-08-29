@@ -81,7 +81,7 @@
 				<div>
 					<p class="mb-1.5 text-sm font-medium">Permissions</p>
 					<div class="flex flex-wrap gap-2">
-						{#each permissions as perm}
+						{#each permissions as perm (perm)}
 							<label class="flex items-center gap-1.5 rounded-lg bg-surface-overlay px-3 py-1.5 text-xs">
 								<input
 									type="checkbox"
@@ -104,7 +104,7 @@
 
 	{#if loading}
 		<div class="flex flex-col gap-3">
-			{#each Array(3) as _}
+			{#each Array(3) as _, i (i)}
 				<Skeleton class="h-20 w-full" rounded="xl" />
 			{/each}
 		</div>
@@ -112,7 +112,7 @@
 		<p class="py-8 text-center text-text-muted">No API keys. Create one to get started.</p>
 	{:else}
 		<div class="flex flex-col gap-3">
-			{#each keys as key}
+			{#each keys as key (key.id)}
 				<div class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-4">
 					<div>
 						<p class="font-medium">{key.name}</p>

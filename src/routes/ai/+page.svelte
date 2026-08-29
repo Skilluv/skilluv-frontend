@@ -142,7 +142,7 @@
 
 		{#if loadingArtifacts}
 			<div class="grid gap-3 sm:grid-cols-2">
-				{#each Array(4) as _}
+				{#each Array(4) as _, i (i)}
 					<Skeleton class="h-32 w-full" rounded="xl" />
 				{/each}
 			</div>
@@ -241,7 +241,7 @@
 
 		{#if loadingCompetitions}
 			<div class="space-y-3">
-				{#each Array(3) as _}
+				{#each Array(3) as _, i (i)}
 					<Skeleton class="h-24 w-full" rounded="xl" />
 				{/each}
 			</div>

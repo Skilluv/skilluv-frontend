@@ -32,7 +32,6 @@
 	import { opsApi, isResolved, objectiveMet, type Incident, type Objective } from '$api/ops';
 	import { i18n } from '$lib/i18n';
 	import Badge from '$components/ui/Badge.svelte';
-	import Button from '$components/ui/Button.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 

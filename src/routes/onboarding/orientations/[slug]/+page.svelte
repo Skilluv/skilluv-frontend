@@ -94,7 +94,7 @@
 							{i18n.t('orientations.detail.secondaryDomains')}
 						</h3>
 						<ul class="flex flex-wrap gap-1.5" role="list">
-							{#each orientation.secondary_domains as d}
+							{#each orientation.secondary_domains as d, i (i)}
 								<li class="rounded bg-surface-overlay px-2 py-0.5 text-xs text-text-muted">
 									{i18n.t(`common.domains.${d}`)}
 								</li>
@@ -111,7 +111,7 @@
 						<p class="text-sm text-text-muted">—</p>
 					{:else}
 						<ul class="flex flex-wrap gap-1.5" role="list">
-							{#each orientation.tags as tag}
+							{#each orientation.tags as tag, i (i)}
 								<li class="rounded bg-surface-overlay px-2 py-0.5 text-xs text-text-muted">
 									{tag}
 								</li>

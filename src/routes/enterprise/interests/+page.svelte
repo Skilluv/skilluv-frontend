@@ -140,7 +140,7 @@
 
 	{#if loading}
 		<div class="flex flex-col gap-3">
-			{#each Array(4) as _}
+			{#each Array(4) as _, i (i)}
 				<Skeleton class="h-24 w-full" rounded="xl" />
 			{/each}
 		</div>

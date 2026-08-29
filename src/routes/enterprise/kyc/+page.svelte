@@ -240,7 +240,7 @@
 				{i18n.locale === 'fr' ? 'Documents' : 'Documents'}
 			</h2>
 			<div class="space-y-2">
-				{#each DOC_KINDS as dk}
+				{#each DOC_KINDS as dk (dk.slug)}
 					{@const existing = status.documents.find((d) => d.kind === dk.slug)}
 					<div class="rounded-2xl border border-border bg-surface-elevated p-5">
 						<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

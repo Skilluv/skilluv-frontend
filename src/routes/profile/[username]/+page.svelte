@@ -186,7 +186,7 @@
 				</div>
 			</div>
 			<div class="grid grid-cols-4 divide-x divide-border border-t border-border">
-				{#each Array(4) as _}
+				{#each Array(4) as _, i (i)}
 					<div class="p-4 text-center">
 						<Skeleton class="h-7 w-12 mx-auto mb-1" />
 						<Skeleton class="h-3 w-16 mx-auto" />

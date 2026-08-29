@@ -3,7 +3,6 @@
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
 	import { goto } from '$app/navigation';
-	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import { dmApi, type DmConversation } from '$api/dm';
 	import { toast } from '$stores/toast.svelte';
@@ -57,7 +56,7 @@
 
 	{#if loading}
 		<div class="space-y-2">
-			{#each Array(5) as _}
+			{#each Array(5) as _, i (i)}
 				<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-16"></div>
 			{/each}
 		</div>
@@ -73,7 +72,7 @@
 		</div>
 	{:else}
 		<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
-			{#each convs as c}
+			{#each convs as c (c.id)}
 				<a
 					href={`/messages/${c.id}`}
 					class="flex items-center gap-4 p-4 hover:bg-surface-overlay transition-colors"

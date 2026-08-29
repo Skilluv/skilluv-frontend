@@ -257,7 +257,7 @@
 			</div>
 
 			<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				{#each pricing.packs as pack}
+				{#each pricing.packs as pack (pack.slug)}
 					<article
 						class="rounded-2xl border border-border bg-surface-elevated p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
 					>
@@ -367,7 +367,7 @@
 
 		{#if loading}
 			<div class="space-y-2">
-				{#each Array(6) as _}
+				{#each Array(6) as _, i (i)}
 					<div class="animate-pulse rounded-xl border border-border bg-surface-elevated p-4 h-16"></div>
 				{/each}
 			</div>
@@ -380,7 +380,7 @@
 			</div>
 		{:else}
 			<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
-				{#each transactions as tx}
+				{#each transactions as tx (tx.id)}
 					{@const meta = reasonMeta(tx.reason)}
 					{@const delta = parseFloat(tx.delta)}
 					<div class="flex items-center gap-4 p-4">

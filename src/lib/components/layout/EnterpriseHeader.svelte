@@ -90,7 +90,7 @@
 				<div
 					class="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-surface-elevated p-1.5 shadow-lg"
 				>
-					{#each themes as t}
+					{#each themes as t (t.key)}
 						<button
 							type="button"
 							onclick={() => selectTheme(t.key)}

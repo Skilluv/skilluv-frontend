@@ -383,7 +383,7 @@
 									: 'They let you log back in if you lose your phone. Never share them.'}
 							</p>
 							<div class="mb-3 grid grid-cols-2 gap-2 font-mono text-xs">
-								{#each backupCodes as code}
+								{#each backupCodes as code, i (i)}
 									<div
 										class="rounded-lg border border-border bg-surface-overlay px-3 py-2 text-center"
 									>

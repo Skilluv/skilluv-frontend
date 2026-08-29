@@ -101,7 +101,7 @@
 	<!-- Grid -->
 	{#if loading}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{#each Array(6) as _}
+			{#each Array(6) as _, i (i)}
 				<ChallengeCard loading />
 			{/each}
 		</div>
@@ -126,7 +126,7 @@
 		</EmptyState>
 	{:else}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{#each challenges as { challenge, locked }}
+			{#each challenges as { challenge, locked } (challenge.id)}
 				<ChallengeCard {challenge} {locked} />
 			{/each}
 		</div>

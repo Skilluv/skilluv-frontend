@@ -161,7 +161,7 @@
 				{ n: '02', fr: { t: 'Résous des challenges', d: 'Gagne des fragments. Fais grimper ton titre : Apprenti → Artisan → Maître → Légende.' }, en: { t: 'Solve challenges', d: 'Earn fragments. Level up: Apprentice → Artisan → Master → Legend.' } },
 				{ n: '03', fr: { t: 'Prouve tes compétences', d: 'Passe une certification. Résous une bounty OSS. Prends un mentor si besoin.' }, en: { t: 'Prove your skills', d: 'Take a certification. Solve an OSS bounty. Get a mentor if needed.' } },
 				{ n: '04', fr: { t: 'Sois recruté·e', d: 'Les entreprises te trouvent via tes preuves, pas ton CV. Recruteurs vérifient tes diplômes en 1 clic.' }, en: { t: 'Get hired', d: 'Companies find you via your proof, not your resume. Recruiters verify your diplomas in 1 click.' } }
-			] as step}
+			] as step, i (i)}
 				{@const t = i18n.locale === 'fr' ? step.fr : step.en}
 				<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 					<div class="mb-3 text-4xl font-black text-primary">{step.n}</div>

@@ -14,7 +14,6 @@
 	 * `/trials/hours/{id}/decision` requires an enterprise session.
 	 */
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
 	import { ArrowLeft, Check, Clock, X } from '@lucide/svelte';
 	import { opportunitiesApi } from '$lib/api/opportunities';
 	import { SkilluError } from '$api/client';

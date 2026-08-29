@@ -7,7 +7,6 @@
 	import { enterpriseTypesApi } from '$lib/api/enterprise_types';
 	import type { EnterpriseType, EnterpriseTypeConfig } from '$lib/types';
 	import { auth } from '$stores/auth.svelte';
-	import { SkilluError } from '$api/client';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
@@ -154,7 +153,7 @@
 
 	{#if loading}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-			{#each Array(8) as _}
+			{#each Array(8) as _, i (i)}
 				<Skeleton class="h-24 w-full" rounded="xl" />
 			{/each}
 		</div>
@@ -411,7 +410,7 @@
 					</a>
 				</div>
 				<div class="rounded-xl border border-border bg-surface-elevated divide-y divide-border">
-					{#each recentNotifs as n}
+					{#each recentNotifs as n (n.id)}
 						<a
 							href="/notifications"
 							class="flex items-start gap-3 p-4 transition-colors hover:bg-surface-overlay"
@@ -468,7 +467,7 @@
 						{i18n.t('enterprise.dashboard.byDomain')}
 					</p>
 					<div class="space-y-2.5">
-						{#each Object.entries(platformStats.by_domain) as [domain, count]}
+						{#each Object.entries(platformStats.by_domain) as [domain, count] (domain)}
 							{@const pct = totalByDomain > 0 ? Math.round((count / totalByDomain) * 100) : 0}
 							<div>
 								<div class="mb-1 flex items-center justify-between text-xs">
@@ -489,7 +488,7 @@
 						{i18n.locale === 'fr' ? 'Par niveau' : 'By level'}
 					</p>
 					<div class="space-y-2.5">
-						{#each ['apprenti', 'artisan', 'maitre', 'legende'] as title}
+						{#each ['apprenti', 'artisan', 'maitre', 'legende'] as title (title)}
 							{@const count = platformStats.by_title[title] ?? 0}
 							{@const pct = totalByTitle > 0 ? Math.round((count / totalByTitle) * 100) : 0}
 							<div>

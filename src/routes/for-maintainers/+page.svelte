@@ -220,7 +220,7 @@
 	<section class="space-y-4">
 		<h2 class="font-heading text-2xl text-text-primary">{i18n.t('p26.forMaintainers.faqTitle')}</h2>
 		<div class="space-y-2">
-			{#each faqs as faq, i}
+			{#each faqs as faq, i (faq.q)}
 				<div class="rounded-xl border border-border bg-surface-elevated">
 					<button
 						type="button"

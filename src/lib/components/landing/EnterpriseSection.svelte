@@ -55,7 +55,7 @@
 
 			<!-- Talent results -->
 			<div class="divide-y divide-border">
-				{#each demoTalents as talent}
+				{#each demoTalents as talent (talent.name)}
 					<div class="flex items-center gap-4 px-5 py-4">
 						<!-- Avatar -->
 						<div class="shrink-0 h-10 w-10 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-bold text-primary">
@@ -79,7 +79,7 @@
 
 						<!-- Skills -->
 						<div class="hidden sm:flex gap-1.5 shrink-0">
-							{#each talent.skills as skill}
+							{#each talent.skills as skill, i (i)}
 								<span class="rounded-md bg-surface-overlay px-2 py-0.5 text-[10px] font-medium text-text-muted">{skill}</span>
 							{/each}
 						</div>

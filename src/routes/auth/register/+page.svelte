@@ -149,7 +149,7 @@
 		<p class="mb-10 text-center text-base text-text-muted">{i18n.t('auth.register.pickDomainSub')}</p>
 
 		<div class="grid gap-3">
-			{#each domains as domain}
+			{#each domains as domain (domain.value)}
 				{@const ds = domainStyle(domain.value)}
 				<button
 					type="button"

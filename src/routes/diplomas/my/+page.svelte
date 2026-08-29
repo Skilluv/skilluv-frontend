@@ -66,7 +66,7 @@
 
 	{#if loading}
 		<div class="space-y-3">
-			{#each Array(3) as _}
+			{#each Array(3) as _, i (i)}
 				<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-32"></div>
 			{/each}
 		</div>
@@ -87,7 +87,7 @@
 		</div>
 	{:else}
 		<div class="space-y-3">
-			{#each diplomas as d}
+			{#each diplomas as d (d.verification_code)}
 				<article class="rounded-2xl border border-border bg-surface-elevated p-6">
 					<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div class="min-w-0 flex-1">

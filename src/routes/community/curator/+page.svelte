@@ -114,7 +114,7 @@
 	     first pass flashed "forbidden" at a legitimate curator. -->
 	{#if !auth.capabilitiesLoaded}
 		<div class="space-y-3">
-			{#each Array(3) as _}
+			{#each Array(3) as _, i (i)}
 				<Skeleton class="h-32 w-full" rounded="xl" />
 			{/each}
 		</div>
@@ -124,7 +124,7 @@
 		</div>
 	{:else if loading}
 		<div class="space-y-3">
-			{#each Array(3) as _}
+			{#each Array(3) as _, i (i)}
 				<Skeleton class="h-32 w-full" rounded="xl" />
 			{/each}
 		</div>

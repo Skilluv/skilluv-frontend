@@ -1,4 +1,4 @@
-import type { LeaderboardEntry, LeaderboardDomain, LeaderboardPeriod, ApiPaginatedResponse, ApiResponse } from '$lib/types';
+import type { LeaderboardEntry, LeaderboardDomain, LeaderboardPeriod } from '$lib/types';
 import { createApiClient } from './client';
 
 const api = createApiClient();

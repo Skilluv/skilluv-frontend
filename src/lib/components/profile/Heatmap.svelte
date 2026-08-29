@@ -64,9 +64,9 @@
 
 <div class="overflow-x-auto">
 	<div class="inline-flex gap-[3px]">
-		{#each grid as week}
+		{#each grid as week, i (i)}
 			<div class="flex flex-col gap-[3px]">
-				{#each week as day}
+				{#each week as day (day.date)}
 					<div
 						class="h-3 w-3 rounded-sm {levelColors[day.level]} transition-colors"
 						title="{day.date}: {day.count} challenge{day.count !== 1 ? 's' : ''}"

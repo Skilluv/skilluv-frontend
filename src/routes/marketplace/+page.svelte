@@ -116,7 +116,7 @@
 
 	{#if loading}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{#each Array(6) as _}
+			{#each Array(6) as _, i (i)}
 				<Skeleton class="h-64 w-full" rounded="xl" />
 			{/each}
 		</div>

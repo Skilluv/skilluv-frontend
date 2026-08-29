@@ -105,7 +105,7 @@
 			>
 				{i18n.locale === 'fr' ? 'Toutes' : 'All'}
 			</button>
-			{#each categories as c}
+			{#each categories as c (c.slug)}
 				<button
 					onclick={() => { selectedCategory = c.slug; void load(); }}
 					class="w-full text-left rounded-lg px-3 py-2 text-sm font-medium transition-colors {selectedCategory === c.slug ? 'bg-primary/15 text-primary' : 'hover:bg-surface-overlay'}"
@@ -124,7 +124,7 @@
 				{ v: 'recent' as const, fr: 'Récent', en: 'Recent' },
 				{ v: 'hot' as const, fr: 'Populaires', en: 'Hot' },
 				{ v: 'top-bounty' as const, fr: 'Top bounty', en: 'Top bounty' }
-			] as s}
+			] as s, i (i)}
 				<button
 					onclick={() => { sort = s.v; void load(); }}
 					class="w-full text-left rounded-lg px-3 py-2 text-sm font-medium transition-colors {sort === s.v ? 'bg-primary/15 text-primary' : 'hover:bg-surface-overlay'}"
@@ -153,7 +153,7 @@
 
 		{#if loading}
 			<div class="space-y-2">
-				{#each Array(6) as _}
+				{#each Array(6) as _, i (i)}
 					<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-24"></div>
 				{/each}
 			</div>
@@ -167,7 +167,7 @@
 			/>
 		{:else}
 			<div class="space-y-2">
-				{#each posts as p}
+				{#each posts as p (p.id)}
 					<a
 						href={`/forum/${p.id}`}
 						class="block rounded-2xl border border-border bg-surface-elevated p-5 transition-all hover:border-primary/40 hover:shadow-md"

@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import Badge from '$components/ui/Badge.svelte';
-	import Button from '$components/ui/Button.svelte';
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import FilterBar from '$components/ui/FilterBar.svelte';
 	import { tournamentApi, type Tournament, type Season } from '$api/tournament';
@@ -118,7 +117,7 @@
 <section class="mx-auto max-w-6xl px-4 py-14">
 	{#if loading}
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-			{#each Array(6) as _}
+			{#each Array(6) as _, i (i)}
 				<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-64"></div>
 			{/each}
 		</div>
@@ -131,7 +130,7 @@
 		</div>
 	{:else}
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-			{#each filtered as t}
+			{#each filtered as t (t.slug)}
 				<a
 					href={`/tournaments/${t.slug}`}
 					class="flex flex-col rounded-2xl border {isActive(t) ? 'border-accent bg-surface-elevated' : 'border-border bg-surface-elevated'} p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"

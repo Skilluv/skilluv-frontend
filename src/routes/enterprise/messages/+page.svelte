@@ -47,7 +47,7 @@
 
 	{#if loading}
 		<div class="flex flex-col gap-3">
-			{#each Array(4) as _}
+			{#each Array(4) as _, i (i)}
 				<Skeleton class="h-16 w-full" rounded="xl" />
 			{/each}
 		</div>
@@ -60,7 +60,7 @@
 		</div>
 	{:else}
 		<div class="flex flex-col gap-2">
-			{#each conversations as conv}
+			{#each conversations as conv (conv.id)}
 				<a
 					href="/enterprise/messages/{conv.id}"
 					class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4 transition-all hover:border-primary/30

@@ -73,7 +73,7 @@
 
 	{#if orientation.tags.length > 0}
 		<ul class="flex flex-wrap gap-1.5" role="list">
-			{#each orientation.tags.slice(0, 4) as tag}
+			{#each orientation.tags.slice(0, 4) as tag, i (i)}
 				<li class="rounded bg-surface-overlay px-2 py-0.5 text-[10px] font-medium text-text-muted">
 					{tag}
 				</li>

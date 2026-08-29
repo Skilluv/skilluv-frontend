@@ -139,7 +139,7 @@
 		<div class="animate-pulse space-y-4">
 			<div class="h-32 rounded-2xl bg-surface-elevated"></div>
 			<div class="grid gap-4 sm:grid-cols-3">
-				{#each Array(3) as _}
+				{#each Array(3) as _, i (i)}
 					<div class="h-56 rounded-2xl bg-surface-elevated"></div>
 				{/each}
 			</div>
@@ -208,7 +208,7 @@
 			</div>
 
 			<div class="grid gap-5 sm:grid-cols-3">
-				{#each plans as p, i}
+				{#each plans as p, i (p.slug)}
 					{@const isCurrent = current?.plan_slug === p.slug}
 					{@const isBest = i === 1}
 					<article class="flex flex-col rounded-2xl border {isBest ? 'border-accent' : isCurrent ? 'border-primary' : 'border-border'} bg-surface-elevated p-6 relative">

@@ -11,7 +11,7 @@
 	import Modal from '$components/ui/Modal.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { Locale } from '$lib/i18n';
-	import type { ThemeBase, SkillDomain, PrivacySettings } from '$types';
+	import type { ThemeBase, PrivacySettings } from '$types';
 
 	// Password
 	let currentPassword = $state('');
@@ -104,7 +104,7 @@
 	<section class="mb-8">
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.theme.title')}</h2>
 		<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-			{#each themes as t}
+			{#each themes as t (t.value)}
 				<button
 					class="rounded-xl border p-3 text-left transition-all
 						{theme.base === t.value ? 'border-accent bg-accent/10' : 'border-border hover:border-text-muted'}"
@@ -121,7 +121,7 @@
 	<section class="mb-8">
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.language.title')}</h2>
 		<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-			{#each locales as loc}
+			{#each locales as loc (loc.value)}
 				<button
 					class="rounded-xl border p-3 text-left transition-all
 						{i18n.locale === loc.value ? 'border-accent bg-accent/10' : 'border-border hover:border-text-muted'}"
@@ -246,7 +246,7 @@
 				{ key: 'show_streak', label: i18n.t('settings.privacy.showStreak') },
 				{ key: 'show_email', label: i18n.t('settings.privacy.showEmail') },
 				{ key: 'allow_interest_requests', label: i18n.t('settings.privacy.allowInterests') }
-			] as setting}
+			] as setting (setting.key)}
 				<label class="flex items-center justify-between">
 					<span class="text-sm">{setting.label}</span>
 					<input

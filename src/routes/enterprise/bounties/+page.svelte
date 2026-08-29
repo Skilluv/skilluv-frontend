@@ -291,7 +291,7 @@
 	<!-- Liste bounties -->
 	{#if loading}
 		<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-			{#each Array(6) as _}
+			{#each Array(6) as _, i (i)}
 				<div class="h-48 animate-pulse rounded-xl border border-border bg-surface-elevated"></div>
 			{/each}
 		</div>
@@ -335,7 +335,7 @@
 						<p class="mb-3 line-clamp-2 text-xs text-text-muted">{b.description}</p>
 
 						<div class="mb-3 flex flex-wrap gap-1">
-							{#each b.required_skills.slice(0, 3) as skill}
+							{#each b.required_skills.slice(0, 3) as skill, i (i)}
 								<Badge variant="default" size="sm">{skill}</Badge>
 							{/each}
 						</div>

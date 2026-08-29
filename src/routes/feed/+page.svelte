@@ -118,7 +118,7 @@
 
 	{#if loading}
 		<div class="space-y-2">
-			{#each Array(8) as _}
+			{#each Array(8) as _, i (i)}
 				<div class="animate-pulse rounded-xl border border-border bg-surface-elevated h-16"></div>
 			{/each}
 		</div>
@@ -143,7 +143,7 @@
 		</EmptyState>
 	{:else}
 		<div class="space-y-2">
-			{#each events as ev}
+			{#each events as ev (ev.id)}
 				{@const href = targetLink(ev)}
 				{@const KindIcon = iconForKind(ev.kind)}
 				<svelte:element

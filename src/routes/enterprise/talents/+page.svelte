@@ -574,7 +574,7 @@
 			<!-- Grille de résultats -->
 			{#if loading}
 				<div class="grid gap-3 xl:grid-cols-2">
-					{#each Array(6) as _}
+					{#each Array(6) as _, i (i)}
 						<div class="h-36 animate-pulse rounded-xl border border-border bg-surface-elevated"></div>
 					{/each}
 				</div>
@@ -638,7 +638,7 @@
 									<Badge variant="default" size="sm">{t.country_iso2}</Badge>
 								{/if}
 								{#if t.top_skills.length}
-									{#each t.top_skills.slice(0, 3) as s}
+									{#each t.top_skills.slice(0, 3) as s (s.sub_skill)}
 										<Badge variant="default" size="sm">{s.sub_skill}</Badge>
 									{/each}
 								{/if}

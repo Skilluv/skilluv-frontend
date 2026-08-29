@@ -106,7 +106,7 @@
 				</p>
 			{:else if recos}
 				<div class="space-y-2">
-					{#each recos as r}
+					{#each recos as r (r.challenge_id)}
 						{@const g = growthLabel(r.growth_category)}
 						<a
 							href={`/challenges/${r.challenge_id}`}

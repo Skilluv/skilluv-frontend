@@ -57,7 +57,7 @@
 	<p class="mb-4 text-sm text-text-muted">{description}</p>
 
 	<ul class="mt-auto space-y-1.5" role="list">
-		{#each benefits as benefit}
+		{#each benefits as benefit (benefit)}
 			<li class="flex items-start gap-2 text-xs text-text-muted">
 				<Check size={12} strokeWidth={2.5} class="mt-0.5 shrink-0 text-accent" aria-hidden="true" />
 				<span>{benefit}</span>

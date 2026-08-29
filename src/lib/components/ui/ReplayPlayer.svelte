@@ -119,7 +119,7 @@
 
 		<!-- Speed -->
 		<div class="flex items-center gap-1">
-			{#each speeds as s}
+			{#each speeds as s (s)}
 				<button
 					class="rounded px-1.5 py-0.5 text-xs transition-colors
 						{speed === s ? 'bg-accent text-accent-fg' : 'text-text-muted hover:text-text-primary'}"

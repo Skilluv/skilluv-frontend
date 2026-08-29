@@ -2,7 +2,6 @@
 	import { i18n } from '$lib/i18n';
 	import { scrollReveal } from '$lib/utils/animations';
 	import { rankColor, domainStyle } from '$lib/utils/domains';
-	import Button from '$components/ui/Button.svelte';
 	import type { Rank } from '$lib/types';
 
 	// The canonical ladder is Rank (5 tiers, Apprenti -> Doyen). This listed 4
@@ -85,7 +84,7 @@
 					</div>
 				</div>
 				<div class="flex gap-2">
-					{#each ['Rust', 'Go', 'TypeScript'] as skill}
+					{#each ['Rust', 'Go', 'TypeScript'] as skill (skill)}
 						<span class="rounded-md {codeStyle.bgSoft} px-2 py-0.5 text-[10px] font-medium {codeStyle.text}">{skill}</span>
 					{/each}
 				</div>

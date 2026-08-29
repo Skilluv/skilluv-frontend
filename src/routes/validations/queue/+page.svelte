@@ -136,7 +136,7 @@
 
 	{#if view.status === 'loading'}
 		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-			{#each Array(4) as _}
+			{#each Array(4) as _, i (i)}
 				<Skeleton class="h-48 w-full rounded-2xl" />
 			{/each}
 		</div>

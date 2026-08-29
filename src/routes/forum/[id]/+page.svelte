@@ -263,7 +263,7 @@
 			</h2>
 
 			<div class="space-y-3">
-				{#each comments as c}
+				{#each comments as c (c.id)}
 					<article
 						class="rounded-2xl border {c.accepted ? 'border-success/40 bg-success/5' : 'border-border bg-surface-elevated'} p-5"
 					>

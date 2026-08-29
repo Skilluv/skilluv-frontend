@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { i18n } from '$lib/i18n';
 
 	let { children } = $props();
 	let pathname = $derived($page.url.pathname);

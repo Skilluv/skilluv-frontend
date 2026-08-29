@@ -5,7 +5,6 @@
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
-	import Badge from '$components/ui/Badge.svelte';
 	import { certificationsApi, type StartResponse, type SubmitResponse } from '$api/certifications';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
@@ -188,7 +187,7 @@
 						: 'Open each challenge, complete it, come back here to submit at the end.'}
 				</p>
 				<div class="space-y-2">
-					{#each started.challenge_ids as cid, i}
+					{#each started.challenge_ids as cid, i (i)}
 						<a
 							href={`/challenges/${cid}`}
 							class="flex items-center gap-3 rounded-xl border border-border bg-surface-overlay p-3 hover:border-primary hover:bg-primary/5 transition-colors"
