@@ -39,7 +39,12 @@ COPY --from=build /app/package.json ./
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOST=0.0.0.0
-ENV ORIGIN=https://skilluv.com
+# The production domain. SvelteKit checks the Origin header of every form
+# post against this value and rejects mismatches as CSRF, so a deployment
+# that serves a different host MUST override it — a preview or staging
+# environment left on this default renders perfectly and silently refuses
+# every submission.
+ENV ORIGIN=https://skill-uv.com
 
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
