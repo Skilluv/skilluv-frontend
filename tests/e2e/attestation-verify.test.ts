@@ -97,7 +97,7 @@ test.describe('SKI-103 public attestation verification', () => {
 		// A generic SVG card is what the social platforms refuse to render, and it
 		// would not name the contributor. This one is rendered per attestation.
 		const og = page.locator('meta[property="og:image"]');
-		await expect(og).toHaveAttribute('content', new RegExp(`/api/verify/${HASH}/og\.png$`));
+		await expect(og).toHaveAttribute('content', new RegExp(`/api/verify/${HASH}/og\\.png$`));
 		await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
 			'content',
 			'1200'

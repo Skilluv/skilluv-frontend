@@ -346,7 +346,7 @@ test.describe('SKI-93 slice detail - submit PR', () => {
 		// backend root, where the frontend origin has no such route.
 		await expect(
 			page.getByRole('link', { name: "Telecharger le PDF de l'attestation" })
-		).toHaveAttribute('href', new RegExp(`^https?://.+/verify/${hash}\.pdf$`));
+		).toHaveAttribute('href', new RegExp(`^https?://.+/verify/${hash}\\.pdf$`));
 		await expect(page.getByRole('link', { name: 'Verifier publiquement' })).toHaveAttribute(
 			'href',
 			`/verify/${hash}`
