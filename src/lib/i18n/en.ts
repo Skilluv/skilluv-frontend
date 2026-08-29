@@ -1367,6 +1367,29 @@ export const en: Translations = {
 		unlistedCta: 'Check your notifications'
 	},
 
+	advances: {
+		title: 'Advances',
+		subtitle: 'Money you have earned and not yet been paid, drawn early against a fee.',
+		empty: 'No advance requested.',
+		whereCta: 'See your missions',
+		ofExpected: '{percent} of {total} expected',
+		fee: 'Fee {amount} ({percent})'
+	},
+
+	dataConsent: {
+		title: 'What your record may be used for',
+		subtitle:
+			'Each use is asked for separately, and the ones that earn money say so and say what your share is.',
+		empty: 'Nothing is being asked of your record.',
+		commercial: 'Earns money',
+		on: 'Agreed',
+		revenueShare: 'Your share: {percent}',
+		agreeCta: 'Agree',
+		withdrawCta: 'Withdraw',
+		agreed: 'Agreed.',
+		withdrawn: 'Withdrawn.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'AI record',

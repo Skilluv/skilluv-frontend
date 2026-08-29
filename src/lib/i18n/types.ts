@@ -1533,6 +1533,30 @@ export interface Translations
 		unlistedCta: string;
 	};
 
+	/** SKI-328 — advances on an issued invoice. */
+	advances: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		whereCta: string;
+		ofExpected: string;
+		fee: string;
+	};
+
+	/** SKI-328 — what the platform may do with a record, and what it pays. */
+	dataConsent: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		commercial: string;
+		on: string;
+		revenueShare: string;
+		agreeCta: string;
+		withdrawCta: string;
+		agreed: string;
+		withdrawn: string;
+	};
+
 	craftProfile: {
 		titles: {
 			ai: string;

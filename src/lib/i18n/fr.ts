@@ -1376,6 +1376,30 @@ export const fr: Translations = {
 		unlistedCta: 'Regarde tes notifications'
 	},
 
+	advances: {
+		title: 'Avances',
+		subtitle:
+			'De l’argent que tu as gagné et qui ne t’a pas encore été versé, tiré en avance contre des frais.',
+		empty: 'Aucune avance demandée.',
+		whereCta: 'Voir tes missions',
+		ofExpected: '{percent} de {total} attendus',
+		fee: 'Frais {amount} ({percent})'
+	},
+
+	dataConsent: {
+		title: 'À quoi ton parcours peut servir',
+		subtitle:
+			'Chaque usage est demandé séparément, et ceux qui rapportent de l’argent le disent et disent quelle est ta part.',
+		empty: 'Rien n’est demandé de ton parcours.',
+		commercial: 'Rapporte de l’argent',
+		on: 'Accepté',
+		revenueShare: 'Ta part : {percent}',
+		agreeCta: 'Accepter',
+		withdrawCta: 'Retirer',
+		agreed: 'Accepté.',
+		withdrawn: 'Retiré.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'Parcours IA',

@@ -12,6 +12,7 @@
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import { Download } from '@lucide/svelte';
+	import { AdvancesPanel } from '$components/finance';
 
 	let wallet = $state<Wallet | null>(null);
 	let transactions = $state<WalletTransaction[]>([]);
@@ -106,6 +107,13 @@
 				</ul>
 			{/if}
 		</section>
+
+		<!-- SKI-328. The wallet showed a balance and no way to reach money
+		     already earned but not yet paid: /users/me/advances was served and
+		     read by nothing. -->
+		<div class="mt-6">
+			<AdvancesPanel />
+		</div>
 	{/if}
 </div>
 
