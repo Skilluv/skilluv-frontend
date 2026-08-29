@@ -1662,6 +1662,7 @@ export interface Translations
 		startsOn: string;
 		endsOn: string;
 		stampEarned: string;
+		counted: string;
 	};
 	privacyPage: {
 		title: string;

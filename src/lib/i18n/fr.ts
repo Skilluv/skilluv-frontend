@@ -1514,7 +1514,8 @@ export const fr: Translations = {
 		myEventsEmpty: 'Tu n\'as pas encore rejoint d\'événement.',
 		startsOn: 'Démarre le {date}',
 		endsOn: 'Se termine le {date}',
-		stampEarned: 'Timbre gagné'
+		stampEarned: 'Timbre gagné',
+		counted: 'Contribution comptée'
 	},
 	privacyPage: {
 		title: 'Confidentialité & données',

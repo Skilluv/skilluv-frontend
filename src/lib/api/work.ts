@@ -84,7 +84,45 @@ export interface Proposal {
 	created_at: string;
 }
 
+/**
+ * A company asking for proposals rather than hiring for a defined job.
+ *
+ * The mirror image of a proposal: here the enterprise has the problem and is
+ * looking for an approach, where a proposal has somebody with the approach
+ * looking for the problem. Both exist because work starts from either end.
+ */
+export interface Rfp {
+	id: string;
+	slug: string;
+	enterprise_id: string;
+	title: string;
+	context_md: string;
+	desired_outcome_md: string;
+	budget_min: string;
+	budget_max: string;
+	currency: string;
+	proposal_deadline: string;
+	selection_deadline: string;
+	visibility: string;
+	/** Skilluv's cut, stated on the row rather than discovered at payment. */
+	facilitation_fee: string;
+	status: string;
+	created_at: string;
+}
+
 export const workApi = {
+	/** Calls for proposals somebody may answer. */
+	rfps() {
+		return api.get<ApiResponse<{ rfps: Rfp[] }>>('/rfps');
+	},
+
+	/** The proposals already filed against one, where the caller may see them. */
+	rfpProposals(id: string) {
+		return api.get<ApiResponse<{ proposals: unknown[] }>>(
+			`/rfps/${encodeURIComponent(id)}/proposals`
+		);
+	},
+
 	/** Every studio. Public. */
 	studios() {
 		return api.get<ApiResponse<{ studios: Studio[] }>>('/studios');

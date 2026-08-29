@@ -58,6 +58,20 @@ export const tournamentApi = {
 		return api.get<ApiResponse<{ seasons: Season[] }>>('/seasons');
 	},
 
+	/**
+	 * What is on: the running season, and the tournaments open or about to be.
+	 *
+	 * One call rather than two, and that is the point. A season and the
+	 * tournaments inside it are read together or not at all, and two requests
+	 * let a page render a season with the previous one's tournaments under it
+	 * for the length of a round trip.
+	 */
+	feed() {
+		return api.get<
+			ApiResponse<{ current_season: Season | null; upcoming_tournaments: Tournament[] }>
+		>('/tournaments/feed');
+	},
+
 	currentSeason() {
 		return api.get<ApiResponse<Season>>('/seasons/current');
 	},

@@ -138,6 +138,45 @@ export const brandApi = {
 		return api.get<ApiResponse<{ premium: boolean }>>('/users/me/audience');
 	},
 
+	/**
+	 * Record a month's deliverable as an ambassador.
+	 *
+	 * The gesture that makes a stipend legitimate: a programme pays monthly
+	 * against a quota, and this is how the quota is met. Without it somebody
+	 * accepts a year of obligation and has nowhere to discharge it.
+	 *
+	 * `counts_for_month` defaults to the current one server-side. Passing it is
+	 * for the case that actually happens: filing late, for the month the work
+	 * was really done in rather than the month somebody got round to it.
+	 *
+	 * A non-https link is refused with a 400, as is filing for a programme you
+	 * are not on.
+	 */
+	recordDeliverable(
+		programId: string,
+		body: { kind: string; url?: string; note?: string; counts_for_month?: string }
+	) {
+		return api.post<ApiResponse<{ deliverable_id: string }>>(
+			`/ambassador-programs/${encodeURIComponent(programId)}/deliverables`,
+			body
+		);
+	},
+
+	/**
+	 * Record having visited a sponsor's stand at an event.
+	 *
+	 * This creates a lead the sponsor can read, which is the whole product they
+	 * bought. So it is never fired on render or on scroll: it is somebody saying
+	 * "I talked to these people", and a surface must ask before saying that on
+	 * their behalf.
+	 */
+	visitStand(eventId: string, sponsorshipId: string, interaction: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/events/${encodeURIComponent(eventId)}/stands/${encodeURIComponent(sponsorshipId)}`,
+			{ interaction }
+		);
+	},
+
 	/** What sponsoring costs. Public, and read here so the figure is not a secret. */
 	sponsorshipPackages() {
 		return api.get<ApiResponse<{ packages: SponsorshipPackage[] }>>('/sponsorship/packages');

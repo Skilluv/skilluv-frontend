@@ -1498,7 +1498,8 @@ export const en: Translations = {
 		myEventsEmpty: 'You have not joined any event yet.',
 		startsOn: 'Starts {date}',
 		endsOn: 'Ends {date}',
-		stampEarned: 'Stamp earned'
+		stampEarned: 'Stamp earned',
+		counted: 'Contribution counted'
 	},
 	privacyPage: {
 		title: 'Privacy & data',

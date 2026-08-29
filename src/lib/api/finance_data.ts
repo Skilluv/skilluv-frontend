@@ -69,6 +69,47 @@ export const ADVANCE_MAX_PERCENT = 90;
 /** The two guarantee tiers the server accepts. */
 export const GUARANTEE_TIERS = ['basic', 'premium'] as const;
 
+/** A financing partner Skilluv can introduce somebody to. */
+export interface Partnership {
+	id: string;
+	partner_org: string;
+	kind: string;
+	/** Where it operates. An introduction outside these is not on offer. */
+	countries: string[];
+	commission_percent: string;
+	/**
+	 * The licence it operates under, and where to check it. Null when the
+	 * partner declares none, which is itself the useful thing to show: an
+	 * unregulated lender is a decision, not a detail.
+	 */
+	regulatory_basis: string | null;
+	registry_url: string | null;
+	min_rank: string | null;
+	status: string;
+}
+
+/** A plan for programmatic access to the talent score. */
+export interface ApiPlan {
+	slug: string;
+	label: string;
+	monthly_quota: number | null;
+	daily_ceiling: number | null;
+	monthly_fee: string;
+	currency: string;
+	/** Whether using it obliges the caller to credit Skilluv. */
+	attribution_required: boolean;
+	sla: boolean;
+}
+
+/** A corporate learning plan, priced per seat. */
+export interface LearningPlan {
+	slug: string;
+	label: string;
+	monthly_fee_per_seat: string;
+	currency: string;
+	features: string[];
+}
+
 export const financeApi = {
 	/** Advances already requested, newest first. */
 	advances() {
@@ -90,9 +131,58 @@ export const financeApi = {
 		});
 	},
 
+	/**
+	 * Financing partners open to an introduction, optionally in one country.
+	 *
+	 * Narrow by country wherever one is known. A partner that cannot operate
+	 * where somebody lives is not an option, and listing it as one spends the
+	 * only thing this feature has: the reader's belief that the introduction is
+	 * actually possible.
+	 */
+	partners(country?: string) {
+		return api.get<ApiResponse<{ partners: Partnership[] }>>(
+			'/finance/partners',
+			country ? { country } : undefined
+		);
+	},
+
+	/**
+	 * Ask to be introduced to a partner.
+	 *
+	 * The response returns `shared_with_partner`: the exact snapshot passed on.
+	 * It comes back deliberately, and a surface must render it. The snapshot is
+	 * about the person asking, they are entitled to see it without asking again,
+	 * and it is what the partner priced on. Discarding it hides the substance of
+	 * the transaction from its subject.
+	 */
+	requestReferral(input: {
+		partnership_id: string;
+		purpose: string;
+		amount_requested?: string;
+		coverage_requested?: string;
+		currency?: string;
+	}) {
+		return api.post<ApiResponse<{ referral_id: string; shared_with_partner: unknown }>>(
+			'/finance/referrals',
+			input
+		);
+	},
+
 	/** Subscribe to the payment guarantee at one of its two tiers. */
 	subscribeGuarantee(tier: string) {
 		return api.post<ApiResponse<unknown>>('/finance/guarantee', { tier });
+	}
+};
+
+export const plansApi = {
+	/** Plans for programmatic access to the talent score. Public. */
+	apiPlans() {
+		return api.get<ApiResponse<{ plans: ApiPlan[] }>>('/api-plans');
+	},
+
+	/** Corporate learning plans, priced per seat. Public. */
+	learningPlans() {
+		return api.get<ApiResponse<{ plans: LearningPlan[] }>>('/learning/plans');
 	}
 };
 
