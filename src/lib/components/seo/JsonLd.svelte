@@ -31,5 +31,10 @@
 </script>
 
 <svelte:head>
-	{@html `<script type="application/ld+json">${json}</script>`}
+	<!-- The element is assembled from LT rather than written literally, for
+	     the same reason the constant exists at all: a literal `<script>` inside
+	     this template defeats parsers reading the file. svelte-check coped;
+	     svelte-eslint-parser did not, and excluding the whole file to hide one
+	     parse error would have hidden everything else in it too. -->
+	{@html `${LT}script type="application/ld+json">${json}${LT}/script>`}
 </svelte:head>

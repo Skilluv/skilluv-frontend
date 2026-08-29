@@ -31,11 +31,7 @@ export default [
 			'scripts/**',
 			'*.config.js',
 			'*.config.ts',
-			'*.config.mjs',
-			// The template literal that builds the JSON-LD script element
-			// defeats svelte-eslint-parser (it sees an unterminated element).
-			// Not a defect in the file — svelte-check reads it fine.
-			'src/lib/components/seo/JsonLd.svelte'
+			'*.config.mjs'
 		]
 	},
 	js.configs.recommended,
@@ -50,7 +46,8 @@ export default [
 			}
 		},
 		rules: {
-			// Autorise `any` explicite dans le legacy — chantier de typage à part
+			// 13 occurrences. Small enough to clear, kept as a warning so the
+			// number stays honest rather than being suppressed file by file.
 			'@typescript-eslint/no-explicit-any': 'warn',
 			// Underscore-prefix = intentionally-unused (convention repo)
 			'@typescript-eslint/no-unused-vars': [
@@ -81,9 +78,22 @@ export default [
 			// Svelte 5 utilise des callbacks en props (onclick, onclose) — la règle
 			// legacy `svelte/valid-compile` a des faux positifs sur les runes
 			'svelte/no-at-html-tags': 'warn',
-			// Chantier legacy à part : ~380 occurrences dans les +page.svelte
-			// existants. Downgrade en warn pour ne pas noyer les erreurs réelles.
+			// 171 occurrences, spread thin across ~80 files. Real debt rather
+			// than noise: a keyless {#each} reuses DOM by position, so a list
+			// that reorders or filters carries child state onto the wrong row.
+			// Most of these iterate static arrays where it cannot bite, which
+			// is why it is a warning and not an error — but it stays visible,
+			// because the dangerous subset is invisible from the count alone.
 			'svelte/require-each-key': 'warn',
+			// 355 occurrences, and 59% of this config's entire warning count.
+			// It asks every href to go through resolve(), which prepends the
+			// configured base path and checks the target against known route
+			// ids. This app sets no base path, so the first half is a no-op
+			// today; the second half is real value that costs 355 edits.
+			// Left as a warning rather than switched off, so the day a base
+			// path is introduced the list is already there. If the count ever
+			// buries something, that is the argument for doing the migration,
+			// not for hiding the rule.
 			'svelte/no-navigation-without-resolve': 'warn',
 			// Chantier legacy à part : migration Map/Set/Date → SvelteMap/Set/Date
 			'svelte/prefer-svelte-reactivity': 'warn',
@@ -91,9 +101,11 @@ export default [
 			// is the documented Svelte 5 idiom, and it reads as a useless
 			// expression to a linter that does not know about runes.
 			'@typescript-eslint/no-unused-expressions': 'off',
-			// A refactor suggestion rather than a defect; kept visible without
-			// failing the run.
-			'svelte/prefer-writable-derived': 'warn'
+			// Kept as an error: there was exactly one occurrence and it was worth
+			// fixing rather than tolerating. A $state + $effect pair that only
+			// mirrors a prop needs a `state_referenced_locally` suppression and
+			// re-runs on every navigation; a writable $derived needs neither.
+			'svelte/prefer-writable-derived': 'error'
 		}
 	},
 	{
