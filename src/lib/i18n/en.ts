@@ -1621,6 +1621,73 @@ export const en: Translations = {
 		concludedToast: 'Cohort concluded.'
 	},
 
+	projects: {
+		title: 'Projects',
+		subtitle: 'What Skilluv stands behind, what is asking for help, and what matches your record.',
+		tabCurated: 'Curated',
+		tabLooking: 'Wants help',
+		tabRecommended: 'For you',
+		hint: {
+			curated: 'Skilluv put its name behind these. It is not something a project can apply to itself.',
+			looking: 'These say so themselves — a flag their own owner set.',
+			recommended: 'Matched against your verified work, and each one says what earned the match.'
+		},
+		empty: {
+			curated: 'No curated project yet.',
+			looking: 'Nobody is asking for help right now.',
+			recommended: 'Nothing matches your record yet.'
+		},
+		curatedBadge: 'Curated',
+		lookingBadge: 'Wants contributors',
+		oss: 'open source',
+		repo: 'Repository',
+		starCta: 'Follow this project',
+		starred: 'Following.',
+		unstarred: 'No longer following.',
+		matchedBecause: 'Matched on {domains} — {n} verified contributions there.',
+		interestIsNotMembership:
+			'Following a project tells you about it. It does not put you on it — only its owner adds contributors.'
+	},
+
+	ats: {
+		title: 'Applicant tracker',
+		subtitle: 'Your openings and their pipelines. Nobody outside your company can read them.',
+		plansTitle: 'Plans',
+		currentPlan: 'You are on {plan}.',
+		noPlan: 'No plan chosen yet — including the free one, which is claimed like any other.',
+		currentBadge: 'Current',
+		chooseCta: 'Choose',
+		subscribed: 'Plan claimed.',
+		unlimited: 'unlimited',
+		maxOpenings: '{n} open positions',
+		maxCandidates: '{n} candidates per opening',
+		retention: 'Rows kept {n} days',
+		openingsTitle: 'Openings',
+		noOpenings: 'No opening yet.',
+		noOpeningsHint: 'An opening is where a pipeline hangs.',
+		liveTitle: 'Open',
+		closedTitle: 'Closed',
+		positions: '{n} positions',
+		remoteOk: 'remote welcome',
+		closeCta: 'Close it',
+		closed: 'Opening closed.',
+		scopeNote:
+			'Everything here belongs to your company. Skilluv stores it and does not read it: there is no admin view of your pipeline and no cross-company listing.'
+	},
+
+	linkedAccounts: {
+		title: 'Linked accounts',
+		subtitle: 'The identity providers you can sign in with.',
+		none: 'No provider linked.',
+		linkedOn: 'linked {date}',
+		linkCta: 'Link {provider}',
+		unlinkCta: 'Unlink',
+		unlinked: 'Provider unlinked.',
+		lastOne: 'Your only way in',
+		lastOneNote:
+			'This is the only provider on the account, so unlinking it is not offered — it could leave you unable to sign in.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'AI record',

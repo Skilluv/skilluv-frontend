@@ -1779,6 +1779,65 @@ export interface Translations
 		concludedToast: string;
 	};
 
+	/** The project catalogue. */
+	projects: {
+		title: string;
+		subtitle: string;
+		tabCurated: string;
+		tabLooking: string;
+		tabRecommended: string;
+		hint: { curated: string; looking: string; recommended: string };
+		empty: { curated: string; looking: string; recommended: string };
+		curatedBadge: string;
+		lookingBadge: string;
+		oss: string;
+		repo: string;
+		starCta: string;
+		starred: string;
+		unstarred: string;
+		matchedBecause: string;
+		interestIsNotMembership: string;
+	};
+
+	/** The applicant tracker, enterprise side. */
+	ats: {
+		title: string;
+		subtitle: string;
+		plansTitle: string;
+		currentPlan: string;
+		noPlan: string;
+		currentBadge: string;
+		chooseCta: string;
+		subscribed: string;
+		unlimited: string;
+		maxOpenings: string;
+		maxCandidates: string;
+		retention: string;
+		openingsTitle: string;
+		noOpenings: string;
+		noOpeningsHint: string;
+		liveTitle: string;
+		closedTitle: string;
+		positions: string;
+		remoteOk: string;
+		closeCta: string;
+		closed: string;
+		scopeNote: string;
+	};
+
+	/** OAuth providers linked to an account. */
+	linkedAccounts: {
+		title: string;
+		subtitle: string;
+		none: string;
+		linkedOn: string;
+		linkCta: string;
+		unlinkCta: string;
+		unlinked: string;
+		lastOne: string;
+		lastOneNote: string;
+	};
+
 	craftProfile: {
 		titles: {
 			ai: string;

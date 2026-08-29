@@ -1643,6 +1643,77 @@ export const fr: Translations = {
 		concludedToast: 'Cohorte close.'
 	},
 
+	projects: {
+		title: 'Projets',
+		subtitle:
+			'Ce que Skilluv soutient, ce qui cherche de l’aide, et ce qui correspond à ton parcours.',
+		tabCurated: 'Sélectionnés',
+		tabLooking: 'Cherchent de l’aide',
+		tabRecommended: 'Pour toi',
+		hint: {
+			curated:
+				'Skilluv y a mis son nom. Ce n’est pas quelque chose qu’un projet peut s’attribuer lui-même.',
+			looking: 'Ceux-ci le disent eux-mêmes — un indicateur posé par leur propre propriétaire.',
+			recommended:
+				'Rapprochés de ton travail vérifié, et chacun dit ce qui a produit la correspondance.'
+		},
+		empty: {
+			curated: 'Aucun projet sélectionné pour le moment.',
+			looking: 'Personne ne cherche d’aide en ce moment.',
+			recommended: 'Rien ne correspond encore à ton parcours.'
+		},
+		curatedBadge: 'Sélectionné',
+		lookingBadge: 'Cherche des contributeurs',
+		oss: 'open source',
+		repo: 'Dépôt',
+		starCta: 'Suivre ce projet',
+		starred: 'Suivi.',
+		unstarred: 'Plus suivi.',
+		matchedBecause: 'Correspondance sur {domains} — {n} contributions vérifiées là-bas.',
+		interestIsNotMembership:
+			'Suivre un projet t’en donne des nouvelles. Ça ne t’y met pas — seul son propriétaire ajoute des contributeurs.'
+	},
+
+	ats: {
+		title: 'Suivi des candidatures',
+		subtitle: 'Tes postes et leurs pipelines. Personne hors de ton entreprise ne peut les lire.',
+		plansTitle: 'Formules',
+		currentPlan: 'Tu es sur {plan}.',
+		noPlan:
+			'Aucune formule choisie — y compris la gratuite, qui se réclame comme les autres.',
+		currentBadge: 'Actuelle',
+		chooseCta: 'Choisir',
+		subscribed: 'Formule prise.',
+		unlimited: 'illimité',
+		maxOpenings: '{n} postes ouverts',
+		maxCandidates: '{n} candidats par poste',
+		retention: 'Données conservées {n} jours',
+		openingsTitle: 'Postes',
+		noOpenings: 'Aucun poste pour le moment.',
+		noOpeningsHint: 'Un poste est ce à quoi un pipeline se rattache.',
+		liveTitle: 'Ouverts',
+		closedTitle: 'Fermés',
+		positions: '{n} postes',
+		remoteOk: 'télétravail accepté',
+		closeCta: 'Fermer',
+		closed: 'Poste fermé.',
+		scopeNote:
+			'Tout ici appartient à ton entreprise. Skilluv le stocke et ne le lit pas : il n’existe aucune vue admin de ton pipeline ni de listing inter-entreprises.'
+	},
+
+	linkedAccounts: {
+		title: 'Comptes liés',
+		subtitle: 'Les fournisseurs d’identité avec lesquels tu peux te connecter.',
+		none: 'Aucun fournisseur lié.',
+		linkedOn: 'lié le {date}',
+		linkCta: 'Lier {provider}',
+		unlinkCta: 'Délier',
+		unlinked: 'Fournisseur délié.',
+		lastOne: 'Ton seul accès',
+		lastOneNote:
+			'C’est le seul fournisseur du compte, donc le délier n’est pas proposé — tu pourrais ne plus pouvoir te connecter.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'Parcours IA',

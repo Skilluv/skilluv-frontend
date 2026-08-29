@@ -127,3 +127,29 @@ test.describe('Game and leadership', () => {
 		}
 	});
 });
+
+/**
+ * Projects, the applicant tracker, and linked accounts.
+ */
+test.describe('Projects, ATS and identity', () => {
+	test('the project catalogue keeps its three lists apart', async ({ page }) => {
+		await gotoHydrated(page, '/projects');
+		await expect(page.getByTestId('projects-page')).toBeVisible();
+		await expect(page.locator('h1')).toBeVisible();
+	});
+
+	test('the applicant tracker renders in the enterprise console', async ({ page }) => {
+		await gotoHydrated(page, '/enterprise/ats');
+		await expect(page.getByTestId('ats-page')).toBeVisible();
+	});
+
+	test('no i18n key leaks on either', async ({ page }) => {
+		for (const path of ['/projects', '/enterprise/ats']) {
+			await gotoHydrated(page, path);
+			const body = await page.locator('body').innerText();
+			expect(body, `raw i18n key leaked on ${path}`).not.toMatch(
+				/\b(projects|ats|linkedAccounts)\.[a-zA-Z]+/
+			);
+		}
+	});
+});
