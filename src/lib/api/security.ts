@@ -56,6 +56,7 @@ import type {
 	TrustSummary
 } from '$lib/types';
 import { createApiClient } from './client';
+import { tournamentApi } from './tournament';
 
 const api = createApiClient();
 
@@ -222,6 +223,28 @@ export const securityApi = {
 		return api.get<ApiResponse<{ all_time: ScoreboardRow[]; [key: string]: unknown }>>(
 			'/security/ctf/scoreboard'
 		);
+	},
+
+	// ─── Competitions ─────────────────────────────────────────────────
+
+	/**
+	 * Cyber competitions — SKI-149.
+	 *
+	 * There is no competitions table. Migration 0554 seeded five rows into
+	 * `tournament_kinds` instead: `sec_ctf_jeopardy`, `sec_attack_defence`,
+	 * `sec_bug_bash`, `sec_purple_exercise`, `sec_code_audit_rally`. A cyber
+	 * competition *is* a tournament, which is why it already has registration,
+	 * a leaderboard, prizes and a room to publish live events into — none of it
+	 * built twice.
+	 *
+	 * Narrowed on `skill_domain` rather than on `kind`: the endpoint takes one
+	 * kind and there are five, and a domain filter also returns the contests
+	 * open to every domain — which a purple exercise or a bug bash often is.
+	 * Grouping by kind afterwards is presentation, not filtering, so nothing
+	 * falls out of the list on the way.
+	 */
+	competitions(params?: { status?: string; upcoming?: boolean; limit?: number }) {
+		return tournamentApi.list({ skill_domain: 'security', ...params });
 	},
 
 	// ─── Reading what was found ───────────────────────────────────────

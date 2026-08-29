@@ -1,4 +1,25 @@
 /**
+ * The five shapes a cyber competition takes.
+ *
+ * Seeded into `tournament_kinds` by migration 0554 rather than into a
+ * competitions table of their own: a competition is a tournament, so it
+ * inherits registration, scoring, prizes and its live room instead of growing
+ * a second copy of each.
+ *
+ * Read as a display order, not as a filter — the listing narrows on
+ * `skill_domain`, and a kind this build has not heard of still renders.
+ */
+export const SECURITY_COMPETITION_KINDS = [
+	'sec_ctf_jeopardy',
+	'sec_attack_defence',
+	'sec_bug_bash',
+	'sec_purple_exercise',
+	'sec_code_audit_rally'
+] as const;
+
+export type SecurityCompetitionKind = (typeof SECURITY_COMPETITION_KINDS)[number];
+
+/**
  * Types for the Skilluv Cyber programme (Linear SKI-116 … SKI-284).
  *
  * Four shapes the backend chose that every cyber surface follows:

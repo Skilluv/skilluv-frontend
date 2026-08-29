@@ -131,6 +131,28 @@ export interface SecurityTranslations {
 	};
 
 	/** B-05 — the defensive labs. */
+	/** P-02 — the cyber competitions board. */
+	securityCompetitions: {
+		title: string;
+		subtitle: string;
+		liveTitle: string;
+		upcomingTitle: string;
+		pastTitle: string;
+		empty: string;
+		emptyHint: string;
+		openCta: string;
+		registerCta: string;
+		everyDomain: string;
+		prizePool: string;
+		kinds: {
+			sec_ctf_jeopardy: string;
+			sec_attack_defence: string;
+			sec_bug_bash: string;
+			sec_purple_exercise: string;
+			sec_code_audit_rally: string;
+		};
+	};
+
 	blueLab: {
 		title: string;
 		subtitle: string;

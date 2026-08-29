@@ -227,5 +227,8 @@
 			{i18n.t('securityHallOfFame.title')}
 		</Button>
 		<Button href="/blue-lab" size="sm" variant="ghost">{i18n.t('blueLab.title')}</Button>
+		<Button href="/security/competitions" size="sm" variant="ghost">
+			{i18n.t('securityCompetitions.title')}
+		</Button>
 	</div>
 </div>

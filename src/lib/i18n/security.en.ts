@@ -126,6 +126,27 @@ export const securityEn: SecurityTranslations = {
 		notFound: 'No finding carries this identifier.'
 	},
 
+	securityCompetitions: {
+		title: 'Competitions',
+		subtitle: 'Attack, defend, or audit against the clock — and against everybody else.',
+		liveTitle: 'Running now',
+		upcomingTitle: 'Open for entry',
+		pastTitle: 'Finished',
+		empty: 'No competition scheduled.',
+		emptyHint: 'They run in seasons rather than continuously, so the board is empty between them.',
+		openCta: 'Open',
+		registerCta: 'Enter',
+		everyDomain: 'Open to every domain',
+		prizePool: '{n} fragments in the pot',
+		kinds: {
+			sec_ctf_jeopardy: 'CTF jeopardy',
+			sec_attack_defence: 'Attack & defence',
+			sec_bug_bash: 'Bug bash',
+			sec_purple_exercise: 'Purple exercise',
+			sec_code_audit_rally: 'Code audit rally'
+		}
+	},
+
 	blueLab: {
 		title: 'Defensive labs',
 		subtitle: 'An artefact from a real incident, and the questions it should let you answer.',

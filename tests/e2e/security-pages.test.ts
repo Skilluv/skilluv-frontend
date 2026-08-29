@@ -18,7 +18,8 @@ const PUBLIC_PAGES = [
 	'/ctf',
 	'/blue-lab',
 	'/security/bounties',
-	'/security/missions'
+	'/security/missions',
+	'/security/competitions'
 ];
 
 const SESSION_PAGES = [
@@ -99,6 +100,16 @@ test.describe('Skilluv Cyber pages', () => {
 		await expect(page.getByTestId('security-missions-page')).toBeVisible();
 	});
 
+	test('the competitions board renders its three shelves', async ({ page }) => {
+		// SKI-149. A cyber competition is a tournament — migration 0554 seeded
+		// five kinds rather than a competitions table — so this page lists and
+		// routes to /tournaments/[slug], which is already the detail, the
+		// registration and the live standing.
+		await gotoHydrated(page, '/security/competitions');
+		await expect(page.getByTestId('security-competitions-page')).toBeVisible();
+		await expect(page.locator('h1')).toBeVisible();
+	});
+
 	test('the CTF board says it is live only while the socket is up', async ({ page }) => {
 		// SKI-141 landed the room-scoped events; the front was the half that
 		// never subscribed. With no backend there is no socket, so the claim
@@ -161,7 +172,7 @@ test.describe('Skilluv Cyber pages', () => {
 			await gotoHydrated(page, path);
 			const body = await page.locator('body').innerText();
 			expect(body, `raw i18n key leaked on ${path}`).not.toMatch(
-				/\b(securityScope|securityReport|securityMyReports|securityFinding|securityHallOfFame|securityTrust|securityPractice|securityResearch|securityBounties|securityCredentials|blueLab|missionWork|portfolioSettings|nextChallenges|mentorMatches|featuredTalent)\.[a-zA-Z]+/
+				/\b(securityScope|securityReport|securityMyReports|securityFinding|securityHallOfFame|securityTrust|securityPractice|securityResearch|securityBounties|securityCredentials|blueLab|missionWork|portfolioSettings|nextChallenges|mentorMatches|featuredTalent|securityCompetitions)\.[a-zA-Z]+/
 			);
 		}
 	});

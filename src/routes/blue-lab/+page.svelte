@@ -159,5 +159,8 @@
 	<div class="flex flex-wrap gap-2">
 		<Button href="/ctf" size="sm" variant="ghost">{i18n.t('securityPractice.ctfTitle')}</Button>
 		<Button href="/security" size="sm" variant="ghost">{i18n.t('securityScope.title')}</Button>
+		<Button href="/security/competitions" size="sm" variant="ghost">
+			{i18n.t('securityCompetitions.title')}
+		</Button>
 	</div>
 </div>

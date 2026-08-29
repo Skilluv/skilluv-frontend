@@ -129,6 +129,27 @@ export const securityFr: SecurityTranslations = {
 		notFound: 'Aucun finding ne porte cet identifiant.'
 	},
 
+	securityCompetitions: {
+		title: 'Compétitions',
+		subtitle: "Attaquer, défendre ou auditer contre la montre — et contre tous les autres.",
+		liveTitle: 'En cours',
+		upcomingTitle: 'Inscriptions ouvertes',
+		pastTitle: 'Terminées',
+		empty: 'Aucune compétition programmée.',
+		emptyHint: "Elles fonctionnent par saisons plutôt qu'en continu, donc le tableau est vide entre deux.",
+		openCta: 'Ouvrir',
+		registerCta: "S'inscrire",
+		everyDomain: 'Ouverte à tous les domaines',
+		prizePool: '{n} fragments en jeu',
+		kinds: {
+			sec_ctf_jeopardy: 'CTF jeopardy',
+			sec_attack_defence: 'Attaque & défense',
+			sec_bug_bash: 'Bug bash',
+			sec_purple_exercise: 'Exercice purple',
+			sec_code_audit_rally: 'Rallye audit de code'
+		}
+	},
+
 	blueLab: {
 		title: 'Labs défensifs',
 		subtitle: 'Un artefact d’incident réel, et les questions auxquelles il doit te permettre de répondre.',
