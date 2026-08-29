@@ -20,6 +20,12 @@ export default defineConfig(({ mode }) => {
 
 	return {
 		plugins: [tailwindcss(), sveltekit()],
+		// SE-04: never emit source maps in the build. A .map ships the original
+		// source (server logic included), so the prod bundle must carry none —
+		// the CI gate enforces it.
+		build: {
+			sourcemap: false
+		},
 		server: {
 			proxy: {
 				'/api': {
