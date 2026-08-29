@@ -29,13 +29,11 @@
 		domain: string;
 		/** Where this domain's board lives, e.g. `/ai/missions`. */
 		basePath: string;
-		/** Where this domain's "my missions" lives. */
-		minePath: string;
 		/** The board's name, for the back-links. */
 		boardTitle: string;
 	}
 
-	let { domain, basePath, minePath, boardTitle }: Props = $props();
+	let { domain, basePath, boardTitle }: Props = $props();
 
 	let slug = $derived($page.params.slug ?? '');
 

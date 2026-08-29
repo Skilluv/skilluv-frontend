@@ -11,6 +11,5 @@
 <MissionDetail
 	domain="design"
 	basePath="/design/missions"
-	minePath="/design/my/missions"
 	boardTitle={i18n.t('missions.boards.design.title')}
 />

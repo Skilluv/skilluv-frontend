@@ -36,5 +36,9 @@
 	     this template defeats parsers reading the file. svelte-check coped;
 	     svelte-eslint-parser did not, and excluding the whole file to hide one
 	     parse error would have hidden everything else in it too. -->
+	<!-- Audited under FE-06: `json` is JSON.stringify output with every `<`
+	     escaped above, so nothing in `data` can close the element. On the
+	     allowlist in scripts/check-html-sinks.sh. -->
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html `${LT}script type="application/ld+json">${json}${LT}/script>`}
 </svelte:head>

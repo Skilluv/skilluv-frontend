@@ -12,13 +12,10 @@
 	 * `/missions` would have to mean either "all domains" or "cyber", and one
 	 * of those readings is wrong for whoever holds the other.
 	 */
-	import { i18n } from '$lib/i18n';
 	import { MissionApply } from '$components/missions';
 </script>
 
 <MissionApply
-	domain="security"
 	basePath="/security/missions"
 	minePath="/security/my/missions"
-	boardTitle={i18n.t('missions.boards.security.title')}
 />

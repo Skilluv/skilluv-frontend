@@ -17,8 +17,6 @@
 </script>
 
 <MyMissions
-	domain="security"
 	basePath="/security/missions"
-	minePath="/security/my/missions"
 	boardTitle={i18n.t('missions.boards.security.title')}
 />

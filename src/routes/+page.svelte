@@ -32,6 +32,12 @@
 	<!-- Dashboard utilisateur connecte -->
 	<div class="mx-auto max-w-5xl px-4 py-8">
 		<h1 class="mb-2 text-3xl font-bold">
+			<!-- The only interpolation is the display name, escaped on the line
+			     itself; the surrounding markup is the translation string, which
+			     is ours. Audited under FE-06 and on the allowlist in
+			     scripts/check-html-sinks.sh, which is stricter than this rule:
+			     it fails CI for any {@html} in a file nobody has reviewed. -->
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 			{@html i18n.t('dashboard.greeting', { name: `<span class="text-accent">${escapeHtml(auth.displayName)}</span>` })}
 		</h1>
 		<p class="mb-8 text-text-muted">

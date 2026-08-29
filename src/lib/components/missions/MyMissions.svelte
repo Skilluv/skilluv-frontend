@@ -14,17 +14,13 @@
 	import type { MyMissionApplication } from '$types';
 
 	interface Props {
-		/** `design`, `ai`… narrows the shared listing where it is queried. */
-		domain: string;
 		/** Where this domain's board lives, e.g. `/ai/missions`. */
 		basePath: string;
-		/** Where this domain's "my missions" lives. */
-		minePath: string;
 		/** The board's name, for the back-links. */
 		boardTitle: string;
 	}
 
-	let { domain, basePath, minePath, boardTitle }: Props = $props();
+	let { basePath, boardTitle }: Props = $props();
 
 	type Tab = 'all' | 'applied' | 'shortlisted' | 'selected' | 'rejected';
 

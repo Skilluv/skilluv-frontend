@@ -26,16 +26,26 @@
 			// (approche pragmatique côté frontend — le backend a un endpoint
 			// dédié futur mais on peut déjà servir la reco IA avec ce qu'on a).
 			const list = await challengesApi.list({ per_page: 40 });
-			// L'endpoint challenges.list renvoie { data: { challenges, pagination } } ou paginated
-			const raw = (list as any).data.challenges ?? (list as any).data ?? [];
-			const candidates = raw.slice(0, 30).map((c: any) => ({
-				challenge_id: c.challenge?.id ?? c.id,
-				title: c.challenge?.title ?? c.title,
-				skill_domain: c.challenge?.skill_domain ?? c.skill_domain,
-				sub_skills: c.challenge?.tags ?? c.tags ?? [],
-				difficulty: c.challenge?.difficulty ?? c.difficulty ?? 1,
-				duration_minutes: c.challenge?.duration_minutes ?? c.duration_minutes ?? 30,
-				tags: c.challenge?.tags ?? c.tags ?? [],
+			// `list.data` is the array — the endpoint returns
+			// ApiPaginatedResponse<ChallengeListItem>. The previous version cast
+			// through `any` to try `.data.challenges` first, guarding against a
+			// shape this API has never returned, and the cast then hid that
+			// `tags` is not a field on Challenge at all: both `sub_skills` and
+			// `tags` resolved to [] on every candidate, every time.
+			//
+			// They stay empty rather than being invented, because the model
+			// scoring these is better served by an honest absence than by a
+			// field quietly filled with the wrong thing.
+			const candidates = list.data.slice(0, 30).map((item) => ({
+				challenge_id: item.challenge.id,
+				title: item.challenge.title,
+				skill_domain: item.challenge.skill_domain,
+				sub_skills: [] as string[],
+				difficulty: item.challenge.difficulty,
+				// Nullable on the challenge, required by the request. 30 is a stated
+				// default rather than a measurement, and it only affects ranking.
+				duration_minutes: item.challenge.duration_minutes ?? 30,
+				tags: [] as string[],
 				completion_count: 0
 			}));
 
