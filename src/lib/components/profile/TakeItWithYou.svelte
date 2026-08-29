@@ -98,6 +98,13 @@
 		     only reach with a mouse is unreachable on a keyboard, and Safari in
 		     particular gives it no focus of its own. The label says what it is,
 		     since a bare scrollable box announces nothing. -->
+		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+		<!-- Svelte's rule and axe disagree here, and axe is right for this
+		     case: the block scrolls, so a keyboard user must be able to reach
+		     and scroll it. The rule exists to stop tab stops on inert text;
+		     a scrollable region with a role and a label is the documented
+		     exception, and removing the tabindex reintroduces a serious
+		     violation the suite already caught once. -->
 		<pre
 			tabindex="0"
 			role="region"

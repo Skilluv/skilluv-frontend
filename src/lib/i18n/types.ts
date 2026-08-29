@@ -1880,6 +1880,201 @@ export interface Translations
 		verificationsHint: string;
 	};
 
+	/** The discovery page. */
+	explore: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		sponsoredTitle: string;
+		sponsoredHint: string;
+		sponsoredBadge: string;
+		forYouTitle: string;
+		forYouHint: string;
+		shelves: Record<string, string>;
+	};
+
+	/** The way into code work. */
+	codeDiscovery: {
+		title: string;
+		subtitle: string;
+		firstIssuesTitle: string;
+		firstIssuesHint: string;
+		languagePlaceholder: string;
+		filterCta: string;
+		noIssues: string;
+		noIssuesHint: string;
+		openIssue: string;
+		ecosystemsTitle: string;
+		topLanguagesTitle: string;
+		topLanguagesHint: string;
+	};
+
+	/** Hiring contests, candidate side. */
+	contests: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		acceptCta: string;
+		declineCta: string;
+		enterCta: string;
+		submitCta: string;
+		cancelCta: string;
+		notesPlaceholder: string;
+		accepted: string;
+		declined: string;
+		submitted: string;
+		enterpriseNote: string;
+	};
+
+	/** Devices and public-feed consent. */
+	deviceFeed: {
+		devicesTitle: string;
+		devicesSubtitle: string;
+		noDevices: string;
+		removeDeviceCta: string;
+		deviceRemoved: string;
+		feedTitle: string;
+		feedSubtitle: string;
+		withdrawCta: string;
+		withdrawConfirm: string;
+		withdrawConfirmCta: string;
+		withdrawn: string;
+		cancelCta: string;
+	};
+
+	/** Benchmarks and safety reports on a slice. */
+	evidence: {
+		benchmarksTitle: string;
+		reproducedOn: string;
+		notReproduced: string;
+		reproduceCta: string;
+		reproducedToast: string;
+		safetyTitle: string;
+		safetyHint: string;
+		seenAgain: string;
+		sawItTooCta: string;
+		disclosesOn: string;
+	};
+
+	/** The GitHub link. */
+	githubLink: {
+		title: string;
+		subtitle: string;
+		repoCount: string;
+		connectCta: string;
+		reconnectCta: string;
+		syncCta: string;
+		synced: string;
+		cvCta: string;
+		disconnectCta: string;
+		disconnectNote: string;
+		disconnectConfirmCta: string;
+		disconnected: string;
+		cancelCta: string;
+		syncNote: string;
+	};
+
+	/** Code portfolios and review languages. */
+	declaredCraft: {
+		portfoliosTitle: string;
+		portfoliosHint: string;
+		platformPlaceholder: string;
+		handlePlaceholder: string;
+		reviewLanguagesTitle: string;
+		reviewLanguagesHint: string;
+		notePlaceholder: string;
+		addCta: string;
+		removeCta: string;
+		removed: string;
+		portfolioAdded: string;
+		languageAdded: string;
+	};
+
+	/** What is sold around mentoring. */
+	mentoringProducts: {
+		subscriptionsTitle: string;
+		usage: string;
+		cancelCta: string;
+		cancelled: string;
+		cancelNote: string;
+		slotsTitle: string;
+		slotsHint: string;
+		openSlotCta: string;
+		slotOpened: string;
+		programsTitle: string;
+		empty: string;
+	};
+
+	/** A cohort's teaching record. */
+	educationOutcomes: {
+		title: string;
+		recorded: string;
+		noneRecorded: string;
+		adoptions: string;
+		clearedNote: string;
+		clearedCta: string;
+		clearedConfirmCta: string;
+		clearedDeclared: string;
+		cancelCta: string;
+	};
+
+	/** Deliverables and counted skills on a profile. */
+	workAndSkills: {
+		deliverablesTitle: string;
+		openCta: string;
+		skillsTitle: string;
+		skillsHint: string;
+	};
+
+	/** API and corporate learning plans. */
+	programmaticPlans: {
+		apiTitle: string;
+		apiSubtitle: string;
+		monthlyQuota: string;
+		dailyCeiling: string;
+		attributionRequired: string;
+		sla: string;
+		unlimited: string;
+		learningTitle: string;
+		learningSubtitle: string;
+		perSeat: string;
+	};
+
+	/** The assistant's long-running jobs. */
+	assistantJobs: {
+		title: string;
+		subtitle: string;
+		reviewCta: string;
+		recommendCta: string;
+		working: string;
+		gaveUp: string;
+		notAValidation: string;
+	};
+
+	/** Reporting somebody or something. */
+	report: {
+		cta: string;
+		title: string;
+		reasonLabel: string;
+		reasons: Record<string, string>;
+		detailsPlaceholder: string;
+		whatHappensNext: string;
+		sendCta: string;
+		cancelCta: string;
+		closeCta: string;
+		sent: string;
+	};
+
+	/** The very first run. */
+	firstRun: {
+		title: string;
+		subtitle: string;
+		startCta: string;
+		started: string;
+	};
+
 	craftProfile: {
 		titles: {
 			ai: string;

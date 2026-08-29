@@ -45,6 +45,7 @@
 	import Input from '$components/ui/Input.svelte';
 	import Select from '$components/ui/Select.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import DeclaredCraft from '$lib/components/settings/DeclaredCraft.svelte';
 
 	let experiences = $state<Experience[]>([]);
 	let educations = $state<Education[]>([]);
@@ -336,5 +337,9 @@
 				</div>
 			{/if}
 		</section>
+
+		<!-- Code portfolios and review languages: two more claims, on the page
+		     that says out loud it accepts claims. -->
+		<DeclaredCraft />
 	{/if}
 </div>

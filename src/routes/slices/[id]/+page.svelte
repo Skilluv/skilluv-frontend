@@ -16,6 +16,7 @@
 	import { TestRuns } from '$components/quality';
 	import { PlaytestPanel } from '$components/game';
 	import { ArtefactPanel } from '$components/leadership';
+	import { EvidencePanels } from '$components/slices';
 	import { ExternalLink, Check, GitBranch, ShieldCheck } from '@lucide/svelte';
 
 	interface Props {
@@ -453,6 +454,13 @@
 			     was written, but that something happened because of it. -->
 			<div class="mt-4">
 				<ArtefactPanel sliceId={slice.id} isMine={isMine} />
+			</div>
+
+			<!-- Benchmarks and safety reports: the two claims only a second person
+			     can settle. Renders nothing on a slice that has neither, which is
+			     most of them. -->
+			<div class="mt-4">
+				<EvidencePanels sliceId={slice.id} isMine={isMine} />
 			</div>
 
 			<!-- Diary -->

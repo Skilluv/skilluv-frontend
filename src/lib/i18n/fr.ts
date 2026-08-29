@@ -1757,6 +1757,210 @@ export const fr: Translations = {
 			'Ce n’est pas un test de compétence. Quelqu’un explique sa propre soumission, ce qu’une personne qui l’a copiée ne peut pas faire — c’est donc ce qui permet à son travail de compter.'
 	},
 
+	explore: {
+		title: 'Ce qui se passe sur Skilluv',
+		subtitle:
+			'Tout ce qui est en cours — et, une fois que tu as un parcours, ce qui lui correspond.',
+		empty: 'Rien à montrer pour le moment.',
+		emptyHint: 'Les challenges, projets et événements apparaissent ici à leur ouverture.',
+		sponsoredTitle: 'Sponsorisé',
+		sponsoredHint: 'Une entreprise a payé pour que ce soit là. On préfère le dire.',
+		sponsoredBadge: 'Sponsorisé',
+		forYouTitle: 'Pour toi',
+		forYouHint: 'Lu depuis ton travail vérifié, donc ça se remplit à mesure que tu fais des choses.',
+		shelves: {}
+	},
+
+	codeDiscovery: {
+		title: 'Commencer par le code',
+		subtitle: 'Des issues pour se faire la main, et ce qu’on écrit vraiment ici.',
+		firstIssuesTitle: 'Premières issues',
+		firstIssuesHint:
+			'La seule liste ici qui ne suppose rien de toi. Aucun parcours requis, et jamais triée par le standing de qui que ce soit.',
+		languagePlaceholder: 'Langage',
+		filterCta: 'Filtrer',
+		noIssues: 'Aucune issue ne correspond.',
+		noIssuesHint: 'Essaie un autre langage, ou enlève le filtre.',
+		openIssue: 'Ouvrir',
+		ecosystemsTitle: 'Écosystèmes',
+		topLanguagesTitle: 'Les plus écrits',
+		topLanguagesHint:
+			'Compté depuis les dépôts synchronisés — ce que les gens écrivent vraiment, pas ce qu’ils disent écrire.'
+	},
+
+	contests: {
+		title: 'Concours de recrutement',
+		subtitle: 'Un brief, une échéance, et une entreprise qui lit ce que tu rends.',
+		empty: 'Aucun concours ouvert.',
+		emptyHint: 'Ils fonctionnent par salves plutôt qu’en continu.',
+		acceptCta: 'Accepter l’invitation',
+		declineCta: 'Refuser',
+		enterCta: 'Participer',
+		submitCta: 'Rendre',
+		cancelCta: 'Annuler',
+		notesPlaceholder: 'Ce que le lecteur devrait savoir (facultatif)',
+		accepted: 'Accepté.',
+		declined: 'Refusé.',
+		submitted: 'Rendu.',
+		enterpriseNote:
+			'Le jugement, les embauches et les résultats sont du côté entreprise et vivent dans la console entreprise.'
+	},
+
+	deviceFeed: {
+		devicesTitle: 'Appareils',
+		devicesSubtitle: 'Les appareils qui peuvent t’envoyer des notifications.',
+		noDevices: 'Aucun appareil enregistré.',
+		removeDeviceCta: 'Retirer',
+		deviceRemoved: 'Appareil retiré.',
+		feedTitle: 'Fil public',
+		feedSubtitle: 'Ce que la plateforme montre publiquement de ce que tu fais.',
+		withdrawCta: 'Me retirer du fil public',
+		withdrawConfirm:
+			'Ceci te retire entièrement du fil public. Ce n’est pas une préférence — rien de ce que tu fais n’y sera publié.',
+		withdrawConfirmCta: 'Me retirer',
+		withdrawn: 'Tu es hors du fil public.',
+		cancelCta: 'Annuler'
+	},
+
+	evidence: {
+		benchmarksTitle: 'Benchmarks',
+		reproducedOn: 'reproduit le {date}',
+		notReproduced: 'Personne ne l’a reproduit',
+		reproduceCta: 'Je l’ai lancé aussi',
+		reproducedToast: 'Enregistré.',
+		safetyTitle: 'Signalements de sûreté',
+		safetyHint:
+			'En publier un le jour où il est trouvé aide celui qui voulait s’en servir, donc chacun porte la date à laquelle il devient lisible.',
+		seenAgain: 'Vu par quelqu’un d’autre',
+		sawItTooCta: 'Je l’ai vu aussi',
+		disclosesOn: 'lisible à partir du {date}'
+	},
+
+	githubLink: {
+		title: 'GitHub',
+		subtitle: 'Les dépôts synchronisés et les chiffres de contribution qu’on y lit.',
+		repoCount: '{n} dépôts synchronisés',
+		connectCta: 'Connecter GitHub',
+		reconnectCta: 'Reconnecter',
+		syncCta: 'Synchroniser maintenant',
+		synced: 'Synchronisé.',
+		cvCta: 'Ouvrir ton CV généré',
+		disconnectCta: 'Déconnecter',
+		disconnectNote:
+			'Les attestations déjà émises depuis ce travail restent. Déconnecter arrête les synchronisations futures ; ça n’efface pas ton parcours.',
+		disconnectConfirmCta: 'Déconnecter',
+		disconnected: 'Déconnecté.',
+		cancelCta: 'Annuler',
+		syncNote:
+			'Skilluv synchronise quand tu le demandes plutôt qu’en continu — il ne lit pas ton GitHub plus souvent que tu ne le veux.'
+	},
+
+	declaredCraft: {
+		portfoliosTitle: 'Portfolios de code',
+		portfoliosHint: 'npm, crates, PyPI — là où tu publies sous ton nom.',
+		platformPlaceholder: 'npm',
+		handlePlaceholder: 'ton identifiant là-bas',
+		reviewLanguagesTitle: 'Langues dans lesquelles tu relis',
+		reviewLanguagesHint:
+			'Rien ici ne teste ton niveau, et un quiz produirait un chiffre qui ressemble à une preuve. Ce que ça achète, c’est la responsabilité : c’est signé, et chaque relecture que tu fais dessous le porte.',
+		notePlaceholder: 'Ce que ton niveau couvre vraiment (facultatif, et c’est la partie utile)',
+		addCta: 'Ajouter',
+		removeCta: 'Retirer',
+		removed: 'Retiré.',
+		portfolioAdded: 'Portfolio ajouté.',
+		languageAdded: 'Langue déclarée.'
+	},
+
+	mentoringProducts: {
+		subscriptionsTitle: 'Tes abonnements mentor',
+		usage: '{used} sur {included} ce mois-ci',
+		cancelCta: 'Arrêter le renouvellement',
+		cancelled: 'Renouvellement arrêté.',
+		cancelNote:
+			'Arrêter le renouvellement ne coupe pas ton accès — tu as payé cette période et tu la gardes.',
+		slotsTitle: 'Tes disponibilités',
+		slotsHint:
+			'Proposées dans ton propre fuseau, pour qu’un mentoré ailleurs ne devine pas ce que l’heure voulait dire.',
+		openSlotCta: 'Ouvrir le créneau',
+		slotOpened: 'Créneau ouvert.',
+		programsTitle: 'Programmes de mentorat',
+		empty: 'Aucun abonnement ni programme pour le moment.'
+	},
+
+	educationOutcomes: {
+		title: 'Parcours pédagogique',
+		recorded: '{n} résultats d’apprenants enregistrés',
+		noneRecorded:
+			'Aucun résultat enregistré — ce n’est pas la même chose que personne n’a terminé.',
+		adoptions: 'Repris par {n} autres formateurs',
+		clearedNote:
+			'Enseigner produit des données sur des gens qui n’ont jamais rejoint Skilluv. Déclarer les données effacées atteste que tu les as supprimées.',
+		clearedCta: 'Déclarer les données apprenants effacées',
+		clearedConfirmCta: 'Je les ai supprimées',
+		clearedDeclared: 'Enregistré.',
+		cancelCta: 'Annuler'
+	},
+
+	workAndSkills: {
+		deliverablesTitle: 'Ce qu’il a livré',
+		openCta: 'Ouvrir',
+		skillsTitle: 'Compétences',
+		skillsHint: 'Comptées depuis du travail vérifié, pas depuis un formulaire.'
+	},
+
+	programmaticPlans: {
+		apiTitle: 'API Talent Score',
+		apiSubtitle: 'Lire les scores par programme, sous une licence avec des conditions.',
+		monthlyQuota: '{n} appels par mois',
+		dailyCeiling: '{n} par jour',
+		attributionRequired: 'Attribution obligatoire',
+		sla: 'SLA',
+		unlimited: 'Illimité',
+		learningTitle: 'Formation entreprise',
+		learningSubtitle: 'Des places pour une équipe, facturées à la place.',
+		perSeat: '{amount} par place'
+	},
+
+	assistantJobs: {
+		title: 'Travail plus long',
+		subtitle: 'Une relecture de code ou des recommandations. Les deux prennent un moment.',
+		reviewCta: 'Relire ce dépôt',
+		recommendCta: 'Me recommander quelque chose',
+		working: 'En cours — ça prend un moment, pas un instant.',
+		gaveUp:
+			'Aucune réponse n’est revenue à temps. Réessaie, ou vérifie que le dépôt est accessible.',
+		notAValidation:
+			'Ce n’est pas une validation et ça ne le devient jamais. C’est un humain qui décide si un travail compte.'
+	},
+
+	report: {
+		cta: 'Signaler',
+		title: 'Signaler',
+		reasonLabel: 'Ce qui ne va pas',
+		reasons: {
+			harassment: 'Harcèlement ou abus',
+			inappropriate: 'Contenu inapproprié',
+			spam: 'Spam',
+			cheating: 'Triche',
+			fake_profile: 'Faux profil',
+			other: 'Autre chose'
+		},
+		detailsPlaceholder: 'Ce qu’un modérateur devrait savoir (facultatif)',
+		whatHappensNext:
+			'Un modérateur lit ce signalement. On ne te dira pas que le contenu a été retiré, parce que c’est sa décision et pas une promesse qu’on peut faire.',
+		sendCta: 'Envoyer le signalement',
+		cancelCta: 'Annuler',
+		closeCta: 'Fermer',
+		sent: 'Signalement envoyé.'
+	},
+
+	firstRun: {
+		title: 'Bonjour Skilluv',
+		subtitle: 'Cinq minutes pour régler ce que la plateforme te montre en premier.',
+		startCta: 'Commencer',
+		started: 'C’est parti.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'Parcours IA',

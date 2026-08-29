@@ -42,6 +42,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import { FirstRunBanner } from '$components/onboarding';
 	import type {
 		ContestInvitation,
 		MentorSubscription,
@@ -138,6 +139,13 @@
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-8" data-testid="dashboard-home">
+	<!-- Shown only until the first run is finished, then gone: an
+	     onboarding that keeps offering itself reads as the platform not
+	     having noticed. -->
+	<div class="mb-6">
+		<FirstRunBanner />
+	</div>
+
 	<header class="mb-8">
 		<h1 class="text-3xl font-bold text-text-primary">
 			{auth.user

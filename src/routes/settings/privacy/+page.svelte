@@ -13,6 +13,7 @@
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
 	import { DataConsentPanel } from '$components/finance';
+	import DeviceAndFeed from '$lib/components/settings/DeviceAndFeed.svelte';
 
 	// The backend stores consents on the user record (`consent_analytics`,
 	// `consent_marketing`) and returns them via /auth/me. We seed local state
@@ -198,6 +199,12 @@
 	     feature to ship alone. -->
 	<div class="mt-8">
 		<DataConsentPanel />
+	</div>
+
+	<!-- The devices that can reach you, and whether the platform publishes what
+	     you do. Both are about being findable, which is what this page is. -->
+	<div class="mt-8">
+		<DeviceAndFeed />
 	</div>
 </div>
 

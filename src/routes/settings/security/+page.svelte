@@ -9,6 +9,7 @@
 	// recruiter is bounced to `/enterprise/settings/security` instead.
 	import SecurityForm from '$lib/components/settings/SecurityForm.svelte';
 	import LinkedAccounts from '$lib/components/settings/LinkedAccounts.svelte';
+	import GithubLink from '$lib/components/settings/GithubLink.svelte';
 </script>
 
 <SecurityForm />
@@ -16,6 +17,11 @@
 <!-- The identity providers on this account. Here rather than on the profile
      page because unlinking one can be the act that locks somebody out, and
      that belongs next to passwords and passkeys. -->
-<div class="mx-auto max-w-3xl px-4 pb-8">
+<div class="mx-auto max-w-3xl space-y-6 px-4 pb-8">
 	<LinkedAccounts />
+
+	<!-- GitHub is its own panel rather than a row in the list above: it syncs
+	     work rather than only proving identity, so it carries a schedule and a
+	     disconnect that means something different. -->
+	<GithubLink />
 </div>

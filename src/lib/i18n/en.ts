@@ -1730,6 +1730,207 @@ export const en: Translations = {
 			'Not a test of skill. Somebody is explaining their own submission, which is the one thing a person who copied it cannot do — so this is what lets their work count.'
 	},
 
+	explore: {
+		title: 'What is on Skilluv',
+		subtitle: 'Everything happening right now — and, once you have a record, what matches it.',
+		empty: 'Nothing to show yet.',
+		emptyHint: 'Challenges, projects and events appear here as they open.',
+		sponsoredTitle: 'Sponsored',
+		sponsoredHint: 'A company paid for these to be here. We would rather say so than not.',
+		sponsoredBadge: 'Sponsored',
+		forYouTitle: 'Matched to you',
+		forYouHint: 'Read from your verified work, so it fills up as you do things.',
+		shelves: {}
+	},
+
+	codeDiscovery: {
+		title: 'Start with code',
+		subtitle: 'Issues to cut your teeth on, and what people here actually ship in.',
+		firstIssuesTitle: 'First issues',
+		firstIssuesHint:
+			'The one list here that assumes nothing about you. No record needed, and it is never sorted by anybody’s standing.',
+		languagePlaceholder: 'Language',
+		filterCta: 'Filter',
+		noIssues: 'No issue matches.',
+		noIssuesHint: 'Try another language, or clear the filter.',
+		openIssue: 'Open it',
+		ecosystemsTitle: 'Ecosystems',
+		topLanguagesTitle: 'Most shipped in',
+		topLanguagesHint:
+			'Counted from synced repositories — what people actually write, not what they say they write.'
+	},
+
+	contests: {
+		title: 'Hiring contests',
+		subtitle: 'A brief, a deadline, and a company reading what you hand in.',
+		empty: 'No contest open.',
+		emptyHint: 'They run in bursts rather than continuously.',
+		acceptCta: 'Accept the invitation',
+		declineCta: 'Decline',
+		enterCta: 'Enter',
+		submitCta: 'Hand it in',
+		cancelCta: 'Cancel',
+		notesPlaceholder: 'Anything the reader should know (optional)',
+		accepted: 'Accepted.',
+		declined: 'Declined.',
+		submitted: 'Handed in.',
+		enterpriseNote:
+			'Judging, hires and outcomes are the company’s side and live in the enterprise console.'
+	},
+
+	deviceFeed: {
+		devicesTitle: 'Devices',
+		devicesSubtitle: 'The devices that can send you notifications.',
+		noDevices: 'No device registered.',
+		removeDeviceCta: 'Remove',
+		deviceRemoved: 'Device removed.',
+		feedTitle: 'Public feed',
+		feedSubtitle: 'What the platform shows publicly about what you do.',
+		withdrawCta: 'Take me out of the public feed',
+		withdrawConfirm:
+			'This removes you from the public feed entirely. It is not a preference — nothing you do will be published there.',
+		withdrawConfirmCta: 'Take me out',
+		withdrawn: 'You are out of the public feed.',
+		cancelCta: 'Cancel'
+	},
+
+	evidence: {
+		benchmarksTitle: 'Benchmarks',
+		reproducedOn: 'reproduced {date}',
+		notReproduced: 'Nobody has reproduced this',
+		reproduceCta: 'I ran it too',
+		reproducedToast: 'Recorded.',
+		safetyTitle: 'Safety reports',
+		safetyHint:
+			'Publishing one the day it is found helps whoever wanted to use it, so each carries the date it becomes readable.',
+		seenAgain: 'Seen by somebody else',
+		sawItTooCta: 'I saw it too',
+		disclosesOn: 'readable from {date}'
+	},
+
+	githubLink: {
+		title: 'GitHub',
+		subtitle: 'Synced repositories and the contribution figures read from them.',
+		repoCount: '{n} repositories synced',
+		connectCta: 'Connect GitHub',
+		reconnectCta: 'Reconnect',
+		syncCta: 'Sync now',
+		synced: 'Synced.',
+		cvCta: 'Open your generated CV',
+		disconnectCta: 'Disconnect',
+		disconnectNote:
+			'Attestations already issued from this work stay. Disconnecting stops future syncing; it does not undo your record.',
+		disconnectConfirmCta: 'Disconnect it',
+		disconnected: 'Disconnected.',
+		cancelCta: 'Cancel',
+		syncNote:
+			'Skilluv syncs when you ask rather than continuously — it reads your GitHub no more often than you want it to.'
+	},
+
+	declaredCraft: {
+		portfoliosTitle: 'Code portfolios',
+		portfoliosHint: 'npm, crates, PyPI — where you publish under your own name.',
+		platformPlaceholder: 'npm',
+		handlePlaceholder: 'your handle there',
+		reviewLanguagesTitle: 'Languages you will review in',
+		reviewLanguagesHint:
+			'Nothing here tests your level, and a quiz would produce a number that looks like evidence. What this buys is accountability: it is signed, and every review you make under it carries it.',
+		notePlaceholder: 'What your level actually covers (optional, and the useful part)',
+		addCta: 'Add',
+		removeCta: 'Remove',
+		removed: 'Removed.',
+		portfolioAdded: 'Portfolio added.',
+		languageAdded: 'Language declared.'
+	},
+
+	mentoringProducts: {
+		subscriptionsTitle: 'Your mentor subscriptions',
+		usage: '{used} of {included} this month',
+		cancelCta: 'Stop renewing',
+		cancelled: 'Renewal stopped.',
+		cancelNote:
+			'Stopping the renewal does not end your access — you have paid for this period and you keep it.',
+		slotsTitle: 'Your availability',
+		slotsHint:
+			'Offered in your own timezone, so a mentee somewhere else is not guessing what the hour meant.',
+		openSlotCta: 'Open the slot',
+		slotOpened: 'Slot opened.',
+		programsTitle: 'Mentoring programmes',
+		empty: 'No subscription or programme yet.'
+	},
+
+	educationOutcomes: {
+		title: 'Teaching record',
+		recorded: '{n} learner outcomes recorded',
+		noneRecorded: 'No outcome recorded yet — which is not the same as nobody finishing.',
+		adoptions: 'Run by {n} other trainers',
+		clearedNote:
+			'Teaching produces records about people who never joined Skilluv. Declaring the data cleared states on the record that you deleted them.',
+		clearedCta: 'Declare learner data cleared',
+		clearedConfirmCta: 'I deleted them',
+		clearedDeclared: 'Recorded.',
+		cancelCta: 'Cancel'
+	},
+
+	workAndSkills: {
+		deliverablesTitle: 'What they shipped',
+		openCta: 'Open',
+		skillsTitle: 'Skills',
+		skillsHint: 'Counted from verified work, not from anything typed on a form.'
+	},
+
+	programmaticPlans: {
+		apiTitle: 'Talent Score API',
+		apiSubtitle: 'Read scores by programme, under a licence with terms.',
+		monthlyQuota: '{n} calls a month',
+		dailyCeiling: '{n} a day',
+		attributionRequired: 'Attribution required',
+		sla: 'SLA',
+		unlimited: 'Unlimited',
+		learningTitle: 'Corporate learning',
+		learningSubtitle: 'Seats for a team, billed per seat.',
+		perSeat: '{amount} per seat'
+	},
+
+	assistantJobs: {
+		title: 'Longer work',
+		subtitle: 'A code review or a set of recommendations. Both take a moment.',
+		reviewCta: 'Review this repository',
+		recommendCta: 'Recommend something',
+		working: 'Working on it — this takes a moment rather than an instant.',
+		gaveUp: 'No answer came back in time. Try again, or check the repository is reachable.',
+		notAValidation:
+			'This is not a validation and never becomes one. A human reviewer decides whether work counts.'
+	},
+
+	report: {
+		cta: 'Report',
+		title: 'Report this',
+		reasonLabel: 'What is wrong',
+		reasons: {
+			harassment: 'Harassment or abuse',
+			inappropriate: 'Inappropriate content',
+			spam: 'Spam',
+			cheating: 'Cheating',
+			fake_profile: 'Fake profile',
+			other: 'Something else'
+		},
+		detailsPlaceholder: 'Anything a moderator should know (optional)',
+		whatHappensNext:
+			'A moderator reads this. We will not tell you it has been removed, because that is their decision to make and not ours to promise.',
+		sendCta: 'Send the report',
+		cancelCta: 'Cancel',
+		closeCta: 'Close',
+		sent: 'Report sent.'
+	},
+
+	firstRun: {
+		title: 'Say hello to Skilluv',
+		subtitle: 'Five minutes to set up what the platform shows you first.',
+		startCta: 'Start',
+		started: 'Started.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'AI record',

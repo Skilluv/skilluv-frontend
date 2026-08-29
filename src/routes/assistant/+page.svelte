@@ -26,6 +26,7 @@
 	import Input from '$components/ui/Input.svelte';
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import { JobPanel } from '$components/assistant';
 	import {
 		AI_INTERACTION_TYPES,
 		type AiCompanionAnswer,
@@ -322,4 +323,10 @@
 			</ul>
 		{/if}
 	</section>
+
+	<!-- The long-running half: a code review or a set of recommendations, both
+	     of which return a job rather than an answer. -->
+	<div class="mx-auto mt-8 max-w-4xl px-4">
+		<JobPanel />
+	</div>
 </div>

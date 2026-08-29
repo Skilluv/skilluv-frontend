@@ -10,6 +10,7 @@
 	import { SkilluError } from '$api/client';
 	import { CONTACT_EMAIL } from '$lib/config/social';
 	import { Sparkles, Coins, Package, Boxes, Gem, ThumbsDown, Timer, Check, X } from '@lucide/svelte';
+	import { ProgrammaticPlans } from '$components/pricing';
 
 	let data = $state<PricingResponse | null>(null);
 	let loading = $state(true);
@@ -414,7 +415,15 @@
 				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Prix locaux : EUR, USD, NGN, XOF, MAD…' : 'Local prices: EUR, USD, NGN, XOF, MAD…'}</li>
 			</ul>
 		</div>
+	
+	<!-- The two plans nobody buys on a whim: programmatic access to the talent
+	     score, and corporate learning seats. Under the human pricing rather than
+	     beside it — somebody comparing subscriptions is not the person buying an
+	     API key. -->
+	<div class="mx-auto mt-10 max-w-4xl px-4">
+		<ProgrammaticPlans />
 	</div>
+</div>
 </section>
 
 <!-- ============================================

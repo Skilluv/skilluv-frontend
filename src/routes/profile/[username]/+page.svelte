@@ -22,6 +22,7 @@
 	} from '$components/profile/records';
 	import Heatmap from '$components/profile/Heatmap.svelte';
 	import TakeItWithYou from '$components/profile/TakeItWithYou.svelte';
+	import WorkAndSkills from '$components/profile/WorkAndSkills.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import JsonLd from '$lib/components/seo/JsonLd.svelte';
@@ -42,6 +43,7 @@
 	import { ContributionSection } from '$lib/components/capabilities';
 	import BadgesSection from '$lib/components/profile/BadgesSection.svelte';
 	import { projectsApi } from '$api/projects';
+	import { ReportButton } from '$components/moderation';
 
 	onMount(() => {
 		void geo.ensureCountries();
@@ -414,6 +416,24 @@
 				<div class="mb-4">
 					<TakeItWithYou {username} />
 				</div>
+
+				<!-- A platform with a reporting endpoint and no way to report is one
+				     that looks like it takes harassment seriously and does not: the
+				     person being harassed finds nothing to click. Not shown on your
+				     own profile. -->
+				{#if profileUserId && !isOwnProfile}
+					<div class="mb-4">
+						<ReportButton targetType="user" targetId={profileUserId} />
+					</div>
+				{/if}
+
+				<!-- The work itself and the skills counted from it. Keyed on the user
+				     id, which both endpoints take rather than the username. -->
+				{#if profileUserId}
+					<div class="mb-4">
+						<WorkAndSkills userId={profileUserId} />
+					</div>
+				{/if}
 
 				<!-- SKI-253 — the design record. Addressed by username, so unlike
 				     the sections above it needs no UUID. -->

@@ -20,7 +20,7 @@
 	import Input from '$components/ui/Input.svelte';
 	import Modal from '$components/ui/Modal.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
-	import { CohortOutcomes } from '$components/leadership';
+	import { CohortOutcomes, EducationOutcomes } from '$components/leadership';
 	import type {
 		CohortDetail,
 		CohortMemberListing,
@@ -437,6 +437,13 @@
 						isOrganizer={isOrganizer}
 						members={members.map((m) => ({ user_id: m.user_id, display_name: m.display_name }))}
 					/>
+				</section>
+
+				<!-- The teaching record, beside the leadership one. Different
+				     question on the same cohort: one asks whether somebody led the
+				     group, the other what the learners got. -->
+				<section class="rounded-2xl border border-border bg-surface-elevated p-6">
+					<EducationOutcomes cohortId={cohortId} isOrganizer={isOrganizer} />
 				</section>
 			</div>
 		</div>
