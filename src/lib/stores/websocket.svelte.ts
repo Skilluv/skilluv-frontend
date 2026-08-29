@@ -1,4 +1,5 @@
 import { notifications } from './notifications.svelte';
+import { wsUrl } from '$api/origin';
 
 export type WsEvent =
 	| 'connected'
@@ -44,10 +45,9 @@ class WebSocketState {
 		if (this.ws?.readyState === WebSocket.OPEN) return;
 		if (typeof window === 'undefined') return;
 
-		const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-		const url = `${protocol}//${window.location.host}/ws`;
-
-		this.ws = new WebSocket(url);
+		// Follows the API origin, not the page: the socket is the backend's,
+		// and the SvelteKit server has no /ws route to answer on.
+		this.ws = new WebSocket(wsUrl());
 
 		this.ws.onopen = () => {
 			this.connected = true;

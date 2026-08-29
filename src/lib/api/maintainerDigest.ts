@@ -1,8 +1,10 @@
 import type { ApiResponse } from '$lib/types';
 import { createApiClient } from './client';
+import { publicBase } from './origin';
 
-// SKI-120 endpoints hors /api (opt-in public)
-const publicApi = createApiClient(fetch, '');
+// SKI-120 endpoints served outside the `/api` prefix (opt-in public flow).
+// Still the backend's origin, so it follows PUBLIC_API_ORIGIN like the rest.
+const publicApi = createApiClient(fetch, publicBase());
 
 // --- Types ---
 

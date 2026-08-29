@@ -1,4 +1,5 @@
 import type { ApiErrorBody } from '$lib/types';
+import { apiBase } from './origin';
 
 /**
  * Erreur API Skilluv typée
@@ -32,10 +33,12 @@ export class SkilluError extends Error {
 }
 
 /**
- * Crée un client API typé.
+ * Builds a typed API client.
  *
- * - Client-side : createApiClient() → utilise /api (proxy Vite/Caddy)
- * - Server-side (SSR) : createApiClient(fetch, 'http://localhost:3001/api')
+ * The default base comes from `apiBase()`: a relative `/api` unless
+ * `PUBLIC_API_ORIGIN` names an absolute one, which is what a backend on its
+ * own subdomain needs. Pass a base explicitly for SSR, where a relative path
+ * has no meaning at all.
  */
 /**
  * Single in-flight refresh promise: parallel 401s all await the same refresh call,
@@ -100,7 +103,7 @@ async function sleep(ms: number): Promise<void> {
 
 export function createApiClient(
 	customFetch: typeof fetch = fetch,
-	baseUrl: string = '/api'
+	baseUrl: string = apiBase()
 ) {
 	async function fire(url: string, options?: RequestInit): Promise<Response> {
 		// Double-submit CSRF: echo the non-httpOnly `csrf_token` cookie into the header on
