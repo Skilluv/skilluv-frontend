@@ -111,6 +111,20 @@ export interface Rfp {
 }
 
 export const workApi = {
+	/**
+	 * A company says it has the problem a proposal describes.
+	 *
+	 * The enterprise half of a proposal, kept here because the two sides read
+	 * the same row and splitting the module would mean two definitions of what a
+	 * proposal is.
+	 */
+	registerInterest(proposalId: string, noteMd?: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/proposals/${encodeURIComponent(proposalId)}/interest`,
+			noteMd ? { note_md: noteMd } : {}
+		);
+	},
+
 	/** Calls for proposals somebody may answer. */
 	rfps() {
 		return api.get<ApiResponse<{ rfps: Rfp[] }>>('/rfps');

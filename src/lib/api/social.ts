@@ -48,6 +48,13 @@ export const socialApi = {
 		);
 	},
 
+	/** The tags attached to one target. */
+	tagsOn(targetType: string, targetId: string) {
+		return api.get<ApiResponse<{ tags: unknown[] }>>(
+			`/social/tag-map/${encodeURIComponent(targetType)}/${encodeURIComponent(targetId)}`
+		);
+	},
+
 	/** Every tag the platform knows. Public. */
 	tags() {
 		return api.get<ApiResponse<{ tags: unknown[] }>>('/tags');

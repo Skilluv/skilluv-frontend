@@ -43,6 +43,35 @@ export interface ForumPost {
 // --- API ---
 
 export const forumApi = {
+	/**
+	 * Pin a post to the top of its board.
+	 *
+	 * A toggle: calling it on a pinned post unpins. So a surface reads the
+	 * current state before labelling the button, or it offers "pin" on something
+	 * already pinned.
+	 */
+	togglePin(postId: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/forum/posts/${encodeURIComponent(postId)}/pin`,
+			{}
+		);
+	},
+
+	/**
+	 * Lock a thread.
+	 *
+	 * Locking ends a conversation other people are in. It reads to them as
+	 * having been silenced, so a surface offering it should say who locked it
+	 * and leave the thread readable — a locked thread that disappears is a
+	 * deletion wearing another word.
+	 */
+	toggleLock(postId: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/forum/posts/${encodeURIComponent(postId)}/lock`,
+			{}
+		);
+	},
+
 	categories() {
 		return api.get<ApiResponse<{ categories: ForumCategory[] }>>('/forum/categories');
 	},

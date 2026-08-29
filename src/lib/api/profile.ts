@@ -49,6 +49,37 @@ interface HeatmapResponse {
 }
 
 export const profileApi = {
+	/**
+	 * How somebody's rank moved over time.
+	 *
+	 * Worth rendering as a line rather than a current value: a rank that went up
+	 * and a rank that came back down read identically at a single point, and the
+	 * difference is most of what somebody wants to know.
+	 */
+	rankHistory(userId: string) {
+		return api.get<ApiResponse<{ history: unknown[] }>>(
+			`/users/${encodeURIComponent(userId)}/rank-history`
+		);
+	},
+
+	/** Change the shown name. Not the username, which is the address. */
+	setDisplayName(displayName: string) {
+		return api.put<ApiResponse<unknown>>('/auth/me/display-name', {
+			display_name: displayName
+		});
+	},
+
+	/**
+	 * Change the primary domain.
+	 *
+	 * It decides what the platform shows first, not what somebody is allowed to
+	 * do — every domain stays open. Worth saying where this is offered, because
+	 * a "primary domain" reads like a lock and is not one.
+	 */
+	setSkillDomain(domain: string) {
+		return api.put<ApiResponse<unknown>>('/auth/me/skill-domain', { skill_domain: domain });
+	},
+
 	/** Profil public (SSR-ready) */
 	getPublic(username: string) {
 		return api.get<PublicProfileResponse>(`/profile/${username}`);

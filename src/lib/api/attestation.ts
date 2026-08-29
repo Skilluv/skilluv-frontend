@@ -217,3 +217,18 @@ export function verifyCardUrl(code: string, baseUrl = '/api'): string {
 export function verifyCertificateUrl(code: string, baseUrl = '/api'): string {
 	return `${baseUrl}/attestations/verify/${encodeURIComponent(code)}/certificate.svg`;
 }
+
+/**
+ * The Open Graph image and the PDF for a public verification.
+ *
+ * Addresses, like the card: the first is read by a link preview crawler that
+ * never runs JavaScript, and the second is a file somebody saves. Fetching
+ * either would break the only thing it is for.
+ */
+export function verifyOgImageUrl(hash: string, baseUrl = '/api'): string {
+	return `${baseUrl}/verify/${encodeURIComponent(hash)}/og.png`;
+}
+
+export function verifyPdfUrl(hash: string, baseUrl = '/api'): string {
+	return `${baseUrl}/verify/${encodeURIComponent(hash)}/pdf`;
+}

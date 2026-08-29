@@ -78,7 +78,10 @@ export const awardsApi = {
 	 */
 	vote(nomineeId: string, jury = false) {
 		return api.post<ApiResponse<{ recorded: boolean; ballot: string }>>(
-			`/awards/nominees/${nomineeId}/vote${jury ? '?jury=true' : ''}`
+			// The jury flag rides on the path because `post` takes a body, not
+			// params. Written as a suffix so the route itself stays greppable.
+			`/awards/nominees/${nomineeId}/vote` + (jury ? '?jury=true' : ''),
+			{}
 		);
 	},
 

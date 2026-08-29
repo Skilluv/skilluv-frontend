@@ -94,7 +94,14 @@
 			<Code2 size={14} />
 			{copied ? i18n.t('portableRecord.copied') : i18n.t('portableRecord.copyMarkdown')}
 		</button>
+		<!-- `tabindex` because the block scrolls sideways: a region somebody can
+		     only reach with a mouse is unreachable on a keyboard, and Safari in
+		     particular gives it no focus of its own. The label says what it is,
+		     since a bare scrollable box announces nothing. -->
 		<pre
-			class="overflow-x-auto rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text-muted">{markdown}</pre>
+			tabindex="0"
+			role="region"
+			aria-label={i18n.t('portableRecord.copyMarkdown')}
+			class="overflow-x-auto rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-accent">{markdown}</pre>
 	</div>
 </section>

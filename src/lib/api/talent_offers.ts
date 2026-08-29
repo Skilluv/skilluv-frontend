@@ -37,6 +37,26 @@ export interface BrowseOffersParams {
 }
 
 export const talentOffersApi = {
+	/**
+	 * Open a reverse-recruitment posting: a person saying what they want, for
+	 * companies to answer.
+	 *
+	 * The direction is the point — everywhere else a company posts and people
+	 * apply. A surface must not present it as a job listing, because the person
+	 * reading their own posting is the one being pitched to.
+	 */
+	createPosting(body: Record<string, unknown>) {
+		return api.post<ApiResponse<unknown>>('/reverse-recruitment/postings', body);
+	},
+
+	/** A company pitches a posting. */
+	sendPitch(postingId: string, body: Record<string, unknown>) {
+		return api.post<ApiResponse<unknown>>(
+			`/reverse-recruitment/postings/${encodeURIComponent(postingId)}/pitch`,
+			body
+		);
+	},
+
 	create(payload: CreateOfferRequest) {
 		return api.post<ApiResponse<{ offer: TalentOffer }>>('/talent-offers', payload);
 	},

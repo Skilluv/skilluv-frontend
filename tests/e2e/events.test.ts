@@ -72,30 +72,51 @@ const talent = {
 const DAY_MS = 86_400_000;
 const isoInDays = (n: number) => new Date(Date.now() + n * DAY_MS).toISOString().slice(0, 10);
 
-const eventsPayload = {
-	data: [
-		{
-			id: 'e1',
-			slug: 'skilluv-fest-2026',
-			name: 'Skilluv Fest 2026',
-			description: 'Le hackathon flagship de l\'année.',
-			starts_at: isoInDays(-1),
-			ends_at: isoInDays(30),
-			visual_theme: {},
-			is_partner: false
-		},
-		{
-			id: 'e2',
-			slug: 'hacktoberfest',
-			name: 'Hacktoberfest',
-			description: 'Contribuez open-source pendant octobre.',
-			starts_at: isoInDays(60),
-			ends_at: isoInDays(90),
-			visual_theme: {},
-			is_partner: true
-		}
-	]
-};
+/**
+ * The rows `GET /events` actually returns.
+ *
+ * These used to be mocked at `/badge-events`, a prefix nothing has ever
+ * served — so the suite passed while the page was broken (SKI-352). The shape
+ * here is `routes::events`: an event carries its type, its location, its
+ * participant ceiling and its showcase page, and the list is wrapped in
+ * `{ events }` rather than being the payload itself.
+ */
+const eventRows = [
+	{
+		id: 'e1',
+		slug: 'skilluv-fest-2026',
+		name: 'Skilluv Fest 2026',
+		description: 'Le hackathon flagship de l\'année.',
+		event_type: 'hackathon',
+		domain_focus: ['code'],
+		location_type: 'online',
+		location_details: {},
+		max_participants: null,
+		showcase_page_url: null,
+		status: 'published',
+		starts_at: isoInDays(-1),
+		ends_at: isoInDays(30),
+		visual_theme: {},
+		is_partner: false
+	},
+	{
+		id: 'e2',
+		slug: 'hacktoberfest',
+		name: 'Hacktoberfest',
+		description: 'Contribuez open-source pendant octobre.',
+		event_type: 'partner',
+		domain_focus: ['code'],
+		location_type: 'online',
+		location_details: {},
+		max_participants: null,
+		showcase_page_url: null,
+		status: 'published',
+		starts_at: isoInDays(60),
+		ends_at: isoInDays(90),
+		visual_theme: {},
+		is_partner: true
+	}
+];
 
 test.describe('Events pages', () => {
 	test.beforeEach(async ({ page }) => {
@@ -130,42 +151,46 @@ test.describe('Events pages', () => {
 					})
 			},
 			{
-				path: '/users/me/badge-events',
+				path: '/users/me/events',
 				handler: (route) =>
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
-						body: JSON.stringify({ data: [] })
+						body: JSON.stringify({ data: { events: [] } })
 					})
 			},
 			{
-				// Must stay AFTER `/users/me/badge-events`: matching is by suffix, so
-				// this route would otherwise capture the personal feed.
-				path: '/badge-events',
+				// Must stay AFTER `/users/me/events`: matching is by suffix, so this
+				// route would otherwise capture the personal listing.
+				path: '/events',
 				handler: (route) =>
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
-						body: JSON.stringify(eventsPayload)
+						body: JSON.stringify({ data: { events: eventRows } })
 					})
 			},
 			{
-				path: '/badge-events/skilluv-fest-2026',
-				handler: (route) =>
-					route.fulfill({
-						status: 200,
-						contentType: 'application/json',
-						body: JSON.stringify({ data: eventsPayload.data[0] })
-					})
-			},
-			{
-				path: '/badge-events/skilluv-fest-2026/join',
+				// The detail carries who is backing it and where to watch, not just
+				// the event.
+				path: '/events/skilluv-fest-2026',
 				handler: (route) =>
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
 						body: JSON.stringify({
-							data: { event: eventsPayload.data[0], joined_at: '2026-07-16', stamp_earned: false }
+							data: { event: eventRows[0], participants: 12, sponsors: [], livestreams: [] }
+						})
+					})
+			},
+			{
+				path: '/events/skilluv-fest-2026/join',
+				handler: (route) =>
+					route.fulfill({
+						status: 200,
+						contentType: 'application/json',
+						body: JSON.stringify({
+							data: { joined: true, event_slug: 'skilluv-fest-2026', role: 'participant' }
 						})
 					})
 			}

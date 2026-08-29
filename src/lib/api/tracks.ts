@@ -33,6 +33,26 @@ export interface UserTrack {
 }
 
 export const tracksApi = {
+	/**
+	 * Whether the caller may start a challenge, and what is missing if not.
+	 *
+	 * Read before offering the start button rather than after refusing it. A
+	 * prerequisite somebody discovers by being turned away reads as a judgement
+	 * of them; the same fact shown beforehand reads as a next step.
+	 */
+	challengeEligibility(challengeId: string) {
+		return api.get<ApiResponse<Record<string, unknown>>>(
+			`/challenges/${encodeURIComponent(challengeId)}/eligibility`
+		);
+	},
+
+	/** How far the caller is through a track. */
+	progress(trackId: string) {
+		return api.get<ApiResponse<Record<string, unknown>>>(
+			`/tracks/${encodeURIComponent(trackId)}/progress`
+		);
+	},
+
 	/** GET /tracks — public catalogue. */
 	list() {
 		return api.get<ApiResponse<{ tracks: Track[] }>>('/tracks');

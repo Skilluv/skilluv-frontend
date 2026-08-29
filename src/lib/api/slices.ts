@@ -176,6 +176,20 @@ export interface SlicesListParams {
 
 export const slicesApi = {
 	/**
+	 * Close a revision round.
+	 *
+	 * Resolving is the reviewer saying the round is answered, which is what lets
+	 * the next one open. A round nobody resolved holds the slice indefinitely,
+	 * so this is the act the whole loop waits on.
+	 */
+	resolveRound(roundId: string, body?: Record<string, unknown>) {
+		return api.post<ApiResponse<unknown>>(
+			`/revisions/${encodeURIComponent(roundId)}/resolve`,
+			body ?? {}
+		);
+	},
+
+	/**
 	 * Claim a slice for a team rather than for yourself.
 	 *
 	 * Distinct from `claim`, and the distinction is who the attestation names.

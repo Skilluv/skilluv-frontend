@@ -64,6 +64,13 @@ export interface CommunityReviewItem {
 }
 
 export const moderationApi = {
+	/** One external signal, for a moderator deciding on it. */
+	externalSignal(id: string) {
+		return api.get<ApiResponse<{ signal: unknown }>>(
+			`/moderation/external-signals/${encodeURIComponent(id)}`
+		);
+	},
+
 	forum: {
 		/** POST /forum/posts/{id}/moderate — hide/unhide/lock/unlock. */
 		moderatePost(postId: string, body: ForumModerateBody) {

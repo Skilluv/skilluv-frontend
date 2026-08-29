@@ -26,6 +26,11 @@ const api = createApiClient();
  * and is not here.
  */
 export const opportunitiesApi = {
+	/** Withdraw an opportunity. */
+	remove(id: string) {
+		return api.delete<void>(`/opportunities/${encodeURIComponent(id)}`);
+	},
+
 	/**
 	 * Pitches sent to your posting.
 	 *

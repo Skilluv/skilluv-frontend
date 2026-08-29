@@ -29,6 +29,19 @@ export interface VerificationRequest {
 
 export const apprenticeVerificationsApi = {
 	/**
+	 * The questions for one template.
+	 *
+	 * Served rather than shipped, and never guessed: answers are keyed by the
+	 * ids this returns, and a client inventing them would submit answers to
+	 * questions that were never asked.
+	 */
+	questions(templateId: string) {
+		return api.get<ApiResponse<{ questions: unknown[] }>>(
+			`/beginner/verifications/questions/${encodeURIComponent(templateId)}`
+		);
+	},
+
+	/**
 	 * Submit answers about your own submission.
 	 *
 	 * `answers` is free-form JSON keyed by the question ids that were served —

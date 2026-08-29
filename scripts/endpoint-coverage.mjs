@@ -36,6 +36,25 @@ const FRONT = resolve(process.cwd(), 'src');
 const BACK = resolve(process.cwd(), '..', 'skilluv-backend', 'src', 'routes');
 
 /** Paths that belong to another repo or are not called by a browser. */
+/**
+ * Paths no browser client can call, and why.
+ *
+ * OAuth callbacks are navigated to by the identity provider, not fetched: the
+ * server reads the code, sets a cookie and redirects. A client calling one
+ * would be handing itself a code it did not receive.
+ *
+ * `/guild-invitations/{id}` is the older spelling of a route that also exists
+ * as `/guilds/{id}/invitations/{invitation_id}`, which is the one the front
+ * calls — SKI-289 kept both.
+ */
+const UNREACHABLE = [
+	'/auth/github/callback',
+	'/auth/github/login/callback',
+	'/auth/google/callback',
+	'/auth/linkedin/callback',
+	'/guild-invitations/{}'
+];
+
 const SKIP = [
 	'/admin', '/enterprise', '/webhooks', '/public/v1', '/v1/', '/scim',
 	'/health', '/metrics', '/.well-known', '/security.txt', '/manifest',
@@ -80,6 +99,10 @@ for (const file of walk(BACK, ['.rs'])) {
 	for (const m of src.matchAll(/\.route\(\s*"(\/[^"]*)"/g)) {
 		const p = m[1].replace(/\{[a-zA-Z_]*\}/g, '{}');
 		if (!routes.has(p)) routes.set(p, mod);
+		// A handful of routes carry `/api` in their own registration while the
+		// client adds it for everyone else. Record the bare form too, or a
+		// consumed endpoint reads as missing.
+		if (p.startsWith('/api/') && !routes.has(p.slice(4))) routes.set(p.slice(4), mod);
 	}
 }
 
@@ -93,11 +116,31 @@ for (const file of walk(FRONT, ['.ts', '.svelte', '.js'])) {
 		// A direct fetch carries the /api prefix the client adds for everyone else.
 		if (p.startsWith('/api/')) called.add(p.slice(4));
 	}
+	// A URL built from a base — `${baseUrl}/users/${u}/badge.svg` — has no
+	// leading slash, so the pass above never sees it. Read those separately and
+	// keep only the tail, which is the path the backend registered.
+	for (const m of src.matchAll(/`\$\{[^}]*\}(\/[^`]*)`/g)) {
+		called.add(collapse(m[1]).replace(/\{\}/g, '{}'));
+	}
+	// A path with an interpolated *segment* — `/users/${u}/${domain}-profile` —
+	// collapses to `/users/{}/{}-profile`, which matches no registered route.
+	// Widen those into every route they could be, rather than reporting a
+	// consumed endpoint as missing.
+	for (const p of [...called]) {
+		if (!p.includes('{}-')) continue;
+		for (const route of routes.keys()) {
+			const rx = new RegExp('^' + p.replace(/\{\}/g, '[^/]*').replace(/[.]/g, '\.') + '$');
+			if (rx.test(route)) called.add(route);
+		}
+	}
 }
 
 const byModule = new Map();
 for (const [path, mod] of [...routes].sort()) {
 	if (SKIP.some((s) => path.startsWith(s))) continue;
+	if (UNREACHABLE.includes(path)) continue;
+	// Counted under its bare form, which the loop above also recorded.
+	if (path.startsWith('/api/') && routes.has(path.slice(4))) continue;
 	if (!byModule.has(mod)) byModule.set(mod, { total: 0, done: 0, missing: [] });
 	const row = byModule.get(mod);
 	row.total++;

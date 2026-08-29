@@ -25,6 +25,20 @@ const api = createApiClient();
  */
 export const audioCastingsApi = {
 	/**
+	 * Credit somebody on a deliverable.
+	 *
+	 * Audio work is collective more often than not, and a credit is how the
+	 * people who are not the uploader end up on the record. Without it a mix
+	 * belongs entirely to whoever pressed submit.
+	 */
+	creditDeliverable(deliverableId: string, body: Record<string, unknown>) {
+		return api.post<ApiResponse<unknown>>(
+			`/audio/deliverables/${encodeURIComponent(deliverableId)}/credit`,
+			body
+		);
+	},
+
+	/**
 	 * Castings still taking auditions. Closed ones are not served at all — a
 	 * listing that keeps showing them teaches people to stop reading it.
 	 *

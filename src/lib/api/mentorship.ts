@@ -76,6 +76,20 @@ export interface ConnectStatus {
 // --- API ---
 
 export const mentorshipApi = {
+	/**
+	 * Confirm a session actually happened.
+	 *
+	 * Separate from completing it, and by the other party: a session both sides
+	 * agree took place is the thing an attestation can rest on, where one side
+	 * saying so is a claim.
+	 */
+	confirmSession(sessionId: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/mentorship/sessions/${encodeURIComponent(sessionId)}/confirm`,
+			{}
+		);
+	},
+
 	listMentors(params?: {
 		expertise?: string;
 		language?: string;

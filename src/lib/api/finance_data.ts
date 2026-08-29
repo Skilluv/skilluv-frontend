@@ -111,6 +111,19 @@ export interface LearningPlan {
 }
 
 export const financeApi = {
+	/**
+	 * Take a learning seat your employer bought.
+	 *
+	 * Their own act, not their employer's — which is why it is a separate call
+	 * rather than something the purchase does on their behalf.
+	 */
+	activateLearningSeat(subscriptionId: string) {
+		return api.post<ApiResponse<unknown>>(
+			`/learning/${encodeURIComponent(subscriptionId)}/activate`,
+			{}
+		);
+	},
+
 	/** Advances already requested, newest first. */
 	advances() {
 		return api.get<ApiResponse<{ advances: Advance[] }>>('/users/me/advances');

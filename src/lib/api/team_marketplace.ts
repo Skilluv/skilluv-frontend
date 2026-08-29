@@ -27,6 +27,20 @@ export interface CreateSlotBody {
 }
 
 export const teamMarketplaceApi = {
+	/**
+	 * Ask for more time on a challenge.
+	 *
+	 * Bounded server-side, so a refusal is a real limit rather than a
+	 * negotiation. Show the remaining time before offering this: extending from
+	 * a timer somebody cannot see is a button with no meaning.
+	 */
+	extendChallengeTimer(challengeId: string, minutes: number) {
+		return api.post<ApiResponse<unknown>>(
+			`/challenges/${encodeURIComponent(challengeId)}/timer/extend`,
+			{ minutes }
+		);
+	},
+
 	/** GET /users/me/teams — teams the current user belongs to. */
 	/**
 	 * Create a standing team.
