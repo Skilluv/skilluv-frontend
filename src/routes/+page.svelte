@@ -25,7 +25,7 @@
 	<title>Skilluv — {i18n.t('landing.title')}</title>
 	<meta property="og:title" content="Skilluv — {i18n.t('landing.title')} {i18n.t('landing.titleAccent')}" />
 	<meta property="og:description" content={i18n.t('landing.subtitle')} />
-	<meta property="og:image" content="/og-image.svg" />
+	<meta property="og:image" content="/og-image.png" />
 </svelte:head>
 
 {#if auth.isAuthenticated}

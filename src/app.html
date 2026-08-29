@@ -19,13 +19,21 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content="Skilluv — Prouve ce que tu sais faire. Pour de vrai." />
-		<meta name="theme-color" content="#ea580c" />
+		<!-- #FFA701, sampled from the official artwork rather than approximated.
+		     The previous value belonged to the placeholder mark. -->
+		<meta name="theme-color" content="#FFA701" />
 		<meta property="og:site_name" content="Skilluv" />
 		<meta property="og:type" content="website" />
-		<link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/favicon.svg" />
+		<!-- PNG only, and deliberately. A browser that understands SVG prefers it,
+		     so leaving the old placeholder `favicon.svg` here would have kept
+		     showing the retired diamond in the tab whatever the PNGs said. The mark
+		     exists only as raster today; an SVG from the designer would be strictly
+		     better and is the one asset still missing. -->
 		<link rel="icon" type="image/png" href="%sveltekit.assets%/favicon.png" />
 		<link rel="manifest" href="%sveltekit.assets%/manifest.json" />
-		<link rel="apple-touch-icon" href="%sveltekit.assets%/icon-192.png" />
+		<!-- Opaque, on the ink ground: iOS composites a transparent icon onto
+		     white, which haloes a circular mark. -->
+		<link rel="apple-touch-icon" href="%sveltekit.assets%/apple-touch-icon.png" />
 		<!-- Preconnect a l'origine API back (evite le cout DNS+TLS sur premier
 		     fetch cote client — utile pour /auth/me, /notifications, etc.). -->
 		<link rel="preconnect" href="https://api.skill-uv.com" crossorigin />

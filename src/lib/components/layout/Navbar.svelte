@@ -9,6 +9,7 @@
 	import NavDropdown from './NavDropdown.svelte';
 	import LogoutConfirmModal from './LogoutConfirmModal.svelte';
 	import { onMount } from 'svelte';
+	import BrandLogo from '$components/layout/BrandLogo.svelte';
 	import {
 		Target,
 		Pencil,
@@ -387,19 +388,9 @@
 					{tenant.name}
 				</span>
 			{:else}
-				<!-- Placeholder trousseau icon en attendant les SVG Recraft -->
-				<svg viewBox="0 0 40 40" class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-					<circle cx="20" cy="10" r="6" />
-					<line x1="16" y1="16" x2="13" y2="34" />
-					<line x1="20" y1="16" x2="20" y2="36" />
-					<line x1="24" y1="16" x2="27" y2="34" />
-					<rect x="11" y="30" width="4" height="2" fill="currentColor" stroke="none" />
-					<rect x="18" y="32" width="5" height="2" fill="currentColor" stroke="none" />
-					<rect x="25" y="30" width="4" height="2" fill="currentColor" stroke="none" />
-				</svg>
-				<span class="wordmark text-2xl leading-none">
-					<span class="wordmark-skil">sKIL</span><span class="wordmark-luv">LUV</span>
-				</span>
+				<!-- The official mark. One logo across all five themes: only its
+				     contrast adapts, never its hue — see BrandLogo for why. -->
+				<BrandLogo size={32} />
 			{/if}
 		</a>
 
