@@ -107,7 +107,23 @@ describe('the craft shape', () => {
 		// Design is deliberately absent: it shipped first with a nested
 		// craft_score plus artefacts, contests and attestations, and has its
 		// own type and section.
-		expect([...CRAFT_DOMAINS]).toEqual(['ai', 'audio']);
+		//
+		// Communication and education joined in SKI-321. They belong here and
+		// not with the five nested ones because their payload is the flat craft
+		// envelope — craft_score, tier, breakdown, orientations — plus one list
+		// of their own. Putting them in the wrong family would have meant two
+		// more components instead of two more branches.
+		expect([...CRAFT_DOMAINS]).toEqual(['ai', 'audio', 'communication', 'education']);
+	});
+
+	it('the two newest carry a second list beyond their highlights', async () => {
+		// The reason they are worth rendering at all: a communication record
+		// names the languages somebody has validated translations into, and an
+		// education record names the cohorts they led. Without those, both are
+		// a score and a list of trades, which every other domain already shows.
+		const mod = await import('../../src/lib/types/craft');
+		expect(mod.CRAFT_DOMAINS).toContain('communication');
+		expect(mod.CRAFT_DOMAINS).toContain('education');
 	});
 
 	it('only contributing terms are worth rendering', async () => {

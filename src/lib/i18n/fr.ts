@@ -1400,6 +1400,69 @@ export const fr: Translations = {
 		withdrawn: 'Retiré.'
 	},
 
+	creator: {
+		title: 'Payé pour ton audience',
+		subtitle: 'Ce que les marques paient en ce moment, et exactement ce que chacune paie.',
+		empty: 'Rien d’ouvert pour le moment.',
+		emptyHint:
+			'Les campagnes et les programmes ambassadeurs arrivent par vagues plutôt qu’en continu.',
+		campaignsTitle: 'Campagnes de lancement',
+		campaignsHint:
+			'Payé à la pièce, sur une cagnotte qui s’épuise. Regarde ce qu’il en reste avant d’écrire.',
+		perPiece: '{amount} par pièce',
+		pot: 'cagnotte de {amount}',
+		piecesLeftApprox: 'environ {n} pièces restantes',
+		until: 'jusqu’au {date}',
+		writeCta: 'Proposer une pièce',
+		pieceTitlePlaceholder: 'Titre de ta pièce',
+		sendCta: 'Envoyer',
+		cancelCta: 'Annuler',
+		pieceSent: 'Pièce envoyée.',
+		pieceSentWithPot:
+			'Pièce envoyée. Environ {n} autres peuvent encore être payées sur cette cagnotte.',
+		ambassadorsTitle: 'Programmes ambassadeurs',
+		ambassadorsHint:
+			'Ce sont des mois, pas un post : une bourse mensuelle contre un quota mensuel. Lis l’engagement avant d’accepter.',
+		perMonth: '{amount} par mois',
+		commitment: '{months} mois, {n} livrables par mois',
+		minimumRank: 'à partir du rang {rank}',
+		swag: 'goodies inclus',
+		previewAccess: 'accès anticipé aux produits',
+		acceptCta: 'Accepter',
+		declineCta: 'Refuser',
+		joined: 'Tu en fais partie.',
+		declined: 'Refusé.'
+	},
+
+	work: {
+		title: 'Autres façons de travailler',
+		subtitle:
+			'Équipes permanentes, laboratoires vivants, et du travail proposé avant que quiconque l’ait commandé.',
+		empty: 'Rien d’ouvert pour le moment.',
+		emptyHint:
+			'Les studios se forment, les labs ouvrent et les propositions se publient par vagues plutôt qu’en continu.',
+		studiosTitle: 'Studios',
+		studiosHint:
+			'Une équipe permanente qui vend des jours. Ici tu rejoins des gens, pas une tâche.',
+		dayRate: '{amount} par jour',
+		maxMembers: 'jusqu’à {n} membres',
+		labsTitle: 'Laboratoires vivants',
+		labsHint:
+			'Une entreprise paie une communauté pour continuer d’utiliser son produit et lui en rendre compte. L’argent est une cagnotte mensuelle partagée, donc ta part dépend de qui d’autre rejoint.',
+		monthlyPool: '{amount} par mois, partagés',
+		communityTarget: '{n} contributeurs recherchés',
+		joinCta: 'Rejoindre',
+		labJoined: 'Tu en fais partie.',
+		proposalsTitle: 'Propositions',
+		proposalsHint:
+			'Celle-ci fonctionne à l’envers : quelqu’un a repéré un problème et cherche l’entreprise, au lieu qu’une entreprise arrive déjà décidée. Ce n’est pas une offre d’emploi.',
+		budgetEstimate: 'environ {amount}',
+		acceptCta: 'Accepter',
+		declineCta: 'Refuser',
+		proposalAccepted: 'Accepté.',
+		proposalDeclined: 'Refusé.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'Parcours IA',

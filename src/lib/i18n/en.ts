@@ -1390,6 +1390,63 @@ export const en: Translations = {
 		withdrawn: 'Withdrawn.'
 	},
 
+	creator: {
+		title: 'Paid for your reach',
+		subtitle: 'What brands are paying for right now, and exactly what each one pays.',
+		empty: 'Nothing open at the moment.',
+		emptyHint: 'Campaigns and ambassador programmes arrive in waves rather than steadily.',
+		campaignsTitle: 'Launch campaigns',
+		campaignsHint: 'Paid per piece, out of a pot that runs out. Check what is left before you write.',
+		perPiece: '{amount} per piece',
+		pot: 'pot of {amount}',
+		piecesLeftApprox: 'roughly {n} pieces left in it',
+		until: 'until {date}',
+		writeCta: 'Submit a piece',
+		pieceTitlePlaceholder: 'Title of your piece',
+		sendCta: 'Send it',
+		cancelCta: 'Cancel',
+		pieceSent: 'Piece submitted.',
+		pieceSentWithPot: 'Piece submitted. About {n} more can still be paid from this pot.',
+		ambassadorsTitle: 'Ambassador programmes',
+		ambassadorsHint:
+			'These are months, not a post: a monthly stipend against a monthly quota. Read the commitment before accepting.',
+		perMonth: '{amount} a month',
+		commitment: '{months} months, {n} deliverables a month',
+		minimumRank: 'from rank {rank}',
+		swag: 'swag included',
+		previewAccess: 'early access to products',
+		acceptCta: 'Accept',
+		declineCta: 'Decline',
+		joined: 'You are in.',
+		declined: 'Declined.'
+	},
+
+	work: {
+		title: 'Other ways to work',
+		subtitle: 'Standing teams, living labs, and work somebody proposed before anyone commissioned it.',
+		empty: 'Nothing open at the moment.',
+		emptyHint: 'Studios form, labs open and proposals get published in waves rather than steadily.',
+		studiosTitle: 'Studios',
+		studiosHint: 'A standing team that sells days. You join people here, not a task.',
+		dayRate: '{amount} a day',
+		maxMembers: 'up to {n} members',
+		labsTitle: 'Living labs',
+		labsHint:
+			'A company pays a community to keep using its product and report on it. The money is a monthly pool shared between contributors, so your share depends on who else joins.',
+		monthlyPool: '{amount} a month, shared',
+		communityTarget: '{n} contributors wanted',
+		joinCta: 'Join',
+		labJoined: 'You are in.',
+		proposalsTitle: 'Proposals',
+		proposalsHint:
+			'This one runs backwards: somebody noticed a problem and is looking for the company, rather than a company arriving having already decided. It is not a job posting.',
+		budgetEstimate: 'around {amount}',
+		acceptCta: 'Accept',
+		declineCta: 'Decline',
+		proposalAccepted: 'Accepted.',
+		proposalDeclined: 'Declined.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'AI record',

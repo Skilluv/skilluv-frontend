@@ -1557,6 +1557,62 @@ export interface Translations
 		withdrawn: string;
 	};
 
+	/** SKI-326 — what a brand will pay a creator for. */
+	creator: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		campaignsTitle: string;
+		campaignsHint: string;
+		perPiece: string;
+		pot: string;
+		piecesLeftApprox: string;
+		until: string;
+		writeCta: string;
+		pieceTitlePlaceholder: string;
+		sendCta: string;
+		cancelCta: string;
+		pieceSent: string;
+		pieceSentWithPot: string;
+		ambassadorsTitle: string;
+		ambassadorsHint: string;
+		perMonth: string;
+		commitment: string;
+		minimumRank: string;
+		swag: string;
+		previewAccess: string;
+		acceptCta: string;
+		declineCta: string;
+		joined: string;
+		declined: string;
+	};
+
+	/** SKI-325 — studios, living labs and proposals. */
+	work: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		studiosTitle: string;
+		studiosHint: string;
+		dayRate: string;
+		maxMembers: string;
+		labsTitle: string;
+		labsHint: string;
+		monthlyPool: string;
+		communityTarget: string;
+		joinCta: string;
+		labJoined: string;
+		proposalsTitle: string;
+		proposalsHint: string;
+		budgetEstimate: string;
+		acceptCta: string;
+		declineCta: string;
+		proposalAccepted: string;
+		proposalDeclined: string;
+	};
+
 	craftProfile: {
 		titles: {
 			ai: string;

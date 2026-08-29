@@ -108,13 +108,19 @@
 			{/if}
 		</section>
 
-		<!-- SKI-328. The wallet showed a balance and no way to reach money
-		     already earned but not yet paid: /users/me/advances was served and
-		     read by nothing. -->
-		<div class="mt-6">
-			<AdvancesPanel />
-		</div>
 	{/if}
+
+	<!-- SKI-328. The wallet showed a balance and no way to reach money already
+	     earned but not yet paid: /users/me/advances was served and read by
+	     nothing.
+
+	     Outside the wallet's own branch on purpose. Advances are a separate
+	     endpoint, and a balance that fails to load is no reason to hide money
+	     somebody is owed — that is the moment they are most likely to be
+	     looking for it. -->
+	<div class="mt-6">
+		<AdvancesPanel />
+	</div>
 </div>
 
 <PayoutRequestModal open={modalOpen} {wallet} onClose={closeModal} onSubmitted={handleSubmitted} />
