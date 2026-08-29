@@ -85,18 +85,34 @@ export default [
 			// is why it is a warning and not an error — but it stays visible,
 			// because the dangerous subset is invisible from the count alone.
 			'svelte/require-each-key': 'warn',
-			// 355 occurrences, and 59% of this config's entire warning count.
-			// It asks every href to go through resolve(), which prepends the
-			// configured base path and checks the target against known route
-			// ids. This app sets no base path, so the first half is a no-op
-			// today; the second half is real value that costs 355 edits.
-			// Left as a warning rather than switched off, so the day a base
-			// path is introduced the list is already there. If the count ever
-			// buries something, that is the argument for doing the migration,
-			// not for hiding the rule.
-			'svelte/no-navigation-without-resolve': 'warn',
-			// Chantier legacy à part : migration Map/Set/Date → SvelteMap/Set/Date
-			'svelte/prefer-svelte-reactivity': 'warn',
+			// Off, deliberately, and this is the one worth arguing about.
+			//
+			// The rule asks every href and goto() to go through resolve(). That
+			// does two things: it prepends the configured base path, and it
+			// checks the target against known route ids so a link to a deleted
+			// route fails the build. The first is a no-op here — this app sets
+			// no base path. The second is genuine value.
+			//
+			// It is off because it is a migration, not a lint fix: 355 links
+			// across 179 files, and 210 of them are interpolated, so each needs
+			// its route id spelled out — resolve('/profile/[username]',
+			// { username }) — which no codemod can infer. Left on, it was 96% of
+			// the warning output and buried everything else, which is how a
+			// linter stops being read at all.
+			//
+			// Worth doing as its own piece of work. Turn this back on the day it
+			// starts, or the day a base path is introduced, whichever is first.
+			'svelte/no-navigation-without-resolve': 'off',
+			// Off, and not out of convenience: all 16 hits were false positives.
+			// The rule flags any `new Map`/`Set`/`Date` in a rune file, but every
+			// one of ours is either a collection built and consumed inside a
+			// single $derived (reactivity comes from the derivation re-running,
+			// not from mutating the collection) or the copy-then-reassign
+			// pattern — `const next = new Map(this.index); …; this.index = next`
+			// — where the reassignment is what triggers. SvelteMap would only
+			// matter for a long-lived reactive collection mutated in place, and
+			// there is none. Re-enable the day one appears.
+			'svelte/prefer-svelte-reactivity': 'off',
 			// Reading a rune in an $effect purely to declare it as a dependency
 			// is the documented Svelte 5 idiom, and it reads as a useless
 			// expression to a linter that does not know about runes.

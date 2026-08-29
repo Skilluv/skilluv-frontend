@@ -2,7 +2,7 @@
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
-	import { aiApi, type CodeReviewResult, type CodeReviewFinding } from '$api/ai';
+	import { aiApi, type CodeReviewResult } from '$api/ai';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
 	import type { Component } from 'svelte';

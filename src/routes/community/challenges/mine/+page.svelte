@@ -3,13 +3,20 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import { i18n } from '$lib/i18n';
+	import type { ComponentProps } from 'svelte';
 	import type { Challenge } from '$types';
 
 	let challenges = $state<Challenge[]>([]);
 	let loading = $state(true);
 
-	const statusColors: Record<string, string> = {
-		draft: 'warning', review: 'info', approved: 'success', rejected: 'error'
+	// Typed against Badge's own variants: the previous Record<string, string>
+	// let `review` map to 'info', which Badge does not know, so a challenge in
+	// review rendered a badge with no style class.
+	const statusColors: Record<string, ComponentProps<typeof Badge>['variant']> = {
+		draft: 'warning',
+		review: 'accent',
+		approved: 'success',
+		rejected: 'error'
 	};
 
 	$effect(() => { loadMine(); });
@@ -71,11 +78,11 @@
 						<div class="mb-1 flex items-center gap-2">
 							<span class="font-medium">{ch.title}</span>
 							{#if ch.community_status}
-								<Badge variant={statusColors[ch.community_status] as any}>
+								<Badge variant={statusColors[ch.community_status]}>
 									{i18n.t(`community.mine.status.${ch.community_status}`)}
 								</Badge>
 							{/if}
-							<Badge variant={ch.skill_domain as any}>{ch.skill_domain}</Badge>
+							<Badge variant={ch.skill_domain}>{ch.skill_domain}</Badge>
 						</div>
 						<p class="text-xs text-text-muted line-clamp-1">{ch.description}</p>
 						<div class="mt-1 flex items-center gap-3 text-xs text-text-muted">

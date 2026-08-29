@@ -36,7 +36,6 @@
 		DOMAIN_GOALS,
 		DOMAIN_LEVELS,
 		DOMAIN_WEEKLY_HOURS,
-		EXTERNAL_SIGNAL_PROVIDERS,
 		type DomainGoal,
 		type DomainLevel,
 		type DomainWeeklyHours,

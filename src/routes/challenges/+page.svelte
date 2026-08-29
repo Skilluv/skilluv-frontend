@@ -53,8 +53,6 @@
 	}
 
 	function applyFilter() { currentPage = 1; loadChallenges(); }
-	function nextPage() { if (currentPage < totalPages) { currentPage++; loadChallenges(); } }
-	function prevPage() { if (currentPage > 1) { currentPage--; loadChallenges(); } }
 </script>
 
 <svelte:head>

@@ -124,7 +124,7 @@
 			<!-- ▓▓▓ 2. NAVIGATION — UNE SEULE LIGNE, GROS, MAXIMALISTE ▓▓▓ -->
 			<nav class="mt-20 border-t border-border pt-10">
 				<ul class="flex flex-wrap items-baseline gap-x-6 gap-y-3 sm:gap-x-8">
-					{#each navLinks as link, i (link.href)}
+					{#each navLinks as link (link.href)}
 						<li>
 							<a href={link.href} class="group inline-flex items-baseline text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-text-primary transition-colors duration-200 hover:text-accent">
 								<span>{i18n.locale === 'fr' ? link.fr : link.en}</span>

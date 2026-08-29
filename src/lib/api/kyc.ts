@@ -1,5 +1,6 @@
 import type { ApiResponse } from '$lib/types';
 import { createApiClient } from './client';
+import { apiBase } from './origin';
 
 const api = createApiClient();
 
@@ -37,13 +38,14 @@ export const kycApi = {
 		const fd = new FormData();
 		fd.append('kind', kind);
 		fd.append('file', file);
-		const resp = await fetch('/api/enterprise/kyc/documents', {
+		const resp = await fetch(`${apiBase()}/enterprise/kyc/documents`, {
 			method: 'POST',
 			credentials: 'include',
 			body: fd
 		});
 		if (!resp.ok) {
-			let body: any = null;
+			// Only the message is read; typing it beats `any` for exactly that.
+			let body: { error?: { message?: string } } | null = null;
 			try {
 				body = await resp.json();
 			} catch {

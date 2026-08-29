@@ -83,7 +83,7 @@
 							<p class="font-medium hover:text-accent">{talent.display_name}</p>
 							<div class="flex items-center gap-2 text-xs">
 								<span class="capitalize {titleColors[talent.title]}">{talent.title}</span>
-								<Badge variant={talent.skill_domain as any}>{talent.skill_domain}</Badge>
+								<Badge variant={talent.skill_domain}>{talent.skill_domain}</Badge>
 								<span class="text-accent">{talent.total_fragments} ◆</span>
 							</div>
 						</a>

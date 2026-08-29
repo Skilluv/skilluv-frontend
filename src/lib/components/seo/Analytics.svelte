@@ -41,7 +41,10 @@
 	// Track SPA navigations
 	$effect(() => {
 		if (enabled && typeof window !== 'undefined' && $page.url.pathname) {
-			const plausible = (window as any).plausible;
+			// Injected by the Plausible script tag, so it is not on the Window
+			// type. Narrowed to what is called rather than cast to any.
+			const plausible = (window as unknown as { plausible?: (event: string) => void })
+				.plausible;
 			if (plausible) plausible('pageview');
 		}
 	});

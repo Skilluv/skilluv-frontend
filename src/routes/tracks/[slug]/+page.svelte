@@ -16,20 +16,18 @@
 	let enrolment = $state<UserTrack | null>(null);
 	let loading = $state(true);
 	let enrolling = $state(false);
-	let notFound = $state(false);
 
 	onMount(load);
 
 	async function load() {
 		loading = true;
-		notFound = false;
 		try {
 			const res = await tracksApi.getBySlug(slug);
 			track = res.data.track;
-		} catch (err) {
+		} catch {
+			// Any failure is the same outcome here: the {:else} branch renders
+			// the not-found state.
 			track = null;
-			if (err instanceof SkilluError && err.status === 404) notFound = true;
-			else notFound = true;
 		}
 
 		// Enrolment is a separate, optional signal: a failure here must not hide

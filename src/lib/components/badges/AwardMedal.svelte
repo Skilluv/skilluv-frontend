@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { i18n } from '$lib/i18n';
 	import type { Rarity } from './types';
 
 	interface Props {
@@ -12,6 +13,26 @@
 	let { variant, label, rarity, awardedAt, size = 'md' }: Props = $props();
 
 	const dim = $derived(size === 'md' ? 96 : 160);
+
+	/**
+	 * When it was earned.
+	 *
+	 * The prop was required, every caller passed it, and nothing rendered it —
+	 * so a medal wall showed what somebody won and never when. It goes into the
+	 * accessible name rather than a tooltip: a `title` attribute is invisible
+	 * to touch and to keyboard users, which is most of the people looking at a
+	 * badge wall on a phone.
+	 */
+	const earnedOn = $derived.by(() => {
+		try {
+			return new Date(awardedAt).toLocaleDateString(i18n.locale, {
+				year: 'numeric',
+				month: 'long'
+			});
+		} catch {
+			return null;
+		}
+	});
 </script>
 
 <div
@@ -20,7 +41,9 @@
 	style:width="{dim}px"
 	style:height="{dim}px"
 	role="img"
-	aria-label="Médaille {label} — {rarity}"
+	aria-label={earnedOn
+		? `${i18n.locale === 'fr' ? 'Médaille' : 'Medal'} ${label} — ${rarity} — ${earnedOn}`
+		: `${i18n.locale === 'fr' ? 'Médaille' : 'Medal'} ${label} — ${rarity}`}
 >
 	<!-- Laurier ornemental (SVG placeholder) -->
 	<svg class="medal__laurel" viewBox="0 0 100 100" aria-hidden="true">

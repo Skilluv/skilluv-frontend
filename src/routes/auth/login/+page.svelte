@@ -12,6 +12,7 @@
 	import { postLoginDestination } from '$lib/utils/post_login';
 	import { KeyRound, Building2 } from '@lucide/svelte';
 	import SsoButton from '$components/ui/SsoButton.svelte';
+	import { apiBase } from '$api/origin';
 
 	let identifier = $state('');
 	let password = $state('');
@@ -61,7 +62,7 @@
 		ssoDiscoverTimer = setTimeout(async () => {
 			try {
 				const params = new URLSearchParams({ email: value });
-				const res = await fetch(`/api/enterprise/sso/discover?${params}`);
+				const res = await fetch(`${apiBase()}/enterprise/sso/discover?${params}`, { credentials: 'include' });
 				if (!res.ok) return;
 				const body = (await res.json()) as { data: SsoDiscoverResponse };
 				if (body.data.sso_available && body.data.start_url) {

@@ -4,6 +4,7 @@
 	import { auth } from '$stores/auth.svelte';
 	import { challengesApi } from '$api/challenges';
 	import { SkilluError } from '$api/client';
+	import type { SkillDomain } from '$types';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Badge from '$components/ui/Badge.svelte';
@@ -16,14 +17,16 @@
 
 	$effect(() => {
 		if (auth.user?.skill_domain) {
-			loadOnboarding(auth.user.skill_domain);
+			// Guarded: the field is nullable until onboarding picks one, and the
+			// endpoint has no meaning without it.
+			if (auth.user.skill_domain) loadOnboarding(auth.user.skill_domain);
 		}
 	});
 
-	async function loadOnboarding(domain: string) {
+	async function loadOnboarding(domain: SkillDomain) {
 		loading = true;
 		try {
-			const res = await challengesApi.getOnboarding(domain as any);
+			const res = await challengesApi.getOnboarding(domain);
 			challenge = res.data.challenge;
 		} catch (err) {
 			if (err instanceof SkilluError) error = err.message;
