@@ -30,7 +30,7 @@ jobs:
           curl -fsSL -o gitleaks.tar.gz "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz"
           tar -xzf gitleaks.tar.gz gitleaks && sudo mv gitleaks /usr/local/bin/
       - name: Secret scan -- source (SE-04)
-        run: gitleaks detect --source . --redact --verbose --exit-code 1
+        run: gitleaks detect --config .gitleaks.toml --source . --redact --verbose --exit-code 1
 
       - name: i18n parity + orphan-key check
         run: npm run i18n:check
@@ -46,7 +46,7 @@ jobs:
         # The client bundle is downloaded by every browser. SvelteKit keeps
         # $env/static/private out of client code; this catches anything of the
         # right shape that slips through.
-        run: gitleaks detect --source build --no-git --redact --verbose --exit-code 1
+        run: gitleaks detect --config .gitleaks.toml --source build --no-git --redact --verbose --exit-code 1
       - name: No source maps served to the browser (SE-04)
         # A .map in the client bundle ships the original source to the browser.
         # `build/client` is the only directory adapter-node serves publicly, so

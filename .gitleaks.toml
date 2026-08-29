@@ -1,0 +1,35 @@
+# gitleaks configuration (SE-04).
+#
+# The default ruleset is kept in full — this only adds an allowlist, and a
+# narrow one.
+#
+# ## The problem it solves
+#
+# `generic-api-key` fires on entropy, so any hand-written token in a mocked
+# route handler trips it: an e2e test returning `invite_token: '…'` looks
+# exactly like a leak to a scanner that cannot know the server is a mock.
+#
+# ## Why the allowlist is by value, not by path
+#
+# Excluding `tests/` would be the easy fix and the wrong one. The e2e suite is
+# precisely where a real credential gets pasted "just to try", so it is the
+# last directory that should stop being scanned.
+#
+# Instead the allowlist matches values that *say* they are fixtures. A real
+# leaked secret does not contain the word `test`, `fake`, `mock`, `dummy` or
+# `fixture`; a fixture named that way is self-documenting for the next reader
+# as well as for the scanner.
+#
+# The convention, then: any placeholder secret in this repo carries one of
+# those words. If gitleaks flags something, the question to ask is whether the
+# value is genuinely fake — not whether the file can be excluded.
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Self-identifying test fixtures"
+regexTarget = "match"
+regexes = [
+  '''(?i)(test|fake|mock|dummy|fixture|example|placeholder|sample)''',
+]

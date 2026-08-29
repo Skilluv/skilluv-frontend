@@ -112,7 +112,10 @@ test.describe('S6.3 enterprise members', () => {
 				path: '/enterprise/invite',
 				handler: (route) => {
 					invited = route.request().postDataJSON();
-					return json({ data: { invite_token: 'tok-abcdef123456' } })(route);
+					// Named so it reads as a fixture to the next person and to the
+					// secret scanner, which fires on entropy and cannot tell a
+					// mocked server from a real one. See .gitleaks.toml.
+					return json({ data: { invite_token: 'test-invite-token' } })(route);
 				}
 			},
 			membersRoute([OWNER]),
