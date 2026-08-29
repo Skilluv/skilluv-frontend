@@ -3,6 +3,7 @@ import { designWorkflowEn } from './design_workflow.en';
 import { portfoliosEn } from './portfolios.en';
 import { securityEn } from './security.en';
 import { postMvpEn } from './postmvp.en';
+import { consentEn } from './consent.en';
 import type { Translations } from './types';
 
 export const en: Translations = {
@@ -11,6 +12,7 @@ export const en: Translations = {
 	...designWorkflowEn,
 	...securityEn,
 	...portfoliosEn,
+	...consentEn,
 	common: {
 		actions: {
 			save: 'Save', cancel: 'Cancel', delete: 'Delete', edit: 'Edit',
