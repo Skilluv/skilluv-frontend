@@ -1713,6 +1713,23 @@ export const en: Translations = {
 		languageSet: 'Language set.'
 	},
 
+	reviewQueue: {
+		title: 'Waiting on you',
+		subtitle: 'Work that needs a verdict, and beginners waiting to be told theirs counts.',
+		empty: 'Nothing is waiting on you.',
+		emptyHint: 'Tasks appear here when they match what you can review.',
+		tasksTitle: 'Review tasks',
+		seniority: 'needs {level}',
+		claimCta: 'Take it',
+		claimed: 'Taken.',
+		minutesLeft: 'yours for {n} min',
+		hoursLeft: 'yours for {n}h',
+		pastSla: 'Somebody has been waiting past what we promised them.',
+		verificationsTitle: 'Beginner verifications',
+		verificationsHint:
+			'Not a test of skill. Somebody is explaining their own submission, which is the one thing a person who copied it cannot do — so this is what lets their work count.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'AI record',

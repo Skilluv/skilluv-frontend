@@ -1739,6 +1739,24 @@ export const fr: Translations = {
 		languageSet: 'Langue définie.'
 	},
 
+	reviewQueue: {
+		title: 'En attente de toi',
+		subtitle:
+			'Du travail qui attend un verdict, et des débutants qui attendent qu’on leur dise que le leur compte.',
+		empty: 'Rien ne t’attend.',
+		emptyHint: 'Les tâches apparaissent ici quand elles correspondent à ce que tu peux relire.',
+		tasksTitle: 'Tâches de relecture',
+		seniority: 'demande {level}',
+		claimCta: 'La prendre',
+		claimed: 'Prise.',
+		minutesLeft: 'à toi pour {n} min',
+		hoursLeft: 'à toi pour {n}h',
+		pastSla: 'Quelqu’un attend au-delà de ce qu’on lui a promis.',
+		verificationsTitle: 'Vérifications débutants',
+		verificationsHint:
+			'Ce n’est pas un test de compétence. Quelqu’un explique sa propre soumission, ce qu’une personne qui l’a copiée ne peut pas faire — c’est donc ce qui permet à son travail de compter.'
+	},
+
 	craftProfile: {
 		titles: {
 			ai: 'Parcours IA',

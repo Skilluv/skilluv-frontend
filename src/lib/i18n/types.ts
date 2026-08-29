@@ -1863,6 +1863,23 @@ export interface Translations
 		languageSet: string;
 	};
 
+	/** The review queue: tasks and beginner verifications. */
+	reviewQueue: {
+		title: string;
+		subtitle: string;
+		empty: string;
+		emptyHint: string;
+		tasksTitle: string;
+		seniority: string;
+		claimCta: string;
+		claimed: string;
+		minutesLeft: string;
+		hoursLeft: string;
+		pastSla: string;
+		verificationsTitle: string;
+		verificationsHint: string;
+	};
+
 	craftProfile: {
 		titles: {
 			ai: string;
