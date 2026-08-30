@@ -214,13 +214,13 @@
 	--sk-primary: #3a6a86;             /* bleu terreux (assombri pour contrast WCAG AA >= 4.5 avec text-primary-fg) */
 	--sk-primary-hover: #457b9d;
 	--sk-primary-fg: #f4ede0;
-	--sk-accent: #ea8a3d;               /* ocre plus vif que #c47a2e — SIGNATURE */
-	--sk-accent-hover: #f4a261;
+	--sk-accent: #ff6c47;               /* ocre plus vif que #c47a2e — SIGNATURE */
+	--sk-accent-hover: #ff8b6a;
 	--sk-accent-fg: #18130f;
 
 	--sk-shadow-color: rgba(0, 0, 0, 0.5);
-	--sk-success: #32b8ab;             /* AA: 4.72:1 on bg-success/15 (was 3.66) */
-	--sk-success-soft: rgba(50, 184, 171, 0.2);
+	--sk-success: #25d474;             /* AA: 4.72:1 on bg-success/15 (was 3.66) */
+	--sk-success-soft: rgba(37, 212, 116, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
 	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
@@ -253,13 +253,13 @@
 	--sk-primary: #375f7a;
 	--sk-primary-hover: #2a4a5f;
 	--sk-primary-fg: #ffffff;
-	--sk-accent: #a04520;               /* terracotta profond pour AA sur crème */
+	--sk-accent: #a03318;               /* terracotta profond pour AA sur crème */
 	--sk-accent-hover: #7a3418;
 	--sk-accent-fg: #ffffff;
 
 	--sk-shadow-color: rgba(45, 24, 16, 0.12);
-	--sk-success: #1e7268;
-	--sk-success-soft: rgba(30, 114, 104, 0.15);
+	--sk-success: #157540;
+	--sk-success-soft: rgba(21, 117, 64, 0.16);
 	--sk-warning: #a17825;
 	--sk-warning-soft: rgba(161, 120, 37, 0.15);
 	--sk-error: #b91c1c;
@@ -295,13 +295,13 @@
 	--sk-primary: #e9c46a;
 	--sk-primary-hover: #f4d68a;
 	--sk-primary-fg: #0a1024;
-	--sk-accent: #f4a261;                /* orange braise SIGNATURE */
+	--sk-accent: #f2b8a0;                /* orange braise SIGNATURE */
 	--sk-accent-hover: #f7ba85;
 	--sk-accent-fg: #0a1024;
 
 	--sk-shadow-color: rgba(0, 0, 0, 0.65);
-	--sk-success: #83c5be;
-	--sk-success-soft: rgba(131, 197, 190, 0.2);
+	--sk-success: #25d474;
+	--sk-success-soft: rgba(37, 212, 116, 0.2);
 	--sk-warning: #f4a261;
 	--sk-warning-soft: rgba(244, 162, 97, 0.2);
 	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
@@ -333,13 +333,13 @@
 	--sk-primary: #b87333;
 	--sk-primary-hover: #8b5522;
 	--sk-primary-fg: #ffffff;
-	--sk-accent: #c14e33;
+	--sk-accent: #8c462c;
 	--sk-accent-hover: #a03d24;
 	--sk-accent-fg: #ffffff;
 
 	--sk-shadow-color: rgba(26, 35, 64, 0.15);
-	--sk-success: #1e7268;
-	--sk-success-soft: rgba(30, 114, 104, 0.15);
+	--sk-success: #157540;
+	--sk-success-soft: rgba(21, 117, 64, 0.16);
 	--sk-warning: #a04520;
 	--sk-warning-soft: rgba(160, 69, 32, 0.15);
 	--sk-error: #b91c1c;
@@ -377,11 +377,11 @@
 	--sk-primary-fg: #150808;
 	--sk-accent: #e63946;                 /* rouge héraldique SIGNATURE */
 	--sk-accent-hover: #f04b58;
-	--sk-accent-fg: #f4ede0;
+	--sk-accent-fg: #150808  /* AA 4.71:1 — le creme precedent tombait a 3.58:1 */;
 
 	--sk-shadow-color: rgba(0, 0, 0, 0.7);
-	--sk-success: #32b8ab;             /* AA: 4.72:1 on bg-success/15 (was 3.66) */
-	--sk-success-soft: rgba(50, 184, 171, 0.2);
+	--sk-success: #25d474;             /* AA: 4.72:1 on bg-success/15 (was 3.66) */
+	--sk-success-soft: rgba(37, 212, 116, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
 	--sk-error: #ea580c;
@@ -418,8 +418,8 @@
 	--sk-accent-fg: #ffffff;
 
 	--sk-shadow-color: rgba(45, 15, 15, 0.15);
-	--sk-success: #1e7268;
-	--sk-success-soft: rgba(30, 114, 104, 0.15);
+	--sk-success: #157540;
+	--sk-success-soft: rgba(21, 117, 64, 0.16);
 	--sk-warning: #a17825;
 	--sk-warning-soft: rgba(161, 120, 37, 0.15);
 	--sk-error: #b91c1c;
@@ -455,13 +455,13 @@
 	--sk-primary: #83a598;
 	--sk-primary-hover: #a0bfb0;
 	--sk-primary-fg: #150f0a;
-	--sk-accent: #d68b48;                /* ocre encre plume — plus vif */
+	--sk-accent: #a8794e;                /* ocre encre plume — plus vif */
 	--sk-accent-hover: #e9a460;
 	--sk-accent-fg: #150f0a;
 
 	--sk-shadow-color: rgba(0, 0, 0, 0.65);
-	--sk-success: #2a9d8f;
-	--sk-success-soft: rgba(42, 157, 143, 0.2);
+	--sk-success: #25d474;
+	--sk-success-soft: rgba(37, 212, 116, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
 	--sk-error: #cc6666;
@@ -493,13 +493,13 @@
 	--sk-primary: #4a6b5c;
 	--sk-primary-hover: #38534a;
 	--sk-primary-fg: #ffffff;
-	--sk-accent: #a04520;
+	--sk-accent: #815937;
 	--sk-accent-hover: #7a3418;
 	--sk-accent-fg: #ffffff;
 
 	--sk-shadow-color: rgba(36, 24, 15, 0.15);
-	--sk-success: #1e7268;
-	--sk-success-soft: rgba(30, 114, 104, 0.15);
+	--sk-success: #157540;
+	--sk-success-soft: rgba(21, 117, 64, 0.16);
 	--sk-warning: #a17825;
 	--sk-warning-soft: rgba(161, 120, 37, 0.15);
 	--sk-error: #b91c1c;
@@ -540,8 +540,8 @@
 	--sk-accent-fg: #180f20;
 
 	--sk-shadow-color: rgba(0, 0, 0, 0.55);
-	--sk-success: #83c5be;
-	--sk-success-soft: rgba(131, 197, 190, 0.2);
+	--sk-success: #25d474;
+	--sk-success-soft: rgba(37, 212, 116, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
 	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
@@ -575,11 +575,11 @@
 	--sk-primary-fg: #ffffff;
 	--sk-accent: #d4739c;
 	--sk-accent-hover: #b04870;
-	--sk-accent-fg: #ffffff;
+	--sk-accent-fg: #1f1622  /* AA 5.63:1 — le blanc precedent tombait a 3.12:1 */;
 
 	--sk-shadow-color: rgba(31, 22, 34, 0.15);
-	--sk-success: #1e7268;
-	--sk-success-soft: rgba(30, 114, 104, 0.15);
+	--sk-success: #157540;
+	--sk-success-soft: rgba(21, 117, 64, 0.16);
 	--sk-warning: #a17825;
 	--sk-warning-soft: rgba(161, 120, 37, 0.15);
 	--sk-error: #b91c1c;
@@ -588,6 +588,109 @@
 	--sk-info: #6b3a5c;
 	--sk-info-soft: rgba(107, 58, 92, 0.12);
 }
+
+/* ============================================
+   LAGUNE — le sixième, et le seul hors du coin chaud.
+   ============================================
+
+   Les cinq autres occupent 53 degrés de la roue chromatique : tous leurs
+   accents tiennent entre le rouge et l'orange. Lagune est à 147 degrés, soit
+   106 de l'orange du logo — assez loin pour que personne n'y cherche une
+   erreur.
+
+   Sa couleur est le vert du hoodie de la mascotte, assombri de cinq points
+   pour passer AA en texte. C'est donc à la fois le thème le plus fidèle à la
+   marque et le plus éloigné de son orange, ce qui n'est pas une contradiction :
+   le logo a deux couleurs et une seule était utilisée.
+
+   Il est pensé en clair d'abord, contrairement aux cinq autres. Un téléphone
+   en plein soleil n'est pas un cas limite ici, et aucun thème ne répondait à
+   ça — les variantes claires existantes sont des déclinaisons, pas des
+   identités.
+
+   Ses neutres sont quasi désaturés (S ~4%) là où les autres ont des fonds
+   teintés à 23-57%. Le vert est le seul événement chromatique de l'écran,
+   ce qui en fait un thème d'une autre nature, pas une sixième nuance.
+   ============================================ */
+[data-theme='lagune-light'] {
+	--sk-surface: #f7f6f3;
+	--sk-surface-alt: #eeece7;
+	--sk-surface-elevated: #ffffff;
+	--sk-surface-elevated-hover: #f4f7f4;
+	--sk-surface-overlay: #ffffff;
+	--sk-border: #d5d3cd;
+	--sk-border-strong: #a3a09a;
+
+	--sk-text: #14201a;
+	--sk-text-muted: #55605a;
+
+	--sk-surface-craft: #f3eee2;
+	--sk-surface-create: #f6e6e4;
+	--sk-surface-understand: #e2ecf2;
+	--sk-surface-operate: #dcece4;
+	--sk-surface-share: #eae7f0;
+	--sk-surface-meta: #f2eedd;
+
+	--sk-primary: #2a6f7f;
+	--sk-primary-hover: #1f5460;
+	--sk-primary-fg: #ffffff;
+	--sk-accent: #087d3c;
+	--sk-accent-hover: #066330;
+	--sk-accent-fg: #ffffff;
+
+	--sk-shadow-color: rgba(20, 32, 26, 0.12);
+	--sk-success: #157540;
+	--sk-success-soft: rgba(21, 117, 64, 0.16);
+	--sk-warning: #8a6410;
+	--sk-warning-soft: rgba(138, 100, 16, 0.15);
+	--sk-error: #b3261e;
+	--sk-error-soft: rgba(179, 38, 30, 0.12);
+	--sk-error-fg: #ffffff;
+	--sk-info: #2a6f7f;
+	--sk-info-soft: rgba(42, 111, 127, 0.14);
+}
+
+/* La variante sombre : mêmes neutres désaturés, vert remonté en clarté pour
+   tenir sur l'encre. Elle existe parce que le sélecteur clair/sombre doit
+   marcher partout — mais c'est la variante, pas l'identité. */
+[data-theme='lagune'] {
+	--sk-surface: #101413;
+	--sk-surface-alt: #171c1a;
+	--sk-surface-elevated: #1f2523;
+	--sk-surface-elevated-hover: #29302d;
+	--sk-surface-overlay: #333b38;
+	--sk-border: #3c4441;
+	--sk-border-strong: #58625e;
+
+	--sk-text: #eef2ef;
+	--sk-text-muted: #a3ada8;
+
+	--sk-surface-craft: #2a2416;
+	--sk-surface-create: #2e1a1a;
+	--sk-surface-understand: #16242e;
+	--sk-surface-operate: #122a22;
+	--sk-surface-share: #241f2e;
+	--sk-surface-meta: #26261a;
+
+	--sk-primary: #3d8ea1;
+	--sk-primary-hover: #4ea3b6;
+	--sk-primary-fg: #101413;
+	--sk-accent: #2cdd7c;
+	--sk-accent-hover: #4fe793;
+	--sk-accent-fg: #101413;
+
+	--sk-shadow-color: rgba(0, 0, 0, 0.5);
+	--sk-success: #25d474;
+	--sk-success-soft: rgba(37, 212, 116, 0.2);
+	--sk-warning: #e9c46a;
+	--sk-warning-soft: rgba(233, 196, 106, 0.2);
+	--sk-error: #e56b6b;
+	--sk-error-soft: rgba(229, 107, 107, 0.2);
+	--sk-error-fg: #101413;
+	--sk-info: #3d8ea1;
+	--sk-info-soft: rgba(61, 142, 161, 0.2);
+}
+
 
 /* ============================================
    COLORATION PAR ROUTE — chromatique globale
