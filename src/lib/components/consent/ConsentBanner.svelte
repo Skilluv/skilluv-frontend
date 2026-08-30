@@ -46,7 +46,7 @@
 		data-consent-banner
 		data-testid="consent-banner"
 		aria-label={i18n.t('consent.banner.aria')}
-		class="fixed inset-x-0 bottom-0 z-[80] px-3 pb-3 sm:px-4 sm:pb-4"
+		class="fixed inset-x-0 bottom-0 z-[80] px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-4 sm:pb-4"
 	>
 		<div
 			class="mx-auto max-w-5xl rounded-2xl border border-border bg-surface-elevated p-4 shadow-lg sm:p-5"
@@ -67,18 +67,53 @@
 					</p>
 				</div>
 
+				<!--
+					Three stacked full-width buttons made this 339px tall at 320px
+					wide — 47% of the screen, for a banner that is supposed to let
+					somebody keep reading. The two decisive answers now share a row
+					at every width and the third sits under them.
+
+					They share it as equals: `flex-1` on both, so neither is easier
+					to hit than the other. A "reject" narrower or lower than
+					"accept" is the dark pattern the copy was written to avoid, and
+					it would have crept back in through the layout.
+
+					`sm:contents` dissolves the pairing wrapper above the small
+					breakpoint, so the desktop row keeps its original order —
+					customise, reject, accept — from the same markup.
+				-->
 				<div
 					class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-3"
 				>
-					<Button variant="secondary" size="md" onclick={customize} disabled={busy}>
+					<Button
+						variant="secondary"
+						size="md"
+						class="order-last sm:order-none"
+						onclick={customize}
+						disabled={busy}
+					>
 						{i18n.t('consent.banner.customize')}
 					</Button>
-					<Button variant="secondary" size="md" onclick={rejectAll} disabled={busy}>
-						{i18n.t('consent.banner.rejectAll')}
-					</Button>
-					<Button variant="primary" size="md" onclick={acceptAll} disabled={busy}>
-						{i18n.t('consent.banner.acceptAll')}
-					</Button>
+					<div class="flex gap-2 sm:contents">
+						<Button
+							variant="secondary"
+							size="md"
+							class="flex-1 sm:flex-none"
+							onclick={rejectAll}
+							disabled={busy}
+						>
+							{i18n.t('consent.banner.rejectAll')}
+						</Button>
+						<Button
+							variant="primary"
+							size="md"
+							class="flex-1 sm:flex-none"
+							onclick={acceptAll}
+							disabled={busy}
+						>
+							{i18n.t('consent.banner.acceptAll')}
+						</Button>
+					</div>
 				</div>
 			</div>
 		</div>

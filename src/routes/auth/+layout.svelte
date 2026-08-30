@@ -1,6 +1,7 @@
 <script lang="ts">
 	let { children } = $props();
 	import { i18n } from '$lib/i18n';
+	import BrandLogo from '$components/layout/BrandLogo.svelte';
 </script>
 
 <!-- Auth layout : bare mais avec identité Skilluv forte + ambiance CRAFT
@@ -10,20 +11,21 @@
 	<div class="auth-shell__bg" aria-hidden="true"></div>
 
 	<div class="auth-shell__inner">
-		<!-- Brand block : trousseau + wordmark bicolore -->
+		<!--
+			The real mark, not the stand-in.
+
+			This carried the hand-drawn keyring and the CSS wordmark that the
+			navbar shed when the official artwork arrived — so sign-in and
+			sign-up, the first page anyone sees and the one that asks for a
+			password, were the last places still showing a placeholder. The
+			enterprise funnel had been branded for a while; the candidate one
+			never was.
+
+			Putting it in the layout covers all eight auth pages at once, which
+			is why it belongs here rather than on login and register.
+		-->
 		<a href="/" class="auth-brand" aria-label="Skilluv accueil">
-			<svg viewBox="0 0 60 60" class="auth-brand__mark" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
-				<circle cx="30" cy="14" r="8" />
-				<line x1="24" y1="22" x2="20" y2="50" />
-				<line x1="30" y1="22" x2="30" y2="52" />
-				<line x1="36" y1="22" x2="40" y2="50" />
-				<rect x="17" y="45" width="5" height="3" fill="currentColor" stroke="none" />
-				<rect x="27" y="47" width="6" height="3" fill="currentColor" stroke="none" />
-				<rect x="37" y="45" width="5" height="3" fill="currentColor" stroke="none" />
-			</svg>
-			<span class="wordmark auth-brand__word">
-				<span class="wordmark-skil">sKIL</span><span class="wordmark-luv">LUV</span>
-			</span>
+			<BrandLogo size={44} />
 		</a>
 
 		<!-- Content card -->
@@ -85,14 +87,6 @@
 	}
 	.auth-brand:hover {
 		transform: translateY(-2px);
-	}
-	.auth-brand__mark {
-		height: 40px;
-		width: 40px;
-	}
-	.auth-brand__word {
-		font-size: 2.25rem;
-		line-height: 1;
 	}
 
 	.auth-card {
