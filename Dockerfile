@@ -47,8 +47,18 @@ ENV HOST=0.0.0.0
 ENV ORIGIN=https://skill-uv.com
 
 # Healthcheck
+#
+# 127.0.0.1, not localhost. In this image wget resolves `localhost` to the IPv6
+# loopback and connects to [::1]:3000, while the server binds 0.0.0.0, which is
+# IPv4 only — so every probe was refused and the container was declared
+# unhealthy while it was serving perfectly ("Listening on http://0.0.0.0:3000"
+# in the logs, connection refused in the probe). The literal address removes
+# the name resolution that caused it.
+#
+# $PORT rather than a literal 3000, so overriding the port does not leave the
+# healthcheck probing the old one.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
+  CMD wget --no-verbose --tries=1 --spider "http://127.0.0.1:${PORT}/" || exit 1
 
 # Port
 EXPOSE 3000
