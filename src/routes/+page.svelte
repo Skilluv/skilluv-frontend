@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { auth } from '$lib/stores/auth.svelte';
 	import { i18n } from '$lib/i18n';
 	import JsonLd from '$lib/components/seo/JsonLd.svelte';
@@ -25,7 +26,20 @@
 	<title>Skilluv — {i18n.t('landing.title')}</title>
 	<meta property="og:title" content="Skilluv — {i18n.t('landing.title')} {i18n.t('landing.titleAccent')}" />
 	<meta property="og:description" content={i18n.t('landing.subtitle')} />
-	<meta property="og:image" content="/og-image.png" />
+	<!-- Absolute, because Open Graph takes a URL and a crawler has no page to
+	     resolve a relative path against. `/og-image.png` served fine to a
+	     browser and produced no preview at all when a link was shared, which
+	     is the same failure the SVG had, one step later.
+
+	     Derived from the request rather than hardcoded so a preview
+	     deployment advertises its own image instead of production's. -->
+	<meta property="og:image" content={`${page.url.origin}/og-image.png`} />
+	<meta property="og:url" content={page.url.href} />
+	<meta property="og:type" content="website" />
+	<!-- Twitter reads og:* as a fallback but needs the card type to render
+	     the large image rather than a thumbnail. -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content={`${page.url.origin}/og-image.png`} />
 </svelte:head>
 
 {#if auth.isAuthenticated}
