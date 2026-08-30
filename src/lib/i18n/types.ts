@@ -1838,6 +1838,18 @@ export interface Translations
 		unlinked: string;
 		lastOne: string;
 		lastOneNote: string;
+		/** What linking Discord actually gets you — roles and channels. */
+		discordHint: string;
+		/** Said before the click: unlinking takes the Discord roles back. */
+		discordUnlinkWarning: string;
+	};
+
+	/** The invitation to link Discord, shown after the trades step. */
+	discordLink: {
+		title: string;
+		body: string;
+		cta: string;
+		laterNote: string;
 	};
 
 	/** The declared half of a profile: jobs, schools, languages. */

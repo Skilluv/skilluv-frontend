@@ -1713,7 +1713,19 @@ export const fr: Translations = {
 		unlinked: 'Fournisseur délié.',
 		lastOne: 'Ton seul accès',
 		lastOneNote:
-			'C’est le seul fournisseur du compte, donc le délier n’est pas proposé — tu pourrais ne plus pouvoir te connecter.'
+			'C’est le seul fournisseur du compte, donc le délier n’est pas proposé — tu pourrais ne plus pouvoir te connecter.',
+		discordHint:
+			'Lier Discord ouvre les salons de tes métiers et t’attribue tes rôles automatiquement. Ce n’est pas une façon de te connecter.',
+		discordUnlinkWarning:
+			'Délier Discord retire tes rôles sur le serveur. Tu peux relier le compte à tout moment.'
+	},
+
+	discordLink: {
+		title: 'Rejoins tes salons sur Discord',
+		body: 'Tes métiers sont enregistrés. Lie ton compte Discord et tes rôles arrivent en quelques secondes, avec les salons qui vont avec — un message privé te les nomme.',
+		cta: 'Connecter Discord',
+		laterNote:
+			'Tu peux le faire plus tard depuis tes paramètres, rien ici n’en dépend.'
 	},
 
 	cv: {

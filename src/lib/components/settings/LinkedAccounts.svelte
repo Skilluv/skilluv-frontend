@@ -23,7 +23,13 @@
 	 */
 	import { onMount } from 'svelte';
 	import { Link2, Unlink } from '@lucide/svelte';
-	import { oauthLinksApi, linkUrl, type LinkedProvider } from '$api/oauth_links';
+	import {
+		oauthLinksApi,
+		linkUrl,
+		isSignInProvider,
+		LINKABLE_PROVIDERS,
+		type LinkedProvider
+	} from '$api/oauth_links';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';
@@ -35,11 +41,23 @@
 	let loading = $state(true);
 	let busy = $state<Record<string, boolean>>({});
 
-	/** The two that link from here. GitHub goes through the repo-sync flow. */
-	const LINKABLE = ['google', 'linkedin'] as const;
-
 	let linked = $derived(new Set(providers.map((p) => p.provider)));
-	let isLastOne = $derived(providers.length <= 1);
+
+	/**
+	 * How many providers are actually a way back in.
+	 *
+	 * Counting every link was wrong once Discord existed. Discord cannot sign
+	 * anyone in, so it must not prop up the count — otherwise the guard refuses
+	 * a harmless unlink when Discord is the only link left, and permits a
+	 * dangerous one when the pair is Google + Discord and Google is the only
+	 * real door.
+	 */
+	let waysIn = $derived(providers.filter((p) => isSignInProvider(p.provider)).length);
+
+	/** True for a provider whose removal could cost somebody their account. */
+	function isLoadBearing(provider: string): boolean {
+		return isSignInProvider(provider) && waysIn <= 1;
+	}
 
 	function fmtDate(iso: string): string {
 		return new Date(iso).toLocaleDateString(i18n.locale, {
@@ -62,7 +80,7 @@
 	}
 
 	async function unlink(provider: string) {
-		if (busy[provider] || isLastOne) return;
+		if (busy[provider] || isLoadBearing(provider)) return;
 		busy = { ...busy, [provider]: true };
 		try {
 			await oauthLinksApi.unlink(provider);
@@ -107,7 +125,7 @@
 						</span>
 
 						<div class="ml-auto">
-							{#if isLastOne}
+							{#if isLoadBearing(p.provider)}
 								<!-- Not offered, and the reason is on screen rather than in a
 								     dialog somebody clicks through. -->
 								<Badge size="sm" variant="warning">{i18n.t('linkedAccounts.lastOne')}</Badge>
@@ -122,6 +140,14 @@
 									<Unlink size={15} />
 									{i18n.t('linkedAccounts.unlinkCta')}
 								</Button>
+								{#if p.provider === 'discord'}
+									<!-- Unlinking Discord takes the roles back, which is not
+									     obvious from a button labelled "unlink". Said before
+									     the click, not in a dialog after it. -->
+									<p class="mt-1 max-w-xs text-xs text-text-muted">
+										{i18n.t('linkedAccounts.discordUnlinkWarning')}
+									</p>
+								{/if}
 							{/if}
 						</div>
 					</li>
@@ -132,7 +158,7 @@
 		{/if}
 
 		<div class="flex flex-wrap gap-2">
-			{#each LINKABLE as provider (provider)}
+			{#each LINKABLE_PROVIDERS as provider (provider)}
 				{#if !linked.has(provider)}
 					<!-- A link, not a button: this navigates into a consent screen and
 					     comes back through a callback the server handles. -->
@@ -143,8 +169,14 @@
 			{/each}
 		</div>
 
-		{#if isLastOne && providers.length === 1}
+		{#if waysIn === 1}
 			<p class="text-xs text-text-muted">{i18n.t('linkedAccounts.lastOneNote')}</p>
+		{/if}
+
+		{#if !linked.has('discord')}
+			<!-- What linking Discord actually does, since "link Discord" says
+			     nothing about roles or channels. -->
+			<p class="text-xs text-text-muted">{i18n.t('linkedAccounts.discordHint')}</p>
 		{/if}
 	{/if}
 </section>
