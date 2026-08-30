@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { contactApi } from '$api/contact';
@@ -186,7 +187,7 @@
 							<div class="mb-1 flex flex-wrap items-center gap-2">
 								{#if req.talent_username}
 									<a
-										href={`/profile/${req.talent_username}`}
+										href={resolve(`/profile/${req.talent_username}`)}
 										class="font-semibold hover:text-primary"
 									>
 										{req.talent_display_name ?? req.talent_username}
@@ -221,7 +222,7 @@
 								</span>
 
 								{#if req.status === 'accepted'}
-									<a href="/enterprise/messages" class="inline-flex items-center gap-1 text-accent hover:underline">
+									<a href={resolve('/enterprise/messages')} class="inline-flex items-center gap-1 text-accent hover:underline">
 										{i18n.locale === 'fr' ? 'Ouvrir la conversation' : 'Open conversation'}
 										<ArrowRight size={12} strokeWidth={2} />
 									</a>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import type { TeamMarketplaceSlot } from '$lib/types';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
@@ -23,7 +24,7 @@
 				<span class="truncate">{slot.team_name}</span>
 			</div>
 			<h3 class="text-base font-bold text-text-primary">
-				<a href="/challenges/{slot.challenge_id}" class="hover:text-accent">
+				<a href={resolve(`/challenges/${slot.challenge_id}`)} class="hover:text-accent">
 					{slot.challenge_title}
 				</a>
 			</h3>

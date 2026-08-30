@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { authApi } from '$api/auth';
 	import { auth } from '$stores/auth.svelte';
@@ -69,7 +70,7 @@
 			auth.setUser(me.data.user);
 			// New onboarding step: pick 1-3 orientations (P16). Users can skip
 			// via the soft-block CTA if they want to explore first — see MVP §0.7.
-			goto('/onboarding/orientations');
+			goto(resolve('/onboarding/orientations'));
 		} catch (err) {
 			error = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
 		} finally {
@@ -165,14 +166,14 @@
 				<span>
 					{#if i18n.locale === 'fr'}
 						J'accepte les
-						<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">CGU</a>
+						<a href={resolve('/legal/terms')} target="_blank" rel="noopener" class="text-accent hover:underline">CGU</a>
 						et la
-						<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">politique de confidentialité</a>.
+						<a href={resolve('/legal/privacy')} target="_blank" rel="noopener" class="text-accent hover:underline">politique de confidentialité</a>.
 					{:else}
 						I accept the
-						<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">Terms of Service</a>
+						<a href={resolve('/legal/terms')} target="_blank" rel="noopener" class="text-accent hover:underline">Terms of Service</a>
 						and
-						<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">Privacy Policy</a>.
+						<a href={resolve('/legal/privacy')} target="_blank" rel="noopener" class="text-accent hover:underline">Privacy Policy</a>.
 					{/if}
 				</span>
 			</label>

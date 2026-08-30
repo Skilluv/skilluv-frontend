@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 </script>
 
@@ -12,7 +13,7 @@
 	<p class="lede">
 		Cette page détaille les droits dont vous disposez sur vos données à caractère personnel et la
 		procédure pour les exercer auprès de Skilluv. Elle complète notre
-		<a href="/legal/privacy">Politique de confidentialité</a>.
+		<a href={resolve('/legal/privacy')}>Politique de confidentialité</a>.
 	</p>
 
 	<h2>1. Cadre légal</h2>
@@ -37,7 +38,7 @@
 	<p>
 		Vous pouvez demander la correction de données inexactes ou le complément de données
 		incomplètes. La plupart des informations de profil peuvent être modifiées directement depuis
-		vos <a href="/settings">paramètres</a>.
+		vos <a href={resolve('/settings')}>paramètres</a>.
 	</p>
 
 	<h3>2.3 Droit à l'effacement <small>(art. 17 — « droit à l'oubli »)</small></h3>
@@ -92,9 +93,9 @@
 	<h2>3. Comment exercer vos droits</h2>
 	<p>Pour exercer l'un de ces droits, vous pouvez&nbsp;:</p>
 	<ol>
-		<li>utiliser les outils en libre-service de vos <a href="/settings">paramètres de compte</a> (édition du profil, suppression du compte, paramètres de visibilité)&nbsp;;</li>
+		<li>utiliser les outils en libre-service de vos <a href={resolve('/settings')}>paramètres de compte</a> (édition du profil, suppression du compte, paramètres de visibilité)&nbsp;;</li>
 		<li>nous écrire par e-mail à <span class="todo">[TODO : dpo@skilluv.…]</span> avec pour objet « Exercice de droits RGPD »&nbsp;;</li>
-		<li>nous écrire par courrier à l'adresse du siège social (voir <a href="/legal/mentions">mentions légales</a>).</li>
+		<li>nous écrire par courrier à l'adresse du siège social (voir <a href={resolve('/legal/mentions')}>mentions légales</a>).</li>
 	</ol>
 
 	<h3>3.1 Justification d'identité</h3>
@@ -145,7 +146,7 @@
 	<h1>Your rights — GDPR</h1>
 	<p class="lede">
 		This page details the rights you have over your personal data and how to exercise them with
-		Skilluv. It complements our <a href="/legal/privacy">Privacy Policy</a>.
+		Skilluv. It complements our <a href={resolve('/legal/privacy')}>Privacy Policy</a>.
 	</p>
 
 	<h2>1. Legal framework</h2>
@@ -168,7 +169,7 @@
 	<h3>2.2 Right to rectification <small>(Art. 16)</small></h3>
 	<p>
 		You may request the correction of inaccurate data or the completion of incomplete data. Most
-		profile information can be edited directly from your <a href="/settings">settings</a>.
+		profile information can be edited directly from your <a href={resolve('/settings')}>settings</a>.
 	</p>
 
 	<h3>2.3 Right to erasure <small>(Art. 17 — "right to be forgotten")</small></h3>
@@ -221,9 +222,9 @@
 	<h2>3. How to exercise your rights</h2>
 	<p>To exercise any of these rights, you may:</p>
 	<ol>
-		<li>use the self-service tools in your <a href="/settings">account settings</a> (profile editing, account deletion, visibility settings);</li>
+		<li>use the self-service tools in your <a href={resolve('/settings')}>account settings</a> (profile editing, account deletion, visibility settings);</li>
 		<li>email us at <span class="todo">[TODO: dpo@skilluv.…]</span> with the subject "GDPR rights request";</li>
-		<li>write to the registered office address (see <a href="/legal/mentions">legal notice</a>).</li>
+		<li>write to the registered office address (see <a href={resolve('/legal/mentions')}>legal notice</a>).</li>
 	</ol>
 
 	<h3>3.1 Proof of identity</h3>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/state';
 	import { i18n } from '$lib/i18n';
@@ -139,7 +140,7 @@
 
 <div class="mx-auto max-w-4xl px-4 py-10 sm:py-14">
 	<nav class="mb-6 flex items-center gap-2 text-sm text-text-muted">
-		<a href="/tournaments" class="hover:text-text-primary">Tournaments</a>
+		<a href={resolve('/tournaments')} class="hover:text-text-primary">Tournaments</a>
 		<span>›</span>
 		<span class="text-text-primary truncate">{tournament?.name ?? '...'}</span>
 	</nav>
@@ -236,7 +237,7 @@
 							<div class="min-w-0 flex-1">
 								{#if e.username}
 									<a
-										href="/profile/{e.username}"
+										href={resolve(`/profile/${e.username}`)}
 										class="truncate font-semibold hover:underline"
 										data-testid="leaderboard-name"
 									>

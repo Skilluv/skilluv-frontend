@@ -8,6 +8,7 @@
 	 * card falls back to type, which is honest rather than a grey placeholder
 	 * pretending to be artwork.
 	 */
+	import { resolve } from '$app/paths';
 	import { CalendarRange, Trophy } from '@lucide/svelte';
 	import { i18n } from '$lib/i18n';
 	import Badge from '$components/ui/Badge.svelte';
@@ -56,7 +57,7 @@
 	class="group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface-elevated transition-colors duration-200 hover:border-text-muted"
 	data-testid="contest-card"
 >
-	<a href="/design/contests/{contest.slug}" class="block">
+	<a href={resolve(`/design/contests/${contest.slug}`)} class="block">
 		{#if moodboard}
 			<img
 				src={moodboard}
@@ -77,7 +78,7 @@
 	<div class="flex flex-1 flex-col p-5">
 		<div class="flex flex-wrap items-start justify-between gap-2">
 			<a
-				href="/design/contests/{contest.slug}"
+				href={resolve(`/design/contests/${contest.slug}`)}
 				class="text-lg font-bold text-text-primary underline-offset-4 hover:underline"
 			>
 				{contest.name}

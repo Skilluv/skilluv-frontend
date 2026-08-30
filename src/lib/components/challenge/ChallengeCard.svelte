@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 	import { domainStyle } from '$lib/utils/domains';
 	import type { Challenge } from '$lib/types';
@@ -51,7 +52,7 @@
 	</div>
 {:else}
 	<a
-		href={locked ? undefined : `/challenges/${challenge.id}`}
+		href={locked ? undefined : resolve(`/challenges/${challenge.id}`)}
 		class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200
 			{locked ? 'cursor-not-allowed opacity-50' : 'hover:border-text-muted/40'}"
 		aria-disabled={locked}

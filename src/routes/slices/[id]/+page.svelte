@@ -192,7 +192,7 @@
 						<a
 							href={slice.external_metadata.issue_url}
 							target="_blank"
-							rel="noopener noreferrer"
+							rel="external noopener noreferrer"
 							class="inline-flex items-center gap-1.5 text-text-muted hover:text-accent transition-colors"
 						>
 							<ExternalLink size={14} strokeWidth={2} />
@@ -203,7 +203,7 @@
 						<a
 							href={slice.fork_repo_url}
 							target="_blank"
-							rel="noopener noreferrer"
+							rel="external noopener noreferrer"
 							class="inline-flex items-center gap-1.5 text-text-muted hover:text-accent transition-colors"
 						>
 							<GitBranch size={14} strokeWidth={2} />
@@ -214,7 +214,7 @@
 						<a
 							href={slice.submitted_pr_url}
 							target="_blank"
-							rel="noopener noreferrer"
+							rel="external noopener noreferrer"
 							class="inline-flex items-center gap-1.5 text-text-muted hover:text-accent transition-colors"
 						>
 							<ExternalLink size={14} strokeWidth={2} />

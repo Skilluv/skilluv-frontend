@@ -6,6 +6,7 @@
 	 * (a long-lived identity): it is a learning cycle with an end date. The
 	 * copy says so, because the three would otherwise blur.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { CalendarRange, Users } from '@lucide/svelte';
 	import { cohortsApi } from '$lib/api/cohorts';
@@ -153,7 +154,7 @@
 			<div class="flex flex-wrap gap-2">
 				{#each mine as row (row.cohort.id)}
 					<a
-						href="/cohorts/{row.cohort.id}"
+						href={resolve(`/cohorts/${row.cohort.id}`)}
 						class="inline-flex items-center gap-2 rounded-full border border-border bg-surface-elevated px-4 py-2 text-sm text-text-primary transition-colors duration-200 hover:border-text-muted"
 					>
 						{row.cohort.name}
@@ -225,7 +226,7 @@
 				<article class="flex flex-col rounded-2xl border border-border bg-surface-elevated p-5">
 					<div class="flex flex-wrap items-start justify-between gap-2">
 						<a
-							href="/cohorts/{listing.cohort.id}"
+							href={resolve(`/cohorts/${listing.cohort.id}`)}
 							class="text-lg font-bold text-text-primary underline-offset-4 hover:underline"
 						>
 							{listing.cohort.name}

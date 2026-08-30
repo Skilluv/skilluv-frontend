@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
@@ -54,7 +55,7 @@
 				: 'Join a guild to fight, learn, cultivate. MMO-style guilds F1-team-inspired: banner, tag, leader, wars. Live ranking on total fragments.'}
 		</p>
 		<a
-			href="/guilds/new"
+			href={resolve('/guilds/new')}
 			data-testid="guild-create-cta"
 			class="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-primary/90"
 		>
@@ -98,7 +99,7 @@
 		<div class="space-y-2">
 			{#each guilds as g, i (g.slug)}
 				<a
-					href={`/guilds/${g.slug}`}
+					href={resolve(`/guilds/${g.slug}`)}
 					data-testid="guild-card"
 					class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
 				>

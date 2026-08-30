@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { auth } from '$stores/auth.svelte';
 	import { theme } from '$stores/theme.svelte';
@@ -84,7 +85,7 @@
 		try {
 			await authApi.deleteAccount(deletePassword);
 			auth.clear();
-			goto('/');
+			goto(resolve('/'));
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : 'Erreur.');
 		} finally {
@@ -137,7 +138,7 @@
 	<section class="mb-8">
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.notifications.title')}</h2>
 		<a
-			href="/settings/notifications"
+			href={resolve('/settings/notifications')}
 			data-testid="settings-link-notifications"
 			class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
 		>
@@ -153,7 +154,7 @@
 	<section class="mb-8">
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.emailPrefs.title')}</h2>
 		<a
-			href="/settings/email-preferences"
+			href={resolve('/settings/email-preferences')}
 			data-testid="settings-link-email-prefs"
 			class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
 		>
@@ -169,7 +170,7 @@
 	<section class="mb-8">
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.profileSection.title')}</h2>
 		<a
-			href="/settings/profile"
+			href={resolve('/settings/profile')}
 			data-testid="settings-link-profile"
 			class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
 		>
@@ -185,7 +186,7 @@
 	<section class="mb-8">
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('externalSignals.title')}</h2>
 		<a
-			href="/settings/external-signals"
+			href={resolve('/settings/external-signals')}
 			data-testid="settings-link-external-signals"
 			class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
 		>
@@ -201,7 +202,7 @@
 		     than a signal a moderator confirms. Same page, so the difference is
 		     read once rather than discovered twice. -->
 		<a
-			href="/settings/cv"
+			href={resolve('/settings/cv')}
 			data-testid="settings-link-cv"
 			class="mt-4 flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
 		>
@@ -213,7 +214,7 @@
 		</a>
 
 		<a
-			href="/settings/portfolios"
+			href={resolve('/settings/portfolios')}
 			data-testid="settings-link-portfolios"
 			class="mt-4 flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
 		>
@@ -264,7 +265,7 @@
 	<section class="mb-8">
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.security.title')}</h2>
 		<a
-			href="/settings/security"
+			href={resolve('/settings/security')}
 			class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
 		>
 			<div>

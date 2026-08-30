@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
@@ -9,7 +10,7 @@
 		e.preventDefault();
 		const c = code.trim().toUpperCase();
 		if (!c) return;
-		void goto(`/diplomas/verify/${c}`);
+		void goto(resolve(`/diplomas/verify/${c}`));
 	}
 </script>
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { slicesApi, type Slice, type SliceStatus } from '$api/slices';
 	import { SkilluError } from '$api/client';
@@ -72,7 +73,7 @@
 		try {
 			await slicesApi.claim(s.id);
 			toast.success(i18n.t('p26.dashboardSlices.toastReserved'));
-			await goto(`/slices/${s.id}`);
+			await goto(resolve(`/slices/${s.id}`));
 		} catch (err) {
 			if (err instanceof SkilluError && err.status === 403) {
 				toast.warning(i18n.t('p26.dashboardSlices.toastGateBlocked'));

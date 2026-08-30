@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { auth } from '$lib/stores/auth.svelte';
 	import { i18n } from '$lib/i18n';
 	import { Compass, X } from '@lucide/svelte';
@@ -49,7 +50,7 @@
 				</p>
 			</div>
 			<a
-				href="/onboarding/orientations"
+				href={resolve('/onboarding/orientations')}
 				class="shrink-0 rounded-full bg-accent px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-accent-fg transition-colors hover:bg-accent-hover"
 			>
 				{i18n.t('orientations.banner.cta')}

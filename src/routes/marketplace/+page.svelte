@@ -13,6 +13,7 @@
 	 * term a buyer most often discovers after paying, and three values is few
 	 * enough to say every time.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { Download, Star } from '@lucide/svelte';
 	import { marketplaceApi } from '$lib/api/marketplace';
@@ -136,7 +137,7 @@
 				{@const rating = fmtRating(item.rating_avg)}
 				<li>
 					<a
-						href="/marketplace/{item.id}"
+						href={resolve(`/marketplace/${item.id}`)}
 						class="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface-elevated transition-colors hover:border-accent/40"
 					>
 						<img

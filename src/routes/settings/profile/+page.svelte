@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { auth } from '$stores/auth.svelte';
 	import { toast } from '$stores/toast.svelte';
 	import { profileApi } from '$api/profile';
@@ -55,7 +56,7 @@
 
 <div class="mx-auto max-w-2xl px-4 py-8">
 	<a
-		href="/settings"
+		href={resolve('/settings')}
 		class="mb-6 inline-flex items-center gap-1 text-sm text-text-muted transition-colors hover:text-text-primary"
 	>
 		<ArrowLeft size={14} strokeWidth={2} />
@@ -117,7 +118,7 @@
 	</div>
 
 	<a
-		href="/settings/profile/availability"
+		href={resolve('/settings/profile/availability')}
 		data-testid="settings-link-availability"
 		class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
 	>

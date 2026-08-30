@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
@@ -169,7 +170,7 @@
 			<div class="space-y-2">
 				{#each posts as p (p.id)}
 					<a
-						href={`/forum/${p.id}`}
+						href={resolve(`/forum/${p.id}`)}
 						class="block rounded-2xl border border-border bg-surface-elevated p-5 transition-all hover:border-primary/40 hover:shadow-md"
 					>
 						<div class="flex items-start gap-3">

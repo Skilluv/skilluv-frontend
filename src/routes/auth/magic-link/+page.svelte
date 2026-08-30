@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import { magicLinkApi } from '$api/magic_link';
@@ -107,7 +108,7 @@
 		</form>
 
 		<div class="mt-6 flex flex-col items-center gap-2 text-sm text-text-muted">
-			<a href="/auth/login" class="hover:text-primary">
+			<a href={resolve('/auth/login')} class="hover:text-primary">
 				{i18n.locale === 'fr' ? 'Ou utiliser mot de passe →' : 'Or use password →'}
 			</a>
 		</div>

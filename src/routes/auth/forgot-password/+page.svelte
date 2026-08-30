@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import { authApi } from '$api/auth';
@@ -70,7 +71,7 @@
 		</form>
 
 		<p class="mt-6 text-center text-sm text-text-muted">
-			<a href="/auth/login" class="font-medium text-primary hover:underline">{i18n.t('auth.forgot.backToLogin')}</a>
+			<a href={resolve('/auth/login')} class="font-medium text-primary hover:underline">{i18n.t('auth.forgot.backToLogin')}</a>
 		</p>
 	{/if}
 </div>

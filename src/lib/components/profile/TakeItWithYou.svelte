@@ -66,7 +66,7 @@
 		<a
 			href={jsonHref}
 			target="_blank"
-			rel="noopener"
+			rel="external noopener"
 			class="inline-flex items-center gap-1.5 text-sm text-accent hover:underline"
 			data-testid="profile-portfolio-json"
 		>

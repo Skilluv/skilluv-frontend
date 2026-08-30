@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
@@ -102,7 +103,7 @@
 
 	onMount(() => {
 		if (!auth.isAuthenticated) {
-			goto('/auth/login?redirect=/enterprise/subscriptions');
+			goto(resolve('/auth/login?redirect=/enterprise/subscriptions'));
 			return;
 		}
 		void load();
@@ -116,7 +117,7 @@
 
 <div class="mx-auto max-w-5xl px-4 py-10 sm:py-14">
 	<nav class="mb-6 flex items-center gap-2 text-sm text-text-muted">
-		<a href="/enterprise/dashboard" class="hover:text-text-primary">
+		<a href={resolve('/enterprise/dashboard')} class="hover:text-text-primary">
 			{i18n.locale === 'fr' ? 'Espace entreprise' : 'Enterprise space'}
 		</a>
 		<span>›</span>
@@ -201,7 +202,7 @@
 							: (i18n.locale === 'fr' ? 'Choisir un plan.' : 'Choose a plan.')}
 					</h2>
 				</div>
-				<a href="/pricing" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+				<a href={resolve('/pricing')} class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
 					{i18n.locale === 'fr' ? 'Comparer avec crédits' : 'Compare with credits'}
 					<ArrowRight size={14} strokeWidth={2} />
 				</a>

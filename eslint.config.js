@@ -102,7 +102,7 @@ export default [
 			//
 			// Worth doing as its own piece of work. Turn this back on the day it
 			// starts, or the day a base path is introduced, whichever is first.
-			'svelte/no-navigation-without-resolve': 'off',
+			'svelte/no-navigation-without-resolve': 'error',
 			// Off, and not out of convenience: all 16 hits were false positives.
 			// The rule flags any `new Map`/`Set`/`Date` in a rune file, but every
 			// one of ours is either a collection built and consumed inside a

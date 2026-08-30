@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { auth } from '$stores/auth.svelte';
@@ -70,7 +71,7 @@
 		// until this flag is true (SSO sessions are the one exception because
 		// the IdP already asserted email ownership).
 		if (!auth.user.email_verified && auth.loginMethod !== 'sso') {
-			goto('/auth/verify-email?next=/enterprise/dashboard');
+			goto(resolve('/auth/verify-email?next=/enterprise/dashboard'));
 			return;
 		}
 		// TOTP mandatory unless the session was minted with a strong factor:
@@ -82,7 +83,7 @@
 		// user who armed a passkey isn't forced back through onboarding on a
 		// password login.
 		if (!auth.hasStrongFactorEnrolled && !auth.isStrongFactorSession) {
-			goto('/enterprise/onboarding');
+			goto(resolve('/enterprise/onboarding'));
 		}
 	});
 
@@ -95,25 +96,25 @@
 		{
 			title: i18n.locale === 'fr' ? 'Sourcing' : 'Sourcing',
 			items: [
-				{ href: '/enterprise/dashboard', label: i18n.t('enterprise.nav.dashboard'), icon: LayoutDashboard },
-				{ href: '/enterprise/talents', label: i18n.t('enterprise.nav.talents'), icon: Users },
-				{ href: '/enterprise/bookmarks', label: i18n.t('enterprise.nav.bookmarks'), icon: Bookmark },
-				{ href: '/enterprise/lists', label: i18n.t('enterprise.nav.lists'), icon: List },
-				{ href: '/enterprise/pipeline', label: i18n.locale === 'fr' ? 'Pipeline' : 'Pipeline', icon: Kanban },
-				{ href: '/enterprise/messages', label: i18n.t('enterprise.nav.messages'), icon: MessageSquare },
-				{ href: '/enterprise/interests', label: i18n.locale === 'fr' ? 'Demandes envoyées' : 'Sent requests', icon: Send }
+				{ href: resolve('/enterprise/dashboard'), label: i18n.t('enterprise.nav.dashboard'), icon: LayoutDashboard },
+				{ href: resolve('/enterprise/talents'), label: i18n.t('enterprise.nav.talents'), icon: Users },
+				{ href: resolve('/enterprise/bookmarks'), label: i18n.t('enterprise.nav.bookmarks'), icon: Bookmark },
+				{ href: resolve('/enterprise/lists'), label: i18n.t('enterprise.nav.lists'), icon: List },
+				{ href: resolve('/enterprise/pipeline'), label: i18n.locale === 'fr' ? 'Pipeline' : 'Pipeline', icon: Kanban },
+				{ href: resolve('/enterprise/messages'), label: i18n.t('enterprise.nav.messages'), icon: MessageSquare },
+				{ href: resolve('/enterprise/interests'), label: i18n.locale === 'fr' ? 'Demandes envoyées' : 'Sent requests', icon: Send }
 			]
 		},
 		{
 			title: i18n.locale === 'fr' ? 'Formation' : 'Learning',
 			items: [
 				{
-					href: '/enterprise/bounties',
+					href: resolve('/enterprise/bounties'),
 					label: i18n.locale === 'fr' ? 'Bounties' : 'Bounties',
 					icon: Hexagon
 				},
 				{
-					href: '/enterprise/certifications',
+					href: resolve('/enterprise/certifications'),
 					label: i18n.locale === 'fr' ? 'Certifications' : 'Certifications',
 					icon: Award
 				}
@@ -123,24 +124,24 @@
 			title: i18n.locale === 'fr' ? 'Compte' : 'Account',
 			items: [
 				{
-					href: '/enterprise/profile',
+					href: resolve('/enterprise/profile'),
 					label: i18n.locale === 'fr' ? 'Profil entreprise' : 'Company profile',
 					icon: Building2,
 					ownerOnly: true
 				},
 				{
-					href: '/enterprise/members',
+					href: resolve('/enterprise/members'),
 					label: i18n.locale === 'fr' ? 'Équipe' : 'Team',
 					icon: UserPlus
 				},
 				{
-					href: '/enterprise/kyc',
+					href: resolve('/enterprise/kyc'),
 					label: 'KYC',
 					icon: FileCheck2,
 					ownerOnly: true
 				},
 				{
-					href: '/enterprise/settings/security',
+					href: resolve('/enterprise/settings/security'),
 					label: i18n.locale === 'fr' ? 'Sécurité' : 'Security',
 					icon: ShieldCheck
 				}
@@ -150,18 +151,18 @@
 			title: i18n.locale === 'fr' ? 'Facturation' : 'Billing',
 			items: [
 				{
-					href: '/enterprise/credits',
+					href: resolve('/enterprise/credits'),
 					label: i18n.locale === 'fr' ? 'Crédits' : 'Credits',
 					icon: Wallet
 				},
 				{
-					href: '/enterprise/subscriptions',
+					href: resolve('/enterprise/subscriptions'),
 					label: i18n.locale === 'fr' ? 'Abonnements' : 'Subscriptions',
 					icon: Repeat,
 					ownerOnly: true
 				},
 				{
-					href: '/enterprise/credits/invoices',
+					href: resolve('/enterprise/credits/invoices'),
 					label: i18n.locale === 'fr' ? 'Factures' : 'Invoices',
 					icon: FileText
 				}
@@ -171,7 +172,7 @@
 			title: 'Owner',
 			items: [
 				{
-					href: '/enterprise/settings/sso',
+					href: resolve('/enterprise/settings/sso'),
 					label: 'SSO & SCIM',
 					icon: Settings,
 					ownerOnly: true
@@ -263,6 +264,10 @@
 						</p>
 						<div class="flex flex-col gap-0.5">
 							{#each group.items as item (item.href)}
+								<!-- Resolved where the literal is written, so the route is checked
+								     against the app's real routes there. The base path is applied
+								     exactly once and must not be applied again here. -->
+								<!-- eslint-disable svelte/no-navigation-without-resolve -->
 								<a
 									href={item.href}
 									class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors
@@ -273,6 +278,7 @@
 									<item.icon size={18} strokeWidth={2} />
 									{item.label}
 								</a>
+								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							{/each}
 						</div>
 					</div>
@@ -286,6 +292,10 @@
 	     dropdown et les liens contextuels des pages. -->
 	<div class="fixed bottom-0 left-0 right-0 z-50 flex justify-around border-t border-border bg-surface-elevated/95 py-2 backdrop-blur-sm lg:hidden">
 		{#each mobileNavItems as item (item.href)}
+			<!-- Resolved where the literal is written, so the route is checked
+			     against the app's real routes there. The base path is applied
+			     exactly once and must not be applied again here. -->
+			<!-- eslint-disable svelte/no-navigation-without-resolve -->
 			<a
 				href={item.href}
 				class="flex flex-col items-center gap-0.5 px-2 text-xs
@@ -294,6 +304,7 @@
 				<item.icon size={20} strokeWidth={2} />
 				<span>{item.label}</span>
 			</a>
+			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		{/each}
 	</div>
 

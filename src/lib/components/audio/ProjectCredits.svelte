@@ -15,6 +15,7 @@
 	 * Every row carries its verification code and links to it. That is the
 	 * whole point: a credit nobody can check is a line on a page.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { BadgeCheck } from '@lucide/svelte';
 	import { audioDeliveryApi } from '$lib/api/audio';
@@ -69,7 +70,7 @@
 					<p class="flex flex-wrap items-center gap-2">
 						<BadgeCheck size={13} strokeWidth={2} class="shrink-0 text-success" />
 						<a
-							href="/profile/{credit.username}"
+							href={resolve(`/profile/${credit.username}`)}
 							class="text-sm font-semibold text-text-primary hover:text-accent"
 						>
 							{credit.display_name || credit.username}
@@ -85,7 +86,7 @@
 						     attestation hash, while this is a short verification code
 						     on the attestations table. -->
 						<a
-							href="/attestations/verify/{credit.verification_code}"
+							href={resolve(`/attestations/verify/${credit.verification_code}`)}
 							class="underline-offset-4 hover:text-text-primary hover:underline"
 						>
 							{i18n.t('projectCredits.verifyCta')}

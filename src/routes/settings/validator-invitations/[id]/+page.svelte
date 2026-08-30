@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import {
@@ -39,7 +40,7 @@
 
 	async function load() {
 		if (!auth.isAuthenticated) {
-			await goto(`/auth/login?next=/settings/validator-invitations/${data.id}`);
+			await goto(resolve(`/auth/login?next=/settings/validator-invitations/${data.id}`));
 			return;
 		}
 		view = { status: 'loading' };
@@ -67,7 +68,7 @@
 		try {
 			await validatorApplicationsApi.accept(view.app.id);
 			toast.success(i18n.t('p26.validatorApplication.toastInviteAccepted'));
-			await goto('/settings/my-validator-applications');
+			await goto(resolve('/settings/my-validator-applications'));
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.inviteError'));
 		} finally {
@@ -81,7 +82,7 @@
 		try {
 			await validatorApplicationsApi.withdraw(view.app.id);
 			toast.success(i18n.t('p26.validatorApplication.toastInviteDeclined'));
-			await goto('/settings/my-validator-applications');
+			await goto(resolve('/settings/my-validator-applications'));
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.inviteError'));
 		} finally {
@@ -97,7 +98,7 @@
 <div class="mx-auto max-w-2xl px-4 py-8">
 	<div class="mb-4">
 		<a
-			href="/settings/my-validator-applications"
+			href={resolve('/settings/my-validator-applications')}
 			class="inline-flex items-center gap-1 text-sm text-text-muted hover:text-text-primary"
 		>
 			<ArrowLeft size={14} strokeWidth={2} />

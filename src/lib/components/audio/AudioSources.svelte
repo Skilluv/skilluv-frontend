@@ -201,7 +201,7 @@
 									<a
 										href={source.source_url}
 										target="_blank"
-										rel="noopener noreferrer nofollow ugc"
+										rel="external noopener noreferrer nofollow ugc"
 										class="ml-auto inline-flex items-center gap-1 hover:text-text-primary"
 									>
 										{i18n.t('audioSources.openSource')}

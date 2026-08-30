@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { api, SkilluError } from '$api/client';
@@ -45,7 +46,7 @@
 
 	onMount(async () => {
 		if (!auth.isAuthenticated) {
-			await goto('/auth/login?next=/settings/validator-application/new');
+			await goto(resolve('/auth/login?next=/settings/validator-application/new'));
 			return;
 		}
 		try {
@@ -100,7 +101,7 @@
 				motivation: motivation.trim() || undefined
 			});
 			toast.success(i18n.t('p26.validatorApplication.toastApplySuccess'));
-			await goto('/settings/my-validator-applications');
+			await goto(resolve('/settings/my-validator-applications'));
 		} catch (err) {
 			if (err instanceof SkilluError && err.status === 403) {
 				toast.error(i18n.t('p26.validatorApplication.toastApplyCriteria'));
@@ -120,7 +121,7 @@
 <div class="mx-auto max-w-2xl px-4 py-8">
 	<div class="mb-4">
 		<a
-			href="/settings/my-validator-applications"
+			href={resolve('/settings/my-validator-applications')}
 			class="inline-flex items-center gap-1 text-sm text-text-muted hover:text-text-primary"
 		>
 			<ArrowLeft size={14} strokeWidth={2} />

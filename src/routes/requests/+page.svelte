@@ -32,6 +32,7 @@
 	 * which is a different thing and, for somebody waiting on work, a worse one
 	 * to get wrong. It says so once, plainly, and links to notifications.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { Inbox } from '@lucide/svelte';
 	import {
@@ -422,7 +423,7 @@
 			data-testid="requests-unlisted-note"
 		>
 			{i18n.t('requests.unlistedNote')}
-			<a href="/notifications" class="text-accent hover:underline">
+			<a href={resolve('/notifications')} class="text-accent hover:underline">
 				{i18n.t('requests.unlistedCta')}
 			</a>
 		</p>

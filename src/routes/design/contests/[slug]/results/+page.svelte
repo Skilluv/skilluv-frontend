@@ -6,6 +6,7 @@
 	 * mid-run would publish a result nobody has decided. Before that, the page
 	 * says so and points back at the gallery.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { tournamentApi } from '$api/tournament';
@@ -75,7 +76,7 @@
 <div class="mx-auto max-w-5xl px-4 py-8" data-testid="design-contest-results">
 	<header class="mb-8">
 		<a
-			href="/design/contests/{slug}"
+			href={resolve(`/design/contests/${slug}`)}
 			class="text-sm text-text-muted underline-offset-4 hover:text-text-primary hover:underline"
 		>
 			{contest?.name ?? i18n.t('designContests.title')}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { contactApi } from '$api/contact';
 	import { auth } from '$stores/auth.svelte';
@@ -87,7 +88,7 @@
 
 	<!-- Header -->
 	<div class="flex items-center gap-3 border-b border-border bg-surface-elevated px-4 py-3">
-		<a href="/enterprise/messages" class="text-text-muted hover:text-text-primary lg:hidden" aria-label={i18n.locale === 'fr' ? 'Retour' : 'Back'}>
+		<a href={resolve('/enterprise/messages')} class="text-text-muted hover:text-text-primary lg:hidden" aria-label={i18n.locale === 'fr' ? 'Retour' : 'Back'}>
 			<ArrowLeft size={18} strokeWidth={2} />
 		</a>
 		{#if conversation}

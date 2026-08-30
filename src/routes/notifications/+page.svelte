@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { notificationsApi } from '$api/notifications';
 	import { notifications } from '$stores/notifications.svelte';
 	import { attestationApi } from '$api/attestation';
@@ -446,7 +447,7 @@
 										{i18n.t('notifActions.decline')}
 									</Button>
 									<a
-										href={`/settings/validator-invitations/${invitationId}`}
+										href={resolve(`/settings/validator-invitations/${invitationId}`)}
 										class="text-xs text-text-muted underline hover:text-text-primary"
 									>
 										{i18n.t('notifActions.seeInvitation')}
@@ -487,7 +488,7 @@
 									{#each d.unlock_hint.sample as slice (slice.slice_id)}
 										<li>
 											<a
-												href={`/slices/${slice.slice_id}`}
+												href={resolve(`/slices/${slice.slice_id}`)}
 												class="text-xs text-text-muted underline-offset-4 hover:text-text-primary hover:underline"
 											>
 												{slice.title}

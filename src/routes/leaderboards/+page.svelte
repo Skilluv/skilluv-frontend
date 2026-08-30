@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { leaderboardApi } from '$api/leaderboard';
 	import { tournamentApi, type Season } from '$api/tournament';
 	import { auth } from '$stores/auth.svelte';
@@ -88,7 +89,7 @@
 
 	{#if currentSeason}
 		<a
-			href="/tournaments"
+			href={resolve('/tournaments')}
 			class="group mb-8 flex items-center gap-3 rounded-2xl border border-accent/30 bg-accent/5 px-5 py-4 transition-colors hover:border-accent"
 		>
 			<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-accent">
@@ -200,7 +201,7 @@
 				{@const isMe = auth.user?.username === entry.username}
 				{@const isTop3 = entry.rank <= 3}
 				<a
-					href="/profile/{entry.username}"
+					href={resolve(`/profile/${entry.username}`)}
 					class="grid grid-cols-[3rem_1fr_auto_6rem] gap-4 items-center px-5 py-3.5 transition-colors duration-200
 						{idx < entries.length - 1 ? 'border-b border-border' : ''}
 						{isMe ? 'bg-accent/5' : 'hover:bg-surface-overlay/30'}"

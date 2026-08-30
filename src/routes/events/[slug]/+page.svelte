@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { badgeEventsApi } from '$lib/api/badge_events';
 	import { SkilluError } from '$lib/api/client';
@@ -86,7 +87,7 @@
 
 <div class="mx-auto max-w-3xl px-4 py-10">
 	<a
-		href="/events"
+		href={resolve('/events')}
 		class="mb-6 inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-text-primary"
 	>
 		<ChevronLeft size={16} strokeWidth={2} />

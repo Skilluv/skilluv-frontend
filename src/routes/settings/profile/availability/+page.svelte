@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { toast } from '$stores/toast.svelte';
 	import { profileApi, type SalaryVisibility } from '$api/profile';
@@ -74,7 +75,7 @@
 
 <div class="mx-auto max-w-2xl px-4 py-8">
 	<a
-		href="/settings/profile"
+		href={resolve('/settings/profile')}
 		class="mb-6 inline-flex items-center gap-1 text-sm text-text-muted transition-colors hover:text-text-primary"
 	>
 		<ArrowLeft size={14} strokeWidth={2} />

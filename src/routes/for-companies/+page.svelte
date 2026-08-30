@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
 	import { scrollReveal } from '$lib/utils/animations';
@@ -195,7 +196,7 @@
 
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			<!-- Recherche avancée -->
-			<a href="/enterprise/register" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
+			<a href={resolve('/enterprise/register')} class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
 					<span class="text-sm font-semibold text-primary">
@@ -218,7 +219,7 @@
 			</a>
 
 			<!-- Bounties -->
-			<a href="/for-companies/bounties" id="bounties" class="group flex flex-col scroll-mt-24 rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40">
+			<a href={resolve('/for-companies/bounties')} id="bounties" class="group flex flex-col scroll-mt-24 rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40">
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-accent"></div>
 					<span class="text-sm font-semibold text-accent">
@@ -243,7 +244,7 @@
 			</a>
 
 			<!-- Tarifs multi-devise -->
-			<a href="/pricing" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
+			<a href={resolve('/pricing')} class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
 					<span class="text-sm font-semibold text-primary">
@@ -266,7 +267,7 @@
 			</a>
 
 			<!-- Certifications -->
-			<a href="/certifications" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40">
+			<a href={resolve('/certifications')} class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40">
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-accent"></div>
 					<span class="text-sm font-semibold text-accent">
@@ -290,7 +291,7 @@
 			</a>
 
 			<!-- Crédits & facturation -->
-			<a href="/enterprise/credits" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
+			<a href={resolve('/enterprise/credits')} class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
 					<span class="text-sm font-semibold text-primary">
@@ -314,7 +315,7 @@
 			</a>
 
 			<!-- Abonnements Pipeline -->
-			<a href="/enterprise/subscriptions" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40">
+			<a href={resolve('/enterprise/subscriptions')} class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40">
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-accent"></div>
 					<span class="text-sm font-semibold text-accent">

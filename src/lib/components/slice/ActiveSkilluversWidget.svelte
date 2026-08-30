@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { slicesApi, type ActiveSkilluver } from '$api/slices';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
@@ -62,7 +63,7 @@
 		<div class="flex -space-x-2">
 			{#each users.slice(0, 5) as u (u.user_id)}
 				<a
-					href={`/profile/${u.username}`}
+					href={resolve(`/profile/${u.username}`)}
 					class="relative inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-surface-elevated bg-surface-overlay text-xs font-semibold text-text-primary hover:z-10 hover:scale-105 transition-transform overflow-hidden"
 					title={u.display_name}
 				>

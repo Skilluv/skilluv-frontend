@@ -11,6 +11,7 @@
 	 * the work, not by whoever does it, and this listing is read by
 	 * contributors — the filter is there for the company that comes looking.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { BookOpen, Wrench, FileText, ClipboardList } from '@lucide/svelte';
 	import { guidesApi } from '$lib/api/guides';
@@ -183,7 +184,7 @@
 							{@const Icon = kindIcons[guide.kind]}
 							<li>
 								<a
-									href="/guides/{guide.slug}"
+									href={resolve(`/guides/${guide.slug}`)}
 									class="block h-full rounded-xl border border-border bg-surface-elevated p-4 transition-colors {domainStyle(
 										group
 									).hoverBorder}"

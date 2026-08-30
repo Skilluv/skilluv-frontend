@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { replaceState } from '$app/navigation';
@@ -233,6 +234,10 @@
 			openCreate();
 			const cleaned = new URL($page.url);
 			cleaned.searchParams.delete('new');
+			// Rewrites the current URL with one query parameter removed. There is
+			// no route to resolve: the destination is the page already open, and
+			// resolve() would only re-apply the base path the URL already carries.
+			// eslint-disable-next-line svelte/no-navigation-without-resolve
 			replaceState(cleaned.toString(), $page.state);
 		}
 	});
@@ -327,7 +332,7 @@
 
 					<div class="flex flex-1 flex-col p-4">
 						<a
-							href="/bounties/{b.id}"
+							href={resolve(`/bounties/${b.id}`)}
 							class="mb-2 line-clamp-2 text-sm font-semibold leading-snug transition-colors group-hover:text-primary"
 						>
 							{b.title}

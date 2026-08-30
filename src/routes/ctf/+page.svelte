@@ -13,6 +13,7 @@
 	 * none. The field is read optionally, so a deployment that predates it
 	 * yields an empty list rather than a wrong one.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount, onDestroy } from 'svelte';
 	import { Flag } from '@lucide/svelte';
 	import { challengesApi, type ChallengeListItem } from '$api/challenges';
@@ -200,7 +201,7 @@
 									class="h-9 w-9 rounded-full object-cover"
 								/>
 							{/if}
-							<a href="/profile/{row.username}" class="truncate text-sm font-bold text-text hover:underline">
+							<a href={resolve(`/profile/${row.username}`)} class="truncate text-sm font-bold text-text hover:underline">
 								{row.display_name ?? row.username}
 							</a>
 						</div>

@@ -1,3 +1,5 @@
+import { resolve } from '$app/paths';
+import type { ResolvedPathname } from '$app/types';
 import type { UserPrivate } from '$lib/types';
 
 /**
@@ -21,14 +23,14 @@ import type { UserPrivate } from '$lib/types';
  * lets the login page surface a "please use admin.skill-uv.com" message
  * without a race with the SSR redirect.
  */
-export function postLoginDestination(user: UserPrivate): string {
+export function postLoginDestination(user: UserPrivate): ResolvedPathname {
 	switch (user.role) {
 		case 'admin':
-			return '/auth/login?error=admin_wrong_frontend';
+			return resolve('/auth/login?error=admin_wrong_frontend');
 		case 'enterprise':
 		case 'recruiter':
-			return '/enterprise/dashboard';
+			return resolve('/enterprise/dashboard');
 		default:
-			return user.profile_active ? '/' : '/challenges/onboarding';
+			return user.profile_active ? resolve('/') : resolve('/challenges/onboarding');
 	}
 }

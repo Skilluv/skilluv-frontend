@@ -40,6 +40,12 @@
 				{span.value}
 			</code>
 		{:else if span.kind === 'link'}
+			<!-- The destination is whatever a user typed in their markdown, so it
+			     is neither an app route resolve() can check nor reliably
+			     external — the ternaries below already sort the two at runtime.
+			     Nothing to resolve here; the escaping that matters happens in
+			     the parser. -->
+			<!-- eslint-disable svelte/no-navigation-without-resolve -->
 			<a
 				href={span.href}
 				target={span.href.startsWith('/') ? undefined : '_blank'}
@@ -48,6 +54,7 @@
 			>
 				{span.value}
 			</a>
+			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		{:else}
 			{span.value}
 		{/if}

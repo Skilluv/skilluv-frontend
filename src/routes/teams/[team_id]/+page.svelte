@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { teamMarketplaceApi } from '$lib/api/team_marketplace';
 	import { SkilluError } from '$lib/api/client';
@@ -73,7 +74,7 @@
 
 <div class="mx-auto max-w-4xl px-4 py-8">
 	<a
-		href="/teams/marketplace"
+		href={resolve('/teams/marketplace')}
 		class="mb-6 inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-text-primary"
 	>
 		<ChevronLeft size={16} strokeWidth={2} />

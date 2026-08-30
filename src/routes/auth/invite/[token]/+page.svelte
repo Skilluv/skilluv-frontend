@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
@@ -76,13 +77,15 @@
 		// let the accept page take over immediately. Candidates get the warning
 		// screen instead (see the render branch below).
 		if (auth.isAuthenticated && auth.user && auth.user.role !== 'user') {
-			goto(`/enterprise/invite/accept?token=${encodeURIComponent(token)}`);
+			goto(resolve(`/enterprise/invite/accept?token=${encodeURIComponent(token)}`));
 		}
 	});
 
 	function goSignIn() {
 		goto(
-			`/auth/login?redirect=${encodeURIComponent('/enterprise/invite/accept?token=' + token)}`
+			resolve(
+				`/auth/login?redirect=${encodeURIComponent('/enterprise/invite/accept?token=' + token)}`
+			)
 		);
 	}
 
@@ -95,7 +98,7 @@
 	function acceptAsCandidate() {
 		// The user has confirmed they're OK losing candidate status. Hand off to
 		// the accept page which does the token exchange as the current user.
-		goto(`/enterprise/invite/accept?token=${encodeURIComponent(token)}`);
+		goto(resolve(`/enterprise/invite/accept?token=${encodeURIComponent(token)}`));
 	}
 
 	async function submitRegister(e: SubmitEvent) {
@@ -124,7 +127,7 @@
 			);
 			// New recruiters land in the enterprise 2FA onboarding wizard —
 			// requires_totp_setup is always true right after signup.
-			goto('/enterprise/onboarding');
+			goto(resolve('/enterprise/onboarding'));
 		} catch (err) {
 			submitError = err instanceof SkilluError ? err.message : 'Erreur';
 		} finally {
@@ -257,11 +260,11 @@
 					/>
 					<span class="text-text-muted">
 						{i18n.locale === 'fr' ? "J'accepte les " : 'I accept the '}
-						<a href="/legal/terms" target="_blank" class="text-accent hover:underline">
+						<a href={resolve('/legal/terms')} target="_blank" class="text-accent hover:underline">
 							{i18n.locale === 'fr' ? 'Conditions' : 'Terms'}
 						</a>
 						{i18n.locale === 'fr' ? ' et la ' : ' and the '}
-						<a href="/legal/privacy" target="_blank" class="text-accent hover:underline">
+						<a href={resolve('/legal/privacy')} target="_blank" class="text-accent hover:underline">
 							{i18n.locale === 'fr' ? 'Politique de confidentialité' : 'Privacy Policy'}
 						</a>
 						.

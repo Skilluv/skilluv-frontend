@@ -22,6 +22,7 @@
 	 *     The takes are listed with their length and notes, which is what there
 	 *     is to show.
 	 */
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { ArrowLeft, Check, EyeOff } from '@lucide/svelte';
 	import { audioCastingsApi } from '$lib/api/audio';
@@ -166,7 +167,7 @@
 
 <div class="mx-auto max-w-3xl px-4 py-8">
 	<a
-		href="/audio/castings"
+		href={resolve('/audio/castings')}
 		class="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-text-primary"
 	>
 		<ArrowLeft size={14} strokeWidth={2} />

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { ResolvedPathname } from '$app/types';
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { i18n } from '$lib/i18n';
 
@@ -6,11 +8,11 @@
 
 	const LAST_UPDATED = '2026-06-26';
 
-	const links = [
-		{ href: '/legal/mentions', fr: 'Mentions légales', en: 'Legal notice' },
-		{ href: '/legal/privacy', fr: 'Confidentialité', en: 'Privacy policy' },
-		{ href: '/legal/terms', fr: 'CGU', en: 'Terms of service' },
-		{ href: '/legal/gdpr', fr: 'RGPD', en: 'GDPR rights' }
+	const links: { href: ResolvedPathname; fr: string; en: string }[] = [
+		{ href: resolve('/legal/mentions'), fr: 'Mentions légales', en: 'Legal notice' },
+		{ href: resolve('/legal/privacy'), fr: 'Confidentialité', en: 'Privacy policy' },
+		{ href: resolve('/legal/terms'), fr: 'CGU', en: 'Terms of service' },
+		{ href: resolve('/legal/gdpr'), fr: 'RGPD', en: 'GDPR rights' }
 	];
 
 	function formatDate(iso: string): string {
@@ -32,6 +34,10 @@
 			<nav class="flex flex-col gap-1">
 				{#each links as link (link.href)}
 					{@const active = $page.url.pathname === link.href}
+					<!-- Resolved where the literal is written, so the route is checked
+					     against the app's real routes there. The base path is applied
+					     exactly once and must not be applied again here. -->
+					<!-- eslint-disable svelte/no-navigation-without-resolve -->
 					<a
 						href={link.href}
 						class="rounded-md px-3 py-2 text-sm transition-colors duration-200 {active
@@ -40,6 +46,7 @@
 					>
 						{i18n.locale === 'fr' ? link.fr : link.en}
 					</a>
+					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 				{/each}
 			</nav>
 

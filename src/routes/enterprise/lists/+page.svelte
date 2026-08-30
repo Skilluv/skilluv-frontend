@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { enterpriseApi } from '$api/enterprise';
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
@@ -115,7 +116,7 @@
 		<div class="flex flex-col gap-3">
 			{#each lists as list (list.id)}
 				<div class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-4">
-					<a href="/enterprise/lists/{list.id}" class="flex-1">
+					<a href={resolve(`/enterprise/lists/${list.id}`)} class="flex-1">
 						<p class="font-medium hover:text-accent">{list.name}</p>
 						<div class="flex items-center gap-3 text-xs text-text-muted">
 							<span>{list.talent_count} talent{list.talent_count !== 1 ? 's' : ''}</span>

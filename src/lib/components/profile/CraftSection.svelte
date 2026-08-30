@@ -247,7 +247,7 @@
 									<a
 										href={work.external_url}
 										target="_blank"
-										rel="noopener noreferrer nofollow ugc"
+										rel="external noopener noreferrer nofollow ugc"
 										class="mt-2 inline-flex items-center gap-1 text-xs text-text-muted hover:text-text-primary"
 									>
 										{i18n.t('craftProfile.openWork')}
@@ -315,7 +315,7 @@
 									<a
 										href={work.url}
 										target="_blank"
-										rel="noopener noreferrer nofollow ugc"
+										rel="external noopener noreferrer nofollow ugc"
 										class="mt-2 inline-flex items-center gap-1 text-xs text-text-muted hover:text-text-primary"
 									>
 										{i18n.t('craftProfile.openWork')}
@@ -386,7 +386,7 @@
 									<a
 										href={work.url}
 										target="_blank"
-										rel="noopener noreferrer nofollow ugc"
+										rel="external noopener noreferrer nofollow ugc"
 										class="mt-2 inline-flex items-center gap-1 text-xs text-text-muted hover:text-text-primary"
 									>
 										{i18n.t('craftProfile.openWork')}

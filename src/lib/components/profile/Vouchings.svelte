@@ -7,6 +7,7 @@
 	 * shown, because a vouching with nothing at risk means something else
 	 * entirely from one that costs ninety days of rank if it breaks.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { HandHeart } from '@lucide/svelte';
 	import { vouchingsApi, VOUCHING_DEFAULT_WINDOW_DAYS } from '$lib/api/vouchings';
@@ -140,7 +141,7 @@
 								     it, is a link. It stays text when the join found nobody. -->
 								{#if row.voucher_username}
 									<a
-										href="/profile/{row.voucher_username}"
+										href={resolve(`/profile/${row.voucher_username}`)}
 										class="text-sm font-semibold text-text-primary underline-offset-2 hover:text-accent hover:underline"
 									>
 										{i18n.t('vouchings.vouchedBy', { name: voucherName(row) })}

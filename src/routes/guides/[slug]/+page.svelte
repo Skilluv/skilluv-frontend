@@ -7,6 +7,7 @@
 	 * strings elsewhere. It still never reaches `{@html}` — see
 	 * `$lib/utils/markdown`.
 	 */
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { ArrowLeft } from '@lucide/svelte';
 	import { guidesApi } from '$lib/api/guides';
@@ -57,7 +58,7 @@
 
 <div class="mx-auto max-w-3xl px-4 py-8">
 	<a
-		href="/guides"
+		href={resolve('/guides')}
 		class="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-text-primary"
 	>
 		<ArrowLeft size={14} strokeWidth={2} />

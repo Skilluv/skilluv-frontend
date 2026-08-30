@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 	import { goto } from '$app/navigation';
 	import { auth } from '$stores/auth.svelte';
@@ -41,7 +42,7 @@
 		starting = true;
 		try {
 			await challengesApi.start(challenge.id);
-			goto(`/challenges/${challenge.id}/sandbox`);
+			goto(resolve(`/challenges/${challenge.id}/sandbox`));
 		} catch (err) {
 			if (err instanceof SkilluError) error = err.message;
 			else error = 'Impossible de démarrer le challenge.';

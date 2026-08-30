@@ -96,7 +96,7 @@
 							<a
 								href={story.first_artifact_url}
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="external noopener noreferrer"
 								class="inline-flex items-center gap-1.5 text-text-muted hover:underline"
 							>
 								<ExternalLink size={14} />
@@ -110,7 +110,7 @@
 							<a
 								href={story.final_artifact_url}
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="external noopener noreferrer"
 								class="inline-flex items-center gap-1.5 text-accent hover:underline"
 							>
 								<ExternalLink size={14} />

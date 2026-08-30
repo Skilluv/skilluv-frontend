@@ -116,12 +116,15 @@
 				<li class="rounded-2xl border border-border bg-surface-elevated p-5">
 					<div class="flex flex-wrap items-start justify-between gap-3">
 						<div class="min-w-0 flex-1">
+							<!-- basePath is a prop resolved by the domain board that renders this. -->
+							<!-- eslint-disable svelte/no-navigation-without-resolve -->
 							<a
 								href="{basePath}/{row.mission_slug}"
 								class="text-base font-bold text-text-primary underline-offset-4 hover:underline"
 							>
 								{row.mission_title}
 							</a>
+							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							<p class="mt-1 text-xs text-text-muted">
 								{label('statuses', row.mission_status)}
 							</p>

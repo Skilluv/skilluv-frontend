@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import Button from '$components/ui/Button.svelte';
@@ -264,7 +265,7 @@
 
 	onMount(() => {
 		if (!auth.user) {
-			goto('/auth/login');
+			goto(resolve('/auth/login'));
 			return;
 		}
 		passkeySupported = isPasskeySupported();
@@ -293,7 +294,7 @@
 <div class="mx-auto max-w-2xl px-4 py-8">
 	{#if showBack}
 		<div class="mb-6 flex items-center gap-3">
-			<a href="/settings" class="text-sm text-text-muted hover:text-text-primary">← {i18n.t('settings.title')}</a>
+			<a href={resolve('/settings')} class="text-sm text-text-muted hover:text-text-primary">← {i18n.t('settings.title')}</a>
 		</div>
 	{/if}
 	<h1 class="mb-8 text-2xl font-bold">{i18n.locale === 'fr' ? 'Sécurité' : 'Security'}</h1>

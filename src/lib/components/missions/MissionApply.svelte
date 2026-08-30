@@ -88,6 +88,9 @@
 				availability_hours_per_week: Number(availabilityHours) || undefined
 			});
 			toast.success(i18n.t('missions.appliedToast'));
+			// minePath is a prop: the three domain boards own their own destinations,
+			// and each resolves it before passing it in.
+			// eslint-disable-next-line svelte/no-navigation-without-resolve
 			await goto(minePath);
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
@@ -116,12 +119,15 @@
 		</div>
 	{:else if mission}
 		<header class="mb-6">
+			<!-- basePath is a prop resolved by the domain board that renders this. -->
+			<!-- eslint-disable svelte/no-navigation-without-resolve -->
 			<a
 				href="{basePath}/{mission.slug}"
 				class="text-sm text-text-muted underline-offset-4 hover:text-text-primary hover:underline"
 			>
 				{mission.title}
 			</a>
+			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			<h1 class="mt-2 text-3xl font-bold text-text-primary">
 				{i18n.t('missions.applyTitle')}
 			</h1>

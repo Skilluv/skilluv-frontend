@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import Modal from '$components/ui/Modal.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import { auth } from '$stores/auth.svelte';
@@ -28,7 +29,7 @@
 		try {
 			await auth.logout();
 			open = false;
-			goto('/');
+			goto(resolve('/'));
 		} finally {
 			busy = false;
 		}

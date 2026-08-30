@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { NavGroup } from './NavDropdown.svelte';
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { auth } from '$lib/stores/auth.svelte';
 	import { theme } from '$lib/stores/theme.svelte';
@@ -55,19 +57,19 @@
 	let capabilityLinks = $derived(
 		[
 			{
-				href: '/forum/moderation',
+				href: resolve('/forum/moderation'),
 				icon: MessageSquare,
 				label: i18n.t('capabilities.nav.forumModeration'),
 				show: auth.can('forum_moderator')
 			},
 			{
-				href: '/community/curator',
+				href: resolve('/community/curator'),
 				icon: BookOpenCheck,
 				label: i18n.t('capabilities.nav.pendingCurator'),
 				show: auth.can('community_curator')
 			},
 			{
-				href: '/moderation/plagiarism',
+				href: resolve('/moderation/plagiarism'),
 				icon: FileSearch,
 				label: i18n.t('capabilities.nav.plagiarismQueue'),
 				show: auth.can('plagiarism_reviewer')
@@ -76,25 +78,25 @@
 				// SKI-297 — the queue is gated on either capability, because a
 				// revoked deliverable is exactly what makes a backing worth
 				// re-reading.
-				href: '/moderation/vouchings',
+				href: resolve('/moderation/vouchings'),
 				icon: Handshake,
 				label: i18n.t('capabilities.nav.vouchingQueue'),
 				show: auth.can('community_moderator') || auth.can('plagiarism_reviewer')
 			},
 			{
-				href: '/moderation/external-signals',
+				href: resolve('/moderation/external-signals'),
 				icon: Link2,
 				label: i18n.t('capabilities.nav.externalSignalQueue'),
 				show: auth.can('community_moderator') || auth.can('community_curator')
 			},
 			{
-				href: '/mentors/me',
+				href: resolve('/mentors/me'),
 				icon: Star,
 				label: i18n.t('capabilities.nav.mentorZone'),
 				show: auth.can('mentor')
 			},
 			{
-				href: '/tournaments/jury',
+				href: resolve('/tournaments/jury'),
 				icon: Trophy,
 				label: i18n.t('capabilities.nav.juryTournament'),
 				show: auth.can('jury_tournament')
@@ -200,18 +202,18 @@
 
 	// ── Nav groups par persona ────────────────────────────────
 
-	let discoverGroups = $derived([
+	let discoverGroups: NavGroup[] = $derived([
 		{
 			title: i18n.locale === 'fr' ? 'Apprendre & jouer' : 'Learn & play',
 			items: [
 				{
-					href: '/challenges',
+					href: resolve('/challenges'),
 					icon: Target,
 					label: i18n.t('common.nav.challenges'),
 					description: i18n.locale === 'fr' ? 'Résous des défis dans 4 domaines' : 'Solve challenges in 4 domains'
 				},
 				{
-					href: '/community/challenges',
+					href: resolve('/community/challenges'),
 					icon: Pencil,
 					label: i18n.locale === 'fr' ? 'Communauté' : 'Community',
 					description: i18n.locale === 'fr' ? 'Challenges créés par la communauté' : 'Community-created challenges'
@@ -222,19 +224,19 @@
 			title: i18n.locale === 'fr' ? 'Grandir' : 'Grow',
 			items: [
 				{
-					href: '/bounties',
+					href: resolve('/bounties'),
 					icon: Hexagon,
 					label: 'Bounties',
 					description: i18n.locale === 'fr' ? 'Résous une issue GitHub, gagne des fragments' : 'Solve a GitHub issue, earn fragments'
 				},
 				{
-					href: '/certifications',
+					href: resolve('/certifications'),
 					icon: BadgeCheck,
 					label: 'Certifications',
 					description: i18n.locale === 'fr' ? 'Diplômes vérifiables en ligne' : 'Online-verifiable diplomas'
 				},
 				{
-					href: '/mentors',
+					href: resolve('/mentors'),
 					icon: Star,
 					label: 'Mentorship',
 					description: i18n.locale === 'fr' ? 'Sessions 1-on-1 avec un expert' : '1-on-1 sessions with an expert'
@@ -243,127 +245,131 @@
 		}
 	]);
 
-	let communityGroups = $derived([
+	let communityGroups: NavGroup[] = $derived([
 		{
 			items: [
-				{ href: '/forum', icon: MessageSquare, label: 'Forum', description: i18n.locale === 'fr' ? 'Questions, réponses, bounties fragments' : 'Q&A with fragment bounties' },
-				{ href: '/guilds', icon: Shield, label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds', description: i18n.locale === 'fr' ? 'Rejoins une écurie style F1/MMO' : 'Join an F1/MMO-style team' },
-				{ href: '/tournaments', icon: Trophy, label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments', description: i18n.locale === 'fr' ? 'Compétitions mensuelles chronométrées' : 'Timed monthly competitions' },
-				{ href: '/leaderboards', icon: TrendingUp, label: i18n.t('common.nav.leaderboards'), description: i18n.locale === 'fr' ? 'Top 100 live par domaine' : 'Live Top 100 by domain' }
+				{ href: resolve('/forum'), icon: MessageSquare, label: 'Forum', description: i18n.locale === 'fr' ? 'Questions, réponses, bounties fragments' : 'Q&A with fragment bounties' },
+				{ href: resolve('/guilds'), icon: Shield, label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds', description: i18n.locale === 'fr' ? 'Rejoins une écurie style F1/MMO' : 'Join an F1/MMO-style team' },
+				{ href: resolve('/tournaments'), icon: Trophy, label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments', description: i18n.locale === 'fr' ? 'Compétitions mensuelles chronométrées' : 'Timed monthly competitions' },
+				{ href: resolve('/leaderboards'), icon: TrendingUp, label: i18n.t('common.nav.leaderboards'), description: i18n.locale === 'fr' ? 'Top 100 live par domaine' : 'Live Top 100 by domain' }
 			]
 		}
 	]);
 
-	let talentGrowGroups = $derived([
+	let talentGrowGroups: NavGroup[] = $derived([
 		{
 			items: [
-				{ href: '/bounties', icon: Hexagon, label: 'Bounties OSS', description: i18n.locale === 'fr' ? 'Gagne des fragments sur des issues GitHub' : 'Earn fragments on GitHub issues' },
-				{ href: '/certifications', icon: BadgeCheck, label: 'Certifications', description: i18n.locale === 'fr' ? 'Passe une certification, obtiens un diplôme' : 'Take a certification, get a diploma' },
-				{ href: '/diplomas/my', icon: GraduationCap, label: i18n.locale === 'fr' ? 'Mes diplômes' : 'My diplomas' }
+				{ href: resolve('/bounties'), icon: Hexagon, label: 'Bounties OSS', description: i18n.locale === 'fr' ? 'Gagne des fragments sur des issues GitHub' : 'Earn fragments on GitHub issues' },
+				{ href: resolve('/certifications'), icon: BadgeCheck, label: 'Certifications', description: i18n.locale === 'fr' ? 'Passe une certification, obtiens un diplôme' : 'Take a certification, get a diploma' },
+				{ href: resolve('/diplomas/my'), icon: GraduationCap, label: i18n.locale === 'fr' ? 'Mes diplômes' : 'My diplomas' }
 			]
 		},
 		{
 			title: 'Mentorship',
 			items: [
-				{ href: '/mentors', icon: Star, label: i18n.locale === 'fr' ? 'Trouver un mentor' : 'Find a mentor' },
-				{ href: '/mentorship/sessions', icon: Target, label: i18n.locale === 'fr' ? 'Mes sessions' : 'My sessions' },
-				{ href: '/mentors/me', icon: Pencil, label: i18n.locale === 'fr' ? 'Devenir mentor' : 'Become a mentor', badge: '80%' }
+				{ href: resolve('/mentors'), icon: Star, label: i18n.locale === 'fr' ? 'Trouver un mentor' : 'Find a mentor' },
+				{ href: resolve('/mentorship/sessions'), icon: Target, label: i18n.locale === 'fr' ? 'Mes sessions' : 'My sessions' },
+				{ href: resolve('/mentors/me'), icon: Pencil, label: i18n.locale === 'fr' ? 'Devenir mentor' : 'Become a mentor', badge: '80%' }
 			]
 		},
 		{
 			// Skilluv Design (SKI-237, SKI-248): contests and paid missions.
 			title: i18n.t('common.domains.design'),
 			items: [
-				{ href: '/design/contests', icon: Palette, label: i18n.t('designContests.title'), description: i18n.t('designContests.subtitle') },
-				{ href: '/design/missions', icon: Briefcase, label: i18n.t('missions.boards.design.title'), description: i18n.t('missions.boards.design.subtitle') }
+				{ href: resolve('/design/contests'), icon: Palette, label: i18n.t('designContests.title'), description: i18n.t('designContests.subtitle') },
+				{ href: resolve('/design/missions'), icon: Briefcase, label: i18n.t('missions.boards.design.title'), description: i18n.t('missions.boards.design.subtitle') }
 			]
 		},
 		{
 			// The AI domain of work — not the assistant, which is below.
 			title: i18n.t('common.domains.ai'),
 			items: [
-				{ href: '/ai', icon: Sparkles, label: i18n.t('aiDomain.title'), description: i18n.t('aiDomain.subtitle') },
-				{ href: '/ai/missions', icon: Briefcase, label: i18n.t('missions.boards.ai.title'), description: i18n.t('missions.boards.ai.subtitle') }
+				{ href: resolve('/ai'), icon: Sparkles, label: i18n.t('aiDomain.title'), description: i18n.t('aiDomain.subtitle') },
+				{ href: resolve('/ai/missions'), icon: Briefcase, label: i18n.t('missions.boards.ai.title'), description: i18n.t('missions.boards.ai.subtitle') }
 			]
 		},
 		{
 			// Post-MVP tier 3 — the assistant and the reverse marketplace.
 			items: [
-				{ href: '/assistant', icon: Sparkles, label: i18n.t('assistant.title'), description: i18n.t('assistant.subtitle') },
-				{ href: '/talent-offers', icon: Clock, label: i18n.t('talentOffers.title'), description: i18n.t('talentOffers.subtitle') }
+				{ href: resolve('/assistant'), icon: Sparkles, label: i18n.t('assistant.title'), description: i18n.t('assistant.subtitle') },
+				{ href: resolve('/talent-offers'), icon: Clock, label: i18n.t('talentOffers.title'), description: i18n.t('talentOffers.subtitle') }
 			]
 		}
 	]);
 
-	let talentCommunityGroups = $derived([
+	let talentCommunityGroups: NavGroup[] = $derived([
 		{
 			items: [
-				{ href: '/feed', icon: Rss, label: i18n.locale === 'fr' ? "Fil d'activité" : 'Activity feed' },
-				{ href: '/forum', icon: MessageSquare, label: 'Forum' },
-				{ href: '/guilds', icon: Shield, label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
-				{ href: '/tournaments', icon: Trophy, label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments' },
-				{ href: '/messages', icon: MessageSquare, label: 'Messages' },
-				{ href: '/mentions', icon: AtSign, label: i18n.t('mentions.title') },
-				{ href: '/leaderboards', icon: TrendingUp, label: i18n.t('common.nav.leaderboards') }
+				{ href: resolve('/feed'), icon: Rss, label: i18n.locale === 'fr' ? "Fil d'activité" : 'Activity feed' },
+				{ href: resolve('/forum'), icon: MessageSquare, label: 'Forum' },
+				{ href: resolve('/guilds'), icon: Shield, label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
+				{ href: resolve('/tournaments'), icon: Trophy, label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments' },
+				{ href: resolve('/messages'), icon: MessageSquare, label: 'Messages' },
+				{ href: resolve('/mentions'), icon: AtSign, label: i18n.t('mentions.title') },
+				{ href: resolve('/leaderboards'), icon: TrendingUp, label: i18n.t('common.nav.leaderboards') }
 			]
 		},
 		{
 			// Post-MVP tier 2 — learning together rather than alone.
 			items: [
-				{ href: '/cohorts', icon: CalendarRange, label: i18n.t('cohorts.title'), description: i18n.t('cohorts.subtitle') },
-				{ href: '/dashboard/peer-matching', icon: Handshake, label: i18n.t('peerMatching.title'), description: i18n.t('peerMatching.subtitle') }
+				{ href: resolve('/cohorts'), icon: CalendarRange, label: i18n.t('cohorts.title'), description: i18n.t('cohorts.subtitle') },
+				{ href: resolve('/dashboard/peer-matching'), icon: Handshake, label: i18n.t('peerMatching.title'), description: i18n.t('peerMatching.subtitle') }
 			]
 		}
 	]);
 
-	let enterpriseGroupsAnon = $derived([
+	let enterpriseGroupsAnon: NavGroup[] = $derived([
 		{
 			title: 'Sourcing',
 			items: [
-				{ href: '/for-companies', icon: Compass, label: i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works', description: i18n.locale === 'fr' ? 'Recruter sur la preuve, pas le CV' : 'Hire on proof, not resume' },
-				{ href: '/enterprise/register', icon: Plus, label: i18n.locale === 'fr' ? 'Recruteur ? Créer un espace' : 'Recruiter? Create a space', description: i18n.locale === 'fr' ? 'Accès aux 13 filtres de sourcing' : 'Access to the 13 sourcing filters' }
+				{ href: resolve('/for-companies'), icon: Compass, label: i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works', description: i18n.locale === 'fr' ? 'Recruter sur la preuve, pas le CV' : 'Hire on proof, not resume' },
+				{ href: resolve('/enterprise/register'), icon: Plus, label: i18n.locale === 'fr' ? 'Recruteur ? Créer un espace' : 'Recruiter? Create a space', description: i18n.locale === 'fr' ? 'Accès aux 13 filtres de sourcing' : 'Access to the 13 sourcing filters' }
 			]
 		},
 		{
 			title: 'Business',
 			items: [
-				{ href: '/for-companies/bounties', icon: Hexagon, label: i18n.locale === 'fr' ? 'Sponsoriser une issue' : 'Sponsor an issue', description: i18n.locale === 'fr' ? 'Bounties open-source, payout au merge' : 'Open-source bounties, payout on merge' },
-				{ href: '/pricing', icon: Star, label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing', description: i18n.locale === 'fr' ? 'Pay-as-you-go multi-devise' : 'Pay-as-you-go multi-currency' },
-				{ href: '/enterprise/register', icon: Plus, label: i18n.locale === 'fr' ? 'Créer mon espace' : 'Create my space', badge: '2 min' }
+				{ href: resolve('/for-companies/bounties'), icon: Hexagon, label: i18n.locale === 'fr' ? 'Sponsoriser une issue' : 'Sponsor an issue', description: i18n.locale === 'fr' ? 'Bounties open-source, payout au merge' : 'Open-source bounties, payout on merge' },
+				{ href: resolve('/pricing'), icon: Star, label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing', description: i18n.locale === 'fr' ? 'Pay-as-you-go multi-devise' : 'Pay-as-you-go multi-currency' },
+				{ href: resolve('/enterprise/register'), icon: Plus, label: i18n.locale === 'fr' ? 'Créer mon espace' : 'Create my space', badge: '2 min' }
 			]
 		}
 	]);
 
-	let enterpriseGroupsAuth = $derived([
+	let enterpriseGroupsAuth: NavGroup[] = $derived([
 		{
 			title: 'Sourcing',
 			items: [
-				{ href: '/enterprise/talents', icon: Search, label: i18n.locale === 'fr' ? 'Recherche talents' : 'Search talents', description: i18n.locale === 'fr' ? '13 filtres croisés' : '13 cross filters' },
-				{ href: '/enterprise/bookmarks', icon: Bookmark, label: 'Bookmarks' },
-				{ href: '/enterprise/lists', icon: List, label: i18n.locale === 'fr' ? 'Listes' : 'Lists' },
-				{ href: '/enterprise/messages', icon: MessageSquare, label: 'Messages' }
+				{ href: resolve('/enterprise/talents'), icon: Search, label: i18n.locale === 'fr' ? 'Recherche talents' : 'Search talents', description: i18n.locale === 'fr' ? '13 filtres croisés' : '13 cross filters' },
+				{ href: resolve('/enterprise/bookmarks'), icon: Bookmark, label: 'Bookmarks' },
+				{ href: resolve('/enterprise/lists'), icon: List, label: i18n.locale === 'fr' ? 'Listes' : 'Lists' },
+				{ href: resolve('/enterprise/messages'), icon: MessageSquare, label: 'Messages' }
 			]
 		},
 		{
 			title: i18n.locale === 'fr' ? 'Espace' : 'Space',
 			items: [
-				{ href: '/enterprise/profile', icon: Building2, label: i18n.locale === 'fr' ? 'Profil entreprise' : 'Enterprise profile', description: i18n.locale === 'fr' ? 'Nom, description, logo, taille' : 'Name, description, logo, size' },
-				{ href: '/enterprise/members', icon: Users, label: i18n.locale === 'fr' ? 'Membres' : 'Members', description: i18n.locale === 'fr' ? 'Inviter des recruteurs, gérer les rôles' : 'Invite recruiters, manage roles' }
+				{ href: resolve('/enterprise/profile'), icon: Building2, label: i18n.locale === 'fr' ? 'Profil entreprise' : 'Enterprise profile', description: i18n.locale === 'fr' ? 'Nom, description, logo, taille' : 'Name, description, logo, size' },
+				{ href: resolve('/enterprise/members'), icon: Users, label: i18n.locale === 'fr' ? 'Membres' : 'Members', description: i18n.locale === 'fr' ? 'Inviter des recruteurs, gérer les rôles' : 'Invite recruiters, manage roles' }
 			]
 		},
 		{
 			title: 'Bounties',
 			items: [
-				{ href: '/enterprise/bounties', icon: Hexagon, label: i18n.locale === 'fr' ? 'Mes bounties' : 'My bounties', description: i18n.locale === 'fr' ? 'Dashboard de mes issues sponsorisées' : 'Dashboard of my sponsored issues' },
-				{ href: '/enterprise/bounties/new', icon: Plus, label: i18n.locale === 'fr' ? 'Poster une bounty' : 'Post a bounty', description: i18n.locale === 'fr' ? 'Sponsoriser une nouvelle issue GitHub' : 'Sponsor a new GitHub issue' }
+				{ href: resolve('/enterprise/bounties'), icon: Hexagon, label: i18n.locale === 'fr' ? 'Mes bounties' : 'My bounties', description: i18n.locale === 'fr' ? 'Dashboard de mes issues sponsorisées' : 'Dashboard of my sponsored issues' },
+				{ href: resolve('/enterprise/bounties/new'), icon: Plus, label: i18n.locale === 'fr' ? 'Poster une bounty' : 'Post a bounty', description: i18n.locale === 'fr' ? 'Sponsoriser une nouvelle issue GitHub' : 'Sponsor a new GitHub issue' }
 			]
 		},
 		{
 			title: 'Business',
 			items: [
-				{ href: '/enterprise/credits', icon: Star, label: i18n.locale === 'fr' ? 'Crédits' : 'Credits' },
-				{ href: '/invoices', icon: FileText, label: i18n.locale === 'fr' ? 'Factures' : 'Invoices' },
-				{ href: '/pricing', icon: Star, label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing' }
+				{ href: resolve('/enterprise/credits'), icon: Star, label: i18n.locale === 'fr' ? 'Crédits' : 'Credits' },
+				{
+					href: resolve('/enterprise/credits/invoices'),
+					icon: FileText,
+					label: i18n.locale === 'fr' ? 'Factures' : 'Invoices'
+				},
+				{ href: resolve('/pricing'), icon: Star, label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing' }
 			]
 		}
 	]);
@@ -378,7 +384,7 @@
 	>
 		<!-- Logo — tenant-aware. Skilluv canonique = wordmark bicolore sKIL·LUV
 		     (Fraunces WONK, easter egg: le LUV rouge se révèle au 2e regard) -->
-		<a href="/" class="flex items-center gap-2.5" aria-label="Skilluv accueil">
+		<a href={resolve('/')} class="flex items-center gap-2.5" aria-label="Skilluv accueil">
 			{#if tenant.isWhiteLabel && tenant.logoUrl}
 				<img src={tenant.logoUrl} alt={tenant.name} width="120" height="32" class="h-8 max-w-[120px] object-contain" />
 				<span class="text-lg font-black tracking-tight text-text-primary truncate max-w-[160px]">
@@ -402,7 +408,7 @@
 				></span>
 
 				<a
-					href="/"
+					href={resolve('/')}
 					data-nav-key="home"
 					data-nav-active={activeKey === 'home'}
 					class="relative z-10 inline-flex items-center h-8 rounded-full px-4 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'home' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
@@ -412,7 +418,7 @@
 
 				{#if auth.isAuthenticated}
 					<a
-						href="/challenges"
+						href={resolve('/challenges')}
 						data-nav-key="challenges"
 						data-nav-active={activeKey === 'challenges'}
 						class="relative z-10 inline-flex items-center h-8 rounded-full px-4 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'challenges' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
@@ -534,7 +540,7 @@
 			</button>
 
 			{#if auth.isAuthenticated}
-				<a href="/notifications" class="relative flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary">
+				<a href={resolve('/notifications')} class="relative flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary">
 					<svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
 					</svg>
@@ -573,7 +579,7 @@
 						>
 							{#if auth.user?.username}
 								<a
-									href="/profile/{auth.user.username}"
+									href={resolve(`/profile/${auth.user.username}`)}
 									onclick={() => (userMenuOpen = false)}
 									class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
 								>
@@ -582,7 +588,7 @@
 								</a>
 							{/if}
 							<a
-								href="/settings"
+								href={resolve('/settings')}
 								onclick={() => (userMenuOpen = false)}
 								class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
 							>
@@ -594,14 +600,18 @@
 							     what you noted, what you are aiming at. -->
 							<div class="my-1.5 h-px bg-border"></div>
 							{#each [
-								{ href: '/dashboard', icon: Compass, label: i18n.t('dashboardHome.title') },
-								{ href: '/dashboard/opportunities', icon: Handshake, label: i18n.t('opportunities.title') },
-								{ href: '/dashboard/bookmarks', icon: Bookmark, label: i18n.t('bookmarks.title') },
-								{ href: '/dashboard/notes', icon: NotebookPen, label: i18n.t('notes.title') },
-								{ href: '/dashboard/goals', icon: Target, label: i18n.t('goals.title') },
-								{ href: '/dashboard/vouchings', icon: Handshake, label: i18n.t('vouchings.title') }
+								{ href: resolve('/dashboard'), icon: Compass, label: i18n.t('dashboardHome.title') },
+								{ href: resolve('/dashboard/opportunities'), icon: Handshake, label: i18n.t('opportunities.title') },
+								{ href: resolve('/dashboard/bookmarks'), icon: Bookmark, label: i18n.t('bookmarks.title') },
+								{ href: resolve('/dashboard/notes'), icon: NotebookPen, label: i18n.t('notes.title') },
+								{ href: resolve('/dashboard/goals'), icon: Target, label: i18n.t('goals.title') },
+								{ href: resolve('/dashboard/vouchings'), icon: Handshake, label: i18n.t('vouchings.title') }
 							] as shelfLink (shelfLink.href)}
 								{@const ShelfIcon = shelfLink.icon}
+								<!-- Resolved where the literal is written, so the route is checked
+								     against the app's real routes there. The base path is applied
+								     exactly once and must not be applied again here. -->
+								<!-- eslint-disable svelte/no-navigation-without-resolve -->
 								<a
 									href={shelfLink.href}
 									onclick={() => (userMenuOpen = false)}
@@ -610,12 +620,17 @@
 									<ShelfIcon size={14} strokeWidth={2} />
 									<span>{shelfLink.label}</span>
 								</a>
+								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							{/each}
 
 							{#if capabilityLinks.length > 0}
 								<div class="my-1.5 h-px bg-border"></div>
 								{#each capabilityLinks as link (link.href)}
 									{@const IconEl = link.icon}
+									<!-- Resolved where the literal is written, so the route is checked
+									     against the app's real routes there. The base path is applied
+									     exactly once and must not be applied again here. -->
+									<!-- eslint-disable svelte/no-navigation-without-resolve -->
 									<a
 										href={link.href}
 										onclick={() => (userMenuOpen = false)}
@@ -624,6 +639,7 @@
 										<IconEl size={14} strokeWidth={2} />
 										<span>{link.label}</span>
 									</a>
+									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 								{/each}
 							{/if}
 
@@ -641,10 +657,10 @@
 				</div>
 			{:else}
 				<div class="ml-1 h-5 w-px bg-border"></div>
-				<a href="/auth/login" class="rounded-full px-4 py-1.5 text-sm font-medium text-text-muted transition-colors duration-200 hover:text-text-primary">
+				<a href={resolve('/auth/login')} class="rounded-full px-4 py-1.5 text-sm font-medium text-text-muted transition-colors duration-200 hover:text-text-primary">
 					{i18n.t('common.nav.login')}
 				</a>
-				<a href="/auth/register" class="ml-1 rounded-full bg-accent px-5 py-2 text-xs font-bold uppercase tracking-wider text-accent-fg shadow-sm transition-colors duration-200 hover:bg-accent-hover">
+				<a href={resolve('/auth/register')} class="ml-1 rounded-full bg-accent px-5 py-2 text-xs font-bold uppercase tracking-wider text-accent-fg shadow-sm transition-colors duration-200 hover:bg-accent-hover">
 					{i18n.t('common.nav.register')}
 				</a>
 			{/if}
@@ -672,37 +688,41 @@
 	{#if mobileOpen}
 		<div class="border-t border-border bg-surface-elevated/95 backdrop-blur-md md:hidden animate-in slide-in-from-top-2">
 			<div class="mx-auto max-w-7xl px-4 py-3 space-y-0.5">
-				<a href="/" onclick={() => mobileOpen = false} class="block rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 {isActive('/') ? 'text-text-primary bg-surface-overlay' : 'text-text-muted hover:bg-surface-overlay'}">
+				<a href={resolve('/')} onclick={() => mobileOpen = false} class="block rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 {isActive('/') ? 'text-text-primary bg-surface-overlay' : 'text-text-muted hover:bg-surface-overlay'}">
 					{i18n.locale === 'fr' ? 'Accueil' : 'Home'}
 				</a>
 				{#if auth.isAuthenticated}
 					{#each [
-						{ href: '/challenges', label: i18n.t('common.nav.challenges') },
-						{ href: '/bounties', label: 'Bounties' },
-						{ href: '/certifications', label: 'Certifications' },
-						{ href: '/mentors', label: 'Mentors' },
-						{ href: '/feed', label: i18n.locale === 'fr' ? 'Fil' : 'Feed' },
-						{ href: '/forum', label: 'Forum' },
-						{ href: '/guilds', label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
-						{ href: '/tournaments', label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments' },
-						{ href: '/messages', label: 'Messages' },
-						{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards') },
-						{ href: '/cohorts', label: i18n.t('cohorts.title') },
-						{ href: '/dashboard/peer-matching', label: i18n.t('peerMatching.title') },
-						{ href: '/assistant', label: i18n.t('assistant.title') },
-						{ href: '/talent-offers', label: i18n.t('talentOffers.title') },
-						{ href: '/design/contests', label: i18n.t('designContests.title') },
-						{ href: '/design/missions', label: i18n.t('missions.boards.design.title') },
-						{ href: '/ai', label: i18n.t('aiDomain.title') },
-						{ href: '/ai/missions', label: i18n.t('missions.boards.ai.title') },
-						{ href: '/dashboard', label: i18n.t('dashboardHome.title') },
-						{ href: '/dashboard/bookmarks', label: i18n.t('bookmarks.title') },
-						{ href: '/dashboard/notes', label: i18n.t('notes.title') },
-						{ href: '/dashboard/goals', label: i18n.t('goals.title') },
-						{ href: '/dashboard/vouchings', label: i18n.t('vouchings.title') },
+						{ href: resolve('/challenges'), label: i18n.t('common.nav.challenges') },
+						{ href: resolve('/bounties'), label: 'Bounties' },
+						{ href: resolve('/certifications'), label: 'Certifications' },
+						{ href: resolve('/mentors'), label: 'Mentors' },
+						{ href: resolve('/feed'), label: i18n.locale === 'fr' ? 'Fil' : 'Feed' },
+						{ href: resolve('/forum'), label: 'Forum' },
+						{ href: resolve('/guilds'), label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
+						{ href: resolve('/tournaments'), label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments' },
+						{ href: resolve('/messages'), label: 'Messages' },
+						{ href: resolve('/leaderboards'), label: i18n.t('common.nav.leaderboards') },
+						{ href: resolve('/cohorts'), label: i18n.t('cohorts.title') },
+						{ href: resolve('/dashboard/peer-matching'), label: i18n.t('peerMatching.title') },
+						{ href: resolve('/assistant'), label: i18n.t('assistant.title') },
+						{ href: resolve('/talent-offers'), label: i18n.t('talentOffers.title') },
+						{ href: resolve('/design/contests'), label: i18n.t('designContests.title') },
+						{ href: resolve('/design/missions'), label: i18n.t('missions.boards.design.title') },
+						{ href: resolve('/ai'), label: i18n.t('aiDomain.title') },
+						{ href: resolve('/ai/missions'), label: i18n.t('missions.boards.ai.title') },
+						{ href: resolve('/dashboard'), label: i18n.t('dashboardHome.title') },
+						{ href: resolve('/dashboard/bookmarks'), label: i18n.t('bookmarks.title') },
+						{ href: resolve('/dashboard/notes'), label: i18n.t('notes.title') },
+						{ href: resolve('/dashboard/goals'), label: i18n.t('goals.title') },
+						{ href: resolve('/dashboard/vouchings'), label: i18n.t('vouchings.title') },
 						{ href: `/profile/${auth.user?.username}`, label: i18n.t('common.nav.profile') },
-						{ href: '/settings', label: i18n.t('common.nav.settings') }
+						{ href: resolve('/settings'), label: i18n.t('common.nav.settings') }
 					] as link, i (i)}
+						<!-- Resolved where the literal is written, so the route is checked
+						     against the app's real routes there. The base path is applied
+						     exactly once and must not be applied again here. -->
+						<!-- eslint-disable svelte/no-navigation-without-resolve -->
 						<a
 							href={link.href}
 							onclick={() => mobileOpen = false}
@@ -710,6 +730,7 @@
 						>
 							{link.label}
 						</a>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/each}
 					<button
 						type="button"
@@ -721,15 +742,19 @@
 					</button>
 				{:else}
 					{#each [
-						{ href: '/challenges', label: i18n.t('common.nav.challenges') },
-						{ href: '/bounties', label: 'Bounties' },
-						{ href: '/certifications', label: 'Certifications' },
-						{ href: '/mentors', label: 'Mentors' },
-						{ href: '/forum', label: 'Forum' },
-						{ href: '/guilds', label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
-						{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards') },
-						{ href: '/pricing', label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing' }
+						{ href: resolve('/challenges'), label: i18n.t('common.nav.challenges') },
+						{ href: resolve('/bounties'), label: 'Bounties' },
+						{ href: resolve('/certifications'), label: 'Certifications' },
+						{ href: resolve('/mentors'), label: 'Mentors' },
+						{ href: resolve('/forum'), label: 'Forum' },
+						{ href: resolve('/guilds'), label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
+						{ href: resolve('/leaderboards'), label: i18n.t('common.nav.leaderboards') },
+						{ href: resolve('/pricing'), label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing' }
 					] as link, i (i)}
+						<!-- Resolved where the literal is written, so the route is checked
+						     against the app's real routes there. The base path is applied
+						     exactly once and must not be applied again here. -->
+						<!-- eslint-disable svelte/no-navigation-without-resolve -->
 						<a
 							href={link.href}
 							onclick={() => mobileOpen = false}
@@ -737,6 +762,7 @@
 						>
 							{link.label}
 						</a>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/each}
 				{/if}
 
@@ -772,10 +798,10 @@
 
 				{#if !auth.isAuthenticated}
 					<div class="flex gap-2 px-4 pt-1 pb-2">
-						<a href="/auth/login" onclick={() => mobileOpen = false} class="flex-1 rounded-lg border border-border px-4 py-2.5 text-center text-sm font-medium transition-colors duration-200 hover:bg-surface-overlay">
+						<a href={resolve('/auth/login')} onclick={() => mobileOpen = false} class="flex-1 rounded-lg border border-border px-4 py-2.5 text-center text-sm font-medium transition-colors duration-200 hover:bg-surface-overlay">
 							{i18n.t('common.nav.login')}
 						</a>
-						<a href="/auth/register" onclick={() => mobileOpen = false} class="flex-1 rounded-lg bg-accent px-4 py-2.5 text-center text-sm font-bold text-accent-fg transition-colors duration-200 hover:bg-accent-hover">
+						<a href={resolve('/auth/register')} onclick={() => mobileOpen = false} class="flex-1 rounded-lg bg-accent px-4 py-2.5 text-center text-sm font-bold text-accent-fg transition-colors duration-200 hover:bg-accent-hover">
 							{i18n.t('common.nav.register')}
 						</a>
 					</div>

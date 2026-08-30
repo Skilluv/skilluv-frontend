@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { i18n } from '$lib/i18n';
@@ -107,7 +108,7 @@
 <div class="mx-auto max-w-4xl px-4 py-10 sm:py-14">
 	<!-- Breadcrumb -->
 	<nav class="mb-6 flex items-center gap-2 text-sm text-text-muted">
-		<a href="/bounties" class="hover:text-text-primary">
+		<a href={resolve('/bounties')} class="hover:text-text-primary">
 			{i18n.locale === 'fr' ? 'Bounties' : 'Bounties'}
 		</a>
 		<span>›</span>
@@ -212,7 +213,7 @@
 		<a
 			href={bounty.issue_url}
 			target="_blank"
-			rel="noopener noreferrer"
+			rel="external noopener noreferrer"
 			class="mb-8 flex items-center gap-3 rounded-2xl border border-border bg-surface-elevated p-5 hover:border-primary hover:text-primary transition-colors"
 		>
 			<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 
 	let { children } = $props();
@@ -15,12 +16,12 @@
 
 	<div class="mb-6 flex gap-2">
 		<a
-			href="/developer/keys"
+			href={resolve('/developer/keys')}
 			class="rounded-xl px-4 py-2 text-sm font-medium transition-colors
 				{isActive('/developer/keys') ? 'bg-primary text-primary-fg' : 'bg-surface-elevated text-text-muted hover:text-text-primary'}"
 		>API Keys</a>
 		<a
-			href="/developer/webhooks"
+			href={resolve('/developer/webhooks')}
 			class="rounded-xl px-4 py-2 text-sm font-medium transition-colors
 				{isActive('/developer/webhooks') ? 'bg-primary text-primary-fg' : 'bg-surface-elevated text-text-muted hover:text-text-primary'}"
 		>Webhooks</a>

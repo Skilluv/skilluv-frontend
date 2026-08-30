@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 </script>
 
@@ -19,7 +20,7 @@
 	<h2>1. Responsable du traitement</h2>
 	<p>
 		Le responsable du traitement est <span class="todo">[TODO : raison sociale]</span>, dont les
-		coordonnées sont précisées dans les <a href="/legal/mentions">mentions légales</a>.
+		coordonnées sont précisées dans les <a href={resolve('/legal/mentions')}>mentions légales</a>.
 	</p>
 	<p>
 		Délégué à la protection des données (DPO) ou point de contact protection des données&nbsp;:
@@ -118,7 +119,7 @@
 		Conformément au RGPD et aux lois applicables, vous disposez de droits sur vos données&nbsp;:
 		accès, rectification, effacement, limitation, opposition, portabilité, retrait du consentement
 		et directives post-mortem. Le détail et la procédure d'exercice sont décrits sur notre
-		<a href="/legal/gdpr">page dédiée aux droits RGPD</a>.
+		<a href={resolve('/legal/gdpr')}>page dédiée aux droits RGPD</a>.
 	</p>
 
 	<h2>9. Cookies et traceurs</h2>
@@ -161,7 +162,7 @@
 	<p>
 		Pour toute question relative à vos données personnelles, écrivez à
 		<span class="todo">[TODO : dpo@skilluv.…]</span> ou par voie postale à l'adresse du siège social
-		(voir <a href="/legal/mentions">mentions légales</a>).
+		(voir <a href={resolve('/legal/mentions')}>mentions légales</a>).
 	</p>
 
 	<div class="callout">
@@ -180,7 +181,7 @@
 	<h2>1. Data controller</h2>
 	<p>
 		The data controller is <span class="todo">[TODO: legal name]</span>, whose details are listed
-		in the <a href="/legal/mentions">legal notice</a>.
+		in the <a href={resolve('/legal/mentions')}>legal notice</a>.
 	</p>
 	<p>
 		Data protection officer (DPO) or data-protection contact:
@@ -265,7 +266,7 @@
 		Under the GDPR and applicable laws, you have rights over your data: access, rectification,
 		erasure, restriction, objection, portability, withdrawal of consent, and post-mortem
 		directives. Details and the exercise procedure are on our
-		<a href="/legal/gdpr">GDPR rights page</a>.
+		<a href={resolve('/legal/gdpr')}>GDPR rights page</a>.
 	</p>
 
 	<h2>9. Cookies and trackers</h2>
@@ -303,7 +304,7 @@
 	<p>
 		For any question regarding your personal data, write to
 		<span class="todo">[TODO: dpo@skilluv.…]</span> or by mail at the registered office address (see
-		<a href="/legal/mentions">legal notice</a>).
+		<a href={resolve('/legal/mentions')}>legal notice</a>).
 	</p>
 
 	<div class="callout">

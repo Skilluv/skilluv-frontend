@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import Badge from '$components/ui/Badge.svelte';
@@ -132,7 +133,7 @@
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 			{#each filtered as t (t.slug)}
 				<a
-					href={`/tournaments/${t.slug}`}
+					href={resolve(`/tournaments/${t.slug}`)}
 					class="flex flex-col rounded-2xl border {isActive(t) ? 'border-accent bg-surface-elevated' : 'border-border bg-surface-elevated'} p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
 				>
 					<div class="mb-3 flex items-start justify-between gap-2">

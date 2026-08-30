@@ -21,6 +21,8 @@
 	 * hour, the other paying for a model call — so they belong to the
 	 * assistant rather than to a page that loads on every visit.
 	 */
+	import type { ResolvedPathname } from '$app/types';
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import {
 		Bookmark,
@@ -70,13 +72,13 @@
 	let waitingCount = $derived(pendingInvitations.length);
 
 	const shortcuts = [
-		{ href: '/dashboard/opportunities', icon: Handshake, key: 'opportunities' },
-		{ href: '/dashboard/bookmarks', icon: Bookmark, key: 'bookmarks' },
-		{ href: '/dashboard/notes', icon: NotebookPen, key: 'notes' },
-		{ href: '/dashboard/goals', icon: Target, key: 'goals' },
-		{ href: '/dashboard/vouchings', icon: Handshake, key: 'vouchings' },
-		{ href: '/dashboard/slices', icon: Sparkles, key: 'slices' },
-		{ href: '/dashboard/teams', icon: Users, key: 'teams' }
+		{ href: resolve('/dashboard/opportunities'), icon: Handshake, key: 'opportunities' },
+		{ href: resolve('/dashboard/bookmarks'), icon: Bookmark, key: 'bookmarks' },
+		{ href: resolve('/dashboard/notes'), icon: NotebookPen, key: 'notes' },
+		{ href: resolve('/dashboard/goals'), icon: Target, key: 'goals' },
+		{ href: resolve('/dashboard/vouchings'), icon: Handshake, key: 'vouchings' },
+		{ href: resolve('/dashboard/slices'), icon: Sparkles, key: 'slices' },
+		{ href: resolve('/dashboard/teams'), icon: Users, key: 'teams' }
 	];
 
 	async function load() {
@@ -109,9 +111,10 @@
 	}
 
 	/** A contest points at the tournament; an individual brief at its slice. */
-	function suggestionHref(s: NextChallenge): string {
-		if (s.format === 'contest') return s.slug ? `/tournaments/${s.slug}` : '/tournaments';
-		return `/slices/${s.id}`;
+	function suggestionHref(s: NextChallenge): ResolvedPathname {
+		if (s.format === 'contest')
+			return s.slug ? resolve(`/tournaments/${s.slug}`) : resolve('/tournaments');
+		return resolve(`/slices/${s.id}`);
 	}
 
 	function fmtDate(iso: string): string {
@@ -255,12 +258,16 @@
 								{/if}
 							</div>
 
+							<!-- suggestionHref() returns a ResolvedPathname — it resolves each branch
+							     itself, beside the literal. The rule only sees a call here. -->
+							<!-- eslint-disable svelte/no-navigation-without-resolve -->
 							<a
 								href={suggestionHref(suggestion)}
 								class="text-sm font-semibold text-text-primary hover:text-accent"
 							>
 								{suggestion.title}
 							</a>
+							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 							<!-- The reasons are the point. The backend returns them rather
 							     than logging them: a recommendation nobody can argue with
@@ -294,7 +301,7 @@
 								{#each events as event (event.event_slug)}
 									<li class="flex flex-wrap items-center gap-x-2 text-sm">
 										<a
-											href="/events/{event.event_slug}"
+											href={resolve(`/events/${event.event_slug}`)}
 											class="text-text-primary hover:text-accent"
 										>
 											{event.event_name}
@@ -304,7 +311,7 @@
 											<a
 												href={event.contribution_ref}
 												target="_blank"
-												rel="noopener noreferrer nofollow ugc"
+												rel="external noopener noreferrer nofollow ugc"
 												class="ml-auto inline-flex items-center gap-1 text-xs text-text-muted hover:text-text-primary"
 											>
 												{i18n.t('dashboardHome.contribution')}
@@ -387,6 +394,10 @@
 			<div class="grid gap-3 sm:grid-cols-3">
 				{#each shortcuts as shortcut (shortcut.href)}
 					{@const Icon = shortcut.icon}
+					<!-- Resolved where the literal is written, so the route is checked
+					     against the app's real routes there. The base path is applied
+					     exactly once and must not be applied again here. -->
+					<!-- eslint-disable svelte/no-navigation-without-resolve -->
 					<a
 						href={shortcut.href}
 						class="flex items-center gap-2 rounded-xl border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary transition-colors hover:border-accent/40"
@@ -394,6 +405,7 @@
 						<Icon size={14} strokeWidth={2} class="text-text-muted" />
 						{i18n.t(`dashboardHome.shortcuts.${shortcut.key}`)}
 					</a>
+					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 				{/each}
 			</div>
 		</section>

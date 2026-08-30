@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { enterpriseApi } from '$api/enterprise';
 	import { SkilluError } from '$api/client';
@@ -52,7 +53,7 @@
 </svelte:head>
 
 <div class="p-6 lg:p-8">
-	<a href="/enterprise/lists" class="mb-4 inline-block text-sm text-text-muted hover:text-text-primary">{i18n.t('enterprise.lists.backToLists')}</a>
+	<a href={resolve('/enterprise/lists')} class="mb-4 inline-block text-sm text-text-muted hover:text-text-primary">{i18n.t('enterprise.lists.backToLists')}</a>
 
 	{#if loading}
 		<Skeleton class="mb-2 h-7 w-48" />
@@ -79,7 +80,7 @@
 						<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-overlay font-bold text-text-muted">
 							{talent.display_name.charAt(0).toUpperCase()}
 						</div>
-						<a href="/profile/{talent.username}" class="flex-1">
+						<a href={resolve(`/profile/${talent.username}`)} class="flex-1">
 							<p class="font-medium hover:text-accent">{talent.display_name}</p>
 							<div class="flex items-center gap-2 text-xs">
 								<span class="capitalize {titleColors[talent.title]}">{talent.title}</span>

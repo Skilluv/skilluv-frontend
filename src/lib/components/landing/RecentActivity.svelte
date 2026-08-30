@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { scrollReveal } from '$lib/utils/animations';
@@ -68,7 +69,7 @@
 				{#each entries as entry, idx (entry.user_id)}
 					{@const ds = domainStyle(null)}
 					<a
-						href={`/profile/${entry.username}`}
+						href={resolve(`/profile/${entry.username}`)}
 						class="flex items-center gap-4 px-5 py-4 transition-colors hover:bg-surface-overlay {idx <
 						entries.length - 1
 							? 'border-b border-border'

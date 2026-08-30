@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { ResolvedPathname } from '$app/types';
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 	import { theme } from '$lib/stores/theme.svelte';
 	import { consent } from '$lib/stores/consent.svelte';
@@ -15,31 +17,31 @@
 		{ key: 'sakura', label: 'Sakura', color: '#e8a5c1' }
 	];
 
-	const navLinks = [
-		{ href: '/challenges', fr: 'Challenges', en: 'Challenges' },
-		{ href: '/leaderboards', fr: 'Classements', en: 'Leaderboards' },
-		{ href: '/forum', fr: 'Forum', en: 'Forum' },
-		{ href: '/guilds', fr: 'Guildes', en: 'Guilds' },
-		{ href: '/tournaments', fr: 'Tournois', en: 'Tournaments' },
-		{ href: '/bounties', fr: 'Bounties', en: 'Bounties' },
-		{ href: '/certifications', fr: 'Certifications', en: 'Certifications' },
-		{ href: '/mentors', fr: 'Mentors', en: 'Mentors' },
-		{ href: '/guides', fr: 'Guides', en: 'Guides' },
-		{ href: '/audio/castings', fr: 'Castings voix', en: 'Voice castings' },
-		{ href: '/ai', fr: 'IA', en: 'AI' },
-		{ href: '/ai/missions', fr: 'Missions IA', en: 'AI missions' },
-		{ href: '/marketplace', fr: 'Marché', en: 'Marketplace' },
-		{ href: '/enterprise/register', fr: 'Entreprises', en: 'Enterprise' },
-		{ href: '/pricing', fr: 'Tarifs', en: 'Pricing' },
-		{ href: '/for-companies', fr: 'Talents', en: 'Talents' },
-		{ href: '/community/challenges', fr: 'Communauté', en: 'Community' }
+	const navLinks: { href: ResolvedPathname; fr: string; en: string }[] = [
+		{ href: resolve('/challenges'), fr: 'Challenges', en: 'Challenges' },
+		{ href: resolve('/leaderboards'), fr: 'Classements', en: 'Leaderboards' },
+		{ href: resolve('/forum'), fr: 'Forum', en: 'Forum' },
+		{ href: resolve('/guilds'), fr: 'Guildes', en: 'Guilds' },
+		{ href: resolve('/tournaments'), fr: 'Tournois', en: 'Tournaments' },
+		{ href: resolve('/bounties'), fr: 'Bounties', en: 'Bounties' },
+		{ href: resolve('/certifications'), fr: 'Certifications', en: 'Certifications' },
+		{ href: resolve('/mentors'), fr: 'Mentors', en: 'Mentors' },
+		{ href: resolve('/guides'), fr: 'Guides', en: 'Guides' },
+		{ href: resolve('/audio/castings'), fr: 'Castings voix', en: 'Voice castings' },
+		{ href: resolve('/ai'), fr: 'IA', en: 'AI' },
+		{ href: resolve('/ai/missions'), fr: 'Missions IA', en: 'AI missions' },
+		{ href: resolve('/marketplace'), fr: 'Marché', en: 'Marketplace' },
+		{ href: resolve('/enterprise/register'), fr: 'Entreprises', en: 'Enterprise' },
+		{ href: resolve('/pricing'), fr: 'Tarifs', en: 'Pricing' },
+		{ href: resolve('/for-companies'), fr: 'Talents', en: 'Talents' },
+		{ href: resolve('/community/challenges'), fr: 'Communauté', en: 'Community' }
 	];
 
-	const legalLinks = [
-		{ href: '/legal/mentions', fr: 'Mentions légales', en: 'Legal notice' },
-		{ href: '/legal/privacy', fr: 'Confidentialité', en: 'Privacy' },
-		{ href: '/legal/cgu', fr: 'CGU', en: 'Terms' },
-		{ href: '/legal/gdpr', fr: 'RGPD', en: 'GDPR' }
+	const legalLinks: { href: ResolvedPathname; fr: string; en: string }[] = [
+		{ href: resolve('/legal/mentions'), fr: 'Mentions légales', en: 'Legal notice' },
+		{ href: resolve('/legal/privacy'), fr: 'Confidentialité', en: 'Privacy' },
+		{ href: resolve('/legal/terms'), fr: 'CGU', en: 'Terms' },
+		{ href: resolve('/legal/gdpr'), fr: 'RGPD', en: 'GDPR' }
 	];
 
 	let email = $state('');
@@ -126,10 +128,15 @@
 				<ul class="flex flex-wrap items-baseline gap-x-6 gap-y-3 sm:gap-x-8">
 					{#each navLinks as link (link.href)}
 						<li>
+							<!-- Resolved where the literal is written, so the route is checked
+							     against the app's real routes there. The base path is applied
+							     exactly once and must not be applied again here. -->
+							<!-- eslint-disable svelte/no-navigation-without-resolve -->
 							<a href={link.href} class="group inline-flex items-baseline text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-text-primary transition-colors duration-200 hover:text-accent">
 								<span>{i18n.locale === 'fr' ? link.fr : link.en}</span>
 								<span class="text-accent">.</span>
 							</a>
+							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 						</li>
 					{/each}
 				</ul>
@@ -220,7 +227,7 @@
 
 			<!-- ▓▓▓ 4. GROS LOGO + SOCIAL PILLS ▓▓▓ -->
 			<div class="mt-16 flex flex-col gap-8 border-t border-border pt-10 lg:flex-row lg:items-end lg:justify-between">
-				<a href="/" class="inline-flex items-baseline leading-none">
+				<a href={resolve('/')} class="inline-flex items-baseline leading-none">
 					<span class="text-7xl sm:text-8xl lg:text-9xl font-black tracking-[-0.05em]">
 						<span class="text-accent">Skill</span><span class="text-text-primary">uv</span><span class="text-accent">.</span>
 					</span>
@@ -231,7 +238,7 @@
 						<a
 							href={account.url}
 							target="_blank"
-							rel="noopener"
+							rel="external noopener"
 							data-testid="social-{account.key}"
 							class="rounded-full border border-border bg-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-text-primary transition-colors duration-200 hover:border-text-primary hover:bg-surface-overlay"
 						>
@@ -249,9 +256,14 @@
 				<ul class="flex flex-wrap items-center gap-x-5 gap-y-2">
 					{#each legalLinks as link (link.href)}
 						<li>
+							<!-- Resolved where the literal is written, so the route is checked
+							     against the app's real routes there. The base path is applied
+							     exactly once and must not be applied again here. -->
+							<!-- eslint-disable svelte/no-navigation-without-resolve -->
 							<a href={link.href} class="text-xs uppercase tracking-widest font-bold text-text-muted transition-colors duration-200 hover:text-text-primary">
 								{i18n.locale === 'fr' ? link.fr : link.en}
 							</a>
+							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 						</li>
 					{/each}
 					<li>

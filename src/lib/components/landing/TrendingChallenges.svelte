@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { scrollReveal } from '$lib/utils/animations';
@@ -59,7 +60,7 @@
 					{@const c = item.challenge}
 					{@const ds = domainStyle(c.skill_domain)}
 					<a
-						href="/challenges/{c.id}"
+						href={resolve(`/challenges/${c.id}`)}
 						data-testid="mission-card"
 						class="group overflow-hidden rounded-2xl border-2 border-border bg-surface-elevated transition-colors duration-200 {ds.hoverBorder}"
 					>

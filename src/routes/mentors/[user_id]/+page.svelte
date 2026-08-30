@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
@@ -27,7 +28,6 @@
 	let showPayment = $state(false);
 	let paymentId = $state('');
 	let checkoutUrl = $state('');
-	let bookedSessionId = $state('');
 
 	async function load() {
 		loading = true;
@@ -72,7 +72,6 @@
 			// keeps the provider's page as a way out for card payments.
 			paymentId = res.data.payment_id;
 			checkoutUrl = res.data.checkout_url;
-			bookedSessionId = res.data.session_id;
 			showBook = false;
 			showPayment = true;
 		} catch (e) {
@@ -99,7 +98,7 @@
 <div class="mx-auto max-w-4xl px-4 py-10 sm:py-14">
 	<!-- Breadcrumb -->
 	<nav class="mb-6 flex items-center gap-2 text-sm text-text-muted">
-		<a href="/mentors" class="hover:text-text-primary">Mentors</a>
+		<a href={resolve('/mentors')} class="hover:text-text-primary">Mentors</a>
 		<span>›</span>
 		<span class="text-text-primary truncate">{mentor?.display_name ?? '...'}</span>
 	</nav>
@@ -280,6 +279,9 @@
 	onclose={() => (showPayment = false)}
 	onsettled={() => {
 		showPayment = false;
-		goto(`/mentorship/sessions/${bookedSessionId}`);
+		// There is no /mentorship/sessions/[id] route — this redirect landed on
+		// a 404 after every paid booking. The list is where the new session
+		// actually appears.
+		goto(resolve('/mentorship/sessions'));
 	}}
 />

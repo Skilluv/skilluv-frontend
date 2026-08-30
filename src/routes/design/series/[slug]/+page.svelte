@@ -12,6 +12,7 @@
 	 * worth having: a series result can name its winners, where
 	 * `/tournaments/[slug]` still has to rank anonymous participants.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { Trophy } from '@lucide/svelte';
@@ -125,7 +126,7 @@
 									</p>
 								{/if}
 								<a
-									href="/design/contests/{standing.tournament_slug}"
+									href={resolve(`/design/contests/${standing.tournament_slug}`)}
 									class="text-sm font-bold text-text hover:underline"
 								>
 									{standing.tournament_name}
@@ -147,7 +148,7 @@
 											<!-- Named, unlike a bare tournament leaderboard: this
 											     payload joins the identity. -->
 											{#if line.username}
-												<a href="/profile/{line.username}" class="text-text hover:underline">
+												<a href={resolve(`/profile/${line.username}`)} class="text-text hover:underline">
 													{entrantName(line)}
 												</a>
 											{:else}

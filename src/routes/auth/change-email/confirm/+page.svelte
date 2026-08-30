@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
@@ -48,13 +49,13 @@
 	{:else if status === 'ok'}
 		<h1 class="mb-4 text-2xl font-bold">{i18n.locale === 'fr' ? 'Email confirmé' : 'Email confirmed'}</h1>
 		<p class="mb-6 text-text-muted">{message}</p>
-		<Button variant="accent" onclick={() => goto('/auth/login')}>
+		<Button variant="accent" onclick={() => goto(resolve('/auth/login'))}>
 			{i18n.locale === 'fr' ? 'Se reconnecter' : 'Sign in again'}
 		</Button>
 	{:else}
 		<h1 class="mb-4 text-2xl font-bold text-error">{i18n.locale === 'fr' ? 'Erreur' : 'Error'}</h1>
 		<p class="mb-6 text-text-muted">{message}</p>
-		<Button variant="ghost" onclick={() => goto('/settings/security')}>
+		<Button variant="ghost" onclick={() => goto(resolve('/settings/security'))}>
 			{i18n.locale === 'fr' ? 'Retour' : 'Back'}
 		</Button>
 	{/if}

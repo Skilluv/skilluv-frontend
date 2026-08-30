@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { guildApi } from '$lib/api/guild';
 	import { profileApi } from '$lib/api/profile';
@@ -119,7 +120,7 @@
 				color_hex: colorHex
 			});
 			toast.success(i18n.t('guilds.create.created'));
-			await goto(`/guilds/${res.data.guild.slug}`);
+			await goto(resolve(`/guilds/${res.data.guild.slug}`));
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
 		} finally {

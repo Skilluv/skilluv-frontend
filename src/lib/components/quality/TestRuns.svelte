@@ -120,7 +120,7 @@
 						<a
 							href={run.report_url}
 							target="_blank"
-							rel="noopener noreferrer nofollow ugc"
+							rel="external noopener noreferrer nofollow ugc"
 							class="inline-flex items-center gap-1 text-accent hover:underline"
 						>
 							{i18n.t('testRuns.openReport')}

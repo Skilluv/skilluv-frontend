@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 </script>
 
@@ -143,8 +144,8 @@
 	<h2>11. Données personnelles</h2>
 	<p>
 		Le traitement des données personnelles est décrit dans notre
-		<a href="/legal/privacy">Politique de confidentialité</a> et l'exercice de vos droits sur la
-		<a href="/legal/gdpr">page RGPD</a>.
+		<a href={resolve('/legal/privacy')}>Politique de confidentialité</a> et l'exercice de vos droits sur la
+		<a href={resolve('/legal/gdpr')}>page RGPD</a>.
 	</p>
 
 	<h2>12. Liens et services tiers</h2>
@@ -327,8 +328,8 @@
 	<h2>11. Personal data</h2>
 	<p>
 		Processing of personal data is described in our
-		<a href="/legal/privacy">Privacy Policy</a> and rights are detailed on the
-		<a href="/legal/gdpr">GDPR page</a>.
+		<a href={resolve('/legal/privacy')}>Privacy Policy</a> and rights are detailed on the
+		<a href={resolve('/legal/gdpr')}>GDPR page</a>.
 	</p>
 
 	<h2>12. Third-party links and services</h2>

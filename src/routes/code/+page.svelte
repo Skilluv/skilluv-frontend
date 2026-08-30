@@ -121,7 +121,7 @@
 								<a
 									href={link}
 									target="_blank"
-									rel="noopener noreferrer nofollow ugc"
+									rel="external noopener noreferrer nofollow ugc"
 									class="inline-flex items-center gap-1 text-xs text-accent hover:underline"
 								>
 									{i18n.t('codeDiscovery.openIssue')}

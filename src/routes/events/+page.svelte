@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { badgeEventsApi } from '$lib/api/badge_events';
 	import { SkilluError } from '$lib/api/client';
@@ -69,7 +70,7 @@
 								<EventCard event={full} />
 							{:else}
 								<a
-									href="/events/{m.event_slug}"
+									href={resolve(`/events/${m.event_slug}`)}
 									class="block rounded-2xl border border-border bg-surface-elevated p-5 hover:border-accent"
 								>
 									<p class="font-semibold text-text-primary">{m.event_name}</p>

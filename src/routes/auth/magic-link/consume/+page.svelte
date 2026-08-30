@@ -35,6 +35,8 @@
 					: intent === 'signup'
 						? '/challenges/onboarding'
 						: '/';
+				// Same shape: target is picked from internal literals a few lines up.
+				// eslint-disable-next-line svelte/no-navigation-without-resolve
 				goto(target);
 			}, 1200);
 		} catch (e) {

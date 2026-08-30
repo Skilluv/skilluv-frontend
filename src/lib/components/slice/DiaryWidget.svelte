@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { slicesApi, type DiaryEntry } from '$api/slices';
 	import { SkilluError } from '$api/client';
 	import { toast } from '$stores/toast.svelte';
@@ -130,7 +131,7 @@
 									{initials(e.author_display_name || e.author_username)}
 								{/if}
 							</span>
-							<a href={`/profile/${e.author_username}`} class="text-sm font-medium text-text-primary hover:text-accent truncate">
+							<a href={resolve(`/profile/${e.author_username}`)} class="text-sm font-medium text-text-primary hover:text-accent truncate">
 								{e.author_display_name || e.author_username}
 							</a>
 							<span class="text-xs text-text-muted shrink-0">{fmtDate(e.created_at)}</span>

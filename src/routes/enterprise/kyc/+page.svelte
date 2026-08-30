@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
@@ -149,7 +150,7 @@
 
 	onMount(() => {
 		if (!auth.isAuthenticated) {
-			goto('/auth/login?redirect=/enterprise/kyc');
+			goto(resolve('/auth/login?redirect=/enterprise/kyc'));
 			return;
 		}
 		void load();
@@ -163,7 +164,7 @@
 
 <div class="mx-auto max-w-4xl px-4 py-10 sm:py-14">
 	<nav class="mb-6 flex items-center gap-2 text-sm text-text-muted">
-		<a href="/enterprise/dashboard" class="hover:text-text-primary">
+		<a href={resolve('/enterprise/dashboard')} class="hover:text-text-primary">
 			{i18n.locale === 'fr' ? 'Espace entreprise' : 'Enterprise space'}
 		</a>
 		<span>›</span>

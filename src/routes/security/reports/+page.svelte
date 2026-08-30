@@ -19,6 +19,7 @@
 	 * keeps both — `severity_reported_tier` alongside `severity_tier`. Showing
 	 * only the second would quietly overwrite somebody's judgement with ours.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { ExternalLink, MessageSquare, ShieldAlert } from '@lucide/svelte';
 	import { securityApi } from '$api/security';
@@ -158,7 +159,7 @@
 				{@const hint = statusHint(report.status)}
 				<li class="rounded-xl border border-border bg-surface-elevated p-4" data-testid="security-report-row">
 					<div class="flex flex-wrap items-start justify-between gap-2">
-						<a href="/security/findings/{report.id}" class="text-sm font-bold text-text hover:underline">
+						<a href={resolve(`/security/findings/${report.id}`)} class="text-sm font-bold text-text hover:underline">
 							{report.title}
 						</a>
 						<div class="flex flex-wrap items-center gap-2">
@@ -232,7 +233,7 @@
 							<a
 								href={report.writeup_url}
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="external noopener noreferrer"
 								class="inline-flex items-center gap-1.5 text-sm text-accent hover:underline"
 							>
 								<ExternalLink size={14} />

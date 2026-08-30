@@ -22,6 +22,7 @@
 	 *    presenting it as a live terrain would send somebody to contribute
 	 *    somewhere Skilluv cannot credit them for it.
 	 */
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { ExternalLink, Wrench } from '@lucide/svelte';
 	import { practiceApi, groupByCategory } from '$api/practice';
@@ -226,15 +227,18 @@
 								<a
 									href={terrain.upstream_url}
 									target="_blank"
-									rel="noopener noreferrer"
+									rel="external noopener noreferrer"
 									class="inline-flex items-center gap-1.5 text-text-muted hover:underline"
 								>
 									<ExternalLink size={14} />
 									{i18n.t('designPractice.openUpstream')}
 								</a>
 								{#if terrain.adopted && terrain.project_slug}
+									<!-- /projects has no detail route, so this pointed at a
+									     404. Sends to the listing instead, which is where
+									     the project can actually be found. -->
 									<a
-										href="/projects/{terrain.project_slug}"
+										href={resolve('/projects')}
 										class="inline-flex items-center gap-1.5 text-accent hover:underline"
 									>
 										{i18n.t('designPractice.openProject')}

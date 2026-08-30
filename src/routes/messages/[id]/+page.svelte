@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount, tick } from 'svelte';
 	import { page } from '$app/state';
 	import { i18n } from '$lib/i18n';
@@ -65,7 +66,7 @@
 
 	onMount(() => {
 		if (!auth.isAuthenticated) {
-			goto('/auth/login?redirect=/messages');
+			goto(resolve('/auth/login?redirect=/messages'));
 			return;
 		}
 		void load();
@@ -89,7 +90,7 @@
 
 <div class="mx-auto max-w-3xl px-4 py-6 flex flex-col h-[calc(100vh-140px)]">
 	<nav class="mb-4 flex items-center gap-2 text-sm text-text-muted">
-		<a href="/messages" class="hover:text-text-primary">Messages</a>
+		<a href={resolve('/messages')} class="hover:text-text-primary">Messages</a>
 		<span>›</span>
 		<span class="text-text-primary">Conversation</span>
 	</nav>

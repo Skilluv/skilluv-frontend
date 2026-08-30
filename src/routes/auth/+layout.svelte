@@ -1,5 +1,6 @@
 <script lang="ts">
 	let { children } = $props();
+	import { resolve } from '$app/paths';
 	import { i18n } from '$lib/i18n';
 </script>
 
@@ -11,7 +12,7 @@
 
 	<div class="auth-shell__inner">
 		<!-- Brand block : trousseau + wordmark bicolore -->
-		<a href="/" class="auth-brand" aria-label="Skilluv accueil">
+		<a href={resolve('/')} class="auth-brand" aria-label="Skilluv accueil">
 			<svg viewBox="0 0 60 60" class="auth-brand__mark" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
 				<circle cx="30" cy="14" r="8" />
 				<line x1="24" y1="22" x2="20" y2="50" />

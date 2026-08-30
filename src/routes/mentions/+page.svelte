@@ -110,6 +110,7 @@
 				<li>
 					<a
 						href={mention.source_url}
+						rel="external"
 						data-testid="mention-item"
 						onclick={() => markRead(mention)}
 						class="flex gap-3 rounded-2xl border border-border bg-surface-elevated p-4 transition-colors hover:border-accent"

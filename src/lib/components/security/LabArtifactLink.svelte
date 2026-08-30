@@ -86,7 +86,7 @@
 			<a
 				href={artifact.url}
 				class="text-sm font-medium text-accent hover:underline"
-				rel="noopener"
+				rel="external noopener"
 				data-testid="lab-artifact-link"
 			>
 				{artifact.filename}

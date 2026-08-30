@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { enterpriseApi } from '$api/enterprise';
 	import { creditsApi, type CreditBalance } from '$api/credits';
 	import { subscriptionsApi, type EnterpriseSubscription } from '$api/subscriptions';
@@ -165,7 +166,7 @@
 			<div class="mb-8 flex flex-col gap-3">
 				{#if kycNeedsAttention && kyc}
 					<a
-						href="/enterprise/kyc"
+						href={resolve('/enterprise/kyc')}
 						class="flex items-start gap-3 rounded-xl border border-warning/30 bg-warning/10 p-4 text-sm transition-colors hover:bg-warning/15"
 					>
 						<AlertTriangle size={20} strokeWidth={2} class="mt-0.5 shrink-0 text-warning" />
@@ -191,7 +192,7 @@
 
 				{#if lowCredits}
 					<a
-						href="/enterprise/credits"
+						href={resolve('/enterprise/credits')}
 						class="flex items-start gap-3 rounded-xl border border-accent/30 bg-accent/10 p-4 text-sm transition-colors hover:bg-accent/15"
 					>
 						<Wallet size={20} strokeWidth={2} class="mt-0.5 shrink-0 text-accent" />
@@ -211,7 +212,7 @@
 
 				{#if subscriptionPastDue}
 					<a
-						href="/enterprise/subscriptions"
+						href={resolve('/enterprise/subscriptions')}
 						class="flex items-start gap-3 rounded-xl border border-error/30 bg-error/10 p-4 text-sm transition-colors hover:bg-error/15"
 					>
 						<AlertTriangle size={20} strokeWidth={2} class="mt-0.5 shrink-0 text-error" />
@@ -238,7 +239,7 @@
 		<div class="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			<!-- Credits balance -->
 			<a
-				href="/enterprise/credits"
+				href={resolve('/enterprise/credits')}
 				class="group flex flex-col justify-between rounded-xl border border-border bg-surface-elevated p-5 transition-colors hover:border-primary/40"
 			>
 				<div class="mb-3 flex items-center justify-between">
@@ -262,7 +263,7 @@
 
 			<!-- Subscription -->
 			<a
-				href="/enterprise/subscriptions"
+				href={resolve('/enterprise/subscriptions')}
 				class="group flex flex-col justify-between rounded-xl border border-border bg-surface-elevated p-5 transition-colors hover:border-primary/40"
 			>
 				<div class="mb-3 flex items-center justify-between">
@@ -306,7 +307,7 @@
 			<!-- KYC status (owner only) or Team size fallback -->
 			{#if isOwner && kyc}
 				<a
-					href="/enterprise/kyc"
+					href={resolve('/enterprise/kyc')}
 					class="group flex flex-col justify-between rounded-xl border border-border bg-surface-elevated p-5 transition-colors hover:border-primary/40"
 				>
 					<div class="mb-3 flex items-center justify-between">
@@ -337,7 +338,7 @@
 				</a>
 			{:else if myStats}
 				<a
-					href="/enterprise/members"
+					href={resolve('/enterprise/members')}
 					class="group flex flex-col justify-between rounded-xl border border-border bg-surface-elevated p-5 transition-colors hover:border-primary/40"
 				>
 					<div class="mb-3 flex items-center justify-between">
@@ -361,14 +362,14 @@
 		{#if myStats}
 			<h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">{i18n.t('enterprise.dashboard.myActivity')}</h2>
 			<div class="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<a href="/enterprise/bookmarks" class="group rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40">
+				<a href={resolve('/enterprise/bookmarks')} class="group rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40">
 					<div class="mb-2 flex items-center gap-2 text-text-muted">
 						<Bookmark size={14} strokeWidth={2} />
 						<p class="text-xs">{i18n.t('enterprise.dashboard.bookmarks')}</p>
 					</div>
 					<p class="text-2xl font-bold">{myStats.bookmarks}</p>
 				</a>
-				<a href="/enterprise/lists" class="group rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40">
+				<a href={resolve('/enterprise/lists')} class="group rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40">
 					<div class="mb-2 flex items-center gap-2 text-text-muted">
 						<List size={14} strokeWidth={2} />
 						<p class="text-xs">{i18n.t('enterprise.dashboard.lists')}</p>
@@ -387,7 +388,7 @@
 						<span class="text-error">{myStats.interest_requests.declined} {i18n.locale === 'fr' ? 'déclinées' : 'declined'}</span>
 					</div>
 				</div>
-				<a href="/enterprise/messages" class="group rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40">
+				<a href={resolve('/enterprise/messages')} class="group rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40">
 					<div class="mb-2 flex items-center gap-2 text-text-muted">
 						<MessageSquare size={14} strokeWidth={2} />
 						<p class="text-xs">{i18n.t('enterprise.dashboard.conversations')}</p>
@@ -404,7 +405,7 @@
 					<h2 class="text-sm font-semibold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Notifications récentes' : 'Recent notifications'}
 					</h2>
-					<a href="/notifications" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+					<a href={resolve('/notifications')} class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
 						{i18n.locale === 'fr' ? 'Tout voir' : 'View all'}
 						<ArrowRight size={14} strokeWidth={2} />
 					</a>
@@ -412,7 +413,7 @@
 				<div class="rounded-xl border border-border bg-surface-elevated divide-y divide-border">
 					{#each recentNotifs as n (n.id)}
 						<a
-							href="/notifications"
+							href={resolve('/notifications')}
 							class="flex items-start gap-3 p-4 transition-colors hover:bg-surface-overlay"
 						>
 							<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -512,7 +513,7 @@
 			</h2>
 			<div class="mb-8 grid gap-4 sm:grid-cols-2">
 				<a
-					href="/enterprise/agency-clients"
+					href={resolve('/enterprise/agency-clients')}
 					class="group rounded-2xl border border-border bg-surface-elevated p-5 transition-colors hover:border-accent"
 				>
 					<div class="mb-3 flex items-center gap-3">
