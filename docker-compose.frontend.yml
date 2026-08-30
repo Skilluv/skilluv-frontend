@@ -26,6 +26,8 @@ services:
       # Browser-facing origin. Empty keeps the clients relative, which only
       # works when something in front routes /api to the backend.
       PUBLIC_API_ORIGIN: ${PUBLIC_API_ORIGIN:-}
+      # The host rel="canonical" should name. Empty = self-canonical.
+      PUBLIC_CANONICAL_ORIGIN: ${PUBLIC_CANONICAL_ORIGIN:-}
       PUBLIC_SENTRY_DSN: ${PUBLIC_SENTRY_DSN:-}
       PUBLIC_POSTHOG_KEY: ${PUBLIC_POSTHOG_KEY:-}
       PUBLIC_POSTHOG_HOST: ${PUBLIC_POSTHOG_HOST:-https://eu.i.posthog.com}

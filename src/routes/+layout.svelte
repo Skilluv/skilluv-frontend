@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { env as publicEnv } from '$env/dynamic/public';
 	import { auth } from '$lib/stores/auth.svelte';
 	import { theme } from '$lib/stores/theme.svelte';
 	import { tenant } from '$lib/stores/tenant.svelte';
@@ -154,7 +155,36 @@
 			notifications.stopPolling();
 		}
 	});
+
+	/** The canonical origin, or the one that served this request. */
+	let canonicalHref = $derived.by(() => {
+		const origin = (publicEnv.PUBLIC_CANONICAL_ORIGIN ?? '').replace(/\/+$/, '');
+		const url = $page.url;
+		return `${origin || url.origin}${url.pathname}${url.search}`;
+	});
 </script>
+
+<svelte:head>
+	<!--
+		One address per page, whichever host served it.
+
+		The app answers on more than one origin — the apex and `www` both
+		resolve and both return 200 — so the same page exists at two URLs and a
+		crawler has no way to know they are the same thing. This says which one
+		counts.
+
+		The host comes from `PUBLIC_CANONICAL_ORIGIN` when it is set, and from
+		the request otherwise. That distinction matters: production names the
+		apex so a `www` visit still points search engines at the canonical host,
+		while a preview deployment sets nothing and is self-canonical, which
+		keeps it from advertising production's URLs as its own.
+
+		The path keeps its query string. Dropping it would be the usual advice,
+		but it would also collapse `?page=2` onto `?page=1` and tell a crawler
+		that two different listings are the same page.
+	-->
+	<link rel="canonical" href={canonicalHref} />
+</svelte:head>
 
 <KeysSprite />
 <Toast />
