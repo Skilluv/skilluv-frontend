@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { orientationsApi } from '$lib/api/orientations';
 	import { auth } from '$lib/stores/auth.svelte';
 	import { SkilluError } from '$lib/api/client';
 	import { i18n } from '$lib/i18n';
 	import { OrientationSelector } from '$lib/components/orientations';
+	import DiscordLinkCard from '$components/onboarding/DiscordLinkCard.svelte';
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import type { Orientation } from '$lib/types';
@@ -79,10 +81,20 @@
 			<p class="mt-2 text-text-muted">
 				{i18n.t('orientations.catalog.savedSubtitle')}
 			</p>
-			<div class="mt-6">
-				<Button variant="primary" onclick={() => goto('/challenges/onboarding')}>
-					{i18n.t('orientations.catalog.continueCta')}
-				</Button>
+			<!-- Here rather than at signup: the trades are registered, so the
+			     domain roles now exist and the matching channels open within
+			     seconds of linking. The same click at signup would have granted
+			     only the two roles every member already has. -->
+			<div class="mx-auto mt-8 max-w-xl">
+				<DiscordLinkCard>
+					<Button
+						variant="ghost"
+						size="sm"
+						onclick={() => goto(resolve('/challenges/onboarding'))}
+					>
+						{i18n.t('orientations.catalog.continueCta')}
+					</Button>
+				</DiscordLinkCard>
 			</div>
 		</section>
 	{:else if loading}

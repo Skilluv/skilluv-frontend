@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { THEMES } from '$lib/config/themes';
 	import { page } from '$app/stores';
 	import { auth } from '$lib/stores/auth.svelte';
 	import { theme } from '$lib/stores/theme.svelte';
@@ -176,13 +177,12 @@
 		return () => window.removeEventListener('resize', onResize);
 	});
 
-	const themes: { key: ThemeBase; label: string; accent: string; primary: string }[] = [
-		{ key: 'forge', label: 'Forge', accent: '#c47a2e', primary: '#457b9d' },
-		{ key: 'vesperal', label: 'Vespéral', accent: '#f4a261', primary: '#e9c46a' },
-		{ key: 'arena', label: 'Arena', accent: '#e63946', primary: '#e9c46a' },
-		{ key: 'scriptorium', label: 'Scriptorium', accent: '#c47a2e', primary: '#83a598' },
-		{ key: 'sakura', label: 'Sakura', accent: '#e8a5c1', primary: '#c47a2e' }
-	];
+	// Read from the catalogue rather than repeated here. The three copies
+	// this replaces had already drifted: forge showed #c47a2e in every
+	// switcher while app.css declared #ea8a3d, and scriptorium carried a
+	// different value in each of the three files. The swatches were
+	// describing themes that no longer existed.
+	const themes = THEMES;
 
 	function selectTheme(t: ThemeBase) {
 		themeOpen = false;

@@ -528,7 +528,8 @@ export const en: Translations = {
 			vesperal: 'Vespéral', vesperalDesc: 'Deep blue + ember orange — lantern-lit night',
 			arena: 'Arena', arenaDesc: 'Heraldic red + gold — medieval tournament',
 			scriptorium: 'Scriptorium', scriptoriumDesc: 'Parchment + ink — the copyist monk',
-			sakura: 'Sakura', sakuraDesc: 'Plum + cherry blossom — cherry season'
+			sakura: 'Sakura', sakuraDesc: 'Plum + cherry blossom — cherry season',
+			lagune: 'Lagune', laguneDesc: 'Lagoon green + neutrals — the one theme built for daylight'
 		},
 		language: { title: 'Language', fr: 'Français', en: 'English' },
 		profileSection: {
@@ -1686,8 +1687,19 @@ export const en: Translations = {
 		unlinkCta: 'Unlink',
 		unlinked: 'Provider unlinked.',
 		lastOne: 'Your only way in',
+		discordHint:
+			'Linking Discord opens the channels for your trades and grants your roles automatically. It is not a way to sign in.',
+		discordUnlinkWarning:
+			'Unlinking Discord takes your server roles back. You can link the account again at any time.',
 		lastOneNote:
 			'This is the only provider on the account, so unlinking it is not offered — it could leave you unable to sign in.'
+	},
+
+	discordLink: {
+		title: 'Join your channels on Discord',
+		body: 'Your trades are saved. Link your Discord account and your roles arrive within seconds, along with the channels that come with them — a direct message names them for you.',
+		cta: 'Connect Discord',
+		laterNote: 'You can do this later from your settings; nothing here depends on it.'
 	},
 
 	cv: {
