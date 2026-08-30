@@ -329,7 +329,7 @@
 
 	{#if loading}
 		<div class="grid gap-4 lg:grid-cols-3 xl:grid-cols-6">
-			{#each Array(6) as _}
+			{#each Array(6) as _, i (i)}
 				<Skeleton class="h-64 w-full" rounded="xl" />
 			{/each}
 		</div>
@@ -345,7 +345,7 @@
 	{:else}
 		<!-- Kanban horizontal-scroll sur desktop étroit, 6 colonnes sur xl -->
 		<div class="grid auto-cols-[minmax(260px,1fr)] grid-flow-col gap-3 overflow-x-auto pb-4 xl:grid-flow-row xl:grid-cols-6">
-			{#each PIPELINE_STAGES as stage}
+			{#each PIPELINE_STAGES as stage (stage)}
 				{@const items = byStage[stage]}
 				{@const style = stageStyle(stage)}
 				<div
@@ -528,7 +528,7 @@
 				bind:value={addStage}
 				class="h-11 w-full rounded-xl border border-border bg-surface-elevated px-4 text-sm text-text-primary focus:border-primary focus:outline-none"
 			>
-				{#each PIPELINE_STAGES as s}
+				{#each PIPELINE_STAGES as s (s)}
 					<option value={s}>{stageLabel(s)}</option>
 				{/each}
 			</select>

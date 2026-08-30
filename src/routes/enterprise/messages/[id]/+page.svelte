@@ -74,6 +74,17 @@
 </svelte:head>
 
 <div class="flex h-[calc(100vh-4rem)] flex-col">
+		<!-- The message was captured and never shown: a failed load or send left
+		     the conversation looking merely empty. -->
+		{#if error}
+			<div
+				class="mx-4 mt-4 rounded-2xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error"
+				data-testid="page-error"
+			>
+				{error}
+			</div>
+		{/if}
+
 	<!-- Header -->
 	<div class="flex items-center gap-3 border-b border-border bg-surface-elevated px-4 py-3">
 		<a href="/enterprise/messages" class="text-text-muted hover:text-text-primary lg:hidden" aria-label={i18n.locale === 'fr' ? 'Retour' : 'Back'}>
@@ -98,13 +109,13 @@
 	<div bind:this={messagesContainer} class="flex-1 overflow-y-auto p-4">
 		{#if loading}
 			<div class="flex flex-col gap-3">
-				{#each Array(5) as _}
+				{#each Array(5) as _, i (i)}
 					<Skeleton class="h-12 w-2/3" rounded="xl" />
 				{/each}
 			</div>
 		{:else}
 			<div class="flex flex-col gap-3">
-				{#each messages as msg, i}
+				{#each messages as msg, i (msg.id)}
 					{@const isMe = msg.sender_id === auth.user?.id}
 					{@const showDate = i === 0 || formatDate(messages[i - 1].created_at) !== formatDate(msg.created_at)}
 

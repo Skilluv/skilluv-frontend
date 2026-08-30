@@ -29,7 +29,7 @@
 			<span class="text-accent">{accent}</span>
 		</h2>
 		<div class="divide-y divide-border rounded-2xl border-2 border-cat-understand bg-surface-understand">
-			{#each items as item}
+			{#each items as item (item.q)}
 				<details class="group px-6 py-5">
 					<summary class="flex cursor-pointer items-center justify-between gap-4 text-left font-semibold marker:hidden [&::-webkit-details-marker]:hidden">
 						<span>{item.q}</span>

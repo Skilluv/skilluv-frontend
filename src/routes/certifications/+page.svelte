@@ -153,7 +153,7 @@
 <section class="mx-auto max-w-6xl px-4 py-14">
 	{#if loading}
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-			{#each Array(6) as _}
+			{#each Array(6) as _, i (i)}
 				<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-72 p-6"></div>
 			{/each}
 		</div>
@@ -166,7 +166,7 @@
 		</div>
 	{:else}
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-			{#each filtered as cert}
+			{#each filtered as cert (cert.slug)}
 				{@const lvl = levelBadge(cert.level)}
 				<article class="group flex flex-col rounded-2xl border border-border bg-surface-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
 					<div class="mb-3 flex items-start justify-between gap-2">
@@ -235,7 +235,7 @@
 				{ icon: '⧗', fr: { t: 'Temps limité', d: 'Suite de challenges à passer dans un timing serré. Le score reflète ta vraie maîtrise.' }, en: { t: 'Time-limited', d: 'Series of challenges under tight timing. Score reflects real mastery.' } },
 				{ icon: '★', fr: { t: 'Score serveur', d: 'Le score est recalculé côté serveur depuis tes soumissions réelles. Aucun bidouillage possible.' }, en: { t: 'Server-side score', d: 'Score recalculated server-side from your actual submissions. No tampering.' } },
 				{ icon: '◆', fr: { t: 'PDF signé', d: 'Ton diplôme génère un PDF téléchargeable avec code de vérification et validité claire.' }, en: { t: 'Signed PDF', d: 'Your diploma generates a downloadable PDF with verification code and clear validity.' } }
-			] as p}
+			] as p, i (i)}
 				{@const t = i18n.locale === 'fr' ? p.fr : p.en}
 				<article class="rounded-2xl border border-border bg-surface-elevated p-6">
 					<div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-xl text-primary">{p.icon}</div>

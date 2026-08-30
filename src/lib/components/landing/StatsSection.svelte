@@ -25,7 +25,7 @@
 			<!-- Domaines -->
 			<div use:scrollReveal class="bg-surface-craft p-8 flex flex-col min-h-[280px]">
 				<div class="flex items-center gap-3">
-					{#each allDomains as d}
+					{#each allDomains as d (d)}
 						<div class="h-3 w-3 rounded-sm {domainStyle(d).dot}"></div>
 					{/each}
 				</div>

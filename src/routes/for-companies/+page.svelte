@@ -91,7 +91,7 @@
 		<span class="text-accent">{i18n.locale === 'fr' ? 'obtenez.' : 'get.'}</span>
 	</h2>
 	<div class="grid gap-4 sm:grid-cols-2">
-		{#each benefits as b, i}
+		{#each benefits as b, i (b.fr)}
 			{@const t = i18n.locale === 'fr' ? b.fr : b.en}
 			<article class="rounded-2xl border border-border bg-surface-elevated overflow-hidden flex flex-col">
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
@@ -128,7 +128,7 @@
 						{ fr: 'Tests techniques génériques en entretien', en: 'Generic tech tests during interviews' },
 						{ fr: "Aucune visibilité sur l'engagement réel", en: 'No visibility into real engagement' },
 						{ fr: 'Spam et messages froids', en: 'Spam and cold outreach' }
-					] as item}
+					] as item, i (i)}
 						<li class="flex items-start gap-2 text-text-muted">
 							<span class="mt-0.5 shrink-0 text-error">×</span>
 							<span>{i18n.locale === 'fr' ? item.fr : item.en}</span>
@@ -147,7 +147,7 @@
 						{ fr: 'Niveau, streak, badges et progression visibles', en: 'Level, streak, badges and progression visible' },
 						{ fr: 'Sourcing affiné par domaine, langage, pays', en: 'Sourcing refined by domain, stack, country' },
 						{ fr: 'Contact direct uniquement après accord du talent', en: 'Direct contact only after the talent accepts' }
-					] as item}
+					] as item, i (i)}
 						<li class="flex items-start gap-2 text-text-primary">
 							<span class="mt-0.5 shrink-0 text-success">+</span>
 							<span>{i18n.locale === 'fr' ? item.fr : item.en}</span>
@@ -165,7 +165,7 @@
 		{i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works'}<span class="text-accent">.</span>
 	</h2>
 	<ol class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-		{#each steps as s}
+		{#each steps as s (s.n)}
 			{@const t = i18n.locale === 'fr' ? s.fr : s.en}
 			<li class="rounded-2xl border border-border bg-surface-elevated overflow-hidden flex flex-col">
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
@@ -210,7 +210,7 @@
 							: 'Cross skill, level, streak, badges, language, country, availability, GitHub.'}
 					</p>
 					<div class="mt-auto flex flex-wrap gap-1.5">
-						{#each ['skill', 'level', 'streak', 'badges', 'country', 'lang'] as tag}
+						{#each ['skill', 'level', 'streak', 'badges', 'country', 'lang'] as tag (tag)}
 							<span class="rounded-md bg-surface-overlay px-2 py-0.5 text-[11px] font-medium text-text-muted">{tag}</span>
 						{/each}
 					</div>
@@ -258,7 +258,7 @@
 							: 'No monthly commitment. Automatic 50% refund if talent declines the interest.'}
 					</p>
 					<div class="mt-auto flex flex-wrap gap-1.5">
-						{#each ['EUR', 'USD', 'NGN', 'XOF', 'MAD'] as cur}
+						{#each ['EUR', 'USD', 'NGN', 'XOF', 'MAD'] as cur (cur)}
 							<span class="rounded-md bg-surface-overlay px-2 py-0.5 text-[11px] font-mono font-semibold text-text-muted">{cur}</span>
 						{/each}
 					</div>

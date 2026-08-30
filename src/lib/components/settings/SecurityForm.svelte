@@ -413,7 +413,7 @@
 					</p>
 				{:else}
 					<ul class="mb-4 flex flex-col gap-2">
-						{#each passkeys as pk}
+						{#each passkeys as pk (pk.id)}
 							<li class="flex items-center justify-between rounded-xl border border-border bg-surface p-3">
 								<div class="min-w-0">
 									<p class="truncate text-sm font-medium">
@@ -455,7 +455,7 @@
 				</p>
 			{:else}
 				<ul class="mb-4 flex flex-col gap-2">
-					{#each sessions as s}
+					{#each sessions as s (s.id)}
 						<li class="flex items-center justify-between rounded-xl border border-border bg-surface p-3">
 							<div class="min-w-0">
 								<p class="truncate text-sm font-medium">
@@ -546,7 +546,7 @@
 			: 'Store these codes safely. Each can be used once. They will not be shown again.'}
 	</p>
 	<div class="mb-3 grid grid-cols-2 gap-2 rounded-xl bg-surface-overlay p-4 font-mono text-sm">
-		{#each backupCodes as code}
+		{#each backupCodes as code, i (i)}
 			<span>{code}</span>
 		{/each}
 	</div>

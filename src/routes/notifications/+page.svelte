@@ -341,7 +341,7 @@
 
 	{#if loading}
 		<div class="flex flex-col gap-2" aria-busy="true">
-			{#each Array(5) as _}
+			{#each Array(5) as _, i (i)}
 				<div class="flex w-full items-start gap-3 rounded-2xl border border-border bg-surface p-4">
 					<!-- type dot placeholder -->
 					<div class="mt-2 h-2 w-2 shrink-0 rounded-full bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>

@@ -256,13 +256,13 @@
 			class="auto-hide-scrollbar sticky top-14 flex h-[calc(100vh-3.5rem)] flex-col overflow-y-auto overscroll-contain p-4"
 		>
 			<nav class="flex flex-col gap-6">
-				{#each visibleGroups as group}
+				{#each visibleGroups as group (group.title)}
 					<div>
 						<p class="mb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-text-muted">
 							{group.title}
 						</p>
 						<div class="flex flex-col gap-0.5">
-							{#each group.items as item}
+							{#each group.items as item (item.href)}
 								<a
 									href={item.href}
 									class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors
@@ -285,7 +285,7 @@
 	     sections (Compte, Facturation, Owner) reste accessible via l'avatar
 	     dropdown et les liens contextuels des pages. -->
 	<div class="fixed bottom-0 left-0 right-0 z-50 flex justify-around border-t border-border bg-surface-elevated/95 py-2 backdrop-blur-sm lg:hidden">
-		{#each mobileNavItems as item}
+		{#each mobileNavItems as item (item.href)}
 			<a
 				href={item.href}
 				class="flex flex-col items-center gap-0.5 px-2 text-xs

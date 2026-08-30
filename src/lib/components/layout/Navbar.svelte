@@ -492,7 +492,7 @@
 
 				{#if themeOpen}
 					<div class="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-surface-elevated p-1.5 shadow-lg animate-in slide-in-from-top-2">
-						{#each themes as t}
+						{#each themes as t (t.key)}
 							<button
 								onclick={() => selectTheme(t.key)}
 								class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors duration-200 hover:bg-surface-overlay {theme.base === t.key ? 'bg-surface-overlay text-text-primary' : 'text-text-muted'}"
@@ -705,7 +705,7 @@
 						{ href: '/dashboard/vouchings', label: i18n.t('vouchings.title') },
 						{ href: `/profile/${auth.user?.username}`, label: i18n.t('common.nav.profile') },
 						{ href: '/settings', label: i18n.t('common.nav.settings') }
-					] as link}
+					] as link, i (i)}
 						<a
 							href={link.href}
 							onclick={() => mobileOpen = false}
@@ -732,7 +732,7 @@
 						{ href: '/guilds', label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
 						{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards') },
 						{ href: '/pricing', label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing' }
-					] as link}
+					] as link, i (i)}
 						<a
 							href={link.href}
 							onclick={() => mobileOpen = false}
@@ -745,7 +745,7 @@
 
 				<!-- Controls row -->
 				<div class="flex items-center gap-2 px-4 py-3 border-t border-border mt-2">
-					{#each themes as t}
+					{#each themes as t (t.key)}
 						<button
 							onclick={() => theme.set(t.key)}
 							class="h-6 w-6 rounded-full border-2 transition-colors duration-200 {theme.base === t.key ? 'border-text-primary' : 'border-transparent opacity-50'}"

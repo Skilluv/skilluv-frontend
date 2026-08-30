@@ -101,7 +101,7 @@
 				<Skeleton class="h-4 w-full mb-2" />
 				<Skeleton class="h-4 w-4/5 mb-8" />
 				<div class="grid grid-cols-4 gap-4 mb-8">
-					{#each Array(4) as _}
+					{#each Array(4) as _, i (i)}
 						<Skeleton class="h-16 w-full" rounded="lg" />
 					{/each}
 				</div>
@@ -162,7 +162,7 @@
 					<div class="bg-surface-elevated p-4 text-center">
 						<p class="text-xs text-text-muted mb-1">{i18n.t('challenges.detail.difficulty')}</p>
 						<div class="flex items-center justify-center gap-1 mb-1">
-							{#each Array(5) as _, idx}
+							{#each Array(5) as _, idx (idx)}
 								<span class="h-1.5 w-1.5 rounded-full {idx < challenge.difficulty ? 'bg-accent' : 'bg-surface-overlay'}"></span>
 							{/each}
 						</div>

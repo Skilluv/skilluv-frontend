@@ -119,7 +119,7 @@
 <section class="mx-auto max-w-6xl px-4 py-14">
 	{#if loading}
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-			{#each Array(6) as _}
+			{#each Array(6) as _, i (i)}
 				<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-64 p-6"></div>
 			{/each}
 		</div>
@@ -133,7 +133,7 @@
 		/>
 	{:else}
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-			{#each mentors as m}
+			{#each mentors as m (m.user_id)}
 				<a
 					href="/mentors/{m.user_id}"
 					class="group flex flex-col rounded-2xl border border-border bg-surface-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
@@ -163,7 +163,7 @@
 
 					<!-- Expertise -->
 					<div class="mb-4 flex flex-wrap gap-1.5">
-						{#each m.expertise_areas.slice(0, 3) as area}
+						{#each m.expertise_areas.slice(0, 3) as area, i (i)}
 							<Badge variant="primary" size="sm">{area}</Badge>
 						{/each}
 					</div>
@@ -196,7 +196,7 @@
 				{ icon: '◎', fr: { t: '80 % au mentor', d: 'Skilluv prend 20 %. Le reste va directement au mentor via Stripe Connect.' }, en: { t: '80% to mentor', d: 'Skilluv takes 20%. The rest goes directly to the mentor via Stripe Connect.' } },
 				{ icon: '⧗', fr: { t: 'Refund automatique', d: 'Mentor annule = 100 %. Toi <24h = 50 %. Toi ≥24h = 100 %.' }, en: { t: 'Automatic refund', d: 'Mentor cancels = 100%. You <24h = 50%. You ≥24h = 100%.' } },
 				{ icon: '★', fr: { t: 'Reviews vérifiées', d: 'Seuls les mentees qui ont eu une session complétée peuvent noter.' }, en: { t: 'Verified reviews', d: 'Only mentees with a completed session can rate.' } }
-			] as p}
+			] as p, i (i)}
 				{@const t = i18n.locale === 'fr' ? p.fr : p.en}
 				<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 					<div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-xl text-primary">{p.icon}</div>

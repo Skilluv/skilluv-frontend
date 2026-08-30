@@ -60,6 +60,17 @@
 </svelte:head>
 
 <div class="p-6 lg:p-8">
+
+	<!-- The message was captured and never shown: a failed load or delete left
+	     the page looking merely empty. -->
+	{#if error}
+		<div
+			class="mb-5 rounded-2xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error"
+			data-testid="page-error"
+		>
+			{error}
+		</div>
+	{/if}
 	<div class="mb-6 flex items-center justify-between">
 		<div>
 			<h1 class="text-2xl font-bold">{i18n.t('enterprise.lists.title')}</h1>
@@ -82,7 +93,7 @@
 
 	{#if loading}
 		<div class="flex flex-col gap-3">
-			{#each Array(3) as _}
+			{#each Array(3) as _, i (i)}
 				<Skeleton class="h-16 w-full" rounded="xl" />
 			{/each}
 		</div>
@@ -102,7 +113,7 @@
 		</div>
 	{:else}
 		<div class="flex flex-col gap-3">
-			{#each lists as list}
+			{#each lists as list (list.id)}
 				<div class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-4">
 					<a href="/enterprise/lists/{list.id}" class="flex-1">
 						<p class="font-medium hover:text-accent">{list.name}</p>

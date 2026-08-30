@@ -98,7 +98,7 @@
 	<div bind:this={scrollEl} class="flex-1 overflow-y-auto rounded-2xl border border-border bg-surface-elevated p-4 mb-3">
 		{#if loading}
 			<div class="animate-pulse space-y-3">
-				{#each Array(4) as _}
+				{#each Array(4) as _, i (i)}
 					<div class="h-16 rounded-xl bg-surface-overlay"></div>
 				{/each}
 			</div>
@@ -110,7 +110,7 @@
 			</div>
 		{:else}
 			<div class="space-y-3">
-				{#each messages as m}
+				{#each messages as m (m.id)}
 					<div class="flex {isMine(m) ? 'justify-end' : 'justify-start'}">
 						<div
 							class="max-w-[75%] rounded-2xl px-4 py-2 {isMine(m)

@@ -151,7 +151,7 @@
 						<Check size={12} strokeWidth={2.5} class="inline align-middle" /> {i18n.locale === 'fr' ? 'Points forts' : 'Strengths'}
 					</p>
 					<ul class="space-y-1 text-sm">
-						{#each result.strengths as s}
+						{#each result.strengths as s, i (i)}
 							<li class="flex gap-2">
 								<span class="text-success">•</span>
 								<span>{s}</span>
@@ -205,7 +205,7 @@
 						<BookOpen size={12} strokeWidth={2.5} class="inline align-middle" /> {i18n.locale === 'fr' ? 'Pour aller plus loin' : 'Go further'}
 					</p>
 					<ul class="space-y-1 text-sm">
-						{#each result.learning_resources as r}
+						{#each result.learning_resources as r, i (i)}
 							<li class="flex gap-2">
 								<span class="text-primary">•</span>
 								<span>{r}</span>

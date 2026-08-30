@@ -163,7 +163,7 @@
 				<div class="h-3 w-12 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] justify-self-end"></div>
 			</div>
 
-			{#each Array(10) as _, idx}
+			{#each Array(10) as _, idx (idx)}
 				<div class="grid grid-cols-[3rem_1fr_auto_6rem] gap-4 items-center px-5 py-3.5 {idx < 9 ? 'border-b border-border' : ''}">
 					<!-- Rank -->
 					<div class="mx-auto h-5 w-5 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
@@ -198,7 +198,7 @@
 				<span class="text-right">Score</span>
 			</div>
 
-			{#each entries as entry, idx}
+			{#each entries as entry, idx (entry.username)}
 				{@const isMe = auth.user?.username === entry.username}
 				{@const isTop3 = entry.rank <= 3}
 				<a

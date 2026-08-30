@@ -177,7 +177,7 @@
 
 	{#if !auth.capabilitiesLoaded}
 		<div class="space-y-3">
-			{#each Array(3) as _}
+			{#each Array(3) as _, i (i)}
 				<Skeleton class="h-32 w-full" rounded="xl" />
 			{/each}
 		</div>
@@ -191,7 +191,7 @@
 			role="tablist"
 			data-testid="vouching-queue-tabs"
 		>
-			{#each VOUCHING_QUEUE_STATUSES as candidate}
+			{#each VOUCHING_QUEUE_STATUSES as candidate (candidate)}
 				<button
 					type="button"
 					role="tab"
@@ -214,7 +214,7 @@
 
 		{#if loading}
 			<div class="space-y-3">
-				{#each Array(3) as _}
+				{#each Array(3) as _, i (i)}
 					<Skeleton class="h-32 w-full" rounded="xl" />
 				{/each}
 			</div>

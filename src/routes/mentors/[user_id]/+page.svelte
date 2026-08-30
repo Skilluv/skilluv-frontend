@@ -171,7 +171,7 @@
 					{i18n.locale === 'fr' ? 'Expertise' : 'Expertise'}
 				</p>
 				<div class="flex flex-wrap gap-1.5">
-					{#each mentor.expertise_areas as e}
+					{#each mentor.expertise_areas as e, i (i)}
 						<Badge variant="primary" size="sm">{e}</Badge>
 					{/each}
 				</div>
@@ -181,7 +181,7 @@
 					{i18n.locale === 'fr' ? 'Langues parlées' : 'Languages'}
 				</p>
 				<div class="flex flex-wrap gap-1.5">
-					{#each mentor.languages_spoken as l}
+					{#each mentor.languages_spoken as l, i (i)}
 						<Badge variant="accent" size="sm">{l}</Badge>
 					{/each}
 				</div>

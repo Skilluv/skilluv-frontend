@@ -46,7 +46,6 @@ describe('parseInline', () => {
 	});
 
 	it('drops a link whose scheme a reader must not be sent to, keeping the words', () => {
-		// eslint-disable-next-line no-script-url
 		const spans = parseInline('[click](javascript:alert(1))');
 		expect(spans.some((s) => s.kind === 'link')).toBe(false);
 		expect(spans.map((s) => ('value' in s ? s.value : '')).join('')).toContain('click');

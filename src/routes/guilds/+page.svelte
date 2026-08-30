@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
-	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
@@ -77,7 +76,7 @@
 
 	{#if loading}
 		<div class="space-y-2">
-			{#each Array(8) as _}
+			{#each Array(8) as _, i (i)}
 				<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-20"></div>
 			{/each}
 		</div>
@@ -97,7 +96,7 @@
 		</EmptyState>
 	{:else}
 		<div class="space-y-2">
-			{#each guilds as g, i}
+			{#each guilds as g, i (g.slug)}
 				<a
 					href={`/guilds/${g.slug}`}
 					data-testid="guild-card"

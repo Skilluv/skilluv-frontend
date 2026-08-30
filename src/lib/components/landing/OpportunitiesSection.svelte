@@ -145,7 +145,7 @@
 					</p>
 
 					<div class="flex flex-wrap gap-1.5">
-						{#each [{fr: 'Code review', en: 'Code review'}, {fr: 'Entretien', en: 'Interview'}, {fr: 'Coaching', en: 'Coaching'}] as chip}
+						{#each [{fr: 'Code review', en: 'Code review'}, {fr: 'Entretien', en: 'Interview'}, {fr: 'Coaching', en: 'Coaching'}] as chip (chip.en)}
 							<span class="rounded-md bg-surface-overlay px-2 py-0.5 text-[11px] font-medium text-text-muted">
 								{i18n.locale === 'fr' ? chip.fr : chip.en}
 							</span>

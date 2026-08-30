@@ -19,7 +19,7 @@
 			{ href: '/challenges', label: i18n.t('common.nav.challenges'), icon: 'challenge' },
 			{ href: `/profile/${auth.user?.username}`, label: i18n.t('common.nav.profile'), icon: 'profile' },
 			{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards'), icon: 'leaderboard' }
-		] as item}
+		] as item (item.href)}
 			{@const active = isActive(item.href, $page.url.pathname)}
 			<a
 				href={item.href}

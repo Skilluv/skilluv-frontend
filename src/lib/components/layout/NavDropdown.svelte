@@ -97,14 +97,14 @@
 			role="menu"
 		>
 			<div class="p-2">
-				{#each groups as group, gi}
+				{#each groups as group, gi (group.title)}
 					{#if group.title}
 						<p class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-widest text-text-muted">
 							{group.title}
 						</p>
 					{/if}
 					<div class="space-y-0.5">
-						{#each group.items as item}
+						{#each group.items as item (item.href)}
 							{@const isCurrentPage = item.href === activeHref}
 							<a
 								href={item.href}

@@ -164,7 +164,7 @@
 
 	{#if loading}
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-			{#each Array(4) as _}
+			{#each Array(4) as _, i (i)}
 				<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated p-6">
 					<div class="mb-4 h-8 w-16 rounded bg-surface-overlay"></div>
 					<div class="mb-2 h-12 w-32 rounded bg-surface-overlay"></div>
@@ -185,7 +185,7 @@
 		</div>
 	{:else if data && data.packs.length}
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-			{#each data.packs as pack}
+			{#each data.packs as pack (pack.slug)}
 				{@const isBest = pack.slug === bestPack && data.packs.length > 1}
 				<article
 					class="group relative rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl
@@ -244,7 +244,7 @@
 					</p>
 				</div>
 				<div class="grid gap-5 sm:grid-cols-3">
-					{#each data.subscriptions as sub}
+					{#each data.subscriptions as sub (sub.slug)}
 						<article class="rounded-2xl border border-border bg-surface-elevated p-6">
 							<div class="mb-1 font-mono text-xs uppercase tracking-wider text-text-muted">
 								{sub.slug.replace(/_/g, ' ').replace('pipeline', '').trim()}

@@ -80,7 +80,7 @@
 				{ n: '02', fr: { t: 'Coût variable', d: "Vous payez uniquement au merge de la PR. Aucune facture d'attente, aucun engagement mensuel." }, en: { t: 'Variable cost', d: 'You pay only when the PR merges. No pending invoice, no monthly commitment.' } },
 				{ n: '03', fr: { t: 'Qualité prouvée', d: "Chaque talent affiche son historique de challenges résolus, sa progression, ses badges. Vous savez à qui vous confiez l'issue." }, en: { t: 'Proven quality', d: 'Each talent shows their history of solved challenges, progression, badges. You know who you trust the issue to.' } },
 				{ n: '04', fr: { t: 'Zéro RH', d: 'Pas d\'onboarding, pas d\'accès à donner, pas de review interne. Le code arrive via une PR standard sur GitHub.' }, en: { t: 'Zero HR', d: 'No onboarding, no access to grant, no internal review. Code arrives via a standard GitHub PR.' } }
-			] as b}
+			] as b, i (i)}
 				{@const t = i18n.locale === 'fr' ? b.fr : b.en}
 				<div class="rounded-2xl border border-border bg-surface-elevated p-6 flex flex-col">
 					<div class="mb-3 text-4xl font-black text-primary tabular-nums">{b.n}</div>
@@ -115,7 +115,7 @@
 				{ n: '02', fr: { t: 'Un talent revendique', d: 'Un talent qualifié la revendique. Il a 7 jours pour ouvrir une PR sur votre repo.' }, en: { t: 'A talent claims', d: 'A qualified talent claims it. They have 7 days to open a PR on your repo.' } },
 				{ n: '03', fr: { t: 'Vous mergez', d: 'Vous reviewez la PR comme n\'importe quelle contribution. Merge, c\'est vous qui décidez.' }, en: { t: 'You merge', d: 'You review the PR like any other contribution. Merge is your call.' } },
 				{ n: '04', fr: { t: 'Payout automatique', d: 'Le webhook GitHub détecte le merge. Les crédits séquestrés sont convertis en fragments pour le talent, la bounty est marquée payée.' }, en: { t: 'Automatic payout', d: 'The GitHub webhook detects the merge. Escrowed credits are converted into fragments for the talent, bounty is marked paid.' } }
-			] as step}
+			] as step, i (i)}
 				{@const t = i18n.locale === 'fr' ? step.fr : step.en}
 				<div class="rounded-2xl border border-border bg-surface-elevated p-6 flex flex-col">
 					<div class="mb-3 flex items-center gap-2">

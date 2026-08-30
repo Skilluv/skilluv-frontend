@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
 	import { challengesApi } from '$api/challenges';
 	import { sandboxApi } from '$api/sandbox';
 	import { auth } from '$stores/auth.svelte';

@@ -90,7 +90,7 @@
 				{ href: '/forum', icon: '◈', fr: 'Forum', en: 'Forum' },
 				{ href: '/guilds', icon: '⬢', fr: 'Guildes', en: 'Guilds' },
 				{ href: '/messages', icon: '◎', fr: 'Messages', en: 'Messages' }
-			] as short}
+			] as short (short.href)}
 				<a href={short.href} class="flex items-center gap-3 rounded-xl border border-border bg-surface-elevated p-4 hover:border-primary/40 hover:-translate-y-0.5 transition-all">
 					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">{short.icon}</div>
 					<span class="font-semibold">{i18n.locale === 'fr' ? short.fr : short.en}</span>

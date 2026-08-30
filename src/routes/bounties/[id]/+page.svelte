@@ -185,7 +185,7 @@
 					{i18n.locale === 'fr' ? 'Compétences requises' : 'Required skills'}
 				</p>
 				<div class="flex flex-wrap gap-1.5">
-					{#each bounty.required_skills as s}
+					{#each bounty.required_skills as s, i (i)}
 						<Badge variant="primary" size="sm">{s}</Badge>
 					{:else}
 						<span class="text-sm text-text-muted">
@@ -197,7 +197,7 @@
 			<div class="rounded-2xl border border-border bg-surface-elevated p-5">
 				<p class="mb-3 text-xs font-bold uppercase tracking-wider text-text-muted">Tags</p>
 				<div class="flex flex-wrap gap-1.5">
-					{#each bounty.tags as t}
+					{#each bounty.tags as t, i (i)}
 						<Badge variant="default" size="sm">{t}</Badge>
 					{:else}
 						<span class="text-sm text-text-muted">—</span>

@@ -52,7 +52,7 @@
 
 	{#if loading}
 		<div class="flex flex-col gap-3">
-			{#each Array(4) as _}
+			{#each Array(4) as _, i (i)}
 				<Skeleton class="h-16 w-full" rounded="xl" />
 			{/each}
 		</div>
@@ -70,7 +70,7 @@
 		</div>
 	{:else}
 		<div class="flex flex-col gap-3">
-			{#each bookmarks as bk}
+			{#each bookmarks as bk (bk.id)}
 				<div class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4">
 					<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-overlay font-bold text-text-muted">
 						{bk.display_name.charAt(0).toUpperCase()}

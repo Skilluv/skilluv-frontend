@@ -120,7 +120,7 @@
 	<section class="ds-section">
 		<h2 class="ds-section-title font-wonk">1. Les 5 clés canoniques</h2>
 		<div class="ds-row">
-			{#each keyTypes as k}
+			{#each keyTypes as k (k)}
 				<figure class="ds-keyfig">
 					<Key type={k} size={80} />
 					<figcaption>{k}</figcaption>
@@ -156,10 +156,10 @@
 	<section class="ds-section">
 		<h2 class="ds-section-title font-wonk">3. Skill patches · 6 catégories × 4 raretés</h2>
 		<div class="ds-grid">
-			{#each categories as cat}
+			{#each categories as cat (cat)}
 				<div class="ds-cat-column">
 					<div class="ds-cat-label">{cat.toUpperCase()}</div>
-					{#each rarities as rar}
+					{#each rarities as rar (rar)}
 						<SkillPatch
 							skill={catSample[cat]}
 							category={cat}
@@ -179,7 +179,7 @@
 	<section class="ds-section">
 		<h2 class="ds-section-title font-wonk">4. Rank chevrons (5 rangs)</h2>
 		<div class="ds-row">
-			{#each rankLevels as lvl}
+			{#each rankLevels as lvl (lvl)}
 				<div class="ds-block">
 					<RankChevron level={lvl} size="md" showLabel />
 				</div>

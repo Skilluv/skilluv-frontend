@@ -41,7 +41,7 @@
 
 	{#if loading}
 		<div class="flex flex-col gap-3" aria-busy="true">
-			{#each Array(3) as _}
+			{#each Array(3) as _, i (i)}
 				<div class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4">
 					<div class="flex-1">
 						<div class="mb-2 flex items-center gap-2">
@@ -65,7 +65,7 @@
 		</div>
 	{:else}
 		<div class="flex flex-col gap-3">
-			{#each challenges as ch}
+			{#each challenges as ch (ch.id)}
 				<div class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4">
 					<div class="flex-1">
 						<div class="mb-1 flex items-center gap-2">

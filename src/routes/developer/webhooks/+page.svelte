@@ -84,7 +84,7 @@
 				<div>
 					<p class="mb-1.5 text-sm font-medium">Events</p>
 					<div class="flex flex-wrap gap-2">
-						{#each availableEvents as evt}
+						{#each availableEvents as evt (evt)}
 							<label class="flex items-center gap-1.5 rounded-lg bg-surface-overlay px-3 py-1.5 text-xs">
 								<input
 									type="checkbox"
@@ -107,7 +107,7 @@
 
 	{#if loading}
 		<div class="flex flex-col gap-3">
-			{#each Array(3) as _}
+			{#each Array(3) as _, i (i)}
 				<Skeleton class="h-28 w-full" rounded="xl" />
 			{/each}
 		</div>
@@ -115,7 +115,7 @@
 		<p class="py-8 text-center text-text-muted">No webhooks configured.</p>
 	{:else}
 		<div class="flex flex-col gap-3">
-			{#each webhooks as wh}
+			{#each webhooks as wh (wh.id)}
 				<div class="rounded-2xl border border-border bg-surface-elevated p-4">
 					<div class="mb-2 flex items-center justify-between">
 						<div class="flex items-center gap-2">
@@ -124,7 +124,7 @@
 						</div>
 					</div>
 					<div class="mb-3 flex flex-wrap gap-1.5">
-						{#each wh.events as evt}
+						{#each wh.events as evt, i (i)}
 							<code class="rounded bg-surface-overlay px-1.5 py-0.5 text-xs text-text-muted">{evt}</code>
 						{/each}
 					</div>

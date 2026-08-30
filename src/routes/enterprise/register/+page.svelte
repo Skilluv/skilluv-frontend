@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import CountrySelect from '$components/ui/CountrySelect.svelte';
@@ -235,7 +234,7 @@
 
 	<!-- Step indicator -->
 	<div class="mb-8 flex items-center gap-2" aria-hidden="true">
-		{#each stepLabels as label, i}
+		{#each stepLabels as label, i (label)}
 			{@const n = (i + 1) as 1 | 2 | 3 | 4}
 			{@const done = step > n}
 			{@const current = step === n}

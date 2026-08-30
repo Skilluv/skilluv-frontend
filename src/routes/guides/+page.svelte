@@ -160,7 +160,7 @@
 
 	{#if loading}
 		<div class="grid gap-3 sm:grid-cols-2">
-			{#each Array(6) as _}
+			{#each Array(6) as _, i (i)}
 				<Skeleton class="h-28 w-full" rounded="xl" />
 			{/each}
 		</div>

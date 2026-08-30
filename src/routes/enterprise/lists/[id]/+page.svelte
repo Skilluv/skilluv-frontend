@@ -57,7 +57,7 @@
 	{#if loading}
 		<Skeleton class="mb-2 h-7 w-48" />
 		<Skeleton class="mb-6 h-4 w-32" />
-		<div class="flex flex-col gap-3">{#each Array(3) as _}<Skeleton class="h-16 w-full" rounded="xl" />{/each}</div>
+		<div class="flex flex-col gap-3">{#each Array(3) as _, i (i)}<Skeleton class="h-16 w-full" rounded="xl" />{/each}</div>
 	{:else if error}
 		<p class="py-8 text-text-muted">{error}</p>
 	{:else}
@@ -74,7 +74,7 @@
 		{:else}
 			<p class="mb-4 text-sm text-text-muted">{talents.length} talent{talents.length !== 1 ? 's' : ''}</p>
 			<div class="flex flex-col gap-3">
-				{#each talents as talent}
+				{#each talents as talent (talent.id)}
 					<div class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4">
 						<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-overlay font-bold text-text-muted">
 							{talent.display_name.charAt(0).toUpperCase()}

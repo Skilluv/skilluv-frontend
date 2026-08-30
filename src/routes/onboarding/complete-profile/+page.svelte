@@ -97,7 +97,7 @@
 		</p>
 
 		<div class="grid gap-3">
-			{#each domains as domain, i}
+			{#each domains as domain, i (domain.value)}
 				{@const ds = domainStyle(domain.value)}
 				{@const catBg = ['bg-surface-craft border-cat-craft', 'bg-surface-create border-cat-create', 'bg-surface-meta border-cat-meta', 'bg-surface-operate border-cat-operate'][i]}
 				<button

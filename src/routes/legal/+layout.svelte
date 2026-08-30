@@ -30,7 +30,7 @@
 				{i18n.locale === 'fr' ? 'Documents légaux' : 'Legal documents'}
 			</p>
 			<nav class="flex flex-col gap-1">
-				{#each links as link}
+				{#each links as link (link.href)}
 					{@const active = $page.url.pathname === link.href}
 					<a
 						href={link.href}

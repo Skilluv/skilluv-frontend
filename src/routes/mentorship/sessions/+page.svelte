@@ -125,7 +125,7 @@
 
 	{#if loading}
 		<div class="space-y-3">
-			{#each Array(3) as _}
+			{#each Array(3) as _, i (i)}
 				<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-28"></div>
 			{/each}
 		</div>
@@ -146,7 +146,7 @@
 					{i18n.locale === 'fr' ? 'À venir' : 'Upcoming'}
 				</h2>
 				<div class="space-y-3">
-					{#each upcoming as s}
+					{#each upcoming as s (s.id)}
 						<article class="rounded-2xl border border-border bg-surface-elevated p-5">
 							<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 								<div class="min-w-0 flex-1">
@@ -184,7 +184,7 @@
 					{i18n.locale === 'fr' ? 'Historique' : 'Past'}
 				</h2>
 				<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
-					{#each past as s}
+					{#each past as s (s.id)}
 						<div class="p-4 flex items-center gap-4">
 							<div class="min-w-0 flex-1">
 								<div class="flex items-center gap-2">

@@ -51,7 +51,7 @@
 			<table class="w-full text-sm">
 				<thead>
 					<tr class="border-b border-border bg-surface/40">
-						{#each columns as col}
+						{#each columns as col (col.label)}
 							<th
 								class="px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-text-muted {alignClass(col.align)}"
 								style={col.width ? `width:${col.width}` : ''}
@@ -62,13 +62,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					{#each rows as row, i}
+					{#each rows as row, i (i)}
 						<tr
 							class="border-b border-border last:border-b-0 transition-colors {hover
 								? 'hover:bg-surface-overlay/40'
 								: ''}"
 						>
-							{#each columns as col}
+							{#each columns as col (col.key)}
 								<td class="px-4 py-3 {alignClass(col.align)} {col.class ?? ''}">
 									{#if cell}
 										{@render cell(row, col)}

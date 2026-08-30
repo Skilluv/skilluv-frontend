@@ -161,7 +161,7 @@
 
 	{#if loading}
 		<div class="space-y-2">
-			{#each Array(5) as _}
+			{#each Array(5) as _, i (i)}
 				<div class="animate-pulse rounded-xl border border-border bg-surface-elevated p-4 h-20"></div>
 			{/each}
 		</div>
@@ -182,7 +182,7 @@
 		</div>
 	{:else}
 		<div class="space-y-10">
-			{#each byYear as [year, list]}
+			{#each byYear as [year, list] (year)}
 				<section>
 					<div class="mb-4 flex items-baseline justify-between border-b border-border pb-2">
 						<h2 class="text-2xl font-black tracking-tight">{year}</h2>
@@ -191,7 +191,7 @@
 						</span>
 					</div>
 					<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
-						{#each list as inv}
+						{#each list as inv (inv.invoice_number)}
 							<div class="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
 								<!-- Invoice number -->
 								<div class="min-w-0 flex-1">

@@ -121,7 +121,7 @@
 <section class="mx-auto max-w-6xl px-4 py-14">
 	{#if loading}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{#each Array(6) as _}
+			{#each Array(6) as _, i (i)}
 				<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-56 p-6"></div>
 			{/each}
 		</div>
@@ -135,7 +135,7 @@
 		/>
 	{:else}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{#each bounties as b}
+			{#each bounties as b (b.id)}
 				{@const diff = difficultyBadge(b.difficulty)}
 				<article class="group rounded-2xl border border-border bg-surface-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
 					<div class="mb-3 flex items-start justify-between gap-2">
@@ -149,7 +149,7 @@
 
 					<!-- Meta -->
 					<div class="mb-4 flex flex-wrap gap-1.5">
-						{#each b.required_skills.slice(0, 3) as skill}
+						{#each b.required_skills.slice(0, 3) as skill, i (i)}
 							<Badge variant="default" size="sm">{skill}</Badge>
 						{/each}
 					</div>
@@ -195,7 +195,7 @@
 				{ n: '02', fr: { t: 'Claim', d: 'Revendique-la pour la réserver. Tu as 7 jours pour ouvrir une PR.' }, en: { t: 'Claim', d: 'Claim it to reserve. You have 7 days to open a PR.' } },
 				{ n: '03', fr: { t: 'PR', d: 'Ouvre la PR sur le repo GitHub. Attache son URL sur Skilluv.' }, en: { t: 'PR', d: 'Open the PR on the GitHub repo. Attach its URL on Skilluv.' } },
 				{ n: '04', fr: { t: 'Merge = payout', d: 'Le webhook GitHub détecte le merge. Fragments crédités automatiquement.' }, en: { t: 'Merge = payout', d: 'GitHub webhook detects the merge. Fragments credited automatically.' } }
-			] as step}
+			] as step, i (i)}
 				{@const t = i18n.locale === 'fr' ? step.fr : step.en}
 				<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 					<div class="mb-3 text-4xl font-black text-primary">{step.n}</div>

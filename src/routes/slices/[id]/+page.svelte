@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto, invalidateAll } from '$app/navigation';
+	import { invalidateAll } from '$app/navigation';
 	import { auth } from '$stores/auth.svelte';
 	import { slicesApi, isDesignSlice, type Slice, type SliceStatus } from '$api/slices';
 	import { attestationApi } from '$api/attestation';
