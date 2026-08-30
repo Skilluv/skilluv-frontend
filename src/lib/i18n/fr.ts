@@ -528,7 +528,8 @@ export const fr: Translations = {
 			vesperal: 'Vespéral', vesperalDesc: 'Bleu nuit + orange braise — la nuit à la lanterne',
 			arena: 'Arena', arenaDesc: 'Rouge héraldique + or — le tournoi médiéval',
 			scriptorium: 'Scriptorium', scriptoriumDesc: 'Parchemin + encre — le moine copiste',
-			sakura: 'Sakura', sakuraDesc: 'Prune + fleur de cerisier — saison des cerisiers'
+			sakura: 'Sakura', sakuraDesc: 'Prune + fleur de cerisier — saison des cerisiers',
+			lagune: 'Lagune', laguneDesc: 'Vert lagune + neutres — le seul thème pensé en plein jour'
 		},
 		language: { title: 'Langue', fr: 'Français', en: 'English' },
 		profileSection: {

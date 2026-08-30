@@ -528,7 +528,8 @@ export const en: Translations = {
 			vesperal: 'Vespéral', vesperalDesc: 'Deep blue + ember orange — lantern-lit night',
 			arena: 'Arena', arenaDesc: 'Heraldic red + gold — medieval tournament',
 			scriptorium: 'Scriptorium', scriptoriumDesc: 'Parchment + ink — the copyist monk',
-			sakura: 'Sakura', sakuraDesc: 'Plum + cherry blossom — cherry season'
+			sakura: 'Sakura', sakuraDesc: 'Plum + cherry blossom — cherry season',
+			lagune: 'Lagune', laguneDesc: 'Lagoon green + neutrals — the one theme built for daylight'
 		},
 		language: { title: 'Language', fr: 'Français', en: 'English' },
 		profileSection: {

@@ -36,7 +36,8 @@
 		{ value: 'vesperal', label: 'vespéral', descKey: 'settings.theme.vesperalDesc' },
 		{ value: 'arena', label: 'arena', descKey: 'settings.theme.arenaDesc' },
 		{ value: 'scriptorium', label: 'scriptorium', descKey: 'settings.theme.scriptoriumDesc' },
-		{ value: 'sakura', label: 'sakura', descKey: 'settings.theme.sakuraDesc' }
+		{ value: 'sakura', label: 'sakura', descKey: 'settings.theme.sakuraDesc' },
+		{ value: 'lagune', label: 'lagune', descKey: 'settings.theme.laguneDesc' }
 	];
 
 	// Language

@@ -645,6 +645,8 @@ export interface Translations
 			scriptoriumDesc: string;
 			sakura: string;
 			sakuraDesc: string;
+			lagune: string;
+			laguneDesc: string;
 		};
 		language: {
 			title: string;

@@ -1,8 +1,11 @@
+import { THEME_KEYS } from '$lib/config/themes';
 import type { Theme, ThemeBase, ThemeMode } from '$lib/types';
 
 const THEME_KEY = 'skilluv-theme';
 const MODE_KEY = 'skilluv-mode';
-const VALID_BASES: ThemeBase[] = ['forge', 'vesperal', 'arena', 'scriptorium', 'sakura'];
+// Derived from the catalogue rather than repeated: a theme added there and
+// forgotten here would be selectable in the switcher and rejected on reload.
+const VALID_BASES: readonly ThemeBase[] = THEME_KEYS;
 
 /** Migration table for legacy theme names. */
 const LEGACY_MIGRATIONS: Record<string, ThemeBase> = {

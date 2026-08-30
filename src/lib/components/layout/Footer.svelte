@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { THEMES } from '$lib/config/themes';
 	import { i18n } from '$lib/i18n';
 	import { theme } from '$lib/stores/theme.svelte';
 	import { consent } from '$lib/stores/consent.svelte';
@@ -7,13 +8,12 @@
 
 	const year = new Date().getFullYear();
 
-	const themes: { key: ThemeBase; label: string; color: string }[] = [
-		{ key: 'forge', label: 'Forge', color: '#c47a2e' },
-		{ key: 'vesperal', label: 'Vespéral', color: '#f4a261' },
-		{ key: 'arena', label: 'Arena', color: '#e63946' },
-		{ key: 'scriptorium', label: 'Scriptorium', color: '#83a598' },
-		{ key: 'sakura', label: 'Sakura', color: '#e8a5c1' }
-	];
+	// Read from the catalogue rather than repeated here. The three copies
+	// this replaces had already drifted: forge showed #c47a2e in every
+	// switcher while app.css declared #ea8a3d, and scriptorium carried a
+	// different value in each of the three files. The swatches were
+	// describing themes that no longer existed.
+	const themes = THEMES;
 
 	const navLinks = [
 		{ href: '/challenges', fr: 'Challenges', en: 'Challenges' },
@@ -152,7 +152,7 @@
 							>
 								<span
 									class="h-10 w-10 rounded-full border-2 transition-all duration-200 {theme.base === t.key ? 'border-text-primary scale-105' : 'border-transparent opacity-60 group-hover:opacity-100'}"
-									style="background-color: {t.color};"
+									style="background-color: {t.accent};"
 								></span>
 								<span class="text-[10px] font-bold uppercase tracking-widest {theme.base === t.key ? 'text-text-primary' : 'text-text-muted group-hover:text-text-primary'}">
 									{t.label}
