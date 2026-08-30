@@ -132,6 +132,12 @@ export default defineConfig({
 					port: 4173,
 					env: {
 						PORT: '4173',
+						// Without ORIGIN, adapter-node assumes https and reports
+						// `https://localhost:4173` as the request origin while the
+						// browser is on http — so anything reading page.url.origin
+						// saw a protocol the test server does not speak. Production
+						// always sets it; the test server should too.
+						ORIGIN: 'http://localhost:4173',
 						// The mocked suite must never hit the real backend, even when
 						// `.env` configures one for the parcours specs.
 						API_URL: `http://localhost:${MOCK_BACKEND_PORT}/api`,
