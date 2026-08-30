@@ -47,6 +47,44 @@ const MOCK_BACKEND_PORT = 3099;
  * pour ajouter Firefox + WebKit sur les smoke et parcours (attendu long a
  * runner, reserver pour CI nightly ou release checks).
  */
+/**
+ * A visitor who has already answered the cookie banner.
+ *
+ * Without this every spec in the suite starts as a first-time visitor, the
+ * banner renders fixed to the bottom of the page, and any click it overlaps is
+ * intercepted — which is exactly what happened: 25 specs about unrelated
+ * features timed out clicking elements the banner sat on top of.
+ *
+ * Seeding a decision is not hiding the problem. The banner has its own spec
+ * that clears this and asserts the real first-visit behaviour; every *other*
+ * spec is about something else and models the returning visitor, which is the
+ * state a real user spends almost all their time in.
+ *
+ * The key is versioned, and version 1 is what the store falls back to when the
+ * backend does not answer -- which is the case against the mock.
+ */
+const CONSENT_DECIDED = {
+	cookies: [],
+	origins: [
+		{
+			origin: 'http://localhost:4173',
+			localStorage: [
+				{ name: 'skilluv-consent-version', value: '1' },
+				{
+					name: 'skilluv-consent-v1',
+					value: JSON.stringify({
+						essential: true,
+						analytics: false,
+						marketing: false,
+						version: 1,
+						decidedAt: '2026-01-01T00:00:00.000Z'
+					})
+				}
+			]
+		}
+	]
+};
+
 export default defineConfig({
 	testDir: 'tests/e2e',
 	// Only meaningful when the dev server is started (parcours runs); it returns
@@ -121,7 +159,8 @@ export default defineConfig({
 			testMatch: '**/*.test.ts',
 			use: {
 				...devices['Desktop Chrome'],
-				baseURL: 'http://localhost:4173'
+				baseURL: 'http://localhost:4173',
+				storageState: CONSENT_DECIDED
 			}
 		},
 		{

@@ -24,12 +24,11 @@
 	}
 
 	let { data }: Props = $props();
-	// svelte-ignore state_referenced_locally
-	let slice = $state<Slice>(data.slice);
-
-	$effect(() => {
-		slice = data.slice;
-	});
+	// A writable $derived: it follows `data.slice` when the loader returns a new
+	// one, and the optimistic updates below still assign to it directly. The
+	// $state + $effect pair this replaces needed a `state_referenced_locally`
+	// suppression and re-ran on every navigation to say the same thing.
+	let slice = $derived<Slice>(data.slice);
 
 	// --- Status mapping ---
 	const STATUS_ORDER: SliceStatus[] = [

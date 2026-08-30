@@ -3,6 +3,7 @@ import type { DesignWorkflowTranslations } from './design_workflow.types';
 import type { PortfolioTranslations } from './portfolios.types';
 import type { SecurityTranslations } from './security.types';
 import type { PostMvpTranslations } from './postmvp.types';
+import type { ConsentTranslations } from './consent.types';
 
 /**
  * The Post-MVP namespaces (SKI-36 … SKI-47) are declared in
@@ -14,6 +15,7 @@ export interface Translations
 		DesignTranslations,
 		DesignWorkflowTranslations,
 		SecurityTranslations,
+		ConsentTranslations,
 		PortfolioTranslations {
 	common: {
 		actions: {

@@ -222,7 +222,6 @@
 
 										<div class="mt-3">
 											{#if playable[file.id]}
-												<!-- svelte-ignore a11y_media_has_caption -->
 												<audio controls src={playable[file.id]} class="w-full"></audio>
 												<p class="mt-1 text-xs text-text-muted">
 													{i18n.t('audioDelivery.linkExpires')}

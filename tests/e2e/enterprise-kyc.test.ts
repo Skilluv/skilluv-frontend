@@ -100,7 +100,7 @@ test.describe('S6.4 enterprise KYC', () => {
 	});
 
 	test('deposer un document poste le fichier et son type', async ({ page }) => {
-		let uploadedKinds: string[] = [];
+		const uploadedKinds: string[] = [];
 		await mockApi(page, [
 			{
 				path: '/enterprise/kyc/documents',

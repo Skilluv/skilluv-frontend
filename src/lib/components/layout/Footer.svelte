@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
 	import { theme } from '$lib/stores/theme.svelte';
+	import { consent } from '$lib/stores/consent.svelte';
 	import type { ThemeBase } from '$lib/types';
 	import { PRIMARY_SOCIAL_ACCOUNTS, CONTACT_EMAIL, DPO_EMAIL } from '$lib/config/social';
 
@@ -253,6 +254,19 @@
 							</a>
 						</li>
 					{/each}
+					<li>
+						<!-- A button, not a link: withdrawing consent must be as easy as
+						     giving it, and the banner is gone once a choice is made. This
+						     is the only way back to it. -->
+						<button
+							type="button"
+							onclick={() => consent.openPreferences()}
+							class="text-xs uppercase tracking-widest font-bold text-text-muted transition-colors duration-200 hover:text-text-primary"
+							data-testid="footer-manage-consent"
+						>
+							{i18n.t('consent.footer.managePreferences')}
+						</button>
+					</li>
 				</ul>
 			</div>
 		</div>

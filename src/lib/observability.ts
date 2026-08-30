@@ -27,12 +27,47 @@ class Observability {
 	private sentry: typeof SentryType | null = null;
 	private posthog: PostHog | null = null;
 
-	async init(): Promise<void> {
+	/**
+	 * Boot the providers the visitor has actually allowed.
+	 *
+	 * The two are not equivalent and are not gated together. Sentry receives
+	 * crash reports needed to keep the service running and is covered by
+	 * legitimate interest; PostHog measures behaviour and is not, so it waits
+	 * for an explicit opt-in.
+	 *
+	 * `analyticsAllowed` is read at call time rather than captured, because
+	 * this runs again when the visitor changes their mind.
+	 */
+	async init(analyticsAllowed = false): Promise<void> {
 		if (typeof window === 'undefined') return;
-		await Promise.all([this.initSentry(), this.initPosthog()]);
+		const jobs: Promise<void>[] = [this.initSentry()];
+		if (analyticsAllowed) jobs.push(this.initPosthog());
+		await Promise.all(jobs);
+	}
+
+	/**
+	 * Stop analytics after a withdrawal.
+	 *
+	 * A consent that cannot be withdrawn as easily as it was given is not
+	 * consent, so this has to do more than flip a flag: PostHog keeps its own
+	 * cookies and would carry on capturing pageviews from the already-loaded
+	 * module. `opt_out_capturing()` is what actually stops it and clears them.
+	 */
+	stopAnalytics(): void {
+		if (!this.posthog) return;
+		try {
+			this.posthog.opt_out_capturing();
+		} catch {
+			// Older builds may not expose it; dropping the reference below is
+			// still enough to stop everything this app sends.
+		}
+		this.posthog = null;
 	}
 
 	private async initSentry(): Promise<void> {
+		// init() runs twice by design — once at mount, once if consent is later
+		// granted — so both providers guard against a second boot.
+		if (this.sentry) return;
 		const dsn = import.meta.env.PUBLIC_SENTRY_DSN as string | undefined;
 		if (!dsn) return;
 		const mod = await import('@sentry/sveltekit');
@@ -46,6 +81,7 @@ class Observability {
 	}
 
 	private async initPosthog(): Promise<void> {
+		if (this.posthog) return;
 		const key = import.meta.env.PUBLIC_POSTHOG_KEY as string | undefined;
 		if (!key) return;
 		const mod = await import('posthog-js');

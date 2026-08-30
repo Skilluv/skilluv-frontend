@@ -27,7 +27,8 @@ const LANG_FILES = ['fr', 'en'].map((l) => ({
 		join(SRC, 'lib', 'i18n', `design.${l}.ts`),
 		join(SRC, 'lib', 'i18n', `design_workflow.${l}.ts`),
 		join(SRC, 'lib', 'i18n', `security.${l}.ts`),
-		join(SRC, 'lib', 'i18n', `portfolios.${l}.ts`)
+		join(SRC, 'lib', 'i18n', `portfolios.${l}.ts`),
+		join(SRC, 'lib', 'i18n', `consent.${l}.ts`)
 	]
 }));
 

@@ -18,6 +18,8 @@
 	import EmailVerificationBanner from '$lib/components/auth/EmailVerificationBanner.svelte';
 	import OrientationPromptBanner from '$lib/components/orientations/OrientationPromptBanner.svelte';
 	import { observability } from '$lib/observability';
+	import { consent } from '$stores/consent.svelte';
+	import ConsentBanner from '$components/consent/ConsentBanner.svelte';
 	import KeysSprite from '$lib/components/badges/primitives/keys-sprite.svelte';
 
 	let { data, children } = $props();
@@ -106,7 +108,40 @@
 	// capture l'erreur silencieusement et fallback sur le tenant racine.
 	onMount(() => {
 		void tenant.load();
-		void observability.init();
+		// Resolves the consent version and any stored decision. Analytics is
+		// started by the effect below rather than here, because the answer is
+		// not known yet at this point and must not be assumed to be yes.
+		void consent.init();
+	});
+
+	/**
+	 * Analytics follows consent, in both directions.
+	 *
+	 * Booting it from `onMount` was the bug this replaces: PostHog loaded with
+	 * `capture_pageview: true` before anyone had been asked, which is tracking
+	 * without a legal basis for every visitor in the EU.
+	 *
+	 * Withdrawal has to be handled here too. A consent that cannot be taken
+	 * back as easily as it was given is not consent, and the already-loaded
+	 * PostHog would otherwise keep capturing.
+	 */
+	let analyticsStarted = $state(false);
+	$effect(() => {
+		const allowed = consent.analyticsAllowed;
+		if (allowed && !analyticsStarted) {
+			analyticsStarted = true;
+			void observability.init(true);
+		} else if (!allowed && analyticsStarted) {
+			analyticsStarted = false;
+			observability.stopAnalytics();
+		}
+	});
+
+	// Sentry does not wait for a decision: crash reports keep the service
+	// running and are covered by legitimate interest, unlike behavioural
+	// measurement. Started once, whatever the visitor answers.
+	onMount(() => {
+		void observability.init(false);
 	});
 
 	// WebSocket + notifications polling quand connecte
@@ -149,4 +184,9 @@
 
 	<InstallPrompt />
 	<PushForegroundListener />
+
+	<!-- Outside the `showCandidateChrome` guard on purpose: the obligation to
+	     ask does not depend on which shell the visitor happens to be in, and
+	     the enterprise side loads the same analytics. -->
+	<ConsentBanner />
 </div>
