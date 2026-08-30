@@ -41,7 +41,6 @@
 
 	let featured = $state<FeaturedCreator[]>([]);
 	let mods = $state<GameMod[]>([]);
-	let score = $state<unknown>(null);
 	let loading = $state(true);
 
 	let formOpen = $state(false);
@@ -71,14 +70,12 @@
 
 	async function load() {
 		loading = true;
-		const [f, m, p] = await Promise.allSettled([
+		const [f, m] = await Promise.allSettled([
 			gameApi.featured(),
-			auth.isAuthenticated ? gameApi.myMods() : Promise.resolve(null),
-			auth.isAuthenticated ? gameApi.profile() : Promise.resolve(null)
+			auth.isAuthenticated ? gameApi.myMods() : Promise.resolve(null)
 		]);
 		if (f.status === 'fulfilled') featured = f.value.data?.featured ?? [];
 		if (m.status === 'fulfilled' && m.value) mods = m.value.data?.mods ?? [];
-		if (p.status === 'fulfilled' && p.value) score = p.value.data?.score ?? null;
 		loading = false;
 	}
 

@@ -155,7 +155,7 @@
 				auth.setUser({
 					...auth.user,
 					total_fragments: res.data.user.total_fragments,
-					title: res.data.user.title as any,
+					title: res.data.user.title,
 					golden_stars: res.data.user.golden_stars,
 					streak_current: res.data.user.streak_current,
 					profile_active: res.data.user.profile_active

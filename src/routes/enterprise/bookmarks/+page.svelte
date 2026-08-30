@@ -6,9 +6,10 @@
 	import Button from '$components/ui/Button.svelte';
 	import { i18n } from '$lib/i18n';
 	import { X } from '@lucide/svelte';
+	import type { SkillDomain } from '$types';
 
 	let bookmarks = $state<{
-		id: string; username: string; display_name: string; skill_domain: string;
+		id: string; username: string; display_name: string; skill_domain: SkillDomain;
 		title: string; golden_stars: number; total_fragments: number;
 		country: string | null; bookmarked_at: string;
 	}[]>([]);
@@ -79,7 +80,7 @@
 						<p class="font-medium hover:text-accent">{bk.display_name}</p>
 						<div class="flex items-center gap-2 text-xs">
 							<span class="capitalize {titleColors[bk.title]}">{bk.title}</span>
-							<Badge variant={bk.skill_domain as any}>{bk.skill_domain}</Badge>
+							<Badge variant={bk.skill_domain}>{bk.skill_domain}</Badge>
 							<span class="text-accent">{bk.total_fragments} ◆</span>
 						</div>
 					</a>

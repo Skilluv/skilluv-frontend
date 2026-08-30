@@ -1,6 +1,7 @@
 import type {
 	Challenge,
 	Submission,
+	Title,
 	SkillDomain,
 	ApiResponse,
 	ApiPaginatedResponse,
@@ -31,7 +32,7 @@ interface SubmitResponse {
 		perseverance_bonus: number;
 		user: {
 			total_fragments: number;
-			title: string;
+			title: Title;
 			golden_stars: number;
 			streak_current: number;
 			profile_active: boolean;

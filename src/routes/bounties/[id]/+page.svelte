@@ -74,11 +74,13 @@
 		}
 	}
 
-	function statusVariant(status: string): 'success' | 'accent' | 'default' | 'warning' | 'error' {
+	function statusVariant(
+		status: string
+	): 'success' | 'accent' | 'primary' | 'default' | 'warning' | 'error' {
 		return status === 'open' ? 'success'
 			: status === 'claimed' ? 'accent'
 			: status === 'in_review' ? 'warning'
-			: status === 'paid' ? 'primary' as any
+			: status === 'paid' ? 'primary'
 			: status === 'cancelled' || status === 'expired' ? 'error'
 			: 'default';
 	}

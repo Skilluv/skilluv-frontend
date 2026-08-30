@@ -11,6 +11,5 @@
 <MissionDetail
 	domain="ai"
 	basePath="/ai/missions"
-	minePath="/ai/my/missions"
 	boardTitle={i18n.t('missions.boards.ai.title')}
 />

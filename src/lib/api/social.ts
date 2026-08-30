@@ -5,20 +5,52 @@ const api = createApiClient();
 
 // --- Types ---
 
-export type TargetType = 'forum_post' | 'challenge' | 'submission' | 'project' | 'user';
-export type ReactionKind = 'up' | 'down' | 'love' | 'insight' | 'fire';
+/**
+ * The polymorphic target of a comment or reaction.
+ *
+ * These are the literals `VALID_TARGET_TYPES` accepts on the server, not a
+ * parallel vocabulary. The previous list invented `forum_post` and `user`,
+ * neither of which exists there, so every comment listing, every comment
+ * creation and every reaction on the forum was rejected as a validation error
+ * before reaching the database. An `as any` at the one call site kept the
+ * compiler from noticing.
+ */
+export type TargetType =
+	| 'challenge'
+	| 'submission'
+	| 'post'
+	| 'question'
+	| 'answer'
+	| 'project'
+	| 'profile'
+	| 'guild'
+	| 'comment'
+	| 'repo';
+
+/** Mirrors `VALID_REACTION_KINDS`. Only `fire` matched the old list. */
+export type ReactionKind = 'upvote' | 'downvote' | 'heart' | 'fire' | 'wow';
 
 export interface SocialComment {
 	id: string;
 	target_type: TargetType;
 	target_id: string;
 	author_id: string;
-	author_username: string;
-	author_display_name: string;
+	author_username?: string;
+	author_display_name?: string;
 	body: string;
-	accepted: boolean;
-	reaction_up: number;
-	reaction_down: number;
+	/**
+	 * Optional because the server does not send them.
+	 *
+	 * `GET /social/comments/{type}/{id}` returns the `comments` rows verbatim:
+	 * id, target, author_id, body, parent_id, edited and the timestamps. The
+	 * author's name, the accepted flag and the reaction counts are not joined
+	 * in, so declaring them required made the UI render `@undefined`. Filed as
+	 * SKI-356; the fields stay declared so the call sites are ready, and every
+	 * reader falls back until they arrive.
+	 */
+	accepted?: boolean;
+	reaction_up?: number;
+	reaction_down?: number;
 	created_at: string;
 	updated_at: string;
 	edited: boolean;

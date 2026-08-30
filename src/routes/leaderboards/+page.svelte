@@ -65,8 +65,6 @@
 		}
 	}
 
-	function switchDomain(d: LeaderboardDomain) { domain = d; loadLeaderboard(); }
-	function switchPeriod(p: LeaderboardPeriod) { period = p; loadLeaderboard(); }
 
 	function domainLabel(d: LeaderboardDomain): string {
 		if (d === 'global') return i18n.t('leaderboard.global');

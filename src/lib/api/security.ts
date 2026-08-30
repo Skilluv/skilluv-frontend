@@ -55,6 +55,7 @@ import type {
 	SubmittedReport,
 	TrustSummary
 } from '$lib/types';
+import { apiBase } from './origin';
 import { createApiClient } from './client';
 import { tournamentApi } from './tournament';
 
@@ -146,7 +147,7 @@ export const securityApi = {
 	async uploadProof(file: File): Promise<{ key: string; note: string }> {
 		const body = new FormData();
 		body.append('file', file);
-		const res = await fetch('/api/security/reports/uploads', {
+		const res = await fetch(`${apiBase()}/security/reports/uploads`, {
 			method: 'POST',
 			body,
 			credentials: 'include'

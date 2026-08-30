@@ -24,6 +24,10 @@
 		onchange
 	}: Props = $props();
 
+	// The combobox must name the list it controls, and two of these on one page
+	// must not collide.
+	const listboxId = `country-listbox-${Math.random().toString(36).slice(2, 9)}`;
+
 	let open = $state(false);
 	let query = $state('');
 	let inputEl = $state<HTMLInputElement | undefined>();
@@ -111,7 +115,16 @@
 
 <div bind:this={containerEl} class="relative flex flex-col gap-1.5">
 	{#if label}
-		<span class="text-sm font-medium text-text-primary">{label}</span>
+		<span class="text-sm font-medium text-text-primary">
+			{label}
+			{#if required}
+				<!-- The prop was declared and then ignored, so a field the signup
+				     form marks as required looked optional and was announced as
+				     optional. The star is decorative; aria-required on the
+				     control below is what a screen reader acts on. -->
+				<span class="text-error" aria-hidden="true">*</span>
+			{/if}
+		</span>
 	{/if}
 
 	<div class="relative">
@@ -121,8 +134,11 @@
 			class="flex h-11 w-full items-center justify-between rounded-xl border bg-surface-elevated px-4 text-left text-sm text-text-primary transition-colors
 				{error ? 'border-error' : 'border-border hover:border-text-muted'}
 				{open ? 'border-primary ring-1 ring-primary' : ''}"
+			role="combobox"
 			aria-haspopup="listbox"
 			aria-expanded={open}
+			aria-controls={listboxId}
+			aria-required={required ? 'true' : undefined}
 		>
 			<span class="truncate {selected ? '' : 'text-text-muted'}">
 				{selected ? selected.name : (placeholder ?? (i18n.locale === 'fr' ? 'Sélectionner un pays' : 'Select a country'))}
@@ -162,7 +178,7 @@
 					class="h-9 w-full rounded-lg border border-border bg-surface px-3 text-sm text-text-primary placeholder:text-text-muted focus:border-primary focus:outline-none"
 				/>
 			</div>
-			<ul class="max-h-64 overflow-y-auto py-1" role="listbox">
+			<ul id={listboxId} class="max-h-64 overflow-y-auto py-1" role="listbox">
 				{#if geo.loading && geo.countries.length === 0}
 					<li class="px-3 py-2 text-sm text-text-muted">{i18n.locale === 'fr' ? 'Chargement…' : 'Loading…'}</li>
 				{:else if filtered.length === 0}

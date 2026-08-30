@@ -17,8 +17,6 @@
 		rows: Record<string, unknown>[];
 		/** Snippet cellule : reçoit la row + la column, retourne le contenu */
 		cell?: Snippet<[Record<string, unknown>, Column]>;
-		/** Snippet row wrapper (ex: link entière) */
-		rowWrapper?: Snippet<[Record<string, unknown>, Snippet]>;
 		/** Message si rows vides */
 		emptyLabel?: string;
 		/** Hover subtle */
@@ -30,7 +28,6 @@
 		columns,
 		rows,
 		cell,
-		rowWrapper,
 		emptyLabel = 'Aucun résultat',
 		hover = true,
 		class: className = ''

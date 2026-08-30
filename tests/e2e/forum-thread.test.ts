@@ -57,7 +57,7 @@ function post(overrides: Record<string, unknown> = {}) {
 function comment(overrides: Record<string, unknown> = {}) {
 	return {
 		id: 'c-1',
-		target_type: 'forum_post',
+		target_type: 'post',
 		target_id: 'p-1',
 		author_username: 'ama',
 		author_display_name: 'Ama Doe',
@@ -126,7 +126,9 @@ test.describe('S5.2 forum thread', () => {
 		await page.getByRole('button', { name: 'Publier' }).click();
 
 		await expect.poll(() => posted).not.toBeNull();
-		expect(posted).toMatchObject({ target_type: 'forum_post', target_id: 'p-1', body: 'Ma reponse' });
+		// 'post', not 'forum_post': the latter is not in the server's
+		// VALID_TARGET_TYPES, so asserting it kept a rejected request green.
+		expect(posted).toMatchObject({ target_type: 'post', target_id: 'p-1', body: 'Ma reponse' });
 	});
 
 	test('le bouton publier reste inactif tant que le champ est vide', async ({ page }) => {
