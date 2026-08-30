@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BrandLogo from '$components/layout/BrandLogo.svelte';
 	import {
 		Key,
 		Keyring,
@@ -234,8 +235,10 @@
 	<section class="ds-section">
 		<h2 class="ds-section-title font-wonk">9. Wordmark & typography</h2>
 		<div class="ds-typo">
-			<div class="ds-wordmark wordmark">
-				<span class="wordmark-skil">sKIL</span><span class="wordmark-luv">LUV</span>
+			<!-- The delivered mark, not the CSS wordmark it replaced. A design
+			     system page showing a retired brand teaches the retired one. -->
+			<div class="ds-wordmark">
+				<BrandLogo size={48} />
 			</div>
 			<div class="ds-typo-stack">
 				<h1 class="font-hero">Prouve ce que tu sais faire.</h1>

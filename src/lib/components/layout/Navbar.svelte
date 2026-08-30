@@ -395,7 +395,23 @@
 		</a>
 
 		<!-- Desktop nav — pill container flottant centré avec sliding indicator -->
-		<div class="hidden md:flex fixed top-5 left-1/2 -translate-x-1/2 z-50">
+		<!-- xl, not md.
+
+		     The pill is `fixed` and centred on the viewport, so it is out of the
+		     flow and the row below lays out as though it were not there. Nothing
+		     stops it covering the controls on the right, and at z-50 over the
+		     header's z-40 it wins.
+
+		     Measured: the pill is 442px wide anonymous, 529 signed in, and the
+		     right-hand controls 294 / 334. The overlap starts below 1062px
+		     anonymous and below 1229px signed in — which is why it showed up on
+		     a 1040-wide window and got worse from there.
+
+		     xl (1280) clears the worse of the two with margin. A tuned value
+		     like min-[1229px] would fit tighter and break the day somebody adds
+		     a control, because the number would be right for a row that no
+		     longer exists. -->
+		<div class="hidden xl:flex fixed top-5 left-1/2 -translate-x-1/2 z-50">
 			<div bind:this={pillContainer} class="relative flex items-center gap-1 rounded-full border border-border bg-surface-elevated p-1 shadow-sm">
 				<!-- Sliding indicator (pill inversée qui glisse) -->
 				<span
@@ -476,7 +492,7 @@
 		</div>
 
 		<!-- Right side controls -->
-		<div class="hidden items-center gap-1 md:flex">
+		<div class="hidden items-center gap-1 xl:flex">
 			<!-- Theme selector -->
 			<div class="relative" data-theme-dropdown>
 				<button
@@ -656,7 +672,7 @@
 		<!-- Mobile burger -->
 		<button
 			onclick={() => mobileOpen = !mobileOpen}
-			class="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-elevated text-text-muted transition-colors duration-200 hover:bg-surface-overlay md:hidden"
+			class="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-elevated text-text-muted transition-colors duration-200 hover:bg-surface-overlay xl:hidden"
 			aria-label="Menu"
 		>
 			{#if mobileOpen}
@@ -673,7 +689,7 @@
 
 	<!-- Mobile menu -->
 	{#if mobileOpen}
-		<div class="border-t border-border bg-surface-elevated/95 backdrop-blur-md md:hidden animate-in slide-in-from-top-2">
+		<div class="border-t border-border bg-surface-elevated/95 backdrop-blur-md xl:hidden animate-in slide-in-from-top-2">
 			<div class="mx-auto max-w-7xl px-4 py-3 space-y-0.5">
 				<a href="/" onclick={() => mobileOpen = false} class="block rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 {isActive('/') ? 'text-text-primary bg-surface-overlay' : 'text-text-muted hover:bg-surface-overlay'}">
 					{i18n.locale === 'fr' ? 'Accueil' : 'Home'}
