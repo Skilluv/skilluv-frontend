@@ -69,7 +69,7 @@ async function tryRefresh(customFetch: typeof fetch, baseUrl: string): Promise<b
 
 /**
  * Read a cookie by name from `document.cookie`. Returns undefined on SSR or when absent.
- * Used to grab the non-httpOnly `csrf_token` cookie and echo it back in the header.
+ * Used to grab the non-httpOnly CSRF cookie and echo it back in the header.
  */
 function readCookie(name: string): string | undefined {
 	if (typeof document === 'undefined') return undefined;
@@ -82,6 +82,36 @@ function readCookie(name: string): string | undefined {
 }
 
 const CSRF_SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
+
+/**
+ * The CSRF cookie to echo, admin first.
+ *
+ * The backend's `extract_csrf_cookie` reads `admin_csrf_token` and only falls
+ * back to `csrf_token`, so the header has to follow the same order or the
+ * compare fails. That ordering used to be moot: the cookies were host-only, so
+ * the app origin never saw the admin one. They now carry a `Domain` on the
+ * shared parent, which is what makes them readable here at all — and it also
+ * means somebody who has signed into the admin app has both cookies in the jar
+ * while browsing the public app. Echoing `csrf_token` there would be compared
+ * against `admin_csrf_token` and 403 every write.
+ */
+function csrfCookie(): string | undefined {
+	return readCookie('admin_csrf_token') ?? readCookie('csrf_token');
+}
+
+/**
+ * The CSRF header for a request, or nothing when the method is safe.
+ *
+ * Exported for the handful of calls that cannot go through the client at all:
+ * a multipart upload needs the browser to set its own `Content-Type` boundary,
+ * which the JSON client would clobber. They still have to carry the header —
+ * once the backend layer enforces, a write without it is a 403.
+ */
+export function csrfHeaders(method: string): Record<string, string> {
+	if (CSRF_SAFE_METHODS.has(method.toUpperCase())) return {};
+	const csrf = csrfCookie();
+	return csrf ? { 'X-CSRF-Token': csrf } : {};
+}
 
 /**
  * Retry policy for idempotent reads under flaky networks (Africa/Bénin
@@ -106,15 +136,11 @@ export function createApiClient(
 	baseUrl: string = apiBase()
 ) {
 	async function fire(url: string, options?: RequestInit): Promise<Response> {
-		// Double-submit CSRF: echo the non-httpOnly `csrf_token` cookie into the header on
-		// state-changing requests. The backend middleware (when enabled) checks that the header
+		// Double-submit CSRF: echo the non-httpOnly CSRF cookie into the header on
+		// state-changing requests. The backend middleware checks that the header
 		// matches the cookie in constant time.
 		const method = (options?.method ?? 'GET').toUpperCase();
-		const csrfHeaders: Record<string, string> = {};
-		if (!CSRF_SAFE_METHODS.has(method)) {
-			const csrf = readCookie('csrf_token');
-			if (csrf) csrfHeaders['X-CSRF-Token'] = csrf;
-		}
+		const csrf = csrfHeaders(method);
 		// Skip our JSON default when the body is FormData — the browser needs to
 		// set `multipart/form-data; boundary=...` itself, and any explicit
 		// Content-Type here would clobber the auto-generated boundary.
@@ -127,7 +153,7 @@ export function createApiClient(
 			credentials: 'include',
 			headers: {
 				...baseHeaders,
-				...csrfHeaders,
+				...csrf,
 				...options?.headers
 			}
 		});

@@ -118,8 +118,10 @@ describe('reporting', () => {
 		const [url, init] = fetchMock.mock.calls[0];
 		expect(url).toBe('/api/security/reports/uploads');
 		expect(init.body).toBeInstanceOf(FormData);
-		// A hand-set Content-Type strips the boundary the browser generates.
-		expect(init.headers).toBeUndefined();
+		// A hand-set Content-Type strips the boundary the browser generates, so
+		// the only header this call may carry is the CSRF one — which it must,
+		// since a write without it is refused by the double-submit layer.
+		expect(Object.keys(init.headers ?? {})).not.toContain('Content-Type');
 		expect(stored.key).toBe('security-proofs/u1/a.png');
 	});
 

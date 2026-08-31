@@ -5,17 +5,48 @@ const api = createApiClient();
 
 // --- Types ---
 
-export type TargetType = 'forum_post' | 'challenge' | 'submission' | 'project' | 'user';
-export type ReactionKind = 'up' | 'down' | 'love' | 'insight' | 'fire';
+/**
+ * The polymorphic target types the backend accepts.
+ *
+ * Copied from `VALID_TARGET_TYPES` in `services/social.rs`, and it has to stay
+ * copied: the OpenAPI schema types these fields as `serde_json::Value`, so
+ * nothing generated tells us when the two lists drift. They did drift — this
+ * module used to declare `forum_post` and `user` where the server has `post`
+ * and `profile`, and every comment listing, every comment creation and every
+ * reaction on the forum was rejected by the validator before reaching the
+ * database. Only `challenge`, `submission` and `project` ever matched.
+ */
+export type TargetType =
+	| 'challenge'
+	| 'submission'
+	| 'post'
+	| 'question'
+	| 'answer'
+	| 'project'
+	| 'profile'
+	| 'guild'
+	| 'comment'
+	| 'repo';
+
+/** From `VALID_REACTION_KINDS`. Same drift, same rule: only `fire` overlapped. */
+export type ReactionKind = 'upvote' | 'downvote' | 'heart' | 'fire' | 'wow';
 
 export interface SocialComment {
 	id: string;
 	target_type: TargetType;
 	target_id: string;
 	author_id: string;
-	author_username: string;
-	author_display_name: string;
 	body: string;
+	parent_id: string | null;
+	/**
+	 * The author's handle, joined server-side. Null only when the account was
+	 * hard-deleted out from under the comment, which the schema allows — so a
+	 * reader still has to draw that case, but it is a real state and not the
+	 * `undefined` that a missing join used to produce.
+	 */
+	author_username: string | null;
+	author_display_name: string | null;
+	/** True when the parent question points at this comment as its answer. */
 	accepted: boolean;
 	reaction_up: number;
 	reaction_down: number;
@@ -38,13 +69,6 @@ export const socialApi = {
 	reactionSummary(targetType: string, targetId: string) {
 		return api.get<ApiResponse<{ summary: unknown }>>(
 			`/social/reactions/${encodeURIComponent(targetType)}/${encodeURIComponent(targetId)}/summary`
-		);
-	},
-
-	/** Comments on one target. */
-	comments(targetType: string, targetId: string) {
-		return api.get<ApiResponse<{ comments: unknown[] }>>(
-			`/social/comments/${encodeURIComponent(targetType)}/${encodeURIComponent(targetId)}`
 		);
 	},
 
@@ -75,11 +99,18 @@ export const socialApi = {
 		return api.delete<void>('/social/tag-map', body);
 	},
 
+	/**
+	 * Comments on one target, with the author, the accepted-answer flag and the
+	 * vote counts already joined on.
+	 *
+	 * The target travels in the path, which is where the route puts it —
+	 * `/social/comments` with query parameters is not a route at all and
+	 * answered 404.
+	 */
 	listComments(targetType: TargetType, targetId: string) {
-		return api.get<ApiResponse<{ comments: SocialComment[] }>>('/social/comments', {
-			target_type: targetType,
-			target_id: targetId
-		});
+		return api.get<ApiResponse<{ comments: SocialComment[] }>>(
+			`/social/comments/${encodeURIComponent(targetType)}/${encodeURIComponent(targetId)}`
+		);
 	},
 
 	createComment(targetType: TargetType, targetId: string, body: string) {

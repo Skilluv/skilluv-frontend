@@ -22,6 +22,7 @@
 
 import type { ApiResponse } from '$lib/types';
 import { createApiClient } from './client';
+import { apiBase } from './origin';
 
 const api = createApiClient();
 
@@ -58,6 +59,9 @@ export const oauthLinksApi = {
 	}
 };
 
+/** The providers that link from a settings surface, by navigation. */
+export type LinkableProvider = 'google' | 'linkedin' | 'discord';
+
 /**
  * Where the browser must go to link a provider.
  *
@@ -66,7 +70,27 @@ export const oauthLinksApi = {
  *
  * GitHub is absent on purpose — it links through the repo-sync flow at
  * `/auth/github/start`, which already exists and carries different scopes.
+ *
+ * ## Why `returnTo` matters
+ *
+ * The callback ends on the API origin. Without a return path the server has
+ * nowhere to send the browser and answers `{"linked":true}` as raw JSON: the
+ * link worked, and the person is looking at a payload on a domain they never
+ * chose to visit, with the back button as their only way out — and back lands
+ * them on a settings page still showing the old state. Passing the page they
+ * left is what turns the end of the flow into a return to it.
+ *
+ * The server validates the path against its own allowlist and ignores anything
+ * that is not a same-site path, so an absolute URL here buys nothing. We send a
+ * path for the same reason: an open redirect straight off a consent screen is
+ * the most convincing possible moment to bounce somebody elsewhere.
  */
-export function linkUrl(provider: 'google' | 'linkedin', baseUrl = '/api'): string {
-	return `${baseUrl}/auth/${provider}/link`;
+export function linkUrl(
+	provider: LinkableProvider,
+	returnTo?: string,
+	baseUrl = apiBase()
+): string {
+	const url = `${baseUrl}/auth/${provider}/link`;
+	if (!returnTo || !returnTo.startsWith('/') || returnTo.startsWith('//')) return url;
+	return `${url}?return_to=${encodeURIComponent(returnTo)}`;
 }
