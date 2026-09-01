@@ -9,6 +9,11 @@
 	 * An XHR would follow the redirect invisibly and land a consent screen in a
 	 * response body nobody can interact with.
 	 *
+	 * The callback needs to be told where to come back to, or it ends on the
+	 * API origin showing raw JSON. We hand it this page, so the return lands on
+	 * the list the person was looking at — reloaded, and therefore showing the
+	 * provider they just linked rather than the state they left.
+	 *
 	 * ## Unlinking is the half that can lock somebody out
 	 *
 	 * A provider can be the only way in, and the server does not stop you
@@ -22,6 +27,7 @@
 	 * recoverable; locking them out is not.
 	 */
 	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 	import { Link2, Unlink } from '@lucide/svelte';
 	import {
 		oauthLinksApi,
@@ -40,6 +46,9 @@
 	let providers = $state<LinkedProvider[]>([]);
 	let loading = $state(true);
 	let busy = $state<Record<string, boolean>>({});
+
+	/** Where the OAuth callback sends the browser once the link is stored. */
+	let returnTo = $derived(page.url.pathname + page.url.search);
 
 	let linked = $derived(new Set(providers.map((p) => p.provider)));
 
@@ -162,7 +171,7 @@
 				{#if !linked.has(provider)}
 					<!-- A link, not a button: this navigates into a consent screen and
 					     comes back through a callback the server handles. -->
-					<Button href={linkUrl(provider)} size="sm" variant="ghost">
+					<Button href={linkUrl(provider, returnTo)} size="sm" variant="ghost">
 						{i18n.t('linkedAccounts.linkCta', { provider })}
 					</Button>
 				{/if}

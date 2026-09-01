@@ -5,6 +5,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import { auth } from '$stores/auth.svelte';
 	import { i18n } from '$lib/i18n';
+	import { apiBase } from '$api/origin';
 
 	let status = $state<'pending' | 'ok' | 'error'>('pending');
 	let message = $state('');
@@ -17,9 +18,10 @@
 			return;
 		}
 		try {
-			const res = await fetch(`/api/auth/change-email/confirm?token=${encodeURIComponent(token)}`, {
-				credentials: 'include'
-			});
+			const res = await fetch(
+				`${apiBase()}/auth/change-email/confirm?token=${encodeURIComponent(token)}`,
+				{ credentials: 'include' }
+			);
 			const body = await res.json();
 			if (!res.ok) {
 				status = 'error';

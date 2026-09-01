@@ -31,6 +31,7 @@
 	 * which is the reason the settings surface exists at all.
 	 */
 	import { MessageCircle } from '@lucide/svelte';
+	import { page } from '$app/state';
 	import { linkUrl } from '$api/oauth_links';
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
@@ -41,6 +42,16 @@
 	}
 
 	let { children }: Props = $props();
+
+	/**
+	 * Where the callback sends the browser back to.
+	 *
+	 * Without it the consent screen ends on raw JSON at the API origin, which
+	 * is a bad place to land from anywhere and a worse one mid-onboarding: the
+	 * step that follows is no longer reachable, and the person was in the
+	 * middle of a sequence they were told to finish.
+	 */
+	let returnTo = $derived(page.url.pathname + page.url.search);
 </script>
 
 <section
@@ -57,7 +68,12 @@
 
 	<div class="flex flex-wrap items-center gap-2">
 		<!-- A link, not a button: this navigates into a consent screen. -->
-		<Button href={linkUrl('discord')} size="sm" variant="primary" data-testid="discord-link-cta">
+		<Button
+			href={linkUrl('discord', returnTo)}
+			size="sm"
+			variant="primary"
+			data-testid="discord-link-cta"
+		>
 			{i18n.t('discordLink.cta')}
 		</Button>
 		{@render children?.()}

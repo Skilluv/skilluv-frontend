@@ -10,6 +10,7 @@
 
 import type { SsoDiscoverResponse } from '$lib/types';
 import { createApiClient } from './client';
+import { apiBase } from './origin';
 
 const api = createApiClient();
 
@@ -135,7 +136,7 @@ export const enterpriseSsoApi = {
 	 * this hits the SCIM data-plane, which requires the SCIM bearer token —
 	 * so the caller must have generated one first and pass it in. */
 	async listScimGroups(scimToken: string): Promise<ScimGroupView[]> {
-		const res = await fetch('/api/scim/v2/Groups', {
+		const res = await fetch(`${apiBase()}/scim/v2/Groups`, {
 			headers: { Authorization: `Bearer ${scimToken}` }
 		});
 		if (!res.ok) {

@@ -57,7 +57,7 @@ function post(overrides: Record<string, unknown> = {}) {
 function comment(overrides: Record<string, unknown> = {}) {
 	return {
 		id: 'c-1',
-		target_type: 'forum_post',
+		target_type: 'post',
 		target_id: 'p-1',
 		author_username: 'ama',
 		author_display_name: 'Ama Doe',
@@ -88,7 +88,7 @@ test.describe('S5.2 forum thread', () => {
 	test('affiche la question et ses reponses', async ({ page }) => {
 		await mockApi(page, [
 			{ path: '/forum/posts/p-1', handler: json({ data: { post: post(), comments: [] } }) },
-			{ path: '/social/comments', handler: json({ data: { comments: [comment()] } }) },
+			{ path: '/social/comments/post/p-1', handler: json({ data: { comments: [comment()] } }) },
 			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
 			{ path: '/users/me/orientations', handler: json({ data: [] }) }
 		]);
@@ -105,14 +105,15 @@ test.describe('S5.2 forum thread', () => {
 		let posted: Record<string, unknown> | null = null;
 		await mockApi(page, [
 			{ path: '/forum/posts/p-1', handler: json({ data: { post: post(), comments: [] } }) },
+			// The listing and the creation are two different routes now: the
+			// target travels in the path on the way in, and in the body on the
+			// way out.
+			{ path: '/social/comments/post/p-1', handler: json({ data: { comments: [comment()] } }) },
 			{
 				path: '/social/comments',
 				handler: (route) => {
-					if (route.request().method() === 'POST') {
-						posted = route.request().postDataJSON();
-						return json({ data: { comment: comment({ id: 'c-2', body: 'Ma reponse' }) } })(route);
-					}
-					return json({ data: { comments: [comment()] } })(route);
+					posted = route.request().postDataJSON();
+					return json({ data: { comment: comment({ id: 'c-2', body: 'Ma reponse' }) } })(route);
 				}
 			},
 			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
@@ -126,13 +127,13 @@ test.describe('S5.2 forum thread', () => {
 		await page.getByRole('button', { name: 'Publier' }).click();
 
 		await expect.poll(() => posted).not.toBeNull();
-		expect(posted).toMatchObject({ target_type: 'forum_post', target_id: 'p-1', body: 'Ma reponse' });
+		expect(posted).toMatchObject({ target_type: 'post', target_id: 'p-1', body: 'Ma reponse' });
 	});
 
 	test('le bouton publier reste inactif tant que le champ est vide', async ({ page }) => {
 		await mockApi(page, [
 			{ path: '/forum/posts/p-1', handler: json({ data: { post: post(), comments: [] } }) },
-			{ path: '/social/comments', handler: json({ data: { comments: [] } }) },
+			{ path: '/social/comments/post/p-1', handler: json({ data: { comments: [] } }) },
 			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
 			{ path: '/users/me/orientations', handler: json({ data: [] }) }
 		]);
@@ -146,7 +147,7 @@ test.describe('S5.2 forum thread', () => {
 				path: '/forum/posts/p-1',
 				handler: json({ data: { post: post({ locked: true }), comments: [] } })
 			},
-			{ path: '/social/comments', handler: json({ data: { comments: [comment()] } }) },
+			{ path: '/social/comments/post/p-1', handler: json({ data: { comments: [comment()] } }) },
 			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
 			{ path: '/users/me/orientations', handler: json({ data: [] }) }
 		]);
@@ -170,7 +171,7 @@ test.describe('S5.2 forum thread', () => {
 				path: '/forum/posts/p-1',
 				handler: json({ data: { post: post({ author_id: AUTHOR_ID }), comments: [] } })
 			},
-			{ path: '/social/comments', handler: json({ data: { comments: [comment()] } }) },
+			{ path: '/social/comments/post/p-1', handler: json({ data: { comments: [comment()] } }) },
 			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
 			{ path: '/users/me/orientations', handler: json({ data: [] }) }
 		]);

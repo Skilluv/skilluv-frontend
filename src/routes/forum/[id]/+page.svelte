@@ -26,7 +26,7 @@
 		try {
 			const [pRes, cRes] = await Promise.all([
 				forumApi.get(postId),
-				socialApi.listComments('forum_post', postId).catch(() => null)
+				socialApi.listComments('post', postId).catch(() => null)
 			]);
 			post = pRes.data.post;
 			if (cRes) comments = cRes.data.comments;
@@ -42,7 +42,7 @@
 		if (!newComment.trim() || posting) return;
 		posting = true;
 		try {
-			await socialApi.createComment('forum_post', postId, newComment.trim());
+			await socialApi.createComment('post', postId, newComment.trim());
 			newComment = '';
 			await load();
 		} catch (e) {
@@ -62,9 +62,17 @@
 		}
 	}
 
-	async function react(target: 'forum_post' | 'forum_comment', targetId: string) {
+	/**
+	 * Upvote a post or a comment.
+	 *
+	 * The target type has to be the comment's own: `reaction_up` is counted
+	 * over `target_type = 'comment'`, so sending `post` for a comment would
+	 * have every upvote in the thread land on the question and none of the
+	 * counts beside the answers would ever move.
+	 */
+	async function react(target: 'post' | 'comment', targetId: string) {
 		try {
-			await socialApi.toggleReaction(target === 'forum_post' ? 'forum_post' : 'forum_post' as any, targetId, 'up');
+			await socialApi.toggleReaction(target, targetId, 'upvote');
 			await load();
 		} catch {
 			// no-op
@@ -272,14 +280,14 @@
 						{/if}
 						<div class="mt-2 flex items-start justify-between gap-3">
 							<div class="flex items-center gap-2 text-sm text-text-muted">
-								<span class="font-semibold text-text-primary">@{c.author_username}</span>
+								<span class="font-semibold text-text-primary">@{c.author_username ?? '?'}</span>
 								<span>·</span>
 								<span>{fmtDate(c.created_at)}</span>
 								{#if c.edited}<span class="italic">({i18n.locale === 'fr' ? 'modifié' : 'edited'})</span>{/if}
 							</div>
 							<div class="flex items-center gap-1 text-sm shrink-0">
 								<button
-									onclick={() => void react('forum_post', c.id)}
+									onclick={() => void react('comment', c.id)}
 									class="rounded-full border border-border px-3 py-1 hover:border-primary hover:text-primary transition-colors"
 									aria-label="upvote"
 								>

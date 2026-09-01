@@ -62,7 +62,9 @@ describe('linkUrl', () => {
 		// A relative path would send the consent flow to the SvelteKit server,
 		// which has no such route — the failure only appears once the API moves
 		// to its own host, which is exactly when nobody is looking for it.
-		expect(linkUrl('discord', 'https://api.skill-uv.com/api')).toBe(
+		// The base is the third argument: the second is the return path, which
+		// the callback needs or it ends on raw JSON at the API origin.
+		expect(linkUrl('discord', undefined, 'https://api.skill-uv.com/api')).toBe(
 			'https://api.skill-uv.com/api/auth/discord/link'
 		);
 	});

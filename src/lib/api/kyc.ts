@@ -1,5 +1,6 @@
 import type { ApiResponse } from '$lib/types';
-import { createApiClient } from './client';
+import { createApiClient, csrfHeaders } from './client';
+import { apiBase } from './origin';
 
 const api = createApiClient();
 
@@ -32,14 +33,22 @@ export const kycApi = {
 		return api.get<ApiResponse<KycStatusResponse>>('/enterprise/kyc');
 	},
 
-	/** Upload multipart : ne passe pas par le client JSON, fetch direct. */
+	/**
+	 * Upload multipart : ne passe pas par le client JSON, fetch direct.
+	 *
+	 * Two things the client would otherwise have handled and that have to be
+	 * repeated by hand here: the base comes from `apiBase()` so the call still
+	 * lands on a backend served from its own origin, and the CSRF header is
+	 * echoed so the double-submit layer does not refuse the write.
+	 */
 	async uploadDocument(kind: string, file: File): Promise<{ document_id: string }> {
 		const fd = new FormData();
 		fd.append('kind', kind);
 		fd.append('file', file);
-		const resp = await fetch('/api/enterprise/kyc/documents', {
+		const resp = await fetch(`${apiBase()}/enterprise/kyc/documents`, {
 			method: 'POST',
 			credentials: 'include',
+			headers: csrfHeaders('POST'),
 			body: fd
 		});
 		if (!resp.ok) {
