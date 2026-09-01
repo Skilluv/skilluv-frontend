@@ -50,6 +50,7 @@ const BACK = resolve(process.cwd(), '..', 'skilluv-backend', 'src', 'routes');
 const UNREACHABLE = [
 	'/auth/github/callback',
 	'/auth/github/login/callback',
+	'/auth/discord/callback',
 	'/auth/google/callback',
 	'/auth/linkedin/callback',
 	'/guild-invitations/{}'

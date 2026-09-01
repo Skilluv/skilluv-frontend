@@ -10,7 +10,7 @@
 				// Migration ex-noms → nouveaux noms alignés direction warm/scout
 				if (b === 'neon') b = 'vesperal';
 				if (b === 'terminal') b = 'scriptorium';
-				if (['forge','vesperal','arena','scriptorium','sakura'].indexOf(b) === -1) b = 'forge';
+				if (['forge','vesperal','arena','scriptorium','sakura','lagune'].indexOf(b) === -1) b = 'forge';
 				localStorage.setItem('skilluv-theme', b);
 				var m = localStorage.getItem('skilluv-mode') || 'dark';
 				document.documentElement.setAttribute('data-theme', m === 'dark' ? b : b + '-light');

@@ -26,10 +26,28 @@ import { apiBase } from './origin';
 
 const api = createApiClient();
 
-/** The three providers an account can carry. */
-export const OAUTH_PROVIDERS = ['github', 'google', 'linkedin'] as const;
+/** Every provider an account can carry. */
+export const OAUTH_PROVIDERS = ['github', 'google', 'linkedin', 'discord'] as const;
 
 export type OAuthProvider = (typeof OAUTH_PROVIDERS)[number];
+
+/**
+ * The providers that are also a way to sign in.
+ *
+ * Discord is deliberately absent, and the distinction is not cosmetic. There
+ * is no "sign in with Discord" — the flow only ever attaches an identity to an
+ * account that already exists. So Discord must not be counted when deciding
+ * whether removing a provider would leave somebody unable to get back in:
+ * counting it would refuse a safe unlink when Discord is the only link left,
+ * and allow a dangerous one when the pair is Google + Discord and Google is
+ * the only real door.
+ */
+export const SIGN_IN_PROVIDERS: readonly OAuthProvider[] = ['github', 'google', 'linkedin'];
+
+/** Whether removing `provider` could cost somebody their way back in. */
+export function isSignInProvider(provider: string): boolean {
+	return (SIGN_IN_PROVIDERS as readonly string[]).includes(provider);
+}
 
 export interface LinkedProvider {
 	id: string;
@@ -59,8 +77,10 @@ export const oauthLinksApi = {
 	}
 };
 
-/** The providers that link from a settings surface, by navigation. */
-export type LinkableProvider = 'google' | 'linkedin' | 'discord';
+/** The providers that link from the settings surface. */
+export const LINKABLE_PROVIDERS = ['google', 'linkedin', 'discord'] as const;
+
+export type LinkableProvider = (typeof LINKABLE_PROVIDERS)[number];
 
 /**
  * Where the browser must go to link a provider.
@@ -68,7 +88,11 @@ export type LinkableProvider = 'google' | 'linkedin' | 'discord';
  * Returned rather than fetched: this is a redirect into a consent screen, and
  * an XHR would swallow it. Navigate; do not call.
  *
- * GitHub is absent on purpose — it links through the repo-sync flow at
+ * The base defaults to `apiBase()` rather than a literal `/api`, because the
+ * API can live on another origin — a relative path would send the consent
+ * flow to the SvelteKit server, which has no such route.
+ *
+ * GitHub is absent on purpose: it links through the repo-sync flow at
  * `/auth/github/start`, which already exists and carries different scopes.
  *
  * ## Why `returnTo` matters
