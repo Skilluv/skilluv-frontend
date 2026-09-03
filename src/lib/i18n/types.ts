@@ -103,6 +103,18 @@ export interface Translations
 	};
 	launch: {
 		eyebrow: string;
+		notice: {
+			eyebrow: string;
+			title: string;
+			body: string;
+			countdown: string;
+			days: string;
+			day: string;
+			today: string;
+			open: string;
+			dismiss: string;
+			aria: string;
+		};
 		date: string;
 		badge: string;
 		countdown: string;
