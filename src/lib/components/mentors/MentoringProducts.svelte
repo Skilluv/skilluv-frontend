@@ -1,7 +1,10 @@
 <script lang="ts">
 	/**
-	 * What is sold around mentoring: subscriptions, the slots a mentor offers,
-	 * programmes, and the hours somebody gave for nothing.
+	 * What somebody has bought around mentoring, and what is on offer.
+	 *
+	 * The form for opening a slot used to be here too, which put a mentor's own
+	 * publishing control on the page that sells sessions to mentees. It lives
+	 * in `MentorSlots.svelte`, under mentor management.
 	 *
 	 * ## Cancelling is not ending
 	 *
@@ -25,14 +28,13 @@
 	 * billing feature; it is what stops the record lying about who is generous.
 	 */
 	import { onMount } from 'svelte';
-	import { HandHeart, CalendarClock } from '@lucide/svelte';
+	import { HandHeart } from '@lucide/svelte';
 	import { mentoringProductsApi } from '$api/mentoring_products';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
-	import Input from '$components/ui/Input.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 
 	type Row = { id?: string; [key: string]: unknown };
@@ -43,10 +45,19 @@
 	let loading = $state(true);
 	let busy = $state<Record<string, boolean>>({});
 
-	let slotDate = $state('');
-	let slotStart = $state('');
-	let slotEnd = $state('');
-
+	/**
+	 * Whether this block has anything to say at all.
+	 *
+	 * It used to print "no subscription and no programme yet" instead, which
+	 * fails twice. It merges two unrelated facts: the subscriptions are the
+	 * reader's own and need an account, the programme catalogue is public, and
+	 * a signed-out visitor was being told they hold none of something they
+	 * could not hold. And it printed that directly under a populated list of
+	 * mentors, so the page announced emptiness while its actual offer sat just
+	 * above.
+	 *
+	 * No programme is seeded today, so this is what everybody currently sees.
+	 */
 	let nothing = $derived(subscriptions.length === 0 && programs.length === 0);
 
 	async function load() {
@@ -89,30 +100,11 @@
 		}
 	}
 
-	async function openSlot() {
-		if (!slotDate || !slotStart || !slotEnd) return;
-		await run(
-			'slot',
-			() =>
-				mentoringProductsApi.openSlot({
-					date: slotDate,
-					start_time: slotStart,
-					end_time: slotEnd,
-					// The mentor's own zone, so a mentee in another one is not
-					// guessing what "14:00" meant.
-					timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-				}),
-			i18n.t('mentoringProducts.slotOpened')
-		);
-		slotDate = '';
-		slotStart = '';
-		slotEnd = '';
-	}
-
 	onMount(load);
 </script>
 
-<section class="space-y-6" data-testid="mentoring-products">
+{#if !nothing || loading}
+	<section class="space-y-6" data-testid="mentoring-products">
 	{#if loading}
 		<Skeleton class="h-32 w-full" rounded="xl" />
 	{:else}
@@ -166,28 +158,6 @@
 			</div>
 		{/if}
 
-		<div class="space-y-3">
-			<h2 class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted">
-				<CalendarClock size={14} />
-				{i18n.t('mentoringProducts.slotsTitle')}
-			</h2>
-			<p class="text-sm text-text-muted">{i18n.t('mentoringProducts.slotsHint')}</p>
-			<div class="flex flex-wrap items-end gap-2">
-				<Input type="date" bind:value={slotDate} />
-				<Input type="time" bind:value={slotStart} />
-				<Input type="time" bind:value={slotEnd} />
-				<Button
-					size="sm"
-					loading={busy.slot}
-					disabled={!slotDate || !slotStart || !slotEnd}
-					onclick={openSlot}
-					data-testid="open-slot"
-				>
-					{i18n.t('mentoringProducts.openSlotCta')}
-				</Button>
-			</div>
-		</div>
-
 		{#if programs.length > 0}
 			<div class="space-y-3">
 				<h2 class="text-sm font-bold uppercase tracking-wider text-text-muted">
@@ -203,8 +173,8 @@
 			</div>
 		{/if}
 
-		{#if nothing}
-			<p class="text-sm text-text-muted">{i18n.t('mentoringProducts.empty')}</p>
-		{/if}
+		<!-- Nothing to show means nothing rendered. An empty catalogue does not
+		     need to announce itself. -->
 	{/if}
 </section>
+{/if}

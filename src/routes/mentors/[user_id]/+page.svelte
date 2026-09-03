@@ -93,7 +93,7 @@
 </script>
 
 <svelte:head>
-	<title>{mentor?.display_name ?? 'Mentor'} — Skilluv</title>
+	<title>{mentor?.display_name ?? 'Mentor'} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-10 sm:py-14">
@@ -253,10 +253,18 @@
 					</span>
 					<span class="text-2xl font-black text-accent">{fmtRate(priceForDuration(bookDuration))}</span>
 				</div>
-				<p class="mt-2 text-xs text-text-muted">
+				<!--
+					The commercial terms, at the only moment they are useful.
+					What was here said "80 % pour le mentor, 20 % pour Skilluv",
+					a split the buyer has no stake in, and "Paiement sécurisé
+					Stripe", which is untrue for anyone paying a session in XOF:
+					that goes through Mobile Money. What somebody about to pay
+					actually needs is what happens if the session falls through.
+				-->
+				<p class="mt-2 text-xs leading-relaxed text-text-muted">
 					{i18n.locale === 'fr'
-						? '80 % pour le mentor, 20 % pour Skilluv. Paiement sécurisé Stripe.'
-						: '80% for the mentor, 20% for Skilluv. Secure Stripe payment.'}
+						? 'Si le mentor annule, tu es remboursé intégralement. Si tu annules au moins 24 h avant, intégralement aussi ; moins de 24 h avant, à moitié.'
+						: 'If the mentor cancels, you are refunded in full. If you cancel at least 24h ahead, in full as well; less than 24h ahead, by half.'}
 				</p>
 			</div>
 		{/if}

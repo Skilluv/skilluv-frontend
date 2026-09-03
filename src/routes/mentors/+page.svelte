@@ -4,7 +4,8 @@
 	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
-	import FilterBar from '$components/ui/FilterBar.svelte';
+	import FilterBar from '$components/ui/FilterBar.svelte';
+	import Select from '$components/ui/Select.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import { mentorshipApi, type MentorSummary } from '$api/mentorship';
 	import { toast } from '$stores/toast.svelte';
@@ -43,10 +44,10 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Mentors — Skilluv' : 'Mentors — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Mentors | Skilluv' : 'Mentors | Skilluv'}</title>
 	<meta name="description" content={i18n.locale === 'fr'
-		? 'Réserve une session 1-on-1 avec un mentor expérimenté. Skilluv prend 20 %, le reste va au mentor.'
-		: 'Book a 1-on-1 session with an experienced mentor. Skilluv takes 20%, the rest goes to the mentor.'} />
+		? 'Réserve une session 1-on-1 avec un mentor expérimenté, dans la discipline de ton choix.'
+		: 'Book a 1-on-1 session with an experienced mentor, in the discipline of your choice.'} />
 </svelte:head>
 
 <!-- Hero -->
@@ -69,16 +70,13 @@
 		</h1>
 		<p class="mt-8 max-w-2xl text-lg text-text-muted">
 			{i18n.locale === 'fr'
-				? 'Réserve une session 1-on-1 avec un mentor Skilluv. Code review de ton projet, préparation entretien, coaching carrière. Le mentor touche 80 %, Skilluv 20 %.'
-				: 'Book a 1-on-1 session with a Skilluv mentor. Project code review, interview prep, career coaching. Mentor gets 80%, Skilluv 20%.'}
+				? 'Réserve une session 1-on-1 avec un mentor Skilluv, dans la discipline et sur le sujet de ton choix.'
+				: 'Book a 1-on-1 session with a Skilluv mentor, in the discipline and on the subject of your choice.'}
 		</p>
 		<div class="mt-8 flex flex-wrap gap-3">
 			{#if auth.isAuthenticated}
 				<Button variant="ghost" size="lg" href="/mentorship/sessions">
 					{i18n.locale === 'fr' ? 'Mes sessions →' : 'My sessions →'}
-				</Button>
-				<Button variant="ghost" size="lg" href="/mentors/me">
-					{i18n.locale === 'fr' ? 'Devenir mentor →' : 'Become a mentor →'}
 				</Button>
 			{/if}
 		</div>
@@ -96,12 +94,29 @@
 				placeholder={i18n.locale === 'fr' ? 'Expertise (react, ml...)' : 'Expertise (react, ml...)'}
 				class="h-8 rounded-full border border-border bg-surface-elevated px-4 text-sm focus:border-primary focus:outline-none"
 			/>
-			<input
-				type="text"
+			<!--
+				A choice, not a free-text box.
+
+				`languages_spoken` is filled from the mentor form, which asks for
+				comma-separated codes and suggests "fr, en", and the backend
+				matches with `$2 = ANY(m.languages_spoken)` — an exact match on
+				one element. So anything but the exact stored code returned an
+				empty list: "Français", "FR" and "french" all silently found
+				nobody, and the page looked like it had no mentors rather than
+				like the filter had missed.
+
+				Two entries because the platform speaks two languages. A third
+				belongs here the day a mentor can honestly claim it.
+			-->
+			<Select
+				items={[
+					{ value: '', label: i18n.locale === 'fr' ? 'Toutes les langues' : 'All languages' },
+					{ value: 'fr', label: 'Français' },
+					{ value: 'en', label: 'English' }
+				]}
 				bind:value={filterLanguage}
-				onblur={load}
-				placeholder={i18n.locale === 'fr' ? 'Langue parlée' : 'Spoken language'}
-				class="h-8 rounded-full border border-border bg-surface-elevated px-4 text-sm focus:border-primary focus:outline-none"
+				onchange={load}
+				size="sm"
 			/>
 			<input
 				type="number"
@@ -128,8 +143,8 @@
 			variant="search"
 			title={i18n.locale === 'fr' ? 'Aucun mentor à ces critères.' : 'No mentor for these filters.'}
 			body={i18n.locale === 'fr'
-				? 'Essaie d\'autres skills ou d\'autres domaines — la commu grandit chaque semaine.'
-				: 'Try different skills or domains — the community grows every week.'}
+				? 'Essaie d\'autres skills ou d\'autres domaines, la commu grandit chaque semaine.'
+				: 'Try different skills or domains, the community grows every week.'}
 		/>
 	{:else}
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -187,15 +202,35 @@
 <!-- Value props -->
 <section class="border-t border-border bg-surface-elevated/40 py-20 sm:py-24">
 	<div class="mx-auto max-w-6xl px-4">
+		<!--
+			What this section is for.
+
+			It used to lead with the revenue split, the refund grid and a claim
+			that the money reaches the mentor "via Stripe Connect". None of the
+			three answers a question somebody browsing mentors is asking.
+
+			The split is an argument for recruiting mentors, on the page that
+			sells to mentees, and it was repeated three times: in the heading,
+			the meta description and a card. The refund grid is a clause, not a
+			selling point: it belongs on the booking form, where it reassures,
+			rather than in a window where it raises cancellation before anyone
+			has chosen a person. And the Stripe line was true of the mentor's
+			payout while reading, here, as a statement about how the visitor
+			pays, which is wrong: a session priced in XOF is paid by Mobile
+			Money, which is how most people in this market hold money.
+
+			The heading said "no middleman" above three cards explaining the
+			middleman's commission.
+		-->
 		<h2 class="mb-12 text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
-			{i18n.locale === 'fr' ? 'Un mentor,' : 'A mentor,'}<br />
-			<span class="text-accent">{i18n.locale === 'fr' ? 'sans intermédiaire.' : 'no middleman.'}</span>
+			{i18n.locale === 'fr' ? 'Une heure,' : 'One hour,'}<br />
+			<span class="text-accent">{i18n.locale === 'fr' ? 'qui compte.' : 'that counts.'}</span>
 		</h2>
 		<div class="grid gap-5 sm:grid-cols-3">
 			{#each [
-				{ icon: '◎', fr: { t: '80 % au mentor', d: 'Skilluv prend 20 %. Le reste va directement au mentor via Stripe Connect.' }, en: { t: '80% to mentor', d: 'Skilluv takes 20%. The rest goes directly to the mentor via Stripe Connect.' } },
-				{ icon: '⧗', fr: { t: 'Refund automatique', d: 'Mentor annule = 100 %. Toi <24h = 50 %. Toi ≥24h = 100 %.' }, en: { t: 'Automatic refund', d: 'Mentor cancels = 100%. You <24h = 50%. You ≥24h = 100%.' } },
-				{ icon: '★', fr: { t: 'Reviews vérifiées', d: 'Seuls les mentees qui ont eu une session complétée peuvent noter.' }, en: { t: 'Verified reviews', d: 'Only mentees with a completed session can rate.' } }
+				{ icon: '◎', fr: { t: 'Sur ton sujet, pas en théorie', d: 'Chaque mentor déclare ses domaines et ses compétences. Tu choisis sur cette base, et tu arrives avec ce sur quoi tu bloques.' }, en: { t: 'On your subject, not in theory', d: 'Every mentor declares their disciplines and what they can do. You choose on that basis, and you bring what you are stuck on.' } },
+				{ icon: '★', fr: { t: 'Reviews vérifiées', d: 'Seuls les mentorés ayant eu une session complétée peuvent noter. Une note affichée ici a été payée et suivie.' }, en: { t: 'Verified reviews', d: 'Only mentees with a completed session can rate. A rating shown here was paid for and attended.' } },
+				{ icon: '⌾', fr: { t: 'Payé comme tu peux', d: 'Carte ou Mobile Money, selon ton pays et la devise de la session.' }, en: { t: 'Paid the way you can', d: 'Card or Mobile Money, depending on your country and the session currency.' } }
 			] as p}
 				{@const t = i18n.locale === 'fr' ? p.fr : p.en}
 				<div class="rounded-2xl border border-border bg-surface-elevated p-6">
