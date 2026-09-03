@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? "Conditions générales d'utilisation" : 'Terms of service'} — Skilluv</title>
+	<title>{i18n.locale === 'fr' ? "Conditions générales d'utilisation" : 'Terms of service'} | Skilluv</title>
 	<meta name="robots" content="index, follow" />
 </svelte:head>
 

@@ -49,7 +49,7 @@
 </script>
 
 <svelte:head>
-	<title>{guide ? `${guide.title} — Skilluv` : `${i18n.t('guides.title')} — Skilluv`}</title>
+	<title>{guide ? `${guide.title} | Skilluv` : `${i18n.t('guides.title')} | Skilluv`}</title>
 	{#if guide}
 		<meta name="description" content={guide.summary} />
 	{/if}

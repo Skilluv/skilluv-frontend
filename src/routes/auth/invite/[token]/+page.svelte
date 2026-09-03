@@ -134,7 +134,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Invitation entreprise' : 'Enterprise invitation'} — Skilluv</title>
+	<title>{i18n.locale === 'fr' ? 'Invitation entreprise' : 'Enterprise invitation'} | Skilluv</title>
 </svelte:head>
 
 <div class="animate-[fade-in_300ms_ease-out]">

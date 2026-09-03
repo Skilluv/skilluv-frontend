@@ -134,7 +134,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('dashboardHome.title')} — Skilluv</title>
+	<title>{i18n.t('dashboardHome.title')} | Skilluv</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

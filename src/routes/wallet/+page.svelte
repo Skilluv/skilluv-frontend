@@ -56,7 +56,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('wallet.title')} — Skilluv</title>
+	<title>{i18n.t('wallet.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-8">

@@ -67,7 +67,7 @@
 			: i18n.t('designContests.resultsTitle')} — Skilluv
 	</title>
 	{#if contest}
-		<meta property="og:title" content="{i18n.t('designContests.resultsTitle')} — {contest.name}" />
+		<meta property="og:title" content="{i18n.t('designContests.resultsTitle')} | {contest.name}" />
 		<meta property="og:description" content={contest.description ?? i18n.t('designContests.subtitle')} />
 	{/if}
 </svelte:head>

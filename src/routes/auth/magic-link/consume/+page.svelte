@@ -47,7 +47,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Connexion — Skilluv' : 'Login — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Connexion | Skilluv' : 'Login | Skilluv'}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

@@ -68,7 +68,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('teams.detail.slotsLabel')} — Skilluv</title>
+	<title>{i18n.t('teams.detail.slotsLabel')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-8">

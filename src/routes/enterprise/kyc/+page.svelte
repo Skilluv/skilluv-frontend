@@ -157,7 +157,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'KYC — Skilluv Enterprise' : 'KYC — Skilluv Enterprise'}</title>
+	<title>{i18n.locale === 'fr' ? 'KYC | Skilluv Enterprise' : 'KYC | Skilluv Enterprise'}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

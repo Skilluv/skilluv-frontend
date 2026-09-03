@@ -42,7 +42,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Merci ! — Skilluv' : 'Thank you! — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Merci ! | Skilluv' : 'Thank you! | Skilluv'}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

@@ -79,7 +79,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Finalisation du profil' : 'Finish your profile'} — Skilluv</title>
+	<title>{i18n.locale === 'fr' ? 'Finalisation du profil' : 'Finish your profile'} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-lg px-4 py-10">

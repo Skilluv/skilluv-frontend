@@ -76,7 +76,7 @@
 </script>
 
 <svelte:head>
-	<title>{track?.name ?? i18n.t('tracks.title')} — Skilluv</title>
+	<title>{track?.name ?? i18n.t('tracks.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-8">

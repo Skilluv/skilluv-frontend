@@ -162,7 +162,7 @@
 </script>
 
 <svelte:head>
-	<title>{post?.title ?? 'Forum'} — Skilluv</title>
+	<title>{post?.title ?? 'Forum'} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-10 sm:py-14">

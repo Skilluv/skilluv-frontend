@@ -26,7 +26,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('wallet.payoutModal.stripe.connectingLabel')} — Skilluv</title>
+	<title>{i18n.t('wallet.payoutModal.stripe.connectingLabel')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-4 py-10 text-center">

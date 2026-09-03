@@ -56,7 +56,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Tournois — Skilluv' : 'Tournaments — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Tournois | Skilluv' : 'Tournaments | Skilluv'}</title>
 </svelte:head>
 
 <!-- Hero -->

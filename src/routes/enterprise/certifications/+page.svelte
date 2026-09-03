@@ -133,7 +133,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Certifications' : 'Certifications'} — Skilluv</title>
+	<title>{i18n.locale === 'fr' ? 'Certifications' : 'Certifications'} | Skilluv</title>
 </svelte:head>
 
 <div class="p-6 lg:p-8">

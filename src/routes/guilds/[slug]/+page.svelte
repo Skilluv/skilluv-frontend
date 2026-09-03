@@ -151,7 +151,7 @@
 </script>
 
 <svelte:head>
-	<title>{guild?.name ?? 'Guild'} — Skilluv</title>
+	<title>{guild?.name ?? 'Guild'} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl px-4 py-10 sm:py-14">

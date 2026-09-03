@@ -56,7 +56,7 @@
 </script>
 
 <svelte:head>
-	<title>{diploma ? `${diploma.holder.display_name} — ${diploma.certification.title}` : (i18n.locale === 'fr' ? 'Vérification' : 'Verification')} — Skilluv</title>
+	<title>{diploma ? `${diploma.holder.display_name} | ${diploma.certification.title}` : (i18n.locale === 'fr' ? 'Vérification' : 'Verification')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-14 sm:py-20">

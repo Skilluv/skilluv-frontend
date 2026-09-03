@@ -40,7 +40,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Confirmation email' : 'Email confirmation'} — Skilluv</title>
+	<title>{i18n.locale === 'fr' ? 'Confirmation email' : 'Email confirmation'} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-md px-4 py-16 text-center">

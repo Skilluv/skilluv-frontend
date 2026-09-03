@@ -40,7 +40,7 @@
 </script>
 
 <svelte:head>
-	<title>Design System · Badges — Skilluv</title>
+	<title>Design System · Badges | Skilluv</title>
 </svelte:head>
 
 <div class="ds-page">

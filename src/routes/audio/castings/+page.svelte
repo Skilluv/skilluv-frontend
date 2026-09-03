@@ -72,7 +72,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('castings.title')} — Skilluv</title>
+	<title>{i18n.t('castings.title')} | Skilluv</title>
 	<meta name="description" content={i18n.t('castings.subtitle')} />
 </svelte:head>
 

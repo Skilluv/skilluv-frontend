@@ -92,7 +92,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Certifications — Skilluv' : 'Certifications — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Certifications | Skilluv' : 'Certifications | Skilluv'}</title>
 	<meta name="description" content={i18n.locale === 'fr'
 		? 'Passe une certification Skilluv. Diplôme vérifiable en ligne. Reconnaissance de tes compétences.'
 		: 'Take a Skilluv certification. Online-verifiable diploma. Recognition of your skills.'} />

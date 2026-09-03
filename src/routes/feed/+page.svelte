@@ -100,7 +100,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Fil d\'activité — Skilluv' : 'Activity feed — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Fil d\'activité | Skilluv' : 'Activity feed | Skilluv'}</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-10 sm:py-14">

@@ -159,7 +159,7 @@
 </script>
 
 <svelte:head>
-	<title>{item ? `${item.title} — Skilluv` : `${i18n.t('marketplace.title')} — Skilluv`}</title>
+	<title>{item ? `${item.title} | Skilluv` : `${i18n.t('marketplace.title')} | Skilluv`}</title>
 	{#if item}
 		<meta name="description" content={item.license_summary} />
 	{/if}

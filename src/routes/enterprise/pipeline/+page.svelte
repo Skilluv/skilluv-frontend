@@ -301,7 +301,7 @@
 </script>
 
 <svelte:head>
-	<title>Pipeline — Skilluv</title>
+	<title>Pipeline | Skilluv</title>
 </svelte:head>
 
 <div class="p-6 lg:p-8">

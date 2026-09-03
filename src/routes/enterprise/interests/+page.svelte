@@ -112,7 +112,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Demandes envoyées' : 'Sent requests'} — Skilluv</title>
+	<title>{i18n.locale === 'fr' ? 'Demandes envoyées' : 'Sent requests'} | Skilluv</title>
 </svelte:head>
 
 <div class="p-6 lg:p-8">

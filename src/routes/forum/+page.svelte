@@ -61,7 +61,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Forum — Skilluv' : 'Forum — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Forum | Skilluv' : 'Forum | Skilluv'}</title>
 </svelte:head>
 
 <!-- Hero -->

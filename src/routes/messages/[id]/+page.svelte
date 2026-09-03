@@ -84,7 +84,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Conversation — Skilluv' : 'Conversation — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Conversation | Skilluv' : 'Conversation | Skilluv'}</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-6 flex flex-col h-[calc(100vh-140px)]">

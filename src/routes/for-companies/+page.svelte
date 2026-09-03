@@ -44,7 +44,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Espace entreprises — Skilluv' : 'For companies — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Espace entreprises | Skilluv' : 'For companies | Skilluv'}</title>
 	<meta
 		name="description"
 		content={i18n.locale === 'fr'

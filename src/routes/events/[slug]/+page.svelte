@@ -81,7 +81,7 @@
 </script>
 
 <svelte:head>
-	<title>{event?.name ?? i18n.t('events.title')} — Skilluv</title>
+	<title>{event?.name ?? i18n.t('events.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-10">

@@ -80,7 +80,7 @@
 </script>
 
 <svelte:head>
-	<title>{challenge?.title ?? 'Challenge'} — Skilluv</title>
+	<title>{challenge?.title ?? 'Challenge'} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-8">

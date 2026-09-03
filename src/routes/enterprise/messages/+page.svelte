@@ -38,7 +38,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('enterprise.messages.title')} — Skilluv</title>
+	<title>{i18n.t('enterprise.messages.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="p-6 lg:p-8">

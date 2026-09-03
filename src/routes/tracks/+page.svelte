@@ -24,7 +24,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('tracks.title')} — Skilluv</title>
+	<title>{i18n.t('tracks.title')} | Skilluv</title>
 	<meta name="description" content={i18n.t('tracks.subtitle')} />
 </svelte:head>
 

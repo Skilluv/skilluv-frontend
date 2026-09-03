@@ -29,7 +29,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Lien magique — Skilluv' : 'Magic link — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Lien magique | Skilluv' : 'Magic link | Skilluv'}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
