@@ -45,6 +45,18 @@ export const fr: Translations = {
 	},
 	launch: {
 		eyebrow: 'Ouverture',
+		notice: {
+			eyebrow: 'Accès fermé',
+			title: 'Skilluv est en bêta fermée.',
+			body: 'Ce que tu vois est en construction, et les comptes sont encore sur invitation. La pré-saison ouvre le 11 janvier 2027, et la première saison complète suit en juin.',
+			countdown: 'Ouverture dans',
+			days: 'jours',
+			day: 'jour',
+			today: 'C’est aujourd’hui.',
+			open: 'C’est ouvert.',
+			dismiss: 'J’ai compris',
+			aria: 'Skilluv est en bêta fermée'
+		},
 		date: '11 janvier 2027',
 		badge: 'Bêta le 11 janvier 2027',
 		countdown: 'dans {n} jours',

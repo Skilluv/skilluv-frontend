@@ -79,7 +79,16 @@ const CONSENT_DECIDED = {
 						version: 1,
 						decidedAt: '2026-01-01T00:00:00.000Z'
 					})
-				}
+				},
+				// The closed-beta notice, already read. It opens on `/` a beat
+				// after paint, and a dialog that appears mid-test swallows the
+				// click the test was about to make -- on a suite where hundreds
+				// of specs start from the landing page. `launch-notice.test.ts`
+				// clears this key and is the one place the notice is exercised,
+				// the same arrangement as the consent banner above.
+				//
+				// Keyed by the opening date, so this must move with it.
+				{ name: 'skilluv-launch-notice-2027-01-11', value: '1' }
 			]
 		}
 	]
