@@ -135,7 +135,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('enterprise.agencyClients.title')} — Skilluv</title>
+	<title>{i18n.t('enterprise.agencyClients.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl px-4 py-8">

@@ -37,7 +37,7 @@
 </script>
 
 <svelte:head>
-	<title>Vérification email — Skilluv</title>
+	<title>Vérification email | Skilluv</title>
 </svelte:head>
 
 <div class="animate-[fade-in_300ms_ease-out] text-center">

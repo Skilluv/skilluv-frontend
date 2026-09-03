@@ -4,6 +4,7 @@ import { portfoliosEn } from './portfolios.en';
 import { securityEn } from './security.en';
 import { postMvpEn } from './postmvp.en';
 import { consentEn } from './consent.en';
+import { enlistEn } from './enlist.en';
 import type { Translations } from './types';
 
 export const en: Translations = {
@@ -13,7 +14,13 @@ export const en: Translations = {
 	...securityEn,
 	...portfoliosEn,
 	...consentEn,
+	...enlistEn,
 	common: {
+		filters: {
+			domain: 'Discipline',
+			difficulty: 'Difficulty',
+			period: 'Period'
+		},
 		actions: {
 			save: 'Save', cancel: 'Cancel', delete: 'Delete', edit: 'Edit',
 			search: 'Search', retry: 'Retry', back: 'Back', next: 'Next',
@@ -1768,6 +1775,8 @@ export const en: Translations = {
 		noIssues: 'No issue matches.',
 		noIssuesHint: 'Try another language, or clear the filter.',
 		openIssue: 'Open it',
+		reward: '{n} fragments',
+		artifacts: '{n} artifacts',
 		ecosystemsTitle: 'Ecosystems',
 		topLanguagesTitle: 'Most shipped in',
 		topLanguagesHint:
@@ -1868,6 +1877,7 @@ export const en: Translations = {
 		slotsHint:
 			'Offered in your own timezone, so a mentee somewhere else is not guessing what the hour meant.',
 		openSlotCta: 'Open the slot',
+		slotBackwards: 'The end must come after the start.',
 		slotOpened: 'Slot opened.',
 		programsTitle: 'Mentoring programmes',
 		empty: 'No subscription or programme yet.'

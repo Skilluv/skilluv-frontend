@@ -27,6 +27,16 @@ import { createApiClient } from './client';
 
 const api = createApiClient();
 
+/**
+ * `14:30` becomes `14:30:00`; anything already carrying seconds is left alone.
+ * Empty input is passed through untouched so the caller's own validation, not
+ * this, is what reports a missing time.
+ */
+function withSeconds(time: string): string {
+	if (!time) return time;
+	return /^\d{2}:\d{2}$/.test(time) ? `${time}:00` : time;
+}
+
 export interface MentorSubscription {
 	id: string;
 	[key: string]: unknown;
@@ -86,13 +96,31 @@ export const mentoringProductsApi = {
 	 * reader's zone without saying which one it was set in produces missed
 	 * sessions.
 	 */
-	openSlot(body: {
-		date: string;
-		start_time: string;
-		end_time: string;
-		timezone?: string;
-	}) {
-		return api.post<ApiResponse<{ slot_id: string }>>('/mentors/me/open-slots', body);
+	/**
+	 * Open a one-off slot.
+	 *
+	 * The times are padded to `HH:MM:SS` before they leave, and that is the
+	 * whole reason this is not a one-liner. `<input type="time">` yields
+	 * `HH:MM`, while `SlotBody` in `routes/mentoring_products.rs` types the
+	 * fields as `chrono::NaiveTime`, whose deserializer wants the seconds. The
+	 * body was rejected by the extractor before the handler ever ran, so the
+	 * form simply never worked.
+	 *
+	 * The sibling endpoint proves the shape of the mistake: `add_availability`
+	 * in `routes/mentorship.rs` takes the times as `String` and parses `%H:%M`
+	 * first, falling back to `%H:%M:%S` — somebody met this there and handled
+	 * it. This one kept the strict type, and its own test sends `"14:00:00"`,
+	 * which is why nothing caught it.
+	 *
+	 * Padding here rather than at the three call sites: the rule belongs to the
+	 * endpoint's contract, not to whoever happens to be calling it.
+	 */
+	openSlot(body: { date: string; start_time: string; end_time: string; timezone?: string }) {
+		return api.post<ApiResponse<{ slot_id: string }>>('/mentors/me/open-slots', {
+			...body,
+			start_time: withSeconds(body.start_time),
+			end_time: withSeconds(body.end_time)
+		});
 	},
 
 	/** A mentor's free slots. Public, so somebody can see before subscribing. */

@@ -5,6 +5,7 @@
 	import { auth } from '$lib/stores/auth.svelte';
 	import { SkilluError } from '$lib/api/client';
 	import { i18n } from '$lib/i18n';
+	import { PUBLIC_DOMAINS } from '$lib/utils/domains';
 	import { OrientationSelector } from '$lib/components/orientations';
 	import DiscordLinkCard from '$components/onboarding/DiscordLinkCard.svelte';
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
@@ -19,16 +20,38 @@
 	let submitting = $state(false);
 	let done = $state(false);
 
-	onMount(async () => {
+	/**
+	 * Which discipline's trades are on screen.
+	 *
+	 * Starts on the caller's own — the reason they are here is almost always
+	 * the trade they already practise — and every change reloads from the API
+	 * rather than filtering what is in hand. The catalogue is around 255 trades
+	 * against a page cap of 200, so "load everything and filter" quietly
+	 * returned the backend's default 50 and called it the catalogue.
+	 */
+	let domain = $state<string>(auth.user?.skill_domain ?? PUBLIC_DOMAINS[0]);
+
+	onMount(() => {
+		void load();
+	});
+
+	async function load() {
+		loading = true;
+		error = '';
 		try {
-			const res = await orientationsApi.list();
-			catalog = res.data;
+			const res = await orientationsApi.list({ domain, limit: 200 });
+			catalog = res.data.orientations;
 		} catch (err) {
 			error = err instanceof SkilluError ? err.message : i18n.t('orientations.catalog.loadError');
 		} finally {
 			loading = false;
 		}
-	});
+	}
+
+	function changeDomain(next: string) {
+		domain = next;
+		void load();
+	}
 
 	async function handleSubmit(picks: RegisterOrientationRequest[]) {
 		submitting = true;
@@ -53,7 +76,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('orientations.catalog.title')} — Skilluv</title>
+	<title>{i18n.t('orientations.catalog.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-10">
@@ -108,6 +131,12 @@
 			<p class="text-sm text-error">{error}</p>
 		</div>
 	{:else}
-		<OrientationSelector {catalog} onSubmit={handleSubmit} {submitting} />
+		<OrientationSelector
+			{catalog}
+			onSubmit={handleSubmit}
+			{submitting}
+			{domain}
+			onDomainChange={changeDomain}
+		/>
 	{/if}
 </div>

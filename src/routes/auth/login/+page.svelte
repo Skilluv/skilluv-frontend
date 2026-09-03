@@ -205,7 +205,7 @@
 </script>
 
 <svelte:head>
-	<title>Connexion — Skilluv</title>
+	<title>Connexion | Skilluv</title>
 </svelte:head>
 
 <div class="animate-[fade-in_300ms_ease-out]">

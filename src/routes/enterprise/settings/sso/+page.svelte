@@ -244,7 +244,7 @@
 </script>
 
 <svelte:head>
-	<title>SSO & SCIM — Skilluv</title>
+	<title>SSO & SCIM | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-8">

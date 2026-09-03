@@ -70,7 +70,7 @@
 </script>
 
 <svelte:head>
-	<title>{conversation?.other_party.name ?? 'Conversation'} — Skilluv</title>
+	<title>{conversation?.other_party.name ?? 'Conversation'} | Skilluv</title>
 </svelte:head>
 
 <div class="flex h-[calc(100vh-4rem)] flex-col">

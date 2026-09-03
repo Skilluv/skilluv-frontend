@@ -8,7 +8,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Opportunités — Skilluv' : 'Opportunities — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Opportunités | Skilluv' : 'Opportunities | Skilluv'}</title>
 	<meta name="description" content={i18n.locale === 'fr'
 		? 'Sur Skilluv, tu ne fais pas que résoudre des défis. Bounties OSS, certifications, mentorship — construis ta preuve.'
 		: 'On Skilluv, you don\'t just solve challenges. OSS bounties, certifications, mentorship — build your proof.'} />

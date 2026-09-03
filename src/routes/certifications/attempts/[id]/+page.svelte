@@ -62,7 +62,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Tentative de certification' : 'Certification attempt'} — Skilluv</title>
+	<title>{i18n.locale === 'fr' ? 'Tentative de certification' : 'Certification attempt'} | Skilluv</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

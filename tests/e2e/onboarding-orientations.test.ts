@@ -149,37 +149,75 @@ test.describe('Onboarding orientations flow', () => {
 				}
 			},
 			{
+				// The catalogue is asked for one discipline at a time now — the
+				// endpoint caps a page at 200 against ~255 curated trades, so a
+				// call with no filter silently returned the default 50. The mock
+				// honours the filter so the page under test is exercised the way
+				// the backend actually answers.
 				path: '/orientations',
-				handler: (route) =>
-					route.fulfill({
+				handler: (route) => {
+					const domain = new URL(route.request().url()).searchParams.get('domain');
+					const orientations = domain
+						? catalogPayload.data.filter((o) => o.primary_domain === domain)
+						: catalogPayload.data;
+					return route.fulfill({
 						status: 200,
 						contentType: 'application/json',
-						body: JSON.stringify(catalogPayload)
-					})
+						// The envelope the handler actually writes. This fixture used
+						// to answer a bare array, matching what the client was typed
+						// for rather than what the server sends.
+						body: JSON.stringify({
+							data: {
+								orientations,
+								pagination: { limit: 200, offset: 0 },
+								total: orientations.length
+							}
+						})
+					});
+				}
 			}
 		]);
 	});
 
-	test('renders catalog with all orientations', async ({ page }) => {
+	test('opens on the caller own discipline', async ({ page }) => {
+		// The user is a `code` account, so that is the catalogue they meet —
+		// not a mixed list of every discipline at once.
 		await gotoHydrated(page, '/onboarding/orientations');
 		await expect(page.getByRole('heading', { name: 'Ton parcours Skilluv' })).toBeVisible();
-		await expect(page.getByRole('heading', { name: 'Dev frontend' })).toBeVisible();
-		await expect(page.getByRole('heading', { name: 'Analyste sécurité' })).toBeVisible();
-		await expect(page.getByRole('heading', { name: 'Game designer' })).toBeVisible();
-	});
-
-	test('filters catalog by domain', async ({ page }) => {
-		await gotoHydrated(page, '/onboarding/orientations');
-		await page.getByLabel('Filtrer par domaine').selectOption('code');
 		await expect(page.getByRole('heading', { name: 'Dev frontend' })).toBeVisible();
 		await expect(page.getByRole('heading', { name: 'Analyste sécurité' })).toHaveCount(0);
 	});
 
-	test('enforces the 3-orientation cap', async ({ page }) => {
+	test('changing the discipline asks the backend again for that one', async ({ page }) => {
+		const asked: string[] = [];
+		page.on('request', (req) => {
+			const url = new URL(req.url());
+			if (url.pathname.endsWith('/orientations')) {
+				asked.push(url.searchParams.get('domain') ?? '');
+			}
+		});
+
+		await gotoHydrated(page, '/onboarding/orientations');
+		await expect(page.getByRole('heading', { name: 'Dev frontend' })).toBeVisible();
+
+		await page.getByLabel('Filtrer par domaine').selectOption('security');
+		await expect(page.getByRole('heading', { name: 'Analyste sécurité' })).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'Dev frontend' })).toHaveCount(0);
+
+		expect(asked).toContain('security');
+	});
+
+	test('offers every discipline the platform serves, not four of them', async ({ page }) => {
+		await gotoHydrated(page, '/onboarding/orientations');
+		const options = page.getByLabel('Filtrer par domaine').locator('option');
+		// The list used to be written out by hand and froze at four while the
+		// platform served eleven.
+		await expect(options).toHaveCount(11);
+	});
+
+	test('shows the selection summary once something is picked', async ({ page }) => {
 		await gotoHydrated(page, '/onboarding/orientations');
 		await page.getByRole('button', { name: /Dev frontend/i }).click();
-		await page.getByRole('button', { name: /Analyste sécurité/i }).click();
-		await page.getByRole('button', { name: /Game designer/i }).click();
 		await expect(page.getByRole('heading', { name: 'Ta sélection' })).toBeVisible();
 		// "Dev frontend" also appears on the picker card; assert inside the
 		// summary, which is what this test is about.

@@ -110,7 +110,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Abonnements — Skilluv Enterprise' : 'Subscriptions — Skilluv Enterprise'}</title>
+	<title>{i18n.locale === 'fr' ? 'Abonnements | Skilluv Enterprise' : 'Subscriptions | Skilluv Enterprise'}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

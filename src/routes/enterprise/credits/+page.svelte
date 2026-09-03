@@ -163,7 +163,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Crédits — Skilluv Enterprise' : 'Credits — Skilluv Enterprise'}</title>
+	<title>{i18n.locale === 'fr' ? 'Crédits | Skilluv Enterprise' : 'Credits | Skilluv Enterprise'}</title>
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-10 sm:py-14">

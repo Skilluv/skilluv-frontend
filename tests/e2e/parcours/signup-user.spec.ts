@@ -66,12 +66,14 @@ test.describe('@signup signup-user', () => {
 			} catch { /* ignore */ }
 		});
 
-		// ---- STEP 1 : domain picker ----
+		// ---- STEP 1 : the entrance ----
+		//
+		// The signup is a sequence now — entrance, domain, trade, pact — and each
+		// beat is its own route. Walking it here rather than jumping to the pact
+		// is the point of this spec: it is the only place the whole sequence is
+		// driven against a real backend.
 		await page.goto('/auth/register');
 		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-		// Attendre que Svelte 5 hydrate côté client — sans ça le click atteint le
-		// bouton (focus visible) mais l'onclick handler n'est pas encore bindé,
-		// selectDomain() n'est jamais appelé, step reste à 1.
 		await page.waitForLoadState('networkidle');
 		// Fallback : dismiss banner if it still appeared (race).
 		const banner = page.getByTestId('consent-banner');
@@ -79,23 +81,38 @@ test.describe('@signup signup-user', () => {
 			await banner.getByRole('button').first().click().catch(() => {});
 			await banner.waitFor({ state: 'hidden', timeout: 3_000 }).catch(() => {});
 		}
-		await page.screenshot({ path: testInfo.outputPath('step-1-domain-picker.png'), fullPage: true });
+		await page.screenshot({ path: testInfo.outputPath('step-1-entrance.png'), fullPage: true });
 
-		// Le bouton "Code" — locateur par le heading interne (font-semibold).
-		const codeBtn = page.locator('button', { has: page.locator('p', { hasText: /^Code$/ }) }).first();
-		await expect(codeBtn).toBeVisible({ timeout: 15_000 });
-		await codeBtn.click();
-		// Attend explicitement le bouton submit de step 2 pour confirmer transition.
-		await page.waitForSelector('button:has-text("Créer mon compte"), button:has-text("Create my account")', { timeout: 10_000 });
+		await page.getByTestId('enlist-start').click();
+		await page.waitForURL(/\/auth\/register\/domain/, { timeout: 15_000 });
 
-		// ---- STEP 2 : account form ----
+		// ---- STEP 2 : the wall ----
+		const codePlate = page.getByTestId('domain-plate-code');
+		await expect(codePlate).toBeVisible({ timeout: 15_000 });
+		await page.screenshot({ path: testInfo.outputPath('step-2-wall.png'), fullPage: true });
+		await codePlate.getByRole('link').click();
+		await page.waitForURL(/\/auth\/register\/path/, { timeout: 15_000 });
+
+		// ---- STEP 3 : the trades ----
+		//
+		// The catalogue is real here, so the spec takes whichever trade comes
+		// first rather than naming one: a slug written into a test is a slug that
+		// breaks the day the catalogue is re-curated.
+		const firstTrade = page.locator('[data-testid^="path-card-"]').first();
+		await expect(firstTrade).toBeVisible({ timeout: 20_000 });
+		await firstTrade.click();
+		await page.screenshot({ path: testInfo.outputPath('step-3-trades.png'), fullPage: true });
+		await page.getByTestId('enlist-continue').click();
+		await page.waitForURL(/\/auth\/register\/account/, { timeout: 15_000 });
+
+		// ---- STEP 4 : the pact ----
 		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-		await page.screenshot({ path: testInfo.outputPath('step-2-form-empty.png'), fullPage: true });
+		await page.screenshot({ path: testInfo.outputPath('step-4-form-empty.png'), fullPage: true });
 
-		await page.getByPlaceholder(/^kofi_dev$/).fill(USER.username);
-		await page.getByPlaceholder(/kofi@exemple\.com/).fill(USER.email);
-		await page.getByPlaceholder(/^Kofi$/).fill(USER.firstName);
-		await page.getByPlaceholder(/^Mensah$/).fill(USER.lastName);
+		await page.locator('input[autocomplete="username"]').fill(USER.username);
+		await page.locator('input[autocomplete="email"]').fill(USER.email);
+		await page.locator('input[autocomplete="given-name"]').fill(USER.firstName);
+		await page.locator('input[autocomplete="family-name"]').fill(USER.lastName);
 		await page.locator('input[type="password"]').fill(USER.password);
 
 		// Country picker (custom combobox). Ouvre + tape + sélectionne "Benin".
@@ -115,14 +132,14 @@ test.describe('@signup signup-user', () => {
 
 		// Terms checkbox
 		await page.getByRole('checkbox').first().check();
-		await page.screenshot({ path: testInfo.outputPath('step-2-form-filled.png'), fullPage: true });
+		await page.screenshot({ path: testInfo.outputPath('step-4-form-filled.png'), fullPage: true });
 
 		// ---- SUBMIT ----
 		const submitPromise = page.waitForResponse(
 			(r) => r.url().includes('/api/auth/register') && r.request().method() === 'POST',
 			{ timeout: 30_000 }
 		);
-		await page.locator('button[type="submit"]').first().click();
+		await page.getByTestId('enlist-submit').click();
 
 		const submitRes = await submitPromise.catch((e) => {
 			throw new Error(`BLOCAGE: aucune requête POST /api/auth/register détectée après click submit — ${e.message}`);
@@ -132,7 +149,7 @@ test.describe('@signup signup-user', () => {
 		const body = await submitRes.text().catch(() => '');
 
 		if (status < 200 || status >= 300) {
-			await page.screenshot({ path: testInfo.outputPath('step-3-submit-error.png'), fullPage: true });
+			await page.screenshot({ path: testInfo.outputPath('step-5-submit-error.png'), fullPage: true });
 			throw new Error(
 				`BLOCAGE: POST /api/auth/register a retourné ${status}. ` +
 					`Body: ${body.slice(0, 400)}. ` +
@@ -140,17 +157,18 @@ test.describe('@signup signup-user', () => {
 			);
 		}
 
-		// The register page sends new accounts straight to /challenges/onboarding.
-		// The previously expected /onboarding/bonjour-skilluv welcome page does
-		// not exist in this frontend.
+		// The pact sends new accounts straight to the first act. The trades
+		// chosen at step 3 are replayed against the API on the way, which is why
+		// the redirect can lag the register response by a few hundred
+		// milliseconds.
 		await page.waitForURL(/\/challenges\/onboarding/, { timeout: 15_000 }).catch(async () => {
-			await page.screenshot({ path: testInfo.outputPath('step-4-no-redirect.png'), fullPage: true });
+			await page.screenshot({ path: testInfo.outputPath('step-5-no-redirect.png'), fullPage: true });
 			throw new Error(
 				`submit OK (${status}) but no redirect to /challenges/onboarding. Current URL: ${page.url()}`
 			);
 		});
 
-		await page.screenshot({ path: testInfo.outputPath('step-4-onboarding.png'), fullPage: true });
+		await page.screenshot({ path: testInfo.outputPath('step-5-first-act.png'), fullPage: true });
 
 		// ---- STEP 5 : verify-email programmatique via dev-mode ----
 		// Consomme : 0 register (dev endpoint non rate-limité). Le register lui-

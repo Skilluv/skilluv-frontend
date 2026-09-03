@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Vos droits — RGPD' : 'Your rights — GDPR'} — Skilluv</title>
+	<title>{i18n.locale === 'fr' ? 'Vos droits | RGPD' : 'Your rights | GDPR'} | Skilluv</title>
 	<meta name="robots" content="index, follow" />
 </svelte:head>
 

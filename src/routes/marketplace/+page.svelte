@@ -77,7 +77,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('marketplace.title')} — Skilluv</title>
+	<title>{i18n.t('marketplace.title')} | Skilluv</title>
 	<meta name="description" content={i18n.t('marketplace.subtitle')} />
 </svelte:head>
 

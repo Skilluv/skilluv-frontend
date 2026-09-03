@@ -45,7 +45,7 @@
 </script>
 
 <svelte:head>
-	<title>{orientation?.name ?? i18n.t('orientations.catalog.title')} — Skilluv</title>
+	<title>{orientation?.name ?? i18n.t('orientations.catalog.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-10">

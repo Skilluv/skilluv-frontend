@@ -137,9 +137,9 @@
 </script>
 
 <svelte:head>
-	<title>{title} — Skilluv</title>
+	<title>{title} | Skilluv</title>
 	<meta name="description" content={subtitle} />
-	<meta property="og:title" content="{title} — Skilluv" />
+	<meta property="og:title" content="{title} | Skilluv" />
 	<meta property="og:description" content={subtitle} />
 </svelte:head>
 

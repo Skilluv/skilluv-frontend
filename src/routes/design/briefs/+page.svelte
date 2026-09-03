@@ -98,7 +98,9 @@
 			// works the queue.
 			orientations =
 				all.status === 'fulfilled'
-					? (all.value.data ?? []).filter((o) => o.primary_domain === 'design' && !o.is_archived)
+					? (all.value.data?.orientations ?? []).filter(
+							(o) => o.primary_domain === 'design' && !o.is_archived
+						)
 					: [];
 			if (!orientationSlug && orientations.length > 0) orientationSlug = orientations[0].slug;
 		} finally {

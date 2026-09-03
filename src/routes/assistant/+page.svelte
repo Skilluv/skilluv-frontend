@@ -124,7 +124,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('assistant.title')} — Skilluv</title>
+	<title>{i18n.t('assistant.title')} | Skilluv</title>
 	<meta name="description" content={i18n.t('assistant.subtitle')} />
 </svelte:head>
 

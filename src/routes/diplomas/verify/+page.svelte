@@ -14,7 +14,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Vérifier un diplôme — Skilluv' : 'Verify a diploma — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Vérifier un diplôme | Skilluv' : 'Verify a diploma | Skilluv'}</title>
 </svelte:head>
 
 <div class="mx-auto max-w-2xl px-4 py-20 sm:py-28 text-center">

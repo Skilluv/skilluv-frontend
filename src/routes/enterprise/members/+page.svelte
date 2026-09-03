@@ -116,7 +116,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Membres — Skilluv' : 'Members — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Membres | Skilluv' : 'Members | Skilluv'}</title>
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-10 sm:py-14">

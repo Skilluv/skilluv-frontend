@@ -6,6 +6,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import { i18n } from '$lib/i18n';
 	import { X } from '@lucide/svelte';
+	import { rankColor } from '$lib/utils/domains';
 
 	let bookmarks = $state<{
 		id: string; username: string; display_name: string; skill_domain: string;
@@ -14,10 +15,6 @@
 	}[]>([]);
 	let loading = $state(true);
 	let error = $state('');
-
-	const titleColors: Record<string, string> = {
-		apprenti: 'text-text-muted', artisan: 'text-blue-400', maitre: 'text-accent', legende: 'text-yellow-400'
-	};
 
 	$effect(() => { loadBookmarks(); });
 
@@ -43,7 +40,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('enterprise.bookmarks.title')} — Skilluv</title>
+	<title>{i18n.t('enterprise.bookmarks.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="p-6 lg:p-8">
@@ -78,7 +75,7 @@
 					<a href="/profile/{bk.username}" class="flex-1">
 						<p class="font-medium hover:text-accent">{bk.display_name}</p>
 						<div class="flex items-center gap-2 text-xs">
-							<span class="capitalize {titleColors[bk.title]}">{bk.title}</span>
+							<span class="capitalize {rankColor(bk.title)}">{bk.title}</span>
 							<Badge variant={bk.skill_domain as any}>{bk.skill_domain}</Badge>
 							<span class="text-accent">{bk.total_fragments} ◆</span>
 						</div>

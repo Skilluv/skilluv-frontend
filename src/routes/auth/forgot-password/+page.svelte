@@ -27,7 +27,7 @@
 </script>
 
 <svelte:head>
-	<title>Mot de passe oublié — Skilluv</title>
+	<title>Mot de passe oublié | Skilluv</title>
 </svelte:head>
 
 <div class="animate-[fade-in_300ms_ease-out]">

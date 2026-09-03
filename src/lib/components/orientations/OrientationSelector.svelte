@@ -5,6 +5,7 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import OrientationCard from './OrientationCard.svelte';
 	import { i18n } from '$lib/i18n';
+	import { PUBLIC_DOMAINS } from '$lib/utils/domains';
 	import { X } from '@lucide/svelte';
 
 	type PickPayload = RegisterOrientationRequest;
@@ -20,20 +21,29 @@
 		catalog: Orientation[];
 		onSubmit: (picks: PickPayload[]) => Promise<void> | void;
 		submitting?: boolean;
+		/**
+		 * The discipline whose trades `catalog` holds.
+		 *
+		 * Controlled by the parent rather than filtered in place, and that is the
+		 * fix rather than a refactor: the catalogue is around 255 trades and the
+		 * endpoint caps a page at 200, so a component that received "the
+		 * catalogue" and filtered it client-side was filtering a list that had
+		 * silently stopped at the backend's default of 50. One discipline per
+		 * request is the only shape that returns all of anything. See SKI-364.
+		 */
+		domain: string;
+		onDomainChange: (domain: string) => void;
 	}
 
-	let { catalog, onSubmit, submitting = false }: Props = $props();
-
-	let domainFilter = $state<string | null>(null);
+	let { catalog, onSubmit, submitting = false, domain, onDomainChange }: Props = $props();
 	let selections = $state<PickState[]>([]);
 	let primaryIndex = $state<number>(0);
 	let workingLanguages = $state<string>('fr,en');
 	let timezone = $state<string>('');
 	let submitError = $state<string>('');
 
-	let filteredCatalog = $derived(
-		domainFilter ? catalog.filter((o) => o.primary_domain === domainFilter) : catalog
-	);
+	// The parent already asked for one discipline; nothing is filtered here.
+	let filteredCatalog = $derived(catalog);
 
 	function isPicked(o: Orientation): boolean {
 		return selections.some((s) => s.orientation.slug === o.slug);
@@ -90,13 +100,12 @@
 		await onSubmit(payload);
 	}
 
-	const domainOptions = $derived([
-		{ value: '', label: i18n.t('orientations.selector.allDomains') },
-		{ value: 'code', label: i18n.t('common.domains.code') },
-		{ value: 'design', label: i18n.t('common.domains.design') },
-		{ value: 'game', label: i18n.t('common.domains.game') },
-		{ value: 'security', label: i18n.t('common.domains.security') }
-	]);
+	// Derived from the catalogue of disciplines, not written out again. The list
+	// froze at four while the platform served eleven, so seven disciplines'
+	// trades were unreachable from this filter.
+	const domainOptions = $derived(
+		PUBLIC_DOMAINS.map((d) => ({ value: d, label: i18n.t(`common.domains.${d}`) }))
+	);
 </script>
 
 <form onsubmit={handleSubmit} class="space-y-8">
@@ -117,8 +126,8 @@
 				<select
 					id="orientation-domain-filter"
 					class="h-11 w-full rounded-xl border border-border bg-surface-elevated px-3 text-sm text-text-primary transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
-					value={domainFilter ?? ''}
-					onchange={(e) => (domainFilter = (e.currentTarget as HTMLSelectElement).value || null)}
+					value={domain}
+					onchange={(e) => onDomainChange((e.currentTarget as HTMLSelectElement).value)}
 				>
 					{#each domainOptions as opt (opt.value)}
 						<option value={opt.value}>{opt.label}</option>

@@ -224,7 +224,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('enterprise.register.title')} — Skilluv</title>
+	<title>{i18n.t('enterprise.register.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="flex min-h-[100vh] flex-col items-center justify-center px-4 py-12">

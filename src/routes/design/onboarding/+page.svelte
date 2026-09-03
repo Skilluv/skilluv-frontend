@@ -162,13 +162,14 @@
 			orientationsApi.list(),
 			designWizard.hydrate()
 		]);
-		if (orientationsRes.status === 'fulfilled') orientations = orientationsRes.value.data ?? [];
+		if (orientationsRes.status === 'fulfilled')
+			orientations = orientationsRes.value.data?.orientations ?? [];
 		loading = false;
 	});
 </script>
 
 <svelte:head>
-	<title>{i18n.t('designWizard.title')} — Skilluv</title>
+	<title>{i18n.t('designWizard.title')} | Skilluv</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

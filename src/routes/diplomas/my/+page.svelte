@@ -51,7 +51,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Mes diplômes — Skilluv' : 'My diplomas — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Mes diplômes | Skilluv' : 'My diplomas | Skilluv'}</title>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl px-4 py-10 sm:py-14">

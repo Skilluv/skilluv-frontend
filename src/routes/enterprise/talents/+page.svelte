@@ -241,7 +241,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('enterprise.nav.talents')} — Skilluv</title>
+	<title>{i18n.t('enterprise.nav.talents')} | Skilluv</title>
 </svelte:head>
 
 <div class="p-6 lg:p-8">

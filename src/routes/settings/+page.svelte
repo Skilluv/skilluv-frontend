@@ -95,7 +95,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('settings.title')} — Skilluv</title>
+	<title>{i18n.t('settings.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-2xl px-4 py-8">

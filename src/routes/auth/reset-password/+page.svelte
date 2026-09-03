@@ -51,7 +51,7 @@
 </script>
 
 <svelte:head>
-	<title>Nouveau mot de passe — Skilluv</title>
+	<title>Nouveau mot de passe | Skilluv</title>
 </svelte:head>
 
 <div class="animate-[fade-in_300ms_ease-out]">

@@ -12,13 +12,23 @@
 				if (b === 'terminal') b = 'scriptorium';
 				if (['forge','vesperal','arena','scriptorium','sakura','lagune'].indexOf(b) === -1) b = 'forge';
 				localStorage.setItem('skilluv-theme', b);
-				var m = localStorage.getItem('skilluv-mode') || 'dark';
+				// Light by default, and this literal is the one that decides: it runs
+				// before hydration. `stores/theme.svelte.ts` carries the same default
+				// and the two must not drift, or the first paint flips on hydration.
+				var m = localStorage.getItem('skilluv-mode') || 'light';
 				document.documentElement.setAttribute('data-theme', m === 'dark' ? b : b + '-light');
 			})();
 		</script>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="description" content="Skilluv — Prouve ce que tu sais faire. Pour de vrai." />
+		<!-- The site-wide fallback, and the only description a page that sets none
+		     will ever have. Both languages, because this file is static: it is
+		     emitted before anything knows which locale the visitor lands on. A
+		     page that sets its own description overrides this one. -->
+		<meta
+			name="description"
+			content="Skilluv | Prove what you can actually build. Prouve ce que tu sais faire. Pour de vrai."
+		/>
 		<!-- #FFA701, sampled from the official artwork rather than approximated.
 		     The previous value belonged to the placeholder mark. -->
 		<meta name="theme-color" content="#FFA701" />
@@ -35,7 +45,7 @@
 		     white, which haloes a circular mark. -->
 		<link rel="apple-touch-icon" href="%sveltekit.assets%/apple-touch-icon.png" />
 		<!-- Preconnect a l'origine API back (evite le cout DNS+TLS sur premier
-		     fetch cote client — utile pour /auth/me, /notifications, etc.). -->
+		     fetch cote client - utile pour /auth/me, /notifications, etc.). -->
 		<link rel="preconnect" href="https://api.skill-uv.com" crossorigin />
 		%sveltekit.head%
 	</head>

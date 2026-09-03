@@ -142,7 +142,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('enterprise.dashboard.title')} — Skilluv</title>
+	<title>{i18n.t('enterprise.dashboard.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="p-6 lg:p-8">

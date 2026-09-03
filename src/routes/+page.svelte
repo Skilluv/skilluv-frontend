@@ -23,8 +23,8 @@
 <JsonLd data={websiteJsonLd()} />
 
 <svelte:head>
-	<title>Skilluv — {i18n.t('landing.title')}</title>
-	<meta property="og:title" content="Skilluv — {i18n.t('landing.title')} {i18n.t('landing.titleAccent')}" />
+	<title>Skilluv | {i18n.t('landing.title')}</title>
+	<meta property="og:title" content="Skilluv | {i18n.t('landing.title')} {i18n.t('landing.titleAccent')}" />
 	<meta property="og:description" content={i18n.t('landing.subtitle')} />
 	<!-- Absolute, because Open Graph takes a URL and a crawler has no page to
 	     resolve a relative path against. `/og-image.png` served fine to a

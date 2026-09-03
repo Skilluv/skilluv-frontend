@@ -15,7 +15,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Bounties open-source pour entreprises — Skilluv' : 'Open-source bounties for companies — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Bounties open-source pour entreprises | Skilluv' : 'Open-source bounties for companies | Skilluv'}</title>
 	<meta
 		name="description"
 		content={i18n.locale === 'fr'

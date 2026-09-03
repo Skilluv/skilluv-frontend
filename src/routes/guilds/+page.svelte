@@ -28,7 +28,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Guildes — Skilluv' : 'Guilds — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Guildes | Skilluv' : 'Guilds | Skilluv'}</title>
 </svelte:head>
 
 <!-- Hero -->

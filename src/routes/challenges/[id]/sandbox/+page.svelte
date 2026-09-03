@@ -178,7 +178,7 @@
 <MobileRedirect />
 
 <svelte:head>
-	<title>{challenge?.title ?? 'Sandbox'} — Skilluv</title>
+	<title>{challenge?.title ?? 'Sandbox'} | Skilluv</title>
 </svelte:head>
 
 <LevelUpAnimation show={showLevelUp} {newTitle} onclose={() => (showLevelUp = false)} />

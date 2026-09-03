@@ -101,7 +101,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('trialHours.title')} — Skilluv</title>
+	<title>{i18n.t('trialHours.title')} | Skilluv</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

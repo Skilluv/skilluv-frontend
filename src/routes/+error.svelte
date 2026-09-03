@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Erreur {$page.status} — Skilluv</title>
+	<title>Erreur {$page.status} | Skilluv</title>
 </svelte:head>
 
 <div class="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-4 text-center">

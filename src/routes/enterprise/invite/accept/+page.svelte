@@ -70,7 +70,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? "Invitation entreprise" : 'Enterprise invitation'} — Skilluv</title>
+	<title>{i18n.locale === 'fr' ? "Invitation entreprise" : 'Enterprise invitation'} | Skilluv</title>
 </svelte:head>
 
 <div class="flex min-h-[100vh] flex-col items-center justify-center px-4 py-12">

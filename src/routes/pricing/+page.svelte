@@ -95,7 +95,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Tarifs — Skilluv' : 'Pricing — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Tarifs | Skilluv' : 'Pricing | Skilluv'}</title>
 	<meta
 		name="description"
 		content={i18n.locale === 'fr'

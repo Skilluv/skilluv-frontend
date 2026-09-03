@@ -44,7 +44,12 @@ describe('rankColor', () => {
 	});
 
 	it('still colours the legacy legende rank', () => {
-		expect(rankColor('legende')).toBe('text-amber-400');
+		// `text-amber-400` until the ranks moved onto theme tokens: a fixed
+		// palette shade cannot follow the theme, and on a light ground it read
+		// well under WCAG AA. What matters here is unchanged — the retired rank
+		// still gets a colour rather than falling through to the muted default.
+		expect(rankColor('legende')).toBe('text-rank-doyen');
+		expect(rankColor('legende')).not.toBe('text-text-muted');
 	});
 
 	it('never returns undefined for an unknown or missing rank', () => {

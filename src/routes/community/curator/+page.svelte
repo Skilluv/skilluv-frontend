@@ -97,7 +97,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('capabilities.nav.pendingCurator')} — Skilluv</title>
+	<title>{i18n.t('capabilities.nav.pendingCurator')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-8">

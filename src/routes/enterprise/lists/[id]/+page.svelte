@@ -8,6 +8,7 @@
 	import { i18n } from '$lib/i18n';
 	import type { TalentCard } from '$types';
 	import { X } from '@lucide/svelte';
+	import { rankColor } from '$lib/utils/domains';
 
 	let listId = $derived($page.params.id ?? '');
 	let listName = $state('');
@@ -15,10 +16,6 @@
 	let talents = $state<TalentCard[]>([]);
 	let loading = $state(true);
 	let error = $state('');
-
-	const titleColors: Record<string, string> = {
-		apprenti: 'text-text-muted', artisan: 'text-blue-400', maitre: 'text-accent', legende: 'text-yellow-400'
-	};
 
 	$effect(() => {
 		if (listId) loadList(listId);
@@ -48,7 +45,7 @@
 </script>
 
 <svelte:head>
-	<title>{listName || 'Liste'} — Skilluv</title>
+	<title>{listName || 'Liste'} | Skilluv</title>
 </svelte:head>
 
 <div class="p-6 lg:p-8">
@@ -82,7 +79,7 @@
 						<a href="/profile/{talent.username}" class="flex-1">
 							<p class="font-medium hover:text-accent">{talent.display_name}</p>
 							<div class="flex items-center gap-2 text-xs">
-								<span class="capitalize {titleColors[talent.title]}">{talent.title}</span>
+								<span class="capitalize {rankColor(talent.title)}">{talent.title}</span>
 								<Badge variant={talent.skill_domain as any}>{talent.skill_domain}</Badge>
 								<span class="text-accent">{talent.total_fragments} ◆</span>
 							</div>

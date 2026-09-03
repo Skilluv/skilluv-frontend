@@ -4,6 +4,7 @@ import { portfoliosFr } from './portfolios.fr';
 import { securityFr } from './security.fr';
 import { postMvpFr } from './postmvp.fr';
 import { consentFr } from './consent.fr';
+import { enlistFr } from './enlist.fr';
 import type { Translations } from './types';
 
 export const fr: Translations = {
@@ -13,7 +14,16 @@ export const fr: Translations = {
 	...securityFr,
 	...portfoliosFr,
 	...consentFr,
+	...enlistFr,
 	common: {
+		// Shared by every listing that filters the same way. Kept here rather
+		// than per page so two catalogues cannot end up calling the same axis
+		// by two different names.
+		filters: {
+			domain: 'Discipline',
+			difficulty: 'Difficulté',
+			period: 'Période'
+		},
 		actions: {
 			save: 'Sauvegarder', cancel: 'Annuler', delete: 'Supprimer', edit: 'Modifier',
 			search: 'Rechercher', retry: 'Réessayer', back: 'Retour', next: 'Suivant',
@@ -1797,6 +1807,8 @@ export const fr: Translations = {
 		noIssues: 'Aucune issue ne correspond.',
 		noIssuesHint: 'Essaie un autre langage, ou enlève le filtre.',
 		openIssue: 'Ouvrir',
+		reward: '{n} fragments',
+		artifacts: '{n} artefacts',
 		ecosystemsTitle: 'Écosystèmes',
 		topLanguagesTitle: 'Les plus écrits',
 		topLanguagesHint:
@@ -1897,6 +1909,7 @@ export const fr: Translations = {
 		slotsHint:
 			'Proposées dans ton propre fuseau, pour qu’un mentoré ailleurs ne devine pas ce que l’heure voulait dire.',
 		openSlotCta: 'Ouvrir le créneau',
+		slotBackwards: 'La fin doit venir après le début.',
 		slotOpened: 'Créneau ouvert.',
 		programsTitle: 'Programmes de mentorat',
 		empty: 'Aucun abonnement ni programme pour le moment.'

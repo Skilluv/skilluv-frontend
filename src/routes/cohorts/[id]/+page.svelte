@@ -213,7 +213,7 @@
 </script>
 
 <svelte:head>
-	<title>{detail ? `${detail.cohort.name} — Skilluv` : `${i18n.t('cohorts.title')} — Skilluv`}</title>
+	<title>{detail ? `${detail.cohort.name} | Skilluv` : `${i18n.t('cohorts.title')} | Skilluv`}</title>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl px-4 py-8" data-testid="cohort-detail-page">

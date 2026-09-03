@@ -22,7 +22,12 @@
 	 */
 	import { onMount } from 'svelte';
 	import { Code2, ExternalLink } from '@lucide/svelte';
-	import { codeDiscoveryApi } from '$api/code_discovery';
+	import {
+		codeDiscoveryApi,
+		type Ecosystem,
+		type FirstIssue,
+		type LanguageCount
+	} from '$api/code_discovery';
 	import { i18n } from '$lib/i18n';
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
@@ -30,30 +35,27 @@
 	import Input from '$components/ui/Input.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 
-	type Row = {
-		id?: string;
-		title?: string;
-		name?: string;
-		url?: string;
-		html_url?: string;
-		language?: string;
-		repository?: string;
-		count?: number;
-		[key: string]: unknown;
-	};
+	// Typed from the client rather than a local bag of optional fields. The bag
+	// is what let this page read `html_url`, `repository` and `count` — none of
+	// which the backend sends — without a single compile error.
 
-	let issues = $state<Row[]>([]);
-	let ecosystems = $state<Row[]>([]);
-	let topLanguages = $state<Row[]>([]);
+	let issues = $state<FirstIssue[]>([]);
+	let ecosystems = $state<Ecosystem[]>([]);
+	let topLanguages = $state<LanguageCount[]>([]);
 	let loading = $state(true);
 	let language = $state('');
 
-	function label(r: Row): string {
-		return r.title ?? r.name ?? r.language ?? '';
-	}
-
-	function href(r: Row): string | null {
-		return (r.html_url as string) ?? (r.url as string) ?? null;
+	/**
+	 * Where the work is actually done.
+	 *
+	 * The row carries `slice_id`: these issues are served as project slices, so
+	 * the slice page is where one is claimed, delivered and — through the
+	 * deliverables pipeline — paid its `fragments_reward`. Linking only to
+	 * GitHub sent people out of the platform at the exact moment they were
+	 * ready to start.
+	 */
+	function sliceHref(issue: FirstIssue): string {
+		return `/slices/${issue.slice_id}`;
 	}
 
 	async function load() {
@@ -63,9 +65,9 @@
 			codeDiscoveryApi.ecosystems(),
 			codeDiscoveryApi.topLanguages()
 		]);
-		if (i.status === 'fulfilled') issues = (i.value.data?.issues as Row[]) ?? [];
-		if (e.status === 'fulfilled') ecosystems = (e.value.data?.ecosystems as Row[]) ?? [];
-		if (t.status === 'fulfilled') topLanguages = (t.value.data?.languages as Row[]) ?? [];
+		if (i.status === 'fulfilled') issues = i.value.data?.issues ?? [];
+		if (e.status === 'fulfilled') ecosystems = e.value.data?.ecosystems ?? [];
+		if (t.status === 'fulfilled') topLanguages = t.value.data?.languages ?? [];
 		loading = false;
 	}
 
@@ -112,26 +114,44 @@
 			/>
 		{:else}
 			<ul class="space-y-2">
-				{#each issues as issue (issue.id ?? label(issue))}
-					{@const link = href(issue)}
+				{#each issues as issue (issue.slice_id)}
 					<li class="rounded-xl border border-border bg-surface-elevated p-4">
-						<div class="flex flex-wrap items-start justify-between gap-2">
-							<p class="min-w-0 flex-1 text-sm font-medium text-text">{label(issue)}</p>
-							{#if link}
+						<div class="flex flex-wrap items-start justify-between gap-3">
+							<!-- The title leads to the slice, not to GitHub: this is where
+							     the issue is claimed and where the reward is paid. -->
+							<a
+								href={sliceHref(issue)}
+								class="min-w-0 flex-1 text-sm font-medium text-text-primary hover:text-accent"
+							>
+								{issue.title}
+							</a>
+							{#if issue.issue_url}
 								<a
-									href={link}
+									href={issue.issue_url}
 									target="_blank"
 									rel="noopener noreferrer nofollow ugc"
-									class="inline-flex items-center gap-1 text-xs text-accent hover:underline"
+									class="inline-flex shrink-0 items-center gap-1 text-xs text-accent hover:underline"
 								>
 									{i18n.t('codeDiscovery.openIssue')}
 									<ExternalLink size={11} />
 								</a>
 							{/if}
 						</div>
-						<div class="mt-1 flex flex-wrap items-center gap-2 text-xs text-text-muted">
-							{#if issue.repository}<span>{issue.repository}</span>{/if}
-							{#if issue.language}<Badge size="sm">{issue.language}</Badge>{/if}
+						<div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-text-muted">
+							<a href="/projects" class="hover:text-text-primary">{issue.project_name}</a>
+							<span aria-hidden="true">·</span>
+							<span>{i18n.t(`common.difficulty.${issue.difficulty}`)}</span>
+							<!-- Shown because it is the answer to "why would I take this
+							     one", and the backend sends it on every row. -->
+							<span class="font-semibold text-accent">
+								{i18n.t('codeDiscovery.reward', { n: issue.fragments_reward })}
+							</span>
+							{#each issue.languages.slice(0, 3) as lang (lang)}
+								<Badge size="sm">{lang}</Badge>
+							{/each}
+							{#if issue.orientation_name}
+								<span class="text-text-muted">{issue.orientation_name}</span>
+							{/if}
 						</div>
 					</li>
 				{/each}
@@ -145,13 +165,19 @@
 				{i18n.t('codeDiscovery.ecosystemsTitle')}
 			</h2>
 			<div class="flex flex-wrap gap-2">
-				{#each ecosystems as eco (eco.name ?? eco.language)}
-					<span
-						class="rounded-full border border-border bg-surface-overlay px-3 py-1 text-xs text-text"
+				{#each ecosystems as eco (eco.language)}
+					<!-- `community_url` is the point of the row: the ecosystem entry
+					     exists to send somebody where that community actually is. -->
+					<a
+						href={eco.community_url}
+						target="_blank"
+						rel="noopener noreferrer nofollow ugc"
+						title={eco.summary}
+						class="inline-flex items-center gap-1 rounded-full border border-border bg-surface-overlay px-3 py-1 text-xs text-text-primary transition-colors hover:border-accent hover:text-accent"
 					>
-						{label(eco)}
-						{#if eco.count}<span class="ml-1 text-text-muted">{eco.count}</span>{/if}
-					</span>
+						{eco.display_name}
+						<ExternalLink size={10} />
+					</a>
 				{/each}
 			</div>
 		</section>
@@ -166,12 +192,14 @@
 			     The distinction is the reason this is worth showing. -->
 			<p class="text-sm text-text-muted">{i18n.t('codeDiscovery.topLanguagesHint')}</p>
 			<div class="flex flex-wrap gap-2">
-				{#each topLanguages as lang (lang.language ?? lang.name)}
+				{#each topLanguages as lang (lang.language)}
 					<span
-						class="rounded-full border border-border bg-surface-overlay px-3 py-1 text-xs text-text"
+						class="rounded-full border border-border bg-surface-overlay px-3 py-1 text-xs text-text-primary"
 					>
-						{label(lang)}
-						{#if lang.count}<span class="ml-1 text-text-muted">{lang.count}</span>{/if}
+						{lang.language}
+						<span class="ml-1 text-text-muted">
+							{i18n.t('codeDiscovery.artifacts', { n: lang.artifacts })}
+						</span>
 					</span>
 				{/each}
 			</div>

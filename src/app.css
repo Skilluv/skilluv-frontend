@@ -42,7 +42,7 @@
    - Surfaces neutres (page/alt/elevated/overlay) avec paliers luminance clairs
    - Surfaces catégorielles (craft/create/…) pour zones colorées audacieuses
    - Accents pluriels : ocre + rouge LUV + sarcelle + bleu + safran + rose
-   Voir : _bmad-output/planning-artifacts/ux-designs/*/DESIGN.md
+   Voir : _bmad-output/planning-artifacts/ux-designs/<theme>/DESIGN.md
    ============================================ */
 
 /* ============================================
@@ -60,6 +60,7 @@
 	--default-font-family: var(--font-sans);
 	--default-mono-font-family: var(--font-mono);
 }
+
 
 /* @theme INLINE — pour les tokens qui référencent d'autres CSS variables.
    `inline` dit à Tailwind: "ne fige pas la valeur, garde le var()
@@ -106,6 +107,34 @@
 	--color-info: var(--sk-info);
 	--color-info-soft: var(--sk-info-soft);
 
+	/* Soft-badge text colours — see the per-theme blocks */
+	--color-accent-on: var(--sk-accent-on);
+	--color-success-on: var(--sk-success-on);
+	--color-warning-on: var(--sk-warning-on);
+	--color-error-on: var(--sk-error-on);
+	--color-primary-on: var(--sk-primary-on);
+	--color-info-on: var(--sk-info-on);
+
+	/* Disciplines (11) — theme-aware, see the token block above */
+	--color-domain-code: var(--sk-domain-code);
+	--color-domain-design: var(--sk-domain-design);
+	--color-domain-game: var(--sk-domain-game);
+	--color-domain-security: var(--sk-domain-security);
+	--color-domain-ai: var(--sk-domain-ai);
+	--color-domain-ops: var(--sk-domain-ops);
+	--color-domain-quality: var(--sk-domain-quality);
+	--color-domain-leadership: var(--sk-domain-leadership);
+	--color-domain-audio: var(--sk-domain-audio);
+	--color-domain-communication: var(--sk-domain-communication);
+	--color-domain-education: var(--sk-domain-education);
+
+	/* Ranks (5) — theme-aware */
+	--color-rank-apprenti: var(--sk-rank-apprenti);
+	--color-rank-ranger: var(--sk-rank-ranger);
+	--color-rank-artisan: var(--sk-rank-artisan);
+	--color-rank-maitre: var(--sk-rank-maitre);
+	--color-rank-doyen: var(--sk-rank-doyen);
+
 	/* Skill categories (6) — couleurs signature marque */
 	--color-cat-craft: var(--sk-cat-craft);
 	--color-cat-create: var(--sk-cat-create);
@@ -125,6 +154,40 @@
    TOKENS GLOBAUX (constants brand, indépendants du thème)
    ============================================ */
 :root {
+	/* Discipline colours.
+	 *
+	 * These lived in `utils/domains.ts` as raw Tailwind classes — `text-blue-400`
+	 * and friends — which is why they could not follow the theme: a literal
+	 * palette shade knows nothing about the surface under it. They were picked
+	 * against dark backgrounds, and the light themes have always been one click
+	 * away, so every discipline label on a light ground has been failing WCAG AA
+	 * since the light themes shipped. Making light the default is what finally
+	 * made an axe check fail; it did not create the defect.
+	 *
+	 * The dark values below are the previous ones unchanged: measured against
+	 * every dark surface a discipline label is rendered on, all eleven already
+	 * cleared 4.5:1, so dark mode looks exactly as it did.
+	 */
+	--sk-domain-code: #60a5fa;
+	--sk-domain-design: #f472b6;
+	--sk-domain-game: #4ade80;
+	--sk-domain-security: #f87171;
+	--sk-domain-ai: #a78bfa;
+	--sk-domain-ops: #2dd4bf;
+	--sk-domain-quality: #22d3ee;
+	--sk-domain-leadership: #fb923c;
+	--sk-domain-audio: #e879f9;
+	--sk-domain-communication: #fbbf24;
+	--sk-domain-education: #a3e635;
+
+	/* Rank colours. Same story as the disciplines: literal palette shades,
+	 * chosen on dark, unreadable on light. Dark values unchanged. */
+	--sk-rank-apprenti: #a1a1aa;
+	--sk-rank-ranger: #34d399;
+	--sk-rank-artisan: #60a5fa;
+	--sk-rank-maitre: #c084fc;
+	--sk-rank-doyen: #fbbf24;
+
 	/* Skill categories — colors (constantes brand) */
 	--sk-cat-craft: #c47a2e; /* ocre */
 	--sk-cat-create: #e63946; /* rouge coquelicot */
@@ -184,6 +247,32 @@
 	--sk-spacing-gutter: 1rem;
 }
 
+/* Light themes darken the discipline colours as a family.
+   `[data-theme$='-light']` matches all six at once, so a theme added later
+   inherits the accessible set instead of silently reintroducing the bug.
+   Each value is the lightest shade of its own hue that clears 4.5:1 against
+   every light surface a discipline label can land on — page, alternate,
+   elevated, and the six categorical grounds. */
+[data-theme$='-light'] {
+	--sk-rank-apprenti: #52525b;
+	--sk-rank-ranger: #065f46;
+	--sk-rank-artisan: #1e40af;
+	--sk-rank-maitre: #6b21a8;
+	--sk-rank-doyen: #78350f;
+
+	--sk-domain-code: #1e40af;
+	--sk-domain-design: #9d174d;
+	--sk-domain-game: #14532d;
+	--sk-domain-security: #991b1b;
+	--sk-domain-ai: #5b21b6;
+	--sk-domain-ops: #115e59;
+	--sk-domain-quality: #155e75;
+	--sk-domain-leadership: #9a3412;
+	--sk-domain-audio: #86198f;
+	--sk-domain-communication: #78350f;
+	--sk-domain-education: #365314;
+}
+
 /* ============================================
    THÈME FORGE (défaut) — l'atelier de l'artisan
    Paliers luminance CLAIRS + surfaces catégorielles AUDACIEUSES
@@ -228,6 +317,19 @@
 	--sk-error-fg: #ffffff;
 	--sk-info: #457b9d;
 	--sk-info-soft: rgba(69, 123, 157, 0.2);
+
+	/* Text colour for soft badges: the token used as *text* rather than as a
+	   fill. The base tokens were tuned as backgrounds — `--sk-error` even says
+	   so, 'assombri pour contrast avec text-white' — and reusing them for the
+	   label of a `a ten-percent wash` pill measured as low as 2.1:1. Same hue, luminance
+	   moved until it clears 4.5:1 over its own 10% wash on every surface this
+	   theme defines. */
+	--sk-accent-on: #ff704d;
+	--sk-success-on: #20b664;
+	--sk-warning-on: #d19d1f;
+	--sk-error-on: #e37377;
+	--sk-primary-on: #669dbd;
+	--sk-info-on: #6ea0bf;
 }
 
 /* FORGE LIGHT — parchemin crème avec accents saturés */
@@ -267,6 +369,19 @@
 	--sk-error-fg: #ffffff;
 	--sk-info: #375f7a;
 	--sk-info-soft: rgba(55, 95, 122, 0.12);
+
+	/* Text colour for soft badges: the token used as *text* rather than as a
+	   fill. The base tokens were tuned as backgrounds — `--sk-error` even says
+	   so, 'assombri pour contrast avec text-white' — and reusing them for the
+	   label of a `a ten-percent wash` pill measured as low as 2.1:1. Same hue, luminance
+	   moved until it clears 4.5:1 over its own 10% wash on every surface this
+	   theme defines. */
+	--sk-accent-on: #a03318;
+	--sk-success-on: #136839;
+	--sk-warning-on: #74571b;
+	--sk-error-on: #ad1a1a;
+	--sk-primary-on: #365d78;
+	--sk-info-on: #365d78;
 }
 
 /* ============================================
@@ -309,6 +424,19 @@
 	--sk-error-fg: #ffffff;
 	--sk-info: #83c5be;
 	--sk-info-soft: rgba(131, 197, 190, 0.2);
+
+	/* Text colour for soft badges: the token used as *text* rather than as a
+	   fill. The base tokens were tuned as backgrounds — `--sk-error` even says
+	   so, 'assombri pour contrast avec text-white' — and reusing them for the
+	   label of a `a ten-percent wash` pill measured as low as 2.1:1. Same hue, luminance
+	   moved until it clears 4.5:1 over its own 10% wash on every surface this
+	   theme defines. */
+	--sk-accent-on: #ea8a62;
+	--sk-success-on: #21bb66;
+	--sk-warning-on: #f0842d;
+	--sk-error-on: #e37377;
+	--sk-primary-on: #d19d1f;
+	--sk-info-on: #58b1a8;
 }
 
 [data-theme='vesperal-light'] {
@@ -347,6 +475,19 @@
 	--sk-error-fg: #ffffff;
 	--sk-info: #375f7a;
 	--sk-info-soft: rgba(55, 95, 122, 0.12);
+
+	/* Text colour for soft badges: the token used as *text* rather than as a
+	   fill. The base tokens were tuned as backgrounds — `--sk-error` even says
+	   so, 'assombri pour contrast avec text-white' — and reusing them for the
+	   label of a `a ten-percent wash` pill measured as low as 2.1:1. Same hue, luminance
+	   moved until it clears 4.5:1 over its own 10% wash on every surface this
+	   theme defines. */
+	--sk-accent-on: #844229;
+	--sk-success-on: #126336;
+	--sk-warning-on: #903e1d;
+	--sk-error-on: #a81919;
+	--sk-primary-on: #7c4d22;
+	--sk-info-on: #345a74;
 }
 
 /* ============================================
@@ -389,6 +530,19 @@
 	--sk-error-fg: #ffffff;
 	--sk-info: #c47a2e;
 	--sk-info-soft: rgba(196, 122, 46, 0.2);
+
+	/* Text colour for soft badges: the token used as *text* rather than as a
+	   fill. The base tokens were tuned as backgrounds — `--sk-error` even says
+	   so, 'assombri pour contrast avec text-white' — and reusing them for the
+	   label of a `a ten-percent wash` pill measured as low as 2.1:1. Same hue, luminance
+	   moved until it clears 4.5:1 over its own 10% wash on every surface this
+	   theme defines. */
+	--sk-accent-on: #ee7780;
+	--sk-success-on: #20b664;
+	--sk-warning-on: #d19d1f;
+	--sk-error-on: #f57533;
+	--sk-primary-on: #d19d1f;
+	--sk-info-on: #d38d45;
 }
 
 [data-theme='arena-light'] {
@@ -427,6 +581,19 @@
 	--sk-error-fg: #ffffff;
 	--sk-info: #7a4a3f;
 	--sk-info-soft: rgba(122, 74, 63, 0.12);
+
+	/* Text colour for soft badges: the token used as *text* rather than as a
+	   fill. The base tokens were tuned as backgrounds — `--sk-error` even says
+	   so, 'assombri pour contrast avec text-white' — and reusing them for the
+	   label of a `a ten-percent wash` pill measured as low as 2.1:1. Same hue, luminance
+	   moved until it clears 4.5:1 over its own 10% wash on every surface this
+	   theme defines. */
+	--sk-accent-on: #9b1717;
+	--sk-success-on: #105b32;
+	--sk-warning-on: #684d18;
+	--sk-error-on: #9b1717;
+	--sk-primary-on: #684d18;
+	--sk-info-on: #6f4339;
 }
 
 /* ============================================
@@ -469,6 +636,19 @@
 	--sk-error-fg: #ffffff;
 	--sk-info: #83a598;
 	--sk-info-soft: rgba(131, 165, 152, 0.2);
+
+	/* Text colour for soft badges: the token used as *text* rather than as a
+	   fill. The base tokens were tuned as backgrounds — `--sk-error` even says
+	   so, 'assombri pour contrast avec text-white' — and reusing them for the
+	   label of a `a ten-percent wash` pill measured as low as 2.1:1. Same hue, luminance
+	   moved until it clears 4.5:1 over its own 10% wash on every surface this
+	   theme defines. */
+	--sk-accent-on: #bb926d;
+	--sk-success-on: #20b664;
+	--sk-warning-on: #d19d1f;
+	--sk-error-on: #d68585;
+	--sk-primary-on: #83a598;
+	--sk-info-on: #83a598;
 }
 
 [data-theme='scriptorium-light'] {
@@ -507,6 +687,19 @@
 	--sk-error-fg: #ffffff;
 	--sk-info: #4a6b5c;
 	--sk-info-soft: rgba(74, 107, 92, 0.12);
+
+	/* Text colour for soft badges: the token used as *text* rather than as a
+	   fill. The base tokens were tuned as backgrounds — `--sk-error` even says
+	   so, 'assombri pour contrast avec text-white' — and reusing them for the
+	   label of a `a ten-percent wash` pill measured as low as 2.1:1. Same hue, luminance
+	   moved until it clears 4.5:1 over its own 10% wash on every surface this
+	   theme defines. */
+	--sk-accent-on: #68482c;
+	--sk-success-on: #105b32;
+	--sk-warning-on: #684d18;
+	--sk-error-on: #9b1717;
+	--sk-primary-on: #3a5449;
+	--sk-info-on: #3a5449;
 }
 
 /* ============================================
@@ -549,6 +742,19 @@
 	--sk-error-fg: #ffffff;
 	--sk-info: #b898c0;
 	--sk-info-soft: rgba(184, 152, 192, 0.2);
+
+	/* Text colour for soft badges: the token used as *text* rather than as a
+	   fill. The base tokens were tuned as backgrounds — `--sk-error` even says
+	   so, 'assombri pour contrast avec text-white' — and reusing them for the
+	   label of a `a ten-percent wash` pill measured as low as 2.1:1. Same hue, luminance
+	   moved until it clears 4.5:1 over its own 10% wash on every surface this
+	   theme defines. */
+	--sk-accent-on: #e085ab;
+	--sk-success-on: #20b664;
+	--sk-warning-on: #d19d1f;
+	--sk-error-on: #e37377;
+	--sk-primary-on: #d38d45;
+	--sk-info-on: #b593bd;
 }
 
 [data-theme='sakura-light'] {
@@ -587,6 +793,19 @@
 	--sk-error-fg: #ffffff;
 	--sk-info: #6b3a5c;
 	--sk-info-soft: rgba(107, 58, 92, 0.12);
+
+	/* Text colour for soft badges: the token used as *text* rather than as a
+	   fill. The base tokens were tuned as backgrounds — `--sk-error` even says
+	   so, 'assombri pour contrast avec text-white' — and reusing them for the
+	   label of a `a ten-percent wash` pill measured as low as 2.1:1. Same hue, luminance
+	   moved until it clears 4.5:1 over its own 10% wash on every surface this
+	   theme defines. */
+	--sk-accent-on: #a03160;
+	--sk-success-on: #126336;
+	--sk-warning-on: #70531a;
+	--sk-error-on: #ad1a1a;
+	--sk-primary-on: #903e1d;
+	--sk-info-on: #7e446c;
 }
 
 /* ============================================
@@ -648,6 +867,19 @@
 	--sk-error-fg: #ffffff;
 	--sk-info: #2a6f7f;
 	--sk-info-soft: rgba(42, 111, 127, 0.14);
+
+	/* Text colour for soft badges: the token used as *text* rather than as a
+	   fill. The base tokens were tuned as backgrounds — `--sk-error` even says
+	   so, 'assombri pour contrast avec text-white' — and reusing them for the
+	   label of a `a ten-percent wash` pill measured as low as 2.1:1. Same hue, luminance
+	   moved until it clears 4.5:1 over its own 10% wash on every surface this
+	   theme defines. */
+	--sk-accent-on: #076e35;
+	--sk-success-on: #136c3b;
+	--sk-warning-on: #7b590e;
+	--sk-error-on: #b3261e;
+	--sk-primary-on: #276877;
+	--sk-info-on: #276877;
 }
 
 /* La variante sombre : mêmes neutres désaturés, vert remonté en clarté pour
@@ -689,6 +921,19 @@
 	--sk-error-fg: #101413;
 	--sk-info: #3d8ea1;
 	--sk-info-soft: rgba(61, 142, 161, 0.2);
+
+	/* Text colour for soft badges: the token used as *text* rather than as a
+	   fill. The base tokens were tuned as backgrounds — `--sk-error` even says
+	   so, 'assombri pour contrast avec text-white' — and reusing them for the
+	   label of a `a ten-percent wash` pill measured as low as 2.1:1. Same hue, luminance
+	   moved until it clears 4.5:1 over its own 10% wash on every surface this
+	   theme defines. */
+	--sk-accent-on: #1db461;
+	--sk-success-on: #20b664;
+	--sk-warning-on: #c8961e;
+	--sk-error-on: #e77474;
+	--sk-primary-on: #46a3b9;
+	--sk-info-on: #46a3b9;
 }
 
 

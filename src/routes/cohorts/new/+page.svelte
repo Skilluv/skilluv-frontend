@@ -78,7 +78,7 @@
 	onMount(async () => {
 		try {
 			const res = await orientationsApi.list();
-			orientations = (res.data ?? []).filter((o) => !o.is_archived);
+			orientations = (res.data?.orientations ?? []).filter((o) => !o.is_archived);
 		} catch {
 			// A cohort without an orientation is legal, so this stays optional.
 		}
@@ -86,7 +86,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('cohorts.newCta')} — Skilluv</title>
+	<title>{i18n.t('cohorts.newCta')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-2xl px-4 py-8" data-testid="cohort-new-page">

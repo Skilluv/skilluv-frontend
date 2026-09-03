@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Paiement annulé — Skilluv' : 'Payment canceled — Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? 'Paiement annulé | Skilluv' : 'Payment canceled | Skilluv'}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

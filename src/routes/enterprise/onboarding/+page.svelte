@@ -237,7 +237,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Configuration' : 'Setup'} — Skilluv</title>
+	<title>{i18n.locale === 'fr' ? 'Configuration' : 'Setup'} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-10">

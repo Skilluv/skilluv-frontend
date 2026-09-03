@@ -51,7 +51,17 @@
 		CalendarRange,
 		Handshake,
 		NotebookPen,
-		Link2
+		Link2,
+		Wallet,
+		Scale,
+		Lock,
+		Flag,
+		Code2,
+		Gamepad2,
+		Server,
+		ShieldCheck,
+		Mic,
+		Layers
 	} from '@lucide/svelte';
 
 	// Conditional user-menu links driven by P18.4 capabilities.
@@ -92,7 +102,7 @@
 				show: auth.can('community_moderator') || auth.can('community_curator')
 			},
 			{
-				href: '/mentors/me',
+				href: '/dashboard/mentor',
 				icon: Star,
 				label: i18n.t('capabilities.nav.mentorZone'),
 				show: auth.can('mentor')
@@ -205,6 +215,31 @@
 
 	let discoverGroups = $derived([
 		{
+			// The discipline landings, as one group instead of a promotion.
+			//
+			// Six of these had no entry anywhere and no inbound link either:
+			// /game, /ops, /quality and /leadership could only be reached by
+			// typing the URL, while /ai and design had a section each. The
+			// filter on /challenges treats all eleven as peers, and the nav
+			// now says the same thing.
+			//
+			// Design, AI and security are absent on purpose: each already has
+			// its own section above, and repeating them here would rank a
+			// discipline twice. `communication` and `education` are absent for
+			// the opposite reason — they are filterable but have no page at
+			// all, and a dead entry is worse than a missing one.
+			title: i18n.locale === 'fr' ? 'Disciplines' : 'Disciplines',
+			items: [
+				{ href: '/code', icon: Code2, label: i18n.t('common.domains.code') },
+				{ href: '/game', icon: Gamepad2, label: i18n.t('common.domains.game') },
+				{ href: '/ops', icon: Server, label: i18n.t('common.domains.ops') },
+				{ href: '/quality', icon: Check, label: i18n.t('common.domains.quality') },
+				{ href: '/leadership', icon: Users, label: i18n.t('common.domains.leadership') },
+				{ href: '/audio/castings', icon: Mic, label: i18n.t('common.domains.audio') },
+				{ href: '/tracks', icon: Layers, label: i18n.t('tracks.title') }
+			]
+		},
+		{
 			title: i18n.locale === 'fr' ? 'Apprendre & jouer' : 'Learn & play',
 			items: [
 				{
@@ -219,6 +254,24 @@
 					label: i18n.locale === 'fr' ? 'Communauté' : 'Community',
 					description: i18n.locale === 'fr' ? 'Challenges créés par la communauté' : 'Community-created challenges'
 				}
+			]
+		},
+		{
+			// Skilluv Cyber. Design and AI each had their section here and this
+			// one did not, so thirteen finished pages — the CTF, the defensive
+			// labs, the competitions, the hall of fame, the disclosure scope —
+			// were reachable only by typing their URL. The entries below are the
+			// vertical's hubs; the report form and the research-mode token hang
+			// off the scope page, which is why they are not repeated here.
+			title: i18n.t('common.domains.security'),
+			items: [
+				{ href: '/security/missions', icon: Briefcase, label: i18n.t('missions.boards.security.title'), description: i18n.t('missions.boards.security.subtitle') },
+				{ href: '/ctf', icon: Flag, label: i18n.t('securityPractice.ctfTitle') },
+				{ href: '/blue-lab', icon: ShieldCheck, label: i18n.t('blueLab.title') },
+				{ href: '/security/competitions', icon: Trophy, label: i18n.t('securityCompetitions.title') },
+				{ href: '/security/hall-of-fame', icon: Star, label: i18n.t('securityHallOfFame.title') },
+				{ href: '/security', icon: Lock, label: i18n.t('securityScope.title') },
+				{ href: '/trust', icon: BadgeCheck, label: i18n.t('securityTrust.title') }
 			]
 		},
 		{
@@ -270,7 +323,7 @@
 			items: [
 				{ href: '/mentors', icon: Star, label: i18n.locale === 'fr' ? 'Trouver un mentor' : 'Find a mentor' },
 				{ href: '/mentorship/sessions', icon: Target, label: i18n.locale === 'fr' ? 'Mes sessions' : 'My sessions' },
-				{ href: '/mentors/me', icon: Pencil, label: i18n.locale === 'fr' ? 'Devenir mentor' : 'Become a mentor', badge: '80%' }
+				{ href: '/dashboard/mentor', icon: Pencil, label: i18n.locale === 'fr' ? 'Devenir mentor' : 'Become a mentor', badge: '80%' }
 			]
 		},
 		{
@@ -282,11 +335,54 @@
 			]
 		},
 		{
+			// Skilluv Cyber. Design and AI each had their section here and this
+			// one did not, so thirteen finished pages — the CTF, the defensive
+			// labs, the competitions, the hall of fame, the disclosure scope —
+			// were reachable only by typing their URL. The entries below are the
+			// vertical's hubs; the report form and the research-mode token hang
+			// off the scope page, which is why they are not repeated here.
+			title: i18n.t('common.domains.security'),
+			items: [
+				{ href: '/security/missions', icon: Briefcase, label: i18n.t('missions.boards.security.title'), description: i18n.t('missions.boards.security.subtitle') },
+				{ href: '/ctf', icon: Flag, label: i18n.t('securityPractice.ctfTitle') },
+				{ href: '/blue-lab', icon: ShieldCheck, label: i18n.t('blueLab.title') },
+				{ href: '/security/competitions', icon: Trophy, label: i18n.t('securityCompetitions.title') },
+				{ href: '/security/hall-of-fame', icon: Star, label: i18n.t('securityHallOfFame.title') },
+				{ href: '/security', icon: Lock, label: i18n.t('securityScope.title') },
+				{ href: '/trust', icon: BadgeCheck, label: i18n.t('securityTrust.title') }
+			]
+		},
+		{
 			// The AI domain of work — not the assistant, which is below.
 			title: i18n.t('common.domains.ai'),
 			items: [
 				{ href: '/ai', icon: Sparkles, label: i18n.t('aiDomain.title'), description: i18n.t('aiDomain.subtitle') },
 				{ href: '/ai/missions', icon: Briefcase, label: i18n.t('missions.boards.ai.title'), description: i18n.t('missions.boards.ai.subtitle') }
+			]
+		},
+		{
+			// The discipline landings, as one group instead of a promotion.
+			//
+			// Six of these had no entry anywhere and no inbound link either:
+			// /game, /ops, /quality and /leadership could only be reached by
+			// typing the URL, while /ai and design had a section each. The
+			// filter on /challenges treats all eleven as peers, and the nav
+			// now says the same thing.
+			//
+			// Design, AI and security are absent on purpose: each already has
+			// its own section above, and repeating them here would rank a
+			// discipline twice. `communication` and `education` are absent for
+			// the opposite reason — they are filterable but have no page at
+			// all, and a dead entry is worse than a missing one.
+			title: i18n.locale === 'fr' ? 'Disciplines' : 'Disciplines',
+			items: [
+				{ href: '/code', icon: Code2, label: i18n.t('common.domains.code') },
+				{ href: '/game', icon: Gamepad2, label: i18n.t('common.domains.game') },
+				{ href: '/ops', icon: Server, label: i18n.t('common.domains.ops') },
+				{ href: '/quality', icon: Check, label: i18n.t('common.domains.quality') },
+				{ href: '/leadership', icon: Users, label: i18n.t('common.domains.leadership') },
+				{ href: '/audio/castings', icon: Mic, label: i18n.t('common.domains.audio') },
+				{ href: '/tracks', icon: Layers, label: i18n.t('tracks.title') }
 			]
 		},
 		{
@@ -319,20 +415,50 @@
 		}
 	]);
 
+	// The personal shelf, named so the user menu and the burger read the same
+	// list. `/wallet` and `/disputes` are new here: on a platform that pays out
+	// in fragments, the balance and the place you contest it were in no menu at
+	// all, and a payout somebody cannot find is a support ticket.
+	let personalShelf = $derived([
+		{ href: '/dashboard', icon: Compass, label: i18n.t('dashboardHome.title') },
+		{ href: '/dashboard/opportunities', icon: Handshake, label: i18n.t('opportunities.title') },
+		{ href: '/dashboard/bookmarks', icon: Bookmark, label: i18n.t('bookmarks.title') },
+		{ href: '/dashboard/notes', icon: NotebookPen, label: i18n.t('notes.title') },
+		{ href: '/dashboard/goals', icon: Target, label: i18n.t('goals.title') },
+		{ href: '/dashboard/vouchings', icon: Handshake, label: i18n.t('vouchings.title') },
+		{ href: '/wallet', icon: Wallet, label: i18n.t('wallet.title') },
+		{ href: '/disputes', icon: Scale, label: i18n.t('disputes.title') }
+	]);
+
 	let enterpriseGroupsAnon = $derived([
 		{
 			title: 'Sourcing',
 			items: [
-				{ href: '/for-companies', icon: Compass, label: i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works', description: i18n.locale === 'fr' ? 'Recruter sur la preuve, pas le CV' : 'Hire on proof, not resume' },
-				{ href: '/enterprise/register', icon: Plus, label: i18n.locale === 'fr' ? 'Recruteur ? Créer un espace' : 'Recruiter? Create a space', description: i18n.locale === 'fr' ? 'Accès aux 13 filtres de sourcing' : 'Access to the 13 sourcing filters' }
+				{ href: '/for-companies', icon: Compass, label: i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works', description: i18n.locale === 'fr' ? 'Recruter sur la preuve, pas le CV' : 'Hire on proof, not resume' }
 			]
 		},
 		{
 			title: 'Business',
 			items: [
 				{ href: '/for-companies/bounties', icon: Hexagon, label: i18n.locale === 'fr' ? 'Sponsoriser une issue' : 'Sponsor an issue', description: i18n.locale === 'fr' ? 'Bounties open-source, payout au merge' : 'Open-source bounties, payout on merge' },
-				{ href: '/pricing', icon: Star, label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing', description: i18n.locale === 'fr' ? 'Pay-as-you-go multi-devise' : 'Pay-as-you-go multi-currency' },
-				{ href: '/enterprise/register', icon: Plus, label: i18n.locale === 'fr' ? 'Créer mon espace' : 'Create my space', badge: '2 min' }
+				{ href: '/pricing', icon: Star, label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing', description: i18n.locale === 'fr' ? 'Pay-as-you-go multi-devise' : 'Pay-as-you-go multi-currency' }
+			]
+		},
+		{
+			// Signing up, once, at the end.
+			//
+			// This sat in both groups above, under two different names and with
+			// a badge on one of them, while `/enterprise/register` reads no
+			// query parameter at all — the two entries were the same page with
+			// the same behaviour, ten lines apart in a single open panel. The
+			// burger already showed one, because the mobile list deduplicates
+			// by href, so the two widths disagreed.
+			//
+			// It belongs to neither group: it is where both paths end, and
+			// filing it under "Sourcing" implies it is not for sponsoring while
+			// filing it under "Business" implies the opposite.
+			items: [
+				{ href: '/enterprise/register', icon: Plus, label: i18n.locale === 'fr' ? 'Créer mon espace' : 'Create my space', description: i18n.locale === 'fr' ? 'Accès aux 13 filtres de sourcing' : 'Access to the 13 sourcing filters', badge: '2 min' }
 			]
 		}
 	]);
@@ -370,6 +496,53 @@
 			]
 		}
 	]);
+
+	/**
+	 * The burger menu, derived from the very lists the desktop dropdowns show.
+	 *
+	 * It used to be a second catalogue typed out by hand, and it had already
+	 * drifted: no diplomas, no mentions, nothing from the enterprise menu, and
+	 * whatever got added to a dropdown simply never reached a phone. Deriving
+	 * it means a section added once is reachable at every width — which is the
+	 * only reason the pages this commit surfaces were unreachable in the first
+	 * place.
+	 *
+	 * Deduplicated by href, because a destination that earns a place in two
+	 * dropdowns must still appear once in a flat list.
+	 */
+	function flattenGroups(groups: { items: { href: string; label: string }[] }[]) {
+		const seen = new Set<string>();
+		const out: { href: string; label: string }[] = [];
+		for (const group of groups) {
+			for (const item of group.items) {
+				if (seen.has(item.href)) continue;
+				seen.add(item.href);
+				out.push({ href: item.href, label: item.label });
+			}
+		}
+		return out;
+	}
+
+	let mobileLinks = $derived(
+		auth.isAuthenticated
+			? flattenGroups([
+					{ items: [{ href: '/challenges', label: i18n.t('common.nav.challenges') }] },
+					...talentGrowGroups,
+					...talentCommunityGroups,
+					...enterpriseGroupsAuth,
+					{ items: personalShelf },
+					{
+						items: [
+							{
+								href: `/profile/${auth.user?.username}`,
+								label: i18n.t('common.nav.profile')
+							},
+							{ href: '/settings', label: i18n.t('common.nav.settings') }
+						]
+					}
+				])
+			: flattenGroups([...discoverGroups, ...communityGroups, ...enterpriseGroupsAnon])
+	);
 </script>
 
 <svelte:window onclick={handleClickOutside} />
@@ -612,14 +785,7 @@
 							<!-- Post-MVP tier 1 — the personal shelf: what you saved,
 							     what you noted, what you are aiming at. -->
 							<div class="my-1.5 h-px bg-border"></div>
-							{#each [
-								{ href: '/dashboard', icon: Compass, label: i18n.t('dashboardHome.title') },
-								{ href: '/dashboard/opportunities', icon: Handshake, label: i18n.t('opportunities.title') },
-								{ href: '/dashboard/bookmarks', icon: Bookmark, label: i18n.t('bookmarks.title') },
-								{ href: '/dashboard/notes', icon: NotebookPen, label: i18n.t('notes.title') },
-								{ href: '/dashboard/goals', icon: Target, label: i18n.t('goals.title') },
-								{ href: '/dashboard/vouchings', icon: Handshake, label: i18n.t('vouchings.title') }
-							] as shelfLink (shelfLink.href)}
+							{#each personalShelf as shelfLink (shelfLink.href)}
 								{@const ShelfIcon = shelfLink.icon}
 								<a
 									href={shelfLink.href}
@@ -694,42 +860,20 @@
 				<a href="/" onclick={() => mobileOpen = false} class="block rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 {isActive('/') ? 'text-text-primary bg-surface-overlay' : 'text-text-muted hover:bg-surface-overlay'}">
 					{i18n.locale === 'fr' ? 'Accueil' : 'Home'}
 				</a>
+				{#each mobileLinks as link (link.href)}
+					<a
+						href={link.href}
+						onclick={() => (mobileOpen = false)}
+						class="block rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 {isActive(
+							link.href
+						)
+							? 'text-text-primary bg-surface-overlay'
+							: 'text-text-muted hover:bg-surface-overlay'}"
+					>
+						{link.label}
+					</a>
+				{/each}
 				{#if auth.isAuthenticated}
-					{#each [
-						{ href: '/challenges', label: i18n.t('common.nav.challenges') },
-						{ href: '/bounties', label: 'Bounties' },
-						{ href: '/certifications', label: 'Certifications' },
-						{ href: '/mentors', label: 'Mentors' },
-						{ href: '/feed', label: i18n.locale === 'fr' ? 'Fil' : 'Feed' },
-						{ href: '/forum', label: 'Forum' },
-						{ href: '/guilds', label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
-						{ href: '/tournaments', label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments' },
-						{ href: '/messages', label: 'Messages' },
-						{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards') },
-						{ href: '/cohorts', label: i18n.t('cohorts.title') },
-						{ href: '/dashboard/peer-matching', label: i18n.t('peerMatching.title') },
-						{ href: '/assistant', label: i18n.t('assistant.title') },
-						{ href: '/talent-offers', label: i18n.t('talentOffers.title') },
-						{ href: '/design/contests', label: i18n.t('designContests.title') },
-						{ href: '/design/missions', label: i18n.t('missions.boards.design.title') },
-						{ href: '/ai', label: i18n.t('aiDomain.title') },
-						{ href: '/ai/missions', label: i18n.t('missions.boards.ai.title') },
-						{ href: '/dashboard', label: i18n.t('dashboardHome.title') },
-						{ href: '/dashboard/bookmarks', label: i18n.t('bookmarks.title') },
-						{ href: '/dashboard/notes', label: i18n.t('notes.title') },
-						{ href: '/dashboard/goals', label: i18n.t('goals.title') },
-						{ href: '/dashboard/vouchings', label: i18n.t('vouchings.title') },
-						{ href: `/profile/${auth.user?.username}`, label: i18n.t('common.nav.profile') },
-						{ href: '/settings', label: i18n.t('common.nav.settings') }
-					] as link}
-						<a
-							href={link.href}
-							onclick={() => mobileOpen = false}
-							class="block rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 {isActive(link.href) ? 'text-text-primary bg-surface-overlay' : 'text-text-muted hover:bg-surface-overlay'}"
-						>
-							{link.label}
-						</a>
-					{/each}
 					<button
 						type="button"
 						onclick={askLogout}
@@ -738,25 +882,6 @@
 						<LogOut size={14} strokeWidth={2} />
 						{i18n.locale === 'fr' ? 'Se déconnecter' : 'Sign out'}
 					</button>
-				{:else}
-					{#each [
-						{ href: '/challenges', label: i18n.t('common.nav.challenges') },
-						{ href: '/bounties', label: 'Bounties' },
-						{ href: '/certifications', label: 'Certifications' },
-						{ href: '/mentors', label: 'Mentors' },
-						{ href: '/forum', label: 'Forum' },
-						{ href: '/guilds', label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
-						{ href: '/leaderboards', label: i18n.t('common.nav.leaderboards') },
-						{ href: '/pricing', label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing' }
-					] as link}
-						<a
-							href={link.href}
-							onclick={() => mobileOpen = false}
-							class="block rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 hover:bg-surface-overlay"
-						>
-							{link.label}
-						</a>
-					{/each}
 				{/if}
 
 				<!-- Controls row -->

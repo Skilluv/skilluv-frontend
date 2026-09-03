@@ -2,7 +2,7 @@
  * Parcours end-to-end complet — user fresh du signup au 1er challenge.
  *
  * Chemin teste :
- *   1. /auth/register (domain picker + account form) -> POST /auth/register
+ *   1. /auth/register (entrance -> domain -> trade -> pact) -> POST /auth/register
  *   2. redirect vers /challenges/onboarding
  *   3. verify-email programmatique via dev-endpoint (dev-verify helper)
  *   4. /onboarding/complete-profile (skill_domain + terms) -> POST /me/complete
@@ -55,27 +55,36 @@ test.describe('@parcours onboarding-fresh-user', () => {
 			}
 		});
 
-		// ---- STEP 1 : domain picker /auth/register ----
+		// ---- STEP 1 : the enlistment, walked ----
+		//
+		// Four routes, not two steps of one page. This spec is about what a
+		// fresh account meets, so it walks them rather than seeding a domain.
 		await page.goto('/auth/register');
 		await page.waitForLoadState('networkidle');
 		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-		await page.screenshot({ path: testInfo.outputPath('01-domain-picker.png'), fullPage: true });
+		await page.screenshot({ path: testInfo.outputPath('01-entrance.png'), fullPage: true });
 
-		const codeBtn = page
-			.locator('button', { has: page.locator('p', { hasText: /^Code$/ }) })
-			.first();
-		await expect(codeBtn).toBeVisible({ timeout: 15_000 });
-		await codeBtn.click();
-		await page.waitForSelector(
-			'button:has-text("Créer mon compte"), button:has-text("Create my account")',
-			{ timeout: 10_000 }
-		);
+		await page.getByTestId('enlist-start').click();
+		await page.waitForURL(/\/auth\/register\/domain/, { timeout: 15_000 });
 
-		// ---- STEP 2 : account form ----
-		await page.getByPlaceholder(/^kofi_dev$/).fill(FRESH_USER.username);
-		await page.getByPlaceholder(/kofi@exemple\.com/).fill(FRESH_USER.email);
-		await page.getByPlaceholder(/^Kofi$/).fill(FRESH_USER.firstName);
-		await page.getByPlaceholder(/^Mensah$/).fill(FRESH_USER.lastName);
+		const codePlate = page.getByTestId('domain-plate-code');
+		await expect(codePlate).toBeVisible({ timeout: 15_000 });
+		await codePlate.getByRole('link').click();
+		await page.waitForURL(/\/auth\/register\/path/, { timeout: 15_000 });
+
+		// Whichever trade the real catalogue lists first: naming a slug here
+		// breaks the day the catalogue is re-curated.
+		const firstTrade = page.locator('[data-testid^="path-card-"]').first();
+		await expect(firstTrade).toBeVisible({ timeout: 20_000 });
+		await firstTrade.click();
+		await page.getByTestId('enlist-continue').click();
+		await page.waitForURL(/\/auth\/register\/account/, { timeout: 15_000 });
+
+		// ---- STEP 2 : the pact ----
+		await page.locator('input[autocomplete="username"]').fill(FRESH_USER.username);
+		await page.locator('input[autocomplete="email"]').fill(FRESH_USER.email);
+		await page.locator('input[autocomplete="given-name"]').fill(FRESH_USER.firstName);
+		await page.locator('input[autocomplete="family-name"]').fill(FRESH_USER.lastName);
 		await page.locator('input[type="password"]').fill(FRESH_USER.password);
 
 		// Country picker Benin
@@ -98,7 +107,7 @@ test.describe('@parcours onboarding-fresh-user', () => {
 			(r: Response) => r.url().includes('/api/auth/register') && r.request().method() === 'POST',
 			{ timeout: 30_000 }
 		);
-		await page.locator('button[type="submit"]').first().click();
+		await page.getByTestId('enlist-submit').click();
 		const submitRes = await submitPromise;
 
 		if (submitRes.status() < 200 || submitRes.status() >= 300) {

@@ -36,15 +36,6 @@ async function mockApi(page: Page, routes: ApiRoute[]) {
 	});
 }
 
-/** Selects a domain card on /auth/register, retrying until step 2 renders. */
-async function selectDomain(page: Page, label: string) {
-	const card = page.getByRole('button').filter({ has: page.getByText(label, { exact: true }) });
-	await expect(async () => {
-		await card.click();
-		await expect(page.locator('input[type="email"]')).toBeVisible({ timeout: 1500 });
-	}).toPass({ timeout: 20_000 });
-}
-
 /** Submits the login form, retrying until POST /auth/login actually fires. */
 async function submitLogin(page: Page) {
 	const submit = page.getByRole('button', { name: 'Se connecter', exact: true });
@@ -91,42 +82,79 @@ test.describe('Auth layout', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Register — Step 1 : choix du domaine
+// Enlistment — the entrance
+//
+// The register flow is a sequence now (entrance → domain → trade → pact), not a
+// domain grid stacked on a form. What used to be asserted here — seven cards
+// and three OAuth buttons on the first screen — describes a screen that no
+// longer exists. The sequence's own screens are covered in enlist.test.ts;
+// what stays here is the pact, because that is where the account is created.
 // ---------------------------------------------------------------------------
 
-test.describe('Register — step 1 (domain selection)', () => {
-	test('shows one card per discipline the backend serves', async ({ page }) => {
-		await gotoHydrated(page, '/auth/register');
-		await expect(page.locator('h1')).toBeVisible();
-
-		// A card's accessible name is label + description, and the descriptions
-		// quote each other ("Game design" in the Jeux Video card, "motion design"
-		// in the Design card), so /Design/i matched two buttons. Target the card
-		// title instead.
-		for (const label of [
-			'Code',
-			'Design',
-			'Jeux Vidéo',
-			'Cybersécurité',
-			'Intelligence artificielle',
-			'Ops & Cloud',
-			'Communication & leadership'
-		]) {
-			await expect(
-				page.getByRole('button').filter({ has: page.getByText(label, { exact: true }) })
-			).toBeVisible();
+/** Puts a chosen domain in the tab's session, the way the wall would have. */
+async function seedEnlistment(page: Page, domain = 'code') {
+	await page.addInitScript((d) => {
+		try {
+			sessionStorage.setItem(
+				'skilluv-enlist',
+				JSON.stringify({ domain: d, picks: [], primary: 0 })
+			);
+		} catch {
+			// storage might be unavailable in some contexts
 		}
+	}, domain);
+}
+
+test.describe('Enlistment — entrance', () => {
+	test('offers exactly two ways forward', async ({ page }) => {
+		await gotoHydrated(page, '/auth/register');
+		await expect(page.getByTestId('enlist-start')).toBeVisible();
+		await expect(page.locator('a[href="/auth/login"]').first()).toBeVisible();
 	});
 
-	test('shows the three OAuth entry points', async ({ page }) => {
+	test('carries no OAuth button', async ({ page }) => {
+		// The shortcuts moved to the pact. On the entrance they were a fourth
+		// decision on a screen whose only question is "are you new".
 		await gotoHydrated(page, '/auth/register');
+		await expect(page.getByRole('link', { name: 'Google' })).toHaveCount(0);
+		await expect(page.getByRole('link', { name: 'LinkedIn' })).toHaveCount(0);
+	});
+
+	test('leads to the wall, keeping an enterprise invite token', async ({ page }) => {
+		await gotoHydrated(page, '/auth/register?invite_token=abc123');
+		await expect(page.getByTestId('enlist-start')).toHaveAttribute(
+			'href',
+			'/auth/register/domain?invite_token=abc123'
+		);
+	});
+});
+
+// ---------------------------------------------------------------------------
+// Enlistment — the pact
+// ---------------------------------------------------------------------------
+
+test.describe('Enlistment — pact', () => {
+	async function reachPact(page: Page) {
+		await seedEnlistment(page);
+		await gotoHydrated(page, '/auth/register/account');
+		await expect(page.locator('input[autocomplete="username"]')).toBeVisible();
+	}
+
+	test('displays all required fields and the chosen domain', async ({ page }) => {
+		await reachPact(page);
+		await expect(page.locator('input[autocomplete="email"]')).toBeVisible();
+		await expect(page.locator('input[autocomplete="given-name"]')).toBeVisible();
+		await expect(page.locator('input[autocomplete="family-name"]')).toBeVisible();
+		await expect(page.locator('input[autocomplete="new-password"]')).toBeVisible();
+		await expect(page.locator('input[type="checkbox"]')).toBeVisible();
+		await expect(page.getByText('Code', { exact: true }).first()).toBeVisible();
+	});
+
+	test('offers the OAuth shortcuts here, not at the entrance', async ({ page }) => {
+		await reachPact(page);
 		await expect(page.getByRole('link', { name: 'Google' })).toHaveAttribute(
 			'href',
 			'/api/auth/google/start'
-		);
-		await expect(page.getByRole('link', { name: 'LinkedIn' })).toHaveAttribute(
-			'href',
-			'/api/auth/linkedin/start'
 		);
 		await expect(page.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
 			'href',
@@ -134,57 +162,29 @@ test.describe('Register — step 1 (domain selection)', () => {
 		);
 	});
 
-	test('links to /auth/login', async ({ page }) => {
-		await gotoHydrated(page, '/auth/register');
-		await expect(page.locator('a[href="/auth/login"]')).toBeVisible();
+	test('an invite token rides through to the OAuth shortcuts', async ({ page }) => {
+		await seedEnlistment(page);
+		await gotoHydrated(page, '/auth/register/account?invite_token=abc123');
+		await expect(page.getByRole('link', { name: 'Google' })).toHaveAttribute(
+			'href',
+			'/api/auth/google/start?invite_token=abc123'
+		);
 	});
 
-	test('clicking a domain moves to step 2 with domain shown', async ({ page }) => {
-		await gotoHydrated(page, '/auth/register');
-		await selectDomain(page, 'Code');
-
-		await expect(page.locator('input[autocomplete="username"]')).toBeVisible();
-		await expect(page.locator('input[type="email"]')).toBeVisible();
-		await expect(page.locator('input[type="password"]')).toBeVisible();
-		await expect(page.getByText(/Domaine\s*:/i)).toBeVisible();
-		await expect(page.getByText(/code/i).first()).toBeVisible();
-	});
-
-	test.describe('domain switching', () => {
-		for (const domain of ['Design', 'Jeux Vidéo', 'Cybersécurité']) {
-			test(`selecting "${domain}" jumps to step 2`, async ({ page }) => {
-				await gotoHydrated(page, '/auth/register');
-				await selectDomain(page, domain);
-			});
-		}
-	});
-});
-
-// ---------------------------------------------------------------------------
-// Register — Step 2 : formulaire
-// ---------------------------------------------------------------------------
-
-test.describe('Register — step 2 (form)', () => {
-	test.beforeEach(async ({ page }) => {
-		await gotoHydrated(page, '/auth/register');
-		await selectDomain(page, 'Code');
-	});
-
-	test('back link returns to step 1', async ({ page }) => {
-		await page.getByRole('button', { name: /Changer de domaine/i }).click();
-		await expect(page.getByRole('button', { name: /Cybersécurité/i })).toBeVisible();
-	});
-
-	test('displays all required fields', async ({ page }) => {
-		await expect(page.locator('input[autocomplete="username"]')).toBeVisible();
-		await expect(page.locator('input[autocomplete="email"]')).toBeVisible();
-		await expect(page.locator('input[autocomplete="given-name"]')).toBeVisible();
-		await expect(page.locator('input[autocomplete="family-name"]')).toBeVisible();
-		await expect(page.locator('input[autocomplete="new-password"]')).toBeVisible();
-		await expect(page.locator('input[type="checkbox"]')).toBeVisible();
+	test('with no domain chosen, it sends you back to the wall', async ({ page }) => {
+		await gotoHydrated(page, '/auth/register/account');
+		await page.waitForURL('**/auth/register/domain', { timeout: 10_000 });
 	});
 
 	test('weak password triggers a client-side error', async ({ page }) => {
+		await reachPact(page);
+
+		let called = false;
+		await page.route('**/api/auth/register', (route) => {
+			called = true;
+			return route.fulfill({ status: 200, body: '{}' });
+		});
+
 		await page.locator('input[autocomplete="username"]').fill('kofi_dev');
 		await page.locator('input[autocomplete="email"]').fill('kofi@example.com');
 		await page.locator('input[autocomplete="given-name"]').fill('Kofi');
@@ -192,20 +192,15 @@ test.describe('Register — step 2 (form)', () => {
 		await page.locator('input[autocomplete="new-password"]').fill('weak');
 		await page.locator('input[type="checkbox"]').check();
 
-		// No API call should happen — validation blocks it.
-		let called = false;
-		await page.route('**/api/auth/register', (route) => {
-			called = true;
-			return route.fulfill({ status: 200, body: '{}' });
-		});
-
-		await page.getByRole('button', { name: /Créer mon compte/i }).click();
+		await page.getByTestId('enlist-submit').click();
 
 		await expect(page.getByText(/Au moins 10 caractères/i)).toBeVisible();
 		expect(called).toBe(false);
 	});
 
 	test('unchecked terms triggers a client-side error', async ({ page }) => {
+		await reachPact(page);
+
 		await page.locator('input[autocomplete="username"]').fill('kofi_dev');
 		await page.locator('input[autocomplete="email"]').fill('kofi@example.com');
 		await page.locator('input[autocomplete="given-name"]').fill('Kofi');
@@ -215,61 +210,14 @@ test.describe('Register — step 2 (form)', () => {
 		// Bypass the HTML required attribute so we can hit our custom validation.
 		await page.locator('input[type="checkbox"]').evaluate((el) => el.removeAttribute('required'));
 
-		await page.getByRole('button', { name: /Créer mon compte/i }).click();
-		// The checkbox label already contains a "CGU" link, so assert on the full
-		// error message rather than the word alone.
+		await page.getByTestId('enlist-submit').click();
 		await expect(
-			page.getByText(/Vous devez accepter les CGU|You must accept the Terms of Service/i)
+			page.getByText(/Tu dois accepter les CGU|You must accept the Terms of Service/i)
 		).toBeVisible();
 	});
 
-	test('successful registration redirects to /challenges/onboarding', async ({ page }) => {
-		await mockApi(page, [
-			{
-				path: '/auth/register',
-				handler: (route) =>
-					route.fulfill({
-						status: 200,
-						contentType: 'application/json',
-						body: JSON.stringify({ data: { user: { ...fakeUser, profile_active: false } } })
-					})
-			}
-		]);
-
-		await page.locator('input[autocomplete="username"]').fill('kofi_dev');
-		await page.locator('input[autocomplete="email"]').fill('kofi@example.com');
-		await page.locator('input[autocomplete="given-name"]').fill('Kofi');
-		await page.locator('input[autocomplete="family-name"]').fill('Mensah');
-		await page.locator('input[autocomplete="new-password"]').fill('StrongPass1!');
-		// Skip country/city widgets by removing the client validation via terms only —
-		// then intercept the submit through a direct button click. Since CountrySelect
-		// is a custom component, we bypass it by evaluating the form state directly.
-		await page.locator('input[type="checkbox"]').check();
-
-		// Give a country via the underlying select if present; otherwise skip
-		// validation by pushing the button and trusting the redirect assertion below.
-		const countryTrigger = page.getByLabel(/Pays/i).first();
-		if (await countryTrigger.isVisible().catch(() => false)) {
-			// custom widget — try clicking + selecting France if it opens a listbox
-			await countryTrigger.click().catch(() => {});
-			await page.getByText(/France/i).first().click().catch(() => {});
-		}
-
-		await page.getByRole('button', { name: /Créer mon compte/i }).click();
-
-		// Either it redirects (happy path with valid country) OR shows a country error
-		// (widget didn't open). Both are acceptable outcomes for a UI test — we assert
-		// on the reachable one.
-		await Promise.race([
-			page.waitForURL('**/challenges/onboarding', { timeout: 5000 }).catch(() => null),
-			page
-				.getByText(/Sélectionnez un pays|Pick a country/i)
-				.waitFor({ timeout: 5000 })
-				.catch(() => null)
-		]);
-	});
-
-	test('backend error is displayed to the user', async ({ page }) => {
+	test('a backend refusal is shown and the account is not assumed', async ({ page }) => {
+		await reachPact(page);
 		await mockApi(page, [
 			{
 				path: '/auth/register',
@@ -291,24 +239,17 @@ test.describe('Register — step 2 (form)', () => {
 		await page.locator('input[autocomplete="new-password"]').fill('StrongPass1!');
 		await page.locator('input[type="checkbox"]').check();
 
-		// Force-set the country binding so client validation passes and we hit the mock
-		await page.evaluate(() => {
-			const trigger = document.querySelector('[data-country-trigger], button[aria-haspopup="listbox"]');
-			(trigger as HTMLElement | null)?.click?.();
-		});
-		const franceOption = page.getByText(/France/i).first();
-		if (await franceOption.isVisible().catch(() => false)) {
-			await franceOption.click();
-		}
+		await page.getByTestId('enlist-submit').click();
 
-		await page.getByRole('button', { name: /Créer mon compte/i }).click();
-
-		// If country widget was interactable, we should see the backend error.
+		// Either the country widget was reachable and the backend error shows, or
+		// client validation stopped at the country. Both prove the account was not
+		// assumed to exist.
 		const backendErr = page.getByText(/Email déjà utilisé/i);
-		const countryErr = page.getByText(/Sélectionnez un pays|Pick a country/i);
+		const countryErr = page.getByText(/Sélectionne un pays|Select a country/i);
 		await expect(backendErr.or(countryErr)).toBeVisible({ timeout: 5000 });
 	});
 });
+
 
 // ---------------------------------------------------------------------------
 // Login

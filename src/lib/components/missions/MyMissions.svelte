@@ -78,7 +78,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('missions.mineTitle')} — Skilluv</title>
+	<title>{i18n.t('missions.mineTitle')} | Skilluv</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
