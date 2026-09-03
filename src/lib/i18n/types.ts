@@ -4,6 +4,7 @@ import type { PortfolioTranslations } from './portfolios.types';
 import type { SecurityTranslations } from './security.types';
 import type { PostMvpTranslations } from './postmvp.types';
 import type { ConsentTranslations } from './consent.types';
+import type { EnlistTranslations } from './enlist.types';
 
 /**
  * The Post-MVP namespaces (SKI-36 … SKI-47) are declared in
@@ -16,8 +17,14 @@ export interface Translations
 		DesignWorkflowTranslations,
 		SecurityTranslations,
 		ConsentTranslations,
+		EnlistTranslations,
 		PortfolioTranslations {
 	common: {
+		filters: {
+			domain: string;
+			difficulty: string;
+			period: string;
+		};
 		actions: {
 			save: string;
 			cancel: string;
@@ -1921,6 +1928,8 @@ export interface Translations
 		noIssues: string;
 		noIssuesHint: string;
 		openIssue: string;
+		reward: string;
+		artifacts: string;
 		ecosystemsTitle: string;
 		topLanguagesTitle: string;
 		topLanguagesHint: string;
@@ -2018,6 +2027,7 @@ export interface Translations
 		slotsTitle: string;
 		slotsHint: string;
 		openSlotCta: string;
+		slotBackwards: string;
 		slotOpened: string;
 		programsTitle: string;
 		empty: string;

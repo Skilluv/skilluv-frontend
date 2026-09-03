@@ -186,7 +186,7 @@
 </script>
 
 <svelte:head>
-	<title>{title} — Skilluv</title>
+	<title>{title} | Skilluv</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

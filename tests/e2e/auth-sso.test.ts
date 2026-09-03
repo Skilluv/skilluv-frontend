@@ -44,6 +44,13 @@ test.beforeEach(async ({ page }) => {
 	await page.addInitScript(() => {
 		try {
 			localStorage.setItem('skilluv-locale', 'fr');
+			// The shortcuts now live on the pact, the last screen of the
+			// enlistment, which needs a class already chosen to render. Seeding one
+			// puts us there without walking the fresco, which has its own spec.
+			sessionStorage.setItem(
+				'skilluv-enlist',
+				JSON.stringify({ domain: 'code', picks: [], primary: 0 })
+			);
 		} catch {
 			/* storage unavailable */
 		}
@@ -53,7 +60,7 @@ test.beforeEach(async ({ page }) => {
 test.describe('SKI-49 SSO departure', () => {
 	test('l inscription expose les trois providers sur leurs URL de depart', async ({ page }) => {
 		await mockApi(page, common);
-		await gotoHydrated(page, '/auth/register');
+		await gotoHydrated(page, '/auth/register/account');
 
 		await expect(page.getByRole('link', { name: 'Google' })).toHaveAttribute(
 			'href',
@@ -72,7 +79,7 @@ test.describe('SKI-49 SSO departure', () => {
 
 	test('un invite_token en URL est propage sur les trois providers', async ({ page }) => {
 		await mockApi(page, common);
-		await gotoHydrated(page, '/auth/register?invite_token=inv-42');
+		await gotoHydrated(page, '/auth/register/account?invite_token=inv-42');
 
 		// Losing the token here would create an orphan account instead of
 		// consuming the invitation.

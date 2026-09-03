@@ -1,306 +1,274 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import { page } from '$app/state';
-	import Button from '$components/ui/Button.svelte';
-	import Input from '$components/ui/Input.svelte';
-	import CountrySelect from '$components/ui/CountrySelect.svelte';
-	import CityAutocomplete from '$components/ui/CityAutocomplete.svelte';
-	import { authApi, type RegisterRequest } from '$api/auth';
-	import { auth } from '$stores/auth.svelte';
-	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
-	import { domainStyle } from '$lib/utils/domains';
-	import type { SkillDomain } from '$types';
-	import SsoButton from '$components/ui/SsoButton.svelte';
-	import type { Component } from 'svelte';
-	import { Code2, Palette, Gamepad2, Shield, Brain, Cloud, Users } from '@lucide/svelte';
+	import { gsap } from '$lib/utils/animations';
+	import { enlist } from '$stores/enlist.svelte';
+	import { DOMAIN_PLATES } from '$lib/data/domains';
+	import Button from '$components/ui/Button.svelte';
 
-	// When arriving from an enterprise recruiter invite email, the URL carries
-	// ?invite_token=…  — we propagate it onto the OAuth buttons so the backend
-	// callback can consume the invite atomically with account creation.
+	/**
+	 * The entrance. Two ways forward and nothing else.
+	 *
+	 * ## What it shows besides the question
+	 *
+	 * The eleven domain names, drifting past low in the frame in outline type —
+	 * the benches seen down a dark workshop before you walk in. It is the only
+	 * ornament on the screen and it is not ornament: it says what is behind the
+	 * button, so "I'm ready" is a decision rather than a leap. The names are the
+	 * same strings the wall uses on the next screen.
+	 *
+	 * ## The sequence
+	 *
+	 * One orchestrated arrival rather than four independent fades: the workshop
+	 * lights (the band), then the headline wipes up line by line, then the rule
+	 * draws itself, then the words and the way in. Every part of it is skipped
+	 * whole under `prefers-reduced-motion` — the page then simply is what the
+	 * animation was building towards.
+	 *
+	 * The sign-in exit stays plainly visible, because hiding it is how you make
+	 * returning users create a second account. The OAuth shortcuts are not here;
+	 * they sit at the pact, where they save typing rather than adding a fourth
+	 * decision to an empty screen.
+	 */
+
+	/**
+	 * An enterprise recruiter arrives from an invite email carrying
+	 * `?invite_token=…`. It used to ride on the OAuth buttons that stood here;
+	 * with those moved, it rides the sequence instead and is spent at the pact.
+	 */
 	const inviteToken = $derived(page.url.searchParams.get('invite_token') ?? '');
-	function oauthHref(base: string): string {
-		return inviteToken ? `${base}?invite_token=${encodeURIComponent(inviteToken)}` : base;
-	}
+	const nextHref = $derived(
+		inviteToken
+			? `/auth/register/domain?invite_token=${encodeURIComponent(inviteToken)}`
+			: '/auth/register/domain'
+	);
 
-	// --- State ---
-	let step = $state<1 | 2>(1);
-	let loading = $state(false);
-	let error = $state('');
-	let fieldErrors = $state<Record<string, string>>({});
+	/** Doubled so the drift can loop on itself without a visible seam. */
+	const names = $derived(
+		DOMAIN_PLATES.map((plate) => i18n.t(`disciplines.${plate.domain}.label`))
+	);
 
-	// Step 1
-	let selectedDomain = $state<SkillDomain | null>(null);
+	let root = $state<HTMLElement | null>(null);
+	let band = $state<HTMLElement | null>(null);
 
-	// Step 2
-	let username = $state('');
-	let email = $state('');
-	let firstName = $state('');
-	let lastName = $state('');
-	let password = $state('');
-	let country = $state<string | null>(null);
-	let city = $state<string | null>(null);
-	let termsAccepted = $state(false);
+	onMount(() => {
+		// Anybody who backs out of the wall and lands here again is starting
+		// over; the domain they were holding should not silently survive it.
+		enlist.restore();
 
-	// $derived, not const: evaluated once, these labels froze on whichever locale
-	// happened to be active at first render and never followed a language switch.
-	const domains: { value: SkillDomain; label: string; desc: string; icon: Component }[] = $derived([
-		{ value: 'code', label: i18n.t('common.domains.code'), desc: i18n.t('auth.register.codeDesc'), icon: Code2 as Component },
-		{ value: 'design', label: i18n.t('common.domains.design'), desc: i18n.t('auth.register.designDesc'), icon: Palette as Component },
-		{ value: 'game', label: i18n.t('common.domains.game'), desc: i18n.t('auth.register.gameDesc'), icon: Gamepad2 as Component },
-		{ value: 'security', label: i18n.t('common.domains.security'), desc: i18n.t('auth.register.securityDesc'), icon: Shield as Component },
-		{ value: 'ai', label: i18n.t('common.domains.ai'), desc: i18n.t('auth.register.aiDesc'), icon: Brain as Component },
-		{ value: 'ops', label: i18n.t('common.domains.ops'), desc: i18n.t('auth.register.opsDesc'), icon: Cloud as Component },
-		{ value: 'soft_skills', label: i18n.t('common.domains.soft_skills'), desc: i18n.t('auth.register.softSkillsDesc'), icon: Users as Component }
-	]);
+		if (!root) return;
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-	function selectDomain(domain: SkillDomain) {
-		selectedDomain = domain;
-		step = 2;
-		error = '';
-		fieldErrors = {};
-	}
+		const ctx = gsap.context(() => {
+			const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-	function goBack() {
-		step = 1;
-		error = '';
-		fieldErrors = {};
-	}
+			tl.from('[data-band]', { opacity: 0, duration: 1.4, ease: 'sine.out' })
+				.from(
+					'[data-line]',
+					{
+						clipPath: 'inset(0 0 105% 0)',
+						yPercent: 14,
+						duration: 0.85,
+						stagger: 0.11,
+						clearProps: 'clipPath,transform'
+					},
+					0.15
+				)
+				.from('[data-rule]', { scaleX: 0, duration: 0.7, ease: 'power2.inOut' }, '-=0.35')
+				.from('[data-fade]', { opacity: 0, y: 14, duration: 0.7, stagger: 0.1 }, '-=0.4');
 
-	async function handleRegister(e: SubmitEvent) {
-		e.preventDefault();
-		if (!selectedDomain) return;
-
-		fieldErrors = {};
-		error = '';
-
-		// Validation client
-		if (!username.trim()) fieldErrors.username = i18n.t('auth.register.username');
-		if (!email.trim()) fieldErrors.email = i18n.t('auth.register.email');
-		if (!firstName.trim()) fieldErrors.firstName = i18n.t('auth.register.firstName');
-		if (!lastName.trim()) fieldErrors.lastName = i18n.t('auth.register.lastName');
-		// Backend policy: min 10 chars + uppercase + lowercase + digit + symbol.
-		if (
-			password.length < 10 ||
-			!/[A-Z]/.test(password) ||
-			!/[a-z]/.test(password) ||
-			!/\d/.test(password) ||
-			!/[^A-Za-z0-9\s]/.test(password)
-		) {
-			fieldErrors.password =
-				i18n.locale === 'fr'
-					? 'Au moins 10 caractères, avec majuscule, minuscule, chiffre et symbole'
-					: 'At least 10 characters, with uppercase, lowercase, digit and symbol';
-		}
-		if (!country) fieldErrors.country = i18n.locale === 'fr' ? 'Sélectionnez un pays' : 'Pick a country';
-		if (!termsAccepted) {
-			fieldErrors.terms =
-				i18n.locale === 'fr'
-					? 'Vous devez accepter les CGU et la politique de confidentialité'
-					: 'You must accept the Terms of Service and Privacy Policy';
-		}
-		if (Object.keys(fieldErrors).length > 0) return;
-
-		loading = true;
-		try {
-			const body: RegisterRequest = {
-				email: email.trim(),
-				username: username.trim(),
-				password,
-				first_name: firstName.trim(),
-				last_name: lastName.trim(),
-				skill_domain: selectedDomain,
-				country: country ?? undefined,
-				city: city ?? undefined,
-				terms_accepted: true
-			};
-
-			const res = await authApi.register(body);
-			auth.setUser(res.data.user);
-
-			// Redirige vers l'onboarding challenge
-			goto('/challenges/onboarding');
-		} catch (err) {
-			if (err instanceof SkilluError) {
-				if (err.code === 'VALIDATION_ERROR') {
-					error = err.message;
-				} else {
-					error = err.message;
-				}
-			} else {
-				error = i18n.t('errors.generic');
+			// The drift itself: one continuous pass, no easing, no reset flash.
+			// The row holds the eleven names twice, so -50% lands exactly on the
+			// start of the second copy.
+			if (band) {
+				gsap.to(band, { xPercent: -50, duration: 90, ease: 'none', repeat: -1 });
 			}
-		} finally {
-			loading = false;
-		}
-	}
+		}, root);
+
+		return () => ctx.revert();
+	});
 </script>
 
 <svelte:head>
-	<title>Inscription — Skilluv</title>
+	<title>{i18n.t('enlist.ready.title')} | Skilluv</title>
+	<meta name="robots" content="noindex" />
 </svelte:head>
 
-{#if step === 1}
-	<!-- STEP 1 : Choix du domaine -->
-	<div class="animate-[fade-in_300ms_ease-out]">
-		<h1 class="mb-3 text-center text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">
-			{i18n.t('auth.register.pickDomain')}<span class="text-accent">.</span>
-		</h1>
-		<p class="mb-10 text-center text-base text-text-muted">{i18n.t('auth.register.pickDomainSub')}</p>
-
-		<div class="grid gap-3">
-			{#each domains as domain}
-				{@const ds = domainStyle(domain.value)}
-				<button
-					type="button"
-					class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-4 text-left transition-colors duration-200 {ds.hoverBorder}"
-					onclick={() => selectDomain(domain.value)}
-				>
-					<span class="flex h-12 w-12 items-center justify-center rounded-2xl {ds.bgSoft} {ds.text}">
-						<domain.icon size={22} strokeWidth={2} />
-					</span>
-					<div class="min-w-0">
-						<p class="font-semibold text-text-primary">{domain.label}</p>
-						<p class="text-xs text-text-muted">{domain.desc}</p>
-					</div>
-				</button>
+<section class="ready" bind:this={root}>
+	<div class="ready__band" data-band aria-hidden="true">
+		<div class="ready__row" bind:this={band}>
+			{#each [...names, ...names] as name, i (i)}
+				<span class="ready__name">{name}</span>
 			{/each}
 		</div>
-
-		<div class="my-6 flex items-center gap-3">
-			<div class="h-px flex-1 bg-border"></div>
-			<span class="text-xs uppercase text-text-muted">{i18n.locale === 'fr' ? 'ou' : 'or'}</span>
-			<div class="h-px flex-1 bg-border"></div>
-		</div>
-		<div class="grid gap-2">
-			<SsoButton provider="google" href={oauthHref('/api/auth/google/start')} />
-			<SsoButton provider="linkedin" href={oauthHref('/api/auth/linkedin/start')} />
-			<SsoButton provider="github" href={oauthHref('/api/auth/github/login')} />
-		</div>
-
-		<p class="mt-8 text-center text-sm text-text-muted">
-			{i18n.t('auth.register.hasAccount')}
-			<a href="/auth/login" class="font-medium text-accent hover:underline">{i18n.t('auth.register.loginLink')}</a>
-		</p>
 	</div>
-{:else}
-	<!-- STEP 2 : Informations -->
-	<div class="animate-[fade-in_300ms_ease-out]">
-		<button type="button" class="mb-6 inline-flex items-center gap-1 text-sm text-text-muted transition-colors hover:text-text-primary" onclick={goBack}>
-			{i18n.t('auth.register.changeDomain')}
-		</button>
 
-		<h1 class="mb-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">
-			{i18n.t('auth.register.createAccount')}<span class="text-accent">.</span>
+	<div class="ready__content">
+		<h1 class="ready__title">
+			<span class="ready__line" data-line>{i18n.t('enlist.ready.title')}</span>
+			<span class="ready__line ready__line--accent" data-line>
+				{i18n.t('enlist.ready.titleAccent')}
+			</span>
 		</h1>
-		<p class="mb-8 text-base text-text-muted">
-			{i18n.t('auth.register.domain')} :
-			<span class="font-semibold text-accent capitalize">{selectedDomain}</span>
-		</p>
 
-		{#if error}
-			<div class="mb-5 rounded-2xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error" role="alert">
-				{error}
-			</div>
-		{/if}
+		<span class="ready__rule" data-rule aria-hidden="true"></span>
 
-		<form onsubmit={handleRegister} class="flex flex-col gap-4">
-			<Input
-				label={i18n.t('auth.register.username')}
-				placeholder="kofi_dev"
-				bind:value={username}
-				error={fieldErrors.username}
-				autocomplete="username"
-				required
-			/>
+		<p class="ready__lead" data-fade>{i18n.t('enlist.ready.lead')}</p>
 
-			<Input
-				label={i18n.t('auth.register.email')}
-				type="email"
-				placeholder="kofi@exemple.com"
-				bind:value={email}
-				error={fieldErrors.email}
-				autocomplete="email"
-				required
-			/>
-
-			<div class="grid grid-cols-2 gap-3">
-				<Input
-					label={i18n.t('auth.register.firstName')}
-					placeholder="Kofi"
-					bind:value={firstName}
-					error={fieldErrors.firstName}
-					autocomplete="given-name"
-					required
-				/>
-				<Input
-					label={i18n.t('auth.register.lastName')}
-					placeholder="Mensah"
-					bind:value={lastName}
-					error={fieldErrors.lastName}
-					autocomplete="family-name"
-					required
-				/>
-			</div>
-
-			<Input
-				label={i18n.t('auth.register.password')}
-				type="password"
-				placeholder={i18n.t('auth.register.passwordHint')}
-				bind:value={password}
-				error={fieldErrors.password}
-				autocomplete="new-password"
-				required
-			/>
-
-			<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-				<CountrySelect
-					label={i18n.locale === 'fr' ? 'Pays' : 'Country'}
-					bind:value={country}
-					error={fieldErrors.country}
-					required
-				/>
-				<CityAutocomplete
-					label={i18n.locale === 'fr' ? 'Ville' : 'City'}
-					bind:value={city}
-					{country}
-					hint={i18n.locale === 'fr' ? 'Optionnel' : 'Optional'}
-				/>
-			</div>
-
-			<label class="mt-2 flex items-start gap-3 text-sm text-text-muted">
-				<input
-					type="checkbox"
-					bind:checked={termsAccepted}
-					class="mt-0.5 h-4 w-4 shrink-0 rounded border-border accent-accent focus:ring-2 focus:ring-accent"
-					required
-				/>
-				<span>
-					{#if i18n.locale === 'fr'}
-						J'accepte les
-						<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">CGU</a>
-						et la
-						<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">politique de confidentialité</a>.
-					{:else}
-						I accept the
-						<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">Terms of Service</a>
-						and
-						<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">Privacy Policy</a>.
-					{/if}
-				</span>
-			</label>
-			{#if fieldErrors.terms}
-				<p class="-mt-2 text-sm text-error">{fieldErrors.terms}</p>
-			{/if}
-
-			<Button variant="accent" size="lg" type="submit" {loading} class="mt-2 w-full">
-				{loading ? i18n.t('auth.register.creating') : i18n.t('auth.register.createBtn')}
+		<div class="ready__act" data-fade>
+			<Button variant="accent" size="lg" href={nextHref} data-testid="enlist-start">
+				{i18n.t('enlist.ready.cta')}
 			</Button>
-		</form>
+		</div>
 
-		<p class="mt-8 text-center text-sm text-text-muted">
-			{i18n.t('auth.register.hasAccount')}
-			<a href="/auth/login" class="font-medium text-accent hover:underline">{i18n.t('auth.register.loginLink')}</a>
+		<p class="ready__alt" data-fade>
+			{i18n.t('enlist.ready.haveAccount')}
+			<a href="/auth/login">{i18n.t('enlist.ready.loginLink')}</a>
 		</p>
 	</div>
-{/if}
+</section>
+
+<style>
+	.ready {
+		position: relative;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		/* The generous bottom padding is what lifts the block off the drifting
+		   names: the content is centred in what is left after it, so the band
+		   keeps its anchor at the foot of the screen while the sign-in line
+		   stops sitting on top of it. */
+		padding: 2rem clamp(1rem, 5vw, 3rem) clamp(8rem, 26vh, 18rem);
+		text-align: center;
+		overflow: hidden;
+	}
+
+	/* ── The benches down the workshop ─────────────────────────────────── */
+
+	.ready__band {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 9%;
+		pointer-events: none;
+		user-select: none;
+		/* Fades at both ends so the loop never shows an edge, and downward so
+		   the names sink into the dark rather than stopping. */
+		mask-image:
+			linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%),
+			linear-gradient(to bottom, black 72%, transparent 100%);
+		mask-composite: intersect;
+		-webkit-mask-image:
+			linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%),
+			linear-gradient(to bottom, black 72%, transparent 100%);
+		-webkit-mask-composite: source-in;
+	}
+
+	.ready__row {
+		display: flex;
+		align-items: baseline;
+		gap: clamp(2rem, 5vw, 4.5rem);
+		width: max-content;
+		will-change: transform;
+	}
+
+	.ready__name {
+		font-family: 'Fraunces Variable', Georgia, serif;
+		font-variation-settings: 'opsz' 144, 'SOFT' 30, 'WONK' 1;
+		font-weight: 700;
+		font-size: clamp(3rem, 9vw, 7rem);
+		line-height: 1;
+		letter-spacing: -0.03em;
+		white-space: nowrap;
+		/* Outline rather than fill: present, unreadable as a claim, and it never
+		   competes with the headline sitting above it. */
+		color: transparent;
+		-webkit-text-stroke: 1px var(--sk-border-strong);
+		opacity: 0.75;
+	}
+
+	/* ── The question ─────────────────────────────────────────────────── */
+
+	.ready__content {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+		max-width: 46rem;
+	}
+
+	.ready__title {
+		margin: 0;
+		font-family: 'Fraunces Variable', Georgia, serif;
+		font-variation-settings: 'opsz' 144, 'SOFT' 40, 'WONK' 1;
+		font-weight: 700;
+		font-size: clamp(2.75rem, 9vw, 6rem);
+		line-height: 0.96;
+		letter-spacing: -0.035em;
+	}
+
+	.ready__line {
+		display: block;
+	}
+
+	.ready__line--accent {
+		color: var(--sk-accent);
+		font-style: italic;
+	}
+
+	.ready__rule {
+		display: block;
+		width: clamp(3rem, 8vw, 5rem);
+		height: 1px;
+		background-color: var(--sk-border-strong);
+		transform-origin: center;
+	}
+
+	.ready__lead {
+		max-width: 44ch;
+		margin: 0;
+		font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+		line-height: 1.6;
+		color: var(--sk-text-muted);
+		text-wrap: pretty;
+	}
+
+	.ready__act {
+		margin-top: 0.5rem;
+	}
+
+	.ready__alt {
+		margin: 0;
+		font-size: 0.875rem;
+		color: var(--sk-text-muted);
+	}
+	.ready__alt a {
+		color: var(--sk-text);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.ready__alt a:hover {
+		color: var(--sk-accent);
+	}
+
+	@media (max-width: 640px) {
+		.ready__band {
+			bottom: 4%;
+		}
+		.ready__name {
+			-webkit-text-stroke-width: 0.75px;
+		}
+	}
+
+	/* The band is the whole point of the screen's motion; with motion refused
+	   it holds still and reads as a static texture, which it already is. */
+	@media (prefers-reduced-motion: reduce) {
+		.ready__row {
+			will-change: auto;
+		}
+	}
+</style>

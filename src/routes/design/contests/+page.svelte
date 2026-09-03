@@ -62,9 +62,9 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('designContests.title')} — Skilluv</title>
+	<title>{i18n.t('designContests.title')} | Skilluv</title>
 	<meta name="description" content={i18n.t('designContests.subtitle')} />
-	<meta property="og:title" content="{i18n.t('designContests.title')} — Skilluv" />
+	<meta property="og:title" content="{i18n.t('designContests.title')} | Skilluv" />
 	<meta property="og:description" content={i18n.t('designContests.subtitle')} />
 </svelte:head>
 

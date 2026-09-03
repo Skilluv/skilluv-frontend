@@ -122,10 +122,10 @@
 </script>
 
 <svelte:head>
-	<title>{mission ? `${mission.title} — Skilluv` : `${boardTitle} — Skilluv`}</title>
+	<title>{mission ? `${mission.title} | Skilluv` : `${boardTitle} | Skilluv`}</title>
 	{#if mission}
 		<meta name="description" content={mission.description.slice(0, 200)} />
-		<meta property="og:title" content="{mission.title} — Skilluv" />
+		<meta property="og:title" content="{mission.title} | Skilluv" />
 		<meta property="og:description" content={mission.description.slice(0, 200)} />
 	{/if}
 </svelte:head>

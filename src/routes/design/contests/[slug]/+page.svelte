@@ -154,10 +154,10 @@
 </script>
 
 <svelte:head>
-	<title>{contest ? `${contest.name} — Skilluv` : `${i18n.t('designContests.title')} — Skilluv`}</title>
+	<title>{contest ? `${contest.name} | Skilluv` : `${i18n.t('designContests.title')} | Skilluv`}</title>
 	{#if contest}
 		<meta name="description" content={contest.description ?? i18n.t('designContests.subtitle')} />
-		<meta property="og:title" content="{contest.name} — Skilluv" />
+		<meta property="og:title" content="{contest.name} | Skilluv" />
 		<meta property="og:description" content={contest.description ?? i18n.t('designContests.subtitle')} />
 		{#if moodboard}
 			<meta property="og:image" content={moodboard} />

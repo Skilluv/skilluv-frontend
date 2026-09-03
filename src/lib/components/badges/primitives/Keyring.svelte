@@ -50,7 +50,7 @@
 		{#each keys as key, i (i)}
 			{@const meaning = KEY_MEANINGS[key]}
 			<g class="keyring-key" class:keyring-key--interactive={interactive} transform={keyTransform(i, keys.length)}>
-				<title>{meaning.label_fr} — {meaning.fr}</title>
+				<title>{meaning.label_fr} | {meaning.fr}</title>
 				{#if interactive && onKeyClick}
 					<foreignObject x="0" y="0" width="80" height="240">
 						<button
