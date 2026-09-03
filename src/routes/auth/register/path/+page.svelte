@@ -76,72 +76,114 @@
 		});
 	});
 
-	// ── The rail ────────────────────────────────────────────────────────────
+	// ── The ring ────────────────────────────────────────────────────────────
 	//
-	// Scrolling is native: `scroll-snap` gives the swipe on a phone and the
-	// trackpad on a desktop for free, and the cards are buttons, so tabbing
-	// through them scrolls them into view without a line of script. The arrows
-	// exist for the mouse, which has neither gesture.
-	let rail = $state<HTMLElement | null>(null);
+	// The trades sit on a carousel rather than a row: the active one faces you,
+	// its neighbours turn away and fall back into depth, and the ends join, so
+	// there is no first card and no last one. Walking past the end of a class
+	// brings you round rather than stopping you at a wall — the same rule the
+	// discipline wall follows, and the reason both read as something you turn
+	// rather than something you reach the end of.
+	//
+	// Driven by an index, not by scroll position. Scroll cannot wrap: a
+	// container has a real first pixel and a real last one, and faking the
+	// wrap means teleporting the scroll offset, which the eye catches. An index
+	// wraps by arithmetic and nothing jumps.
+	let active = $state(0);
 
-	function nudge(direction: 1 | -1) {
-		if (!rail) return;
-		// One viewport of cards, less a card, so the last one stays visible and
-		// the eye keeps its place instead of restarting on a blank row.
-		const step = Math.max(rail.clientWidth - 220, 240);
-		rail.scrollBy({ left: step * direction, behavior: 'smooth' });
+	/** How many cards stand behind the front one on each side. */
+	const VISIBLE = 3;
+
+	/**
+	 * Shortest signed distance from the active card, wrapping both ways.
+	 *
+	 * With 12 trades, card 11 is at -1 from card 0, not at +11. That is what
+	 * makes the ring a ring: the card before the first is the last one, and it
+	 * arrives from the left like any other.
+	 */
+	function offsetOf(index: number, total: number): number {
+		if (total === 0) return 0;
+		const half = Math.floor(total / 2);
+		return ((((index - active) % total) + total + half) % total) - half;
 	}
 
-	// ── Dragging the rail ───────────────────────────────────────────────────
+	function turn(direction: 1 | -1) {
+		const total = matches.length;
+		if (total === 0) return;
+		active = (active + direction + total) % total;
+	}
+
+	// The set changes under the ring whenever the search narrows it, and an
+	// index kept from the previous set would point at a card that is no longer
+	// there. Back to the front of whatever is left.
+	$effect(() => {
+		void query;
+		active = 0;
+	});
+
+	function onKeydown(event: KeyboardEvent) {
+		if (event.key === 'ArrowRight') {
+			event.preventDefault();
+			turn(1);
+		} else if (event.key === 'ArrowLeft') {
+			event.preventDefault();
+			turn(-1);
+		}
+	}
+
+	// ── Turning it by hand ──────────────────────────────────────────────────
 	//
-	// A finger already swipes: the rail scrolls natively, with the momentum the
-	// platform gives it, and intercepting that would only make it worse. A
-	// mouse has no such gesture — it has a wheel that scrolls the page, not the
-	// rail — so the cards are draggable, and that is what this handles.
+	// A finger and a mouse do the same thing here, unlike a scroll rail where
+	// the finger had a native gesture and the mouse had none. Dragging past a
+	// card's width turns the ring by one, and keeps turning as the drag
+	// continues, so a long haul walks several trades rather than one.
 	//
-	// The hard part is not the scrolling, it is telling a drag from a click. A
-	// card is a button: releasing after hauling the rail 300px must not enrol
-	// somebody in a trade they were only scrolling past. So a drag past the
-	// threshold swallows the click that follows it, in the capture phase,
-	// before it reaches the card.
+	// The hard part is unchanged: a card is a button, and releasing after
+	// hauling the ring must not enrol somebody in a trade they were turning
+	// past. A drag past the threshold swallows the click that follows it, in
+	// the capture phase, before it reaches the card.
 	let dragFrom = 0;
-	let dragScroll = 0;
-	// Reactive because it drives the cursor: the other three are read inside
-	// handlers only and would cost a re-render for nothing.
+	let dragTurns = 0;
 	let dragging = $state(false);
 	let dragged = false;
 
-	const DRAG_SLOP = 6;
+	const DRAG_SLOP = 8;
+	/** Pixels of drag per card. Roughly a card's width, so it tracks the hand. */
+	const DRAG_STEP = 120;
 
-	function onRailPointerDown(event: PointerEvent) {
-		if (!rail || event.pointerType === 'touch' || event.button !== 0) return;
+	function onRingPointerDown(event: PointerEvent) {
+		if (event.button !== 0) return;
 		dragFrom = event.clientX;
-		dragScroll = rail.scrollLeft;
+		dragTurns = 0;
 		dragging = true;
 		dragged = false;
 	}
 
-	function onRailPointerMove(event: PointerEvent) {
-		if (!dragging || !rail) return;
+	function onRingPointerMove(event: PointerEvent) {
+		if (!dragging) return;
 		const dx = event.clientX - dragFrom;
 		if (!dragged && Math.abs(dx) < DRAG_SLOP) return;
 		if (!dragged) {
 			dragged = true;
-			// Captured only once the intent is clear, so a plain click on a card
-			// is never stolen from it.
-			rail.setPointerCapture(event.pointerId);
+			(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
 		}
-		rail.scrollLeft = dragScroll - dx;
+		// Turns already taken are subtracted rather than the origin being reset,
+		// so a drag that comes back rewinds the ring instead of ratcheting.
+		const wanted = Math.trunc(-dx / DRAG_STEP);
+		const delta = wanted - dragTurns;
+		if (delta === 0) return;
+		dragTurns = wanted;
+		for (let i = 0; i < Math.abs(delta); i++) turn(delta > 0 ? 1 : -1);
 	}
 
-	function onRailPointerUp(event: PointerEvent) {
-		if (!dragging || !rail) return;
+	function onRingPointerUp(event: PointerEvent) {
+		if (!dragging) return;
 		dragging = false;
-		if (rail.hasPointerCapture(event.pointerId)) rail.releasePointerCapture(event.pointerId);
-		// `dragged` stays true until the click it produced has been swallowed.
+		const el = event.currentTarget as HTMLElement;
+		if (el.hasPointerCapture(event.pointerId)) el.releasePointerCapture(event.pointerId);
 	}
 
-	function onRailClickCapture(event: MouseEvent) {
+	function onRingClickCapture(event: MouseEvent) {
 		if (!dragged) return;
 		dragged = false;
 		event.stopPropagation();
@@ -199,6 +241,10 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
+<!-- Left and right walk the ring wherever the focus is, which is what a
+     carousel is expected to answer to. -->
+<svelte:window onkeydown={onKeydown} />
+
 <section class="paths">
 	<header class="paths__head">
 		<p class="paths__eyebrow">{i18n.t('enlist.path.eyebrow')}</p>
@@ -211,10 +257,8 @@
 	</header>
 
 	{#if loading}
-		<div class="paths__rail" aria-hidden="true">
-			{#each Array(4) as _, i (i)}
-				<Skeleton class="h-52 w-72 shrink-0" rounded="xl" />
-			{/each}
+		<div class="paths__skeleton" aria-hidden="true">
+			<Skeleton class="h-96 w-64" rounded="xl" />
 		</div>
 	{:else if error}
 		<p class="paths__error" role="alert">{error}</p>
@@ -256,41 +300,73 @@
 				<span>{i18n.t('enlist.path.noMatchHint', { total: catalogue.length })}</span>
 			</p>
 		{:else}
-			<div class="paths__railWrap">
+			<div class="paths__ringWrap">
 				<button
 					type="button"
 					class="paths__arrow"
 					aria-label={i18n.t('enlist.path.railPrevious')}
-					onclick={() => nudge(-1)}
+					onclick={() => turn(-1)}
 				>
 					<ChevronLeft size={20} strokeWidth={2} />
 				</button>
 
-				<!-- The cards are buttons, so tabbing scrolls them into view on
-				     its own and the rail needs no keyboard handling of its own. -->
-				<!-- `onclickcapture` runs before the card's own handler, which is
-				     the only place a drag can be told from a click in time. -->
+				<!--
+					The ring. `onclickcapture` runs before a card's own handler,
+					which is the only place a drag can be told from a click in
+					time.
+
+					Every match is rendered, not only the seven on screen. A
+					carousel that renders a window is a carousel a screen reader
+					can only ever meet seven of, and the other sixty-six would be
+					unreachable by any means but the search box. The ones behind
+					the visible arc are transparent and inert to the pointer, and
+					still in the tab order: focusing one turns the ring to it.
+				-->
 				<div
-					class="paths__rail"
-					class:paths__rail--dragging={dragging}
-					bind:this={rail}
+					class="paths__ring"
+					class:paths__ring--dragging={dragging}
 					role="group"
 					aria-label={i18n.t('enlist.path.title')}
-					data-testid="path-rail"
-					onpointerdown={onRailPointerDown}
-					onpointermove={onRailPointerMove}
-					onpointerup={onRailPointerUp}
-					onpointercancel={onRailPointerUp}
-					onclickcapture={onRailClickCapture}
+					data-testid="path-ring"
+					onpointerdown={onRingPointerDown}
+					onpointermove={onRingPointerMove}
+					onpointerup={onRingPointerUp}
+					onpointercancel={onRingPointerUp}
+					onclickcapture={onRingClickCapture}
 				>
-					{#each matches as orientation (orientation.slug)}
-						<PathCard
-							{orientation}
-							selected={enlist.isPicked(orientation.slug)}
-							order={enlist.pickOrder(orientation.slug)}
-							locked={enlist.isFull && !enlist.isPicked(orientation.slug)}
-							onToggle={toggle}
-						/>
+					{#each matches as orientation, i (orientation.slug)}
+						{@const offset = offsetOf(i, matches.length)}
+						{@const near = Math.abs(offset) <= VISIBLE}
+						<!--
+							A seat that is not the front one answers a click by
+							turning to it, not by taking the trade. Clicking a card
+							you can only see edge-on and being enrolled in it is not
+							what anybody meant by clicking it — and the alternative,
+							making them inert, would leave the pointer no way to
+							reach a trade the search did not narrow to.
+						-->
+						<div
+							class="paths__seat"
+							data-near={near}
+							data-front={offset === 0}
+							style="--offset: {offset}; --depth: {Math.abs(offset)}; z-index: {100 -
+								Math.abs(offset)}"
+							onfocusin={() => (active = i)}
+							onclickcapture={(event) => {
+								if (offset === 0) return;
+								event.stopPropagation();
+								event.preventDefault();
+								active = i;
+							}}
+						>
+							<PathCard
+								{orientation}
+								selected={enlist.isPicked(orientation.slug)}
+								order={enlist.pickOrder(orientation.slug)}
+								locked={enlist.isFull && !enlist.isPicked(orientation.slug)}
+								onToggle={toggle}
+							/>
+						</div>
 					{/each}
 				</div>
 
@@ -298,7 +374,7 @@
 					type="button"
 					class="paths__arrow"
 					aria-label={i18n.t('enlist.path.railNext')}
-					onclick={() => nudge(1)}
+					onclick={() => turn(1)}
 				>
 					<ChevronRight size={20} strokeWidth={2} />
 				</button>
@@ -480,7 +556,13 @@
 	}
 
 	/* ── The rail ───────────────────────────────────────────────────────── */
-	.paths__railWrap {
+	.paths__skeleton {
+		display: flex;
+		justify-content: center;
+		margin-top: 1.25rem;
+	}
+
+	.paths__ringWrap {
 		position: relative;
 		display: flex;
 		align-items: center;
@@ -488,42 +570,91 @@
 		margin-top: 1.25rem;
 	}
 
-	.paths__rail {
-		display: flex;
-		gap: 0.875rem;
+	/*
+	   The ring.
+	
+	   Every card sits in the same place and is turned out of it by its own
+	   offset, so the front one faces you and its neighbours recede into depth.
+	   The perspective lives here rather than on each seat: one vanishing point
+	   for the whole ring is what makes it read as one object turning, and not
+	   as several cards each tilting on their own.
+	
+	   The height is fixed rather than derived from the cards, because the cards
+	   are absolutely positioned and would otherwise collapse it to nothing.
+	*/
+	.paths__ring {
+		position: relative;
 		flex: 1;
 		min-width: 0;
-		overflow-x: auto;
-		scroll-snap-type: x mandatory;
-		/* Room for the lift and the shadow: without it, a raised card is
-		   clipped by its own scroll container. */
-		padding: 1.25rem 0.25rem 1.75rem;
-		scroll-padding-inline: 0.25rem;
-		/* The depth the cards tilt into. Set here rather than per card so they
-		   share one vanishing point instead of each having their own. */
-		perspective: 1200px;
-		scrollbar-width: none;
+		height: clamp(23rem, 62vh, 27rem);
+		perspective: 1400px;
+		perspective-origin: 50% 45%;
+		touch-action: pan-y;
 	}
-	.paths__rail::-webkit-scrollbar {
-		display: none;
-	}
-	/* The cursor says the rail can be hauled, and says it is being hauled. */
+
 	@media (hover: hover) {
-		.paths__rail {
+		.paths__ring {
 			cursor: grab;
 		}
-		.paths__rail--dragging {
+		.paths__ring--dragging {
 			cursor: grabbing;
-			/* Snap fights a drag: it yanks the rail to the nearest card on every
-			   frame. Restored the moment the pointer is released. */
-			scroll-snap-type: none;
 			/* Otherwise the browser starts selecting the card text mid-drag. */
 			user-select: none;
 		}
 	}
-	.paths__rail > :global(*) {
-		flex: 0 0 clamp(15rem, 74vw, 19rem);
-		scroll-snap-align: center;
+
+	/*
+	   One seat, turned out of the front by its offset.
+	
+	   Three things move together and none of them alone would read as depth:
+	   the card slides aside, falls back in Z, and turns to face the centre. A
+	   card that only slides is a row; one that only turns is a fan.
+	
+	   `--offset` is signed and wraps, so the seat before the first is the last
+	   one arriving from the left. `--depth` is its absolute value, for the
+	   things that do not care which side it is on.
+	*/
+	.paths__seat {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: clamp(14rem, 66vw, 17rem);
+		transform-style: preserve-3d;
+		transform: translate(-50%, -50%) translateX(calc(var(--offset) * 8.5rem))
+			translateZ(calc(var(--depth) * -7rem)) rotateY(calc(var(--offset) * -22deg));
+		transition:
+			transform 420ms cubic-bezier(0.32, 0.72, 0, 1),
+			opacity 320ms ease-out;
+	}
+
+	/*
+	   Behind the visible arc.
+	
+	   Transparent and inert to the pointer rather than removed: they stay in
+	   the tab order, and focusing one turns the ring to it. A carousel that
+	   only renders its visible seats is one a keyboard can never leave.
+	*/
+	.paths__seat[data-near='false'] {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	/* Depth is dimmed as well as distanced. Perspective alone is a weak cue on
+	   a small screen; losing light with distance is the one that always reads. */
+	.paths__seat[data-near='true'] {
+		opacity: calc(1 - var(--depth) * 0.22);
+	}
+
+	/* The back seats keep their pointer events: clicking one turns the ring to
+	   it, which the seat handles in the capture phase. The cursor says so. */
+	.paths__seat[data-front='false'] {
+		cursor: pointer;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.paths__seat {
+			transition: none;
+		}
 	}
 
 	.paths__arrow {

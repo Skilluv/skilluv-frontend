@@ -74,6 +74,39 @@ async function mockCounts(page: Page, totals: Record<string, number>) {
 	);
 }
 
+/**
+ * Take a trade, wherever it sits on the ring.
+ *
+ * The trades are a carousel now, not a row. Only the card facing you can be
+ * taken; clicking one turned away brings it to the front instead, which is
+ * what a carousel is expected to do and what stops somebody enrolling in a
+ * trade they can only see edge-on.
+ *
+ * So reaching a trade is: click until it is the front card, then click once
+ * more to take it. The loop is bounded — a ring of four needs at most four
+ * turns, and an unbounded one would hang rather than fail if the ring ever
+ * stopped turning.
+ */
+async function bringToFront(page: Page, slug: string, total: number) {
+	const card = page.getByTestId(`path-card-${slug}`);
+	const seat = page.locator('[data-front]').filter({ has: card });
+	for (let i = 0; i <= total; i++) {
+		if ((await seat.getAttribute('data-front')) === 'true') return card;
+		// Turned with the keyboard rather than by clicking the card. A seat
+		// beside the front one is partly behind it, so its centre is not
+		// reliably clickable — and a test that depends on hit-testing a moving,
+		// overlapping card fails for reasons that have nothing to do with the
+		// behaviour under test. Clicking a side card is covered on its own.
+		await page.keyboard.press('ArrowRight');
+	}
+	throw new Error(`never reached the front of the ring: ${slug}`);
+}
+
+async function takeTrade(page: Page, slug: string, total: number) {
+	const card = await bringToFront(page, slug, total);
+	await card.click();
+}
+
 async function mockCatalogue(page: Page, items: ReturnType<typeof orientation>[]) {
 	await page.route('**/api/orientations**', (route) =>
 		route.fulfill({
@@ -191,10 +224,11 @@ test.describe('Enlistment — trades', () => {
 		await gotoHydrated(page, '/auth/register/path?d=code');
 
 		const card = page.getByTestId('path-card-dev-frontend');
-		await card.click();
+		await takeTrade(page, 'dev-frontend', four.length);
 		await expect(card).toHaveAttribute('aria-pressed', 'true');
 		await expect(page.getByTestId('enlist-continue')).toBeVisible();
 
+		// Already at the front, so one click gives it back.
 		await card.click();
 		await expect(card).toHaveAttribute('aria-pressed', 'false');
 		// The tray only exists while something is in it.
@@ -206,19 +240,63 @@ test.describe('Enlistment — trades', () => {
 		await gotoHydrated(page, '/auth/register/path?d=code');
 
 		for (const slug of ['dev-frontend', 'dev-backend', 'dev-mobile']) {
-			await page.getByTestId(`path-card-${slug}`).click();
+			await takeTrade(page, slug, four.length);
 		}
 
-		const fourth = page.getByTestId('path-card-dev-embarque');
+		// Brought to the front and then clicked: the cap is what must refuse it,
+		// not its position on the ring.
+		const fourth = await bringToFront(page, 'dev-embarque', four.length);
 		await fourth.click();
 		await expect(fourth).toHaveAttribute('aria-pressed', 'false');
 		await expect(page.getByText(/Tu en as déjà 3/i)).toBeVisible();
 	});
 
+	test('a card turned away is brought to the front rather than taken', async ({ page }) => {
+		await mockCatalogue(page, four);
+		await gotoHydrated(page, '/auth/register/path?d=code');
+
+		// The second trade starts one seat along. Clicking it must turn the ring
+		// to it, not enrol somebody in a trade they can only see edge-on.
+		const card = page.getByTestId('path-card-dev-backend');
+		const seat = page.locator('[data-front]').filter({ has: card });
+		await expect(seat).toHaveAttribute('data-front', 'false');
+
+		// Dispatched on the element rather than clicked at a point. A seat beside
+		// the front one is partly behind it, so a positional click lands on
+		// whatever is topmost there — which is the front card, and would prove
+		// nothing about this one. What is under test is what the seat does with
+		// a click, not where the pointer has to be to deliver it.
+		await card.dispatchEvent('click');
+		await expect(seat).toHaveAttribute('data-front', 'true');
+		await expect(card).toHaveAttribute('aria-pressed', 'false');
+	});
+
+	test('the ring has no end: turning past the last trade comes round', async ({ page }) => {
+		await mockCatalogue(page, four);
+		await gotoHydrated(page, '/auth/register/path?d=code');
+
+		const first = page.locator('[data-front]').filter({
+			has: page.getByTestId('path-card-dev-frontend')
+		});
+		await expect(first).toHaveAttribute('data-front', 'true');
+
+		// One turn per trade brings the first one back round. A rail would have
+		// stopped at the fourth.
+		for (let i = 0; i < four.length; i++) await page.keyboard.press('ArrowRight');
+		await expect(first).toHaveAttribute('data-front', 'true');
+
+		// And backwards from the first lands on the last, not on nothing.
+		await page.keyboard.press('ArrowLeft');
+		const last = page.locator('[data-front]').filter({
+			has: page.getByTestId('path-card-dev-embarque')
+		});
+		await expect(last).toHaveAttribute('data-front', 'true');
+	});
+
 	test('the domain survives a reload', async ({ page }) => {
 		await mockCatalogue(page, four);
 		await gotoHydrated(page, '/auth/register/path?d=code');
-		await page.getByTestId('path-card-dev-frontend').click();
+		await takeTrade(page, 'dev-frontend', four.length);
 
 		await page.reload();
 		await expect(page.getByTestId('path-card-dev-frontend')).toHaveAttribute(
@@ -230,7 +308,7 @@ test.describe('Enlistment — trades', () => {
 	test('switching domain drops trades that belonged to the previous one', async ({ page }) => {
 		await mockCatalogue(page, four);
 		await gotoHydrated(page, '/auth/register/path?d=code');
-		await page.getByTestId('path-card-dev-frontend').click();
+		await takeTrade(page, 'dev-frontend', four.length);
 		await expect(page.getByTestId('enlist-continue')).toBeVisible();
 
 		await mockCatalogue(page, [orientation('ui-designer', 'Designer UI', 'design')]);
