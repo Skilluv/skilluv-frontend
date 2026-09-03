@@ -157,13 +157,22 @@ test.describe('Onboarding orientations flow', () => {
 				path: '/orientations',
 				handler: (route) => {
 					const domain = new URL(route.request().url()).searchParams.get('domain');
-					const data = domain
+					const orientations = domain
 						? catalogPayload.data.filter((o) => o.primary_domain === domain)
 						: catalogPayload.data;
 					return route.fulfill({
 						status: 200,
 						contentType: 'application/json',
-						body: JSON.stringify({ data })
+						// The envelope the handler actually writes. This fixture used
+						// to answer a bare array, matching what the client was typed
+						// for rather than what the server sends.
+						body: JSON.stringify({
+							data: {
+								orientations,
+								pagination: { limit: 200, offset: 0 },
+								total: orientations.length
+							}
+						})
 					});
 				}
 			}

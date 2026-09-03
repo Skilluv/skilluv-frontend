@@ -39,12 +39,47 @@ function orientation(slug: string, name: string, domain = 'code') {
 	};
 }
 
+/**
+ * The catalogue envelope, as the handler actually writes it.
+ *
+ * These fixtures used to answer a bare array, which is what the client was
+ * typed for and never what the backend sent: `OrientationsCatalogResponse` has
+ * carried `{ orientations, pagination, total }` since PR #40. A mock that
+ * agrees with the client instead of with the server proves the two agree with
+ * each other and nothing else.
+ */
+function catalogue(items: ReturnType<typeof orientation>[]) {
+	return {
+		data: {
+			orientations: items,
+			pagination: { limit: 200, offset: 0 },
+			total: items.length
+		}
+	};
+}
+
+/** `/orientation-counts`: every discipline and its total, in one call. */
+async function mockCounts(page: Page, totals: Record<string, number>) {
+	await page.route('**/api/orientation-counts**', (route) =>
+		route.fulfill({
+			status: 200,
+			contentType: 'application/json',
+			body: JSON.stringify({
+				data: {
+					domains: Object.entries(totals).map(([domain, total]) => ({ domain, total })),
+					total: Object.values(totals).reduce((sum, n) => sum + n, 0)
+				}
+			})
+		})
+	);
+}
+
 async function mockCatalogue(page: Page, items: ReturnType<typeof orientation>[]) {
 	await page.route('**/api/orientations**', (route) =>
 		route.fulfill({
 			status: 200,
 			contentType: 'application/json',
-			body: JSON.stringify({ data: items })
+			body: JSON.stringify(catalogue(items))
 		})
 	);
 }
@@ -95,10 +130,11 @@ test.describe('Enlistment — wall', () => {
 	});
 
 	test('the trade count appears only once the catalogue answered', async ({ page }) => {
-		await mockCatalogue(page, [
-			orientation('dev-frontend', 'Développeur frontend'),
-			orientation('dev-backend', 'Développeur backend')
-		]);
+		// The wall asks `/orientation-counts` now: one call for all twelve
+		// disciplines, instead of one catalogue page per discipline read only
+		// for its length. Eleven requests pulling up to 2 200 rows to end up
+		// with eleven numbers, on the first screen after "start".
+		await mockCounts(page, { code: 2 });
 		await gotoHydrated(page, '/auth/register/domain?d=code');
 		await expect(page.getByTestId('domain-plate-code').getByText('2 métiers')).toBeVisible();
 	});
@@ -106,7 +142,7 @@ test.describe('Enlistment — wall', () => {
 	test('a catalogue that fails leaves the domain unlabelled rather than showing zero', async ({
 		page
 	}) => {
-		await page.route('**/api/orientations**', (route) => route.abort());
+		await page.route('**/api/orientation-counts**', (route) => route.abort());
 		await gotoHydrated(page, '/auth/register/domain?d=code');
 		await expect(page.getByTestId('domain-plate-code')).toBeVisible();
 		await expect(page.getByText(/0 métiers/)).toHaveCount(0);
@@ -132,7 +168,7 @@ test.describe('Enlistment — trades', () => {
 			return route.fulfill({
 				status: 200,
 				contentType: 'application/json',
-				body: JSON.stringify({ data: four })
+				body: JSON.stringify(catalogue(four))
 			});
 		});
 
