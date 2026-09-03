@@ -44,6 +44,7 @@
 	import BadgesSection from '$lib/components/profile/BadgesSection.svelte';
 	import { projectsApi } from '$api/projects';
 	import { ReportButton } from '$components/moderation';
+	import { rankColor, domainStyle } from '$lib/utils/domains';
 
 	onMount(() => {
 		void geo.ensureCountries();
@@ -78,19 +79,11 @@
 	 */
 	let profileUserId = $derived(isOwnProfile ? (auth.user?.id ?? user?.id) : user?.id);
 
-	const titleColors: Record<string, string> = {
-		apprenti: 'text-text-muted',
-		artisan: 'text-blue-400',
-		maitre: 'text-purple-400',
-		legende: 'text-amber-400'
-	};
-
-	const domainDot: Record<string, string> = {
-		code: 'bg-blue-500',
-		design: 'bg-pink-500',
-		game: 'bg-green-500',
-		security: 'bg-red-500'
-	};
+	// These were two local copies of tables that already exist in
+	// `utils/domains.ts`, and copies drift: they still held the literal palette
+	// shades after the shared ones moved to theme tokens, so this page kept
+	// rendering an unreadable rank on a light ground. The dot table was worse —
+	// it knew four disciplines out of eleven, so the other seven drew nothing.
 
 	/** Trousseau P5 fallback : dérive quelques clés visibles quand le backend
 	 * P17 n'a pas encore renvoyé un `UserBadgesResponse` complet. Une fois
@@ -160,9 +153,9 @@
 </script>
 
 <svelte:head>
-	<title>{user ? `${user.display_name} — Skilluv` : `${i18n.t('profile.title')} — Skilluv`}</title>
+	<title>{user ? `${user.display_name} | Skilluv` : `${i18n.t('profile.title')} | Skilluv`}</title>
 	{#if user}
-		<meta property="og:title" content="{user.display_name} — Skilluv" />
+		<meta property="og:title" content="{user.display_name} | Skilluv" />
 		<meta property="og:description" content="{i18n.t(`common.titles.${user.title}`)} · {stats?.total_fragments ?? 0} {i18n.t('common.fragments')} · Skilluv" />
 	{/if}
 </svelte:head>
@@ -222,7 +215,7 @@
 			<div class="p-6">
 				<div class="flex items-start gap-5">
 					<!-- Avatar -->
-					<div class="shrink-0 h-16 w-16 rounded-full bg-surface-overlay flex items-center justify-center text-2xl font-bold {titleColors[user.title]}">
+					<div class="shrink-0 h-16 w-16 rounded-full bg-surface-overlay flex items-center justify-center text-2xl font-bold {rankColor(user.title)}">
 						{#if user.avatar_url}
 							<img src={user.avatar_url} alt={user.display_name} width="64" height="64" class="h-16 w-16 rounded-full object-cover" />
 						{:else}
@@ -237,12 +230,12 @@
 							<span class="text-xs text-text-muted font-mono">@{user.username}</span>
 						</div>
 						<div class="mt-1 flex items-center gap-2 flex-wrap">
-							<span class="text-sm font-semibold capitalize {titleColors[user.title]}">{i18n.t(`common.titles.${user.title}`)}</span>
+							<span class="text-sm font-semibold capitalize {rankColor(user.title)}">{i18n.t(`common.titles.${user.title}`)}</span>
 							{#if user.golden_stars > 0}
 								<span class="text-amber-400 text-sm">{'★'.repeat(user.golden_stars)}</span>
 							{/if}
 							<div class="flex items-center gap-1.5">
-								<div class="h-2 w-2 rounded-full {domainDot[user.skill_domain]}"></div>
+								<div class="h-2 w-2 rounded-full {domainStyle(user.skill_domain).dot}"></div>
 								<span class="text-xs text-text-muted">{i18n.t(`common.domains.${user.skill_domain}`)}</span>
 							</div>
 							{#if user.country || user.city}

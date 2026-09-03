@@ -15,7 +15,10 @@ const LEGACY_MIGRATIONS: Record<string, ThemeBase> = {
 
 class ThemeState {
 	base = $state<ThemeBase>('forge');
-	mode = $state<ThemeMode>('dark');
+	// Light is the default. It has to match the inline script in `app.html`,
+	// which paints `data-theme` before hydration: if the two disagree the page
+	// renders in one mode and flips to the other the moment Svelte takes over.
+	mode = $state<ThemeMode>('light');
 	current = $derived<Theme>(this.mode === 'dark' ? this.base : `${this.base}-light`);
 
 	/** Initialise le theme depuis localStorage — migre les anciens noms si besoin. */

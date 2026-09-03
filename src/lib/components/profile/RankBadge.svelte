@@ -10,11 +10,16 @@
 
 	let { title, goldenStars = 0, size = 'md' }: Props = $props();
 
+	// Every colour is a theme token. The literal shades these replaced were
+	// picked on a dark ground and read at about 2:1 on a light one — and the
+	// tint is deliberately dropped to /10 because these badges also sit on the
+	// categorical surfaces, where a /15 wash stacks on an already-coloured
+	// background and eats the contrast the text needs.
 	const titleStyles: Record<Title, string> = {
-		apprenti: 'bg-zinc-500/15 text-zinc-400 border-zinc-500/20',
-		artisan: 'bg-blue-500/15 text-blue-400 border-blue-500/20',
-		maitre: 'bg-accent/15 text-accent border-accent/20',
-		legende: 'bg-yellow-500/15 text-yellow-400 border-yellow-500/20 shadow-[0_0_12px_rgba(234,179,8,0.2)]'
+		apprenti: 'bg-text-muted/10 text-text-muted border-text-muted/20',
+		artisan: 'bg-rank-artisan/10 text-rank-artisan border-rank-artisan/20',
+		maitre: 'bg-rank-maitre/10 text-rank-maitre border-rank-maitre/20',
+		legende: 'bg-rank-doyen/10 text-rank-doyen border-rank-doyen/20'
 	};
 
 	const sizeStyles: Record<string, string> = {
