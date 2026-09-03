@@ -58,6 +58,41 @@ test.describe('Cookie consent', () => {
 		await expect(reject).toBeInViewport();
 	});
 
+	test('the French copy is not covered by the buttons at desktop width', async ({ page }) => {
+		// The row was sized around the English strings. French runs about a
+		// fifth longer, and with `min-width: auto` on the text and `flex-none`
+		// on the buttons neither side could give: the row overflowed the card
+		// and the buttons, painted later, sat on top of the sentence. Nothing
+		// in the class list says which language it was tuned for, so the guard
+		// has to be the geometry.
+		await page.addInitScript(() => localStorage.setItem('skilluv-locale', 'fr'));
+		await page.setViewportSize({ width: 1280, height: 800 });
+		await page.goto('/');
+
+		const banner = page.getByTestId('consent-banner');
+		await expect(banner).toBeVisible();
+		const body = banner.locator('p').first();
+		await expect(body).toContainText('Nous utilisons des cookies');
+
+		const bodyBox = (await body.boundingBox())!;
+		expect(bodyBox).not.toBeNull();
+
+		for (const name of [/personnaliser/i, /refuser/i, /tout accepter/i]) {
+			const box = (await banner.getByRole('button', { name }).boundingBox())!;
+			expect(box).not.toBeNull();
+			const overlaps =
+				bodyBox.x < box.x + box.width &&
+				box.x < bodyBox.x + bodyBox.width &&
+				bodyBox.y < box.y + box.height &&
+				box.y < bodyBox.y + bodyBox.height;
+			expect(overlaps, `"${name}" overlaps the consent copy`).toBe(false);
+		}
+
+		// And the sentence stays inside the card rather than running past it.
+		const cardBox = (await banner.locator('div').first().boundingBox())!;
+		expect(bodyBox.x + bodyBox.width).toBeLessThanOrEqual(cardBox.x + cardBox.width + 1);
+	});
+
 	test('preferences can be reopened from the footer after deciding', async ({ page }) => {
 		await page.goto('/');
 		await page

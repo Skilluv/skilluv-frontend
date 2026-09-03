@@ -52,7 +52,17 @@
 			class="mx-auto max-w-5xl rounded-2xl border border-border bg-surface-elevated p-4 shadow-lg sm:p-5"
 		>
 			<div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-				<div class="lg:max-w-2xl">
+				<!--
+					`min-w-0` is what keeps the copy inside the card. A flex item
+					defaults to `min-width: auto`, so this block refused to shrink
+					below its content while the buttons opposite refused to shrink
+					at all — the row overflowed and the buttons painted over the
+					text. English hid it by being short; French, a fifth longer,
+					did not. `flex-1` then lets the block take whatever the buttons
+					leave and wrap into it, so the card grows taller instead of
+					wider and no translation can push the copy back under a button.
+				-->
+				<div class="min-w-0 flex-1 lg:max-w-2xl">
 					<h2 class="text-base font-bold text-text-primary sm:text-lg">
 						{i18n.t('consent.banner.title')}
 					</h2>
@@ -83,7 +93,7 @@
 					customise, reject, accept — from the same markup.
 				-->
 				<div
-					class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-3"
+					class="flex shrink-0 flex-col gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-3"
 				>
 					<Button
 						variant="secondary"
