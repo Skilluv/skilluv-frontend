@@ -113,7 +113,6 @@ export interface Translations
 			today: string;
 			open: string;
 			dismiss: string;
-			aria: string;
 		};
 		date: string;
 		badge: string;

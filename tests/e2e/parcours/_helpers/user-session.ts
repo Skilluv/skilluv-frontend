@@ -65,7 +65,23 @@ export interface UserCredentials {
  * deliberate absence of one. No spec depends on an implicit skeleton fixture,
  * and none leaves its posture to execution order.
  */
-export const ANONYMOUS_STATE: { cookies: []; origins: [] } = { cookies: [], origins: [] };
+/**
+ * Anonymous, but not naive.
+ *
+ * Truly empty storage means a first visit, and a first visit opens the
+ * closed-beta notice — a modal, over whatever the spec was about to click. An
+ * anonymous *session* is the subject of these specs; an unread notice is not.
+ * The key stays keyed by the opening date, so it moves with it.
+ */
+export const ANONYMOUS_STATE = {
+	cookies: [],
+	origins: [
+		{
+			origin: 'http://localhost:4173',
+			localStorage: [{ name: 'skilluv-launch-notice-2027-01-11', value: '1' }]
+		}
+	]
+};
 
 export function userStoragePath(): string {
 	return path.resolve(__dirname, '../../.auth/user-standard.json');

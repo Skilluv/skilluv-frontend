@@ -16,7 +16,20 @@ import { gotoHydrated } from './utils/hydration';
  * adds a control.
  */
 
-test.use({ storageState: { cookies: [], origins: [] } });
+// Signed out, and with the closed-beta notice already read: it is a modal over
+// the very header this spec measures. The subject here is the nav row, not the
+// notice.
+test.use({
+	storageState: {
+		cookies: [],
+		origins: [
+			{
+				origin: 'http://localhost:4173',
+				localStorage: [{ name: 'skilluv-launch-notice-2027-01-11', value: '1' }]
+			}
+		]
+	}
+});
 
 /** The pill's right edge against the left edge of the controls beside it. */
 async function overlap(page: Page): Promise<number | null> {

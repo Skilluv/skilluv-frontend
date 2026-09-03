@@ -54,8 +54,7 @@ export const fr: Translations = {
 			day: 'jour',
 			today: 'C’est aujourd’hui.',
 			open: 'C’est ouvert.',
-			dismiss: 'J’ai compris',
-			aria: 'Skilluv est en bêta fermée'
+			dismiss: 'J’ai compris'
 		},
 		date: '11 janvier 2027',
 		badge: 'Bêta le 11 janvier 2027',

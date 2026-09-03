@@ -21,19 +21,37 @@
 	 * block site data — so every read and write is guarded and the failure mode
 	 * is showing the notice, not breaking the page.
 	 *
-	 * ## Why it waits a beat
+	 * ## Why it opens immediately, having first opened late
 	 *
-	 * It opens after a short delay rather than on paint. A dialog that is
-	 * already there when the page appears reads as part of the page and gets
-	 * clicked away without being read; one that arrives just after reads as
-	 * something addressed to you. The delay is also what keeps it out of the
-	 * way of the hero animation.
+	 * It waited 900ms, on the argument that a dialog already present when the
+	 * page appears reads as part of the page, while one arriving just after
+	 * reads as addressed to you. That is true and it cost more than it was
+	 * worth.
+	 *
+	 * An auditor samples the page once it goes quiet, which is exactly when a
+	 * timed dialog opens. Lighthouse and axe both caught the dismiss button
+	 * mid-fade and read its background as a partial composite of the accent —
+	 * 1.67:1 rather than the 7:1 it settles at — and the landing page has a
+	 * hard gate at a perfect accessibility score. The finding was an artefact,
+	 * but no sampling moment exists that avoids it: any delay lands in the
+	 * audit window, because the audit waits for the same quiet the delay does.
+	 *
+	 * Opening on mount settles the animation long before anything measures, and
+	 * a first-visit notice appearing at once is ordinary. The aesthetic was not
+	 * worth a permanently amber gate.
 	 *
 	 * ## Accessibility
 	 *
 	 * The shared `Modal` carries the dialog role, the focus trap, the Escape
 	 * key and the scroll lock. This component only decides when it opens and
 	 * what it says.
+	 *
+	 * The title goes through `Modal`'s own `title` prop rather than being an
+	 * `<h2>` in the body, because that prop is what names the dialog: `Modal`
+	 * sets `aria-label` from it, and a `role="dialog"` with no accessible name
+	 * is an axe violation that cost the landing page its perfect score. It also
+	 * buys the close button in the header, which an informational notice should
+	 * have.
 	 */
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
@@ -47,9 +65,6 @@
 	 * what somebody was told, and the hour is not.
 	 */
 	const STORAGE_KEY = `skilluv-launch-notice-${OPENING.toISOString().slice(0, 10)}`;
-
-	/** How long before it appears. Long enough to read as addressed to you. */
-	const DELAY_MS = 900;
 
 	let open = $state(false);
 	let daysLeft = $state<number | null>(null);
@@ -82,8 +97,7 @@
 		// a cached page and served stale.
 		daysLeft = daysUntilOpening();
 		if (alreadySeen()) return;
-		const timer = setTimeout(() => (open = true), DELAY_MS);
-		return () => clearTimeout(timer);
+		open = true;
 	});
 
 	/** The date, in the reader's own locale rather than a hardcoded string. */
@@ -97,10 +111,9 @@
 	);
 </script>
 
-<Modal {open} onclose={dismiss} size="sm">
-	<div class="notice" aria-label={i18n.t('launch.notice.aria')}>
+<Modal {open} onclose={dismiss} size="sm" title={i18n.t('launch.notice.title')}>
+	<div class="notice">
 		<p class="notice__eyebrow">{i18n.t('launch.notice.eyebrow')}</p>
-		<h2 class="notice__title">{i18n.t('launch.notice.title')}</h2>
 		<p class="notice__body">{i18n.t('launch.notice.body')}</p>
 
 		{#if daysLeft !== null}
@@ -147,16 +160,8 @@
 		color: var(--sk-accent);
 	}
 
-	.notice__title {
-		margin: 0.5rem 0 0;
-		font-size: 1.5rem;
-		font-weight: 800;
-		line-height: 1.15;
-		letter-spacing: -0.01em;
-	}
-
 	.notice__body {
-		margin: 0.75rem auto 0;
+		margin: 0.5rem auto 0;
 		max-width: 34ch;
 		font-size: 0.9375rem;
 		line-height: 1.55;
