@@ -92,8 +92,25 @@
 	</button>
 
 	{#if open}
+		<!--
+			A ceiling, and a scrollbar past it.
+
+			These menus grew: "Grow" now carries mentorship, design, AI, security
+			and the disciplines, and an unbounded panel simply ran off the bottom
+			of the screen — the last group was rendered where nobody could reach
+			it. `max-h` rather than `h`, so a short menu still ends where its
+			content does instead of leaving dead space.
+
+			The cap is bounded by the viewport too: a fixed 32rem is fine on a
+			desktop and taller than a landscape phone, and a panel that overflows
+			the screen is the bug this is fixing, not a smaller version of it.
+
+			`overscroll-contain` stops the page behind from taking over the
+			scroll once the panel hits its end, which is what makes a menu feel
+			like it jumped shut.
+		-->
 		<div
-			class="absolute left-1/2 -translate-x-1/2 top-full mt-2 min-w-[320px] max-w-[440px] rounded-2xl border border-border bg-surface-elevated shadow-xl animate-[slide-up_150ms_ease-out] z-[80]"
+			class="absolute left-1/2 -translate-x-1/2 top-full mt-2 max-h-[min(32rem,calc(100vh-6rem))] min-w-[320px] max-w-[440px] overflow-y-auto overscroll-contain rounded-2xl border border-border bg-surface-elevated shadow-xl animate-[slide-up_150ms_ease-out] z-[80]"
 			role="menu"
 		>
 			<div class="p-2">
