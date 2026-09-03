@@ -5,6 +5,8 @@
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
+	import ChipFilter from '$components/ui/ChipFilter.svelte';
+	import Select from '$components/ui/Select.svelte';
 	import type { LeaderboardEntry, LeaderboardDomain, LeaderboardPeriod } from '$types';
 	import { onMount } from 'svelte';
 	import { Trophy } from '@lucide/svelte';
@@ -42,6 +44,15 @@
 
 	const periods: LeaderboardPeriod[] = ['alltime', 'monthly', 'weekly'];
 
+	// One list for both widths, so the chips and the menu cannot drift apart.
+	let domainItems = $derived(
+		domains.map((d) => ({
+			value: d.value,
+			label: domainLabel(d.value),
+			dot: d.dot || undefined
+		}))
+	);
+
 	$effect(() => {
 		loadLeaderboard();
 	});
@@ -75,7 +86,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('leaderboard.title')} — Skilluv</title>
+	<title>{i18n.t('leaderboard.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl px-4 py-12 sm:py-16">
@@ -131,25 +142,43 @@
 		</div>
 	{/if}
 
-	<!-- Filters -->
-	<div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
-		<SegmentedControl
-			items={domains.map((d) => ({
-				value: d.value,
-				label: domainLabel(d.value),
-				dot: d.dot || undefined
-			}))}
-			bind:value={domain}
-			onchange={loadLeaderboard}
-		/>
+	<!--
+		Filters. Same split as /challenges, for the same reason.
 
-		<SegmentedControl
-			items={periods.map((p) => ({ value: p, label: i18n.t(`leaderboard.${p}`) }))}
-			bind:value={period}
-			onchange={loadLeaderboard}
-			size="sm"
-			class="sm:ml-auto"
-		/>
+		Twelve disciplines never fit one row, and here there was not even a
+		scroll container: the track simply ran past the page. Period is three
+		short labels and stays a segmented track.
+	-->
+	<div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+		<div class="min-w-0">
+			<span class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
+				{i18n.t('common.filters.domain')}
+			</span>
+
+			<ChipFilter
+				class="hidden sm:flex"
+				label={i18n.t('common.filters.domain')}
+				items={domainItems}
+				bind:value={domain}
+				onchange={loadLeaderboard}
+			/>
+
+			<div class="sm:hidden">
+				<Select items={domainItems} bind:value={domain} onchange={loadLeaderboard} />
+			</div>
+		</div>
+
+		<div class="shrink-0">
+			<span class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
+				{i18n.t('common.filters.period')}
+			</span>
+			<SegmentedControl
+				items={periods.map((p) => ({ value: p, label: i18n.t(`leaderboard.${p}`) }))}
+				bind:value={period}
+				onchange={loadLeaderboard}
+				size="sm"
+			/>
+		</div>
 	</div>
 
 	<!-- Leaderboard -->
