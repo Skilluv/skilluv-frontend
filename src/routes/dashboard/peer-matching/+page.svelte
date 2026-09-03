@@ -249,14 +249,14 @@
 	onMount(async () => {
 		const [orientationsRes] = await Promise.allSettled([orientationsApi.list(), load()]);
 		if (orientationsRes.status === 'fulfilled') {
-			orientations = (orientationsRes.value.data ?? []).filter((o) => !o.is_archived);
+			orientations = (orientationsRes.value.data?.orientations ?? []).filter((o) => !o.is_archived);
 			if (!enrollOrientationId && orientations.length > 0) enrollOrientationId = orientations[0].id;
 		}
 	});
 </script>
 
 <svelte:head>
-	<title>{i18n.t('peerMatching.title')} — Skilluv</title>
+	<title>{i18n.t('peerMatching.title')} | Skilluv</title>
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-8" data-testid="peer-matching-page">

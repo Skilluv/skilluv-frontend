@@ -120,7 +120,7 @@
 			auth.user ? cohortsApi.listMine() : Promise.resolve(null)
 		]);
 		if (orientationsRes.status === 'fulfilled') {
-			orientations = (orientationsRes.value.data ?? []).filter((o) => !o.is_archived);
+			orientations = (orientationsRes.value.data?.orientations ?? []).filter((o) => !o.is_archived);
 		}
 		if (mineRes.status === 'fulfilled' && mineRes.value) {
 			mine = mineRes.value.data?.cohorts ?? [];
@@ -129,7 +129,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('cohorts.title')} — Skilluv</title>
+	<title>{i18n.t('cohorts.title')} | Skilluv</title>
 	<meta name="description" content={i18n.t('cohorts.subtitle')} />
 </svelte:head>
 
