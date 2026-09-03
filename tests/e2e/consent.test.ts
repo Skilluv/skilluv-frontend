@@ -13,7 +13,28 @@ import { test, expect } from '@playwright/test';
  * to the project value, so the seed still applied and every assertion below
  * failed while looking like the feature was broken.
  */
-test.use({ storageState: { cookies: [], origins: [] } });
+/**
+ * A first visit for the consent decision, and only that.
+ *
+ * The storage is cleared of the consent keys but keeps the closed-beta notice
+ * dismissed. Both open on a genuine first visit, the notice is a modal, and a
+ * modal over the banner swallows the clicks these tests make — so clearing
+ * everything would test the two together and neither properly.
+ *
+ * An explicitly *empty* `origins` would do that. It has to carry the notice
+ * key instead.
+ */
+test.use({
+	storageState: {
+		cookies: [],
+		origins: [
+			{
+				origin: 'http://localhost:4173',
+				localStorage: [{ name: 'skilluv-launch-notice-2027-01-11', value: '1' }]
+			}
+		]
+	}
+});
 
 test.describe('Cookie consent', () => {
 	test('a first-time visitor is asked, and can refuse', async ({ page }) => {

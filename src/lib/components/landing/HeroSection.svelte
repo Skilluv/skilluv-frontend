@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n';
+	import { daysUntilOpening } from '$lib/data/launch';
 	import { gsap } from '$lib/utils/animations';
 	import { onMount } from 'svelte';
 	import Button from '$components/ui/Button.svelte';
@@ -17,16 +18,17 @@
 	 * a recruiter would check first. The opening date is real, it is the thing
 	 * worth announcing before launch, and it needs no data to be true.
 	 */
-	const OPENING = new Date('2027-01-11T00:00:00Z');
-
-	// Computed on mount, not at module scope: evaluating it during SSR would bake
-	// the server's day into the HTML and serve a stale countdown from cache.
+	// The date moved to `$lib/data/launch` when the first-visit notice needed it
+	// too. Two copies of an opening date is how one of them comes to announce a
+	// day the other has already passed.
+	//
+	// Still computed on mount, not at module scope: evaluating it during SSR
+	// would bake the server's day into the HTML and serve a stale countdown from
+	// cache.
 	let daysLeft = $state<number | null>(null);
 
 	onMount(() => {
-		const msPerDay = 86_400_000;
-		const today = new Date();
-		daysLeft = Math.ceil((OPENING.getTime() - today.getTime()) / msPerDay);
+		daysLeft = daysUntilOpening();
 
 		const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 		tl.fromTo(bannerRef, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.6 })

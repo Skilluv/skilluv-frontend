@@ -8,7 +8,8 @@
 	import RecommendationsWidget from '$components/ai/RecommendationsWidget.svelte';
 
 	// Landing sections
-	import HeroSection from '$lib/components/landing/HeroSection.svelte';
+	import HeroSection from '$lib/components/landing/HeroSection.svelte';
+	import LaunchNotice from '$lib/components/landing/LaunchNotice.svelte';
 	import DomainsSection from '$lib/components/landing/DomainsSection.svelte';
 	import HowItWorks from '$lib/components/landing/HowItWorks.svelte';
 	import TrendingChallenges from '$lib/components/landing/TrendingChallenges.svelte';
@@ -126,6 +127,11 @@
 			class="pointer-events-none absolute inset-x-0 -top-20 h-[110vh] opacity-[0.04]"
 			style="background-image: linear-gradient(var(--sk-text) 1px, transparent 1px), linear-gradient(90deg, var(--sk-text) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);"
 		></div>
+		<!-- Said once, on a first visit: the page below describes the platform in
+		     the present tense, and the platform is in closed beta. Somebody who
+		     reads it, tries to sign up and hits a wall learns that the hard way. -->
+		<LaunchNotice />
+
 		<HeroSection />
 	</div>
 	<DomainsSection />
