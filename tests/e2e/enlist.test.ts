@@ -98,6 +98,10 @@ async function bringToFront(page: Page, slug: string, total: number) {
 		// overlapping card fails for reasons that have nothing to do with the
 		// behaviour under test. Clicking a side card is covered on its own.
 		await page.keyboard.press('ArrowRight');
+		// Waited out, because repeated presses deliberately queue: pressing
+		// again mid-flight asks for one seat further, which is right for a
+		// person and wrong for a loop that wants to arrive at a named one.
+		await page.waitForTimeout(420);
 	}
 	throw new Error(`never reached the front of the ring: ${slug}`);
 }
@@ -291,6 +295,131 @@ test.describe('Enlistment — trades', () => {
 			has: page.getByTestId('path-card-dev-embarque')
 		});
 		await expect(last).toHaveAttribute('data-front', 'true');
+	});
+
+	test('a swipe turns the ring, and follows the hand while it does', async ({ page }) => {
+		await mockCatalogue(page, four);
+		await gotoHydrated(page, '/auth/register/path?d=code');
+
+		const first = page.locator('[data-front]').filter({
+			has: page.getByTestId('path-card-dev-frontend')
+		});
+		await expect(first).toHaveAttribute('data-front', 'true');
+
+		const ring = page.getByTestId('path-ring');
+		const box = (await ring.boundingBox())!;
+		const y = box.y + box.height / 2;
+
+		// A real drag, not a click: down, several moves, up. The moves matter —
+		// the first version only turned on release thresholds, so a gesture that
+		// moved the finger and let go looked like nothing had happened.
+		await page.mouse.move(box.x + box.width * 0.7, y);
+		await page.mouse.down();
+		for (let x = 0; x <= 200; x += 40) {
+			await page.mouse.move(box.x + box.width * 0.7 - x, y);
+		}
+		// Held still before letting go, so the release carries no speed. The
+		// ring has momentum now: a throw lands where its speed takes it, and a
+		// test that names the seat has to remove the throw to be about the
+		// drag. The flick test below is the one that exercises speed.
+		await page.mouse.move(box.x + box.width * 0.7 - 200, y);
+		await page.mouse.up();
+
+		// Dragged left by 200px against a step of 140, so one seat and no more.
+		await expect(first).toHaveAttribute('data-front', 'false');
+		const second = page.locator('[data-front]').filter({
+			has: page.getByTestId('path-card-dev-backend')
+		});
+		await expect(second).toHaveAttribute('data-front', 'true');
+	});
+
+	test('a modest drag turns the ring, not only a long haul', async ({ page }) => {
+		await mockCatalogue(page, four);
+		await gotoHydrated(page, '/auth/register/path?d=code');
+
+		const first = page.locator('[data-front]').filter({
+			has: page.getByTestId('path-card-dev-frontend')
+		});
+		await expect(first).toHaveAttribute('data-front', 'true');
+
+		const ring = page.getByTestId('path-ring');
+		const box = (await ring.boundingBox())!;
+		const y = box.y + box.height / 2;
+		const from = box.x + box.width / 2;
+
+		// Ninety pixels against a step of a hundred and forty: past halfway, so
+		// it settles on the next seat whatever speed it was released at. The
+		// earlier version turned on a rounded distance alone and needed the
+		// best part of a card before anything happened at all.
+		//
+		// It deliberately does not test the throw. Velocity comes from the time
+		// between moves, and Playwright's own pace differs by engine — a
+		// gesture that is a flick in Chromium is a slow drag in Firefox. What
+		// speed adds is covered by the model, not by a test that cannot drive
+		// it honestly.
+		await page.mouse.move(from, y);
+		await page.mouse.down();
+		for (const dx of [20, 45, 70, 90]) await page.mouse.move(from - dx, y);
+		await page.mouse.up();
+
+		await expect(first).toHaveAttribute('data-front', 'false');
+	});
+
+	test('two fingers on a trackpad turn the ring', async ({ page }) => {
+		await mockCatalogue(page, four);
+		await gotoHydrated(page, '/auth/register/path?d=code');
+
+		const first = page.locator('[data-front]').filter({
+			has: page.getByTestId('path-card-dev-frontend')
+		});
+		await expect(first).toHaveAttribute('data-front', 'true');
+
+		const ring = page.getByTestId('path-ring');
+		const box = (await ring.boundingBox())!;
+		await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+
+		// A trackpad has no pointer gesture: two fingers sideways arrive as a
+		// wheel with a horizontal delta, which none of the drag code ever sees.
+		for (let i = 0; i < 6; i++) await page.mouse.wheel(40, 0);
+
+		await expect(first).toHaveAttribute('data-front', 'false');
+	});
+
+	test('scrolling the page past the ring is not trapped by it', async ({ page }) => {
+		await mockCatalogue(page, four);
+		await gotoHydrated(page, '/auth/register/path?d=code');
+
+		const first = page.locator('[data-front]').filter({
+			has: page.getByTestId('path-card-dev-frontend')
+		});
+		const ring = page.getByTestId('path-ring');
+		const box = (await ring.boundingBox())!;
+		await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+
+		// Vertical belongs to the page. A carousel that eats a downward scroll
+		// because the pointer happened to be over it is a trap.
+		for (let i = 0; i < 6; i++) await page.mouse.wheel(0, 60);
+		await expect(first).toHaveAttribute('data-front', 'true');
+	});
+
+	test('a swipe does not take the trade it passed over', async ({ page }) => {
+		await mockCatalogue(page, four);
+		await gotoHydrated(page, '/auth/register/path?d=code');
+
+		const card = page.getByTestId('path-card-dev-frontend');
+		const ring = page.getByTestId('path-ring');
+		const box = (await ring.boundingBox())!;
+		const y = box.y + box.height / 2;
+
+		// The drag starts on the front card, which is a button. Releasing must
+		// not enrol anybody in it.
+		await page.mouse.move(box.x + box.width / 2, y);
+		await page.mouse.down();
+		for (let x = 0; x <= 200; x += 40) await page.mouse.move(box.x + box.width / 2 - x, y);
+		await page.mouse.up();
+
+		await expect(card).toHaveAttribute('aria-pressed', 'false');
+		await expect(page.getByTestId('enlist-continue')).toHaveCount(0);
 	});
 
 	test('the domain survives a reload', async ({ page }) => {
