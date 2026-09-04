@@ -72,9 +72,9 @@ export const tournamentApi = {
 		>('/tournaments/feed');
 	},
 
-	/** One season, by slug. */
+	/** One season, by slug. Same envelope as `currentSeason`. */
 	season(slug: string) {
-		return api.get<ApiResponse<Season>>(`/seasons/${encodeURIComponent(slug)}`);
+		return api.get<ApiResponse<{ season: Season }>>(`/seasons/${encodeURIComponent(slug)}`);
 	},
 
 	/**
@@ -118,8 +118,21 @@ export const tournamentApi = {
 		);
 	},
 
+	/**
+	 * The running season, or nothing.
+	 *
+	 * Both season endpoints answer an envelope, `{ season }`, and this was
+	 * typed as the season itself. `res.data.name` and `res.data.ends_at` were
+	 * therefore always undefined — which is where "Se clôture le Invalid Date"
+	 * came from, `new Date(undefined)` being exactly that.
+	 *
+	 * The envelope also made the absence of a season indistinguishable from a
+	 * season: `{ season: null }` is a truthy object, so the banner rendered
+	 * whatever the answer was. `season` is optional here for the same reason it
+	 * is `Option<Season>` there.
+	 */
 	currentSeason() {
-		return api.get<ApiResponse<Season>>('/seasons/current');
+		return api.get<ApiResponse<{ season: Season | null }>>('/seasons/current');
 	},
 
 	/**

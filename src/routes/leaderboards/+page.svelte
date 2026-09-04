@@ -23,7 +23,11 @@
 	onMount(async () => {
 		try {
 			const res = await tournamentApi.currentSeason();
-			currentSeason = res.data;
+			// The endpoint answers `{ season }`, and `season` is null when none is
+			// running. Reading the envelope as the season left every field
+			// undefined and made « no season » render as a season with an
+			// invalid date.
+			currentSeason = res.data?.season ?? null;
 		} catch {
 			currentSeason = null;
 		}
