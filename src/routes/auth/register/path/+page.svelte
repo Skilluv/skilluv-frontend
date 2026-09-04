@@ -76,72 +76,254 @@
 		});
 	});
 
-	// ── The rail ────────────────────────────────────────────────────────────
+	// ── The ring ────────────────────────────────────────────────────────────
 	//
-	// Scrolling is native: `scroll-snap` gives the swipe on a phone and the
-	// trackpad on a desktop for free, and the cards are buttons, so tabbing
-	// through them scrolls them into view without a line of script. The arrows
-	// exist for the mouse, which has neither gesture.
-	let rail = $state<HTMLElement | null>(null);
+	// The trades sit on a carousel. The active one faces you, its neighbours
+	// turn away and fall back into depth, and the ends join, so there is no
+	// first card and no last one.
+	//
+	// ## One position, and it is a real number
+	//
+	// Everything reads `position`, measured in cards. Seat three is at the
+	// front when position is 3, and halfway to four when it is 3.5. The hand
+	// writes to it, momentum writes to it, the buttons and the keyboard write
+	// to it, and the seats read it. Nothing else holds where the ring is.
+	//
+	// The first version kept an integer index and added a drag fraction on top,
+	// rounded on release, and let a CSS transition catch up. Two values for one
+	// position, and two things animating it: the hand moved one, the stylesheet
+	// moved the other, and the seam between them is what made the gesture feel
+	// like it was fighting back. It also needed a special case for a quick
+	// flick, because a rounded distance cannot tell a fast short gesture from a
+	// slow one.
+	//
+	// With a continuous position and real momentum the flick needs no special
+	// case: a fast release projects further than a slow one because it is
+	// carrying more speed, which is what a flick is.
+	let position = $state(0);
+	/** Cards per frame. Carried out of the drag and spent by the spring. */
+	let velocity = 0;
+	let target = 0;
+	let frame = 0;
+	let lastFrameAt = 0;
 
-	function nudge(direction: 1 | -1) {
-		if (!rail) return;
-		// One viewport of cards, less a card, so the last one stays visible and
-		// the eye keeps its place instead of restarting on a blank row.
-		const step = Math.max(rail.clientWidth - 220, 240);
-		rail.scrollBy({ left: step * direction, behavior: 'smooth' });
+	/** How many seats stand behind the front one on each side. */
+	const VISIBLE = 3;
+	// Read once on mount, below, and consulted by `settle`: with motion reduced
+	// the ring jumps to the seat rather than springing to it.
+	let reduceMotion = $state(false);
+	/** Pixels of travel per card. Close to a seat's step, so it tracks the hand. */
+	const STEP_PX = 140;
+	/** Spring pull towards the target seat, per 60fps frame. */
+	const STIFFNESS = 0.14;
+	/** What survives each frame. Below 1, so the ring settles rather than rings. */
+	const DAMPING = 0.72;
+	/** How far a release is projected, in frames. */
+	const THROW = 7;
+
+	/** The seat at the front, and the only one a click can take. */
+	const active = $derived.by(() => {
+		const total = matches.length;
+		if (total === 0) return 0;
+		return ((Math.round(position) % total) + total) % total;
+	});
+
+	/**
+	 * Shortest signed distance from the front, wrapping both ways.
+	 *
+	 * With twelve trades, seat eleven is at -1 from position 0, not at +11.
+	 * That is what makes the ring a ring: the seat before the first is the last
+	 * one, and it arrives from the left like any other. Fractional, because
+	 * `position` is.
+	 */
+	function offsetOf(index: number, total: number): number {
+		if (total === 0) return 0;
+		const half = total / 2;
+		return ((((index - position) % total) + total + half) % total) - half;
 	}
 
-	// ── Dragging the rail ───────────────────────────────────────────────────
+	/**
+	 * The spring.
+	 *
+	 * A damped pull towards `target`, run on animation frames rather than by a
+	 * CSS transition. That is what lets a release inherit the speed the hand
+	 * had: a transition starts from rest every time, so a flick and a slow drag
+	 * settle identically — exactly the flatness that made this feel wrong.
+	 *
+	 * `dt` is normalised against a 60fps frame and clamped, so a dropped frame
+	 * cannot fling the ring across the catalogue.
+	 */
+	function step(now: number) {
+		const dt = Math.min((now - lastFrameAt) / 16.667, 3) || 1;
+		lastFrameAt = now;
+
+		velocity += (target - position) * STIFFNESS * dt;
+		velocity *= Math.pow(DAMPING, dt);
+		position += velocity * dt;
+
+		if (Math.abs(target - position) < 0.001 && Math.abs(velocity) < 0.001) {
+			position = target;
+			velocity = 0;
+			frame = 0;
+			return;
+		}
+		frame = requestAnimationFrame(step);
+	}
+
+	function settle(to: number) {
+		target = to;
+		if (reduceMotion) {
+			position = to;
+			velocity = 0;
+			return;
+		}
+		if (frame) return;
+		lastFrameAt = performance.now();
+		frame = requestAnimationFrame(step);
+	}
+
+	function stopMotion() {
+		if (frame) cancelAnimationFrame(frame);
+		frame = 0;
+	}
+
+	function turn(direction: 1 | -1) {
+		if (matches.length === 0) return;
+		// From wherever the ring is headed, not from where it currently is.
+		// Pressing the arrow twice quickly must advance two seats: measuring
+		// from the live position means the second press reads a ring that has
+		// barely moved and asks it to go where it was already going.
+		const from = frame ? target : Math.round(position);
+		settle(Math.round(from) + direction);
+	}
+
+	/** Bring one seat to the front, by the shortest way round. */
+	function turnTo(index: number) {
+		const total = matches.length;
+		if (total === 0) return;
+		// Measured from the live position, unlike `turn`: this asks for one
+		// named seat rather than for a step, so it must aim at where that seat
+		// actually is now.
+		settle(Math.round(position + offsetOf(index, total)));
+	}
+
+	// The set changes under the ring whenever the search narrows it, and a
+	// position kept from the previous set would point at a seat that is no
+	// longer there.
+	$effect(() => {
+		void query;
+		stopMotion();
+		position = 0;
+		target = 0;
+		velocity = 0;
+	});
+
+	function onKeydown(event: KeyboardEvent) {
+		if (event.key === 'ArrowRight') {
+			event.preventDefault();
+			turn(1);
+		} else if (event.key === 'ArrowLeft') {
+			event.preventDefault();
+			turn(-1);
+		}
+	}
+
+	// ── Turning it by hand ──────────────────────────────────────────────────
 	//
-	// A finger already swipes: the rail scrolls natively, with the momentum the
-	// platform gives it, and intercepting that would only make it worse. A
-	// mouse has no such gesture — it has a wheel that scrolls the page, not the
-	// rail — so the cards are draggable, and that is what this handles.
+	// The ring follows the hand exactly: a card's width of travel is a card of
+	// rotation, with no threshold to cross before it responds. On release the
+	// speed the hand had is handed to the spring, which throws the ring on and
+	// settles it at a seat.
 	//
-	// The hard part is not the scrolling, it is telling a drag from a click. A
-	// card is a button: releasing after hauling the rail 300px must not enrol
-	// somebody in a trade they were only scrolling past. So a drag past the
-	// threshold swallows the click that follows it, in the capture phase,
-	// before it reaches the card.
+	// A card is a button, so releasing after turning must not enrol somebody in
+	// the trade they were turning past. A drag past the slop swallows the click
+	// that follows it, in the capture phase, before it reaches the card.
 	let dragFrom = 0;
-	let dragScroll = 0;
-	// Reactive because it drives the cursor: the other three are read inside
-	// handlers only and would cost a re-render for nothing.
+	let dragFromPosition = 0;
+	let dragLastX = 0;
+	let dragLastAt = 0;
 	let dragging = $state(false);
 	let dragged = false;
 
 	const DRAG_SLOP = 6;
 
-	function onRailPointerDown(event: PointerEvent) {
-		if (!rail || event.pointerType === 'touch' || event.button !== 0) return;
+	function onRingPointerDown(event: PointerEvent) {
+		if (event.button !== 0) return;
+		// Catching a moving ring stops it where it is, the way a hand on a
+		// spinning wheel does.
+		stopMotion();
+		velocity = 0;
+		target = position;
 		dragFrom = event.clientX;
-		dragScroll = rail.scrollLeft;
+		dragFromPosition = position;
+		dragLastX = event.clientX;
+		dragLastAt = event.timeStamp;
 		dragging = true;
 		dragged = false;
 	}
 
-	function onRailPointerMove(event: PointerEvent) {
-		if (!dragging || !rail) return;
+	function onRingPointerMove(event: PointerEvent) {
+		if (!dragging) return;
 		const dx = event.clientX - dragFrom;
 		if (!dragged && Math.abs(dx) < DRAG_SLOP) return;
 		if (!dragged) {
 			dragged = true;
-			// Captured only once the intent is clear, so a plain click on a card
-			// is never stolen from it.
-			rail.setPointerCapture(event.pointerId);
+			(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
 		}
-		rail.scrollLeft = dragScroll - dx;
+
+		position = dragFromPosition - dx / STEP_PX;
+
+		// Speed over the last move only. Averaged across the whole gesture, a
+		// long slow drag that ends in a flick would settle as if it had been
+		// slow throughout.
+		const dt = Math.max(event.timeStamp - dragLastAt, 1);
+		velocity = (-(event.clientX - dragLastX) / STEP_PX / dt) * 16.667;
+		dragLastX = event.clientX;
+		dragLastAt = event.timeStamp;
 	}
 
-	function onRailPointerUp(event: PointerEvent) {
-		if (!dragging || !rail) return;
+	function onRingPointerUp(event: PointerEvent) {
+		if (!dragging) return;
 		dragging = false;
-		if (rail.hasPointerCapture(event.pointerId)) rail.releasePointerCapture(event.pointerId);
-		// `dragged` stays true until the click it produced has been swallowed.
+		const el = event.currentTarget as HTMLElement;
+		if (el.hasPointerCapture(event.pointerId)) el.releasePointerCapture(event.pointerId);
+
+		// Where the throw would carry it, rounded to a seat. A fast release
+		// projects further than a slow one because it is carrying more speed,
+		// which is the whole of what a flick is, with no threshold to tune.
+		settle(Math.round(position + velocity * THROW));
 	}
 
-	function onRailClickCapture(event: MouseEvent) {
+	// ── Turning it with two fingers ─────────────────────────────────────────
+	//
+	// A trackpad has no pointer gesture: two fingers sideways is a wheel event
+	// with a horizontal delta, not a drag, so none of the code above ever sees
+	// it. Without this the only ways round the ring were the arrows and
+	// clicking a card, which is what made it feel like a widget rather than
+	// something you push.
+	//
+	// The deltas are added straight to the position, so it tracks the fingers
+	// the way the drag tracks the hand. There is no end event for a wheel
+	// gesture, so the settle is debounced: a short pause means the fingers have
+	// stopped, and the ring snaps to the nearest seat.
+	let wheelSettle: ReturnType<typeof setTimeout> | undefined;
+
+	function onRingWheel(event: WheelEvent) {
+		// Vertical belongs to the page. Only a mostly-horizontal gesture is
+		// ours, so scrolling past the ring never gets trapped by it.
+		if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+		event.preventDefault();
+
+		stopMotion();
+		velocity = 0;
+		position += event.deltaX / STEP_PX;
+		target = position;
+
+		clearTimeout(wheelSettle);
+		wheelSettle = setTimeout(() => settle(Math.round(position)), 110);
+	}
+
+	function onRingClickCapture(event: MouseEvent) {
 		if (!dragged) return;
 		dragged = false;
 		event.stopPropagation();
@@ -149,6 +331,7 @@
 	}
 
 	onMount(() => {
+		reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		enlist.restore();
 		const param = page.url.searchParams.get('d');
 		if (isPublicDomain(param)) {
@@ -160,6 +343,12 @@
 			return;
 		}
 		void load();
+		// The ring animates on frames, so it has to be stopped when the screen
+		// goes: a loop left running holds the component alive after it is gone.
+		return () => {
+			stopMotion();
+			clearTimeout(wheelSettle);
+		};
 	});
 
 	async function load() {
@@ -199,6 +388,10 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
+<!-- Left and right walk the ring wherever the focus is, which is what a
+     carousel is expected to answer to. -->
+<svelte:window onkeydown={onKeydown} />
+
 <section class="paths">
 	<header class="paths__head">
 		<p class="paths__eyebrow">{i18n.t('enlist.path.eyebrow')}</p>
@@ -211,10 +404,8 @@
 	</header>
 
 	{#if loading}
-		<div class="paths__rail" aria-hidden="true">
-			{#each Array(4) as _, i (i)}
-				<Skeleton class="h-52 w-72 shrink-0" rounded="xl" />
-			{/each}
+		<div class="paths__skeleton" aria-hidden="true">
+			<Skeleton class="h-96 w-64" rounded="xl" />
 		</div>
 	{:else if error}
 		<p class="paths__error" role="alert">{error}</p>
@@ -256,41 +447,83 @@
 				<span>{i18n.t('enlist.path.noMatchHint', { total: catalogue.length })}</span>
 			</p>
 		{:else}
-			<div class="paths__railWrap">
+			<div class="paths__ringWrap">
 				<button
 					type="button"
 					class="paths__arrow"
 					aria-label={i18n.t('enlist.path.railPrevious')}
-					onclick={() => nudge(-1)}
+					onclick={() => turn(-1)}
 				>
 					<ChevronLeft size={20} strokeWidth={2} />
 				</button>
 
-				<!-- The cards are buttons, so tabbing scrolls them into view on
-				     its own and the rail needs no keyboard handling of its own. -->
-				<!-- `onclickcapture` runs before the card's own handler, which is
-				     the only place a drag can be told from a click in time. -->
+				<!--
+					The ring. `onclickcapture` runs before a card's own handler,
+					which is the only place a drag can be told from a click in
+					time.
+
+					Every match is rendered, not only the seven on screen. A
+					carousel that renders a window is a carousel a screen reader
+					can only ever meet seven of, and the other sixty-six would be
+					unreachable by any means but the search box. The ones behind
+					the visible arc are transparent and inert to the pointer, and
+					still in the tab order: focusing one turns the ring to it.
+				-->
 				<div
-					class="paths__rail"
-					class:paths__rail--dragging={dragging}
-					bind:this={rail}
+					class="paths__ring"
+					class:paths__ring--dragging={dragging}
 					role="group"
 					aria-label={i18n.t('enlist.path.title')}
-					data-testid="path-rail"
-					onpointerdown={onRailPointerDown}
-					onpointermove={onRailPointerMove}
-					onpointerup={onRailPointerUp}
-					onpointercancel={onRailPointerUp}
-					onclickcapture={onRailClickCapture}
+					data-testid="path-ring"
+					onpointerdown={onRingPointerDown}
+					onpointermove={onRingPointerMove}
+					onpointerup={onRingPointerUp}
+					onpointercancel={onRingPointerUp}
+					onwheel={onRingWheel}
+					onclickcapture={onRingClickCapture}
 				>
-					{#each matches as orientation (orientation.slug)}
-						<PathCard
-							{orientation}
-							selected={enlist.isPicked(orientation.slug)}
-							order={enlist.pickOrder(orientation.slug)}
-							locked={enlist.isFull && !enlist.isPicked(orientation.slug)}
-							onToggle={toggle}
-						/>
+					{#each matches as orientation, i (orientation.slug)}
+						{@const offset = offsetOf(i, matches.length)}
+						{@const near = Math.abs(offset) <= VISIBLE}
+						<!--
+							A seat that is not the front one answers a click by
+							turning to it, not by taking the trade. Clicking a card
+							you can only see edge-on and being enrolled in it is not
+							what anybody meant by clicking it — and the alternative,
+							making them inert, would leave the pointer no way to
+							reach a trade the search did not narrow to.
+						-->
+						<div
+							class="paths__seat"
+							data-near={near}
+							data-front={Math.round(offset) === 0}
+							style="--offset: {offset}; --depth: {Math.abs(offset)}"
+							onfocusin={() => {
+								// Only when the focus came from the keyboard.
+								// `pointerdown` focuses the button it lands on and
+								// fires before any movement, so without this guard
+								// pressing a seat to start a swipe jerked the ring
+								// to it before the gesture had begun. A pointer
+								// press is already answered by the click handler
+								// below, which is where that belongs.
+								if (dragging) return;
+								turnTo(i);
+							}}
+							onclickcapture={(event) => {
+								if (Math.round(offset) === 0) return;
+								event.stopPropagation();
+								event.preventDefault();
+								turnTo(i);
+							}}
+						>
+							<PathCard
+								{orientation}
+								selected={enlist.isPicked(orientation.slug)}
+								order={enlist.pickOrder(orientation.slug)}
+								locked={enlist.isFull && !enlist.isPicked(orientation.slug)}
+								onToggle={toggle}
+							/>
+						</div>
 					{/each}
 				</div>
 
@@ -298,7 +531,7 @@
 					type="button"
 					class="paths__arrow"
 					aria-label={i18n.t('enlist.path.railNext')}
-					onclick={() => nudge(1)}
+					onclick={() => turn(1)}
 				>
 					<ChevronRight size={20} strokeWidth={2} />
 				</button>
@@ -480,7 +713,13 @@
 	}
 
 	/* ── The rail ───────────────────────────────────────────────────────── */
-	.paths__railWrap {
+	.paths__skeleton {
+		display: flex;
+		justify-content: center;
+		margin-top: 1.25rem;
+	}
+
+	.paths__ringWrap {
 		position: relative;
 		display: flex;
 		align-items: center;
@@ -488,42 +727,126 @@
 		margin-top: 1.25rem;
 	}
 
-	.paths__rail {
-		display: flex;
-		gap: 0.875rem;
+	/*
+	   The ring.
+	
+	   Every card sits in the same place and is turned out of it by its own
+	   offset, so the front one faces you and its neighbours recede into depth.
+	   The perspective lives here rather than on each seat: one vanishing point
+	   for the whole ring is what makes it read as one object turning, and not
+	   as several cards each tilting on their own.
+	
+	   The height is fixed rather than derived from the cards, because the cards
+	   are absolutely positioned and would otherwise collapse it to nothing.
+	*/
+	.paths__ring {
+		position: relative;
 		flex: 1;
 		min-width: 0;
-		overflow-x: auto;
-		scroll-snap-type: x mandatory;
-		/* Room for the lift and the shadow: without it, a raised card is
-		   clipped by its own scroll container. */
-		padding: 1.25rem 0.25rem 1.75rem;
-		scroll-padding-inline: 0.25rem;
-		/* The depth the cards tilt into. Set here rather than per card so they
-		   share one vanishing point instead of each having their own. */
-		perspective: 1200px;
-		scrollbar-width: none;
+		height: clamp(23rem, 62vh, 27rem);
+		perspective: 1400px;
+		perspective-origin: 50% 45%;
+		/*
+		   The seats share one 3D space, and the browser sorts them by their real
+		   depth.
+		
+		   Without this they are flattened into a single plane and ordered by
+		   `z-index` alone — which was computed from the offset and truncated to
+		   an integer, so mid-turn two seats landed on the same rank and passed
+		   through each other. Depth is a continuous quantity here; sorting it
+		   with an integer was the bug.
+		*/
+		transform-style: preserve-3d;
 	}
-	.paths__rail::-webkit-scrollbar {
-		display: none;
+
+	/*
+	   The gesture has to reach the handler, and `touch-action` is read from the
+	   element the touch lands on — not from an ancestor. Setting it on the ring
+	   alone left a touch that started on a card using the card's own `auto`, so
+	   the browser claimed the gesture, sent `pointercancel`, and the drag died
+	   before it began. Horizontal is ours; vertical stays the page's, so the
+	   ring never traps a scroll.
+	*/
+	.paths__ring,
+	.paths__ring * {
+		touch-action: pan-y;
 	}
-	/* The cursor says the rail can be hauled, and says it is being hauled. */
+
 	@media (hover: hover) {
-		.paths__rail {
+		.paths__ring {
 			cursor: grab;
 		}
-		.paths__rail--dragging {
+		.paths__ring--dragging {
 			cursor: grabbing;
-			/* Snap fights a drag: it yanks the rail to the nearest card on every
-			   frame. Restored the moment the pointer is released. */
-			scroll-snap-type: none;
 			/* Otherwise the browser starts selecting the card text mid-drag. */
 			user-select: none;
 		}
 	}
-	.paths__rail > :global(*) {
-		flex: 0 0 clamp(15rem, 74vw, 19rem);
-		scroll-snap-align: center;
+
+	/*
+	   One seat, turned out of the front by its offset.
+	
+	   Three things move together and none of them alone would read as depth:
+	   the card slides aside, falls back in Z, and turns to face the centre. A
+	   card that only slides is a row; one that only turns is a fan.
+	
+	   `--offset` is signed and wraps, so the seat before the first is the last
+	   one arriving from the left. `--depth` is its absolute value, for the
+	   things that do not care which side it is on.
+	*/
+	.paths__seat {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: clamp(14rem, 66vw, 17rem);
+		transform-style: preserve-3d;
+		transform: translate(-50%, -50%) translateX(calc(var(--offset) * 8.5rem))
+			translateZ(calc(var(--depth) * -7rem)) rotateY(calc(var(--offset) * -22deg));
+		/*
+		   No transition on the transform, on purpose.
+		
+		   The position is animated on frames by the spring, so every frame is
+		   already the position the ring should be at. A transition on top would
+		   be a second animation chasing the first, lagging it by its own
+		   duration — and under the hand it would lag the finger. That fight is
+		   what made the earlier version feel loose.
+		
+		   Opacity still eases, because it is not driven by the spring and a seat
+		   appearing at the edge of the arc should fade rather than blink.
+		*/
+		transition: opacity 260ms ease-out;
+	}
+
+	/*
+	   Behind the visible arc.
+	
+	   Transparent and inert to the pointer rather than removed: they stay in
+	   the tab order, and focusing one turns the ring to it. A carousel that
+	   only renders its visible seats is one a keyboard can never leave.
+	*/
+	.paths__seat[data-near='false'] {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	/* Depth is dimmed as well as distanced. Perspective alone is a weak cue on
+	   a small screen; losing light with distance is the one that always reads. */
+	.paths__seat[data-near='true'] {
+		opacity: calc(1 - var(--depth) * 0.22);
+	}
+
+	/* The back seats keep their pointer events: clicking one turns the ring to
+	   it, which the seat handles in the capture phase. The cursor says so. */
+	.paths__seat[data-front='false'] {
+		cursor: pointer;
+	}
+
+	/* The spring is skipped in JS when motion is reduced, so the transform is
+	   already instant; this only stops the fade. */
+	@media (prefers-reduced-motion: reduce) {
+		.paths__seat {
+			transition: none;
+		}
 	}
 
 	.paths__arrow {

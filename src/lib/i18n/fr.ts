@@ -201,7 +201,7 @@ export const fr: Translations = {
 		cardProfile: 'Mon Profil',
 		cardProfileDesc: 'Ton profil vivant, généré par tes preuves.',
 		cardLeaderboards: 'Classements',
-		cardLeaderboardsDesc: 'Top 100 en temps réel par domaine et par pays.'
+		cardLeaderboardsDesc: 'Les cent premiers par discipline, sur la semaine, le mois ou depuis toujours.'
 	},
 	auth: {
 		register: {
@@ -331,7 +331,7 @@ export const fr: Translations = {
 	},
 	leaderboard: {
 		title: 'Classements',
-		subtitle: 'Top 100 en temps réel.',
+		subtitle: 'Les cent premiers, par discipline et par période.',
 		global: 'Global',
 		alltime: 'All-time',
 		monthly: 'Ce mois',

@@ -21,7 +21,8 @@
 				tournamentApi.currentSeason().catch(() => null),
 				tournamentApi.list()
 			]);
-			if (seRes) currentSeason = seRes.data;
+			// `{ season }`, and null when none is running.
+			if (seRes) currentSeason = seRes.data?.season ?? null;
 			tournaments = tRes.data.tournaments;
 		} catch (e) {
 			toast.error(e instanceof SkilluError ? e.message : 'Erreur');

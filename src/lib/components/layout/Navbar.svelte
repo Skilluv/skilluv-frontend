@@ -305,7 +305,7 @@
 				{ href: '/forum', icon: MessageSquare, label: 'Forum', description: i18n.locale === 'fr' ? 'Questions, réponses, bounties fragments' : 'Q&A with fragment bounties' },
 				{ href: '/guilds', icon: Shield, label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds', description: i18n.locale === 'fr' ? 'Rejoins une écurie style F1/MMO' : 'Join an F1/MMO-style team' },
 				{ href: '/tournaments', icon: Trophy, label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments', description: i18n.locale === 'fr' ? 'Compétitions mensuelles chronométrées' : 'Timed monthly competitions' },
-				{ href: '/leaderboards', icon: TrendingUp, label: i18n.t('common.nav.leaderboards'), description: i18n.locale === 'fr' ? 'Top 100 live par domaine' : 'Live Top 100 by domain' }
+				{ href: '/leaderboards', icon: TrendingUp, label: i18n.t('common.nav.leaderboards'), description: i18n.locale === 'fr' ? 'Top 100 par discipline' : 'Top 100 by discipline' }
 			]
 		}
 	]);

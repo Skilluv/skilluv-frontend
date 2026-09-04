@@ -170,6 +170,19 @@ export default defineConfig({
 			],
 	projects: [
 		{
+			// Jeremie browses in Firefox, and the mocked suite only ever ran in
+			// Chromium — so a gesture Gecko handles differently could pass every
+			// check and still not work for the person who asked for it. Not in CI:
+			// it exists to reproduce what a real Firefox does.
+			name: 'firefox',
+			testMatch: '**/*.test.ts',
+			use: {
+				...devices['Desktop Firefox'],
+				baseURL: 'http://localhost:4173',
+				storageState: CONSENT_DECIDED
+			}
+		},
+		{
 			name: 'legacy-chromium',
 			testMatch: '**/*.test.ts',
 			use: {

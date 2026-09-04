@@ -105,19 +105,34 @@ describe('badgeEventsApi lifecycle', () => {
 
 describe('tournamentApi currentSeason', () => {
 	it('reads /seasons/current', async () => {
+		// The envelope the handler actually writes. This fixture answered a bare
+		// season, matching what the client was typed for rather than what the
+		// server sends — so it agreed with the bug instead of catching it.
 		fetchMock.mockResolvedValue(
 			ok({
-				id: 's1',
-				slug: 's-2026-summer',
-				name: 'Summer 2026',
-				status: 'active',
-				starts_at: '2026-06-01',
-				ends_at: '2026-09-01'
+				season: {
+					id: 's1',
+					slug: 's-2026-summer',
+					name: 'Summer 2026',
+					status: 'active',
+					starts_at: '2026-06-01',
+					ends_at: '2026-09-01'
+				}
 			})
 		);
 		const { tournamentApi } = await import('../../src/lib/api/tournament');
 		const res = await tournamentApi.currentSeason();
 		expect(fetchMock).toHaveBeenCalledWith('/api/seasons/current', expect.anything());
-		expect(res.data.name).toBe('Summer 2026');
+		expect(res.data.season?.name).toBe('Summer 2026');
+	});
+
+	it('reads no season as no season, not as an empty one', async () => {
+		// `{ season: null }` is a truthy object, so a caller reading the
+		// envelope as the season rendered a banner with an undefined name and
+		// an invalid date whenever nothing was running.
+		fetchMock.mockResolvedValue(ok({ season: null }));
+		const { tournamentApi } = await import('../../src/lib/api/tournament');
+		const res = await tournamentApi.currentSeason();
+		expect(res.data.season).toBeNull();
 	});
 });
