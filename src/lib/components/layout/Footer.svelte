@@ -221,10 +221,11 @@
 
 			<!-- ▓▓▓ 4. GROS LOGO + SOCIAL PILLS ▓▓▓ -->
 			<div class="mt-16 flex flex-col gap-8 border-t border-border pt-10 lg:flex-row lg:items-end lg:justify-between">
-				<a href="/" class="inline-flex items-baseline leading-none">
-					<span class="text-7xl sm:text-8xl lg:text-9xl font-black tracking-[-0.05em]">
-						<span class="text-accent">Skill</span><span class="text-text-primary">uv</span><span class="text-accent">.</span>
-					</span>
+				<!-- The mark itself, not a wordmark rebuilt from three spans. The
+				     artwork already carries the brand's colours, and the sign-off
+				     is the one place the real lockup earns its size. -->
+				<a href="/" class="inline-flex items-center leading-none" aria-label="Skilluv">
+					<BrandLogo class="[--brand-size:88px] sm:[--brand-size:130px] lg:[--brand-size:170px]" />
 				</a>
 
 				<div class="flex flex-wrap items-center gap-2">
