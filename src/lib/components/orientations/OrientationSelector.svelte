@@ -182,24 +182,32 @@
 								{i18n.t('orientations.selector.setPrimary')}
 							</label>
 
-							<div class="flex overflow-hidden rounded-md border border-border text-xs">
+							<!-- Same switch as the enlistment tray, and the same reason for
+							     the group and the pressed state: two buttons, one answer. -->
+							<div
+								class="flex overflow-hidden rounded-md border border-border text-xs"
+								role="group"
+								aria-label={i18n.t('enlist.path.modeLabel', { name: pick.orientation.name })}
+							>
 								<button
 									type="button"
 									class="px-2.5 py-1 transition-colors {pick.mode === 'learning'
 										? 'bg-surface text-text-primary'
 										: 'text-text-muted hover:bg-surface'}"
+									aria-pressed={pick.mode === 'learning'}
 									onclick={() => setMode(i, 'learning')}
 								>
-									{i18n.t('orientations.mode.learning')}
+									{i18n.t('orientations.modeChoice.learning')}
 								</button>
 								<button
 									type="button"
 									class="px-2.5 py-1 transition-colors {pick.mode === 'active'
 										? 'bg-surface text-text-primary'
 										: 'text-text-muted hover:bg-surface'}"
+									aria-pressed={pick.mode === 'active'}
 									onclick={() => setMode(i, 'active')}
 								>
-									{i18n.t('orientations.mode.active')}
+									{i18n.t('orientations.modeChoice.active')}
 								</button>
 							</div>
 

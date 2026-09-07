@@ -39,6 +39,8 @@ interface Persisted {
 	domain: SkillDomain | null;
 	picks: PathPick[];
 	primary: number;
+	/** True from the moment the pact hands the browser to an OAuth provider. */
+	ssoPending: boolean;
 }
 
 function readStorage(): Persisted | null {
@@ -62,7 +64,7 @@ function readStorage(): Persisted | null {
 			typeof parsed.primary === 'number' && parsed.primary >= 0 && parsed.primary < picks.length
 				? parsed.primary
 				: 0;
-		return { domain, picks, primary };
+		return { domain, picks, primary, ssoPending: parsed.ssoPending === true };
 	} catch {
 		// A malformed entry is a fresh start, not an error to show anybody.
 		return null;
@@ -76,6 +78,21 @@ class EnlistState {
 	primary = $state(0);
 	/** True once `restore()` has run, so a guard does not redirect on first paint. */
 	ready = $state(false);
+	/**
+	 * Set when the pact sends somebody to Google, LinkedIn or GitHub.
+	 *
+	 * The password path posts the trades itself, right after the account comes
+	 * back. The SSO path leaves the page, so nothing on the way back knew there
+	 * was anything to post — an account created through a provider arrived with
+	 * none of the trades chosen two screens earlier, and the enlistment sat in
+	 * the tab's storage until it expired.
+	 *
+	 * This flag is what makes the return recognisable. It is deliberately not
+	 * "am I authenticated with picks in storage": somebody who abandons the
+	 * signup and then signs into an existing account in the same tab has not
+	 * asked for those trades.
+	 */
+	ssoPending = $state(false);
 
 	/** Read the tab's stored enlistment. Safe to call on every mount. */
 	restore() {
@@ -85,6 +102,7 @@ class EnlistState {
 			this.domain = stored.domain;
 			this.picks = stored.picks;
 			this.primary = stored.primary;
+			this.ssoPending = stored.ssoPending;
 		}
 		this.ready = true;
 	}
@@ -95,7 +113,8 @@ class EnlistState {
 			const payload: Persisted = {
 				domain: this.domain,
 				picks: this.picks,
-				primary: this.primary
+				primary: this.primary,
+				ssoPending: this.ssoPending
 			};
 			sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
 		} catch {
@@ -196,11 +215,49 @@ class EnlistState {
 		return { registered, failed };
 	}
 
+	/**
+	 * The pact is handing the browser to an OAuth provider.
+	 *
+	 * Written before the navigation rather than after the return, because after
+	 * the return there is nothing left to tell the two cases apart.
+	 */
+	leaveForSso() {
+		this.ssoPending = true;
+		this.persist();
+	}
+
+	/**
+	 * Back from a provider with a session: finish what the pact would have done.
+	 *
+	 * Called from the root layout rather than from a landing route, because the
+	 * backend decides where the callback lands and the frontend does not get to
+	 * choose. Wherever that is, this runs there.
+	 *
+	 * Returns `null` when there was no SSO departure to resume, so the caller
+	 * can tell "nothing to do" from "done, and these failed".
+	 */
+	async resumeAfterSso(): Promise<{ registered: string[]; failed: string[] } | null> {
+		this.restore();
+		if (!this.ssoPending) return null;
+		// Cleared first, and unconditionally. A replay that throws must not
+		// leave the flag standing, or every later navigation in this tab tries
+		// again against an account that may already carry the trades.
+		this.ssoPending = false;
+		if (this.picks.length === 0) {
+			this.clear();
+			return { registered: [], failed: [] };
+		}
+		const result = await this.replay();
+		this.clear();
+		return result;
+	}
+
 	/** Called once the enlistment is over — the account exists and carries it. */
 	clear() {
 		this.domain = null;
 		this.picks = [];
 		this.primary = 0;
+		this.ssoPending = false;
 		if (typeof window === 'undefined') return;
 		try {
 			sessionStorage.removeItem(STORAGE_KEY);

@@ -6,6 +6,7 @@
 	import { authApi } from '$api/auth';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
+	import { checkPassword } from '$lib/utils/password';
 	import { Check } from '@lucide/svelte';
 
 	let password = $state('');
@@ -20,8 +21,12 @@
 		e.preventDefault();
 		error = '';
 
-		if (password.length < 8) {
-			error = i18n.t('auth.register.passwordHint');
+		// Was eight characters and no classes, against a server that wants ten
+		// and four. Somebody could type a password this page accepted, watch the
+		// API refuse it, and read "8 characters minimum" as the explanation.
+		const verdict = checkPassword(password);
+		if (verdict !== 'ok') {
+			error = i18n.t(`auth.password.${verdict}`);
 			return;
 		}
 		if (password !== confirmPassword) {
@@ -77,7 +82,7 @@
 			<Input
 				label={i18n.t('auth.reset.newPassword')}
 				type="password"
-				placeholder={i18n.t('auth.register.passwordHint')}
+				placeholder={i18n.t('auth.password.hint')}
 				bind:value={password}
 				autocomplete="new-password"
 				required

@@ -11,6 +11,8 @@
 	import { SkilluError } from '$api/client';
 	import { auth } from '$stores/auth.svelte';
 	import { enlist } from '$stores/enlist.svelte';
+	import { checkPassword } from '$lib/utils/password';
+	import PasswordRules from '$components/auth/PasswordRules.svelte';
 
 	/**
 	 * The pact — the only screen that asks for anything about you.
@@ -41,6 +43,7 @@
 	let firstName = $state('');
 	let lastName = $state('');
 	let password = $state('');
+	let passwordConfirm = $state('');
 	let country = $state<string | null>(null);
 	let city = $state<string | null>(null);
 	let termsAccepted = $state(false);
@@ -48,6 +51,24 @@
 	let loading = $state(false);
 	let error = $state('');
 	let fieldErrors = $state<Record<string, string>>({});
+
+	/**
+	 * Whether the confirmation has been left once.
+	 *
+	 * The mismatch is not shown while the second field is being typed: every
+	 * prefix of a correct password differs from it, so live checking would call
+	 * somebody wrong for the first nine characters of nine right ones. It is
+	 * raised on blur and cleared as soon as the two agree again — told once you
+	 * have finished, and dropped the moment you fix it.
+	 */
+	let confirmTouched = $state(false);
+
+	/** Shown under the confirmation, before anybody presses anything. */
+	const confirmError = $derived(
+		confirmTouched && passwordConfirm.length > 0 && passwordConfirm !== password
+			? i18n.t('auth.password.mismatch')
+			: (fieldErrors.passwordConfirm ?? '')
+	);
 
 	onMount(() => {
 		enlist.restore();
@@ -66,17 +87,17 @@
 		if (!email.trim()) errors.email = i18n.t('enlist.errors.email');
 		if (!firstName.trim()) errors.firstName = i18n.t('enlist.errors.firstName');
 		if (!lastName.trim()) errors.lastName = i18n.t('enlist.errors.lastName');
-		// Mirrors the backend policy exactly (auth.rs): 10–128, upper, lower,
-		// digit, symbol. Checked here so the answer is instant, enforced there
-		// because that is the only place it counts.
-		if (
-			password.length < 10 ||
-			!/[A-Z]/.test(password) ||
-			!/[a-z]/.test(password) ||
-			!/\d/.test(password) ||
-			!/[^A-Za-z0-9\s]/.test(password)
-		) {
-			errors.password = i18n.t('enlist.errors.password');
+		// The rule itself lives in `$lib/utils/password.ts`, mirroring the
+		// backend's `validate_password`. Checked here so the answer is instant,
+		// enforced there because that is the only place it counts.
+		const verdict = checkPassword(password);
+		if (verdict !== 'ok') {
+			errors.password = i18n.t(`auth.password.${verdict}`);
+		} else if (passwordConfirm !== password) {
+			// Only once the password itself holds. Telling somebody the two do not
+			// match while the first one is still being rejected gives them two
+			// problems to read and one of them is not theirs yet.
+			errors.passwordConfirm = i18n.t('auth.password.mismatch');
 		}
 		if (!country) errors.country = i18n.t('enlist.errors.country');
 		if (!termsAccepted) errors.terms = i18n.t('enlist.errors.terms');
@@ -199,10 +220,26 @@
 		<Input
 			label={i18n.t('enlist.account.password')}
 			type="password"
-			hint={i18n.t('enlist.account.passwordHint')}
+			hint={password ? undefined : i18n.t('auth.password.hint')}
 			bind:value={password}
 			error={fieldErrors.password}
 			autocomplete="new-password"
+			aria-describedby={fieldErrors.password ? undefined : 'pact-password-rules'}
+			required
+		/>
+		<PasswordRules {password} id="pact-password-rules" />
+
+		<!-- A typo in a password nobody can read costs the account: the person
+		     lands on a login that refuses them and has no way to know why.
+		     `new-password` on both, so a password manager offers to fill the
+		     pair rather than treating the second as a login field. -->
+		<Input
+			label={i18n.t('auth.password.confirm')}
+			type="password"
+			bind:value={passwordConfirm}
+			error={confirmError}
+			autocomplete="new-password"
+			onblur={() => (confirmTouched = true)}
 			required
 		/>
 
@@ -247,10 +284,26 @@
 		<span>{i18n.t('enlist.account.ssoDivider')}</span>
 	</div>
 
+	<!-- Each one records the departure before the browser goes. The trades chosen
+	     upstream can only be posted once a session exists, and on this path the
+	     session appears after a round trip through a provider, on whatever page
+	     the callback lands on — so the root layout finishes the job there. -->
 	<div class="pact__sso">
-		<SsoButton provider="google" href={oauthHref('/api/auth/google/start')} />
-		<SsoButton provider="linkedin" href={oauthHref('/api/auth/linkedin/start')} />
-		<SsoButton provider="github" href={oauthHref('/api/auth/github/login')} />
+		<SsoButton
+			provider="google"
+			href={oauthHref('/api/auth/google/start')}
+			onclick={() => enlist.leaveForSso()}
+		/>
+		<SsoButton
+			provider="linkedin"
+			href={oauthHref('/api/auth/linkedin/start')}
+			onclick={() => enlist.leaveForSso()}
+		/>
+		<SsoButton
+			provider="github"
+			href={oauthHref('/api/auth/github/login')}
+			onclick={() => enlist.leaveForSso()}
+		/>
 	</div>
 	<p class="pact__sso-hint">{i18n.t('enlist.account.ssoHint')}</p>
 </section>

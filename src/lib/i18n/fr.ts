@@ -172,17 +172,61 @@ export const fr: Translations = {
 		sectionTitleLine2: 'Cent vingt parcours.',
 		sectionSubtitle: 'Chaque discipline a ses parcours, ses terrains et ses rangs.',
 		lead: 'Toutes mènent au même endroit : une preuve de ce que tu as fabriqué.',
-		code: { label: 'Code', desc: 'Backend, frontend, mobile, systèmes, embarqué.' },
-		design: { label: 'Design', desc: 'UI/UX, design systems, motion, illustration.' },
-		security: { label: 'Cybersécurité', desc: 'Pentest, red team, forensics, cryptographie.' },
-		game: { label: 'Jeux vidéo', desc: 'Programmation, game design, art et animation.' },
-		ai: { label: 'Intelligence artificielle', desc: 'Data, machine learning, MLOps, agents et RAG.' },
-		ops: { label: 'Ops & Cloud', desc: 'Cloud, CI/CD, conteneurs, fiabilité.' },
-		quality: { label: 'Qualité', desc: 'Tests et automatisation, sur les quatre terrains.' },
-		leadership: { label: 'Leadership', desc: 'Product, tech lead, production, management, mentorat.' },
-		audio: { label: 'Audio', desc: 'Composition, sound design, voix, intégration sonore.' },
-		communication: { label: 'Communication', desc: 'Documentation, evangelism, contenu, traduction.' },
-		education: { label: 'Enseignement', desc: 'Formation, conception de cursus, pédagogie du code.' }
+		code: {
+			label: 'Code',
+			desc: 'Backend, frontend, mobile, systèmes, embarqué.',
+			about: 'Des challenges à coder : API, interfaces, apps mobiles, outils, systèmes. Tu rends du code qui tourne, et il est évalué.'
+		},
+		design: {
+			label: 'Design',
+			desc: 'UI/UX, design systems, motion, illustration.',
+			about: 'Des interfaces qui tiennent à l’usage. D’un brief à un écran qu’on peut ouvrir, critiquer et améliorer.'
+		},
+		security: {
+			label: 'Cybersécurité',
+			desc: 'Pentest, red team, forensics, cryptographie.',
+			about: 'Trouver ce qui casse avant quelqu’un d’autre. Des terrains faits pour être attaqués, et un rapport de ce que tu as trouvé.'
+		},
+		game: {
+			label: 'Jeux vidéo',
+			desc: 'Programmation, game design, art et animation.',
+			about: 'Du jeu qui fonctionne. Une tranche qu’un autre peut prendre en main, et un playtest qui t’apprend autant que le tien.'
+		},
+		ai: {
+			label: 'Intelligence artificielle',
+			desc: 'Data, machine learning, MLOps, agents et RAG.',
+			about: 'Des modèles et des pipelines qui répondent d’eux-mêmes. Tu mesures ce que ton système fait, au lieu de décrire ce qu’il devrait faire.'
+		},
+		ops: {
+			label: 'Ops & Cloud',
+			desc: 'Cloud, CI/CD, conteneurs, fiabilité.',
+			about: 'Faire tourner. Déploiement, observabilité, coûts, et l’incident de trois heures du matin.'
+		},
+		quality: {
+			label: 'Qualité',
+			desc: 'Tests et automatisation, sur les quatre terrains.',
+			about: 'Pouvoir faire confiance à une release. Tu conçois les tests, tu les automatises, et tu dis clairement ce qui reste non couvert.'
+		},
+		leadership: {
+			label: 'Leadership',
+			desc: 'Product, tech lead, production, management, mentorat.',
+			about: 'Amener une équipe à livrer. Périmètre, arbitrages, revues, et les conversations que personne n’aime et dont tout le monde a besoin.'
+		},
+		audio: {
+			label: 'Audio',
+			desc: 'Composition, sound design, voix, intégration sonore.',
+			about: 'Du son qui porte une scène. Composition, sound design, et le métier de les intégrer dans un build.'
+		},
+		communication: {
+			label: 'Communication',
+			desc: 'Documentation, evangelism, contenu, traduction.',
+			about: 'Rendre le travail lisible. Documentation, talks, articles et traduction, jugés sur le fait que quelqu’un ait compris.'
+		},
+		education: {
+			label: 'Enseignement',
+			desc: 'Formation, conception de cursus, pédagogie du code.',
+			about: 'Apprendre à quelqu’un à faire sans toi. Tu construis le parcours, les exercices et le retour qui va avec.'
+		}
 	},
 	landing: {
 		title: 'Prouve ce que tu sais faire.',
@@ -204,6 +248,25 @@ export const fr: Translations = {
 		cardLeaderboardsDesc: 'Les cent premiers par discipline, sur la semaine, le mois ou depuis toujours.'
 	},
 	auth: {
+		password: {
+			hint: '10 à 128 caractères, avec majuscule, minuscule, chiffre et symbole',
+			tooShort: 'Le mot de passe doit faire au moins 10 caractères.',
+			tooLong: 'Le mot de passe doit faire au plus 128 caractères.',
+			missingClass:
+				'Il faut au moins une majuscule, une minuscule, un chiffre et un symbole.',
+			confirm: 'Confirme le mot de passe',
+			mismatch: 'Les deux mots de passe ne sont pas identiques.',
+			rules: {
+				title: 'Il te faut',
+				length: 'Entre 10 et 128 caractères',
+				upper: 'Une majuscule',
+				lower: 'Une minuscule',
+				digit: 'Un chiffre',
+				symbol: 'Un symbole',
+				met: 'fait',
+				notMet: 'manquant'
+			}
+		},
 		register: {
 			pickDomain: 'Qu\'est-ce qui te passionne ?',
 			pickDomainSub: 'Choisis ton domaine principal. Tu pourras explorer les autres après.',
@@ -222,7 +285,6 @@ export const fr: Translations = {
 			firstName: 'Prénom',
 			lastName: 'Nom',
 			password: 'Mot de passe',
-			passwordHint: '8 caractères minimum',
 			creating: 'Création...',
 			createBtn: 'Créer mon compte',
 			hasAccount: 'Déjà un compte ?',
@@ -445,7 +507,7 @@ export const fr: Translations = {
 			providerLabel: 'Fournisseur EOR',
 			currencyLabel: 'Devise de paiement',
 			timezoneLabel: 'Fuseau horaire requis',
-			timezoneHint: 'Format IANA (ex. Africa/Porto-Novo, Europe/Paris).',
+			timezoneHint: 'Format IANA (ex. Africa/Porto-Novo, Africa/Nairobi).',
 			taxCountryLabel: 'Pays de retenue fiscale',
 			saveBtn: 'Enregistrer la config'
 		},
@@ -578,7 +640,7 @@ export const fr: Translations = {
 		},
 		password: {
 			title: 'Mot de passe', current: 'Mot de passe actuel',
-			new: 'Nouveau mot de passe', newHint: '8 caractères minimum', changeBtn: 'Changer le mot de passe'
+			new: 'Nouveau mot de passe', changeBtn: 'Changer le mot de passe'
 		},
 		privacy: {
 			title: 'Confidentialité', showHeatmap: 'Afficher la heatmap',
@@ -2319,7 +2381,11 @@ export const fr: Translations = {
 		selectionOrder: 'Sélection numéro {n}',
 		mode: {
 			learning: 'En apprentissage',
-			active: 'En exercice'
+			active: 'En pratique'
+		},
+		modeChoice: {
+			learning: 'J’apprends',
+			active: 'Je pratique'
 		},
 		empty: {
 			own: 'Aucune orientation choisie. Ta playlist sera générique tant que tu n\'en choisis pas.',
@@ -2472,7 +2538,7 @@ export const fr: Translations = {
 			githubLabel: 'Login GitHub',
 			githubPh: 'ex. torvalds',
 			emailLabel: 'Email',
-			emailPh: 'you@example.com',
+			emailPh: 'ama@example.com',
 			reposLabel: 'Repos',
 			reposHint: 'Format : owner/name — separer par virgules (max 50)',
 			reposPh: 'skilluv/skilluv-backend, skilluv/skilluv-frontend',
