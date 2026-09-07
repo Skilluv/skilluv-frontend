@@ -47,8 +47,17 @@ export interface EnlistTranslations {
 			chosen: string;
 			primary: string;
 			primaryHint: string;
-			modeLearning: string;
-			modeActive: string;
+			/**
+			 * What the learning/practising switch actually does.
+			 *
+			 * The switch itself is labelled from `orientations.modeChoice`, which
+			 * is where the field's vocabulary lives; this only explains it. It
+			 * says the two things somebody pressing it cannot otherwise know: the
+			 * answer is published on their profile, and it is not final.
+			 */
+			modeNote: string;
+			/** `{name}` — the trade the switch belongs to, for assistive tech. */
+			modeLabel: string;
 			remove: string;
 			mustPickOne: string;
 			continue: string;

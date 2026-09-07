@@ -169,17 +169,61 @@ export const en: Translations = {
 		sectionTitleLine2: 'A hundred and twenty tracks.',
 		sectionSubtitle: 'Every discipline has its tracks, its grounds and its ranks.',
 		lead: 'All of them lead to the same place: proof of what you made.',
-		code: { label: 'Code', desc: 'Backend, frontend, mobile, systems, embedded.' },
-		design: { label: 'Design', desc: 'UI/UX, design systems, motion, illustration.' },
-		security: { label: 'Cybersecurity', desc: 'Pentesting, red team, forensics, cryptography.' },
-		game: { label: 'Games', desc: 'Programming, game design, art and animation.' },
-		ai: { label: 'Artificial intelligence', desc: 'Data, machine learning, MLOps, agents and RAG.' },
-		ops: { label: 'Ops & Cloud', desc: 'Cloud, CI/CD, containers, reliability.' },
-		quality: { label: 'Quality', desc: 'Testing and automation, across all four grounds.' },
-		leadership: { label: 'Leadership', desc: 'Product, tech lead, production, people, mentoring.' },
-		audio: { label: 'Audio', desc: 'Composition, sound design, voice, music implementation.' },
-		communication: { label: 'Communication', desc: 'Documentation, evangelism, content, translation.' },
-		education: { label: 'Teaching', desc: 'Training, curriculum design, teaching how to code.' }
+		code: {
+			label: 'Code',
+			desc: 'Backend, frontend, mobile, systems, embedded.',
+			about: 'Challenges to code: APIs, interfaces, mobile apps, tooling, systems. You hand in code that runs, and it gets graded.'
+		},
+		design: {
+			label: 'Design',
+			desc: 'UI/UX, design systems, motion, illustration.',
+			about: 'Interfaces that hold up in use. From a brief to a screen somebody can open, criticise and improve.'
+		},
+		security: {
+			label: 'Cybersecurity',
+			desc: 'Pentesting, red team, forensics, cryptography.',
+			about: 'Finding what breaks before somebody else does. Grounds built to be attacked, and a write-up of what you found.'
+		},
+		game: {
+			label: 'Games',
+			desc: 'Programming, game design, art and animation.',
+			about: 'Play that works. A slice somebody else can pick up, and a playtest that teaches you as much as your own.'
+		},
+		ai: {
+			label: 'Artificial intelligence',
+			desc: 'Data, machine learning, MLOps, agents and RAG.',
+			about: 'Models and pipelines that answer for themselves. You measure what your system does rather than describe what it should do.'
+		},
+		ops: {
+			label: 'Ops & Cloud',
+			desc: 'Cloud, CI/CD, containers, reliability.',
+			about: 'Keeping it running. Deployment, observability, cost, and the incident at three in the morning.'
+		},
+		quality: {
+			label: 'Quality',
+			desc: 'Testing and automation, across all four grounds.',
+			about: 'Being able to trust a release. You design the tests, automate them, and say plainly what is still not covered.'
+		},
+		leadership: {
+			label: 'Leadership',
+			desc: 'Product, tech lead, production, people, mentoring.',
+			about: 'Getting a team to ship. Scope, trade-offs, reviews, and the conversations nobody enjoys and everybody needs.'
+		},
+		audio: {
+			label: 'Audio',
+			desc: 'Composition, sound design, voice, music implementation.',
+			about: 'Sound that carries a scene. Composition, sound design, and the craft of putting both into a build.'
+		},
+		communication: {
+			label: 'Communication',
+			desc: 'Documentation, evangelism, content, translation.',
+			about: 'Making the work readable. Documentation, talks, articles and translation, judged on whether somebody understood.'
+		},
+		education: {
+			label: 'Teaching',
+			desc: 'Training, curriculum design, teaching how to code.',
+			about: 'Teaching somebody to do it without you. You build the path, the exercises and the feedback that goes with them.'
+		}
 	},
 	landing: {
 		title: 'Prove what you can do.',
@@ -2285,7 +2329,11 @@ export const en: Translations = {
 		selectionOrder: 'Selection number {n}',
 		mode: {
 			learning: 'Learning',
-			active: 'Active'
+			active: 'Practising'
+		},
+		modeChoice: {
+			learning: 'Learning',
+			active: 'Practising'
 		},
 		empty: {
 			own: 'No orientation selected. Your playlist will stay generic until you pick one.',

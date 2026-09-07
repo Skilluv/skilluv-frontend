@@ -6,7 +6,6 @@
 	import { gsap } from '$lib/utils/animations';
 	import { DOMAIN_PLATES, domainIndex, isPublicDomain } from '$lib/data/domains';
 	import { orientationsApi } from '$api/orientations';
-	import { onboardingRitesApi, type Rite } from '$api/onboarding_rites';
 	import { enlist } from '$stores/enlist.svelte';
 	import DomainPlate from '$components/enlist/DomainPlate.svelte';
 	import { ArrowLeft, ArrowRight } from '@lucide/svelte';
@@ -93,25 +92,6 @@
 		}
 	}
 
-	// ── The rite each discipline opens on ───────────────────────────────────
-	//
-	// Public, so the wall can show what the first gesture is before an account
-	// exists — which is the whole point of showing it here rather than after
-	// signing up. A domain whose `challenge_id` is null has no published brief
-	// and must not be offered.
-	let rites = $state<Record<string, Rite>>({});
-
-	async function loadRites() {
-		try {
-			const res = await onboardingRitesApi.list();
-			const next: Record<string, Rite> = {};
-			for (const rite of res.data?.rites ?? []) next[rite.domain] = rite;
-			rites = next;
-		} catch {
-			// Left empty. The plate falls back to its static description.
-		}
-	}
-
 	// ── Motion ──────────────────────────────────────────────────────────────
 	let stage = $state<HTMLElement | null>(null);
 	let reduceMotion = $state(false);
@@ -119,11 +99,9 @@
 	onMount(() => {
 		enlist.restore();
 		reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-		// Both are one call each and neither gates the screen: the wall draws
-		// with its static copy and gains the numbers and the gestures when they
-		// land.
+		// One call, and it does not gate the screen: the wall draws with its own
+		// copy and gains the numbers when they land.
 		void loadCounts();
-		void loadRites();
 	});
 
 	$effect(() => {
@@ -220,10 +198,10 @@
 				{plate}
 				label={i18n.t(`disciplines.${plate.domain}.label`)}
 				desc={i18n.t(`disciplines.${plate.domain}.desc`)}
+				about={i18n.t(`disciplines.${plate.domain}.about`)}
 				position={i + 1}
 				{total}
 				trades={counts?.[plate.domain] ?? null}
-				gesture={rites[plate.domain]?.gesture ?? null}
 				active={i === activeIndex}
 				chooseHref={chooseHref(i)}
 			/>

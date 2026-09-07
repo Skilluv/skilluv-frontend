@@ -7,6 +7,21 @@ import type { ConsentTranslations } from './consent.types';
 import type { EnlistTranslations } from './enlist.types';
 
 /**
+ * How one discipline is written.
+ *
+ * `desc` is the summary that names its ground: "Backend, frontend, mobile,
+ * systems, embedded." `about` is the line under it, and it says what the
+ * craft is. It replaced the entry rite the enlistment wall used to show
+ * there, which described a procedure to somebody who had not yet decided
+ * they wanted the discipline at all.
+ */
+export interface DisciplineCopy {
+	label: string;
+	desc: string;
+	about: string;
+}
+
+/**
  * The Post-MVP namespaces (SKI-36 … SKI-47) are declared in
  * `postmvp.types.ts` and folded in here, so `i18n.t('goals.title')` type-checks
  * exactly like an MVP key while the two sets stay separately readable.
@@ -230,17 +245,17 @@ export interface Translations
 		sectionTitleLine2: string;
 		sectionSubtitle: string;
 		lead: string;
-		code: { label: string; desc: string };
-		design: { label: string; desc: string };
-		security: { label: string; desc: string };
-		game: { label: string; desc: string };
-		ai: { label: string; desc: string };
-		ops: { label: string; desc: string };
-		quality: { label: string; desc: string };
-		leadership: { label: string; desc: string };
-		audio: { label: string; desc: string };
-		communication: { label: string; desc: string };
-		education: { label: string; desc: string };
+		code: DisciplineCopy;
+		design: DisciplineCopy;
+		security: DisciplineCopy;
+		game: DisciplineCopy;
+		ai: DisciplineCopy;
+		ops: DisciplineCopy;
+		quality: DisciplineCopy;
+		leadership: DisciplineCopy;
+		audio: DisciplineCopy;
+		communication: DisciplineCopy;
+		education: DisciplineCopy;
 	};
 	landing: {
 		title: string;
@@ -2426,7 +2441,22 @@ export interface Translations
 		workingLanguages: string;
 		timezone: string;
 		selectionOrder: string;
+		/**
+		 * The two forms of one field.
+		 *
+		 * `mode` is the state, read on somebody's profile: "En apprentissage".
+		 * `modeChoice` is the button, pressed by the person it describes: "J’apprends".
+		 *
+		 * They live together because they are the same field, and the enlistment
+		 * tray and the profile once carried two unrelated vocabularies for it —
+		 * "Je pratique" on one screen and "En exercice" on the other. Same words,
+		 * one home, whatever the grammar of the surface.
+		 */
 		mode: {
+			learning: string;
+			active: string;
+		};
+		modeChoice: {
 			learning: string;
 			active: string;
 		};
