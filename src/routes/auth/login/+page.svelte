@@ -232,7 +232,7 @@
 		{:else}
 			<Input
 				label={i18n.t('auth.login.identifier')}
-				placeholder="kofi@exemple.com"
+				placeholder="kofi@example.com"
 				bind:value={identifier}
 				autocomplete="username"
 				oninput={scheduleSsoDiscovery}

@@ -140,12 +140,34 @@ test.describe('Enlistment — pact', () => {
 		await expect(page.locator('input[autocomplete="username"]')).toBeVisible();
 	}
 
+	/**
+	 * The password and its confirmation, in the order the form asks for them.
+	 *
+	 * Positional rather than by label, because the label is translated and this
+	 * file asserts against whichever locale the suite happens to run in. Both
+	 * carry `autocomplete="new-password"` on purpose — that is what makes a
+	 * password manager offer to fill the pair — so the pair is what is matched.
+	 */
+	function passwordFields(page: Page) {
+		const both = page.locator('input[autocomplete="new-password"]');
+		return { password: both.first(), confirm: both.nth(1) };
+	}
+
+	/** Everything but the password, which each test sets for itself. */
+	async function fillIdentity(page: Page) {
+		await page.locator('input[autocomplete="username"]').fill('kofi_dev');
+		await page.locator('input[autocomplete="email"]').fill('kofi@example.com');
+		await page.locator('input[autocomplete="given-name"]').fill('Kofi');
+		await page.locator('input[autocomplete="family-name"]').fill('Mensah');
+	}
+
 	test('displays all required fields and the chosen domain', async ({ page }) => {
 		await reachPact(page);
 		await expect(page.locator('input[autocomplete="email"]')).toBeVisible();
 		await expect(page.locator('input[autocomplete="given-name"]')).toBeVisible();
 		await expect(page.locator('input[autocomplete="family-name"]')).toBeVisible();
-		await expect(page.locator('input[autocomplete="new-password"]')).toBeVisible();
+		// Two of them: the password and its confirmation.
+		await expect(page.locator('input[autocomplete="new-password"]')).toHaveCount(2);
 		await expect(page.locator('input[type="checkbox"]')).toBeVisible();
 		await expect(page.getByText('Code', { exact: true }).first()).toBeVisible();
 	});
@@ -176,6 +198,54 @@ test.describe('Enlistment — pact', () => {
 		await page.waitForURL('**/auth/register/domain', { timeout: 10_000 });
 	});
 
+	test('les regles sont annoncees avant de sinscrire, et se cochent en tapant', async ({
+		page
+	}) => {
+		await reachPact(page);
+		const { password } = passwordFields(page);
+
+		// Nothing under an empty field but the policy as a sentence: five unticked
+		// requirements before anybody has typed read as five complaints.
+		await expect(page.getByText(/10 à 128 caractères|10 to 128 characters/i)).toBeVisible();
+		await expect(page.getByText(/Une majuscule|One uppercase/i)).toHaveCount(0);
+
+		// One character in, the list is there, and it credits exactly what that
+		// character earns: a lowercase letter, and nothing else.
+		await password.fill('s');
+		const rules = page.locator('#pact-password-rules');
+		await expect(rules).toBeVisible();
+		await expect(rules.locator('[data-met="true"]')).toHaveCount(1);
+
+		// Long enough, and lowercase: exactly two of the five, and the other
+		// three still name themselves rather than hiding behind one sentence.
+		await password.fill('strongpassword');
+		await expect(rules.locator('[data-met="true"]')).toHaveCount(2);
+
+		// Everything satisfied, before the form has been submitted once.
+		await password.fill('StrongPass1!');
+		await expect(rules.locator('[data-met="true"]')).toHaveCount(5);
+	});
+
+	test('la non-correspondance est signalee en quittant le champ, pas en le tapant', async ({
+		page
+	}) => {
+		await reachPact(page);
+		const { password, confirm } = passwordFields(page);
+
+		await password.fill('StrongPass1!');
+		await confirm.fill('Strong');
+		// Still in the field. Every prefix of a right password differs from it,
+		// so complaining now would call somebody wrong for typing correctly.
+		await expect(page.getByText(/ne sont pas identiques|do not match/i)).toHaveCount(0);
+
+		await confirm.blur();
+		await expect(page.getByText(/ne sont pas identiques|do not match/i)).toBeVisible();
+
+		// And it goes as soon as they agree, without waiting for another blur.
+		await confirm.fill('StrongPass1!');
+		await expect(page.getByText(/ne sont pas identiques|do not match/i)).toHaveCount(0);
+	});
+
 	test('weak password triggers a client-side error', async ({ page }) => {
 		await reachPact(page);
 
@@ -185,27 +255,80 @@ test.describe('Enlistment — pact', () => {
 			return route.fulfill({ status: 200, body: '{}' });
 		});
 
-		await page.locator('input[autocomplete="username"]').fill('kofi_dev');
-		await page.locator('input[autocomplete="email"]').fill('kofi@example.com');
-		await page.locator('input[autocomplete="given-name"]').fill('Kofi');
-		await page.locator('input[autocomplete="family-name"]').fill('Mensah');
-		await page.locator('input[autocomplete="new-password"]').fill('weak');
+		await fillIdentity(page);
+		const weak = passwordFields(page);
+		await weak.password.fill('weak');
+		await weak.confirm.fill('weak');
 		await page.locator('input[type="checkbox"]').check();
 
 		await page.getByTestId('enlist-submit').click();
 
-		await expect(page.getByText(/Au moins 10 caractères/i)).toBeVisible();
+		await expect(page.getByText(/au moins 10 caractères|at least 10 characters/i)).toBeVisible();
 		expect(called).toBe(false);
+	});
+
+	test('two passwords that differ are refused, and nothing is sent', async ({ page }) => {
+		await reachPact(page);
+
+		let called = false;
+		await page.route('**/api/auth/register', (route) => {
+			called = true;
+			return route.fulfill({ status: 200, body: '{}' });
+		});
+
+		await fillIdentity(page);
+		const fields = passwordFields(page);
+		await fields.password.fill('StrongPass1!');
+		// One character apart, which is what a typo looks like.
+		await fields.confirm.fill('StrongPass1?');
+		// Leaving the field is what raises the message, so it is left explicitly
+		// rather than by whatever happens to be clicked next.
+		await fields.confirm.blur();
+		// Ticked after, deliberately: `Input` reserves the line its message goes
+		// in, so raising one must not move the checkbox out from under the click.
+		await page.locator('input[type="checkbox"]').check();
+
+		await expect(page.getByText(/ne sont pas identiques|do not match/i)).toBeVisible();
+
+		await page.getByTestId('enlist-submit').click();
+		// The whole point: an account created under a password the person cannot
+		// reproduce is worse than a form that refuses.
+		expect(called).toBe(false);
+	});
+
+	test('un mot de passe trop court et une confirmation differente signalent chacun leur champ', async ({
+		page
+	}) => {
+		await reachPact(page);
+
+		await fillIdentity(page);
+		const fields = passwordFields(page);
+		await fields.password.fill('weak');
+		await fields.confirm.fill('other');
+		await fields.confirm.blur();
+		await page.locator('input[type="checkbox"]').check();
+
+		await page.getByTestId('enlist-submit').click();
+
+		// Each field answers for itself. The submit-time verdict still raises one
+		// problem at a time — the length, not the classes — while the
+		// confirmation reports its own state, which is a different field and a
+		// different mistake.
+		await expect(page.getByText(/au moins 10 caractères|at least 10 characters/i)).toBeVisible();
+		await expect(page.getByText(/ne sont pas identiques|do not match/i)).toBeVisible();
+		// The classes are not piled on top of the length.
+		await expect(
+			page.getByText(/il faut au moins une majuscule|it must contain at least one uppercase/i)
+		).toHaveCount(0);
 	});
 
 	test('unchecked terms triggers a client-side error', async ({ page }) => {
 		await reachPact(page);
 
-		await page.locator('input[autocomplete="username"]').fill('kofi_dev');
-		await page.locator('input[autocomplete="email"]').fill('kofi@example.com');
-		await page.locator('input[autocomplete="given-name"]').fill('Kofi');
-		await page.locator('input[autocomplete="family-name"]').fill('Mensah');
-		await page.locator('input[autocomplete="new-password"]').fill('StrongPass1!');
+		await fillIdentity(page);
+		const terms = passwordFields(page);
+		await terms.password.fill('StrongPass1!');
+		await terms.confirm.fill('StrongPass1!');
 
 		// Bypass the HTML required attribute so we can hit our custom validation.
 		await page.locator('input[type="checkbox"]').evaluate((el) => el.removeAttribute('required'));
@@ -232,11 +355,10 @@ test.describe('Enlistment — pact', () => {
 			}
 		]);
 
-		await page.locator('input[autocomplete="username"]').fill('kofi_dev');
-		await page.locator('input[autocomplete="email"]').fill('kofi@example.com');
-		await page.locator('input[autocomplete="given-name"]').fill('Kofi');
-		await page.locator('input[autocomplete="family-name"]').fill('Mensah');
-		await page.locator('input[autocomplete="new-password"]').fill('StrongPass1!');
+		await fillIdentity(page);
+		const refused = passwordFields(page);
+		await refused.password.fill('StrongPass1!');
+		await refused.confirm.fill('StrongPass1!');
 		await page.locator('input[type="checkbox"]').check();
 
 		await page.getByTestId('enlist-submit').click();
@@ -561,6 +683,30 @@ test.describe('Reset password', () => {
 			await submit.click();
 			await expect(page.getByRole('alert')).toBeVisible({ timeout: 1500 });
 		}).toPass({ timeout: 20_000 });
+	});
+
+	test('a long password missing a class is refused here, not by the API', async ({ page }) => {
+		let called = false;
+		await page.route('**/api/auth/reset-password', (route) => {
+			called = true;
+			return route.fulfill({ status: 200, body: '{}' });
+		});
+
+		await gotoHydrated(page, '/auth/reset-password?token=abc123');
+		const inputs = page.locator('input[autocomplete="new-password"]');
+		// Thirteen characters, lowercase and a digit, no uppercase and no symbol.
+		// This page used to ask for eight characters and nothing else, so it
+		// waved this through and let the API do the refusing — with the page's
+		// own "8 characters minimum" as the only explanation on screen.
+		await inputs.nth(0).fill('longpassword1');
+		await inputs.nth(1).fill('longpassword1');
+
+		const submit = page.getByRole('button', { name: /Changer le mot de passe/i });
+		await expect(async () => {
+			await submit.click();
+			await expect(page.getByRole('alert')).toBeVisible({ timeout: 1500 });
+		}).toPass({ timeout: 20_000 });
+		expect(called).toBe(false);
 	});
 
 	test('missing token shows the invalid-link error', async ({ page }) => {

@@ -125,7 +125,7 @@
 		disabled={!country}
 		{required}
 		placeholder={country
-			? (placeholder ?? (i18n.locale === 'fr' ? 'Ex. Paris' : 'e.g. Paris'))
+			? (placeholder ?? (i18n.locale === 'fr' ? 'Ex. Cotonou' : 'e.g. Cotonou'))
 			: i18n.locale === 'fr'
 				? 'Choisir un pays d\'abord'
 				: 'Pick a country first'}

@@ -58,7 +58,7 @@
 			<Input
 				label={i18n.t('auth.register.email')}
 				type="email"
-				placeholder="kofi@exemple.com"
+				placeholder="kofi@example.com"
 				bind:value={email}
 				autocomplete="email"
 				required

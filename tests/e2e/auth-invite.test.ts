@@ -101,6 +101,7 @@ test.describe('S1.6 enterprise invitation', () => {
 		await page.getByLabel('Prénom').fill('Kwame');
 		await page.getByLabel('Nom', { exact: true }).fill('Boateng');
 		await page.getByLabel('Mot de passe', { exact: true }).fill('Skilluv!2026abc');
+		await page.getByLabel('Confirme le mot de passe').fill('Skilluv!2026abc');
 		await page.getByRole('checkbox').check();
 		await page.getByRole('button', { name: "Rejoindre l'entreprise" }).click();
 
@@ -112,6 +113,42 @@ test.describe('S1.6 enterprise invitation', () => {
 			terms_accepted: true
 		});
 		await expect(page).toHaveURL(/\/enterprise\/onboarding/);
+	});
+
+	test('deux mots de passe differents, rien n est poste', async ({ page }) => {
+		let calls = 0;
+		await mockApi(page, [
+			{
+				path: '/enterprise/invite/register-and-accept',
+				handler: (route) => {
+					calls++;
+					return json({ data: {} })(route);
+				}
+			},
+			{ path: '/enterprise/invite/preview', handler: json(preview()) },
+			...common
+		]);
+		await gotoHydrated(page, `/auth/invite/${TOKEN}`);
+
+		await page.getByLabel('Prénom').fill('Kwame');
+		await page.getByLabel('Nom', { exact: true }).fill('Boateng');
+		await page.getByLabel('Mot de passe', { exact: true }).fill('Skilluv!2026abc');
+		// One character apart, which is what a typo looks like.
+		await page.getByLabel('Confirme le mot de passe').fill('Skilluv!2026abd');
+		// Leaving the field is what raises the message.
+		await page.getByLabel('Confirme le mot de passe').blur();
+		// Ticked after: `Input` reserves the line its message goes in, so raising
+		// one must not move the checkbox out from under the click.
+		await page.getByRole('checkbox').check();
+
+		// Said before the button is pressed, not after. The invitation is
+		// single-use: an account created under a password the person cannot
+		// reproduce burns the token with nothing to show for it.
+		await expect(page.getByText(/ne sont pas identiques/i)).toBeVisible();
+
+		await page.getByRole('button', { name: "Rejoindre l'entreprise" }).click();
+		await page.waitForTimeout(300);
+		expect(calls).toBe(0);
 	});
 
 	test('sans acceptation des conditions, rien n est poste', async ({ page }) => {
@@ -132,6 +169,7 @@ test.describe('S1.6 enterprise invitation', () => {
 		await page.getByLabel('Prénom').fill('Kwame');
 		await page.getByLabel('Nom', { exact: true }).fill('Boateng');
 		await page.getByLabel('Mot de passe', { exact: true }).fill('Skilluv!2026abc');
+		await page.getByLabel('Confirme le mot de passe').fill('Skilluv!2026abc');
 		await page.getByRole('button', { name: "Rejoindre l'entreprise" }).click();
 
 		await page.waitForTimeout(500);

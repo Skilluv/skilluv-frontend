@@ -550,54 +550,71 @@
 	     catalogue of seventy-three cards. -->
 	<aside class="tray" aria-label={i18n.t('enlist.path.chosen')}>
 		<div class="tray__inner">
-			<ul class="tray__list">
-				{#each enlist.picks as pick, i (pick.slug)}
-					<li class="tray__item">
-						<button
-							type="button"
-							class="tray__primary"
-							data-on={enlist.primary === i}
-							aria-pressed={enlist.primary === i}
-							title={i18n.t('enlist.path.primaryHint')}
-							onclick={() => enlist.setPrimary(i)}
-						>
-							{enlist.primary === i ? i18n.t('enlist.path.primary') : String(i + 1)}
-						</button>
-
-						<span class="tray__name">{pick.name}</span>
-
-						<span class="tray__modes">
+			<div class="tray__row">
+				<ul class="tray__list">
+					{#each enlist.picks as pick, i (pick.slug)}
+						<li class="tray__item">
 							<button
 								type="button"
-								data-on={pick.mode === 'learning'}
-								onclick={() => enlist.setMode(pick.slug, 'learning')}
+								class="tray__primary"
+								data-on={enlist.primary === i}
+								aria-pressed={enlist.primary === i}
+								title={i18n.t('enlist.path.primaryHint')}
+								onclick={() => enlist.setPrimary(i)}
 							>
-								{i18n.t('enlist.path.modeLearning')}
+								{enlist.primary === i ? i18n.t('enlist.path.primary') : String(i + 1)}
 							</button>
+
+							<span class="tray__name">{pick.name}</span>
+
+							<!-- Two buttons, one answer, so they are a named group and each
+							     one reports whether it is the one that holds. Without
+							     `aria-pressed` a screen reader meets two buttons saying
+							     "learning" and "practising" and no way to hear which is on. -->
+							<span
+								class="tray__modes"
+								role="group"
+								aria-label={i18n.t('enlist.path.modeLabel', { name: pick.name })}
+							>
+								<button
+									type="button"
+									data-on={pick.mode === 'learning'}
+									aria-pressed={pick.mode === 'learning'}
+									onclick={() => enlist.setMode(pick.slug, 'learning')}
+								>
+									{i18n.t('orientations.modeChoice.learning')}
+								</button>
+								<button
+									type="button"
+									data-on={pick.mode === 'active'}
+									aria-pressed={pick.mode === 'active'}
+									onclick={() => enlist.setMode(pick.slug, 'active')}
+								>
+									{i18n.t('orientations.modeChoice.active')}
+								</button>
+							</span>
+
 							<button
 								type="button"
-								data-on={pick.mode === 'active'}
-								onclick={() => enlist.setMode(pick.slug, 'active')}
+								class="tray__remove"
+								aria-label={i18n.t('enlist.path.remove', { name: pick.name })}
+								onclick={() => enlist.togglePath(pick.slug, pick.name)}
 							>
-								{i18n.t('enlist.path.modeActive')}
+								<X size={15} strokeWidth={2} />
 							</button>
-						</span>
+						</li>
+					{/each}
+				</ul>
 
-						<button
-							type="button"
-							class="tray__remove"
-							aria-label={i18n.t('enlist.path.remove', { name: pick.name })}
-							onclick={() => enlist.togglePath(pick.slug, pick.name)}
-						>
-							<X size={15} strokeWidth={2} />
-						</button>
-					</li>
-				{/each}
-			</ul>
+				<a class="tray__cta" href={continueHref} data-testid="enlist-continue">
+					{i18n.t('enlist.path.continue')}
+				</a>
+			</div>
 
-			<a class="tray__cta" href={continueHref} data-testid="enlist-continue">
-				{i18n.t('enlist.path.continue')}
-			</a>
+			<!-- Under the row, on the panel itself. Above it would put the
+			     sentence on the transparent top of the tray, with cards
+			     scrolling behind it. -->
+			<p class="tray__note">{i18n.t('enlist.path.modeNote')}</p>
 		</div>
 	</aside>
 {/if}
@@ -909,9 +926,6 @@
 	}
 
 	.tray__inner {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
 		max-width: 78rem;
 		margin: 0 auto;
 		padding: 0.75rem 0.75rem 0.75rem 1rem;
@@ -919,6 +933,19 @@
 		border-radius: 1.25rem;
 		background-color: var(--sk-surface-overlay);
 		box-shadow: var(--shadow-lg);
+	}
+
+	.tray__row {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.tray__note {
+		margin: 0.625rem 0 0;
+		font-size: 0.75rem;
+		line-height: 1.45;
+		color: var(--sk-text-muted);
 	}
 
 	.tray__list {
@@ -1015,7 +1042,7 @@
 	}
 
 	@media (max-width: 720px) {
-		.tray__inner {
+		.tray__row {
 			flex-direction: column;
 			align-items: stretch;
 		}

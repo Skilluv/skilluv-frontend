@@ -9,6 +9,8 @@
 	import { webauthnApi, isPasskeySupported } from '$api/webauthn';
 	import { auth } from '$stores/auth.svelte';
 	import { SkilluError } from '$api/client';
+	import { checkPassword } from '$lib/utils/password';
+	import PasswordRules from '$components/auth/PasswordRules.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { CompanySize, EnterpriseType } from '$types';
 	import { EnterpriseTypeSelector } from '$lib/components/enterprise';
@@ -111,22 +113,14 @@
 		if (!username.trim()) fieldErrors.username = i18n.t('auth.register.username');
 		if (!email.trim()) fieldErrors.email = i18n.t('auth.register.email');
 
-		// Enterprise owners hold billing / invite / SSO / session-revoke
-		// rights — apply the same strict policy as candidates: min 10 chars +
-		// upper + lower + digit + symbol (backend enforces the same rule via
-		// validate_password_pub).
-		if (
-			password.length < 10 ||
-			password.length > 128 ||
-			!/[A-Z]/.test(password) ||
-			!/[a-z]/.test(password) ||
-			!/\d/.test(password) ||
-			!/[^A-Za-z0-9\s]/.test(password)
-		) {
-			fieldErrors.password =
-				i18n.locale === 'fr'
-					? 'Au moins 10 caractères, avec majuscule, minuscule, chiffre et symbole'
-					: 'At least 10 characters, with uppercase, lowercase, digit and symbol';
+		// Enterprise owners hold billing / invite / SSO / session-revoke rights,
+		// so they get the same policy as everybody else, from the same module —
+		// `validate_password_pub` on the backend is the same validator too. The
+		// two checks below it are this screen's own and have no server side:
+		// they are advice, not policy.
+		const verdict = checkPassword(password);
+		if (verdict !== 'ok') {
+			fieldErrors.password = i18n.t(`auth.password.${verdict}`);
 		} else if (looksLikeCommonPhrase(password)) {
 			fieldErrors.password =
 				i18n.locale === 'fr'
@@ -327,12 +321,17 @@
 							type="password"
 							bind:value={password}
 							error={fieldErrors.password}
+							hint={password ? undefined : i18n.t('auth.password.hint')}
 							autocomplete="new-password"
+							aria-describedby={fieldErrors.password ? undefined : 'enterprise-password-rules'}
 							required
 						/>
+						<!-- The shared policy, ticking off as it is typed. The two lines
+						     below are this screen's own advice, and have no server side:
+						     they cannot be ticked because nothing checks them until
+						     submit. -->
+						<PasswordRules {password} id="enterprise-password-rules" />
 						<ul class="mt-2 space-y-0.5 text-xs text-text-muted">
-							<li>{i18n.locale === 'fr' ? 'Au moins 10 caractères' : 'At least 10 characters'}</li>
-							<li>{i18n.locale === 'fr' ? '1 majuscule, 1 minuscule, 1 chiffre, 1 symbole' : '1 uppercase, 1 lowercase, 1 digit, 1 symbol'}</li>
 							<li>{i18n.locale === 'fr' ? 'Pas de mots courants (ex : "password")' : 'No common phrases (e.g., "password")'}</li>
 							<li>{i18n.locale === 'fr' ? 'Ne peut inclure votre nom, identifiant ou email' : 'Cannot include your name, username or email'}</li>
 						</ul>

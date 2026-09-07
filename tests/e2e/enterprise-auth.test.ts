@@ -107,7 +107,7 @@ test.describe('Enterprise register', () => {
 		await page.locator('input[type="password"]').fill('weakpass');
 		await page.getByRole('button', { name: /Continuer/i }).click();
 		await expect(
-			page.getByText(/Au moins 10 caractères/i).first()
+			page.getByText(/au moins 10 caractères|at least 10 characters/i).first()
 		).toBeVisible();
 	});
 

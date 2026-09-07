@@ -11,6 +11,7 @@
 	import Modal from '$components/ui/Modal.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { Locale } from '$lib/i18n';
+	import { checkPassword } from '$lib/utils/password';
 	import type { ThemeBase, SkillDomain, PrivacySettings } from '$types';
 
 	// Password
@@ -54,7 +55,13 @@
 	});
 
 	async function changePassword() {
-		if (newPassword.length < 8) { toast.error('8 caractères minimum.'); return; }
+		// The same rule as every other screen. Hardcoded French and the wrong
+		// length before, on a screen that is served in both locales.
+		const verdict = checkPassword(newPassword);
+		if (verdict !== 'ok') {
+			toast.error(i18n.t(`auth.password.${verdict}`));
+			return;
+		}
 		savingPassword = true;
 		try {
 			await authApi.changePassword(currentPassword, newPassword);
@@ -231,7 +238,7 @@
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.password.title')}</h2>
 		<div class="flex flex-col gap-4 rounded-2xl border border-border bg-surface-elevated p-6">
 			<Input label={i18n.t('settings.password.current')} type="password" bind:value={currentPassword} autocomplete="current-password" />
-			<Input label={i18n.t('settings.password.new')} type="password" bind:value={newPassword} autocomplete="new-password" hint={i18n.t('settings.password.newHint')} />
+			<Input label={i18n.t('settings.password.new')} type="password" bind:value={newPassword} autocomplete="new-password" hint={i18n.t('auth.password.hint')} />
 			<Button variant="primary" loading={savingPassword} onclick={changePassword}>{i18n.t('settings.password.changeBtn')}</Button>
 		</div>
 	</section>

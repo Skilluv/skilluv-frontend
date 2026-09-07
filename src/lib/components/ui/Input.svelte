@@ -23,6 +23,22 @@
 	let inputId = $derived(id ?? label?.toLowerCase().replace(/\s+/g, '-') ?? crypto.randomUUID());
 	let isPassword = $derived(type === 'password');
 	let inputType = $derived(isPassword && showPassword ? 'text' : type);
+
+	/**
+	 * One slot under the field, always present, for whichever of the two applies.
+	 *
+	 * The line used to be conditional, and a message appearing pushed everything
+	 * below it down. On a form that validates when a field is left, that means
+	 * the page grows under the pointer between pressing and releasing: leaving
+	 * the password confirmation raised its message and moved the checkbox out
+	 * from under the click that was already on its way to it. The suite caught
+	 * it as "clicking the checkbox did not change its state", which is exactly
+	 * what a person would have experienced without being able to name it.
+	 *
+	 * So the space is reserved whether or not there is anything to say. It costs
+	 * one line under every field and it buys a form that does not move.
+	 */
+	let message = $derived(error || hint || '');
 </script>
 
 <div class="flex flex-col gap-1.5 {className}">
@@ -43,7 +59,7 @@
 				: 'border-border focus:border-primary focus:ring-1 focus:ring-primary'}
 				{isPassword ? 'pr-11' : ''}"
 			aria-invalid={error ? 'true' : undefined}
-			aria-describedby={error ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined}
+			aria-describedby={message ? `${inputId}-msg` : undefined}
 			{...rest}
 		/>
 
@@ -68,9 +84,18 @@
 		{/if}
 	</div>
 
-	{#if error}
-		<p id="{inputId}-error" class="text-xs text-error" role="alert">{error}</p>
-	{:else if hint}
-		<p id="{inputId}-hint" class="text-xs text-text-muted">{hint}</p>
-	{/if}
+	<!--
+		Rendered even when empty, so the field below never moves. A persistent
+		polite region rather than a `role="alert"` that appears with its own text:
+		a live region and its content arriving in the same frame is the case
+		screen readers announce least reliably, while a region that was already
+		there announces the change it sees.
+	-->
+	<p
+		id="{inputId}-msg"
+		class="min-h-4 text-xs leading-4 {error ? 'text-error' : 'text-text-muted'}"
+		aria-live="polite"
+	>
+		{message}
+	</p>
 </div>

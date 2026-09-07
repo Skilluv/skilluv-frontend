@@ -26,20 +26,23 @@
 		/** Number of trades, or `null` while unknown or unanswered. */
 		trades: number | null;
 		/**
-		 * The first gesture this discipline asks for, in one line, or `null`
-		 * when the rite catalogue has not answered.
+		 * What the discipline is, in one line under the summary.
 		 *
-		 * Shown here rather than after signing up because it is the honest
-		 * answer to "what would I actually do": a designer reads that they
-		 * hand in a screen, not that they open a pull request.
+		 * This used to carry the entry rite the domain opens on, served by the
+		 * rite catalogue: fork a starter, write your HELLO.md, open the pull
+		 * request. That is a procedure, and somebody standing in front of the
+		 * wall has not decided they want the discipline yet. Telling them how
+		 * they will be onboarded answers a question they have not asked.
+		 *
+		 * So the second line describes the craft rather than the paperwork. The
+		 * rite is still true, and still shown on the screen that asks for it.
 		 */
-		gesture: string | null;
+		about: string;
 		active: boolean;
 		chooseHref: string;
 	}
 
-	let { plate, label, desc, position, total, trades, gesture, active, chooseHref }: Props =
-		$props();
+	let { plate, label, desc, position, total, trades, about, active, chooseHref }: Props = $props();
 
 	const counter = $derived(
 		i18n.t('enlist.fresco.counter', {
@@ -67,9 +70,8 @@
 
 		<p class="plate__desc">{desc}</p>
 
-		{#if gesture}
-			<p class="plate__gesture">{gesture}</p>
-		{/if}
+		<p class="plate__about">{about}</p>
+
 		{#if trades !== null}
 			<p class="plate__trades">{i18n.t('enlist.fresco.trades', { n: trades })}</p>
 		{/if}
@@ -143,9 +145,9 @@
 		text-wrap: pretty;
 	}
 
-	/* The gesture is prose and the trade count is a label, so they are set
+	/* The second line is prose and the trade count is a label, so they are set
 	   differently: the sentence reads, the count tallies. */
-	.plate__gesture {
+	.plate__about {
 		margin: 1rem 0 0;
 		max-width: 34ch;
 		font-size: 0.9375rem;
