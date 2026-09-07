@@ -507,7 +507,7 @@ export const fr: Translations = {
 			providerLabel: 'Fournisseur EOR',
 			currencyLabel: 'Devise de paiement',
 			timezoneLabel: 'Fuseau horaire requis',
-			timezoneHint: 'Format IANA (ex. Africa/Porto-Novo, Europe/Paris).',
+			timezoneHint: 'Format IANA (ex. Africa/Porto-Novo, Africa/Nairobi).',
 			taxCountryLabel: 'Pays de retenue fiscale',
 			saveBtn: 'Enregistrer la config'
 		},
@@ -2538,7 +2538,7 @@ export const fr: Translations = {
 			githubLabel: 'Login GitHub',
 			githubPh: 'ex. torvalds',
 			emailLabel: 'Email',
-			emailPh: 'you@example.com',
+			emailPh: 'ama@example.com',
 			reposLabel: 'Repos',
 			reposHint: 'Format : owner/name — separer par virgules (max 50)',
 			reposPh: 'skilluv/skilluv-backend, skilluv/skilluv-frontend',

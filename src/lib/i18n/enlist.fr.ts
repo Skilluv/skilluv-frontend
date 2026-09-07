@@ -57,7 +57,7 @@ export const enlistFr: EnlistTranslations = {
 			username: 'Pseudo',
 			usernamePlaceholder: 'kofi_dev',
 			email: 'Email',
-			emailPlaceholder: 'kofi@exemple.com',
+			emailPlaceholder: 'kofi@example.com',
 			firstName: 'Prénom',
 			lastName: 'Nom',
 			password: 'Mot de passe',
