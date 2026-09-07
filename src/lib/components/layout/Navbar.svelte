@@ -550,11 +550,11 @@
 <header class="relative z-40 bg-transparent">
 	<nav
 		aria-label={i18n.locale === 'fr' ? 'Navigation principale' : 'Primary navigation'}
-		class="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-4"
+		class="relative mx-auto grid h-20 max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-4"
 	>
 		<!-- Logo — tenant-aware. Skilluv canonique = wordmark bicolore sKIL·LUV
 		     (Fraunces WONK, easter egg: le LUV rouge se révèle au 2e regard) -->
-		<a href="/" class="flex items-center gap-2.5" aria-label="Skilluv accueil">
+		<a href="/" class="col-start-1 flex items-center gap-2.5" aria-label="Skilluv accueil">
 			{#if tenant.isWhiteLabel && tenant.logoUrl}
 				<img src={tenant.logoUrl} alt={tenant.name} width="120" height="32" class="h-8 max-w-[120px] object-contain" />
 				<span class="text-lg font-black tracking-tight text-text-primary truncate max-w-[160px]">
@@ -594,10 +594,7 @@
 		     like min-[1229px] would fit tighter and break the day somebody adds
 		     a control, because the number would be right for a row that no
 		     longer exists. -->
-		<div
-			data-testid="nav-pill"
-			class="hidden xl:flex absolute top-5 left-1/2 -translate-x-1/2 z-50"
-		>
+		<div data-testid="nav-pill" class="col-start-2 hidden justify-self-center xl:flex">
 			<div bind:this={pillContainer} class="relative flex items-center gap-1 rounded-full border border-border bg-surface-elevated p-1 shadow-sm">
 				<!-- Sliding indicator (pill inversée qui glisse) -->
 				<span
@@ -610,7 +607,7 @@
 					href="/"
 					data-nav-key="home"
 					data-nav-active={activeKey === 'home'}
-					class="relative z-10 inline-flex items-center h-8 rounded-full px-4 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'home' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
+					class="relative z-10 inline-flex items-center h-8 rounded-full px-3 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'home' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
 				>
 					{i18n.locale === 'fr' ? 'Accueil' : 'Home'}
 				</a>
@@ -620,7 +617,7 @@
 						href="/challenges"
 						data-nav-key="challenges"
 						data-nav-active={activeKey === 'challenges'}
-						class="relative z-10 inline-flex items-center h-8 rounded-full px-4 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'challenges' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
+						class="relative z-10 inline-flex items-center h-8 rounded-full px-3 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'challenges' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
 					>
 						{i18n.t('common.nav.challenges')}
 					</a>
@@ -678,7 +675,7 @@
 		</div>
 
 		<!-- Right side controls -->
-		<div class="hidden items-center gap-1 xl:flex">
+		<div class="col-start-3 hidden items-center gap-1 justify-self-end xl:flex">
 			<!-- Theme selector -->
 			<div class="relative" data-theme-dropdown>
 				<button
@@ -851,7 +848,7 @@
 		<!-- Mobile burger -->
 		<button
 			onclick={() => mobileOpen = !mobileOpen}
-			class="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-elevated text-text-muted transition-colors duration-200 hover:bg-surface-overlay xl:hidden"
+			class="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-elevated text-text-muted transition-colors duration-200 hover:bg-surface-overlay col-start-3 justify-self-end xl:hidden"
 			aria-label="Menu"
 		>
 			{#if mobileOpen}
