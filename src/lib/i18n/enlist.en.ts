@@ -61,7 +61,6 @@ export const enlistEn: EnlistTranslations = {
 			firstName: 'First name',
 			lastName: 'Last name',
 			password: 'Password',
-			passwordHint: 'At least 10 characters, with uppercase, lowercase, digit and symbol',
 			country: 'Country',
 			city: 'City',
 			cityHint: 'Optional',
@@ -80,7 +79,6 @@ export const enlistEn: EnlistTranslations = {
 			email: 'Enter an email address.',
 			firstName: 'Enter your first name.',
 			lastName: 'Enter your last name.',
-			password: 'At least 10 characters, with uppercase, lowercase, digit and symbol.',
 			country: 'Select a country.',
 			terms: 'You must accept the Terms of Service and the Privacy Policy.',
 			noDomain: 'Pick a domain first.'

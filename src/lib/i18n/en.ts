@@ -245,6 +245,25 @@ export const en: Translations = {
 		cardLeaderboardsDesc: 'The first hundred by discipline, over the week, the month or all time.'
 	},
 	auth: {
+		password: {
+			hint: '10 to 128 characters, with uppercase, lowercase, digit and symbol',
+			tooShort: 'Password must be at least 10 characters.',
+			tooLong: 'Password must be at most 128 characters.',
+			missingClass:
+				'It must contain at least one uppercase letter, one lowercase letter, one digit and one symbol.',
+			confirm: 'Confirm password',
+			mismatch: 'The two passwords do not match.',
+			rules: {
+				title: 'Your password needs',
+				length: 'Between 10 and 128 characters',
+				upper: 'One uppercase letter',
+				lower: 'One lowercase letter',
+				digit: 'One digit',
+				symbol: 'One symbol',
+				met: 'done',
+				notMet: 'still needed'
+			}
+		},
 		register: {
 			pickDomain: 'What are you passionate about?',
 			pickDomainSub: 'Pick your main domain. You can explore others later.',
@@ -263,7 +282,6 @@ export const en: Translations = {
 			firstName: 'First name',
 			lastName: 'Last name',
 			password: 'Password',
-			passwordHint: '8 characters minimum',
 			creating: 'Creating...',
 			createBtn: 'Create my account',
 			hasAccount: 'Already have an account?',
@@ -619,7 +637,7 @@ export const en: Translations = {
 		},
 		password: {
 			title: 'Password', current: 'Current password',
-			new: 'New password', newHint: '8 characters minimum', changeBtn: 'Change password'
+			new: 'New password', changeBtn: 'Change password'
 		},
 		privacy: {
 			title: 'Privacy', showHeatmap: 'Show heatmap',

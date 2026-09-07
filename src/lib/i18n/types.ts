@@ -277,6 +277,41 @@ export interface Translations
 		cardLeaderboardsDesc: string;
 	};
 	auth: {
+		/**
+		 * The password policy, said once for every screen that asks for one.
+		 *
+		 * Four screens used to state it and no two agreed — see
+		 * `$lib/utils/password.ts`, which holds the rule these sentences
+		 * describe. The three failure messages match the ones the API returns,
+		 * so a person who trips the client check and a person who trips the
+		 * server check read the same thing.
+		 */
+		password: {
+			hint: string;
+			tooShort: string;
+			tooLong: string;
+			missingClass: string;
+			confirm: string;
+			mismatch: string;
+			/**
+			 * The live checklist, shown while somebody types.
+			 *
+			 * Each line is a requirement stated as something to reach rather than
+			 * something they got wrong, because at that point they have not got
+			 * anything wrong yet — they are halfway through typing.
+			 */
+			rules: {
+				title: string;
+				length: string;
+				upper: string;
+				lower: string;
+				digit: string;
+				symbol: string;
+				/** Read out after a rule, for people who cannot see the tick. */
+				met: string;
+				notMet: string;
+			};
+		};
 		register: {
 			pickDomain: string;
 			pickDomainSub: string;
@@ -295,7 +330,6 @@ export interface Translations
 			firstName: string;
 			lastName: string;
 			password: string;
-			passwordHint: string;
 			creating: string;
 			createBtn: string;
 			hasAccount: string;
@@ -716,7 +750,6 @@ export interface Translations
 			title: string;
 			current: string;
 			new: string;
-			newHint: string;
 			changeBtn: string;
 		};
 		privacy: {

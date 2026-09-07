@@ -61,7 +61,6 @@ export const enlistFr: EnlistTranslations = {
 			firstName: 'Prénom',
 			lastName: 'Nom',
 			password: 'Mot de passe',
-			passwordHint: '10 caractères minimum, avec majuscule, minuscule, chiffre et symbole',
 			country: 'Pays',
 			city: 'Ville',
 			cityHint: 'Optionnel',
@@ -80,7 +79,6 @@ export const enlistFr: EnlistTranslations = {
 			email: 'Indique une adresse email.',
 			firstName: 'Indique ton prénom.',
 			lastName: 'Indique ton nom.',
-			password: 'Au moins 10 caractères, avec majuscule, minuscule, chiffre et symbole.',
 			country: 'Sélectionne un pays.',
 			terms: 'Tu dois accepter les CGU et la politique de confidentialité.',
 			noDomain: 'Choisis d’abord un domaine.'

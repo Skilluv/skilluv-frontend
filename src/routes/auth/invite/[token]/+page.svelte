@@ -7,6 +7,8 @@
 	import { enterpriseApi } from '$api/enterprise';
 	import { SkilluError } from '$api/client';
 	import { toast } from '$stores/toast.svelte';
+	import { checkPassword } from '$lib/utils/password';
+	import PasswordRules from '$components/auth/PasswordRules.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import { ShieldCheck, AlertTriangle } from '@lucide/svelte';
@@ -38,6 +40,13 @@
 	let firstName = $state('');
 	let lastName = $state('');
 	let password = $state('');
+	let passwordConfirm = $state('');
+	// Raised when the field is left, not while it is being typed: every prefix
+	// of a correct password differs from it.
+	let confirmTouched = $state(false);
+	const confirmMismatch = $derived(
+		confirmTouched && passwordConfirm.length > 0 && passwordConfirm !== password
+	);
 	let termsAccepted = $state(false);
 	let submitting = $state(false);
 	let submitError = $state('');
@@ -104,6 +113,22 @@
 			submitError = i18n.locale === 'fr'
 				? "Vous devez accepter les Conditions."
 				: 'You must accept the Terms.';
+			return;
+		}
+		// Same rule as every other screen that asks for a password, from the
+		// same module. This screen used to promise twelve characters and omit
+		// lowercase, and enforced nothing at all.
+		const verdict = checkPassword(password);
+		if (verdict !== 'ok') {
+			submitError = i18n.t(`auth.password.${verdict}`);
+			return;
+		}
+		// The only field nobody can proof-read. A typo here costs more than an
+		// ordinary signup: the invitation is single-use, so it is consumed, the
+		// recruiter lands on a login that refuses them, and there is no second
+		// link to try again with.
+		if (passwordConfirm !== password) {
+			submitError = i18n.t('auth.password.mismatch');
 			return;
 		}
 		submitting = true;
@@ -244,9 +269,20 @@
 					bind:value={password}
 					required
 					autocomplete="new-password"
-					hint={i18n.locale === 'fr'
-						? 'Min. 12 caractères, 1 maj., 1 chiffre, 1 caractère spécial.'
-						: 'Min. 12 chars, 1 uppercase, 1 digit, 1 special char.'}
+					hint={password ? undefined : i18n.t('auth.password.hint')}
+					aria-describedby="invite-password-rules"
+				/>
+				<PasswordRules {password} id="invite-password-rules" />
+				<!-- `new-password` on both, so a password manager offers to fill the
+				     pair instead of reading the second as a login field. -->
+				<Input
+					type="password"
+					label={i18n.t('auth.password.confirm')}
+					bind:value={passwordConfirm}
+					required
+					autocomplete="new-password"
+					onblur={() => (confirmTouched = true)}
+					error={confirmMismatch ? i18n.t('auth.password.mismatch') : undefined}
 				/>
 				<label class="flex items-start gap-2 text-sm">
 					<input

@@ -248,6 +248,25 @@ export const fr: Translations = {
 		cardLeaderboardsDesc: 'Les cent premiers par discipline, sur la semaine, le mois ou depuis toujours.'
 	},
 	auth: {
+		password: {
+			hint: '10 à 128 caractères, avec majuscule, minuscule, chiffre et symbole',
+			tooShort: 'Le mot de passe doit faire au moins 10 caractères.',
+			tooLong: 'Le mot de passe doit faire au plus 128 caractères.',
+			missingClass:
+				'Il faut au moins une majuscule, une minuscule, un chiffre et un symbole.',
+			confirm: 'Confirme le mot de passe',
+			mismatch: 'Les deux mots de passe ne sont pas identiques.',
+			rules: {
+				title: 'Il te faut',
+				length: 'Entre 10 et 128 caractères',
+				upper: 'Une majuscule',
+				lower: 'Une minuscule',
+				digit: 'Un chiffre',
+				symbol: 'Un symbole',
+				met: 'fait',
+				notMet: 'manquant'
+			}
+		},
 		register: {
 			pickDomain: 'Qu\'est-ce qui te passionne ?',
 			pickDomainSub: 'Choisis ton domaine principal. Tu pourras explorer les autres après.',
@@ -266,7 +285,6 @@ export const fr: Translations = {
 			firstName: 'Prénom',
 			lastName: 'Nom',
 			password: 'Mot de passe',
-			passwordHint: '8 caractères minimum',
 			creating: 'Création...',
 			createBtn: 'Créer mon compte',
 			hasAccount: 'Déjà un compte ?',
@@ -622,7 +640,7 @@ export const fr: Translations = {
 		},
 		password: {
 			title: 'Mot de passe', current: 'Mot de passe actuel',
-			new: 'Nouveau mot de passe', newHint: '8 caractères minimum', changeBtn: 'Changer le mot de passe'
+			new: 'Nouveau mot de passe', changeBtn: 'Changer le mot de passe'
 		},
 		privacy: {
 			title: 'Confidentialité', showHeatmap: 'Afficher la heatmap',

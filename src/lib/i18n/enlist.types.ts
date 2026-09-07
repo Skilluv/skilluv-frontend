@@ -89,7 +89,6 @@ export interface EnlistTranslations {
 			firstName: string;
 			lastName: string;
 			password: string;
-			passwordHint: string;
 			country: string;
 			city: string;
 			cityHint: string;
@@ -109,7 +108,6 @@ export interface EnlistTranslations {
 			email: string;
 			firstName: string;
 			lastName: string;
-			password: string;
 			country: string;
 			terms: string;
 			noDomain: string;
