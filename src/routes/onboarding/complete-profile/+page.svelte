@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { authApi } from '$api/auth';
 	import { auth } from '$stores/auth.svelte';
+	import { enlist } from '$stores/enlist.svelte';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import { domainStyle } from '$lib/utils/domains';
@@ -21,6 +23,36 @@
 	let country = $state<string | null>(auth.user?.country ?? null);
 	let city = $state<string | null>(auth.user?.city ?? null);
 	let termsAccepted = $state(false);
+
+	/**
+	 * Where an SSO signup lands, and where the enlistment is finished.
+	 *
+	 * An account created through Google, LinkedIn or GitHub starts incomplete:
+	 * the backend inserts `skill_domain` as NULL and captures consent here
+	 * rather than reading it into an OAuth click, and it refuses write endpoints
+	 * until this page has run. `hooks.server.ts` is what routes them here.
+	 *
+	 * Two consequences for somebody who came through the enlistment:
+	 *
+	 * - the ground they picked on the fresco is already known, so asking again
+	 *   would be asking twice — and this page only offers seven of the eleven
+	 *   disciplines, so the second answer could not even match the first.
+	 * - the trades they picked could not be registered before now.
+	 *   `POST /users/me/orientations` is a write, and writes are exactly what an
+	 *   incomplete account cannot do. So the replay happens after this succeeds,
+	 *   not on the way back from the provider.
+	 *
+	 * Consent is not carried over from the pact. Whatever was ticked there
+	 * belonged to a form that was never submitted, and the backend will not take
+	 * anybody's word for it: it is asked again, here, once.
+	 */
+	onMount(() => {
+		enlist.restore();
+		if (enlist.ssoPending && enlist.domain) {
+			selectedDomain = enlist.domain;
+			step = 2;
+		}
+	});
 
 	// $derived, not const: evaluated once, these labels froze on whichever locale
 	// happened to be active at first render and never followed a language switch.
@@ -64,9 +96,24 @@
 				city: city ?? undefined
 			});
 
-			// Re-fetch /me so the store carries `profile_completed = true`.
+			// Re-fetch /me so the store carries `profile_completed = true`. It has
+			// to happen before the replay: the account is only allowed to write
+			// once the profile is complete.
 			const me = await authApi.me();
 			auth.setUser(me.data.user);
+
+			// The trades picked before the account existed, registered at last.
+			// `null` for anybody who did not arrive through the enlistment.
+			const resumed = await enlist.resumeAfterSso();
+			if (resumed && resumed.registered.length > 0) {
+				goto(
+					resumed.failed.length > 0
+						? '/challenges/onboarding?trades=partial'
+						: '/challenges/onboarding'
+				);
+				return;
+			}
+
 			// New onboarding step: pick 1-3 orientations (P16). Users can skip
 			// via the soft-block CTA if they want to explore first — see MVP §0.7.
 			goto('/onboarding/orientations');

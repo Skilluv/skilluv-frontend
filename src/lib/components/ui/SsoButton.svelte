@@ -9,6 +9,11 @@
 	interface Props {
 		provider: 'google' | 'linkedin' | 'github';
 		href?: string;
+		/**
+		 * With no `href`, this is the whole action (login needs to run SSO
+		 * discovery before it knows where to send anybody). With an `href`, it
+		 * runs on the way out and the navigation still happens.
+		 */
 		onclick?: () => void;
 		label?: string;
 	}
@@ -27,7 +32,11 @@
 </script>
 
 {#if href}
-	<a {href} class={cls}>
+	<!-- A link that can also run something on the way out. The signup flow needs
+	     to record that it is leaving for a provider before the browser goes, and
+	     it must stay a real link: the OAuth start is a server redirect, and a
+	     button would lose middle-click and "open in new tab". -->
+	<a {href} {onclick} class={cls}>
 		<BrandIcon name={provider} size={16} />
 		{displayLabel}
 	</a>

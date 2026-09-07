@@ -284,10 +284,26 @@
 		<span>{i18n.t('enlist.account.ssoDivider')}</span>
 	</div>
 
+	<!-- Each one records the departure before the browser goes. The trades chosen
+	     upstream can only be posted once a session exists, and on this path the
+	     session appears after a round trip through a provider, on whatever page
+	     the callback lands on — so the root layout finishes the job there. -->
 	<div class="pact__sso">
-		<SsoButton provider="google" href={oauthHref('/api/auth/google/start')} />
-		<SsoButton provider="linkedin" href={oauthHref('/api/auth/linkedin/start')} />
-		<SsoButton provider="github" href={oauthHref('/api/auth/github/login')} />
+		<SsoButton
+			provider="google"
+			href={oauthHref('/api/auth/google/start')}
+			onclick={() => enlist.leaveForSso()}
+		/>
+		<SsoButton
+			provider="linkedin"
+			href={oauthHref('/api/auth/linkedin/start')}
+			onclick={() => enlist.leaveForSso()}
+		/>
+		<SsoButton
+			provider="github"
+			href={oauthHref('/api/auth/github/login')}
+			onclick={() => enlist.leaveForSso()}
+		/>
 	</div>
 	<p class="pact__sso-hint">{i18n.t('enlist.account.ssoHint')}</p>
 </section>
