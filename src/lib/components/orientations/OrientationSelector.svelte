@@ -91,7 +91,7 @@
 			.filter(Boolean);
 
 		const payload: PickPayload[] = selections.map((s, i) => ({
-			orientation_slug: s.orientation.slug,
+			slug: s.orientation.slug,
 			mode: s.mode,
 			is_primary: i === primaryIndex,
 			working_languages: langs,

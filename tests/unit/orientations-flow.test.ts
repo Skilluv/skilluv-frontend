@@ -67,17 +67,23 @@ describe('AuthState orientations lifecycle', () => {
 		fetchMock
 			.mockResolvedValueOnce(ok({ user: userWithoutOrientations, login_method: 'password', has_passkey: false }))
 			.mockResolvedValueOnce(ok([])) // capabilities
+			// The envelope the endpoint actually answers. Mocked as a bare array,
+			// this test agreed with the client rather than with the server, and
+			// went green while `user.orientations` was being set to an object.
 			.mockResolvedValueOnce(
-				ok([
-					{
-						orientation_slug: 'dev-frontend',
-						orientation_name: 'Dev frontend',
-						mode: 'learning',
-						is_primary: true,
-						started_at: '2026-06-01',
-						working_languages: ['fr']
-					}
-				])
+				ok({
+					orientations: [
+						{
+							orientation_slug: 'dev-frontend',
+							orientation_name: 'Dev frontend',
+							mode: 'learning',
+							is_primary: true,
+							started_at: '2026-06-01',
+							ended_at: null,
+							working_languages: ['fr']
+						}
+					]
+				})
 			);
 
 		const { auth } = await import('../../src/lib/stores/auth.svelte');
@@ -111,19 +117,19 @@ describe('AuthState orientations lifecycle', () => {
 describe('orientationsApi sequential registration', () => {
 	it('POSTs each pick in order with is_primary flag', async () => {
 		fetchMock
-			.mockResolvedValueOnce(ok({ orientation_slug: 'dev-frontend' }))
-			.mockResolvedValueOnce(ok({ orientation_slug: 'security-analyst' }));
+			.mockResolvedValueOnce(ok({ slug: 'dev-frontend', mode: 'learning', is_primary: true }))
+			.mockResolvedValueOnce(ok({ slug: 'security-analyst', mode: 'active', is_primary: false }));
 
 		const { orientationsApi } = await import('../../src/lib/api/orientations');
 
 		await orientationsApi.register({
-			orientation_slug: 'dev-frontend',
+			slug: 'dev-frontend',
 			mode: 'learning',
 			is_primary: true,
 			working_languages: ['fr']
 		});
 		await orientationsApi.register({
-			orientation_slug: 'security-analyst',
+			slug: 'security-analyst',
 			mode: 'active',
 			is_primary: false,
 			working_languages: ['fr']
@@ -136,5 +142,9 @@ describe('orientationsApi sequential registration', () => {
 		const body2 = JSON.parse(fetchMock.mock.calls[1][1].body);
 		expect(body1.is_primary).toBe(true);
 		expect(body2.is_primary).toBe(false);
+		// The field the API requires, named. Asserting only `is_primary` left the
+		// one key that decides whether the request parses at all unchecked.
+		expect(body1.slug).toBe('dev-frontend');
+		expect(body2.slug).toBe('security-analyst');
 	});
 });

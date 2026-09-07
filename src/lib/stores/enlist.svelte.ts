@@ -202,7 +202,10 @@ class EnlistState {
 		const failed: string[] = [];
 		for (const [i, pick] of this.picks.entries()) {
 			const payload: RegisterOrientationRequest = {
-				orientation_slug: pick.slug,
+				// `slug`, not `orientation_slug`. The read side uses the longer
+				// name; the write side does not, and sending it made the body
+				// unparseable rather than merely wrong.
+				slug: pick.slug,
 				mode: pick.mode,
 				is_primary: i === this.primary
 			};

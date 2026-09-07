@@ -152,7 +152,10 @@ class AuthState {
 		if (!this.user) return;
 		try {
 			const res = await orientationsApi.myOrientations();
-			const orientations: UserOrientation[] = res.data;
+			// An envelope. Assigning `res.data` straight in put `{ orientations:
+			// [...] }` where an array belonged, so every `.length` was `undefined`
+			// and every "has a trade" check read zero.
+			const orientations: UserOrientation[] = res.data?.orientations ?? [];
 			this.user = { ...this.user, orientations };
 		} catch {
 			// Endpoint may not exist yet — treat as empty rather than crashing.

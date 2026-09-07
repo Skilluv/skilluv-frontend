@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { auth } from '$lib/stores/auth.svelte';
+	import { activeOrientations } from '$lib/utils/orientations';
 	import { i18n } from '$lib/i18n';
 	import { Compass, X } from '@lucide/svelte';
 
@@ -19,7 +20,7 @@
 		!dismissed &&
 			auth.isAuthenticated &&
 			auth.user?.role === 'user' &&
-			(auth.user?.orientations?.length ?? 0) === 0
+			activeOrientations(auth.user?.orientations).length === 0
 	);
 
 	function dismiss() {

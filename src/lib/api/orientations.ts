@@ -9,13 +9,36 @@ import { createApiClient } from './client';
 
 const api = createApiClient();
 
+/**
+ * The write side names the trade `slug`. The read side calls the same thing
+ * `orientation_slug`, and both are right — they are different shapes.
+ *
+ * The client sent `orientation_slug` in the body. `RegisterBody` has no serde
+ * alias and does not deny unknown fields, so the extra key was discarded, the
+ * required one was missing, and axum's `Json` extractor refused the body with
+ * a 422 before the handler ever ran. Every trade of every signup, silently,
+ * with an error the API's own vocabulary could not explain because it was
+ * never the handler's error.
+ */
 export interface RegisterOrientationRequest {
-	orientation_slug: string;
+	slug: string;
 	mode: OrientationMode;
 	is_primary?: boolean;
 	working_languages?: string[];
 	timezone?: string;
 	notes?: string;
+}
+
+/** `GET /users/me/orientations`, envelope and all. */
+export interface MyOrientationsResponse {
+	orientations: UserOrientation[];
+}
+
+/** What `POST /users/me/orientations` echoes back. */
+export interface RegisteredOrientation {
+	slug: string;
+	mode: OrientationMode;
+	is_primary: boolean;
 }
 
 export interface PatchOrientationRequest {
@@ -114,20 +137,35 @@ export const orientationsApi = {
 		return api.get<ApiResponse<Orientation>>(`/orientations/${slug}`);
 	},
 
+	/**
+	 * An envelope, like the catalogue — `{ orientations: [...] }`, not a bare
+	 * array. It was typed as the array, so `res.data.length` was `undefined`
+	 * and everything that asks "does this person have a trade" read zero.
+	 *
+	 * Ended trades come back too, carrying `ended_at`. Anything counting active
+	 * ones has to filter; the list is the record, not the current state.
+	 */
 	myOrientations() {
-		return api.get<ApiResponse<UserOrientation[]>>('/users/me/orientations');
+		return api.get<ApiResponse<MyOrientationsResponse>>('/users/me/orientations');
 	},
 
+	// The three writes answer an acknowledgement, not the orientation. They
+	// were typed as `UserOrientation`, which promised fields none of them send.
 	register(payload: RegisterOrientationRequest) {
-		return api.post<ApiResponse<UserOrientation>>('/users/me/orientations', payload);
+		return api.post<ApiResponse<RegisteredOrientation>>('/users/me/orientations', payload);
 	},
 
 	patch(slug: string, payload: PatchOrientationRequest) {
-		return api.patch<ApiResponse<UserOrientation>>(`/users/me/orientations/${slug}`, payload);
+		return api.patch<ApiResponse<{ updated: boolean; slug: string }>>(
+			`/users/me/orientations/${slug}`,
+			payload
+		);
 	},
 
 	end(slug: string) {
-		return api.delete<ApiResponse<{ ended: boolean }>>(`/users/me/orientations/${slug}`);
+		return api.delete<ApiResponse<{ ended: boolean; slug: string }>>(
+			`/users/me/orientations/${slug}`
+		);
 	},
 
 	playlist(slug: string) {

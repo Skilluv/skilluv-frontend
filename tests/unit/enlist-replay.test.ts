@@ -82,12 +82,20 @@ describe('registering the chosen trades', () => {
 		fetchMock.mockImplementation((url: string, init?: RequestInit) => {
 			if ((init?.method ?? 'GET') === 'POST') return Promise.resolve(ok({}));
 			// The list, as the API answers it once the post has landed.
-			return Promise.resolve(ok([TRADE]));
+			return Promise.resolve(ok({ orientations: [TRADE] }));
 		});
 
 		const { registered, failed } = await enlist.replay();
 		expect(registered).toEqual(['backend-developer']);
 		expect(failed).toEqual([]);
+
+		// The field the API requires. Sent as `orientation_slug`, the body was
+		// missing its only required key and axum refused it with a 422 before
+		// the handler ran — every trade of every signup, silently.
+		const post = fetchMock.mock.calls.find((c) => (c[1]?.method ?? 'GET') === 'POST');
+		const body = JSON.parse(post![1].body);
+		expect(body.slug).toBe('backend-developer');
+		expect(body).not.toHaveProperty('orientation_slug');
 
 		// The assertion that matters: the banner and the soft-block both read
 		// this, and both were showing because it was still empty.
@@ -127,7 +135,7 @@ describe('registering the chosen trades', () => {
 				// The second one is refused; the first still happened.
 				return Promise.resolve(posts === 1 ? ok({}) : refused());
 			}
-			return Promise.resolve(ok([TRADE]));
+			return Promise.resolve(ok({ orientations: [TRADE] }));
 		});
 
 		const { registered, failed } = await enlist.replay();
