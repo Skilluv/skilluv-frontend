@@ -5,6 +5,7 @@
 	import { consent } from '$lib/stores/consent.svelte';
 	import type { ThemeBase } from '$lib/types';
 	import { PRIMARY_SOCIAL_ACCOUNTS, CONTACT_EMAIL, DPO_EMAIL } from '$lib/config/social';
+	import BrandLogo from './BrandLogo.svelte';
 
 	const year = new Date().getFullYear();
 
@@ -243,8 +244,13 @@
 
 			<!-- ▓▓▓ 5. BOTTOM BAR ▓▓▓ -->
 			<div class="mt-10 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-				<p class="text-xs uppercase tracking-widest font-bold text-text-muted">
-					© {year} Skilluv — {i18n.locale === 'fr' ? 'Tous droits réservés' : 'All rights reserved'}
+				<!-- The mark rather than the word. `BrandLogo` carries `alt="Skilluv"`
+				     on its wordmark, so the line still reads "© 2026 Skilluv · Tous
+				     droits réservés" to anything that cannot see it. -->
+				<p class="flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-text-muted">
+					<span>© {year}</span>
+					<BrandLogo size={20} />
+					<span>· {i18n.locale === 'fr' ? 'Tous droits réservés' : 'All rights reserved'}</span>
 				</p>
 				<ul class="flex flex-wrap items-center gap-x-5 gap-y-2">
 					{#each legalLinks as link}
