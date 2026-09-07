@@ -1,6 +1,7 @@
 import type { OrientationMode, SkillDomain } from '$lib/types';
 import { orientationsApi, type RegisterOrientationRequest } from '$lib/api/orientations';
 import { isPublicDomain } from '$lib/data/domains';
+import { auth } from '$stores/auth.svelte';
 
 /**
  * What the enlistment carries between its four screens.
@@ -212,6 +213,22 @@ class EnlistState {
 				failed.push(pick.slug);
 			}
 		}
+
+		// The session's copy of the list, brought up to date.
+		//
+		// `auth.user.orientations` is loaded once per identity, and on this path
+		// it was loaded from the account that had just been created — before
+		// these posts, so it read empty and stayed empty. Every check that asks
+		// "does this person have a trade" then answered no: the prompt banner in
+		// the layout told somebody to choose the trades they had chosen a second
+		// earlier, and the team marketplace soft-blocked them out of it.
+		//
+		// Refreshed here rather than by each caller, so a future one cannot
+		// forget. Only when something was actually registered — a total failure
+		// has nothing to propagate, and the caller is already telling the person
+		// about it.
+		if (registered.length > 0) await auth.refreshOrientations();
+
 		return { registered, failed };
 	}
 
