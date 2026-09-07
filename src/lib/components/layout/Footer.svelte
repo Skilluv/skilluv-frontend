@@ -225,7 +225,7 @@
 				     artwork already carries the brand's colours, and the sign-off
 				     is the one place the real lockup earns its size. -->
 				<a href="/" class="inline-flex items-center leading-none" aria-label="Skilluv">
-					<BrandLogo class="[--brand-size:88px] sm:[--brand-size:130px] lg:[--brand-size:170px]" />
+					<BrandLogo class="[--brand-size:64px] sm:[--brand-size:80px]" />
 				</a>
 
 				<div class="flex flex-wrap items-center gap-2">
