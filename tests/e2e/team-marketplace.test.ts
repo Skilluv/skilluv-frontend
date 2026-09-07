@@ -126,16 +126,23 @@ test.describe('Team marketplace page', () => {
 						status: 200,
 						contentType: 'application/json',
 						body: JSON.stringify({
-							data: [
-								{
-									orientation_slug: 'dev-backend',
-									orientation_name: 'Dev backend',
-									mode: 'active',
-									is_primary: true,
-									started_at: '2026-01-01',
-									working_languages: ['fr']
-								}
-							]
+							// The envelope the endpoint answers. Mocked as a bare array,
+							// this agreed with the client rather than with the server —
+							// and went on agreeing with it while the store was handed an
+							// object where an array belonged.
+							data: {
+								orientations: [
+									{
+										orientation_slug: 'dev-backend',
+										orientation_name: 'Dev backend',
+										mode: 'active',
+										is_primary: true,
+										started_at: '2026-01-01',
+										ended_at: null,
+										working_languages: ['fr']
+									}
+								]
+							}
 						})
 					})
 			},
@@ -185,7 +192,7 @@ test.describe('Team marketplace page', () => {
 			await route.fulfill({
 				status: 200,
 				contentType: 'application/json',
-				body: JSON.stringify({ data: [] })
+				body: JSON.stringify({ data: { orientations: [] } })
 			});
 		});
 		await gotoHydrated(page, '/teams/marketplace');
