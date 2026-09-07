@@ -1,8 +1,20 @@
 import { notifications } from './notifications.svelte';
 import { wsUrl } from '$api/origin';
+import { authApi } from '$api/auth';
 
 export type WsEvent =
 	| 'connected'
+	/**
+	 * The server's own error frame. It was not in this union, so it fell
+	 * through `dispatch` to nobody — including the one that matters:
+	 * `AUTH_UNAUTHORIZED`, sent the instant an unauthenticated socket opens,
+	 * immediately before the server closes it without a close frame.
+	 *
+	 * That abrupt close is what a dev proxy reports as `read ECONNRESET`, which
+	 * is why the log said the connection had been reset when the server had in
+	 * fact answered clearly and been ignored.
+	 */
+	| 'error'
 	| 'fragment.earned'
 	| 'badge.earned'
 	| 'leaderboard.updated'
@@ -40,6 +52,11 @@ class WebSocketState {
 	private handlers = new Map<WsEvent, Set<WsHandler>>();
 	private reconnectTimer: ReturnType<typeof setTimeout> | undefined;
 	private reconnectDelay = 1000;
+	/**
+	 * One refresh per refusal, so a stale token is retried and a genuinely
+	 * signed-out session is not hammered.
+	 */
+	private refreshing = false;
 
 	connect() {
 		if (this.ws?.readyState === WebSocket.OPEN) return;
@@ -57,6 +74,10 @@ class WebSocketState {
 		this.ws.onmessage = (e) => {
 			try {
 				const msg: WsMessage = JSON.parse(e.data);
+				if (msg.event === 'error' && this.isAuthRefusal(msg.payload)) {
+					void this.recoverFromAuthRefusal();
+					return;
+				}
 				this.dispatch(msg.event, msg.payload, msg.room);
 			} catch {
 				// malformed message
@@ -119,6 +140,46 @@ class WebSocketState {
 		const handlers = this.handlers.get(event);
 		if (handlers) {
 			for (const h of handlers) h(payload, room);
+		}
+	}
+
+	private isAuthRefusal(payload: unknown): boolean {
+		return (
+			typeof payload === 'object' &&
+			payload !== null &&
+			(payload as { code?: string }).code === 'AUTH_UNAUTHORIZED'
+		);
+	}
+
+	/**
+	 * The socket was refused for want of a session, which reconnecting cannot fix.
+	 *
+	 * An access token lasts fifteen minutes. HTTP calls renew it on their own —
+	 * the client posts `/auth/refresh` on a 401 and replays the request — but
+	 * the socket took no part in that: it reconnected on a loop against a cookie
+	 * that would stay stale until something else happened to refresh it. On a
+	 * dev proxy that is a reset every second, and in production a socket that
+	 * silently stops delivering notifications while the rest of the app works.
+	 *
+	 * So the refusal is answered rather than retried: refresh once, reconnect,
+	 * and if the refresh fails there is no session to recover — back off at the
+	 * ceiling instead of from a second, so a signed-out tab costs one attempt
+	 * every thirty seconds rather than a stream of them.
+	 */
+	private async recoverFromAuthRefusal() {
+		if (this.refreshing) return;
+		this.refreshing = true;
+		try {
+			await authApi.refresh();
+			this.reconnectDelay = 1000;
+		} catch {
+			this.reconnectDelay = 30000;
+		} finally {
+			this.refreshing = false;
+			// The close handler schedules the reconnect; the server is about to
+			// close this socket anyway, and closing it here makes that immediate
+			// rather than waiting on a reset.
+			this.ws?.close();
 		}
 	}
 
