@@ -34,7 +34,7 @@ test.use({
 /** The pill's right edge against the left edge of the controls beside it. */
 async function overlap(page: Page): Promise<number | null> {
 	return page.evaluate(() => {
-		const pill = document.querySelector('header .fixed.top-5');
+		const pill = document.querySelector('header [data-testid="nav-pill"]');
 		const right = document.querySelector('header nav > div.hidden.items-center');
 		if (!pill || !right) return null;
 		const p = pill.getBoundingClientRect();
@@ -59,7 +59,7 @@ test.describe('Header at narrow desktop widths', () => {
 	test('the pill is back once there is room for it', async ({ page }) => {
 		await page.setViewportSize({ width: 1440, height: 896 });
 		await gotoHydrated(page, '/');
-		await expect(page.locator('header .fixed.top-5')).toBeVisible();
+		await expect(page.getByTestId('nav-pill')).toBeVisible();
 		const o = await overlap(page);
 		expect(o).not.toBeNull();
 		expect(o!).toBeLessThanOrEqual(0);
@@ -71,7 +71,7 @@ test.describe('Header at narrow desktop widths', () => {
 		for (const width of [400, 768, 1024, 1279, 1440]) {
 			await page.setViewportSize({ width, height: 896 });
 			await gotoHydrated(page, '/');
-			const pill = await page.locator('header .fixed.top-5').isVisible().catch(() => false);
+			const pill = await page.getByTestId('nav-pill').isVisible().catch(() => false);
 			const burger = await page
 				.locator('header nav button.xl\\:hidden')
 				.first()

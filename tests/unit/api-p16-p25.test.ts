@@ -48,22 +48,27 @@ describe('orientationsApi', () => {
 		);
 	});
 
-	it('register() POSTs with proper payload', async () => {
-		fetchMock.mockResolvedValue(ok({ orientation_slug: 'dev-frontend' }));
+	it('register() names the trade `slug`, which is the field the API requires', async () => {
+		fetchMock.mockResolvedValue(ok({ slug: 'dev-frontend', mode: 'learning', is_primary: true }));
 		const { orientationsApi } = await import('../../src/lib/api/orientations');
 		await orientationsApi.register({
-			orientation_slug: 'dev-frontend',
+			slug: 'dev-frontend',
 			mode: 'learning',
 			is_primary: true,
 			working_languages: ['fr']
 		});
 		expect(fetchMock).toHaveBeenCalledWith(
 			'/api/users/me/orientations',
-			expect.objectContaining({
-				method: 'POST',
-				body: expect.stringContaining('dev-frontend')
-			})
+			expect.objectContaining({ method: 'POST' })
 		);
+		// The key, not just the value. This assertion used to be
+		// `stringContaining('dev-frontend')`, which passed just as happily while
+		// the client sent `orientation_slug` — a field `RegisterBody` does not
+		// have, so every real call was refused with a 422 before the handler ran.
+		const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+		expect(Object.keys(body)).toContain('slug');
+		expect(body.slug).toBe('dev-frontend');
+		expect(body).not.toHaveProperty('orientation_slug');
 	});
 
 	it('patch() PATCHs the right path', async () => {

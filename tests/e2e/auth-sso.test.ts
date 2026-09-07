@@ -193,7 +193,10 @@ test.describe('SKI-49 SSO departure', () => {
 			{
 				path: '/users/me/orientations',
 				handler: (route) => {
-					if (route.request().method() === 'POST') calls.push(route.request().postDataJSON().orientation_slug);
+					// `slug` is the field the API requires; the read side is the one
+					// that calls it `orientation_slug`.
+					if (route.request().method() === 'POST')
+						calls.push(route.request().postDataJSON().slug);
 					return json({ data: {} })(route);
 				}
 			},

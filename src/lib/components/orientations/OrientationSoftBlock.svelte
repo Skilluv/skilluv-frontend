@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { auth } from '$lib/stores/auth.svelte';
+	import { activeOrientations } from '$lib/utils/orientations';
 	import { i18n } from '$lib/i18n';
 	import Button from '$lib/components/ui/Button.svelte';
 	import { Compass } from '@lucide/svelte';
@@ -13,7 +14,7 @@
 	let blocked = $derived(
 		auth.isAuthenticated &&
 			auth.user?.role === 'user' &&
-			(auth.user?.orientations?.length ?? 0) === 0
+			activeOrientations(auth.user?.orientations).length === 0
 	);
 </script>
 

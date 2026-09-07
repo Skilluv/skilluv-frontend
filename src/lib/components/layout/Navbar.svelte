@@ -567,13 +567,23 @@
 			{/if}
 		</a>
 
-		<!-- Desktop nav — pill container flottant centré avec sliding indicator -->
-		<!-- xl, not md.
+		<!-- Desktop nav — pill container centré avec sliding indicator -->
+		<!-- `absolute`, not `fixed`.
 
-		     The pill is `fixed` and centred on the viewport, so it is out of the
-		     flow and the row below lays out as though it were not there. Nothing
-		     stops it covering the controls on the right, and at z-50 over the
-		     header's z-40 it wins.
+		     Fixed, it was anchored to the viewport rather than to the header, so
+		     it stayed put while the page scrolled underneath and covered whatever
+		     passed behind it — an opaque pill floating mid-page over the content.
+		     Absolute inside the `relative` nav, it sits exactly where it did at
+		     rest and leaves with the header on scroll.
+
+		     Centring is unchanged: the nav is `mx-auto max-w-7xl`, so its centre
+		     is the viewport's.
+
+		     xl, not md.
+
+		     The pill is out of the flow either way, so the row below lays out as
+		     though it were not there. Nothing stops it covering the controls on
+		     the right, and at z-50 over the header's z-40 it wins.
 
 		     Measured: the pill is 442px wide anonymous, 529 signed in, and the
 		     right-hand controls 294 / 334. The overlap starts below 1062px
@@ -584,7 +594,10 @@
 		     like min-[1229px] would fit tighter and break the day somebody adds
 		     a control, because the number would be right for a row that no
 		     longer exists. -->
-		<div class="hidden xl:flex fixed top-5 left-1/2 -translate-x-1/2 z-50">
+		<div
+			data-testid="nav-pill"
+			class="hidden xl:flex absolute top-5 left-1/2 -translate-x-1/2 z-50"
+		>
 			<div bind:this={pillContainer} class="relative flex items-center gap-1 rounded-full border border-border bg-surface-elevated p-1 shadow-sm">
 				<!-- Sliding indicator (pill inversée qui glisse) -->
 				<span

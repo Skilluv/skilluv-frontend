@@ -10,6 +10,7 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import EmptyState from '$lib/components/ui/EmptyState.svelte';
 	import { OrientationSoftBlock } from '$lib/components/orientations';
+	import { activeOrientations } from '$lib/utils/orientations';
 	import { auth } from '$lib/stores/auth.svelte';
 
 	let slots = $state<TeamMarketplaceSlot[]>([]);
@@ -32,11 +33,13 @@
 	let joinedSlotIds = $state<Set<string>>(new Set());
 
 	// The soft-block wrapper reads auth.user.orientations directly and only
-	// renders itself when the user has zero orientations — no double gate needed.
+	// renders itself when the user has zero orientations, so there is no double
+	// gate — but the two have to agree on what "zero" means. Ended trades stay
+	// in that list carrying `ended_at`, so both go through the same filter.
 	let userNeedsOrientation = $derived(
 		auth.isAuthenticated &&
 			auth.user?.role === 'user' &&
-			(auth.user?.orientations?.length ?? 0) === 0
+			activeOrientations(auth.user?.orientations).length === 0
 	);
 
 	onMount(async () => {
