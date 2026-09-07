@@ -34,7 +34,23 @@ export default defineConfig(({ mode }) => {
 				},
 				'/ws': {
 					target: apiTarget,
-					ws: true
+					ws: true,
+					// Same as `/api`, and for a reason that only shows up on a
+					// TLS target: without it the Host header stays `localhost:5173`,
+					// so the proxy opens the connection with that as its SNI. The
+					// edge has no certificate for it and answers with Traefik's
+					// default one, which is self-signed — and Node refuses it:
+					//
+					//   [vite] ws proxy error:
+					//   Error: self-signed certificate; if the root CA is installed
+					//   locally, try running Node.js with --use-system-ca
+					//
+					// The suggestion is a red herring: nothing is wrong with the
+					// machine's trust store. `openssl s_client -servername localhost`
+					// returns `CN=TRAEFIK DEFAULT CERT` where the real name returns
+					// the Let's Encrypt certificate. `changeOrigin` rewrites the
+					// Host, the SNI follows, and the right certificate is served.
+					changeOrigin: true
 				}
 			}
 		},
