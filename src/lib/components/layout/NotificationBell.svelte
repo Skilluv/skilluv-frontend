@@ -159,7 +159,7 @@
 
 			{#if loading}
 				<p class="px-3 py-6 text-center text-sm text-text-muted">
-					{i18n.t('common.loading')}
+					{i18n.t('common.actions.loading')}
 				</p>
 			{:else if failed}
 				<p class="px-3 py-6 text-center text-sm text-text-muted">
