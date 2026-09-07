@@ -727,12 +727,25 @@
 				{/if}
 			</div>
 
-			<!-- Language toggle -->
+			<!-- Language toggle.
+
+			     The two letters name where the button takes you, not where you
+			     are — the same way the theme item says "Mode clair" while the
+			     theme is dark. On its own that is ambiguous: a bare language code
+			     reads as a label as easily as an action, and somebody in French
+			     seeing "EN" cannot tell which. An icon does not have that problem
+			     because an icon is obviously a control; two letters are not.
+
+			     There is no room for words in this row, so the words go where a
+			     reader can still reach them. Without them the button announced
+			     itself as "EN" and nothing else, which is not a name. -->
 			<button
 				onclick={() => i18n.setLocale(i18n.locale === 'fr' ? 'en' : 'fr')}
+				aria-label={i18n.locale === 'fr' ? 'Passer en anglais' : 'Switch to French'}
+				title={i18n.locale === 'fr' ? 'Passer en anglais' : 'Switch to French'}
 				class="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
 			>
-				{i18n.locale === 'fr' ? 'EN' : 'FR'}
+				<span aria-hidden="true">{i18n.locale === 'fr' ? 'EN' : 'FR'}</span>
 			</button>
 
 			{#if auth.isAuthenticated}
@@ -907,6 +920,13 @@
 					<div class="ml-auto flex items-center gap-2">
 						<button
 							onclick={() => theme.toggleMode()}
+							aria-label={theme.mode === 'dark'
+								? i18n.locale === 'fr'
+									? 'Mode clair'
+									: 'Light mode'
+								: i18n.locale === 'fr'
+									? 'Mode sombre'
+									: 'Dark mode'}
 							class="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
 						>
 							{#if theme.mode === 'dark'}
@@ -917,9 +937,10 @@
 						</button>
 						<button
 							onclick={() => i18n.setLocale(i18n.locale === 'fr' ? 'en' : 'fr')}
+							aria-label={i18n.locale === 'fr' ? 'Passer en anglais' : 'Switch to French'}
 							class="rounded-lg border border-border px-2.5 py-1 text-xs font-bold transition-colors duration-200 hover:bg-surface-overlay"
 						>
-							{i18n.locale === 'fr' ? 'EN' : 'FR'}
+							<span aria-hidden="true">{i18n.locale === 'fr' ? 'EN' : 'FR'}</span>
 						</button>
 					</div>
 				</div>
