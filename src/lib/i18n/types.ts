@@ -390,6 +390,7 @@ export interface Translations
 			title: string;
 			onboardingLabel: string;
 			startBtn: string;
+			startRebuilding: string;
 			starting: string;
 			hint: string;
 			minutesLabel: string;
@@ -405,27 +406,12 @@ export interface Translations
 			difficulty: string;
 			mode: string;
 			startBtn: string;
+			handInRebuilding: string;
 			starting: string;
 			noAi: string;
 		};
 		sandbox: {
 			instructions: string;
-			output: string;
-			testBtn: string;
-			submitBtn: string;
-			executing: string;
-			testHint: string;
-			saved: string;
-			back: string;
-			resultSuccess: string;
-			resultWelcome: string;
-			resultNotYet: string;
-			resultFragments: string;
-			resultPerseverance: string;
-			retryBtn: string;
-			viewChallenges: string;
-			myProfile: string;
-			loadingSandbox: string;
 		};
 	};
 	profile: {

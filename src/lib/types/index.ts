@@ -470,24 +470,6 @@ export interface Team {
 	member_count: number;
 }
 
-export interface SandboxExecution {
-	execution: {
-		stdout: string | null;
-		stderr: string | null;
-		compile_output: string | null;
-		time: string | null;
-		memory: number | null;
-		status: { id: number; description: string };
-	};
-	verdict: string;
-	success: boolean;
-}
-
-export interface SandboxLanguage {
-	id: number;
-	name: string;
-}
-
 // --- P16 : Orientations métier ---
 
 /** Catalogue orientation (public). 31 orientations curated côté backend. */

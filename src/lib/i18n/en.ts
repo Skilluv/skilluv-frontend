@@ -342,6 +342,7 @@ export const en: Translations = {
 			title: 'First challenge',
 			onboardingLabel: 'Onboarding challenge',
 			startBtn: 'Start the challenge',
+			startRebuilding: 'Starting the rite is being wired to the backend. The instructions above are already the right ones.',
 			starting: 'Starting...',
 			hint: '~10 minutes · Your profile will be created at the end',
 			minutesLabel: '{n} minutes',
@@ -357,27 +358,12 @@ export const en: Translations = {
 			difficulty: 'Difficulty',
 			mode: 'Mode',
 			startBtn: 'Start',
+			handInRebuilding: 'Handing work in is being rebuilt: this challenge can be read, not yet submitted.',
 			starting: 'Starting...',
 			noAi: 'AI not allowed'
 		},
 		sandbox: {
-			instructions: 'Instructions',
-			output: 'Output',
-			testBtn: 'Test',
-			submitBtn: 'Submit',
-			executing: 'Running...',
-			testHint: 'Click "Test" to run your code.',
-			saved: 'Saved {time}',
-			back: '← Back',
-			resultSuccess: 'Challenge completed!',
-			resultWelcome: 'Welcome, Apprentice ☆',
-			resultNotYet: 'Not yet.',
-			resultFragments: '+{n} fragments',
-			resultPerseverance: '+{n} perseverance',
-			retryBtn: 'Retry',
-			viewChallenges: 'View challenges',
-			myProfile: 'My profile',
-			loadingSandbox: 'Loading sandbox...'
+			instructions: 'Instructions'
 		}
 	},
 	profile: {

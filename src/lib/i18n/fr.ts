@@ -345,6 +345,7 @@ export const fr: Translations = {
 			title: 'Premier challenge',
 			onboardingLabel: 'Challenge d\'onboarding',
 			startBtn: 'Commencer le challenge',
+			startRebuilding: 'Le lancement du rite est en cours de branchement sur le backend. Les instructions ci-dessus sont déjà les bonnes.',
 			starting: 'Lancement...',
 			hint: '~10 minutes · Ton profil sera créé à la fin',
 			minutesLabel: '{n} minutes',
@@ -360,27 +361,12 @@ export const fr: Translations = {
 			difficulty: 'Difficulté',
 			mode: 'Mode',
 			startBtn: 'Commencer',
+			handInRebuilding: 'La remise est en cours de refonte : ce challenge se lit, il ne se rend pas encore.',
 			starting: 'Lancement...',
 			noAi: 'IA interdite'
 		},
 		sandbox: {
-			instructions: 'Instructions',
-			output: 'Sortie',
-			testBtn: 'Tester',
-			submitBtn: 'Soumettre',
-			executing: 'Exécution...',
-			testHint: 'Clique "Tester" pour exécuter ton code.',
-			saved: 'Sauvé {time}',
-			back: '← Retour',
-			resultSuccess: 'Challenge réussi !',
-			resultWelcome: 'Bienvenue, Apprenti ☆',
-			resultNotYet: 'Pas encore.',
-			resultFragments: '+{n} fragments',
-			resultPerseverance: '+{n} persévérance',
-			retryBtn: 'Retenter',
-			viewChallenges: 'Voir les challenges',
-			myProfile: 'Mon profil',
-			loadingSandbox: 'Chargement de la sandbox...'
+			instructions: 'Instructions'
 		}
 	},
 	profile: {

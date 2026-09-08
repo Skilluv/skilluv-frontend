@@ -36,7 +36,6 @@
 
 	let challenge = $state<Challenge | null>(null);
 	let loading = $state(true);
-	let starting = $state(false);
 	/** A real failure. "No onboarding challenge for this domain" is not one. */
 	let error = $state('');
 	let notOpen = $state(false);
@@ -75,17 +74,6 @@
 		}
 	}
 
-	async function startChallenge() {
-		if (!challenge) return;
-		starting = true;
-		try {
-			await challengesApi.start(challenge.id);
-			await goto(`/challenges/${challenge.id}/sandbox`);
-		} catch (err) {
-			error = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
-			starting = false;
-		}
-	}
 </script>
 
 <svelte:head>
@@ -177,18 +165,19 @@
 				</div>
 			</div>
 
-			<div class="flex flex-col items-center gap-3">
-				<Button
-					variant="accent"
-					size="lg"
-					loading={starting}
-					onclick={startChallenge}
-					class="w-full sm:w-auto"
-				>
-					{starting ? i18n.t('challenges.onboarding.starting') : i18n.t('enlist.rite.start')}
-				</Button>
-				<p class="text-xs text-text-muted">{i18n.t('challenges.onboarding.hint')}</p>
-			</div>
+			<!-- The rite is a fork and a pull request, not a coding exercise: the
+			     challenge carries no language, no test cases and no expected
+			     output. It went to the sandbox anyway, which is why pressing
+			     "Commencer" opened a JavaScript editor.
+
+			     `POST /onboarding/bonjour-skilluv/start` is what actually begins
+			     it, and it needs a linked GitHub account and a declared trade
+			     first. That is the next piece of work; until it is built the
+			     screen says what the rite is and stops there rather than
+			     offering a button that goes somewhere wrong. -->
+			<p class="text-center text-sm text-text-muted">
+				{i18n.t('challenges.onboarding.startRebuilding')}
+			</p>
 		</div>
 	{/if}
 </div>

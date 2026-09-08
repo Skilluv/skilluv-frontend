@@ -16,17 +16,18 @@
 
 	let challenge = $state<Challenge | null>(null);
 	let loading = $state(true);
-	let starting = $state(false);
 	let error = $state('');
 
 	/**
 	 * How a security challenge is verified, when it is one.
 	 *
 	 * A CTF target is finished by pasting the flag you captured; a defensive
-	 * lab by downloading the artefact and analysing it off-platform. Both are
-	 * unreachable from the generic "start the sandbox" button above, which is
-	 * why the surfaces at /ctf and /blue-lab used to send people to a page that
-	 * could not take their answer.
+	 * lab by downloading the artefact and analysing it off-platform. Both were
+	 * unreachable from the generic start button that used to sit above, which
+	 * is why the surfaces at /ctf and /blue-lab once sent people to a page that
+	 * could not take their answer. These two are now the only ways to hand
+	 * anything in at all: the code editor they stood beside is gone, along with
+	 * the execution endpoints behind it.
 	 *
 	 * Read from `security_kind` rather than from `skill_domain`: a security
 	 * challenge is not necessarily verified this way, and one verified this way
@@ -57,18 +58,6 @@
 		}
 	}
 
-	async function startChallenge() {
-		if (!challenge) return;
-		starting = true;
-		try {
-			await challengesApi.start(challenge.id);
-			goto(`/challenges/${challenge.id}/sandbox`);
-		} catch (err) {
-			if (err instanceof SkilluError) error = err.message;
-			else error = i18n.t('errors.generic');
-			starting = false;
-		}
-	}
 
 	function formatDuration(minutes: number | null): string {
 		if (!minutes) return i18n.t('common.time.noLimit');
@@ -225,14 +214,17 @@
 						<span>{i18n.locale === 'fr' ? 'Communauté' : 'Community'}</span>
 					{/if}
 				</div>
-				{#if auth.isAuthenticated}
-					<Button variant="accent" loading={starting} onclick={startChallenge}>
-						{starting ? i18n.t('challenges.detail.starting') : i18n.t('challenges.detail.startBtn')}
-					</Button>
-				{:else}
+				{#if !auth.isAuthenticated}
 					<Button variant="accent" href="/auth/login?redirect=/challenges/{challenge.id}">
 						{i18n.t('common.nav.login')}
 					</Button>
+				{:else}
+					<!-- The start button led to a code editor whose Test button called
+					     an endpoint that no longer exists and whose Submit sent code
+					     nothing grades any more. Saying the hand-in is being rebuilt
+					     is the honest state; a button that starts something with
+					     nowhere to hand it in is the state we just removed. -->
+					<p class="text-xs text-text-muted">{i18n.t('challenges.detail.handInRebuilding')}</p>
 				{/if}
 			</div>
 		</div>
