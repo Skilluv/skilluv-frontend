@@ -174,7 +174,8 @@ export const orientationsApi = {
 		);
 	},
 
+	/** The same envelope as `myOrientations`, and it was typed as the array too. */
 	forUser(userId: string) {
-		return api.get<ApiResponse<UserOrientation[]>>(`/users/${userId}/orientations`);
+		return api.get<ApiResponse<MyOrientationsResponse>>(`/users/${userId}/orientations`);
 	}
 };

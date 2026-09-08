@@ -3,13 +3,27 @@ import { createApiClient } from './client';
 
 const api = createApiClient();
 
+/**
+ * What both capability endpoints answer: an envelope, not a bare array.
+ *
+ * They were typed as the array. `auth.refreshCapabilities` then guarded with
+ * `Array.isArray(res.data) ? res.data : []`, which is false for an object — so
+ * the list was empty for everybody, always, including admins, and every
+ * `auth.can(...)` gate in the app stayed shut. The guard is what hid it: a
+ * wrong shape came back as a plausible empty one instead of failing.
+ */
+export interface CapabilitiesResponse {
+	user_id: string;
+	capabilities: UserCapability[];
+}
+
 export const capabilitiesApi = {
 	myCapabilities() {
-		return api.get<ApiResponse<UserCapability[]>>('/users/me/capabilities');
+		return api.get<ApiResponse<CapabilitiesResponse>>('/users/me/capabilities');
 	},
 
 	forUser(userId: string) {
-		return api.get<ApiResponse<UserCapability[]>>(`/users/${userId}/capabilities`);
+		return api.get<ApiResponse<CapabilitiesResponse>>(`/users/${userId}/capabilities`);
 	}
 };
 

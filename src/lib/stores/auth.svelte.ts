@@ -209,7 +209,11 @@ class AuthState {
 		}
 		try {
 			const res = await capabilitiesApi.myCapabilities();
-			this.capabilities = Array.isArray(res.data) ? res.data : [];
+			// `res.data` is `{ user_id, capabilities }`. It used to be read as
+			// the array itself, behind an `Array.isArray` guard that turned the
+			// wrong shape into a plausible empty list rather than an error — so
+			// every gate was shut for everybody, admins included.
+			this.capabilities = res.data?.capabilities ?? [];
 		} catch {
 			this.capabilities = [];
 		} finally {

@@ -127,8 +127,14 @@
 					projectsApi.forUser(name)
 				]);
 				if (badgesRes.status === 'fulfilled') badgesData = badgesRes.value.data;
-				if (orientationsRes.status === 'fulfilled') orientations = orientationsRes.value.data;
-				if (capabilitiesRes.status === 'fulfilled') publicCapabilities = capabilitiesRes.value.data;
+				// Both answer envelopes, and both were read as the array inside.
+				// A profile therefore showed nobody's trades and nobody's
+				// capabilities, silently, because an object is not an array and
+				// nothing said so.
+				if (orientationsRes.status === 'fulfilled')
+					orientations = orientationsRes.value.data?.orientations ?? [];
+				if (capabilitiesRes.status === 'fulfilled')
+					publicCapabilities = capabilitiesRes.value.data?.capabilities ?? [];
 				if (projectsRes.status === 'fulfilled') {
 					ownedProjects = (projectsRes.value.data.projects ?? [])
 						.filter((pr) => pr.github_repo_owner && pr.github_repo_name && !pr.archived_at)
