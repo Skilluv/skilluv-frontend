@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { env as publicEnv } from '$env/dynamic/public';
-	import { auth } from '$lib/stores/auth.svelte';
+	import { auth, hadSession } from '$lib/stores/auth.svelte';
 	import { theme } from '$lib/stores/theme.svelte';
 	import { tenant } from '$lib/stores/tenant.svelte';
 	import { notifications } from '$lib/stores/notifications.svelte';
@@ -163,6 +163,27 @@
 	// measurement. Started once, whatever the visitor answers.
 	onMount(() => {
 		void observability.init(false);
+	});
+
+	/**
+	 * A reload after fifteen idle minutes is an expiry, not a sign-out.
+	 *
+	 * The SSR probe asks `/auth/me` with whatever access token the browser sent
+	 * and reports `unauthenticated` on a 401. It cannot do better: the refresh
+	 * cookie carries `Path=/api/auth`, so a page request for `/challenges`
+	 * never carries it. The recovery therefore happens here, where the browser
+	 * does send it.
+	 *
+	 * Guarded twice so an anonymous visitor costs nothing: only when the probe
+	 * came back `unauthenticated`, and only when this browser has had a session
+	 * at some point. Once per page load either way.
+	 */
+	let recoveryTried = false;
+	$effect(() => {
+		if (data.authProbe !== 'unauthenticated' || auth.user || recoveryTried) return;
+		if (!hadSession()) return;
+		recoveryTried = true;
+		void auth.recoverSession();
 	});
 
 	// WebSocket + notifications polling quand connecte
