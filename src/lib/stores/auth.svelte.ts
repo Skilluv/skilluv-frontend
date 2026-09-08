@@ -31,6 +31,19 @@ class AuthState {
 	 * refusal.
 	 */
 	capabilitiesLoaded = $state(false);
+	/**
+	 * Whether the trades have been asked for yet.
+	 *
+	 * `user.orientations` is `undefined` until the fetch lands, and "not asked
+	 * yet" was being read as "has none": on every reload the prompt banner
+	 * appeared for a moment and then vanished as the answer arrived. Telling
+	 * somebody to choose the trades they have already chosen, once per page
+	 * load, for as long as the request takes.
+	 *
+	 * Anything that acts on the absence of trades has to wait for this rather
+	 * than assume zero.
+	 */
+	orientationsLoaded = $state(false);
 	loading = $state(true);
 	/** Identity whose capabilities + orientations were already loaded. */
 	private extrasLoadedFor: string | null = null;
@@ -120,6 +133,7 @@ class AuthState {
 			// "known" or capability-gated pages hang on their loading skeleton.
 			this.capabilities = [];
 			this.capabilitiesLoaded = true;
+			this.orientationsLoaded = true;
 			return;
 		}
 		if (this.extrasLoadedFor === id) return;
@@ -160,6 +174,11 @@ class AuthState {
 		} catch {
 			// Endpoint may not exist yet — treat as empty rather than crashing.
 			this.user = { ...this.user, orientations: [] };
+		} finally {
+			// Answered either way. A failure is a known empty list, not an
+			// unknown one: the banner is right to appear when we asked and got
+			// nothing back.
+			this.orientationsLoaded = true;
 		}
 	}
 
@@ -182,6 +201,10 @@ class AuthState {
 		this.loginMethod = null;
 		this.hasPasskey = false;
 		this.capabilities = [];
+		// Nothing to load for nobody, so the answer is known rather than
+		// pending: leaving it false would hold every "has no trades" surface in
+		// limbo for a signed-out visitor.
+		this.orientationsLoaded = true;
 		this.loading = false;
 		bookmarks.reset();
 	}

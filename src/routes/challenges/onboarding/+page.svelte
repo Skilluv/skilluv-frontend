@@ -92,7 +92,7 @@
 	<title>{i18n.t('enlist.rite.title')} | Skilluv</title>
 </svelte:head>
 
-<div class="mx-auto max-w-2xl px-4 py-12">
+<div class="mx-auto max-w-2xl px-4 pb-16 pt-[10vh]">
 	<!-- Always rendered, outside the state machine: while loading or on error the
 	     page used to have no heading at all, which is both an accessibility gap
 	     and a source of flaky waits. -->

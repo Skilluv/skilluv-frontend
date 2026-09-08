@@ -80,6 +80,47 @@ test.describe('The onboarding steps', () => {
 		});
 	}
 
+	test('the prompt never flashes before the answer is in', async ({ page }) => {
+		// `user.orientations` is undefined until the fetch lands, and "not asked
+		// yet" was read as "has none": on every reload the banner appeared for a
+		// moment and vanished as the answer arrived, telling somebody to choose
+		// the trades they had already chosen.
+		let release: (() => void) | undefined;
+		const held = new Promise<void>((r) => (release = r));
+		await page.route('**/api/users/me/orientations', async (route) => {
+			await held;
+			await route.fulfill({
+				status: 200,
+				contentType: 'application/json',
+				body: JSON.stringify({
+					data: {
+						orientations: [
+							{
+								orientation_slug: 'dev-backend',
+								orientation_name: 'Dev backend',
+								mode: 'active',
+								is_primary: true,
+								started_at: '2026-01-01',
+								ended_at: null,
+								working_languages: ['fr']
+							}
+						]
+					}
+				})
+			});
+		});
+
+		await gotoHydrated(page, '/challenges');
+		// The request is still in flight and the banner must stay away.
+		await page.waitForTimeout(600);
+		await expect(page.getByText(/Choisis tes orientations métier/i)).toHaveCount(0);
+
+		release?.();
+		// And it stays away, because the answer says there is a trade.
+		await page.waitForTimeout(600);
+		await expect(page.getByText(/Choisis tes orientations métier/i)).toHaveCount(0);
+	});
+
 	test('the catalogue keeps its chrome: /challenges is not an onboarding step', async ({
 		page
 	}) => {
