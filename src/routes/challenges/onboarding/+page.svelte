@@ -5,7 +5,7 @@
 	import { auth } from '$stores/auth.svelte';
 	import { challengesApi } from '$api/challenges';
 	import { onboardingRiteApi, type RiteProgress } from '$api/onboarding_rite';
-	import { oauthLinksApi, type LinkedProvider } from '$api/oauth_links';
+	import { oauthLinksApi, githubLinkUrl, type LinkedProvider } from '$api/oauth_links';
 	import { activeOrientations } from '$lib/utils/orientations';
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
@@ -330,7 +330,14 @@
 				<div class="rounded-2xl border border-border bg-surface-elevated p-6 text-center">
 					<p class="text-sm text-text-muted">{i18n.t('enlist.rite.needsGithub')}</p>
 					<div class="mt-4">
-						<Button variant="accent" href="/settings/security">
+						<!-- Straight into GitHub's consent screen and straight back
+						     here, rather than out to the settings page. Onboarding is
+						     mandatory and its chrome was removed so nobody wanders
+						     off it; sending them to a fully-chromed settings screen
+						     to do one thing would reopen the door we closed, and
+						     they would have to find their own way back to a step
+						     they were in the middle of. -->
+						<Button variant="accent" href={githubLinkUrl('/challenges/onboarding')}>
 							{i18n.t('enlist.rite.needsGithubCta')}
 						</Button>
 					</div>

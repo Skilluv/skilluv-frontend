@@ -118,3 +118,27 @@ export function linkUrl(
 	if (!returnTo || !returnTo.startsWith('/') || returnTo.startsWith('//')) return url;
 	return `${url}?return_to=${encodeURIComponent(returnTo)}`;
 }
+
+/**
+ * Where the browser must go to link GitHub.
+ *
+ * Separate from `linkUrl` because GitHub is separate: there is no
+ * `/auth/github/link` — it 404s — and the flow that attaches it is
+ * `/auth/github/start`, the same route the repo-sync uses, carrying
+ * `read:user public_repo` rather than the profile scopes the other three ask
+ * for. Signed in, it answers 303 into GitHub's consent screen.
+ *
+ * `returnTo` matters more here than anywhere else. This is the one link an
+ * onboarding step needs — the code rite forks a starter onto the person's own
+ * account and will not start without it — and onboarding is a flow somebody
+ * must not be dropped out of. Without a return path the callback ends on the
+ * API origin showing raw JSON, and the back button lands them on a step whose
+ * state has moved on without them.
+ */
+export function githubLinkUrl(returnTo?: string, baseUrl = apiBase()): string {
+	const url = `${baseUrl}/auth/github/start`;
+	// Same guard as `linkUrl`: a path, never an absolute URL, and never one
+	// that could read as protocol-relative.
+	if (!returnTo || !returnTo.startsWith('/') || returnTo.startsWith('//')) return url;
+	return `${url}?return_to=${encodeURIComponent(returnTo)}`;
+}

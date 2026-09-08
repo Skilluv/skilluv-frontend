@@ -202,6 +202,18 @@ test.describe('The onboarding steps', () => {
 		await gotoHydrated(page, '/challenges/onboarding');
 		await expect(page.getByText(/Ce rite se joue sur GitHub/i)).toBeVisible();
 		await expect(page.getByTestId('rite-start')).toHaveCount(0);
+
+		// Into GitHub and back here, not out to the settings page. Onboarding
+		// lost its chrome so nobody wanders off it; sending them to a fully
+		// chromed screen to do one thing would reopen that door, and they would
+		// have to find their own way back to a step they were in the middle of.
+		const link = page.getByRole('link', { name: /GitHub/i }).last();
+		const href = await link.getAttribute('href');
+		expect(href, 'the link must start the OAuth dance').toContain('/auth/github/start');
+		expect(href, 'and come back to the step it left').toContain(
+			`return_to=${encodeURIComponent('/challenges/onboarding')}`
+		);
+		expect(href, 'settings is not part of onboarding').not.toContain('/settings');
 	});
 
 	test('once started, it shows the fork and says the review is a second step', async ({
