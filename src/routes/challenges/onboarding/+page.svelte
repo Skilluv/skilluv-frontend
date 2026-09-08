@@ -4,6 +4,9 @@
 	import { page } from '$app/state';
 	import { auth } from '$stores/auth.svelte';
 	import { challengesApi } from '$api/challenges';
+	import { onboardingRiteApi, type RiteProgress } from '$api/onboarding_rite';
+	import { oauthLinksApi, type LinkedProvider } from '$api/oauth_links';
+	import { activeOrientations } from '$lib/utils/orientations';
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
@@ -40,6 +43,37 @@
 	let error = $state('');
 	let notOpen = $state(false);
 
+	// ── The rite itself ─────────────────────────────────────────────────────
+	//
+	// `POST /onboarding/bonjour-skilluv/start` is what begins it, not
+	// `/challenges/{id}/start`, and there is no sandbox at the end of it: the
+	// code rite is a fork and a pull request, and the eleven others hand in an
+	// artifact. The endpoint reads the caller's own domain, so this screen
+	// branches on `form` and never on the discipline.
+	let riteDescriptor = $state<{ form: string } | null>(null);
+	let progress = $state<RiteProgress | null>(null);
+	let starting = $state(false);
+	let startError = $state('');
+	let hasGithub = $state<boolean | null>(null);
+	let poller: ReturnType<typeof setInterval> | undefined;
+
+	const riteForm = $derived(progress?.rite_form ?? riteDescriptor?.form ?? null);
+	const needsGithub = $derived(riteForm === 'fork');
+
+	/**
+	 * The two preconditions, both knowable before the button is pressed.
+	 *
+	 * A trade first — the starter that gets forked is chosen from it — then a
+	 * linked GitHub account, for the fork form only. The API answers 400 for
+	 * each, and a 400 after a click is the same class of mistake as sending a
+	 * fork rite to a code editor: something we could have known and did not say.
+	 */
+	const missingTrade = $derived(
+		auth.orientationsLoaded && activeOrientations(auth.user?.orientations).length === 0
+	);
+	const missingGithub = $derived(needsGithub && hasGithub === false);
+	const canStart = $derived(!missingTrade && !missingGithub && hasGithub !== null);
+
 	const domain = $derived(auth.user?.skill_domain ?? null);
 	const rite = $derived(domain ? domainPlate(domain).rite : null);
 
@@ -52,6 +86,76 @@
 	$effect(() => {
 		if (domain) void loadOnboarding(domain);
 	});
+
+	$effect(() => {
+		if (!auth.isAuthenticated) return;
+		void loadRite();
+		return () => clearInterval(poller);
+	});
+
+	async function loadRite() {
+		try {
+			const res = await onboardingRiteApi.status();
+			riteDescriptor = res.data.rite ? { form: res.data.rite.form } : null;
+			progress = res.data.onboarding;
+			schedulePoll();
+		} catch {
+			// The screen still shows the rite and its instructions. Only the
+			// button's state is unknown, and `canStart` stays false until the
+			// GitHub check answers.
+		}
+		if (riteDescriptor?.form === 'fork') {
+			try {
+				const res = await oauthLinksApi.mine();
+				hasGithub = (res.data.providers ?? []).some((p: LinkedProvider) => p.provider === 'github');
+			} catch {
+				// Unknown rather than absent: refusing to offer the button because
+				// one call failed would be worse than letting the API answer.
+				hasGithub = null;
+			}
+		} else {
+			hasGithub = true;
+		}
+	}
+
+	/**
+	 * Polled, because there is nothing to subscribe to.
+	 *
+	 * The webhook moves it to `pr_opened`; a reviewer moves it to `completed`.
+	 * Two asynchronous steps, neither of them ours, and no socket for either.
+	 * Stops once it is settled so a finished rite is not polled forever.
+	 */
+	function schedulePoll() {
+		clearInterval(poller);
+		if (!progress || progress.status === 'completed' || progress.status === 'abandoned') return;
+		poller = setInterval(async () => {
+			try {
+				const res = await onboardingRiteApi.status();
+				progress = res.data.onboarding;
+				if (progress?.status === 'completed' || progress?.status === 'abandoned') {
+					clearInterval(poller);
+				}
+			} catch {
+				// A missed poll is not worth reporting: the next one is 15s away.
+			}
+		}, 15_000);
+	}
+
+	async function startRite() {
+		starting = true;
+		startError = '';
+		try {
+			const res = await onboardingRiteApi.start();
+			progress = res.data.onboarding;
+			schedulePoll();
+		} catch (err) {
+			// The API's own message names what is missing and how to fix it,
+			// which is more use than anything this screen could invent.
+			startError = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
+		} finally {
+			starting = false;
+		}
+	}
 
 	async function loadOnboarding(forDomain: SkillDomain) {
 		loading = true;
@@ -167,17 +271,90 @@
 
 			<!-- The rite is a fork and a pull request, not a coding exercise: the
 			     challenge carries no language, no test cases and no expected
-			     output. It went to the sandbox anyway, which is why pressing
-			     "Commencer" opened a JavaScript editor.
+			     output, and it used to be sent to a code editor anyway.
 
-			     `POST /onboarding/bonjour-skilluv/start` is what actually begins
-			     it, and it needs a linked GitHub account and a declared trade
-			     first. That is the next piece of work; until it is built the
-			     screen says what the rite is and stops there rather than
-			     offering a button that goes somewhere wrong. -->
-			<p class="text-center text-sm text-text-muted">
-				{i18n.t('challenges.onboarding.startRebuilding')}
-			</p>
+			     What begins it is `POST /onboarding/bonjour-skilluv/start`,
+			     which is idempotent, so the button is safe to press twice and
+			     the page is safe to reload. -->
+			{#if progress}
+				<!-- Started. The status is the whole of what there is to say, and
+				     the two links are the only places the work actually happens. -->
+				<div class="rounded-2xl border border-accent/30 bg-surface-elevated p-6">
+					<p class="font-mono text-[11px] uppercase tracking-[0.2em] text-text-muted">
+						{i18n.t(`enlist.rite.status.${progress.status}`)}
+					</p>
+
+					{#if progress.fork_html_url}
+						<a
+							href={progress.fork_html_url}
+							target="_blank"
+							rel="noopener"
+							class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-accent hover:underline"
+							data-testid="rite-fork-link"
+						>
+							{progress.fork_full_name ?? i18n.t('enlist.rite.openFork')}
+						</a>
+					{/if}
+
+					{#if progress.pr_url}
+						<a
+							href={progress.pr_url}
+							target="_blank"
+							rel="noopener"
+							class="mt-2 block text-sm text-text-muted hover:text-text-primary"
+						>
+							{i18n.t('enlist.rite.openPr', { n: progress.pr_number ?? 0 })}
+						</a>
+					{/if}
+
+					<!-- Said plainly, because the wait has two steps and only the
+					     first is automatic: the webhook sees the pull request, a
+					     person settles it afterwards. -->
+					<p class="mt-4 text-xs leading-relaxed text-text-muted">
+						{i18n.t('enlist.rite.reviewNote')}
+					</p>
+				</div>
+			{:else if missingTrade}
+				<div class="rounded-2xl border border-border bg-surface-elevated p-6 text-center">
+					<p class="text-sm text-text-muted">{i18n.t('enlist.rite.needsTrade')}</p>
+					<div class="mt-4">
+						<Button variant="accent" href="/onboarding/orientations">
+							{i18n.t('enlist.rite.needsTradeCta')}
+						</Button>
+					</div>
+				</div>
+			{:else if missingGithub}
+				<!-- Checked before the button rather than after the click: the API
+				     answers 400 for a missing GitHub account, and a refusal you
+				     could have predicted is a refusal you should have prevented. -->
+				<div class="rounded-2xl border border-border bg-surface-elevated p-6 text-center">
+					<p class="text-sm text-text-muted">{i18n.t('enlist.rite.needsGithub')}</p>
+					<div class="mt-4">
+						<Button variant="accent" href="/settings/security">
+							{i18n.t('enlist.rite.needsGithubCta')}
+						</Button>
+					</div>
+				</div>
+			{:else}
+				<div class="flex flex-col items-center gap-3">
+					<Button
+						variant="accent"
+						size="lg"
+						loading={starting}
+						disabled={!canStart}
+						onclick={startRite}
+						class="w-full sm:w-auto"
+						data-testid="rite-start"
+					>
+						{starting ? i18n.t('challenges.onboarding.starting') : i18n.t('enlist.rite.start')}
+					</Button>
+					<p class="text-xs text-text-muted">{i18n.t('challenges.onboarding.hint')}</p>
+				</div>
+			{/if}
+
+			{#if startError}
+				<p class="mt-4 text-sm text-error" role="alert">{startError}</p>
+			{/if}
 		</div>
 	{/if}
 </div>

@@ -87,6 +87,20 @@ export const enlistFr: EnlistTranslations = {
 			title: 'Ton premier geste',
 			subtitle: 'Un artefact réel, dès aujourd’hui. C’est ce qui ouvre ton historique.',
 			start: 'Commencer',
+			status: {
+				forked: 'Starter forké sur ton compte',
+				hello_committed: 'HELLO.md commité',
+				pr_opened: 'Pull request ouverte, en attente de relecture',
+				completed: 'Rite validé',
+				abandoned: 'Rite abandonné'
+			},
+			openFork: 'Ouvrir mon fork',
+			openPr: 'Voir la pull request #{n}',
+			reviewNote: 'On voit ta pull request dès qu’elle est ouverte. Un relecteur tranche ensuite : le rite passe en validé à ce moment-là, pas avant.',
+			needsTrade: 'Choisis d’abord un métier : le starter qu’on te forke est choisi à partir de lui.',
+			needsTradeCta: 'Choisir mon métier',
+			needsGithub: 'Ce rite se joue sur GitHub. Lie ton compte pour qu’on puisse y forker le starter.',
+			needsGithubCta: 'Lier mon compte GitHub',
 			pending: 'En cours de relecture',
 			fork: {
 				label: 'Le premier commit',

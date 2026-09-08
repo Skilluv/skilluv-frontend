@@ -117,6 +117,21 @@ export interface EnlistTranslations {
 			title: string;
 			subtitle: string;
 			start: string;
+			status: {
+				forked: string;
+				hello_committed: string;
+				pr_opened: string;
+				completed: string;
+				abandoned: string;
+			};
+			openFork: string;
+			/** `{n}` — the pull request number. */
+			openPr: string;
+			reviewNote: string;
+			needsTrade: string;
+			needsTradeCta: string;
+			needsGithub: string;
+			needsGithubCta: string;
 			pending: string;
 			fork: { label: string; lead: string };
 			upload: { label: string; lead: string };

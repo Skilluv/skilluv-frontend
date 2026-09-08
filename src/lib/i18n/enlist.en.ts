@@ -87,6 +87,20 @@ export const enlistEn: EnlistTranslations = {
 			title: 'Your first act',
 			subtitle: 'A real artefact, today. It is what opens your record.',
 			start: 'Begin',
+			status: {
+				forked: 'Starter forked onto your account',
+				hello_committed: 'HELLO.md committed',
+				pr_opened: 'Pull request open, awaiting review',
+				completed: 'Rite passed',
+				abandoned: 'Rite abandoned'
+			},
+			openFork: 'Open my fork',
+			openPr: 'See pull request #{n}',
+			reviewNote: 'We see your pull request the moment it opens. A reviewer settles it after that: the rite passes then, not before.',
+			needsTrade: 'Pick a trade first: the starter we fork for you is chosen from it.',
+			needsTradeCta: 'Pick my trade',
+			needsGithub: 'This rite happens on GitHub. Link your account so we can fork the starter there.',
+			needsGithubCta: 'Link my GitHub account',
 			pending: 'Under review',
 			fork: {
 				label: 'The first commit',

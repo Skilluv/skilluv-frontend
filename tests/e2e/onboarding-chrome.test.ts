@@ -32,6 +32,29 @@ function json(body: unknown, status = 200) {
 		route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) });
 }
 
+/** The first act only renders its states once the challenge itself loaded. */
+async function mockRiteChallenge(page: Page) {
+	await page.route('**/api/challenges/onboarding**', (route) =>
+		json({
+			data: {
+				challenge: {
+					id: 'c1',
+					title: 'Ton premier commit',
+					description: 'On te fork un starter.',
+					instructions: '1. Lance le rite.',
+					skill_domain: 'code',
+					reward_fragments: 10,
+					duration_minutes: null,
+					is_domain_rite: true,
+					is_onboarding: true,
+					language: null,
+					test_cases: null
+				}
+			}
+		})(route)
+	);
+}
+
 test.beforeEach(async ({ page, context }) => {
 	await context.addCookies([
 		{ name: 'access_token', value: 'challenger', domain: 'localhost', path: '/' }
@@ -119,6 +142,100 @@ test.describe('The onboarding steps', () => {
 		// And it stays away, because the answer says there is a trade.
 		await page.waitForTimeout(600);
 		await expect(page.getByText(/Choisis tes orientations métier/i)).toHaveCount(0);
+	});
+
+	test('the first act asks for a trade before offering to start', async ({ page }) => {
+		// The API answers 400 when no trade is declared — the starter that gets
+		// forked is chosen from it. A refusal you could have predicted is one
+		// you should have prevented, so the button is not offered at all.
+		await page.route('**/api/onboarding/bonjour-skilluv/status', (route) =>
+			json({
+				data: {
+					started: false,
+					onboarding: null,
+					rite: { domain: 'code', form: 'fork', requires_github: true }
+				}
+			})(route)
+		);
+		await page.route('**/api/users/me/orientations', (route) =>
+			json({ data: { orientations: [] } })(route)
+		);
+
+		await mockRiteChallenge(page);
+		await gotoHydrated(page, '/challenges/onboarding');
+		await expect(page.getByText(/Choisis d’abord un métier/i)).toBeVisible();
+		await expect(page.getByTestId('rite-start')).toHaveCount(0);
+	});
+
+	test('with a trade but no GitHub, it asks to link the account first', async ({ page }) => {
+		await page.route('**/api/onboarding/bonjour-skilluv/status', (route) =>
+			json({
+				data: {
+					started: false,
+					onboarding: null,
+					rite: { domain: 'code', form: 'fork', requires_github: true }
+				}
+			})(route)
+		);
+		await page.route('**/api/users/me/orientations', (route) =>
+			json({
+				data: {
+					orientations: [
+						{
+							orientation_slug: 'dev-backend',
+							orientation_name: 'Dev backend',
+							mode: 'active',
+							is_primary: true,
+							started_at: '2026-01-01',
+							ended_at: null,
+							working_languages: []
+						}
+					]
+				}
+			})(route)
+		);
+		await page.route('**/api/auth/me/oauth-providers', (route) =>
+			json({ data: { providers: [] } })(route)
+		);
+
+		await mockRiteChallenge(page);
+		await gotoHydrated(page, '/challenges/onboarding');
+		await expect(page.getByText(/Ce rite se joue sur GitHub/i)).toBeVisible();
+		await expect(page.getByTestId('rite-start')).toHaveCount(0);
+	});
+
+	test('once started, it shows the fork and says the review is a second step', async ({
+		page
+	}) => {
+		await page.route('**/api/onboarding/bonjour-skilluv/status', (route) =>
+			json({
+				data: {
+					started: true,
+					onboarding: {
+						rite_form: 'fork',
+						challenge_id: 'c1',
+						starter_slug: 'starter-backend',
+						fork_full_name: 'kofi/starter-backend',
+						fork_html_url: 'https://github.com/kofi/starter-backend',
+						status: 'pr_opened',
+						pr_number: 7,
+						pr_url: 'https://github.com/kofi/starter-backend/pull/7'
+					},
+					rite: { domain: 'code', form: 'fork', requires_github: true }
+				}
+			})(route)
+		);
+
+		await mockRiteChallenge(page);
+		await gotoHydrated(page, '/challenges/onboarding');
+		await expect(page.getByTestId('rite-fork-link')).toHaveAttribute(
+			'href',
+			'https://github.com/kofi/starter-backend'
+		);
+		await expect(page.getByText(/Pull request ouverte/i)).toBeVisible();
+		// The wait has two steps and only the first is automatic. Saying "we
+		// will tell you when the pull request lands" would be a half-truth.
+		await expect(page.getByText(/Un relecteur tranche ensuite/i)).toBeVisible();
 	});
 
 	test('the catalogue keeps its chrome: /challenges is not an onboarding step', async ({
