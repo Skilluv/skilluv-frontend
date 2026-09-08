@@ -104,8 +104,8 @@ test.describe('Wallet page', () => {
 				path: '/auth/me',
 				handler: json({ data: { user: talent, login_method: 'password', has_passkey: false } })
 			},
-			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) },
+			{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) },
 			{ path: '/users/me/wallet/transactions', handler: json({ data: { transactions } }) },
 			{ path: '/users/me/wallet', handler: json({ data: { wallet } }) }
 		]);

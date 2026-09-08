@@ -57,14 +57,19 @@ const flagged = {
 };
 
 const reviewerCapability = {
-	data: [{ capability: 'plagiarism_reviewer', granted_at: '2026-01-01', granted_reason: 'seed' }]
+	data: {
+		user_id: 'u-reviewer',
+		capabilities: [
+			{ capability: 'plagiarism_reviewer', granted_at: '2026-01-01', granted_reason: 'seed' }
+		]
+	}
 };
 
 test.describe('Plagiarism queue', () => {
 	test('un reviewer voit la file et ses scores', async ({ page }) => {
 		await mockApi(page, [
 			{ path: '/users/me/capabilities', handler: json(reviewerCapability) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) },
 			{ path: '/fraud/deliverables/flagged', handler: json(flagged) }
 		]);
 
@@ -79,7 +84,7 @@ test.describe('Plagiarism queue', () => {
 	test('un reviewer sans rien a traiter voit un etat vide', async ({ page }) => {
 		await mockApi(page, [
 			{ path: '/users/me/capabilities', handler: json(reviewerCapability) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) },
 			{
 				path: '/fraud/deliverables/flagged',
 				handler: json({
@@ -96,8 +101,8 @@ test.describe('Plagiarism queue', () => {
 
 	test('sans la capability, la page refuse explicitement', async ({ page }) => {
 		await mockApi(page, [
-			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) }
+			{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 		]);
 
 		await gotoHydrated(page, '/moderation/plagiarism');

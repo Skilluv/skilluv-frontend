@@ -89,8 +89,8 @@ test.describe('S5.2 forum thread', () => {
 		await mockApi(page, [
 			{ path: '/forum/posts/p-1', handler: json({ data: { post: post(), comments: [] } }) },
 			{ path: '/social/comments/post/p-1', handler: json({ data: { comments: [comment()] } }) },
-			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) }
+			{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 		]);
 		await gotoHydrated(page, '/forum/p-1');
 
@@ -116,8 +116,8 @@ test.describe('S5.2 forum thread', () => {
 					return json({ data: { comment: comment({ id: 'c-2', body: 'Ma reponse' }) } })(route);
 				}
 			},
-			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) }
+			{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 		]);
 		await gotoHydrated(page, '/forum/p-1');
 
@@ -134,8 +134,8 @@ test.describe('S5.2 forum thread', () => {
 		await mockApi(page, [
 			{ path: '/forum/posts/p-1', handler: json({ data: { post: post(), comments: [] } }) },
 			{ path: '/social/comments/post/p-1', handler: json({ data: { comments: [] } }) },
-			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) }
+			{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 		]);
 		await gotoHydrated(page, '/forum/p-1');
 		await expect(page.getByRole('button', { name: 'Publier' })).toBeDisabled();
@@ -148,8 +148,8 @@ test.describe('S5.2 forum thread', () => {
 				handler: json({ data: { post: post({ locked: true }), comments: [] } })
 			},
 			{ path: '/social/comments/post/p-1', handler: json({ data: { comments: [comment()] } }) },
-			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) }
+			{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 		]);
 		await gotoHydrated(page, '/forum/p-1');
 
@@ -172,8 +172,8 @@ test.describe('S5.2 forum thread', () => {
 				handler: json({ data: { post: post({ author_id: AUTHOR_ID }), comments: [] } })
 			},
 			{ path: '/social/comments/post/p-1', handler: json({ data: { comments: [comment()] } }) },
-			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) }
+			{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 		]);
 		await gotoHydrated(page, '/forum/p-1');
 

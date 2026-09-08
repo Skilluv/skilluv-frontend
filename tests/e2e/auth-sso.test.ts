@@ -36,8 +36,8 @@ function json(body: unknown, status = 200) {
 }
 
 const common: ApiRoute[] = [
-	{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-	{ path: '/users/me/orientations', handler: json({ data: [] }) }
+	{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+	{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 ];
 
 test.beforeEach(async ({ page }) => {
@@ -245,7 +245,7 @@ test.describe('SKI-49 SSO departure', () => {
 				path: '/users/me/orientations',
 				handler: (route) => {
 					if (route.request().method() === 'POST') posted++;
-					return json({ data: [] })(route);
+					return json({ data: { orientations: [] } })(route);
 				}
 			},
 			...common

@@ -73,8 +73,8 @@ async function signIn(
 		...extra,
 		{ path: '/notifications/unread-count', handler: json({ data: { count: items.length } }) },
 		{ path: '/notifications', handler: json(page_(items)) },
-		{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-		{ path: '/users/me/orientations', handler: json({ data: [] }) }
+		{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+		{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 	]);
 }
 

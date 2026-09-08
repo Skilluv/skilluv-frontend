@@ -48,8 +48,8 @@ const profileRoutes: ApiRoute[] = Object.entries(PEOPLE).map(([username, person]
 }));
 
 const common: ApiRoute[] = [
-	{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-	{ path: '/users/me/orientations', handler: json({ data: [] }) }
+	{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+	{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 ];
 
 async function addCofounder(page: Page, username: string) {
