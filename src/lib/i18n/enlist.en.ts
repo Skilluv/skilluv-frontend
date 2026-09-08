@@ -102,50 +102,6 @@ export const enlistEn: EnlistTranslations = {
 			needsGithub: 'This rite happens on GitHub. Link your account so we can fork the starter there.',
 			needsGithubCta: 'Link my GitHub account',
 			pending: 'Under review',
-			fork: {
-				label: 'The first commit',
-				lead: 'We fork a starter onto your account. You write your HELLO.md and open the pull request.'
-			},
-			upload: {
-				label: 'The first screen',
-				lead: 'A short brief, one screen handed in. The critique answers in three verdicts.'
-			},
-			playtest: {
-				label: 'The first playtest',
-				lead: "You play a slice somebody handed in, and return a verdict you can back up."
-			},
-			disclosure: {
-				label: 'The first finding',
-				lead: 'You read the public scope, then report one finding on our practice ground.'
-			},
-			proposal: {
-				label: 'The first proposal',
-				lead: "You read a service objective from Skilluv's own infrastructure and propose one improvement."
-			},
-			defect: {
-				label: 'The first report',
-				lead: 'You file one reproducible defect on our ground, with everything needed to replay it.'
-			},
-			workspace: {
-				label: 'The first step',
-				lead: 'An entry mission, one workspace step, your reasoning made readable.'
-			},
-			render: {
-				label: 'The first twenty seconds',
-				lead: 'A twenty-second signature, sources declared.'
-			},
-			translation: {
-				label: 'The first paragraph',
-				lead: 'You translate one paragraph of a guide. A reviewer from the domain answers.'
-			},
-			explainer: {
-				label: 'The first explanation',
-				lead: 'You explain one skill in three beats, for somebody starting out.'
-			},
-			retro: {
-				label: 'The first retrospective',
-				lead: "A public Skilluv incident, your reading of what happened and what we keep from it."
-			},
 			notReadyTitle: 'This first act is not open yet',
 			notReadyBody:
 				'Your domain is registered and your account is active. The entry rite for this path opens soon — the full catalogue is already yours in the meantime.',

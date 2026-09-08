@@ -11,7 +11,6 @@
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Badge from '$components/ui/Badge.svelte';
-	import { domainPlate } from '$lib/data/domains';
 	import type { Challenge, SkillDomain } from '$types';
 
 	/**
@@ -21,20 +20,25 @@
 	 * ## Why the missing challenge is a state and not an error
 	 *
 	 * `GET /challenges/onboarding?domain=X` answers with a template flagged
-	 * `is_onboarding` for that domain. Ten of the eleven domains have no such
-	 * template seeded and the eleventh depends on a seed script rather than a
-	 * migration, so today this call fails far more often than it succeeds — and
-	 * it failed onto "Impossible de charger", the first thing a brand-new
-	 * account ever saw. See SKI-360.
+	 * `is_onboarding` for that domain. When this was written, ten of the eleven
+	 * had none seeded and the call failed onto "Impossible de charger", the
+	 * first thing a brand-new account ever saw. All eleven are seeded now, so
+	 * the empty state is rare rather than usual — and it stays, because a first
+	 * act that is not open yet is a fact about the platform rather than a fault
+	 * of the person reading it. See SKI-360.
 	 *
-	 * A first act that is not open yet is a fact about the platform, not a
-	 * fault of the person reading it: the screen says which act their domain
-	 * will ask for, that their account is live, and where to go meanwhile.
-	 * When the templates land, the same screen shows the real challenge and
-	 * nothing else changes.
+	 * ## Why the act is not described twice
 	 *
-	 * The per-domain act is described from `domainPlate(domain).rite` — a
-	 * front-side contract until SKI-362 gives the endpoint a shape per domain.
+	 * This screen used to restate it above the challenge, from eleven pairs of
+	 * hardcoded strings keyed on the domain. That was written when the endpoint
+	 * had nothing to say; it now serves the title, the description and the
+	 * instructions per domain and in the reader's language.
+	 *
+	 * The frozen copy had already drifted: design's said "a short brief, one
+	 * screen handed in, the critique answers in three verdicts" against a rite
+	 * that is now "Ton HELLO", a brief that never existed, and a review that
+	 * happens once rather than three times. Two statements of one thing, and
+	 * the wrong one was ours.
 	 */
 
 	let challenge = $state<Challenge | null>(null);
@@ -75,7 +79,6 @@
 	const canStart = $derived(!missingTrade && !missingGithub && hasGithub !== null);
 
 	const domain = $derived(auth.user?.skill_domain ?? null);
-	const rite = $derived(domain ? domainPlate(domain).rite : null);
 
 	/**
 	 * Set when the account was created but one of the chosen trades was
@@ -211,18 +214,6 @@
 		>
 			{i18n.t('enlist.account.partialTrades')}
 		</p>
-	{/if}
-
-	{#if rite}
-		<!-- The act this domain asks for, named before the challenge loads. It is
-		     the same sentence whether the template exists yet or not, which is
-		     the point: the promise does not depend on the seeding. -->
-		<section class="mb-8 rounded-2xl border border-accent/30 bg-surface-elevated p-6">
-			<h2 class="font-display text-2xl font-bold">{i18n.t(`enlist.rite.${rite}.label`)}</h2>
-			<p class="mt-2 text-sm leading-relaxed text-text-muted">
-				{i18n.t(`enlist.rite.${rite}.lead`)}
-			</p>
-		</section>
 	{/if}
 
 	{#if loading}

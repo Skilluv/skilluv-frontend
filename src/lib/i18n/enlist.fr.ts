@@ -102,50 +102,6 @@ export const enlistFr: EnlistTranslations = {
 			needsGithub: 'Ce rite se joue sur GitHub. Lie ton compte pour qu’on puisse y forker le starter.',
 			needsGithubCta: 'Lier mon compte GitHub',
 			pending: 'En cours de relecture',
-			fork: {
-				label: 'Le premier commit',
-				lead: 'On fork un starter sur ton compte. Tu écris ton HELLO.md, tu ouvres la pull request.'
-			},
-			upload: {
-				label: 'Le premier écran',
-				lead: 'Un brief court, un écran rendu. La critique te répond en trois verdicts.'
-			},
-			playtest: {
-				label: 'Le premier playtest',
-				lead: 'Tu joues une tranche déposée par quelqu’un, tu rends ton verdict argumenté.'
-			},
-			disclosure: {
-				label: 'Le premier constat',
-				lead: 'Tu lis le périmètre public, tu remontes un constat sur notre terrain d’exercice.'
-			},
-			proposal: {
-				label: 'La première proposition',
-				lead: 'Tu lis un objectif de service de l’infrastructure Skilluv, tu proposes une amélioration.'
-			},
-			defect: {
-				label: 'Le premier rapport',
-				lead: 'Tu déposes un défaut reproductible sur notre terrain, avec ce qu’il faut pour le rejouer.'
-			},
-			workspace: {
-				label: 'La première étape',
-				lead: 'Une mission d’entrée, une étape d’atelier, ton raisonnement rendu lisible.'
-			},
-			render: {
-				label: 'Les vingt premières secondes',
-				lead: 'Une signature sonore de vingt secondes, sources déclarées.'
-			},
-			translation: {
-				label: 'Le premier paragraphe',
-				lead: 'Tu traduis un paragraphe de guide. Un relecteur du domaine te répond.'
-			},
-			explainer: {
-				label: 'La première explication',
-				lead: 'Tu expliques une compétence en trois temps, pour quelqu’un qui débute.'
-			},
-			retro: {
-				label: 'La première rétro',
-				lead: 'Un incident public de Skilluv, ta lecture de ce qui s’est passé et de ce qu’on en garde.'
-			},
 			notReadyTitle: 'Ce premier geste n’est pas encore ouvert',
 			notReadyBody:
 				'Ton domaine est enregistré et ton compte est actif. Le rite d’entrée de cette voie ouvre bientôt — en attendant, le catalogue complet t’est déjà accessible.',
