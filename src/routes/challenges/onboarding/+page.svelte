@@ -83,6 +83,17 @@
 	 */
 	const partialTrades = $derived(page.url.searchParams.get('trades') === 'partial');
 
+	/**
+	 * Where the OAuth callback sends the browser back to.
+	 *
+	 * Derived rather than hardcoded, the way `LinkedAccounts` and
+	 * `DiscordLinkCard` already do it: the query survives the round trip. It
+	 * carries `?trades=partial` here, and a literal path would drop the notice
+	 * telling somebody a trade could not be registered — on the return from the
+	 * one step where they can do nothing about it.
+	 */
+	const returnTo = $derived(page.url.pathname + page.url.search);
+
 	$effect(() => {
 		if (domain) void loadOnboarding(domain);
 	});
@@ -337,7 +348,7 @@
 						     to do one thing would reopen the door we closed, and
 						     they would have to find their own way back to a step
 						     they were in the middle of. -->
-						<Button variant="accent" href={githubLinkUrl('/challenges/onboarding')}>
+						<Button variant="accent" href={githubLinkUrl(returnTo)}>
 							{i18n.t('enlist.rite.needsGithubCta')}
 						</Button>
 					</div>
