@@ -3,7 +3,6 @@
 	import { page } from '$app/stores';
 	import { auth } from '$lib/stores/auth.svelte';
 	import { theme } from '$lib/stores/theme.svelte';
-	import { notifications } from '$lib/stores/notifications.svelte';
 	import { tenant } from '$lib/stores/tenant.svelte';
 	import { i18n } from '$lib/i18n';
 	import type { ThemeBase } from '$lib/types';
@@ -11,6 +10,7 @@
 	import LogoutConfirmModal from './LogoutConfirmModal.svelte';
 	import { onMount } from 'svelte';
 	import BrandLogo from '$components/layout/BrandLogo.svelte';
+	import NotificationBell from './NotificationBell.svelte';
 	import {
 		Target,
 		Pencil,
@@ -550,11 +550,11 @@
 <header class="relative z-40 bg-transparent">
 	<nav
 		aria-label={i18n.locale === 'fr' ? 'Navigation principale' : 'Primary navigation'}
-		class="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-4"
+		class="relative mx-auto grid h-20 max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-4"
 	>
 		<!-- Logo — tenant-aware. Skilluv canonique = wordmark bicolore sKIL·LUV
 		     (Fraunces WONK, easter egg: le LUV rouge se révèle au 2e regard) -->
-		<a href="/" class="flex items-center gap-2.5" aria-label="Skilluv accueil">
+		<a href="/" class="col-start-1 flex items-center gap-2.5" aria-label="Skilluv accueil">
 			{#if tenant.isWhiteLabel && tenant.logoUrl}
 				<img src={tenant.logoUrl} alt={tenant.name} width="120" height="32" class="h-8 max-w-[120px] object-contain" />
 				<span class="text-lg font-black tracking-tight text-text-primary truncate max-w-[160px]">
@@ -594,10 +594,7 @@
 		     like min-[1229px] would fit tighter and break the day somebody adds
 		     a control, because the number would be right for a row that no
 		     longer exists. -->
-		<div
-			data-testid="nav-pill"
-			class="hidden xl:flex absolute top-5 left-1/2 -translate-x-1/2 z-50"
-		>
+		<div data-testid="nav-pill" class="col-start-2 hidden justify-self-center xl:flex">
 			<div bind:this={pillContainer} class="relative flex items-center gap-1 rounded-full border border-border bg-surface-elevated p-1 shadow-sm">
 				<!-- Sliding indicator (pill inversée qui glisse) -->
 				<span
@@ -610,7 +607,7 @@
 					href="/"
 					data-nav-key="home"
 					data-nav-active={activeKey === 'home'}
-					class="relative z-10 inline-flex items-center h-8 rounded-full px-4 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'home' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
+					class="relative z-10 inline-flex items-center h-8 rounded-full px-3 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'home' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
 				>
 					{i18n.locale === 'fr' ? 'Accueil' : 'Home'}
 				</a>
@@ -620,7 +617,7 @@
 						href="/challenges"
 						data-nav-key="challenges"
 						data-nav-active={activeKey === 'challenges'}
-						class="relative z-10 inline-flex items-center h-8 rounded-full px-4 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'challenges' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
+						class="relative z-10 inline-flex items-center h-8 rounded-full px-3 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'challenges' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
 					>
 						{i18n.t('common.nav.challenges')}
 					</a>
@@ -678,7 +675,7 @@
 		</div>
 
 		<!-- Right side controls -->
-		<div class="hidden items-center gap-1 xl:flex">
+		<div class="col-start-3 hidden items-center gap-1 justify-self-end xl:flex">
 			<!-- Theme selector -->
 			<div class="relative" data-theme-dropdown>
 				<button
@@ -730,25 +727,29 @@
 				{/if}
 			</div>
 
-			<!-- Language toggle -->
+			<!-- Language toggle.
+
+			     The two letters name where the button takes you, not where you
+			     are — the same way the theme item says "Mode clair" while the
+			     theme is dark. On its own that is ambiguous: a bare language code
+			     reads as a label as easily as an action, and somebody in French
+			     seeing "EN" cannot tell which. An icon does not have that problem
+			     because an icon is obviously a control; two letters are not.
+
+			     There is no room for words in this row, so the words go where a
+			     reader can still reach them. Without them the button announced
+			     itself as "EN" and nothing else, which is not a name. -->
 			<button
 				onclick={() => i18n.setLocale(i18n.locale === 'fr' ? 'en' : 'fr')}
+				aria-label={i18n.locale === 'fr' ? 'Passer en anglais' : 'Switch to French'}
+				title={i18n.locale === 'fr' ? 'Passer en anglais' : 'Switch to French'}
 				class="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
 			>
-				{i18n.locale === 'fr' ? 'EN' : 'FR'}
+				<span aria-hidden="true">{i18n.locale === 'fr' ? 'EN' : 'FR'}</span>
 			</button>
 
 			{#if auth.isAuthenticated}
-				<a href="/notifications" class="relative flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary">
-					<svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-					</svg>
-					{#if notifications.unreadCount > 0}
-						<span class="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-accent-fg">
-							{notifications.unreadCount > 9 ? '9+' : notifications.unreadCount}
-						</span>
-					{/if}
-				</a>
+				<NotificationBell />
 
 				<div class="relative ml-1" data-user-dropdown>
 					<button
@@ -851,7 +852,7 @@
 		<!-- Mobile burger -->
 		<button
 			onclick={() => mobileOpen = !mobileOpen}
-			class="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-elevated text-text-muted transition-colors duration-200 hover:bg-surface-overlay xl:hidden"
+			class="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-elevated text-text-muted transition-colors duration-200 hover:bg-surface-overlay col-start-3 justify-self-end xl:hidden"
 			aria-label="Menu"
 		>
 			{#if mobileOpen}
@@ -910,6 +911,13 @@
 					<div class="ml-auto flex items-center gap-2">
 						<button
 							onclick={() => theme.toggleMode()}
+							aria-label={theme.mode === 'dark'
+								? i18n.locale === 'fr'
+									? 'Mode clair'
+									: 'Light mode'
+								: i18n.locale === 'fr'
+									? 'Mode sombre'
+									: 'Dark mode'}
 							class="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-text-muted transition-colors duration-200 hover:bg-surface-overlay hover:text-text-primary"
 						>
 							{#if theme.mode === 'dark'}
@@ -920,9 +928,10 @@
 						</button>
 						<button
 							onclick={() => i18n.setLocale(i18n.locale === 'fr' ? 'en' : 'fr')}
+							aria-label={i18n.locale === 'fr' ? 'Passer en anglais' : 'Switch to French'}
 							class="rounded-lg border border-border px-2.5 py-1 text-xs font-bold transition-colors duration-200 hover:bg-surface-overlay"
 						>
-							{i18n.locale === 'fr' ? 'EN' : 'FR'}
+							<span aria-hidden="true">{i18n.locale === 'fr' ? 'EN' : 'FR'}</span>
 						</button>
 					</div>
 				</div>

@@ -4,16 +4,24 @@ import { gotoHydrated } from './utils/hydration';
 /**
  * The header and the consent banner, at the widths where they broke.
  *
- * The nav pill is `fixed` and centred on the viewport, so it is out of the flow
- * and the row beneath it lays out as though it were not there. Nothing stops it
- * covering the controls on the right, and at z-50 over the header's z-40 it
- * wins. Measured before the fix: the pill is 442px wide anonymous and 529
- * signed in, the right-hand controls 294 and 334 — so the overlap started below
- * 1062px anonymous and below 1229px signed in.
+ * The nav pill used to be `fixed`, so it was out of the flow and the row laid
+ * out as though it were not there. Nothing stopped it covering the controls on
+ * the right, and at z-50 over the header's z-40 it won. The answer was a
+ * breakpoint: hide the pill below xl, on measurements taken at the time.
  *
- * Both numbers are why the breakpoint is xl and not a tuned pixel value: a
- * tighter number would be right for a row that stops existing the day somebody
- * adds a control.
+ * That held until the row changed under it. Signed in and in French — longer
+ * labels, a name, a rank badge — the pill was 572px against 334px of controls
+ * inside a row capped at `max-w-7xl`, leaving four pixels between them. Four.
+ * The next word added to a menu would have taken it.
+ *
+ * So the row is a three-column grid now and the groups cannot overlap at all:
+ * they are in different columns, and grid items in different columns do not
+ * share pixels. The measurements below stop being the thing that keeps them
+ * apart and become what they should always have been — a check that there is
+ * room to breathe.
+ *
+ * This spec ran signed out only, which is why it never saw any of it. The
+ * widest case is signed in and in French, and it is covered at the bottom.
  */
 
 // Signed out, and with the closed-beta notice already read: it is a modal over
@@ -63,6 +71,29 @@ test.describe('Header at narrow desktop widths', () => {
 		const o = await overlap(page);
 		expect(o).not.toBeNull();
 		expect(o!).toBeLessThanOrEqual(0);
+	});
+
+	test('the widest row still has room: signed in, in French', async ({ page, context }) => {
+		// The case that broke, and the one this spec did not have. French labels
+		// are longer than English ones and a signed-in row carries a name and a
+		// rank badge, so this is the most crowded the header ever gets.
+		await context.addCookies([
+			{ name: 'access_token', value: 'challenger', domain: 'localhost', path: '/' }
+		]);
+		await page.addInitScript(() => {
+			try {
+				localStorage.setItem('skilluv-locale', 'fr');
+			} catch {
+				/* storage unavailable */
+			}
+		});
+
+		for (const width of [1280, 1440, 1920]) {
+			await page.setViewportSize({ width, height: 900 });
+			await gotoHydrated(page, '/challenges');
+			const o = await overlap(page);
+			expect(o, `pill and controls only ${o}px apart at ${width}px`).toBeLessThanOrEqual(-16);
+		}
 	});
 
 	test('a way to navigate exists at every width', async ({ page }) => {

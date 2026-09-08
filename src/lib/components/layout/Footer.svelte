@@ -5,6 +5,7 @@
 	import { consent } from '$lib/stores/consent.svelte';
 	import type { ThemeBase } from '$lib/types';
 	import { PRIMARY_SOCIAL_ACCOUNTS, CONTACT_EMAIL, DPO_EMAIL } from '$lib/config/social';
+	import BrandLogo from './BrandLogo.svelte';
 
 	const year = new Date().getFullYear();
 
@@ -220,10 +221,11 @@
 
 			<!-- ▓▓▓ 4. GROS LOGO + SOCIAL PILLS ▓▓▓ -->
 			<div class="mt-16 flex flex-col gap-8 border-t border-border pt-10 lg:flex-row lg:items-end lg:justify-between">
-				<a href="/" class="inline-flex items-baseline leading-none">
-					<span class="text-7xl sm:text-8xl lg:text-9xl font-black tracking-[-0.05em]">
-						<span class="text-accent">Skill</span><span class="text-text-primary">uv</span><span class="text-accent">.</span>
-					</span>
+				<!-- The mark itself, not a wordmark rebuilt from three spans. The
+				     artwork already carries the brand's colours, and the sign-off
+				     is the one place the real lockup earns its size. -->
+				<a href="/" class="inline-flex items-center leading-none" aria-label="Skilluv">
+					<BrandLogo class="[--brand-size:64px] sm:[--brand-size:80px]" />
 				</a>
 
 				<div class="flex flex-wrap items-center gap-2">
@@ -243,8 +245,13 @@
 
 			<!-- ▓▓▓ 5. BOTTOM BAR ▓▓▓ -->
 			<div class="mt-10 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-				<p class="text-xs uppercase tracking-widest font-bold text-text-muted">
-					© {year} Skilluv — {i18n.locale === 'fr' ? 'Tous droits réservés' : 'All rights reserved'}
+				<!-- The mark rather than the word. `BrandLogo` carries `alt="Skilluv"`
+				     on its wordmark, so the line still reads "© 2026 Skilluv · Tous
+				     droits réservés" to anything that cannot see it. -->
+				<p class="flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-text-muted">
+					<span>© {year}</span>
+					<BrandLogo size={20} />
+					<span>· {i18n.locale === 'fr' ? 'Tous droits réservés' : 'All rights reserved'}</span>
 				</p>
 				<ul class="flex flex-wrap items-center gap-x-5 gap-y-2">
 					{#each legalLinks as link}

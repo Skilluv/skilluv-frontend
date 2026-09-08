@@ -75,7 +75,7 @@
 	<button
 		onclick={toggle}
 		data-nav-key={navKey}
-		class="relative inline-flex items-center h-8 gap-1 rounded-full px-4 text-sm font-medium leading-none transition-colors duration-300 {active ? 'text-surface' : open ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'}"
+		class="relative inline-flex items-center h-8 gap-1 rounded-full px-3 text-sm font-medium leading-none transition-colors duration-300 {active ? 'text-surface' : open ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'}"
 		aria-expanded={open}
 		aria-haspopup="menu"
 	>

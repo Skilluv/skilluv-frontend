@@ -51,7 +51,15 @@
 	interface Props {
 		/** `full` shows the wordmark beside the mark; `mark` is the disc alone. */
 		variant?: 'full' | 'mark';
-		/** Height in pixels. The width follows the artwork. */
+		/**
+		 * Height in pixels. The width follows the artwork.
+		 *
+		 * Applied through `--brand-size`, so a caller that needs it to change
+		 * with the viewport sets that property per breakpoint on `class`
+		 * rather than rendering the logo twice and hiding one:
+		 *
+		 *     class="[--brand-size:88px] sm:[--brand-size:170px]"
+		 */
 		size?: number;
 		class?: string;
 	}
@@ -81,7 +89,7 @@
 		width={size}
 		height={size}
 		class="shrink-0"
-		style="height: {size}px; width: auto;"
+		style="height: var(--brand-size, {size}px); width: auto;"
 		data-testid="brand-mark"
 	/>
 
@@ -92,7 +100,7 @@
 			alt="Skilluv"
 			height={size}
 			class="shrink-0"
-			style="height: {Math.round(size * 0.62)}px; width: auto;"
+			style="height: calc(var(--brand-size, {size}px) * 0.62); width: auto;"
 			data-testid="brand-wordmark"
 		/>
 	{:else}

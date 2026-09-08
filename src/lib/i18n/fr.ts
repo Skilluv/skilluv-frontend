@@ -521,6 +521,10 @@ export const fr: Translations = {
 	},
 	notifications: {
 		title: 'Notifications', markAllRead: 'Tout marquer lu', unread: 'Non lues', all: 'Toutes',
+		bell: 'Notifications',
+		bellUnread: 'Notifications, {n} non lues',
+		seeAll: 'Voir tout',
+		panelError: 'Impossible de charger les notifications.',
 		empty: 'Aucune notification.',
 		types: {
 			interest_request_received: 'Demande d\'intérêt reçue',

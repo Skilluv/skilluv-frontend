@@ -10,6 +10,12 @@
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import { i18n } from '$lib/i18n';
+	import {
+		notifData as ctx,
+		notifBody as renderBody,
+		notifAge as formatDate,
+		type NotifData
+	} from '$lib/utils/notifications';
 	import type { Notification } from '$types';
 	import { foldNotifications, actorsLine } from '$lib/utils/notificationGrouping';
 	import {
@@ -95,35 +101,6 @@
 	}
 
 
-	// Contexte data payload (best-effort — deprecate CTA si champ absent).
-	interface NotifData {
-		slice_id?: string;
-		slice_title?: string;
-		fork_url?: string;
-		pr_url?: string;
-		repo?: string;
-		claimer?: string;
-		validator?: string;
-		reason?: string;
-		fragments_bonus?: number;
-		invitation_id?: string;
-		domain?: string;
-		status?: string;
-		notes?: string;
-		attestation_hash?: string;
-		upstream_issue_url?: string;
-		/** SKI-43 promotion payloads. */
-		to_rank?: string;
-		unlock_hint?: { unlocked_slices_count?: number; sample?: { slice_id: string; title: string }[] };
-		capability?: string;
-		badge_slug?: string;
-		goal_id?: string;
-	}
-
-	function ctx(n: Notification): NotifData {
-		return (n.data as NotifData | null) ?? {};
-	}
-
 	/**
 	 * The five kinds `promotion_notify` emits (SKI-43).
 	 *
@@ -145,30 +122,6 @@
 	}
 
 	/** Localised body for enriched types. Falls back to the backend `body`. */
-	function renderBody(n: Notification): string {
-		const d = ctx(n);
-		const key = `notifTypes.${n.notification_type}`;
-		const params: Record<string, string | number> = {
-			title: d.slice_title ?? '',
-			url: d.fork_url ?? d.pr_url ?? d.upstream_issue_url ?? '',
-			user: d.claimer ?? d.validator ?? '',
-			reason: d.reason ?? '—',
-			repo: d.repo ?? '',
-			n: d.fragments_bonus ?? 0,
-			domain: d.domain ?? '',
-			notes: d.notes ?? '—',
-			status:
-				d.status === 'approved'
-					? i18n.t('notifTypes.statusApproved')
-					: d.status === 'rejected'
-						? i18n.t('notifTypes.statusRejected')
-						: (d.status ?? '')
-		};
-		const text = i18n.t(key, params);
-		// `t()` returns the key itself when missing: fall back to the backend copy
-		// rather than showing a raw key to the user.
-		return text === key ? (n.body ?? '') : text;
-	}
 
 
 	let items = $state<Notification[]>([]);
@@ -304,14 +257,6 @@
 		} catch { /* silent */ }
 	}
 
-	function formatDate(iso: string): string {
-		const d = new Date(iso);
-		const now = new Date();
-		const diff = now.getTime() - d.getTime();
-		if (diff < 3600000) return `${Math.floor(diff / 60000)}min`;
-		if (diff < 86400000) return `${Math.floor(diff / 3600000)}h`;
-		return d.toLocaleDateString('fr', { day: 'numeric', month: 'short' });
-	}
 </script>
 
 <svelte:head>

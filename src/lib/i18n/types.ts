@@ -612,6 +612,11 @@ export interface Translations
 	};
 	notifications: {
 		title: string;
+		/** The bell's accessible name, with and without a count. */
+		bell: string;
+		bellUnread: string;
+		seeAll: string;
+		panelError: string;
 		markAllRead: string;
 		unread: string;
 		all: string;

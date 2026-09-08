@@ -518,6 +518,10 @@ export const en: Translations = {
 	},
 	notifications: {
 		title: 'Notifications', markAllRead: 'Mark all as read', unread: 'Unread', all: 'All',
+		bell: 'Notifications',
+		bellUnread: 'Notifications, {n} unread',
+		seeAll: 'See all',
+		panelError: 'Could not load notifications.',
 		empty: 'No notifications.',
 		types: {
 			interest_request_received: 'Interest request received',
