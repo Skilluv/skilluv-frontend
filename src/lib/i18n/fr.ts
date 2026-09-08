@@ -589,8 +589,8 @@ export const fr: Translations = {
 			digestWeeklyDesc: 'Ton activité de la semaine, une fois par semaine.',
 			streakReminder: 'Rappel de série',
 			streakReminderDesc: 'Un rappel quand ta série est sur le point de tomber.',
-			marketing: 'Annonces produit',
-			marketingDesc: 'Nouveautés et annonces. Désactivé par défaut.',
+			marketing: 'Relances',
+			marketingDesc: 'Les emails qui reviennent vers toi quand tu décroches : ton établi est vide, ça fait deux semaines, rejoins une guilde. Désactivé par défaut.',
 			transactional:
 				'Les emails indispensables (vérification, mot de passe, sécurité, reçus de paiement) restent envoyés.',
 			saved: 'Préférences enregistrées',
@@ -2112,8 +2112,8 @@ export const fr: Translations = {
 		consents: {
 			title: 'Consentements',
 			subtitle: 'Tu peux les changer à tout moment. Le nécessaire (auth, sécurité, facturation) ne dépend pas de ces choix.',
-			marketingLabel: 'Communications marketing',
-			marketingHint: 'Emails sur les nouveautés, launches, offres. Zéro spam commercial tiers.',
+			marketingLabel: 'Traceurs marketing',
+			marketingHint: 'Mesure d’audience publicitaire et reciblage. Ça ne décide pas des emails que tu reçois : ça se règle dans Préférences email.',
 			analyticsLabel: 'Analytics produit',
 			analyticsHint: 'Statistiques anonymes pour comprendre comment tu utilises Skilluv et l\'améliorer.',
 			saved: 'Consentements enregistrés.'

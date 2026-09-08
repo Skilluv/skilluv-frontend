@@ -586,8 +586,8 @@ export const en: Translations = {
 			digestWeeklyDesc: 'Your week of activity, once a week.',
 			streakReminder: 'Streak reminder',
 			streakReminderDesc: 'A nudge when your streak is about to break.',
-			marketing: 'Product announcements',
-			marketingDesc: 'News and announcements. Off by default.',
+			marketing: 'Nudges',
+			marketingDesc: 'The emails that come back to you when you drift off: your bench is empty, it has been two weeks, join a guild. Off by default.',
 			transactional:
 				'Essential emails (verification, password, security, payment receipts) are always sent.',
 			saved: 'Preferences saved',
@@ -2078,8 +2078,8 @@ export const en: Translations = {
 		consents: {
 			title: 'Consents',
 			subtitle: 'Changeable anytime. Essentials (auth, security, billing) do not depend on these choices.',
-			marketingLabel: 'Marketing communications',
-			marketingHint: 'Emails about launches, updates, offers. Zero third-party commercial spam.',
+			marketingLabel: 'Marketing trackers',
+			marketingHint: 'Advertising measurement and retargeting. It does not decide which emails you get: that lives in Email preferences.',
 			analyticsLabel: 'Product analytics',
 			analyticsHint: 'Anonymous stats to understand how you use Skilluv and improve it.',
 			saved: 'Consents saved.'
