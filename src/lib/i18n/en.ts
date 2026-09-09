@@ -225,6 +225,13 @@ export const en: Translations = {
 			about: 'Teaching somebody to do it without you. You build the path, the exercises and the feedback that goes with them.'
 		}
 	},
+	newsletter: {
+		consent: 'By leaving your address you agree to receive the Skilluv letter. A confirmation link goes out by mail, and every issue carries a one-click way out.',
+		sent: 'If that address can receive mail, a confirmation link is on its way. Check your inbox.',
+		invalid: 'That does not look like an email address.',
+		throttled: 'Too many attempts for now. Try again in an hour.',
+		failed: 'We could not record your address. Try again in a moment.'
+	},
 	landing: {
 		title: 'Prove what you can do.',
 		titleAccent: 'For real.',

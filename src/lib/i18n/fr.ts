@@ -228,6 +228,13 @@ export const fr: Translations = {
 			about: 'Apprendre à quelqu’un à faire sans toi. Tu construis le parcours, les exercices et le retour qui va avec.'
 		}
 	},
+	newsletter: {
+		consent: 'En laissant ton adresse, tu acceptes de recevoir la lettre Skilluv. Un lien de confirmation part par mail, et chaque envoi porte un lien pour te désabonner en un clic.',
+		sent: 'Si cette adresse peut recevoir du courrier, un lien de confirmation est en route. Regarde ta boîte.',
+		invalid: 'Cette adresse ne ressemble pas à une adresse email.',
+		throttled: 'Trop de tentatives pour le moment. Réessaie dans une heure.',
+		failed: 'On n’a pas pu enregistrer ton adresse. Réessaie dans un instant.'
+	},
 	landing: {
 		title: 'Prouve ce que tu sais faire.',
 		titleAccent: 'Pour de vrai.',

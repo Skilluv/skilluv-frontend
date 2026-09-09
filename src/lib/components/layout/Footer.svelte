@@ -5,6 +5,8 @@
 	import { consent } from '$lib/stores/consent.svelte';
 	import type { ThemeBase } from '$lib/types';
 	import { PRIMARY_SOCIAL_ACCOUNTS, CONTACT_EMAIL, DPO_EMAIL } from '$lib/config/social';
+	import { newsletterApi, EMAIL_SHAPE } from '$api/newsletter';
+	import { SkilluError } from '$api/client';
 	import BrandLogo from './BrandLogo.svelte';
 
 	const year = new Date().getFullYear();
@@ -45,14 +47,58 @@
 
 	let email = $state('');
 	let subscribing = $state(false);
+	/**
+	 * What the reader is told afterwards.
+	 *
+	 * There was none of this: the form waited 400ms so the button looked busy,
+	 * cleared the field so it looked accepted, and dropped the address. Every
+	 * signal said "subscribed" and nothing had happened — worse than no form,
+	 * because somebody who types their address then waits for a letter that is
+	 * never coming has no way to find out.
+	 */
+	let outcome = $state<'idle' | 'sent' | 'invalid' | 'throttled' | 'failed'>('idle');
+
+	/**
+	 * The sentence beside the field, sent with the address.
+	 *
+	 * A consent is *for* a wording, and a boolean cannot say which one somebody
+	 * agreed to. The backend stores this text with the IP and the user agent, so
+	 * if it ever changes, what was agreed under the old one stays readable as
+	 * that. It is the one part of this the backend could not write for us.
+	 */
+	const consentText = $derived(i18n.t('newsletter.consent'));
 
 	async function subscribe(e: SubmitEvent) {
 		e.preventDefault();
-		if (!email.trim() || subscribing) return;
+		const address = email.trim();
+		if (!address || subscribing) return;
+
+		// The API's own shape, not a stricter one: anything tighter refuses
+		// addresses the backend accepts, and it is the confirmation mail that
+		// decides deliverability rather than a regular expression.
+		if (!EMAIL_SHAPE.test(address)) {
+			outcome = 'invalid';
+			return;
+		}
+
 		subscribing = true;
+		outcome = 'idle';
 		try {
-			await new Promise((r) => setTimeout(r, 400));
+			await newsletterApi.subscribe({
+				email: address,
+				locale: i18n.locale,
+				source: 'footer',
+				consent_text: consentText
+			});
+			// One success state, whatever the address turns out to be. The API
+			// answers the same 202 for a new address, a pending one, an already
+			// confirmed one and one that unsubscribed — so that this form cannot
+			// be used to ask whether somebody is on the list.
+			outcome = 'sent';
 			email = '';
+		} catch (err) {
+			const status = err instanceof SkilluError ? err.status : 0;
+			outcome = status === 429 ? 'throttled' : status === 400 ? 'invalid' : 'failed';
 		} finally {
 			subscribing = false;
 		}
@@ -90,6 +136,32 @@
 							{i18n.locale === 'fr' ? 'Rejoindre' : 'Join'}
 						</button>
 					</form>
+
+					<!-- The wording the consent is for, shown where the address is
+					     typed rather than buried in a legal page, and sent with it. -->
+					<p class="mt-3 max-w-lg text-xs leading-relaxed text-text-muted">
+						{i18n.t('newsletter.consent')}
+					</p>
+
+					{#if outcome !== 'idle'}
+						<p
+							class="mt-2 max-w-lg text-sm {outcome === 'sent'
+								? 'text-success'
+								: 'text-error'}"
+							role="status"
+							data-testid="newsletter-outcome"
+						>
+							{#if outcome === 'sent'}
+								{i18n.t('newsletter.sent')}
+							{:else if outcome === 'invalid'}
+								{i18n.t('newsletter.invalid')}
+							{:else if outcome === 'throttled'}
+								{i18n.t('newsletter.throttled')}
+							{:else}
+								{i18n.t('newsletter.failed')}
+							{/if}
+						</p>
+					{/if}
 				</div>
 
 				<!-- Contact + Localisation — style éditorial, PAS de heading "Nous contacter" -->
