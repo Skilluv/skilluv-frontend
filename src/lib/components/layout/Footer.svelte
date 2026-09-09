@@ -56,22 +56,40 @@
 	 * because somebody who types their address then waits for a letter that is
 	 * never coming has no way to find out.
 	 */
-	let outcome = $state<'idle' | 'sent' | 'invalid' | 'throttled' | 'failed'>('idle');
+	let outcome = $state<'idle' | 'sent' | 'invalid' | 'throttled' | 'failed' | 'consent'>('idle');
 
 	/**
-	 * The sentence beside the field, sent with the address.
+	 * Ticked before the address goes anywhere.
+	 *
+	 * A paragraph under the field said the same thing and asked for nothing: the
+	 * consent was inferred from having pressed the button, which is the weakest
+	 * form of it and the one hardest to show afterwards. A box that starts empty
+	 * and has to be ticked is a deliberate act, and it is what gets recorded.
+	 */
+	let optedIn = $state(false);
+
+	/**
+	 * The label on that box, sent with the address.
 	 *
 	 * A consent is *for* a wording, and a boolean cannot say which one somebody
 	 * agreed to. The backend stores this text with the IP and the user agent, so
 	 * if it ever changes, what was agreed under the old one stays readable as
-	 * that. It is the one part of this the backend could not write for us.
+	 * that. It is the one part of this the backend could not write for us — and
+	 * it must stay the exact text the box carries on screen.
 	 */
-	const consentText = $derived(i18n.t('newsletter.consent'));
+	const consentText = $derived(i18n.t('newsletter.optIn'));
 
 	async function subscribe(e: SubmitEvent) {
 		e.preventDefault();
 		const address = email.trim();
 		if (!address || subscribing) return;
+
+		// Said rather than enforced by a dead button: a control that does nothing
+		// when pressed, with no word about why, is the bug this form already had.
+		if (!optedIn) {
+			outcome = 'consent';
+			return;
+		}
 
 		// The API's own shape, not a stricter one: anything tighter refuses
 		// addresses the backend accepts, and it is the confirmation mail that
@@ -96,6 +114,8 @@
 			// be used to ask whether somebody is on the list.
 			outcome = 'sent';
 			email = '';
+			// The next address is a new consent, not a continuation of this one.
+			optedIn = false;
 		} catch (err) {
 			const status = err instanceof SkilluError ? err.status : 0;
 			outcome = status === 429 ? 'throttled' : status === 400 ? 'invalid' : 'failed';
@@ -137,11 +157,16 @@
 						</button>
 					</form>
 
-					<!-- The wording the consent is for, shown where the address is
-					     typed rather than buried in a legal page, and sent with it. -->
-					<p class="mt-3 max-w-lg text-xs leading-relaxed text-text-muted">
-						{i18n.t('newsletter.consent')}
-					</p>
+					<!-- The wording the consent is for, on the control that gives it. -->
+					<label class="mt-3 flex max-w-lg items-start gap-2.5 text-xs leading-relaxed text-text-muted">
+						<input
+							type="checkbox"
+							bind:checked={optedIn}
+							data-testid="newsletter-optin"
+							class="mt-px h-4 w-4 shrink-0 rounded accent-accent"
+						/>
+						<span>{consentText}</span>
+					</label>
 
 					{#if outcome !== 'idle'}
 						<p
@@ -155,6 +180,8 @@
 								{i18n.t('newsletter.sent')}
 							{:else if outcome === 'invalid'}
 								{i18n.t('newsletter.invalid')}
+							{:else if outcome === 'consent'}
+								{i18n.t('newsletter.consentRequired')}
 							{:else if outcome === 'throttled'}
 								{i18n.t('newsletter.throttled')}
 							{:else}

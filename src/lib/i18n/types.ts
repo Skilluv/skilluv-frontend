@@ -260,12 +260,13 @@ export interface Translations
 	/**
 	 * The footer's newsletter form.
 	 *
-	 * `consent` is not decoration: it is sent to the API and stored with the
-	 * address, because a consent is for a wording and a boolean cannot say which
-	 * one was agreed to.
+	 * `optIn` is both the label on the opt-in box and the text sent to the API
+	 * and stored with the address: a consent is for a wording, and a boolean
+	 * cannot say which one was agreed to. The two must never drift apart.
 	 */
 	newsletter: {
-		consent: string;
+		optIn: string;
+		consentRequired: string;
 		sent: string;
 		invalid: string;
 		throttled: string;

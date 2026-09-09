@@ -226,7 +226,8 @@ export const en: Translations = {
 		}
 	},
 	newsletter: {
-		consent: 'By leaving your address you agree to receive the Skilluv letter. A confirmation link goes out by mail, and every issue carries a one-click way out.',
+		optIn: 'I agree to receive the Skilluv letter. One click out, in every issue.',
+		consentRequired: 'Tick the box before joining the letter.',
 		sent: 'If that address can receive mail, a confirmation link is on its way. Check your inbox.',
 		invalid: 'That does not look like an email address.',
 		throttled: 'Too many attempts for now. Try again in an hour.',

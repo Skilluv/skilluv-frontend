@@ -229,7 +229,8 @@ export const fr: Translations = {
 		}
 	},
 	newsletter: {
-		consent: 'En laissant ton adresse, tu acceptes de recevoir la lettre Skilluv. Un lien de confirmation part par mail, et chaque envoi porte un lien pour te désabonner en un clic.',
+		optIn: 'J’accepte de recevoir la lettre Skilluv. Désabonnement en un clic, dans chaque envoi.',
+		consentRequired: 'Coche la case avant de rejoindre la lettre.',
 		sent: 'Si cette adresse peut recevoir du courrier, un lien de confirmation est en route. Regarde ta boîte.',
 		invalid: 'Cette adresse ne ressemble pas à une adresse email.',
 		throttled: 'Trop de tentatives pour le moment. Réessaie dans une heure.',
