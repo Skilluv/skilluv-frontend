@@ -14,6 +14,7 @@
 	let blocked = $derived(
 		auth.isAuthenticated &&
 			auth.user?.role === 'user' &&
+			auth.orientationsLoaded &&
 			activeOrientations(auth.user?.orientations).length === 0
 	);
 </script>

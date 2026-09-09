@@ -114,6 +114,18 @@ export type ThemeMode = 'dark' | 'light';
 export type Theme = ThemeBase | `${ThemeBase}-light`;
 
 /** Capabilities P18.4 — sources de permissions user (mentor, curator, etc.). */
+/**
+ * What somebody is allowed to do, as the backend names it.
+ *
+ * A closed union on purpose: it catches a typo in `auth.can('admn')`, which an
+ * open string would not. The cost is that it is a mirror — a capability the
+ * server grants and this list has never heard of is simply invisible, and the
+ * gate for it stays shut for the people entitled to it.
+ *
+ * There is no catalogue endpoint to check it against; `/capabilities` and
+ * `/capability-rules` both 404. So this is maintained by hand and drifts by
+ * default. `domain_curator` was already missing when this note was written.
+ */
 export type Capability =
 	| 'challenger'
 	| 'mentor'
@@ -128,7 +140,14 @@ export type Capability =
 	| 'forum_moderator'
 	| 'plagiarism_reviewer'
 	| 'kyc_reviewer'
-	| 'community_curator';
+	| 'community_curator'
+	/**
+	 * Settles a domain rite. Named by the backend as one of the three that can
+	 * return a verdict, alongside `admin` and `mentor`, and absent here — so
+	 * `auth.can('domain_curator')` did not compile and the gate could not be
+	 * written at all.
+	 */
+	| 'domain_curator';
 
 /** Type d'entreprise P24 — drive les sections conditionnelles dashboard/register. */
 export type EnterpriseType = 'direct_hire' | 'staffing_agency' | 'remote_international';
@@ -468,24 +487,6 @@ export interface Team {
 	max_members: number | null;
 	members: { user_id: string; username: string; display_name: string }[];
 	member_count: number;
-}
-
-export interface SandboxExecution {
-	execution: {
-		stdout: string | null;
-		stderr: string | null;
-		compile_output: string | null;
-		time: string | null;
-		memory: number | null;
-		status: { id: number; description: string };
-	};
-	verdict: string;
-	success: boolean;
-}
-
-export interface SandboxLanguage {
-	id: number;
-	name: string;
 }
 
 // --- P16 : Orientations métier ---

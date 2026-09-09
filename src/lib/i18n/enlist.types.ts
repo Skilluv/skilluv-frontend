@@ -112,24 +112,34 @@ export interface EnlistTranslations {
 			terms: string;
 			noDomain: string;
 		};
-		/** The first act, one per domain. `label` names it, `lead` says what it asks. */
+		/**
+		 * The first act.
+		 *
+		 * The per-domain descriptions that used to live here are gone: the
+		 * endpoint serves the title, description and instructions per domain and
+		 * in the reader's language, and the frozen pair had already drifted from
+		 * it. What remains is the frame around them.
+		 */
 		rite: {
 			title: string;
 			subtitle: string;
 			start: string;
 			pending: string;
-			fork: { label: string; lead: string };
-			upload: { label: string; lead: string };
-			playtest: { label: string; lead: string };
-			disclosure: { label: string; lead: string };
-			proposal: { label: string; lead: string };
-			defect: { label: string; lead: string };
-			workspace: { label: string; lead: string };
-			render: { label: string; lead: string };
-			translation: { label: string; lead: string };
-			explainer: { label: string; lead: string };
-			retro: { label: string; lead: string };
-			/** Shown when the backend has no first act for this domain yet. */
+			status: {
+				forked: string;
+				hello_committed: string;
+				pr_opened: string;
+				completed: string;
+				abandoned: string;
+			};
+			openFork: string;
+			/** `{n}` — the pull request number. */
+			openPr: string;
+			reviewNote: string;
+			needsTrade: string;
+			needsTradeCta: string;
+			needsGithub: string;
+			needsGithubCta: string;
 			notReadyTitle: string;
 			notReadyBody: string;
 			notReadyCta: string;

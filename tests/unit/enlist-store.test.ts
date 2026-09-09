@@ -14,16 +14,9 @@ describe('the domain catalogue', () => {
 		expect(DOMAIN_PLATES.some((c) => c.domain === 'soft_skills')).toBe(false);
 	});
 
-	it('gives every domain an entry rite', () => {
-		for (const plate of DOMAIN_PLATES) {
-			expect(plate.rite).toBeTruthy();
-		}
-	});
-
 	it('falls back rather than throwing on a domain this build has never heard of', () => {
 		const plate = domainPlate('quantum-basket-weaving');
 		expect(plate.surface).toBe('meta');
-		expect(plate.rite).toBeTruthy();
 	});
 
 	it('answers -1 for an unknown domain index and null domains', () => {

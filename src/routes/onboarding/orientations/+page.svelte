@@ -79,7 +79,7 @@
 	<title>{i18n.t('orientations.catalog.title')} | Skilluv</title>
 </svelte:head>
 
-<div class="mx-auto max-w-6xl px-4 py-10">
+<div class="mx-auto max-w-6xl px-4 pb-16 pt-[6vh]">
 	<header class="mb-8">
 		<p class="text-xs font-mono uppercase tracking-widest text-text-muted">
 			{i18n.locale === 'fr' ? 'Ton parcours' : 'Your path'}

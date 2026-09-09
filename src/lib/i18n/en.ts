@@ -342,6 +342,7 @@ export const en: Translations = {
 			title: 'First challenge',
 			onboardingLabel: 'Onboarding challenge',
 			startBtn: 'Start the challenge',
+			startRebuilding: 'Starting the rite is being wired to the backend. The instructions above are already the right ones.',
 			starting: 'Starting...',
 			hint: '~10 minutes · Your profile will be created at the end',
 			minutesLabel: '{n} minutes',
@@ -357,27 +358,12 @@ export const en: Translations = {
 			difficulty: 'Difficulty',
 			mode: 'Mode',
 			startBtn: 'Start',
+			handInRebuilding: 'Handing work in is being rebuilt: this challenge can be read, not yet submitted.',
 			starting: 'Starting...',
 			noAi: 'AI not allowed'
 		},
 		sandbox: {
-			instructions: 'Instructions',
-			output: 'Output',
-			testBtn: 'Test',
-			submitBtn: 'Submit',
-			executing: 'Running...',
-			testHint: 'Click "Test" to run your code.',
-			saved: 'Saved {time}',
-			back: '← Back',
-			resultSuccess: 'Challenge completed!',
-			resultWelcome: 'Welcome, Apprentice ☆',
-			resultNotYet: 'Not yet.',
-			resultFragments: '+{n} fragments',
-			resultPerseverance: '+{n} perseverance',
-			retryBtn: 'Retry',
-			viewChallenges: 'View challenges',
-			myProfile: 'My profile',
-			loadingSandbox: 'Loading sandbox...'
+			instructions: 'Instructions'
 		}
 	},
 	profile: {
@@ -600,8 +586,8 @@ export const en: Translations = {
 			digestWeeklyDesc: 'Your week of activity, once a week.',
 			streakReminder: 'Streak reminder',
 			streakReminderDesc: 'A nudge when your streak is about to break.',
-			marketing: 'Product announcements',
-			marketingDesc: 'News and announcements. Off by default.',
+			marketing: 'Nudges',
+			marketingDesc: 'The emails that come back to you when you drift off: your bench is empty, it has been two weeks, join a guild. Off by default.',
 			transactional:
 				'Essential emails (verification, password, security, payment receipts) are always sent.',
 			saved: 'Preferences saved',
@@ -2092,8 +2078,8 @@ export const en: Translations = {
 		consents: {
 			title: 'Consents',
 			subtitle: 'Changeable anytime. Essentials (auth, security, billing) do not depend on these choices.',
-			marketingLabel: 'Marketing communications',
-			marketingHint: 'Emails about launches, updates, offers. Zero third-party commercial spam.',
+			marketingLabel: 'Marketing trackers',
+			marketingHint: 'Advertising measurement and retargeting. It does not decide which emails you get: that lives in Email preferences.',
 			analyticsLabel: 'Product analytics',
 			analyticsHint: 'Anonymous stats to understand how you use Skilluv and improve it.',
 			saved: 'Consents saved.'

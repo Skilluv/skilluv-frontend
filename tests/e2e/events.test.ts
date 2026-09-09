@@ -138,7 +138,7 @@ test.describe('Events pages', () => {
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
-						body: JSON.stringify({ data: [] })
+						body: JSON.stringify({ data: { capabilities: [] } })
 					})
 			},
 			{
@@ -147,7 +147,7 @@ test.describe('Events pages', () => {
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
-						body: JSON.stringify({ data: [] })
+						body: JSON.stringify({ data: { orientations: [] } })
 					})
 			},
 			{

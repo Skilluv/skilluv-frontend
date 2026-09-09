@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { env as publicEnv } from '$env/dynamic/public';
-	import { auth } from '$lib/stores/auth.svelte';
+	import { auth, hadSession } from '$lib/stores/auth.svelte';
 	import { theme } from '$lib/stores/theme.svelte';
 	import { tenant } from '$lib/stores/tenant.svelte';
 	import { notifications } from '$lib/stores/notifications.svelte';
@@ -25,11 +25,31 @@
 
 	let { data, children } = $props();
 
-	// Pages qui n'affichent ni Navbar ni Footer (flux d'inscription/auth focalisés).
+	/**
+	 * Pages with no chrome at all: no navbar, no notification bell, no user
+	 * pill, no footer.
+	 *
+	 * The enlistment already qualified because it lives under `/auth`. What did
+	 * not, and should have, is everything after the account exists and before
+	 * the person is actually onboarded — completing the profile, picking the
+	 * trades, the first act. Those screens are not optional, and a navbar on a
+	 * mandatory step offers a way out of it: somebody halfway through picking
+	 * trades could wander into the leaderboards and never come back, with an
+	 * account that carries neither a discipline nor a consent.
+	 *
+	 * `/challenges/onboarding` is matched on the whole segment rather than as a
+	 * prefix of `/challenges`, which is a public catalogue and keeps its chrome.
+	 */
+	const ONBOARDING_PATHS = ['/onboarding', '/challenges/onboarding'];
+
 	let isBareLayout = $derived(
 		$page.url.pathname.startsWith('/auth') ||
 			$page.url.pathname.startsWith('/enterprise/register') ||
-			$page.url.pathname.startsWith('/enterprise/invite/accept')
+			$page.url.pathname.startsWith('/enterprise/invite/accept') ||
+			ONBOARDING_PATHS.some(
+				(path) =>
+					$page.url.pathname === path || $page.url.pathname.startsWith(`${path}/`)
+			)
 	);
 
 	// Espace de travail dédié (entreprise) : le shell candidat
@@ -145,6 +165,27 @@
 		void observability.init(false);
 	});
 
+	/**
+	 * A reload after fifteen idle minutes is an expiry, not a sign-out.
+	 *
+	 * The SSR probe asks `/auth/me` with whatever access token the browser sent
+	 * and reports `unauthenticated` on a 401. It cannot do better: the refresh
+	 * cookie carries `Path=/api/auth`, so a page request for `/challenges`
+	 * never carries it. The recovery therefore happens here, where the browser
+	 * does send it.
+	 *
+	 * Guarded twice so an anonymous visitor costs nothing: only when the probe
+	 * came back `unauthenticated`, and only when this browser has had a session
+	 * at some point. Once per page load either way.
+	 */
+	let recoveryTried = false;
+	$effect(() => {
+		if (data.authProbe !== 'unauthenticated' || auth.user || recoveryTried) return;
+		if (!hadSession()) return;
+		recoveryTried = true;
+		void auth.recoverSession();
+	});
+
 	// WebSocket + notifications polling quand connecte
 	$effect(() => {
 		if (auth.isAuthenticated) {
@@ -193,9 +234,10 @@
 	{#if showCandidateChrome}
 		<Navbar />
 		<EmailVerificationBanner />
-		{#if !$page.url.pathname.startsWith('/onboarding/orientations')}
-			<OrientationPromptBanner />
-		{/if}
+		<!-- No exception for `/onboarding/orientations` any more: onboarding has
+		     no chrome at all, so the banner cannot reach the one screen it used
+		     to have to be excluded from. -->
+		<OrientationPromptBanner />
 	{/if}
 
 	<main class="flex-1" data-route={routeSection}>

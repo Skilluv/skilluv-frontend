@@ -403,6 +403,89 @@
 		</p>
 	</header>
 
+	{#if enlist.picks.length > 0}
+		<!-- The tray only exists once there is something in it, and it sticks to
+		     the top of the window so the selection and the way forward never scroll
+		     away in a catalogue of seventy-three cards.
+
+		     It held the bottom of the window first, which was the obvious place for
+		     a continue action and the wrong one for this. On a laptop the ring fills
+		     the screen, the eye is on the cards, and a bar pinned to the very bottom
+		     edge over a gradient that fades it into the page is something people
+		     reported not knowing was there at all. Under the heading it is on the
+		     way in, and it stays in sight while the ring is turned. -->
+		<aside class="tray" aria-label={i18n.t('enlist.path.chosen')}>
+			<div class="tray__inner">
+				<div class="tray__row">
+					<ul class="tray__list">
+						{#each enlist.picks as pick, i (pick.slug)}
+							<li class="tray__item">
+								<button
+									type="button"
+									class="tray__primary"
+									data-on={enlist.primary === i}
+									aria-pressed={enlist.primary === i}
+									title={i18n.t('enlist.path.primaryHint')}
+									onclick={() => enlist.setPrimary(i)}
+								>
+									{enlist.primary === i ? i18n.t('enlist.path.primary') : String(i + 1)}
+								</button>
+
+								<span class="tray__name">{pick.name}</span>
+
+								<!-- Two buttons, one answer, so they are a named group and each
+								     one reports whether it is the one that holds. Without
+								     `aria-pressed` a screen reader meets two buttons saying
+								     "learning" and "practising" and no way to hear which is on. -->
+								<span
+									class="tray__modes"
+									role="group"
+									aria-label={i18n.t('enlist.path.modeLabel', { name: pick.name })}
+								>
+									<button
+										type="button"
+										data-on={pick.mode === 'learning'}
+										aria-pressed={pick.mode === 'learning'}
+										onclick={() => enlist.setMode(pick.slug, 'learning')}
+									>
+										{i18n.t('orientations.modeChoice.learning')}
+									</button>
+									<button
+										type="button"
+										data-on={pick.mode === 'active'}
+										aria-pressed={pick.mode === 'active'}
+										onclick={() => enlist.setMode(pick.slug, 'active')}
+									>
+										{i18n.t('orientations.modeChoice.active')}
+									</button>
+								</span>
+
+								<button
+									type="button"
+									class="tray__remove"
+									aria-label={i18n.t('enlist.path.remove', { name: pick.name })}
+									onclick={() => enlist.togglePath(pick.slug, pick.name)}
+								>
+									<X size={15} strokeWidth={2} />
+								</button>
+							</li>
+						{/each}
+					</ul>
+
+					<a class="tray__cta" href={continueHref} data-testid="enlist-continue">
+						{i18n.t('enlist.path.continue')}
+					</a>
+				</div>
+
+				<!-- Under the row, on the panel itself. Above it would put the
+				     sentence on the transparent top of the tray, with cards
+				     scrolling behind it. -->
+				<p class="tray__note">{i18n.t('enlist.path.modeNote')}</p>
+			</div>
+		</aside>
+	{/if}
+
+
 	{#if loading}
 		<div class="paths__skeleton" aria-hidden="true">
 			<Skeleton class="h-96 w-64" rounded="xl" />
@@ -544,88 +627,14 @@
 	{/if}
 </section>
 
-{#if enlist.picks.length > 0}
-	<!-- The tray only exists once there is something in it, and it holds the
-	     bottom of the window so the continue action never scrolls away in a
-	     catalogue of seventy-three cards. -->
-	<aside class="tray" aria-label={i18n.t('enlist.path.chosen')}>
-		<div class="tray__inner">
-			<div class="tray__row">
-				<ul class="tray__list">
-					{#each enlist.picks as pick, i (pick.slug)}
-						<li class="tray__item">
-							<button
-								type="button"
-								class="tray__primary"
-								data-on={enlist.primary === i}
-								aria-pressed={enlist.primary === i}
-								title={i18n.t('enlist.path.primaryHint')}
-								onclick={() => enlist.setPrimary(i)}
-							>
-								{enlist.primary === i ? i18n.t('enlist.path.primary') : String(i + 1)}
-							</button>
-
-							<span class="tray__name">{pick.name}</span>
-
-							<!-- Two buttons, one answer, so they are a named group and each
-							     one reports whether it is the one that holds. Without
-							     `aria-pressed` a screen reader meets two buttons saying
-							     "learning" and "practising" and no way to hear which is on. -->
-							<span
-								class="tray__modes"
-								role="group"
-								aria-label={i18n.t('enlist.path.modeLabel', { name: pick.name })}
-							>
-								<button
-									type="button"
-									data-on={pick.mode === 'learning'}
-									aria-pressed={pick.mode === 'learning'}
-									onclick={() => enlist.setMode(pick.slug, 'learning')}
-								>
-									{i18n.t('orientations.modeChoice.learning')}
-								</button>
-								<button
-									type="button"
-									data-on={pick.mode === 'active'}
-									aria-pressed={pick.mode === 'active'}
-									onclick={() => enlist.setMode(pick.slug, 'active')}
-								>
-									{i18n.t('orientations.modeChoice.active')}
-								</button>
-							</span>
-
-							<button
-								type="button"
-								class="tray__remove"
-								aria-label={i18n.t('enlist.path.remove', { name: pick.name })}
-								onclick={() => enlist.togglePath(pick.slug, pick.name)}
-							>
-								<X size={15} strokeWidth={2} />
-							</button>
-						</li>
-					{/each}
-				</ul>
-
-				<a class="tray__cta" href={continueHref} data-testid="enlist-continue">
-					{i18n.t('enlist.path.continue')}
-				</a>
-			</div>
-
-			<!-- Under the row, on the panel itself. Above it would put the
-			     sentence on the transparent top of the tray, with cards
-			     scrolling behind it. -->
-			<p class="tray__note">{i18n.t('enlist.path.modeNote')}</p>
-		</div>
-	</aside>
-{/if}
-
 <style>
 	.paths {
 		flex: 1;
 		width: 100%;
 		max-width: 78rem;
 		margin: 0 auto;
-		padding: 1rem clamp(1rem, 5vw, 3rem) 12rem;
+		/* 12rem of it used to be clearance for a tray pinned to the bottom. */
+		padding: 1rem clamp(1rem, 5vw, 3rem) 4rem;
 	}
 
 	.paths__head {
@@ -919,10 +928,13 @@
 
 	.tray {
 		position: sticky;
-		bottom: 0;
+		top: 0;
 		z-index: 3;
-		padding: 0 clamp(1rem, 5vw, 3rem) 1rem;
-		background: linear-gradient(to top, var(--sk-surface) 55%, transparent);
+		/* Inside `.paths`, which already carries the horizontal padding. The
+		   gradient runs the other way now: solid where the bar is, fading into
+		   the content it sits above. */
+		padding: 0.75rem 0 1rem;
+		background: linear-gradient(to bottom, var(--sk-surface) 62%, transparent);
 	}
 
 	.tray__inner {

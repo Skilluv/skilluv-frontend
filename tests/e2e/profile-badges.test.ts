@@ -102,7 +102,8 @@ const badgesPayload = {
 };
 
 const orientationsPayload = {
-	data: [
+	data: {
+		orientations: [
 		{
 			orientation_slug: 'dev-frontend',
 			orientation_name: 'Dev frontend',
@@ -112,17 +113,21 @@ const orientationsPayload = {
 			working_languages: ['fr', 'en'],
 			timezone: 'Africa/Porto-Novo'
 		}
-	]
+		]
+	}
 };
 
 const capabilitiesPayload = {
-	data: [
+	data: {
+		user_id: 'u-1',
+		capabilities: [
 		{
 			capability: 'mentor',
 			granted_at: '2026-01-01',
 			granted_reason: 'auto-promotion'
 		}
-	]
+		]
+	}
 };
 
 test.describe('Profile page — badges wall', () => {

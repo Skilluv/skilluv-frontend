@@ -4,6 +4,63 @@ import { capabilitiesApi, hasCapability } from '$lib/api/capabilities';
 import { orientationsApi } from '$lib/api/orientations';
 import { bookmarks } from './bookmarks.svelte';
 
+/**
+ * Whether this browser has had a session, as far as JavaScript can tell.
+ *
+ * ## Why a marker exists at all
+ *
+ * The access token lasts fifteen minutes; the refresh token lasts seven days.
+ * Client-side navigation rides that out — the API client refreshes on a 401 and
+ * replays the call — but a full page load does not. The SSR probe calls
+ * `/auth/me` with an expired access token, gets a 401, and reports
+ * `unauthenticated`, which the layout renders as signed out. Twenty minutes and
+ * an F5 was enough to be thrown out with six days of session left.
+ *
+ * The server cannot recover it either, and that is deliberate rather than an
+ * oversight: `refresh_token` carries `Path=/api/auth`, so the browser does not
+ * attach it to a page request for `/challenges`. Narrowing that path is the
+ * right call; it just means the recovery has to happen where the cookie is
+ * sent, which is the browser asking `/api/auth/refresh`.
+ *
+ * ## Why it is not simply "always try"
+ *
+ * Attempting a refresh on every unauthenticated page load would post to the API
+ * for every anonymous visitor on every page — a request that is guaranteed to
+ * fail, on a product whose connectivity target is intermittent. The marker says
+ * "somebody signed in on this browser once", which is the only question worth
+ * asking before spending a round trip.
+ *
+ * It holds no identity and no token: one key, one character. Losing it costs a
+ * sign-in, never a session.
+ */
+const SESSION_MARKER = 'skilluv-had-session';
+
+function rememberSession() {
+	try {
+		localStorage.setItem(SESSION_MARKER, '1');
+	} catch {
+		// Private window, blocked storage. The cost is being asked to sign in
+		// again after fifteen idle minutes, which is where we started.
+	}
+}
+
+function forgetSession() {
+	try {
+		localStorage.removeItem(SESSION_MARKER);
+	} catch {
+		/* same */
+	}
+}
+
+export function hadSession(): boolean {
+	if (typeof localStorage === 'undefined') return false;
+	try {
+		return localStorage.getItem(SESSION_MARKER) === '1';
+	} catch {
+		return false;
+	}
+}
+
 class AuthState {
 	user = $state<UserPrivate | null>(null);
 	/**
@@ -31,6 +88,19 @@ class AuthState {
 	 * refusal.
 	 */
 	capabilitiesLoaded = $state(false);
+	/**
+	 * Whether the trades have been asked for yet.
+	 *
+	 * `user.orientations` is `undefined` until the fetch lands, and "not asked
+	 * yet" was being read as "has none": on every reload the prompt banner
+	 * appeared for a moment and then vanished as the answer arrived. Telling
+	 * somebody to choose the trades they have already chosen, once per page
+	 * load, for as long as the request takes.
+	 *
+	 * Anything that acts on the absence of trades has to wait for this rather
+	 * than assume zero.
+	 */
+	orientationsLoaded = $state(false);
 	loading = $state(true);
 	/** Identity whose capabilities + orientations were already loaded. */
 	private extrasLoadedFor: string | null = null;
@@ -71,6 +141,7 @@ class AuthState {
 
 	setUser(user: UserPrivate | null, loginMethod: LoginMethod | null = null) {
 		this.user = user;
+		if (user) rememberSession();
 		if (loginMethod !== null) this.loginMethod = loginMethod;
 		this.loading = false;
 	}
@@ -120,6 +191,7 @@ class AuthState {
 			// "known" or capability-gated pages hang on their loading skeleton.
 			this.capabilities = [];
 			this.capabilitiesLoaded = true;
+			this.orientationsLoaded = true;
 			return;
 		}
 		if (this.extrasLoadedFor === id) return;
@@ -137,7 +209,11 @@ class AuthState {
 		}
 		try {
 			const res = await capabilitiesApi.myCapabilities();
-			this.capabilities = Array.isArray(res.data) ? res.data : [];
+			// `res.data` is `{ user_id, capabilities }`. It used to be read as
+			// the array itself, behind an `Array.isArray` guard that turned the
+			// wrong shape into a plausible empty list rather than an error — so
+			// every gate was shut for everybody, admins included.
+			this.capabilities = res.data?.capabilities ?? [];
 		} catch {
 			this.capabilities = [];
 		} finally {
@@ -160,7 +236,51 @@ class AuthState {
 		} catch {
 			// Endpoint may not exist yet — treat as empty rather than crashing.
 			this.user = { ...this.user, orientations: [] };
+		} finally {
+			// Answered either way. A failure is a known empty list, not an
+			// unknown one: the banner is right to appear when we asked and got
+			// nothing back.
+			this.orientationsLoaded = true;
 		}
+	}
+
+	/**
+	 * One attempt to bring a session back after a reload found it expired.
+	 *
+	 * The access token lasts fifteen minutes and the refresh token seven days,
+	 * so the usual state after twenty idle minutes is not "signed out" but
+	 * "needs a new access token". The SSR probe cannot tell the two apart — it
+	 * asks `/auth/me`, gets a 401, and reports the only thing it knows.
+	 *
+	 * `POST /auth/refresh` needs nothing but the refresh cookie: no access
+	 * token, no CSRF header. It rotates both cookies and answers 200, and the
+	 * browser sends that cookie because the path matches. So one call decides
+	 * whether this was an expiry or a real sign-out.
+	 *
+	 * Returns whether the session came back. On failure the marker is dropped,
+	 * so the next load costs nothing.
+	 */
+	async recoverSession(): Promise<boolean> {
+		if (typeof window === 'undefined' || this.user || !hadSession()) return false;
+		try {
+			const res = await api.post<unknown>('/auth/refresh');
+			void res;
+		} catch {
+			// Refresh token gone, expired or revoked. That is a real sign-out.
+			forgetSession();
+			return false;
+		}
+		try {
+			await this.init();
+		} catch {
+			forgetSession();
+			return false;
+		}
+		if (!this.user) {
+			forgetSession();
+			return false;
+		}
+		return true;
 	}
 
 	async logout() {
@@ -179,9 +299,14 @@ class AuthState {
 
 	clear() {
 		this.user = null;
+		forgetSession();
 		this.loginMethod = null;
 		this.hasPasskey = false;
 		this.capabilities = [];
+		// Nothing to load for nobody, so the answer is known rather than
+		// pending: leaving it false would hold every "has no trades" surface in
+		// limbo for a signed-out visitor.
+		this.orientationsLoaded = true;
 		this.loading = false;
 		bookmarks.reset();
 	}

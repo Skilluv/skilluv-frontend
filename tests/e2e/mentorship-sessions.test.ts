@@ -46,8 +46,8 @@ function session(overrides: Record<string, unknown> = {}) {
 }
 
 const common: ApiRoute[] = [
-	{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-	{ path: '/users/me/orientations', handler: json({ data: [] }) }
+	{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+	{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 ];
 
 test.beforeEach(async ({ page, context }) => {

@@ -119,14 +119,21 @@ test.describe('Curator community queue', () => {
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
+						// The envelope the endpoint answers. Mocked as the bare
+						// array, this agreed with the client rather than with the
+						// server: both were wrong together, so the gate opened in
+						// the test and stayed shut in production.
 						body: JSON.stringify({
-							data: [
-								{
-									capability: 'community_curator',
-									granted_at: '2026-01-01',
-									granted_reason: 'nomination'
-								}
-							]
+							data: {
+								user_id: 'u-curator',
+								capabilities: [
+									{
+										capability: 'community_curator',
+										granted_at: '2026-01-01',
+										granted_reason: 'nomination'
+									}
+								]
+							}
 						})
 					})
 			},
@@ -136,7 +143,7 @@ test.describe('Curator community queue', () => {
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
-						body: JSON.stringify({ data: [] })
+						body: JSON.stringify({ data: { orientations: [] } })
 					})
 			},
 			{

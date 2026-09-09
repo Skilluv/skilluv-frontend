@@ -42,7 +42,8 @@
 		forum_moderator: MessageSquare,
 		plagiarism_reviewer: FileSearch,
 		kyc_reviewer: IdCard,
-		community_curator: BookOpenCheck
+		community_curator: BookOpenCheck,
+		domain_curator: Compass
 	};
 
 	const variantMap: Record<Capability, 'default' | 'primary' | 'accent' | 'success' | 'warning' | 'error'> = {
@@ -59,7 +60,8 @@
 		forum_moderator: 'warning',
 		plagiarism_reviewer: 'warning',
 		kyc_reviewer: 'warning',
-		community_curator: 'accent'
+		community_curator: 'accent',
+		domain_curator: 'primary'
 	};
 
 	let Icon = $derived(iconMap[capability]);

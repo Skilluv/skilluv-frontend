@@ -129,7 +129,7 @@
 	<title>{i18n.locale === 'fr' ? 'Finalisation du profil' : 'Finish your profile'} | Skilluv</title>
 </svelte:head>
 
-<div class="mx-auto max-w-lg px-4 py-10">
+<div class="mx-auto max-w-lg px-4 pb-16 pt-[10vh]">
 	{#if step === 1}
 		<div class="mb-2 text-xs font-mono uppercase tracking-widest text-text-muted">
 			{i18n.locale === 'fr' ? 'Étape 1 sur 2 · Ta première clé' : 'Step 1 of 2 · Your first key'}

@@ -102,8 +102,8 @@ function routes(extra: ApiRoute[] = []): ApiRoute[] {
 		...extra,
 		{ path: '/tournaments/skilluv-cup/leaderboard', handler: json(leaderboard) },
 		{ path: '/tournaments/skilluv-cup', handler: json({ data: { tournament: tournament() } }) },
-		{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-		{ path: '/users/me/orientations', handler: json({ data: [] }) }
+		{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+		{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 	];
 }
 
@@ -167,8 +167,8 @@ test.describe('S7.5 tournament detail', () => {
 		await mockApi(page, [
 			{ path: '/tournaments/skilluv-cup/leaderboard', handler: json(leaderboardWithMe) },
 			{ path: '/tournaments/skilluv-cup', handler: json({ data: { tournament: tournament() } }) },
-			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) }
+			{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 		]);
 		await gotoHydrated(page, '/tournaments/skilluv-cup');
 
@@ -191,8 +191,8 @@ test.describe('S7.5 tournament detail', () => {
 					}
 				})
 			},
-			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) }
+			{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 		]);
 		await gotoHydrated(page, '/tournaments/skilluv-cup');
 

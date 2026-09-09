@@ -89,19 +89,25 @@ describe('AuthState capabilities', () => {
 					has_passkey: false
 				})
 			)
+			// The envelope the endpoint answers. Mocked as a bare array, this test
+			// agreed with the client rather than with the server and stayed green
+			// while `auth.capabilities` was empty for everybody in production.
 			.mockResolvedValueOnce(
-				ok([
-					{
-						capability: 'mentor',
-						granted_at: '2026-01-01',
-						granted_reason: 'auto-promotion'
-					},
-					{
-						capability: 'forum_moderator',
-						granted_at: '2026-02-01',
-						granted_reason: 'nomination'
-					}
-				])
+				ok({
+					user_id: 'u1',
+					capabilities: [
+						{
+							capability: 'mentor',
+							granted_at: '2026-01-01',
+							granted_reason: 'auto-promotion'
+						},
+						{
+							capability: 'forum_moderator',
+							granted_at: '2026-02-01',
+							granted_reason: 'nomination'
+						}
+					]
+				})
 			);
 
 		const { auth } = await import('../../src/lib/stores/auth.svelte');

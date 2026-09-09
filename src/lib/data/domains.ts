@@ -20,39 +20,6 @@ import { PUBLIC_DOMAINS } from '$lib/utils/domains';
  * rather than a stale count. See SKI-364.
  */
 
-/**
- * The shape of a domain's first act.
- *
- * Front-side contract, and knowingly so: the backend models the entry rite as
- * a GitHub fork and nothing else (`onboarding_bonjour_skilluv`), which is why
- * ten of the eleven domains have no first act to reach today. SKI-362 gives
- * the endpoint a shape per domain; until it lands, this enum is what the
- * screens read, and swapping the source afterwards touches this file alone.
- */
-export type RiteKind =
-	/** Fork the starter, edit HELLO.md, open the pull request. */
-	| 'fork'
-	/** Hand in a screen against a short brief. */
-	| 'upload'
-	/** Play a slice and return a playtest verdict. */
-	| 'playtest'
-	/** Read the public scope, report one finding. */
-	| 'disclosure'
-	/** Read a service objective, propose one improvement. */
-	| 'proposal'
-	/** File one defect report. */
-	| 'defect'
-	/** Run one step of a mission workspace. */
-	| 'workspace'
-	/** Twenty seconds of signature sound, sources declared. */
-	| 'render'
-	/** Translate one paragraph of a guide. */
-	| 'translation'
-	/** Explain one skill node in three beats. */
-	| 'explainer'
-	/** Write a retrospective on a public incident. */
-	| 'retro';
-
 export interface DomainPlate {
 	domain: SkillDomain;
 	/**
@@ -76,7 +43,6 @@ export interface DomainPlate {
 	 * left third kept quiet for the name to sit on.
 	 */
 	art: string;
-	rite: RiteKind;
 }
 
 /**
@@ -85,22 +51,17 @@ export interface DomainPlate {
  * same sequence here.
  */
 export const DOMAIN_PLATES: readonly DomainPlate[] = [
-	{ domain: 'code', surface: 'craft', art: '', rite: 'fork' },
-	{ domain: 'design', surface: 'create', art: '', rite: 'upload' },
-	{ domain: 'security', surface: 'understand', art: '', rite: 'disclosure' },
-	{ domain: 'game', surface: 'create', art: '', rite: 'playtest' },
-	{ domain: 'ai', surface: 'understand', art: '', rite: 'workspace' },
-	{ domain: 'ops', surface: 'operate', art: '', rite: 'proposal' },
-	{ domain: 'quality', surface: 'operate', art: '', rite: 'defect' },
-	{ domain: 'leadership', surface: 'meta', art: '', rite: 'retro' },
-	{ domain: 'audio', surface: 'create', art: '', rite: 'render' },
-	{
-		domain: 'communication',
-		surface: 'share',
-		art: '',
-		rite: 'translation'
-	},
-	{ domain: 'education', surface: 'share', art: '', rite: 'explainer' }
+	{ domain: 'code', surface: 'craft', art: '' },
+	{ domain: 'design', surface: 'create', art: '' },
+	{ domain: 'security', surface: 'understand', art: '' },
+	{ domain: 'game', surface: 'create', art: '' },
+	{ domain: 'ai', surface: 'understand', art: '' },
+	{ domain: 'ops', surface: 'operate', art: '' },
+	{ domain: 'quality', surface: 'operate', art: '' },
+	{ domain: 'leadership', surface: 'meta', art: '' },
+	{ domain: 'audio', surface: 'create', art: '' },
+	{ domain: 'communication', surface: 'share', art: '' },
+	{ domain: 'education', surface: 'share', art: '' }
 ] as const;
 
 /**
@@ -108,16 +69,15 @@ export const DOMAIN_PLATES: readonly DomainPlate[] = [
  *
  * The catalogue of disciplines grows on the backend first. A domain it serves
  * and this build has never heard of must still be pickable — staged plainly on
- * the neutral surface, asking for the one first act every domain can perform —
- * rather than crash the enlistment or, worse, be silently missing from it.
+ * the neutral surface — rather than crash the enlistment or, worse, be
+ * silently missing from it.
  */
 export function domainPlate(domain: SkillDomain | string): DomainPlate {
 	return (
 		DOMAIN_PLATES.find((c) => c.domain === domain) ?? {
 			domain: domain as SkillDomain,
 			surface: 'meta',
-			art: '',
-			rite: 'upload'
+			art: ''
 		}
 	);
 }

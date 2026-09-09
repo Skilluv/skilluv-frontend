@@ -117,7 +117,7 @@ test.describe('Onboarding orientations flow', () => {
 					route.fulfill({
 						status: 200,
 						contentType: 'application/json',
-						body: JSON.stringify({ data: [] })
+						body: JSON.stringify({ data: { capabilities: [] } })
 					})
 			},
 			{

@@ -223,6 +223,31 @@ test.describe('Enlistment — trades', () => {
 		await page.waitForURL('**/auth/register/domain', { timeout: 10_000 });
 	});
 
+	test('the selection is above the ring, not pinned to the bottom edge', async ({ page }) => {
+		await mockCatalogue(page, four);
+		// A laptop, which is where this was reported: the ring fills the screen
+		// and a bar at the very bottom edge went unnoticed.
+		await page.setViewportSize({ width: 1440, height: 800 });
+		await gotoHydrated(page, '/auth/register/path?d=code');
+		await takeTrade(page, 'dev-frontend', four.length);
+
+		const box = await page.evaluate(() => {
+			const tray = document.querySelector('[data-testid="enlist-continue"]')?.closest('aside');
+			const ring = document.querySelector('.paths__ringWrap');
+			if (!tray || !ring) return null;
+			const t = tray.getBoundingClientRect();
+			const r = ring.getBoundingClientRect();
+			return { trayTop: Math.round(t.top), ringTop: Math.round(r.top), viewport: window.innerHeight };
+		});
+
+		expect(box, 'tray or ring not found').not.toBeNull();
+		// Above the cards rather than under them.
+		expect(box!.trayTop).toBeLessThan(box!.ringTop);
+		// And on screen the moment a trade is taken, without scrolling for it.
+		expect(box!.trayTop).toBeGreaterThanOrEqual(0);
+		expect(box!.trayTop).toBeLessThan(box!.viewport);
+	});
+
 	test('a trade can be taken and given back', async ({ page }) => {
 		await mockCatalogue(page, four);
 		await gotoHydrated(page, '/auth/register/path?d=code');

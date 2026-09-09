@@ -75,8 +75,8 @@ const LINK_INVITATION = {
 };
 
 const common: ApiRoute[] = [
-	{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-	{ path: '/users/me/orientations', handler: json({ data: [] }) }
+	{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+	{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 ];
 
 function guildRoutes(opts: {

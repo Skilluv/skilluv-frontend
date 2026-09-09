@@ -141,14 +141,17 @@ function meRoutes(user: typeof challenger, capabilities: string[] = []): ApiRout
 		{
 			path: '/users/me/capabilities',
 			handler: json({
-				data: capabilities.map((capability) => ({
-					capability,
-					granted_at: '2026-01-01',
-					granted_reason: 'seed'
-				}))
+				data: {
+					user_id: 'u-1',
+					capabilities: capabilities.map((capability) => ({
+						capability,
+						granted_at: '2026-01-01',
+						granted_reason: 'seed'
+					}))
+				}
 			})
 		},
-		{ path: '/users/me/orientations', handler: json({ data: [] }) }
+		{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 	];
 }
 

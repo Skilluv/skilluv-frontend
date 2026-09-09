@@ -44,7 +44,12 @@ function json(body: unknown, status = 200) {
 }
 
 const moderatorCapability = {
-	data: [{ capability: 'community_moderator', granted_at: '2026-01-01', granted_reason: 'seed' }]
+	data: {
+		user_id: 'u-moderator',
+		capabilities: [
+			{ capability: 'community_moderator', granted_at: '2026-01-01', granted_reason: 'seed' }
+		]
+	}
 };
 
 const queue = {
@@ -81,7 +86,7 @@ test.describe('File des cautions', () => {
 	test('un modérateur voit la file, les deux parties et le rang en jeu', async ({ page }) => {
 		await mockApi(page, [
 			{ path: '/users/me/capabilities', handler: json(moderatorCapability) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) },
 			{ path: '/moderation/vouchings', handler: json(queue) }
 		]);
 
@@ -108,7 +113,7 @@ test.describe('File des cautions', () => {
 	test('rompre demande un motif avant de partir', async ({ page }) => {
 		await mockApi(page, [
 			{ path: '/users/me/capabilities', handler: json(moderatorCapability) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) },
 			{ path: '/moderation/vouchings', handler: json(queue) }
 		]);
 
@@ -125,7 +130,7 @@ test.describe('File des cautions', () => {
 	test('une file vide se lit comme telle', async ({ page }) => {
 		await mockApi(page, [
 			{ path: '/users/me/capabilities', handler: json(moderatorCapability) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) },
 			{
 				path: '/moderation/vouchings',
 				handler: json({
@@ -140,8 +145,8 @@ test.describe('File des cautions', () => {
 
 	test('sans capability, la page refuse explicitement', async ({ page }) => {
 		await mockApi(page, [
-			{ path: '/users/me/capabilities', handler: json({ data: [] }) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) }
+			{ path: '/users/me/capabilities', handler: json({ data: { capabilities: [] } }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) }
 		]);
 
 		await gotoHydrated(page, '/moderation/vouchings');
@@ -173,7 +178,7 @@ test.describe('File des signaux externes', () => {
 	test('un modérateur voit la file et ses deux gestes', async ({ page }) => {
 		await mockApi(page, [
 			{ path: '/users/me/capabilities', handler: json(moderatorCapability) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) },
 			{ path: '/moderation/external-signals', handler: json(pending) }
 		]);
 
@@ -189,7 +194,7 @@ test.describe('File des signaux externes', () => {
 		let deleteUrl = '';
 		await mockApi(page, [
 			{ path: '/users/me/capabilities', handler: json(moderatorCapability) },
-			{ path: '/users/me/orientations', handler: json({ data: [] }) },
+			{ path: '/users/me/orientations', handler: json({ data: { orientations: [] } }) },
 			{
 				path: '/moderation/external-signals/s1',
 				handler: (route) => {
