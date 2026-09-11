@@ -61,7 +61,8 @@
 		Server,
 		ShieldCheck,
 		Mic,
-		Layers
+		Layers,
+		Hammer
 	} from '@lucide/svelte';
 
 	// Conditional user-menu links driven by P18.4 capabilities.
@@ -253,6 +254,16 @@
 					icon: Pencil,
 					label: i18n.locale === 'fr' ? 'Communauté' : 'Community',
 					description: i18n.locale === 'fr' ? 'Challenges créés par la communauté' : 'Community-created challenges'
+				},
+				{
+					// Unclaimed work across all twelve trades. The pool endpoint
+					// answered for every one of them while the only listing was
+					// the code hub's, so eleven trades had open slices nobody
+					// could find.
+					href: '/open-slices',
+					icon: Hammer,
+					label: i18n.t('openSlices.title'),
+					description: i18n.t('openSlices.navDescription')
 				}
 			]
 		},

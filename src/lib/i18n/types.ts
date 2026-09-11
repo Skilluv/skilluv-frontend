@@ -2325,6 +2325,26 @@ export interface Translations
 	};
 
 	/** The GitHub link. */
+	/**
+	 * The open pool: unclaimed work across every trade.
+	 *
+	 * One listing for the twelve. `GET /api/open-slices` normalises the rows,
+	 * so the wording never names a domain — `slice_type_name` comes from the
+	 * catalogue and says whether this is a ticket or a design file.
+	 */
+	openSlices: {
+		title: string;
+		subtitle: string;
+		allDomains: string;
+		maxDifficulty: string;
+		openUpstream: string;
+		/** One line for the nav entry; `subtitle` is the page's own paragraph. */
+		navDescription: string;
+		reward: string;
+		empty: string;
+		emptyHint: string;
+	};
+
 	githubLink: {
 		title: string;
 		subtitle: string;
@@ -2340,6 +2360,21 @@ export interface Translations
 		disconnected: string;
 		cancelCta: string;
 		syncNote: string;
+		errorTitle: string;
+		retryCta: string;
+		/**
+		 * One sentence per code `routes::github` can send back on the URL.
+		 *
+		 * Mirrors `github_error_code`. The backend sends a token and never a
+		 * sentence, precisely so that the wording and both languages live here.
+		 */
+		errors: {
+			already_linked: string;
+			expired: string;
+			invalid_request: string;
+			unavailable: string;
+			failed: string;
+		};
 	};
 
 	/** Code portfolios and review languages. */

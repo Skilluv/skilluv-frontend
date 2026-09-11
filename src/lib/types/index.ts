@@ -10,6 +10,7 @@ export * from './postmvp';
 // tournament and mission endpoints, so their types are here rather than in a
 // `design`-prefixed silo that would hide the reuse.
 export * from './design';
+export * from './open_slices';
 
 // Voice castings — the audio domain's own hiring loop.
 export * from './audio';

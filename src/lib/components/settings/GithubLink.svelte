@@ -21,13 +21,28 @@
 	 */
 	import { onMount } from 'svelte';
 	import { GitBranch, RefreshCw } from '@lucide/svelte';
-	import { githubApi, connectUrl, cvUrl } from '$api/github';
+	import { githubApi, cvUrl } from '$api/github';
+	import { githubLinkUrl } from '$api/oauth_links';
+	import { page } from '$app/state';
 	import { SkilluError } from '$api/client';
 	import { auth } from '$stores/auth.svelte';
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';
 	import Button from '$components/ui/Button.svelte';
+	import GithubLinkError from './GithubLinkError.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+
+	/**
+	 * Where the consent screen sends the browser back to.
+	 *
+	 * This used to be `connectUrl()`, which took no return path at all — so
+	 * the callback ended on the API origin and the person read
+	 * `{"connected":true}` on a domain they never chose to visit, with the
+	 * back button as their only exit and a settings page behind it still
+	 * showing the old state. The success redirect and the failure one both
+	 * need somewhere to go, and this is it.
+	 */
+	let connectHref = $derived(githubLinkUrl(page.url.pathname));
 
 	let repos = $state<unknown[]>([]);
 	let loading = $state(true);
@@ -109,9 +124,14 @@
 			</p>
 		{/if}
 
+		<!-- Why the last attempt did not take, when the callback sent one
+		     back. Above the button, because it is the reason somebody is
+		     about to press it a second time. -->
+		<GithubLinkError retryHref={connectHref} />
+
 		<div class="flex flex-wrap gap-2">
 			<!-- A link, not a button: this navigates into a consent screen. -->
-			<Button href={connectUrl()} size="sm" variant={connected ? 'ghost' : 'accent'}>
+			<Button href={connectHref} size="sm" variant={connected ? 'ghost' : 'accent'}>
 				{connected ? i18n.t('githubLink.reconnectCta') : i18n.t('githubLink.connectCta')}
 			</Button>
 

@@ -2151,6 +2151,20 @@ export const en: Translations = {
 		disclosesOn: 'readable from {date}'
 	},
 
+	openSlices: {
+		title: 'Open work',
+		subtitle:
+			'Everything nobody has taken yet, in every trade. An upstream ticket, a design brief, a track to mix, a runbook to write — the list is the same list, and what changes is the surface the work lives on.',
+		allDomains: 'Every trade',
+		maxDifficulty: 'Up to',
+		openUpstream: 'Read it upstream',
+		navDescription: 'Unclaimed work, in every trade',
+		reward: '{n} fragments',
+		empty: 'Nothing open here',
+		emptyHint:
+			'Nothing is unclaimed under this filter right now. Widen the difficulty, or look at another trade.'
+	},
+
 	githubLink: {
 		title: 'GitHub',
 		subtitle: 'Synced repositories and the contribution figures read from them.',
@@ -2167,7 +2181,19 @@ export const en: Translations = {
 		disconnected: 'Disconnected.',
 		cancelCta: 'Cancel',
 		syncNote:
-			'Skilluv syncs when you ask rather than continuously — it reads your GitHub no more often than you want it to.'
+			'Skilluv syncs when you ask rather than continuously — it reads your GitHub no more often than you want it to.',
+		errorTitle: 'GitHub was not linked',
+		retryCta: 'Try again',
+		errors: {
+			already_linked:
+				'That GitHub account is already linked to another Skilluv profile. Unlink it there first, or sign in with the account that holds it — one GitHub identity belongs to one profile, because a rank is read from proof and two profiles sharing an identity would let somebody wear a rank they did not earn.',
+			expired:
+				'The link took too long and the request expired. Starting again takes a few seconds.',
+			invalid_request:
+				'GitHub sent us back something we could not read. Starting again usually settles it.',
+			unavailable: 'GitHub linking is not available on this deployment.',
+			failed: 'Something broke on our side, not yours. Try again in a moment.'
+		}
 	},
 
 	declaredCraft: {

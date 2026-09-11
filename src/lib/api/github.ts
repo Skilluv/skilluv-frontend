@@ -50,14 +50,15 @@ export const githubApi = {
 };
 
 /**
- * Where the browser goes to link GitHub.
+ * Where the browser goes to link GitHub lives in `$api/oauth_links`, as
+ * `githubLinkUrl`.
  *
- * Returned, not fetched: this is a consent screen, and an XHR would swallow
- * it.
+ * There were two builders for one route. This one hardcoded `/api` — wrong
+ * the moment the API sits on another origin — and, more to the point, took no
+ * return path, so the flow it started ended on the API origin showing raw
+ * JSON. Its one caller now uses the other, which validates the path and is
+ * the same builder the onboarding step already used.
  */
-export function connectUrl(baseUrl = '/api'): string {
-	return `${baseUrl}/auth/github/start`;
-}
 
 /**
  * The generated CV page for somebody, as HTML.

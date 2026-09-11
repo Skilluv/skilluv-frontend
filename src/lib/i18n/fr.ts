@@ -2189,6 +2189,20 @@ export const fr: Translations = {
 		disclosesOn: 'lisible à partir du {date}'
 	},
 
+	openSlices: {
+		title: 'Travail ouvert',
+		subtitle:
+			'Tout ce que personne n’a encore pris, dans tous les métiers. Un ticket en amont, un brief de design, un morceau à mixer, un runbook à écrire — c’est la même liste, seule change la surface où vit le travail.',
+		allDomains: 'Tous les métiers',
+		maxDifficulty: 'Jusqu’à',
+		openUpstream: 'Lire à la source',
+		navDescription: 'Du travail libre, dans tous les métiers',
+		reward: '{n} fragments',
+		empty: 'Rien d’ouvert ici',
+		emptyHint:
+			'Rien n’est libre sous ce filtre pour l’instant. Élargis la difficulté, ou regarde un autre métier.'
+	},
+
 	githubLink: {
 		title: 'GitHub',
 		subtitle: 'Les dépôts synchronisés et les chiffres de contribution qu’on y lit.',
@@ -2205,7 +2219,19 @@ export const fr: Translations = {
 		disconnected: 'Déconnecté.',
 		cancelCta: 'Annuler',
 		syncNote:
-			'Skilluv synchronise quand tu le demandes plutôt qu’en continu — il ne lit pas ton GitHub plus souvent que tu ne le veux.'
+			'Skilluv synchronise quand tu le demandes plutôt qu’en continu — il ne lit pas ton GitHub plus souvent que tu ne le veux.',
+		errorTitle: 'GitHub n’a pas été lié',
+		retryCta: 'Réessayer',
+		errors: {
+			already_linked:
+				'Ce compte GitHub est déjà lié à un autre profil Skilluv. Détache-le là-bas d’abord, ou connecte-toi avec le compte qui le détient — une identité GitHub appartient à un seul profil, parce qu’un rang se lit sur des preuves et que deux profils partageant une identité laisseraient porter un rang non gagné.',
+			expired:
+				'La liaison a pris trop de temps et la demande a expiré. Recommencer prend quelques secondes.',
+			invalid_request:
+				'GitHub nous a renvoyé quelque chose d’illisible. Recommencer suffit en général.',
+			unavailable: 'La liaison GitHub n’est pas disponible sur ce déploiement.',
+			failed: 'Quelque chose a cassé de notre côté, pas du tien. Réessaie dans un instant.'
+		}
 	},
 
 	declaredCraft: {
