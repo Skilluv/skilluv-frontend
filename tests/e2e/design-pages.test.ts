@@ -23,27 +23,26 @@ test.describe('Skilluv Design pages', () => {
 		await expect(page.locator('aside')).toBeVisible();
 	});
 
-	test('the designer wizard opens on its first question', async ({ page }) => {
+	test('the designer wizard says so when it cannot reach its questions', async ({ page }) => {
+		// The wizard renders from `GET …/questions` and ships no vocabulary of
+		// its own, so with the endpoint dead there is nothing honest to draw.
+		// What it must not do is render an empty form, or throw: the header
+		// stands and the failure is stated.
 		await gotoHydrated(page, '/design/onboarding');
 		await expect(page.getByTestId('design-onboarding')).toBeVisible();
-		await expect(page.getByRole('progressbar')).toBeVisible();
+		await expect(page.locator('h1')).toBeVisible();
+		await expect(page.getByRole('alert')).toBeVisible();
+		// No half-rendered question behind the message.
+		await expect(page.getByTestId('wizard-options')).toHaveCount(0);
 	});
 
-	test('the wizard walks forward and back without a backend', async ({ page }) => {
+	test('the suggestions below the wizard survive the same outage', async ({ page }) => {
+		// Both render their own empty state, so a dead API costs a hole in the
+		// page rather than a crash. Walking the questions themselves needs the
+		// backend and lives in `domain-onboarding.test.ts`.
 		await gotoHydrated(page, '/design/onboarding');
-		// Scoped to the wizard: a bare `h2.first()` also matches the footer's
-		// call to action, and which of the two comes first depends on whether
-		// the current question has rendered yet. That race read as a passing
-		// test until it read as a failing one.
-		const heading = page.getByTestId('design-onboarding').locator('h2').first();
-		await expect(heading).toBeVisible();
-		const firstQuestion = await heading.innerText();
-
-		await page.getByRole('button', { name: /suivant|next/i }).click();
-		await expect(heading).not.toHaveText(firstQuestion);
-
-		await page.getByRole('button', { name: /retour|back/i }).click();
-		await expect(heading).toHaveText(firstQuestion);
+		await expect(page.getByTestId('design-next-challenges')).toBeVisible();
+		await expect(page.getByTestId('design-mentor-matches')).toBeVisible();
 	});
 
 	test('no i18n key leaks as a raw dotted path', async ({ page }) => {
@@ -51,7 +50,7 @@ test.describe('Skilluv Design pages', () => {
 			await gotoHydrated(page, path);
 			const body = await page.locator('body').innerText();
 			expect(body).not.toMatch(
-				/\b(designContests|missions|designProfile|designWizard)\.[a-zA-Z]+\.[a-zA-Z]/
+				/\b(designContests|missions|designProfile|domainWizard)\.[a-zA-Z]+\.[a-zA-Z]/
 			);
 		}
 	});

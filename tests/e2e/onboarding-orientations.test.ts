@@ -69,6 +69,9 @@ const catalogPayload = {
 			primary_domain: 'code',
 			secondary_domains: ['design'],
 			tags: ['react', 'svelte', 'a11y'],
+			// Always on the wire; empty for most of the catalogue, which is the
+			// ordinary case rather than a gap.
+			stack: [],
 			is_curated: true,
 			is_archived: false
 		},
@@ -80,6 +83,7 @@ const catalogPayload = {
 			primary_domain: 'security',
 			secondary_domains: [],
 			tags: ['pentest', 'blue-team'],
+			stack: [],
 			is_curated: true,
 			is_archived: false
 		},

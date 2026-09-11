@@ -13,8 +13,9 @@ import { gotoHydrated } from './utils/hydration';
  * the consent wording that was on screen beside it, and that every outcome is
  * said out loud — including the ones that are not success.
  *
- * The consent is a box that has to be ticked rather than a paragraph nobody
- * answers, so it is also the one thing here that can stop a submission.
+ * The consent is a dialog rather than a paragraph nobody answers — the same
+ * gesture as confirming a sign-out — so it is also the one thing here that can
+ * stop a submission, and the place a typo in the address can still be caught.
  */
 
 const FORM = '/newsletter/subscriptions';
@@ -31,12 +32,18 @@ test.use({
 	}
 });
 
-async function fill(page: Page, address: string, optIn = true) {
+/** Type the address and press join. Stops at the dialog. */
+async function submit(page: Page, address: string) {
 	const field = page.locator('footer input[type="email"]');
 	await field.scrollIntoViewIfNeeded();
 	await field.fill(address);
-	if (optIn) await page.getByTestId('newsletter-optin').check();
 	await field.press('Enter');
+}
+
+/** The whole gesture: type, press join, confirm in the dialog. */
+async function fill(page: Page, address: string) {
+	await submit(page, address);
+	await page.getByTestId('newsletter-confirm').click();
 }
 
 const outcome = (page: Page) => page.getByTestId('newsletter-outcome');
@@ -67,14 +74,14 @@ test.describe('Subscribing from the footer', () => {
 		);
 		expect(sent[0].source).toBe('footer');
 
-		// And the field empties, so nobody sends it twice wondering.
+		// And the field empties, so nobody sends it twice wondering. The dialog
+		// closes with it: the answer belongs beside the form, where it stays
+		// readable, not on a surface that has to be dismissed.
 		await expect(page.locator('footer input[type="email"]')).toHaveValue('');
-		// The box empties with it: the next address is a new consent, not a
-		// continuation of this one.
-		await expect(page.getByTestId('newsletter-optin')).not.toBeChecked();
+		await expect(page.getByTestId('newsletter-confirm')).toHaveCount(0);
 	});
 
-	test('starts unticked, and says so rather than doing nothing when it stays that way', async ({
+	test('sends nothing until the dialog is confirmed, and nothing at all if it is cancelled', async ({
 		page
 	}) => {
 		let calls = 0;
@@ -84,15 +91,22 @@ test.describe('Subscribing from the footer', () => {
 		});
 
 		await gotoHydrated(page, '/');
-		// A pre-ticked box is not a consent, it is a default.
-		await expect(page.getByTestId('newsletter-optin')).not.toBeChecked();
+		await submit(page, 'kofi@example.com');
 
-		await fill(page, 'kofi@example.com', false);
-		await expect(outcome(page)).toBeVisible();
-		expect(calls, 'nothing may leave without the consent').toBe(0);
+		// The dialog shows the address back, because a typo in it is invisible on
+		// a form that answers the same 202 to everything.
+		await expect(page.getByTestId('newsletter-confirm-email')).toHaveText('kofi@example.com');
+		expect(calls, 'the dialog is the consent, not the button behind it').toBe(0);
+
+		await page.getByRole('button', { name: /annuler|cancel/i }).click();
+		await expect(page.getByTestId('newsletter-confirm')).toHaveCount(0);
+		expect(calls, 'cancelling means nothing was sent').toBe(0);
+
+		// And the address survives the cancel, so it need not be typed again.
+		await expect(page.locator('footer input[type="email"]')).toHaveValue('kofi@example.com');
 	});
 
-	test('sends the wording the box actually carried, not a copy of it', async ({ page }) => {
+	test('sends the wording the dialog actually showed, not a copy of it', async ({ page }) => {
 		let body: Record<string, unknown> | null = null;
 		await page.route(`**/api${FORM}`, async (route) => {
 			body = route.request().postDataJSON();
@@ -100,13 +114,17 @@ test.describe('Subscribing from the footer', () => {
 		});
 
 		await gotoHydrated(page, '/');
-		const shown = (await page.getByTestId('newsletter-optin').locator('..').innerText()).trim();
-		await fill(page, 'kofi@example.com');
+		await submit(page, 'kofi@example.com');
+		const shown = (
+			await page.getByTestId('newsletter-confirm-email').locator('+ p').innerText()
+		).trim();
+		await page.getByTestId('newsletter-confirm').click();
 
 		await expect(outcome(page)).toBeVisible();
 		// What is stored must be readable back as what was on screen. If the two
 		// are allowed to drift, the record says a consent was given for a
 		// sentence nobody was ever shown.
+		expect(shown.length, 'the dialog must actually carry the wording').toBeGreaterThan(40);
 		expect(body!.consent_text).toBe(shown);
 	});
 
@@ -118,9 +136,12 @@ test.describe('Subscribing from the footer', () => {
 		});
 
 		await gotoHydrated(page, '/');
-		await fill(page, 'kofi@example');
+		await submit(page, 'kofi@example');
 
+		// Answered where it was typed, without opening a dialog to confirm an
+		// address that cannot be accepted.
 		await expect(outcome(page)).toBeVisible();
+		await expect(page.getByTestId('newsletter-confirm')).toHaveCount(0);
 		expect(calls, 'the API is not the place to learn this').toBe(0);
 	});
 

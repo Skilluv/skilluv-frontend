@@ -7,12 +7,18 @@ import type { UserPrivate } from '$lib/types';
 /**
  * Routes accessible whatever the completion / role state — auth flows,
  * legal pages, the API proxy, and the onboarding form itself.
+ *
+ * `/newsletter/` is here because its two pages are opened from a link in a
+ * mail, by whoever holds that mail. Bouncing somebody mid-onboarding to the
+ * profile form would leave them subscribed to a letter they just asked to
+ * leave, and they would have no way to tell that is what happened.
  */
 const ONBOARDING_ALLOWLIST = [
 	'/onboarding/complete-profile',
 	'/onboarding/orientations',
 	'/auth/', // login, logout, register, magic-link, verify-email, change-email/confirm
 	'/legal/',
+	'/newsletter/',
 	'/api/'
 ];
 
@@ -25,7 +31,7 @@ const ONBOARDING_ALLOWLIST = [
  * Notifications stays cross-role because the notification list is identical
  * for both personas.
  */
-const NEUTRAL_PREFIXES = ['/auth/', '/legal/', '/notifications', '/api/'];
+const NEUTRAL_PREFIXES = ['/auth/', '/legal/', '/newsletter/', '/notifications', '/api/'];
 
 /**
  * Enterprise workspace routes — dashboards, talents, SSO/SCIM config, invite

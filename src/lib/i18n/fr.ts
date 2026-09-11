@@ -229,8 +229,33 @@ export const fr: Translations = {
 		}
 	},
 	newsletter: {
-		optIn: 'J’accepte de recevoir la lettre Skilluv. Désabonnement en un clic, dans chaque envoi.',
-		consentRequired: 'Coche la case avant de rejoindre la lettre.',
+		confirmTitle: 'Rejoindre la lettre Skilluv ?',
+		confirmPage: {
+			title: 'Confirmation de ton inscription',
+			working: 'On confirme ton adresse…',
+			doneTitle: 'C’est confirmé',
+			doneBody: 'Ton adresse est sur la liste. La prochaine lettre Skilluv arrivera dans ta boîte, et chaque envoi porte un lien pour en sortir en un clic.',
+			home: 'Retour à l’accueil',
+			spentTitle: 'Ce lien a déjà servi',
+			spentBody: 'Un lien de confirmation ne marche qu’une fois, et il expire au bout de sept jours. Si tu as déjà cliqué, ton adresse est sur la liste et tu n’as rien à faire. Sinon, redonne ton adresse en bas de la page d’accueil : un nouveau lien partira, valable une semaine.',
+			retry: 'Redonner mon adresse',
+			failedTitle: 'On n’a pas pu confirmer',
+			failedBody: 'Quelque chose a lâché de notre côté, pas de ton fait. Réessaie dans un instant en rouvrant le lien du mail.'
+		},
+		unsubPage: {
+			title: 'Désabonnement',
+			working: 'On te retire de la liste…',
+			doneTitle: 'C’est fait',
+			doneBody: 'Cette adresse ne recevra plus la lettre Skilluv. On ne te demande pas pourquoi et il n’y a rien d’autre à faire.',
+			rejoin: 'Revenir sur la liste',
+			unknownTitle: 'Ce lien ne correspond à rien',
+			unknownBody: 'Il a peut-être déjà servi, ou il a été coupé en chemin par le logiciel de messagerie. Si tu reçois encore la lettre, ouvre le lien du dernier envoi.',
+			failedTitle: 'On n’a pas pu te désabonner',
+			failedBody: 'Quelque chose a lâché de notre côté. Réessaie dans un instant — et si ça persiste, écris-nous, on te retire à la main.',
+			contact: 'Nous écrire'
+		},
+		confirmAction: 'Confirmer',
+		consent: 'Tu recevras la lettre Skilluv à cette adresse. Un lien de confirmation part d’abord par mail, et chaque envoi porte un lien pour te désabonner en un clic.',
 		sent: 'Si cette adresse peut recevoir du courrier, un lien de confirmation est en route. Regarde ta boîte.',
 		invalid: 'Cette adresse ne ressemble pas à une adresse email.',
 		throttled: 'Trop de tentatives pour le moment. Réessaie dans une heure.',
@@ -968,11 +993,44 @@ export const fr: Translations = {
 		}
 	},
 	domainWizard: {
-		titles: { ai: 'Tes débuts en IA', security: 'Tes débuts en sécurité' },
+		titles: {
+			generic: 'Bien commencer en {domain}',
+			code: 'Bien commencer en code',
+			design: 'Bien commencer en design',
+			game: 'Bien commencer en game dev',
+			security: 'Tes débuts en sécurité',
+			ai: 'Tes débuts en IA',
+			ops: 'Bien commencer en ops',
+			audio: 'Bien commencer en audio',
+			quality: 'Bien commencer en test',
+			leadership: 'Bien commencer en leadership',
+			communication: 'Bien commencer en communication',
+			education: 'Bien commencer en pédagogie',
+			soft_skills: 'Bien commencer'
+		},
 		subtitles: {
-			ai: "Six questions. Elles trient ce qu'on te recommande — rien ici ne compte comme une preuve.",
+			generic:
+				'Quelques questions. Elles trient ce qu’on te propose — rien ici ne compte comme une preuve.',
+			code: 'Quelques questions. Elles trient ce qu’on te propose — rien ici ne compte comme une preuve, et un langage déclaré n’est pas une compétence qu’on te crédite.',
+			design:
+				'Quelques questions pour savoir quels briefs te mettre devant. Deux minutes, et tout est modifiable ensuite.',
+			game: 'Quelques questions. Elles trient ce qu’on te propose — rien ici ne compte comme une preuve.',
 			security:
-				"Quelques questions. Elles trient ce qu'on te recommande — rien ici ne compte comme une preuve, et rien n'autorise à tester quoi que ce soit."
+				"Quelques questions. Elles trient ce qu'on te recommande — rien ici ne compte comme une preuve, et rien n'autorise à tester quoi que ce soit.",
+			ai: "Six questions. Elles trient ce qu'on te recommande — rien ici ne compte comme une preuve.",
+			ops: 'Quelques questions. Elles trient ce qu’on te propose — rien ici ne compte comme une preuve.',
+			audio:
+				'Quelques questions. Elles trient ce qu’on te propose, et elles disent à un mentor s’il peut ouvrir ta session.',
+			quality:
+				'Quelques questions. Ce métier travaille sur les autres domaines plutôt que dans un seul : lesquels compte donc plus ici qu’ailleurs.',
+			leadership:
+				'Quelques questions. Depuis combien de temps tu encadres n’est pas la même question que depuis combien de temps tu travailles, et les deux sont posées.',
+			communication:
+				'Quelques questions. Elles trient ce qu’on te propose — un pseudo est un lien qu’on peut suivre, jamais une preuve.',
+			education:
+				'Quelques questions. Qui tu enseignes n’est pas la même question que ton propre niveau, et les deux sont posées.',
+			soft_skills:
+				'Quelques questions. Elles trient ce qu’on te propose — rien ici ne compte comme une preuve.'
 		},
 		notAClaim:
 			"Déclaré, jamais une affirmation. Le rang, les badges et le score de métier lisent du travail vérifié, et aucune de ces réponses n'en est un.",
@@ -980,6 +1038,7 @@ export const fr: Translations = {
 		stepOf: 'Question {n} sur {total}',
 		pickUpTo: 'Jusqu’à {n}.',
 		maxSelections: '{n} réponses au maximum. Retires-en une pour en ajouter une autre.',
+		tagPlaceholder: 'Tape puis Entrée',
 		back: 'Retour',
 		next: 'Suivant',
 		skipQuestion: 'Passer celle-ci',
@@ -987,21 +1046,86 @@ export const fr: Translations = {
 		skipAll: 'Tout passer',
 		savedToast: 'Enregistré.',
 		noQuestions: 'Ce domaine ne demande rien pour l’instant.',
+		planKicker: 'Par où commencer',
+		planFirstMonth: 'Ton premier mois',
+		planGuides: 'À lire en premier',
+		planGo: 'C’est parti',
 		questions: {
 			level: 'Tu en es où ?',
 			weekly_hours: 'Combien de temps par semaine ?',
 			goal: 'Tu viens pour quoi ?',
+			preferred_families: 'Quels métiers t’intéressent ?',
 			compute: 'Tu peux faire tourner quoi, concrètement ?',
 			main_frameworks: 'Tu travailles avec quoi ?',
 			huggingface_username: 'Ton pseudo HuggingFace',
-			preferred_families: 'Quels métiers t’intéressent ?'
+			challenge_preference: 'Quel type de travail te convient ?',
+			main_tool: 'Ton outil principal ?',
+			portfolio_url: 'Tu as déjà un portfolio ?',
+			main_tools: 'Tu travailles avec quoi ?',
+			github_username: 'Ton pseudo GitHub',
+			security_certifications: 'Des certifications ?',
+			security_lab_setup: 'Tu peux faire tourner quoi, concrètement ?',
+			security_tools: 'Tu travailles avec quoi ?',
+			main_formats: 'Tu produis quoi ?',
+			subject_domain: 'Sur quoi ?',
+			dev_to_username: 'Ton pseudo dev.to',
+			blog_url: 'Ton blog',
+			audio_destination: 'Tu écris pour quoi ?',
+			main_daws: 'Tu travailles sur quelles stations ?',
+			soundcloud_username: 'Ton pseudo SoundCloud',
+			bandcamp_username: 'Ton pseudo Bandcamp',
+			quality_background: 'Tu arrives d’où ?',
+			quality_target_domains: 'Tu veux mettre quoi à l’épreuve ?',
+			quality_tools: 'Tu travailles avec quoi ?',
+			leadership_level: 'Depuis combien de temps tu encadres ?',
+			leadership_context: 'Tu encadres où ?',
+			leadership_target_domains: 'Sur quels domaines veux-tu tenir une direction ?',
+			leadership_tools: 'Tu travailles avec quoi ?',
+			main_settings: 'Tu enseignes où ?',
+			learner_level: 'Tu enseignes à qui ?'
 		},
 		hints: {
+			preferred_families: 'Du tri, pas un engagement. Tu peux travailler en dehors.',
 			compute:
 				"Celle-ci décide de ce qu'on te montre : recommander un fine-tune de soixante-dix milliards de paramètres à quelqu'un sur Colab gratuit lui fait perdre sa semaine.",
 			huggingface_username:
 				"Un lien qu'un lecteur peut suivre. Tes modèles là-bas ne sont pas importés — un modèle compte ici quand il arrive comme du travail qui a été relu.",
-			preferred_families: 'Du tri, pas un engagement. Tu peux travailler en dehors.'
+			challenge_preference:
+				'Les deux existent. Une invitation à concourir tombe mal sur quelqu’un venu pratiquer, et une file de briefs paraît vide à quelqu’un venu concourir.',
+			main_tool:
+				'Un bonus dans le matching, jamais un filtre. Un bon mentor sur un outil voisin vaut mieux qu’un mentor moyen sur le tien.',
+			portfolio_url:
+				'Enregistré comme signal externe : visible sur ton profil, jamais compté dans tes preuves Skilluv.',
+			main_tools:
+				'Ce sur quoi tu travailles réellement. Rien n’est vérifié contre une liste, parce que la liste refuserait de vraies réponses.',
+			github_username:
+				'Affirmé ici, prouvé seulement quand tu connectes le compte. Un pseudo tapé est une affirmation comme une autre.',
+			security_certifications:
+				'Un indice de routage, jamais une revendication. Ce qui compte comme certification ici est un titre vérifié sur ton profil ; ceci décide seulement de ce qu’on te montre en premier.',
+			security_lab_setup:
+				'Quelqu’un sur un portable d’entreprise verrouillé ne peut pas lancer une machine virtuelle vulnérable, et l’y envoyer lui fait perdre sa semaine.',
+			security_tools:
+				'Ce sur quoi tu travailles réellement, de Burp à un tableur de contrôles. Lu comme un bonus dans le matching, jamais comme un filtre.',
+			subject_domain:
+				'Ce sur quoi tu écris ou tu enseignes, qui n’est pas le métier que tu pratiques.',
+			dev_to_username:
+				'Un lien qu’un lecteur peut suivre. Un article compte ici quand il arrive comme un travail relu.',
+			main_daws:
+				'La chose la plus utile à savoir pour te mettre en binôme : une session où l’un ne peut pas ouvrir le projet de l’autre, c’est une heure passée sur des formats de fichiers.',
+			quality_background:
+				'Le premier mois d’un développeur qui passe au test et celui de quelqu’un qui arrive du support n’ont presque rien en commun. Ça oriente quel guide vient en premier, et rien d’autre.',
+			quality_target_domains:
+				'Tous les autres métiers travaillent dans un domaine ; celui-ci travaille sur un domaine. Deux, c’est une spécialité ; tout, c’est l’absence de spécialité.',
+			quality_tools:
+				'Ce sur quoi tu travailles réellement, de Playwright à un lecteur d’écran. Lu comme un bonus dans le matching, jamais comme un filtre.',
+			leadership_level:
+				'Un autre axe que l’échelle du métier. Un ingénieur principal de quinze ans d’expérience qui n’a jamais écrit de feuille de route répond « pas encore », honnêtement.',
+			leadership_context:
+				'Pas la même question que ton métier. Tu peux vouloir l’un et n’avoir que l’autre à disposition.',
+			leadership_tools:
+				'De Linear à un document partagé à un tableau blanc. Lu comme un bonus, jamais comme un filtre.',
+			learner_level:
+				'Une autre question que ton propre niveau. Vingt ans de métier et enseigner à de grands débutants est une réponse normale.'
 		},
 		options: {
 			level: {
@@ -1009,20 +1133,34 @@ export const fr: Translations = {
 				apprentissage: 'En apprentissage',
 				practitioner: 'Praticien',
 				senior: 'Senior',
-				researcher: 'Chercheur'
+				researcher: 'Chercheur',
+				beginner: 'Débutant',
+				junior: 'Junior',
+				mid: 'Confirmé',
+				staff: 'Staff'
 			},
 			weekly_hours: {
 				lt3: 'Moins de 3h',
 				'3_10': '3 à 10h',
 				gt10: 'Plus de 10h',
-				fulltime: 'Temps plein'
+				fulltime: 'Temps plein',
+				under_5: 'Moins de 5 h',
+				'5_to_15': 'De 5 à 15 h',
+				'15_to_40': 'De 15 à 40 h'
 			},
 			goal: {
 				learning: 'Apprendre',
 				portfolio: 'Me construire un portfolio',
 				paid_missions: 'Du travail payé',
 				academic_research: 'De la recherche académique',
-				startup: 'Fonder quelque chose'
+				startup: 'Fonder quelque chose',
+				learn: 'Apprendre',
+				build_portfolio: 'Construire un portfolio',
+				find_paid_work: 'Trouver du travail payé',
+				contribute_upstream: 'Contribuer en amont',
+				publish_library: 'Publier une bibliothèque',
+				become_mentor: 'Devenir mentor',
+				ship_own_product: 'Sortir mon propre produit'
 			},
 			compute: {
 				none: 'Colab ou Kaggle gratuit',
@@ -1038,8 +1176,126 @@ export const fr: Translations = {
 				candle: 'Candle',
 				mlx: 'MLX',
 				other: 'Autre chose'
+			},
+			challenge_preference: {
+				individual: 'Défis en solo',
+				contest: 'Concours',
+				both: 'Les deux',
+				undecided: 'Je ne sais pas encore',
+				upstream_contributions: 'Des contributions en amont',
+				solo_shipped_apps: 'Des applis que je sors seul',
+				published_libraries: 'Des bibliothèques publiées',
+				long_team_projects: 'Des longs projets en équipe',
+				short_hackathons: 'Des hackathons courts'
+			},
+			main_tool: {
+				figma: 'Figma',
+				adobe: 'Suite Adobe',
+				sketch: 'Sketch',
+				blender: 'Blender',
+				after_effects: 'After Effects',
+				other: 'Autre chose'
+			},
+			security_certifications: {
+				none: 'Aucune',
+				security_plus: 'Security+',
+				oscp_or_offsec: 'OSCP ou une autre OffSec',
+				ceh: 'CEH',
+				cissp_or_cism: 'CISSP ou CISM',
+				gcih_or_giac: 'GCIH ou une autre GIAC',
+				cloud_security: 'Une certification cloud',
+				other: 'Autre chose'
+			},
+			security_lab_setup: {
+				browser_only: 'Un navigateur, rien d’autre',
+				local_tools: 'Des outils en local, pas de machines virtuelles',
+				local_vms: 'Des machines virtuelles sur ma machine',
+				home_lab: 'Une machine à part ou un labo maison',
+				cloud: 'Des instances cloud que je peux payer'
+			},
+			main_formats: {
+				documentation: 'De la documentation',
+				articles: 'Des articles',
+				talks: 'Des conférences',
+				video: 'De la vidéo',
+				livestream: 'Du live',
+				podcast: 'Des podcasts',
+				translation: 'De la traduction',
+				research: 'De la recherche'
+			},
+			subject_domain: {
+				cross: 'Plusieurs domaines'
+			},
+			audio_destination: {
+				game: 'Le jeu',
+				motion: 'L’image et le film',
+				podcast: 'Le podcast',
+				brand: 'La marque',
+				ui: 'L’interface',
+				cross: 'Plusieurs à la fois'
+			},
+			main_daws: {
+				reaper: 'Reaper',
+				ardour: 'Ardour',
+				logic: 'Logic',
+				fl_studio: 'FL Studio',
+				ableton: 'Ableton',
+				cubase: 'Cubase',
+				pro_tools: 'Pro Tools',
+				audacity: 'Audacity',
+				other: 'Autre chose'
+			},
+			quality_background: {
+				developer_moving_across: 'Développeur qui bascule',
+				professional_tester: 'Déjà testeur',
+				support_or_operations: 'Support ou exploitation',
+				career_change: 'Reconversion',
+				student: 'En études',
+				other: 'Autre chose'
+			},
+			leadership_level: {
+				aspiring: 'Pas encore, et j’aimerais',
+				emerging: 'J’encadre un peu, informellement',
+				lead: 'Une équipe ou un chantier, formellement',
+				senior_lead: 'Plusieurs équipes, ou une fonction',
+				executive: 'Direction'
+			},
+			leadership_context: {
+				employed_team: 'Une équipe au travail',
+				open_source: 'Un projet qui ne m’appartient pas',
+				community: 'Une communauté, un chapitre, un serveur',
+				own_venture: 'Ma propre structure',
+				none_yet: 'Nulle part encore — je m’exerce d’abord'
+			},
+			main_settings: {
+				bootcamp: 'Un bootcamp',
+				school: 'Une école',
+				university: 'Une université',
+				in_company: 'En entreprise',
+				community: 'Des ateliers communautaires',
+				self_paced: 'Des cours en autonomie',
+				one_to_one: 'En tête-à-tête'
+			},
+			learner_level: {
+				beginner: 'Des débutants',
+				junior: 'Des juniors',
+				mid: 'Des confirmés',
+				senior: 'Des seniors',
+				mixed: 'Un peu de tout'
 			}
 		}
+	},
+	onboardingIndex: {
+		title: 'Règle ce qu’on te propose',
+		subtitle:
+			'Une série de questions courtes par discipline. Réponds pour celles que tu pratiques et laisse le reste — les réponses trient ce qu’on te montre, et tout reste modifiable.',
+		notAClaim:
+			'Déclaré, jamais revendiqué. Le rang, les badges et le score d’artisanat lisent du travail vérifié, et aucune de ces réponses n’en est un.',
+		answered: 'Répondu',
+		dismissed: 'Tu as demandé qu’on arrête',
+		open: 'Pas encore répondu',
+		reviewCta: 'Revoir',
+		hubCta: 'Régler mes recommandations'
 	},
 	marketplace: {
 		title: 'Marché des créateurs',
@@ -1082,7 +1338,6 @@ export const fr: Translations = {
 	},
 	aiDomain: {
 		title: 'L’IA sur Skilluv',
-		onboardingCta: 'Régler mes recommandations',
 		subtitle:
 			"Ce que les gens d'ici ont réellement publié, et ce qui vaut la peine d'être tenté ailleurs en ce moment. L'assistant est autre chose et vit sur sa propre page.",
 		artifactsTitle: 'Artefacts publiés',
@@ -2458,7 +2713,9 @@ export const fr: Translations = {
 			forum_moderator: { label: 'Modérateur forum', description: 'Supprime spam et abus sur le forum.' },
 			plagiarism_reviewer: { label: 'Reviewer plagiat', description: 'Décide de la validité des deliverables flaggés.' },
 			kyc_reviewer: { label: 'Reviewer KYC', description: 'Valide les documents d\'identité des payouts.' },
-			community_curator: { label: 'Curator communauté', description: 'Approuve ou rejette les challenges communautaires en revue.' }
+			community_curator: { label: 'Curator communauté', description: 'Approuve ou rejette les challenges communautaires en revue.' },
+			domain_curator: { label: 'Curator de domaine', description: 'Tranche les rites d’entrée d’un domaine.' },
+			rite_reviewer: { label: 'Relecteur de rites {domain}', description: 'Lit les rites d’entrée publiés en {domain}. Obtenu en passant le sien, jamais sur son propre rendu.' }
 		},
 		nav: {
 			forumModeration: 'Modération forum',

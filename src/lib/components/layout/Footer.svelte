@@ -6,6 +6,9 @@
 	import type { ThemeBase } from '$lib/types';
 	import { PRIMARY_SOCIAL_ACCOUNTS, CONTACT_EMAIL, DPO_EMAIL } from '$lib/config/social';
 	import { newsletterApi, EMAIL_SHAPE } from '$api/newsletter';
+	import Modal from '$components/ui/Modal.svelte';
+	import Button from '$components/ui/Button.svelte';
+	import { Mail } from '@lucide/svelte';
 	import { SkilluError } from '$api/client';
 	import BrandLogo from './BrandLogo.svelte';
 
@@ -56,54 +59,66 @@
 	 * because somebody who types their address then waits for a letter that is
 	 * never coming has no way to find out.
 	 */
-	let outcome = $state<'idle' | 'sent' | 'invalid' | 'throttled' | 'failed' | 'consent'>('idle');
+	let outcome = $state<'idle' | 'sent' | 'invalid' | 'throttled' | 'failed'>('idle');
 
 	/**
-	 * Ticked before the address goes anywhere.
+	 * The address is confirmed in a dialog before anything is sent.
 	 *
-	 * A paragraph under the field said the same thing and asked for nothing: the
-	 * consent was inferred from having pressed the button, which is the weakest
-	 * form of it and the one hardest to show afterwards. A box that starts empty
-	 * and has to be ticked is a deliberate act, and it is what gets recorded.
+	 * The wording used to sit under the field as prose that asked for nothing —
+	 * pressing the button was taken as agreement. A dialog is the same gesture
+	 * as confirming a sign-out: it shows the address as it was typed, says what
+	 * subscribing means, and needs a second, deliberate press.
+	 *
+	 * It also catches the ordinary mistake. The address is the only way back to
+	 * somebody here, and a typo in it is invisible on a form that answers the
+	 * same 202 to everything.
 	 */
-	let optedIn = $state(false);
+	let confirming = $state(false);
+	/** Frozen when the dialog opens, so editing behind it cannot change it. */
+	let pending = $state('');
 
 	/**
-	 * The label on that box, sent with the address.
+	 * What the dialog says, sent with the address.
 	 *
 	 * A consent is *for* a wording, and a boolean cannot say which one somebody
 	 * agreed to. The backend stores this text with the IP and the user agent, so
 	 * if it ever changes, what was agreed under the old one stays readable as
 	 * that. It is the one part of this the backend could not write for us — and
-	 * it must stay the exact text the box carries on screen.
+	 * it must stay the exact text shown above the button that gives it.
 	 */
-	const consentText = $derived(i18n.t('newsletter.optIn'));
+	const consentText = $derived(i18n.t('newsletter.consent'));
 
-	async function subscribe(e: SubmitEvent) {
+	/** Pressing join opens the dialog. Nothing leaves until it is confirmed. */
+	function askConfirm(e: SubmitEvent) {
 		e.preventDefault();
 		const address = email.trim();
 		if (!address || subscribing) return;
 
-		// Said rather than enforced by a dead button: a control that does nothing
-		// when pressed, with no word about why, is the bug this form already had.
-		if (!optedIn) {
-			outcome = 'consent';
-			return;
-		}
-
 		// The API's own shape, not a stricter one: anything tighter refuses
 		// addresses the backend accepts, and it is the confirmation mail that
-		// decides deliverability rather than a regular expression.
+		// decides deliverability rather than a regular expression. Checked before
+		// the dialog so a malformed address is answered where it was typed.
 		if (!EMAIL_SHAPE.test(address)) {
 			outcome = 'invalid';
 			return;
 		}
 
-		subscribing = true;
 		outcome = 'idle';
+		pending = address;
+		confirming = true;
+	}
+
+	function cancelConfirm() {
+		if (subscribing) return;
+		confirming = false;
+	}
+
+	async function subscribe() {
+		if (subscribing || !pending) return;
+		subscribing = true;
 		try {
 			await newsletterApi.subscribe({
-				email: address,
+				email: pending,
 				locale: i18n.locale,
 				source: 'footer',
 				consent_text: consentText
@@ -114,13 +129,15 @@
 			// be used to ask whether somebody is on the list.
 			outcome = 'sent';
 			email = '';
-			// The next address is a new consent, not a continuation of this one.
-			optedIn = false;
 		} catch (err) {
 			const status = err instanceof SkilluError ? err.status : 0;
 			outcome = status === 429 ? 'throttled' : status === 400 ? 'invalid' : 'failed';
 		} finally {
 			subscribing = false;
+			// Closed either way: the answer belongs beside the form, where it
+			// stays readable, not on a surface that has to be dismissed.
+			confirming = false;
+			pending = '';
 		}
 	}
 </script>
@@ -140,7 +157,7 @@
 						{/if}
 					</h2>
 
-					<form onsubmit={subscribe} class="mt-10 flex items-center gap-2 rounded-full border border-border bg-surface p-1.5 max-w-lg">
+					<form onsubmit={askConfirm} class="mt-10 flex items-center gap-2 rounded-full border border-border bg-surface p-1.5 max-w-lg">
 						<input
 							type="email"
 							bind:value={email}
@@ -157,17 +174,6 @@
 						</button>
 					</form>
 
-					<!-- The wording the consent is for, on the control that gives it. -->
-					<label class="mt-3 flex max-w-lg items-start gap-2.5 text-xs leading-relaxed text-text-muted">
-						<input
-							type="checkbox"
-							bind:checked={optedIn}
-							data-testid="newsletter-optin"
-							class="mt-px h-4 w-4 shrink-0 rounded accent-accent"
-						/>
-						<span>{consentText}</span>
-					</label>
-
 					{#if outcome !== 'idle'}
 						<p
 							class="mt-2 max-w-lg text-sm {outcome === 'sent'
@@ -180,8 +186,6 @@
 								{i18n.t('newsletter.sent')}
 							{:else if outcome === 'invalid'}
 								{i18n.t('newsletter.invalid')}
-							{:else if outcome === 'consent'}
-								{i18n.t('newsletter.consentRequired')}
 							{:else if outcome === 'throttled'}
 								{i18n.t('newsletter.throttled')}
 							{:else}
@@ -378,3 +382,48 @@
 		</div>
 	</div>
 </footer>
+
+<!--
+	Confirming the address before it is sent, the way signing out is confirmed.
+
+	It carries the consent wording, and that same string travels with the
+	request: a consent is for a sentence, and the one recorded must be the one
+	that was on screen above the button that gave it.
+-->
+<Modal
+	open={confirming}
+	title={i18n.t('newsletter.confirmTitle')}
+	onclose={cancelConfirm}
+	size="sm"
+>
+	<div class="flex gap-4">
+		<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent">
+			<Mail size={20} strokeWidth={2} />
+		</div>
+		<div class="min-w-0">
+			<!-- The address as it was typed. A typo in it is invisible on a form
+			     that answers the same 202 to everything, and it is the only way
+			     back to somebody here. -->
+			<p class="break-all text-sm font-semibold text-text-primary" data-testid="newsletter-confirm-email">
+				{pending}
+			</p>
+			<p class="mt-2 text-sm leading-relaxed text-text-muted">
+				{consentText}
+			</p>
+		</div>
+	</div>
+
+	{#snippet actions()}
+		<Button variant="ghost" onclick={cancelConfirm} disabled={subscribing}>
+			{i18n.t('common.actions.cancel')}
+		</Button>
+		<Button
+			variant="primary"
+			onclick={subscribe}
+			loading={subscribing}
+			data-testid="newsletter-confirm"
+		>
+			{i18n.t('newsletter.confirmAction')}
+		</Button>
+	{/snippet}
+</Modal>

@@ -34,6 +34,7 @@
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import { OnboardingCta } from '$components/onboarding';
 
 	// Typed from the client rather than a local bag of optional fields. The bag
 	// is what let this page read `html_url`, `repository` and `count` — none of
@@ -88,6 +89,12 @@
 			{i18n.t('codeDiscovery.title')}
 		</h1>
 		<p class="text-sm text-text-muted">{i18n.t('codeDiscovery.subtitle')}</p>
+		<!-- The wizard sorts what gets recommended here. Offered rather
+		     than imposed, and hidden from signed-out readers, for whom the
+		     destination is a sign-in wall and not an invitation. -->
+		<div class="pt-1">
+			<OnboardingCta domain="code" />
+		</div>
 	</header>
 
 	<section class="space-y-3" data-testid="code-first-issues">

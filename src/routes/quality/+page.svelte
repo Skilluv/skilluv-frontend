@@ -43,6 +43,7 @@
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import { OnboardingCta } from '$components/onboarding';
 
 	let mine = $state<BugReport[]>([]);
 	let queue = $state<BugReport[]>([]);
@@ -125,6 +126,12 @@
 			{i18n.t('quality.title')}
 		</h1>
 		<p class="text-sm text-text-muted">{i18n.t('quality.subtitle')}</p>
+		<!-- The wizard sorts what gets recommended here. Offered rather
+		     than imposed, and hidden from signed-out readers, for whom the
+		     destination is a sign-in wall and not an invitation. -->
+		<div class="pt-1">
+			<OnboardingCta domain="quality" />
+		</div>
 	</header>
 
 	{#if loading}

@@ -38,6 +38,7 @@
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import { OnboardingCta } from '$components/onboarding';
 
 	let featured = $state<FeaturedCreator[]>([]);
 	let mods = $state<GameMod[]>([]);
@@ -125,6 +126,12 @@
 			{i18n.t('game.title')}
 		</h1>
 		<p class="text-sm text-text-muted">{i18n.t('game.subtitle')}</p>
+		<!-- The wizard sorts what gets recommended here. Offered rather
+		     than imposed, and hidden from signed-out readers, for whom the
+		     destination is a sign-in wall and not an invitation. -->
+		<div class="pt-1">
+			<OnboardingCta domain="game" />
+		</div>
 	</header>
 
 	{#if loading}

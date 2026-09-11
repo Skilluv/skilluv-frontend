@@ -42,6 +42,38 @@ export interface SubscribeBody {
 export const newsletterApi = {
 	subscribe(body: SubscribeBody) {
 		return api.post<ApiResponse<{ message: string }>>('/newsletter/subscriptions', body);
+	},
+
+	/**
+	 * `GET /newsletter/confirm/{token}` — the link in the confirmation mail.
+	 *
+	 * The token is spent on use: a second click answers 404, not 200. That is
+	 * deliberate — a confirmation link that keeps working is a live credential
+	 * sitting in a mailbox somebody else may read one day.
+	 *
+	 * So 404 here covers two different people: one whose link expired, and one
+	 * who simply clicked twice and is already subscribed. The page must not tell
+	 * the second to subscribe again, and cannot tell which of the two it has.
+	 */
+	confirm(token: string) {
+		return api.get<ApiResponse<{ message: string }>>(
+			`/newsletter/confirm/${encodeURIComponent(token)}`
+		);
+	},
+
+	/**
+	 * `GET /newsletter/unsubscribe/{token}` — the link every issue carries.
+	 *
+	 * The opposite of the confirmation token by design: this one never expires
+	 * and is idempotent, so clicking twice answers 200 twice. Somebody who kept
+	 * a two-year-old mail must still be able to get out with it, and neither
+	 * page requires an account. The wording beside the form promises one click,
+	 * and this is the click.
+	 */
+	unsubscribe(token: string) {
+		return api.get<ApiResponse<{ message: string }>>(
+			`/newsletter/unsubscribe/${encodeURIComponent(token)}`
+		);
 	}
 };
 

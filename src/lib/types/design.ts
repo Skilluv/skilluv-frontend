@@ -480,27 +480,26 @@ export const DOMAIN_GOALS = [
 export type DomainGoal = (typeof DOMAIN_GOALS)[number];
 
 /**
- * The answers the backend stores today.
+ * One domain's wizard answers, as the flat object the backend stores.
  *
- * `deny_unknown_fields` is on, so sending a key it does not know is a 400 for
- * the whole request, not a partial save. The design wizard asks four further
- * questions the vocabulary has no room for yet — see `designWizardDraft`.
+ * Open by design. Which keys exist depends on the domain and comes from
+ * `GET /users/me/domain-profile/{domain}/questions` — roughly thirty across
+ * the twelve, and growing whenever a wizard is reworded. Spelling them out
+ * here was how this type came to describe the AI wizard and nothing else:
+ * the four design keys and code's `main_tools` were stored server-side and
+ * absent from the type, so anything reading them had to cast.
+ *
+ * The three every domain asks are named, because they are the ones code
+ * outside the wizard actually reads. Everything else is a string or a list of
+ * strings, which is the whole shape the validator accepts.
  */
 export interface DomainProfileAnswers {
-	level?: DomainLevel;
-	weekly_hours?: DomainWeeklyHours;
-	goal?: DomainGoal;
-	/** AI domain only. */
-	compute?: string;
-	/**
-	 * Plural and a list: somebody who writes in two frameworks answers two,
-	 * and the question is `closed_multi` server-side. It was `main_framework`
-	 * here, singular, which the validator would have refused.
-	 */
-	main_frameworks?: string[];
-	huggingface_username?: string;
+	level?: DomainLevel | string;
+	weekly_hours?: DomainWeeklyHours | string;
+	goal?: DomainGoal | string;
 	/** Sub-orientations, where the domain has families to offer. */
 	preferred_families?: string[];
+	[key: string]: string | string[] | undefined;
 }
 
 // ---------------------------------------------------------------------------

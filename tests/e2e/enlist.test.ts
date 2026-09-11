@@ -24,8 +24,15 @@ test.beforeEach(async ({ page }) => {
 	});
 });
 
-/** The catalogue, as the backend answers it for one discipline. */
-function orientation(slug: string, name: string, domain = 'code') {
+/**
+ * The catalogue, as the backend answers it for one discipline.
+ *
+ * `stack` is always present on the wire and empty for most of the catalogue:
+ * a tool is recorded only where the trade's own description names it. Leaving
+ * it out of the fixture would let the card be written against a shape the
+ * server never sends.
+ */
+function orientation(slug: string, name: string, domain = 'code', stack: string[] = []) {
 	return {
 		id: `00000000-0000-0000-0000-${slug.slice(0, 12).padEnd(12, '0')}`,
 		slug,
@@ -34,6 +41,7 @@ function orientation(slug: string, name: string, domain = 'code') {
 		primary_domain: domain,
 		secondary_domains: [],
 		tags: ['web'],
+		stack,
 		is_curated: true,
 		is_archived: false
 	};
@@ -215,6 +223,32 @@ test.describe('Enlistment — trades', () => {
 		// The cap is 200 and the catalogue holds ~255: a request with no domain
 		// would silently return the backend's default page of 50.
 		expect(urls.some((u) => u.includes('domain=code') && u.includes('limit=200'))).toBe(true);
+	});
+
+	test('shows the named tools of a trade, and does not invent any for the rest', async ({
+		page
+	}) => {
+		// Two of the twenty-six design trades name their tools; the rest do not,
+		// and an empty stack means "not recorded", not "none". Filling it in with
+		// plausible tools would be worse than showing nothing, because on the
+		// screen where somebody picks a trade an invented tool reads as a
+		// requirement of it.
+		const design = [
+			orientation('design-motion-ui', 'Motion designer UI', 'design', ['lottie', 'rive']),
+			orientation('design-product', 'Designer produit', 'design')
+		];
+		await mockCatalogue(page, design);
+		await gotoHydrated(page, '/auth/register/path?d=design');
+
+		const withTools = page.getByTestId('path-card-design-motion-ui');
+		await expect(withTools).toContainText('lottie');
+		await expect(withTools).toContainText('rive');
+
+		// The trade with no recorded stack still shows its categories, and shows
+		// nothing that looks like an error or a gap.
+		const without = page.getByTestId('path-card-design-product');
+		await expect(without).toContainText('web');
+		await expect(without).not.toContainText(/lottie|rive/i);
 	});
 
 	test('with no domain chosen it sends you back to the wall', async ({ page }) => {

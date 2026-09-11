@@ -260,13 +260,47 @@ export interface Translations
 	/**
 	 * The footer's newsletter form.
 	 *
-	 * `optIn` is both the label on the opt-in box and the text sent to the API
-	 * and stored with the address: a consent is for a wording, and a boolean
-	 * cannot say which one was agreed to. The two must never drift apart.
+	 * `consent` is both what the confirmation dialog shows and the text sent to
+	 * the API and stored with the address: a consent is for a wording, and a
+	 * boolean cannot say which one was agreed to. The two must never drift apart.
 	 */
 	newsletter: {
-		optIn: string;
-		consentRequired: string;
+		confirmTitle: string;
+		/**
+		 * The two pages a newsletter mail links to.
+		 *
+		 * The two tokens behave opposite ways on purpose. The confirmation one
+		 * is spent on use, so a second click is a 404 — it must never stay a
+		 * live credential in a mailbox. The unsubscribe one never expires and
+		 * is idempotent, because somebody holding an old mail must always be
+		 * able to get out. The copy follows that, not a shared shape.
+		 */
+		confirmPage: {
+			title: string;
+			working: string;
+			doneTitle: string;
+			doneBody: string;
+			home: string;
+			spentTitle: string;
+			spentBody: string;
+			retry: string;
+			failedTitle: string;
+			failedBody: string;
+		};
+		unsubPage: {
+			title: string;
+			working: string;
+			doneTitle: string;
+			doneBody: string;
+			rejoin: string;
+			unknownTitle: string;
+			unknownBody: string;
+			failedTitle: string;
+			failedBody: string;
+			contact: string;
+		};
+		confirmAction: string;
+		consent: string;
 		sent: string;
 		invalid: string;
 		throttled: string;
@@ -1155,14 +1189,56 @@ export interface Translations
 	/** Who is credited on a project, from the attestations that carry it. */
 	/** The AI domain of work — artefacts published here, contests elsewhere. */
 	/** The per-domain onboarding wizard, rendered from what the backend serves. */
+	/**
+	 * The per-domain onboarding wizard.
+	 *
+	 * The question and option maps mirror `routes::domain_profile`'s registry,
+	 * which is the authority: the wizard renders from `GET …/questions` and
+	 * these are only labels for what it serves. A key missing here is not a
+	 * crash — the component falls back to the slug — so the type is a promise
+	 * that the labels exist, not a gate on what may be asked.
+	 *
+	 * `titles` and `subtitles` carry one entry per discipline plus `generic`,
+	 * which is what a domain that gains a wizard server-side reads until
+	 * somebody writes it a headline.
+	 */
 	domainWizard: {
-		titles: { ai: string; security: string };
-		subtitles: { ai: string; security: string };
+		titles: {
+			generic: string;
+			code: string;
+			design: string;
+			game: string;
+			security: string;
+			ai: string;
+			ops: string;
+			audio: string;
+			quality: string;
+			leadership: string;
+			communication: string;
+			education: string;
+			soft_skills: string;
+		};
+		subtitles: {
+			generic: string;
+			code: string;
+			design: string;
+			game: string;
+			security: string;
+			ai: string;
+			ops: string;
+			audio: string;
+			quality: string;
+			leadership: string;
+			communication: string;
+			education: string;
+			soft_skills: string;
+		};
 		notAClaim: string;
 		progressLabel: string;
 		stepOf: string;
 		pickUpTo: string;
 		maxSelections: string;
+		tagPlaceholder: string;
 		back: string;
 		next: string;
 		skipQuestion: string;
@@ -1170,20 +1246,80 @@ export interface Translations
 		skipAll: string;
 		savedToast: string;
 		noQuestions: string;
+		planKicker: string;
+		planFirstMonth: string;
+		planGuides: string;
+		planGo: string;
 		questions: {
 			level: string;
 			weekly_hours: string;
 			goal: string;
+			preferred_families: string;
 			compute: string;
 			main_frameworks: string;
 			huggingface_username: string;
-			preferred_families: string;
+			challenge_preference: string;
+			main_tool: string;
+			portfolio_url: string;
+			main_tools: string;
+			github_username: string;
+			security_certifications: string;
+			security_lab_setup: string;
+			security_tools: string;
+			main_formats: string;
+			subject_domain: string;
+			dev_to_username: string;
+			blog_url: string;
+			audio_destination: string;
+			main_daws: string;
+			soundcloud_username: string;
+			bandcamp_username: string;
+			quality_background: string;
+			quality_target_domains: string;
+			quality_tools: string;
+			leadership_level: string;
+			leadership_context: string;
+			leadership_target_domains: string;
+			leadership_tools: string;
+			main_settings: string;
+			learner_level: string;
 		};
+		/** Optional by nature: a question earns a hint, it is not owed one. */
 		hints: {
+			preferred_families: string;
 			compute: string;
 			huggingface_username: string;
-			preferred_families: string;
+			challenge_preference: string;
+			main_tool: string;
+			portfolio_url: string;
+			main_tools: string;
+			github_username: string;
+			security_certifications: string;
+			security_lab_setup: string;
+			security_tools: string;
+			subject_domain: string;
+			dev_to_username: string;
+			main_daws: string;
+			quality_background: string;
+			quality_target_domains: string;
+			quality_tools: string;
+			leadership_level: string;
+			leadership_context: string;
+			leadership_tools: string;
+			learner_level: string;
 		};
+		/**
+		 * One map per closed question.
+		 *
+		 * `level`, `weekly_hours`, `goal` and `challenge_preference` each hold
+		 * two vocabularies: code asks them in its own words — `staff` is a
+		 * rank the design ladder has no word for — and the two sets do not
+		 * collide, so one map serves both.
+		 *
+		 * `quality_target_domains` and `leadership_target_domains` have no map
+		 * at all. They answer with discipline slugs, which are translated once
+		 * under `common.domains`, and the component falls through to there.
+		 */
 		options: {
 			level: {
 				debutant: string;
@@ -1191,14 +1327,33 @@ export interface Translations
 				practitioner: string;
 				senior: string;
 				researcher: string;
+				beginner: string;
+				junior: string;
+				mid: string;
+				staff: string;
 			};
-			weekly_hours: { lt3: string; '3_10': string; gt10: string; fulltime: string };
+			weekly_hours: {
+				lt3: string;
+				'3_10': string;
+				gt10: string;
+				fulltime: string;
+				under_5: string;
+				'5_to_15': string;
+				'15_to_40': string;
+			};
 			goal: {
 				learning: string;
 				portfolio: string;
 				paid_missions: string;
 				academic_research: string;
 				startup: string;
+				learn: string;
+				build_portfolio: string;
+				find_paid_work: string;
+				contribute_upstream: string;
+				publish_library: string;
+				become_mentor: string;
+				ship_own_product: string;
 			};
 			compute: {
 				none: string;
@@ -1215,7 +1370,129 @@ export interface Translations
 				mlx: string;
 				other: string;
 			};
+			challenge_preference: {
+				individual: string;
+				contest: string;
+				both: string;
+				undecided: string;
+				upstream_contributions: string;
+				solo_shipped_apps: string;
+				published_libraries: string;
+				long_team_projects: string;
+				short_hackathons: string;
+			};
+			main_tool: {
+				figma: string;
+				adobe: string;
+				sketch: string;
+				blender: string;
+				after_effects: string;
+				other: string;
+			};
+			security_certifications: {
+				none: string;
+				security_plus: string;
+				oscp_or_offsec: string;
+				ceh: string;
+				cissp_or_cism: string;
+				gcih_or_giac: string;
+				cloud_security: string;
+				other: string;
+			};
+			security_lab_setup: {
+				browser_only: string;
+				local_tools: string;
+				local_vms: string;
+				home_lab: string;
+				cloud: string;
+			};
+			main_formats: {
+				documentation: string;
+				articles: string;
+				talks: string;
+				video: string;
+				livestream: string;
+				podcast: string;
+				translation: string;
+				research: string;
+			};
+			/** Only `cross`: the rest are disciplines, read from `common.domains`. */
+			subject_domain: { cross: string };
+			audio_destination: {
+				game: string;
+				motion: string;
+				podcast: string;
+				brand: string;
+				ui: string;
+				cross: string;
+			};
+			main_daws: {
+				reaper: string;
+				ardour: string;
+				logic: string;
+				fl_studio: string;
+				ableton: string;
+				cubase: string;
+				pro_tools: string;
+				audacity: string;
+				other: string;
+			};
+			quality_background: {
+				developer_moving_across: string;
+				professional_tester: string;
+				support_or_operations: string;
+				career_change: string;
+				student: string;
+				other: string;
+			};
+			leadership_level: {
+				aspiring: string;
+				emerging: string;
+				lead: string;
+				senior_lead: string;
+				executive: string;
+			};
+			leadership_context: {
+				employed_team: string;
+				open_source: string;
+				community: string;
+				own_venture: string;
+				none_yet: string;
+			};
+			main_settings: {
+				bootcamp: string;
+				school: string;
+				university: string;
+				in_company: string;
+				community: string;
+				self_paced: string;
+				one_to_one: string;
+			};
+			learner_level: {
+				beginner: string;
+				junior: string;
+				mid: string;
+				senior: string;
+				mixed: string;
+			};
 		};
+	};
+	/**
+	 * The onboarding index: one card per discipline.
+	 *
+	 * `hubCta` lives here rather than beside each discipline's own copy so
+	 * that the seven hubs offering the wizard word it identically — they used
+	 * to have one button between them, on `/ai`, with its own string.
+	 */
+	onboardingIndex: {
+		title: string;
+		subtitle: string;
+		notAClaim: string;
+		answered: string;
+		dismissed: string;
+		open: string;
+		reviewCta: string;
+		hubCta: string;
 	};
 	/** The creators marketplace. */
 	marketplace: {
@@ -1256,7 +1533,6 @@ export interface Translations
 	};
 	aiDomain: {
 		title: string;
-		onboardingCta: string;
 		subtitle: string;
 		artifactsTitle: string;
 		artifactsHint: string;
@@ -2573,6 +2849,9 @@ export interface Translations
 			plagiarism_reviewer: { label: string; description: string };
 			kyc_reviewer: { label: string; description: string };
 			community_curator: { label: string; description: string };
+			domain_curator: { label: string; description: string };
+			/** Granted per discipline, so both strings take a `{domain}`. */
+			rite_reviewer: { label: string; description: string };
 		};
 		nav: {
 			forumModeration: string;

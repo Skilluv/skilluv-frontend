@@ -35,6 +35,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import { OnboardingCta } from '$components/onboarding';
 
 	let objectives = $state<Objective[]>([]);
 	let incidents = $state<Incident[]>([]);
@@ -89,6 +90,12 @@
 			{i18n.t('ops.title')}
 		</h1>
 		<p class="text-sm text-text-muted">{i18n.t('ops.subtitle')}</p>
+		<!-- The wizard sorts what gets recommended here. Offered rather
+		     than imposed, and hidden from signed-out readers, for whom the
+		     destination is a sign-in wall and not an invitation. -->
+		<div class="pt-1">
+			<OnboardingCta domain="ops" />
+		</div>
 	</header>
 
 	{#if loading}
