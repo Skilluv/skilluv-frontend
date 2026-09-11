@@ -5,7 +5,7 @@
 	import Modal from '$components/ui/Modal.svelte';
 	import Select from '$components/ui/Select.svelte';
 	import Badge from '$components/ui/Badge.svelte';
-	import { AlertTriangle, ArrowRight } from '@lucide/svelte';
+	import { ArrowRight } from '@lucide/svelte';
 	import {
 		enterpriseSsoApi,
 		type SsoConfig,
@@ -14,6 +14,7 @@
 	} from '$api/enterprise_sso';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
+	import Alert from '$components/ui/Alert.svelte';
 
 	// ─── SSO configuration state ─────────────────────────────────
 
@@ -258,14 +259,14 @@
 	</p>
 
 	{#if successMsg}
-		<div class="mb-4 rounded-xl border border-success/30 bg-success/10 px-4 py-3 text-sm text-success">
+		<Alert tone="success" size="sm" class="mb-4">
 			{successMsg}
-		</div>
+		</Alert>
 	{/if}
 	{#if configError}
-		<div class="mb-4 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+		<Alert tone="error" size="sm" class="mb-4">
 			{configError}
-		</div>
+		</Alert>
 	{/if}
 
 	<!-- ─── SSO section ─── -->
@@ -432,11 +433,11 @@
 		</p>
 
 		{#if !config}
-			<div class="rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
+			<Alert tone="warning" size="sm">
 				{i18n.locale === 'fr'
 					? 'Configure d’abord ton SSO OIDC ci-dessus.'
 					: 'Configure OIDC SSO above first.'}
-			</div>
+			</Alert>
 		{:else}
 			<div class="mb-4 flex flex-wrap gap-3">
 				<Button variant="accent" onclick={generateScim} loading={scimGenerating}>
@@ -481,9 +482,9 @@
 				{/if}
 
 				{#if scimGroupsError}
-					<div class="mb-3 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+					<Alert tone="error" size="sm" class="mb-3">
 						{scimGroupsError}
-					</div>
+					</Alert>
 				{/if}
 
 				{#if scimGroups.length === 0}
@@ -552,14 +553,11 @@
 	onclose={() => (showScimTokenModal = false)}
 >
 	<div class="flex flex-col gap-4 text-sm">
-		<div class="flex items-start gap-2 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-warning">
-			<AlertTriangle size={18} strokeWidth={2} class="mt-0.5 shrink-0" />
-			<span>
-				{i18n.locale === 'fr'
-					? 'Ce token ne sera plus jamais affiché. Copie-le maintenant et stocke-le dans ton coffre-fort (ou colle-le directement dans ton IdP).'
-					: 'This token will never be shown again. Copy it now and store it in your secret vault (or paste it directly into your IdP).'}
-			</span>
-		</div>
+		<Alert tone="warning">
+			{i18n.locale === 'fr'
+				? 'Ce token ne sera plus jamais affiché. Copie-le maintenant et stocke-le dans ton coffre-fort (ou colle-le directement dans ton IdP).'
+				: 'This token will never be shown again. Copy it now and store it in your secret vault (or paste it directly into your IdP).'}
+		</Alert>
 
 		<div>
 			<p class="mb-1 text-xs font-bold uppercase tracking-widest text-text-muted">Token</p>

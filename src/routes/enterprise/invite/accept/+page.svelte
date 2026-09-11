@@ -8,6 +8,7 @@
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
 	import BrandLogo from '$components/layout/BrandLogo.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	type Phase =
 		| 'loading'
@@ -192,9 +193,9 @@
 					{i18n.locale === 'fr' ? 'Invitation' : 'Invitation'}<br />
 					<span class="text-accent">{i18n.locale === 'fr' ? 'invalide.' : 'invalid.'}</span>
 				</h1>
-				<div class="mb-6 rounded-2xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+				<Alert tone="error" size="sm" class="mb-6">
 					{error}
-				</div>
+				</Alert>
 				<p class="mb-8 text-base text-text-muted">
 					{i18n.locale === 'fr'
 						? "Le lien peut avoir expiré ou avoir déjà été utilisé. Demandez à l'owner de vous renvoyer une invitation."

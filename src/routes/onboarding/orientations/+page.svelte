@@ -13,6 +13,7 @@
 	import type { Orientation } from '$lib/types';
 	import type { RegisterOrientationRequest } from '$lib/api/orientations';
 	import { onMount } from 'svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let catalog = $state<Orientation[]>([]);
 	let loading = $state(true);
@@ -127,9 +128,9 @@
 			{/each}
 		</div>
 	{:else if error}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{error}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{error}
+		</Alert>
 	{:else}
 		<OrientationSelector
 			{catalog}

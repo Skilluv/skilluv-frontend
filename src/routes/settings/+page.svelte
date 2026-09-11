@@ -13,6 +13,7 @@
 	import type { Locale } from '$lib/i18n';
 	import { checkPassword } from '$lib/utils/password';
 	import type { ThemeBase, SkillDomain, PrivacySettings } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	// Password
 	let currentPassword = $state('');
@@ -296,12 +297,14 @@
 	<!-- Zone danger -->
 	<section>
 		<h2 class="mb-4 text-lg font-semibold text-error">{i18n.t('settings.danger.title')}</h2>
-		<div class="rounded-2xl border border-error/30 bg-error/5 p-6">
-			<p class="mb-3 text-sm text-text-muted">
-				{i18n.t('settings.danger.deleteWarning')}
-			</p>
-			<Button variant="danger" onclick={() => (showDeleteModal = true)}>{i18n.t('settings.danger.deleteBtn')}</Button>
-		</div>
+		<Alert tone="error" size="lg" role="none">
+			{i18n.t('settings.danger.deleteWarning')}
+			{#snippet action()}
+				<Button variant="danger" onclick={() => (showDeleteModal = true)}>
+					{i18n.t('settings.danger.deleteBtn')}
+				</Button>
+			{/snippet}
+		</Alert>
 	</section>
 </div>
 

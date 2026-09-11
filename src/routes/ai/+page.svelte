@@ -23,6 +23,7 @@
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { OnboardingCta } from '$components/onboarding';
+	import Alert from '$components/ui/Alert.svelte';
 	import {
 		AI_ARTIFACT_SUBTYPES,
 		type AiArtifact,
@@ -146,9 +147,9 @@
 				{/each}
 			</div>
 		{:else if loadError}
-			<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-				<p class="text-sm text-error">{loadError}</p>
-			</div>
+			<Alert tone="error" size="lg" align="center">
+				{loadError}
+			</Alert>
 		{:else if artifacts.length === 0}
 			<EmptyState
 				variant="scroll"

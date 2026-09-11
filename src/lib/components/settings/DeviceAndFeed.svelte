@@ -26,6 +26,7 @@
 	import { toast } from '$stores/toast.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	type TokenRow = {
 		id?: string;
@@ -146,8 +147,9 @@
 		<!-- Its own gesture, with its own confirmation. Not a switch among
 		     switches: this is somebody asking not to be published. -->
 		{#if confirmWithdraw}
-			<div class="space-y-2 rounded-xl border border-warning/40 bg-warning/5 p-4">
-				<p class="text-sm text-warning">{i18n.t('deviceFeed.withdrawConfirm')}</p>
+			<Alert tone="warning">
+				{i18n.t('deviceFeed.withdrawConfirm')}
+				{#snippet action()}
 				<div class="flex flex-wrap gap-2">
 					<Button
 						size="sm"
@@ -162,7 +164,8 @@
 						{i18n.t('deviceFeed.cancelCta')}
 					</Button>
 				</div>
-			</div>
+				{/snippet}
+			</Alert>
 		{:else}
 			<Button size="sm" variant="ghost" onclick={() => (confirmWithdraw = true)}>
 				{i18n.t('deviceFeed.withdrawCta')}

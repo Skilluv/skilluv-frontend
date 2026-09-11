@@ -12,6 +12,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import { ExternalLink } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	type Filter = 'all' | 'mine';
 
@@ -151,12 +152,12 @@
 			{/snippet}
 		</EmptyState>
 	{:else if view.status === 'error'}
-		<div class="rounded-2xl border border-error/30 bg-error/5 p-6 text-sm text-error">
+		<Alert tone="error" size="lg">
 			{view.message}
-			<div class="mt-3">
+			{#snippet action()}
 				<Button variant="secondary" size="sm" onclick={load}>{i18n.t('p26.validation.retryBtn')}</Button>
-			</div>
-		</div>
+			{/snippet}
+		</Alert>
 	{:else if visibleItems.length === 0}
 		<EmptyState
 			variant="search"

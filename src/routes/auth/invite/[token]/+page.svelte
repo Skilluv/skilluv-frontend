@@ -11,7 +11,8 @@
 	import PasswordRules from '$components/auth/PasswordRules.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
-	import { ShieldCheck, AlertTriangle } from '@lucide/svelte';
+	import { ShieldCheck } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	// Enterprise recruiter invite landing. Three real code paths from here:
 	//
@@ -172,9 +173,9 @@
 			{i18n.locale === 'fr' ? 'Invitation' : 'Invitation'}<br />
 			<span class="text-accent">{i18n.locale === 'fr' ? 'invalide.' : 'invalid.'}</span>
 		</h1>
-		<div class="mb-6 rounded-2xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+		<Alert tone="error" size="sm" class="mb-6">
 			{previewError}
-		</div>
+		</Alert>
 		<p class="mb-8 text-base text-text-muted">
 			{i18n.locale === 'fr'
 				? "Le lien peut avoir expiré ou avoir déjà été utilisé. Demandez à l'owner de vous renvoyer une invitation."
@@ -193,14 +194,11 @@
 				? `${companyName} vous invite à rejoindre son espace entreprise. Votre compte candidat sera converti en compte recruteur.`
 				: `${companyName} is inviting you to their enterprise workspace. Your candidate account will be converted into a recruiter account.`}
 		</p>
-		<div class="mb-6 flex items-start gap-2 rounded-2xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-warning">
-			<AlertTriangle size={16} strokeWidth={2} class="mt-0.5 shrink-0" />
-			<span>
-				{i18n.locale === 'fr'
-					? "Vous perdrez l'accès aux challenges, à la progression et aux fonctionnalités candidat. Votre XP et vos badges restent enregistrés mais deviennent invisibles."
-					: 'You will lose access to challenges, progression and candidate features. Your XP and badges are kept but hidden.'}
-			</span>
-		</div>
+		<Alert tone="warning" class="mb-6">
+			{i18n.locale === 'fr'
+				? "Vous perdrez l'accès aux challenges, à la progression et aux fonctionnalités candidat. Votre XP et vos badges restent enregistrés mais deviennent invisibles."
+				: 'You will lose access to challenges, progression and candidate features. Your XP and badges are kept but hidden.'}
+		</Alert>
 		<div class="flex flex-col gap-3">
 			<Button variant="accent" size="lg" onclick={acceptAsCandidate} class="w-full">
 				{i18n.locale === 'fr' ? 'Continuer et rejoindre' : 'Continue and join'}
@@ -245,9 +243,9 @@
 			     ONLY for the minimum we need (name + password + terms). -->
 			<form onsubmit={submitRegister} class="flex flex-col gap-4">
 				{#if submitError}
-					<div class="rounded-2xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+					<Alert tone="error" size="sm">
 						{submitError}
-					</div>
+					</Alert>
 				{/if}
 				<div class="grid gap-3 sm:grid-cols-2">
 					<Input

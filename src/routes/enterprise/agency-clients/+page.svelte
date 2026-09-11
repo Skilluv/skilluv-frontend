@@ -11,6 +11,7 @@
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
 	import EmptyState from '$lib/components/ui/EmptyState.svelte';
 	import { Pencil, Trash2, Plus, X } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let clients = $state<AgencyClient[]>([]);
 	let enterpriseType = $state<EnterpriseType | null>(null);
@@ -157,9 +158,9 @@
 	</header>
 
 	{#if !loading && !isAgency}
-		<div class="rounded-2xl border border-warning/40 bg-warning/5 p-6 text-center" role="alert">
-			<p class="text-sm text-text-primary">{i18n.t('enterprise.agencyClients.ownerOnly')}</p>
-		</div>
+		<Alert tone="warning" size="lg" align="center">
+			{i18n.t('enterprise.agencyClients.ownerOnly')}
+		</Alert>
 	{:else if loading}
 		<div class="space-y-3">
 			<Skeleton class="h-16 w-full" rounded="xl" />
@@ -167,9 +168,9 @@
 			<Skeleton class="h-16 w-full" rounded="xl" />
 		</div>
 	{:else if error}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{error}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{error}
+		</Alert>
 	{:else}
 		{#if showForm}
 			<form

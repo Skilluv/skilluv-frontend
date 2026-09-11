@@ -39,6 +39,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import TagInput from '$components/ui/TagInput.svelte';
 	import RecommendationPanel from './RecommendationPanel.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 	import type {
 		DomainAnswerValue,
 		DomainQuestionSpec,
@@ -264,9 +265,9 @@
 	{:else if loading}
 		<Skeleton class="h-64 w-full" rounded="xl" />
 	{:else if loadError}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{loadError}
+		</Alert>
 	{:else if total === 0}
 		<p class="text-sm text-text-muted">{i18n.t('domainWizard.noQuestions')}</p>
 	{:else if current}

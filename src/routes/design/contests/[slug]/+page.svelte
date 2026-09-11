@@ -22,6 +22,7 @@
 	import Modal from '$components/ui/Modal.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { ContestJuror, ContestSubmission, Tournament, TournamentParticipant } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let slug = $derived($page.params.slug ?? '');
 
@@ -170,12 +171,14 @@
 		<Skeleton class="h-64 w-full" rounded="xl" />
 		<Skeleton class="mt-6 h-48 w-full" rounded="xl" />
 	{:else if loadError}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-			<Button variant="ghost" size="sm" class="mt-3" href="/design/contests">
-				{i18n.t('designContests.title')}
-			</Button>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{loadError}
+			{#snippet action()}
+				<Button variant="ghost" size="sm" href="/design/contests">
+					{i18n.t('designContests.title')}
+				</Button>
+			{/snippet}
+		</Alert>
 	{:else if contest}
 		<!-- Hero -->
 		<header class="overflow-hidden rounded-2xl border border-border bg-surface-elevated">

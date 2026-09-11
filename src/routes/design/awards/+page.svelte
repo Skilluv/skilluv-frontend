@@ -39,6 +39,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { FeaturedTalent } from '$components/domain';
 	import type { AwardCategory, AwardEdition, AwardNominee } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	/**
 	 * An edition covers a finished year, so the newest one that can exist is
@@ -222,9 +223,9 @@
 			<span class="ml-1">{i18n.t('designAwards.noEditionHint')}</span>
 		</p>
 	{:else if loadError}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-4 py-3 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{loadError}
-		</p>
+		</Alert>
 	{:else if edition}
 		<section class="rounded-xl border border-border bg-surface-elevated p-5 space-y-3">
 			<div class="flex flex-wrap items-center justify-between gap-2">

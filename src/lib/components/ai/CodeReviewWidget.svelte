@@ -7,6 +7,7 @@
 	import { SkilluError } from '$api/client';
 	import type { Component } from 'svelte';
 	import { Bug, Sparkles, Zap, Shield, GraduationCap, Info, Check, BookOpen } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	interface Props {
 		submissionId: string;
@@ -115,9 +116,9 @@
 				</p>
 			</div>
 		{:else if phase === 'error'}
-			<div class="rounded-xl border border-error/30 bg-error/5 p-4">
-				<p class="text-sm text-error">{errorMsg}</p>
-			</div>
+			<Alert tone="error">
+				{errorMsg}
+			</Alert>
 		{:else if phase === 'done' && result}
 			<!-- Score header -->
 			<div class="mb-6 flex items-center gap-6 border-b border-border pb-6">

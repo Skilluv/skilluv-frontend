@@ -39,6 +39,7 @@
 	import Input from '$components/ui/Input.svelte';
 	import Select from '$components/ui/Select.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 	import type {
 		Mission,
 		MissionDelivery,
@@ -267,9 +268,9 @@
 				</div>
 
 				{#if !agreement.is_reviewed}
-					<p class="rounded-lg border border-warning/40 bg-warning/5 px-3 py-2 text-xs text-warning">
+					<Alert tone="warning" size="sm">
 						{i18n.t('missionWork.ndaUnreviewed')}
-					</p>
+					</Alert>
 				{/if}
 
 				<div

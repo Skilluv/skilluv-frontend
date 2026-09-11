@@ -29,6 +29,7 @@
 	import Modal from '$components/ui/Modal.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { domainStyle } from '$lib/utils/domains';
+	import Alert from '$components/ui/Alert.svelte';
 	import {
 		MARKETPLACE_RATING_MAX,
 		MARKETPLACE_RATING_MIN,
@@ -180,9 +181,9 @@
 			<Skeleton class="h-64 w-full" rounded="xl" />
 		</div>
 	{:else if loadError}
-		<div class="mt-6 rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center" class="mt-6">
+			{loadError}
+		</Alert>
 	{:else if item && detail}
 		{@const stars = fmtRating(item.rating_avg)}
 		<article class="mt-6 grid gap-8 lg:grid-cols-3" data-testid="marketplace-item">

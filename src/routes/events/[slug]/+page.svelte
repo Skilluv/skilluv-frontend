@@ -10,6 +10,7 @@
 	import Badge from '$lib/components/ui/Badge.svelte';
 	import { toast } from '$lib/stores/toast.svelte';
 	import { ChevronLeft, Calendar } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let slug = $derived($page.params.slug ?? '');
 
@@ -97,9 +98,9 @@
 		<Skeleton class="mb-4 h-10 w-2/3" />
 		<Skeleton class="h-40 w-full" rounded="xl" />
 	{:else if error}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{error}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{error}
+		</Alert>
 	{:else if event}
 		<article>
 			<header class="mb-6 flex items-center gap-2 flex-wrap">

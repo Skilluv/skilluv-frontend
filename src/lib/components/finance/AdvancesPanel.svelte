@@ -32,6 +32,7 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let rows = $state<Advance[]>([]);
 	let loading = $state(true);
@@ -96,9 +97,9 @@
 	{#if loading}
 		<Skeleton class="h-24 w-full" rounded="xl" />
 	{:else if loadError}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-3 py-2 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{loadError}
-		</p>
+		</Alert>
 	{:else if rows.length === 0}
 		<p class="text-sm text-text-muted">{i18n.t('advances.empty')}</p>
 		<!-- Where asking actually happens: an advance is requested against one

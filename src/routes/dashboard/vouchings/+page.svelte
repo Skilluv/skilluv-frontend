@@ -22,6 +22,7 @@
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { VouchingWithParty } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let given = $state<VouchingWithParty[]>([]);
 	let received = $state<VouchingWithParty[]>([]);
@@ -106,9 +107,9 @@
 			{/each}
 		</div>
 	{:else if loadError}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{loadError}
+		</Alert>
 	{:else}
 		<section class="mb-10">
 			<div class="mb-3 flex flex-wrap items-baseline justify-between gap-2">

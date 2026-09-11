@@ -16,6 +16,7 @@
 	} from '$api/pipeline';
 	import { profileApi } from '$api/profile';
 	import { Download, Pencil, Trash2, GripVertical, Plus } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	// ── State ──────────────────────────────────────────────────
 	let entries = $state<PipelineEntry[]>([]);
@@ -334,14 +335,14 @@
 			{/each}
 		</div>
 	{:else if error}
-		<div class="rounded-2xl border border-error/30 bg-error/10 p-6 text-center text-sm text-error">
+		<Alert tone="error" size="lg" align="center">
 			{error}
-			<div class="mt-3">
+			{#snippet action()}
 				<Button variant="ghost" onclick={load}>
 					{i18n.locale === 'fr' ? 'Réessayer' : 'Retry'}
 				</Button>
-			</div>
-		</div>
+			{/snippet}
+		</Alert>
 	{:else}
 		<!-- Kanban horizontal-scroll sur desktop étroit, 6 colonnes sur xl -->
 		<div class="grid auto-cols-[minmax(260px,1fr)] grid-flow-col gap-3 overflow-x-auto pb-4 xl:grid-flow-row xl:grid-cols-6">

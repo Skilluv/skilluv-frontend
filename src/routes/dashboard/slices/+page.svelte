@@ -9,6 +9,7 @@
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import Pagination from '$components/ui/Pagination.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	interface Props {
 		data: {
@@ -118,9 +119,9 @@
 		</div>
 
 		{#if data.mineError}
-			<div class="rounded-xl border border-error/30 bg-error/10 p-6 text-center">
-				<p class="text-sm text-error">{data.mineError}</p>
-			</div>
+			<Alert tone="error" size="lg" align="center">
+				{data.mineError}
+			</Alert>
 		{:else if filtered.length === 0}
 			{#if tab === 'active'}
 				<EmptyState
@@ -184,9 +185,9 @@
 		</div>
 
 		{#if data.recoError}
-			<div class="rounded-xl border border-error/30 bg-error/10 p-6 text-center">
-				<p class="text-sm text-error">{data.recoError}</p>
-			</div>
+			<Alert tone="error" size="lg" align="center">
+				{data.recoError}
+			</Alert>
 		{:else if data.reco.length === 0}
 			<EmptyState
 				variant="search"

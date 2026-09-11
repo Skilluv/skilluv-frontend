@@ -30,6 +30,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	/** Unhurried on purpose: a model takes seconds. */
 	const POLL_MS = 3000;
@@ -154,9 +155,9 @@
 			<Skeleton class="h-24 w-full" rounded="xl" />
 		</div>
 	{:else if gaveUp}
-		<p class="rounded-lg border border-warning/40 bg-warning/5 px-3 py-2 text-sm text-warning">
+		<Alert tone="warning" size="sm">
 			{i18n.t('assistantJobs.gaveUp')}
-		</p>
+		</Alert>
 	{:else if result}
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 		<!-- Svelte's rule and axe disagree here, and axe is right for this

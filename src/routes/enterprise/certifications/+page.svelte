@@ -12,6 +12,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { toast } from '$stores/toast.svelte';
 	import { BadgeCheck, Award, ArrowRight } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let certifications = $state<Certification[]>([]);
 	let loading = $state(true);
@@ -168,14 +169,14 @@
 			{/each}
 		</div>
 	{:else if error}
-		<div class="rounded-2xl border border-error/30 bg-error/10 p-6 text-center text-sm text-error">
+		<Alert tone="error" size="lg" align="center">
 			{error}
-			<div class="mt-3">
+			{#snippet action()}
 				<Button variant="ghost" onclick={load}>
 					{i18n.locale === 'fr' ? 'Réessayer' : 'Retry'}
 				</Button>
-			</div>
-		</div>
+			{/snippet}
+		</Alert>
 	{:else if certifications.length === 0}
 		<div class="rounded-2xl border border-border bg-surface-elevated p-10 text-center">
 			<div class="mb-3 inline-flex justify-center text-text-muted">

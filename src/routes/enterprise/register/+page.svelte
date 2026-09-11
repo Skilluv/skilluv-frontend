@@ -18,6 +18,7 @@
 	import { Check, KeyRound, Mail, ShieldCheck } from '@lucide/svelte';
 	import SsoButton from '$components/ui/SsoButton.svelte';
 	import BrandLogo from '$components/layout/BrandLogo.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	// --- State ---
 	// Steps: 1 personal → 2 company → 3 enterprise type → 4 done
@@ -256,9 +257,9 @@
 
 	<div class="w-full max-w-md">
 		{#if error}
-			<div class="mb-5 rounded-2xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error" role="alert">
+			<Alert tone="error" size="sm" class="mb-5">
 				{error}
-			</div>
+			</Alert>
 		{/if}
 
 		{#if step === 1}

@@ -11,6 +11,7 @@
 	import Modal from '$components/ui/Modal.svelte';
 	import StatCard from '$components/ui/StatCard.svelte';
 	import Table from '$components/ui/Table.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	interface Member {
 		id: string;
@@ -290,24 +291,28 @@
 		</form>
 
 		{#if lastInviteToken}
-			<div class="rounded-2xl border border-success/40 bg-success/5 p-4">
-				<p class="mb-2 text-xs font-bold uppercase tracking-widest text-success">
-					{i18n.locale === 'fr' ? 'Lien généré' : 'Link generated'}
-				</p>
-				<p class="text-xs text-text-muted mb-3 leading-relaxed">
-					{i18n.locale === 'fr'
-						? "Partagez ce lien avec le recruteur invité. Il pourra l'accepter en un clic."
-						: 'Share this link with the invited recruiter. They can accept in one click.'}
-				</p>
+			<!-- Held in a const because the action snippet is its own scope:
+			     the narrowing the `{#if}` performs does not reach inside it,
+			     and reading the nullable field there is a type error. -->
+			{@const token = lastInviteToken}
+			<Alert
+				tone="success"
+				title={i18n.locale === 'fr' ? 'Lien généré' : 'Link generated'}
+			>
+				{i18n.locale === 'fr'
+					? "Partagez ce lien avec le recruteur invité. Il pourra l'accepter en un clic."
+					: 'Share this link with the invited recruiter. They can accept in one click.'}
+				{#snippet action()}
 				<div class="flex items-center gap-2">
 					<code class="flex-1 truncate rounded-lg bg-surface-overlay px-3 py-2 text-xs font-mono text-text-primary">
-						/enterprise/invite/accept?token={lastInviteToken.slice(0, 12)}…
+						/enterprise/invite/accept?token={token.slice(0, 12)}…
 					</code>
 					<Button variant="secondary" size="sm" onclick={copyInviteLink}>
 						{i18n.locale === 'fr' ? 'Copier' : 'Copy'}
 					</Button>
 				</div>
-			</div>
+				{/snippet}
+			</Alert>
 		{/if}
 	</div>
 </Modal>

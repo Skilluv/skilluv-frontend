@@ -22,6 +22,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { TrustSummary } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let summary = $state<TrustSummary | null>(null);
 	let loading = $state(true);
@@ -82,9 +83,9 @@
 	{#if loading}
 		<Skeleton class="h-96 w-full" rounded="xl" />
 	{:else if loadError}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-4 py-3 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{loadError}
-		</p>
+		</Alert>
 	{:else if summary}
 		<section class="grid gap-3 sm:grid-cols-3" data-testid="trust-stats">
 			{#each [{ n: summary.findings.confirmed, label: i18n.t('securityHallOfFame.statConfirmed') }, { n: summary.findings.fixed, label: i18n.t('securityHallOfFame.statFixed') }, { n: summary.findings.published, label: i18n.t('securityHallOfFame.statPublished') }] as stat (stat.label)}

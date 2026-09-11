@@ -27,6 +27,7 @@
 	import Input from '$components/ui/Input.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { DESIGN_CLOUD_PROVIDERS, type DesignCloudConnection, type DesignCloudInspection } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let connections = $state<DesignCloudConnection[]>([]);
 	let loading = $state(true);
@@ -242,9 +243,9 @@
 		</div>
 
 		{#if inspectError}
-			<p class="rounded-lg border border-error/40 bg-error/5 px-3 py-2 text-sm text-error">
+			<Alert tone="error" size="sm">
 				{inspectError}
-			</p>
+			</Alert>
 		{/if}
 
 		{#if inspection}

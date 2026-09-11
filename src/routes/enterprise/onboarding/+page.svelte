@@ -10,6 +10,7 @@
 	import { enterpriseApi } from '$api/enterprise';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
+	import Alert from '$components/ui/Alert.svelte';
 	import {
 		Check,
 		KeyRound,
@@ -360,12 +361,12 @@
 			</p>
 
 			{#if twoFactorDone}
-				<div class="mb-8 rounded-2xl border border-success/30 bg-success/10 p-5 text-sm">
-					<div class="mb-2 flex items-center gap-2 font-semibold text-success">
-						<Check size={18} strokeWidth={2.5} />
-						{i18n.locale === 'fr' ? '2FA activé' : '2FA enabled'}
-					</div>
-					<p class="text-text-muted">
+				<Alert
+					tone="success"
+					class="mb-8"
+					title={i18n.locale === 'fr' ? '2FA activé' : '2FA enabled'}
+				>
+					<p>
 						{i18n.locale === 'fr'
 							? 'Ton compte est protégé. Tu pourras ajouter l\'autre méthode plus tard depuis les paramètres.'
 							: 'Your account is protected. You can add the other method later from settings.'}
@@ -400,7 +401,7 @@
 							</Button>
 						</div>
 					{/if}
-				</div>
+				</Alert>
 				<Button variant="accent" size="lg" onclick={nextStep}>
 					{i18n.locale === 'fr' ? 'Continuer' : 'Continue'}
 					<ArrowRight size={16} strokeWidth={2.5} />
@@ -660,17 +661,17 @@
 			</p>
 
 			{#if inviteSent}
-				<div class="mb-8 rounded-2xl border border-success/30 bg-success/10 p-5 text-sm">
-					<div class="mb-1 flex items-center gap-2 font-semibold text-success">
-						<Check size={18} strokeWidth={2.5} />
-						{i18n.locale === 'fr' ? 'Invitation envoyée' : 'Invite sent'}
-					</div>
-					<p class="text-text-muted">
+				<Alert
+					tone="success"
+					class="mb-8"
+					title={i18n.locale === 'fr' ? 'Invitation envoyée' : 'Invite sent'}
+				>
+					<p>
 						{i18n.locale === 'fr'
 							? `${inviteEmail} recevra un lien pour rejoindre ton équipe (valide 7 jours).`
 							: `${inviteEmail} will get a link to join your team (valid 7 days).`}
 					</p>
-				</div>
+				</Alert>
 				<Button variant="accent" size="lg" onclick={nextStep}>
 					{i18n.locale === 'fr' ? 'Continuer' : 'Continue'}
 					<ArrowRight size={16} strokeWidth={2.5} />

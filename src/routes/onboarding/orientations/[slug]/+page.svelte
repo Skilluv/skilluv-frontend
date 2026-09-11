@@ -9,6 +9,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import type { Orientation, OrientationPlaylistItem } from '$lib/types';
 	import { ChevronLeft } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let slug = $derived($page.params.slug ?? '');
 
@@ -62,14 +63,14 @@
 		<Skeleton class="mb-6 h-4 w-full" />
 		<Skeleton class="h-64 w-full" rounded="xl" />
 	{:else if error}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{error}</p>
-			<div class="mt-4">
+		<Alert tone="error" size="lg" align="center">
+			{error}
+			{#snippet action()}
 				<Button variant="secondary" href="/onboarding/orientations">
 					{i18n.t('orientations.detail.backToCatalog')}
 				</Button>
-			</div>
-		</div>
+			{/snippet}
+		</Alert>
 	{:else if orientation && style}
 		<article>
 			<header class="mb-8">

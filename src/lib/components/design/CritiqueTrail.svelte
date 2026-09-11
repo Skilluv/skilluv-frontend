@@ -32,6 +32,7 @@
 	import Select from '$components/ui/Select.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { DesignAutoCheck, DesignComparison, DesignReviewRound } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	interface Props {
 		sliceId: string;
@@ -179,9 +180,9 @@
 		</header>
 
 		{#if loadError}
-			<p class="rounded-lg border border-error/40 bg-error/5 px-4 py-3 text-sm text-error">
+			<Alert tone="error" size="sm">
 				{loadError}
-			</p>
+			</Alert>
 		{:else if rounds.length === 0}
 			<p class="rounded-lg border border-border bg-surface-elevated px-4 py-6 text-sm text-text-muted">
 				{i18n.t('designWorkshop.trailEmpty')}

@@ -27,6 +27,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Select from '$components/ui/Select.svelte';
 	import { AUDIO_SOURCE_KINDS, type AudioSource, type AudioSourceKind } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	interface Props {
 		sliceId: string;
@@ -156,9 +157,9 @@
 			{:else}
 				<!-- The distinction the backend is careful about: an empty list
 				     with no statement means nobody filled this in. -->
-				<p class="mb-4 rounded-xl border border-warning/40 bg-warning/5 px-3 py-2 text-xs text-text-primary">
+				<Alert tone="warning" size="sm" class="mb-4">
 					{i18n.t('audioSources.notDeclared')}
-				</p>
+				</Alert>
 			{/if}
 
 			{#if sources.length === 0}

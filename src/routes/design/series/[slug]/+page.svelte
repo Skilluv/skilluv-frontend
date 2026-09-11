@@ -23,6 +23,7 @@
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { CategoryStanding, TournamentSeries } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let slug = $derived(page.params.slug ?? '');
 
@@ -90,9 +91,9 @@
 			{i18n.t('designSeries.notFound')}
 		</p>
 	{:else if loadError}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-4 py-3 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{loadError}
-		</p>
+		</Alert>
 	{:else if series}
 		<header class="space-y-2">
 			<h1 class="flex items-center gap-2 text-2xl font-bold text-text">

@@ -18,6 +18,7 @@
 	import { ArtefactPanel } from '$components/leadership';
 	import { EvidencePanels } from '$components/slices';
 	import { ExternalLink, Check, GitBranch, ShieldCheck } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	interface Props {
 		data: { slice: Slice };
@@ -284,10 +285,9 @@
 
 			<!-- Rejection block -->
 			{#if slice.validation_reject_reason}
-				<section class="mb-8 rounded-xl border border-error/40 bg-error/10 p-4">
-					<h3 class="text-sm font-semibold text-error mb-2">{i18n.t('p26.slice.rejectTitle')}</h3>
-					<p class="text-sm text-text-primary whitespace-pre-wrap">{slice.validation_reject_reason}</p>
-				</section>
+				<Alert tone="error" class="mb-8" title={i18n.t('p26.slice.rejectTitle')}>
+					<span class="whitespace-pre-wrap">{slice.validation_reject_reason}</span>
+				</Alert>
 			{/if}
 
 			<!-- Actions -->

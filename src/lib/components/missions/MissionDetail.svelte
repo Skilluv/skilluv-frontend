@@ -23,6 +23,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { IpTermsBadge, MissionCard } from '$components/design';
 	import type { Mission } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	interface Props {
 		/** `design`, `ai`… narrows the shared listing where it is queried. */
@@ -135,12 +136,14 @@
 		<Skeleton class="h-40 w-full" rounded="xl" />
 		<Skeleton class="mt-6 h-64 w-full" rounded="xl" />
 	{:else if loadError}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-			<Button variant="ghost" size="sm" class="mt-3" href={basePath}>
-				{i18n.t('missions.backToList')}
-			</Button>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{loadError}
+			{#snippet action()}
+				<Button variant="ghost" size="sm" href={basePath}>
+					{i18n.t('missions.backToList')}
+				</Button>
+			{/snippet}
+		</Alert>
 	{:else if mission}
 		<a
 			href={basePath}

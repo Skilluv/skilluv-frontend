@@ -13,6 +13,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import { Download } from '@lucide/svelte';
 	import { AdvancesPanel } from '$components/finance';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let wallet = $state<Wallet | null>(null);
 	let transactions = $state<WalletTransaction[]>([]);
@@ -80,9 +81,9 @@
 		<Skeleton class="mb-6 h-40 w-full" rounded="xl" />
 		<Skeleton class="h-40 w-full" rounded="xl" />
 	{:else if loadError}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{loadError}
+		</Alert>
 	{:else}
 		<div class="mb-8">
 			<WalletBalanceCard {wallet} onRequestPayout={openModal} />

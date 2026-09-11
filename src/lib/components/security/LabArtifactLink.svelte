@@ -22,6 +22,7 @@
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import type { LabArtifact } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	interface Props {
 		challengeId: string;
@@ -76,9 +77,9 @@
 	<p class="text-sm text-text-muted">{i18n.t('blueLab.offlineNote')}</p>
 
 	{#if errorText}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-3 py-2 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{errorText}
-		</p>
+		</Alert>
 	{/if}
 
 	{#if artifact}

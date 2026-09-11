@@ -29,9 +29,13 @@ test.describe('Skilluv Design pages', () => {
 		// What it must not do is render an empty form, or throw: the header
 		// stands and the failure is stated.
 		await gotoHydrated(page, '/design/onboarding');
-		await expect(page.getByTestId('design-onboarding')).toBeVisible();
+		const wizard = page.getByTestId('design-onboarding');
+		await expect(wizard).toBeVisible();
 		await expect(page.locator('h1')).toBeVisible();
-		await expect(page.getByRole('alert')).toBeVisible();
+		// Scoped to the wizard: the suggestion and mentor lists below it
+		// report their own outage, so a bare `getByRole('alert')` matches
+		// three things on this page and resolves to none of them.
+		await expect(wizard.getByRole('alert')).toBeVisible();
 		// No half-rendered question behind the message.
 		await expect(page.getByTestId('wizard-options')).toHaveCount(0);
 	});

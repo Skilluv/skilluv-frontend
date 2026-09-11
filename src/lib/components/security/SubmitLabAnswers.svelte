@@ -25,6 +25,7 @@
 	import Input from '$components/ui/Input.svelte';
 	import Select from '$components/ui/Select.svelte';
 	import type { LabOutcome, LabQuestion } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	interface Props {
 		challengeId: string;
@@ -131,9 +132,9 @@
 	</ol>
 
 	{#if errorText}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-3 py-2 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{errorText}
-		</p>
+		</Alert>
 	{/if}
 
 	{#if outcome}
