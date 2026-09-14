@@ -2345,6 +2345,31 @@ export interface Translations
 		emptyHint: string;
 	};
 
+	/**
+	 * Why linking an account did not take.
+	 *
+	 * Shared by the four providers whose callback reports a failure, because
+	 * they report the same five codes — `oauth_error_code` in `routes::oauth`
+	 * is one function. `{provider}` is the brand's own name, untranslated,
+	 * and the parameter is what lets a settings page with four connect
+	 * buttons say which of them refused.
+	 *
+	 * The backend sends a token and never a sentence, precisely so the
+	 * wording and both languages live here. A code with no sentence would
+	 * render as a raw i18n path on a page somebody reached by failing.
+	 */
+	oauthLink: {
+		errorTitle: string;
+		retryCta: string;
+		errors: {
+			already_linked: string;
+			expired: string;
+			invalid_request: string;
+			unavailable: string;
+			failed: string;
+		};
+	};
+
 	githubLink: {
 		title: string;
 		subtitle: string;
@@ -2360,21 +2385,6 @@ export interface Translations
 		disconnected: string;
 		cancelCta: string;
 		syncNote: string;
-		errorTitle: string;
-		retryCta: string;
-		/**
-		 * One sentence per code `routes::github` can send back on the URL.
-		 *
-		 * Mirrors `github_error_code`. The backend sends a token and never a
-		 * sentence, precisely so that the wording and both languages live here.
-		 */
-		errors: {
-			already_linked: string;
-			expired: string;
-			invalid_request: string;
-			unavailable: string;
-			failed: string;
-		};
 	};
 
 	/** Code portfolios and review languages. */

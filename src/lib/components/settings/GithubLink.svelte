@@ -29,7 +29,7 @@
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';
 	import Button from '$components/ui/Button.svelte';
-	import GithubLinkError from './GithubLinkError.svelte';
+	import OAuthLinkError from './OAuthLinkError.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 
 	/**
@@ -127,7 +127,7 @@
 		<!-- Why the last attempt did not take, when the callback sent one
 		     back. Above the button, because it is the reason somebody is
 		     about to press it a second time. -->
-		<GithubLinkError retryHref={connectHref} />
+		<OAuthLinkError providers={['github']} retryHref={() => connectHref} />
 
 		<div class="flex flex-wrap gap-2">
 			<!-- A link, not a button: this navigates into a consent screen. -->

@@ -35,6 +35,7 @@
 	import { linkUrl } from '$api/oauth_links';
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
+	import OAuthLinkError from '$components/settings/OAuthLinkError.svelte';
 
 	interface Props {
 		/** Rendered under the actions — the step that follows, if any. */
@@ -65,6 +66,12 @@
 		</h3>
 		<p class="text-sm text-text-muted">{i18n.t('discordLink.body')}</p>
 	</div>
+
+	<!-- Why the last attempt did not take, when the callback sent one back.
+	     This card sits inside onboarding, where the chrome is removed, so a
+	     refusal here used to return somebody to an unchanged screen with no
+	     reason given. -->
+	<OAuthLinkError providers={['discord']} retryHref={() => linkUrl('discord', returnTo)} />
 
 	<div class="flex flex-wrap items-center gap-2">
 		<!-- A link, not a button: this navigates into a consent screen. -->

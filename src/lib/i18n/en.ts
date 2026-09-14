@@ -2165,6 +2165,21 @@ export const en: Translations = {
 			'Nothing is unclaimed under this filter right now. Widen the difficulty, or look at another trade.'
 	},
 
+	oauthLink: {
+		errorTitle: '{provider} was not linked',
+		retryCta: 'Try again',
+		errors: {
+			already_linked:
+				'That {provider} account is already linked to another Skilluv profile. Unlink it there first, or sign in with the account that holds it — one {provider} identity belongs to one profile, because a rank is read from proof and two profiles sharing an identity would let somebody wear a rank they did not earn.',
+			expired:
+				'The link took too long and the request expired. Starting again takes a few seconds.',
+			invalid_request:
+				'{provider} sent us back something we could not read. Starting again usually settles it.',
+			unavailable: 'Linking {provider} is not available on this deployment.',
+			failed: 'Something broke between us and {provider}. Try again in a moment.'
+		}
+	},
+
 	githubLink: {
 		title: 'GitHub',
 		subtitle: 'Synced repositories and the contribution figures read from them.',
@@ -2181,19 +2196,7 @@ export const en: Translations = {
 		disconnected: 'Disconnected.',
 		cancelCta: 'Cancel',
 		syncNote:
-			'Skilluv syncs when you ask rather than continuously — it reads your GitHub no more often than you want it to.',
-		errorTitle: 'GitHub was not linked',
-		retryCta: 'Try again',
-		errors: {
-			already_linked:
-				'That GitHub account is already linked to another Skilluv profile. Unlink it there first, or sign in with the account that holds it — one GitHub identity belongs to one profile, because a rank is read from proof and two profiles sharing an identity would let somebody wear a rank they did not earn.',
-			expired:
-				'The link took too long and the request expired. Starting again takes a few seconds.',
-			invalid_request:
-				'GitHub sent us back something we could not read. Starting again usually settles it.',
-			unavailable: 'GitHub linking is not available on this deployment.',
-			failed: 'Something broke on our side, not yours. Try again in a moment.'
-		}
+			'Skilluv syncs when you ask rather than continuously — it reads your GitHub no more often than you want it to.'
 	},
 
 	declaredCraft: {

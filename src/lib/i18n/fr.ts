@@ -2203,6 +2203,21 @@ export const fr: Translations = {
 			'Rien n’est libre sous ce filtre pour l’instant. Élargis la difficulté, ou regarde un autre métier.'
 	},
 
+	oauthLink: {
+		errorTitle: '{provider} n’a pas été lié',
+		retryCta: 'Réessayer',
+		errors: {
+			already_linked:
+				'Ce compte {provider} est déjà lié à un autre profil Skilluv. Détache-le là-bas d’abord, ou connecte-toi avec le compte qui le détient — une identité {provider} appartient à un seul profil, parce qu’un rang se lit sur des preuves et que deux profils partageant une identité laisseraient porter un rang non gagné.',
+			expired:
+				'La liaison a pris trop de temps et la demande a expiré. Recommencer prend quelques secondes.',
+			invalid_request:
+				'{provider} nous a renvoyé quelque chose d’illisible. Recommencer suffit en général.',
+			unavailable: 'La liaison {provider} n’est pas disponible sur ce déploiement.',
+			failed: 'Quelque chose a cassé entre nous et {provider}. Réessaie dans un instant.'
+		}
+	},
+
 	githubLink: {
 		title: 'GitHub',
 		subtitle: 'Les dépôts synchronisés et les chiffres de contribution qu’on y lit.',
@@ -2220,18 +2235,6 @@ export const fr: Translations = {
 		cancelCta: 'Annuler',
 		syncNote:
 			'Skilluv synchronise quand tu le demandes plutôt qu’en continu — il ne lit pas ton GitHub plus souvent que tu ne le veux.',
-		errorTitle: 'GitHub n’a pas été lié',
-		retryCta: 'Réessayer',
-		errors: {
-			already_linked:
-				'Ce compte GitHub est déjà lié à un autre profil Skilluv. Détache-le là-bas d’abord, ou connecte-toi avec le compte qui le détient — une identité GitHub appartient à un seul profil, parce qu’un rang se lit sur des preuves et que deux profils partageant une identité laisseraient porter un rang non gagné.',
-			expired:
-				'La liaison a pris trop de temps et la demande a expiré. Recommencer prend quelques secondes.',
-			invalid_request:
-				'GitHub nous a renvoyé quelque chose d’illisible. Recommencer suffit en général.',
-			unavailable: 'La liaison GitHub n’est pas disponible sur ce déploiement.',
-			failed: 'Quelque chose a cassé de notre côté, pas du tien. Réessaie dans un instant.'
-		}
 	},
 
 	declaredCraft: {

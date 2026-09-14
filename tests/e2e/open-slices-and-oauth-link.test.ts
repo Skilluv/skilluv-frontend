@@ -3,7 +3,7 @@
  *
  * Both are surfaces the backend shipped and the front had not consumed: the
  * pool answered for twelve trades while only code was listed, and the
- * callback wrote `?github_error=` to a URL nobody read.
+ * OAuth callbacks wrote `?<provider>_error=` to a URL nobody read.
  */
 import { test, expect, type Page, type Route } from '@playwright/test';
 import { gotoHydrated } from './utils/hydration';
@@ -155,7 +155,7 @@ test.describe('the open pool', () => {
 	});
 });
 
-test.describe('a GitHub link that did not take', () => {
+test.describe('a provider link that did not take', () => {
 	test('says why, on the step the callback returned to', async ({ page, context }) => {
 		await context.addCookies([
 			{ name: 'access_token', value: 'challenger', domain: 'localhost', path: '/' }
@@ -200,10 +200,27 @@ test.describe('a GitHub link that did not take', () => {
 		await expect(page.getByText(/GitHub n’a pas été lié/)).toHaveCount(0);
 	});
 
+	test('names which of the four refused', async ({ page, context }) => {
+		await context.addCookies([
+			{ name: 'access_token', value: 'challenger', domain: 'localhost', path: '/' }
+		]);
+		await page.route('**/api/**', (route) => json({ data: {} })(route));
+
+		// Discord, Google and LinkedIn report the same five codes as GitHub
+		// now. The parameter is namespaced so a settings page offering four
+		// connect buttons can say which of them refused rather than leaving
+		// the reader to guess — and the brand is named, not its slug.
+		await gotoHydrated(page, '/settings/security?linkedin_error=already_linked');
+		const alert = page.getByRole('alert');
+		await expect(alert).toContainText('LinkedIn');
+		await expect(alert).not.toContainText('compte linkedin');
+		await expect.poll(() => page.url()).not.toContain('linkedin_error');
+	});
+
 	test('no i18n key leaks as a raw dotted path', async ({ page }) => {
 		await page.route('**/api/**', (route) => json({ data: {} })(route));
 		await gotoHydrated(page, '/open-slices');
 		const body = await page.locator('body').innerText();
-		expect(body).not.toMatch(/\b(openSlices|githubLink)\.[a-zA-Z]+/);
+		expect(body).not.toMatch(/\b(openSlices|oauthLink|githubLink)\.[a-zA-Z]+/);
 	});
 });

@@ -6,7 +6,7 @@
 	import { challengesApi } from '$api/challenges';
 	import { onboardingRiteApi, type RiteProgress } from '$api/onboarding_rite';
 	import { oauthLinksApi, githubLinkUrl, type LinkedProvider } from '$api/oauth_links';
-	import GithubLinkError from '$components/settings/GithubLinkError.svelte';
+	import OAuthLinkError from '$components/settings/OAuthLinkError.svelte';
 	import { activeOrientations } from '$lib/utils/orientations';
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
@@ -332,7 +332,11 @@
 				     no navbar: somebody whose link was refused here used to be
 				     returned to an unchanged screen with no reason given, which
 				     reads as "nothing happened". -->
-				<GithubLinkError retryHref={githubLinkUrl(returnTo)} class="mb-4 text-left" />
+				<OAuthLinkError
+					providers={['github']}
+					retryHref={() => githubLinkUrl(returnTo)}
+					class="mb-4 text-left"
+				/>
 
 				<!-- Checked before the button rather than after the click: the API
 				     answers 400 for a missing GitHub account, and a refusal you

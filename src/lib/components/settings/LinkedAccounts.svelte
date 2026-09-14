@@ -34,6 +34,7 @@
 		linkUrl,
 		isSignInProvider,
 		LINKABLE_PROVIDERS,
+		type LinkableProvider,
 		type LinkedProvider
 	} from '$api/oauth_links';
 	import { SkilluError } from '$api/client';
@@ -42,6 +43,7 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import OAuthLinkError from './OAuthLinkError.svelte';
 
 	let providers = $state<LinkedProvider[]>([]);
 	let loading = $state(true);
@@ -165,6 +167,15 @@
 		{:else}
 			<p class="text-sm text-text-muted">{i18n.t('linkedAccounts.none')}</p>
 		{/if}
+
+		<!-- Why the last attempt did not take, when the callback sent one
+		     back. The parameter is namespaced by provider, so a row of four
+		     connect buttons can say which of them refused rather than
+		     leaving the reader to guess. -->
+		<OAuthLinkError
+			providers={LINKABLE_PROVIDERS}
+			retryHref={(provider) => linkUrl(provider as LinkableProvider, returnTo)}
+		/>
 
 		<div class="flex flex-wrap gap-2">
 			{#each LINKABLE_PROVIDERS as provider (provider)}
