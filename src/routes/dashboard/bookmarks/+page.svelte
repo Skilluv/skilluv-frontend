@@ -14,6 +14,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { SavedTargetLink } from '$components/saved';
 	import { SAVED_TARGET_TYPES, type Bookmark, type BookmarkFolder, type SavedTargetType } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	const PAGE_SIZE = 50;
 
@@ -140,12 +141,14 @@
 			{/each}
 		</div>
 	{:else if loadError}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-			<Button variant="ghost" size="sm" class="mt-3" onclick={load}>
-				{i18n.t('common.actions.retry')}
-			</Button>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{loadError}
+			{#snippet action()}
+				<Button variant="ghost" size="sm" onclick={load}>
+					{i18n.t('common.actions.retry')}
+				</Button>
+			{/snippet}
+		</Alert>
 	{:else if rows.length === 0}
 		<EmptyState
 			variant="bookmark"

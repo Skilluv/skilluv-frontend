@@ -6,6 +6,7 @@
 	import { challengesApi } from '$api/challenges';
 	import { onboardingRiteApi, type RiteProgress } from '$api/onboarding_rite';
 	import { oauthLinksApi, githubLinkUrl, type LinkedProvider } from '$api/oauth_links';
+	import OAuthLinkError from '$components/settings/OAuthLinkError.svelte';
 	import { activeOrientations } from '$lib/utils/orientations';
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
@@ -97,8 +98,33 @@
 	 */
 	const returnTo = $derived(page.url.pathname + page.url.search);
 
+	/**
+	 * Whether the session question has been settled, from the server's own
+	 * probe rather than from the absence of a user.
+	 *
+	 * `auth.user` is null both while the session is being restored and when
+	 * there is none, and the page has to tell those apart: the first is worth
+	 * a skeleton, the second is worth a sentence.
+	 */
+	const sessionSettled = $derived(page.data.authProbe !== 'unknown' || auth.isAuthenticated);
+
+	/** Signed in, and the account declares no discipline to run a rite for. */
+	const noDomain = $derived(auth.isAuthenticated && domain === null);
+
+	/**
+	 * Nothing to load, so nothing to wait for.
+	 *
+	 * `loading` starts true and is only cleared by `loadOnboarding`, which
+	 * runs only when there is a domain. Without this the page waited on a
+	 * request it had decided not to make — skeletons for ever, on a step with
+	 * no navbar to leave by.
+	 */
 	$effect(() => {
-		if (domain) void loadOnboarding(domain);
+		if (domain) {
+			void loadOnboarding(domain);
+		} else if (sessionSettled) {
+			loading = false;
+		}
 	});
 
 	$effect(() => {
@@ -207,6 +233,21 @@
 	</h1>
 	<p class="mb-8 text-text-muted">{i18n.t('enlist.rite.subtitle')}</p>
 
+	<!-- Why the last attempt did not take, when there was one.
+	     Above everything the page loads, and outside every branch below,
+	     because it describes the navigation that just happened rather than
+	     the state of the rite. Nested under `missingGithub` it needed the
+	     challenge to have loaded, the rite not to have started and a trade to
+	     be declared before it would appear — and a refusal reaches this page
+	     in all the other cases too, where it showed nothing at all.
+
+	     This is also the step with no navbar, so it was the last exit. -->
+	<OAuthLinkError
+		providers={['github']}
+		retryHref={() => githubLinkUrl(returnTo)}
+		class="mb-6 text-left"
+	/>
+
 	{#if partialTrades}
 		<p
 			class="mb-6 rounded-2xl border border-warning/30 bg-warning-soft px-4 py-3 text-sm text-text-primary"
@@ -222,6 +263,34 @@
 			<Skeleton class="h-5 w-full" />
 			<Skeleton class="h-5 w-3/4" />
 			<Skeleton class="mt-4 h-40 w-full" rounded="xl" />
+		</div>
+	{:else if !auth.isAuthenticated}
+		<!-- The step is per account, so with no session there is nothing to
+		     render and nothing to wait for. It used to wait anyway. -->
+		<div class="rounded-2xl border border-border bg-surface-elevated p-8 text-center">
+			<h2 class="text-xl font-bold">{i18n.t('enlist.rite.needsSessionTitle')}</h2>
+			<p class="mx-auto mt-3 max-w-md text-sm leading-relaxed text-text-muted">
+				{i18n.t('enlist.rite.needsSessionBody')}
+			</p>
+			<div class="mt-6">
+				<Button variant="accent" href="/auth/login?next={encodeURIComponent(returnTo)}">
+					{i18n.t('enlist.rite.needsSessionCta')}
+				</Button>
+			</div>
+		</div>
+	{:else if noDomain}
+		<!-- Signed in, no discipline declared. The starter that gets forked is
+		     chosen from it, so there is no rite to show until there is one. -->
+		<div class="rounded-2xl border border-border bg-surface-elevated p-8 text-center">
+			<h2 class="text-xl font-bold">{i18n.t('enlist.rite.needsDomainTitle')}</h2>
+			<p class="mx-auto mt-3 max-w-md text-sm leading-relaxed text-text-muted">
+				{i18n.t('enlist.rite.needsDomainBody')}
+			</p>
+			<div class="mt-6">
+				<Button variant="accent" href="/auth/register/domain">
+					{i18n.t('enlist.rite.needsDomainCta')}
+				</Button>
+			</div>
 		</div>
 	{:else if notOpen}
 		<div class="rounded-2xl border border-border bg-surface-elevated p-8 text-center">
@@ -339,7 +408,7 @@
 						     to do one thing would reopen the door we closed, and
 						     they would have to find their own way back to a step
 						     they were in the middle of. -->
-						<Button variant="accent" href={githubLinkUrl(returnTo)}>
+						<Button variant="accent" href={githubLinkUrl(returnTo)} data-sveltekit-reload>
 							{i18n.t('enlist.rite.needsGithubCta')}
 						</Button>
 					</div>

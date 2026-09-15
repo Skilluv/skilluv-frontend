@@ -32,6 +32,7 @@
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { MentorMatch, ProfileDomain } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	interface Props {
 		/**
@@ -99,9 +100,9 @@
 	{#if loading}
 		<Skeleton class="h-40 w-full" rounded="xl" />
 	{:else if loadError}
-		<p class="rounded-lg border border-warning/40 bg-warning/5 px-4 py-3 text-sm text-warning">
+		<Alert tone="warning" size="sm">
 			{loadError}
-		</p>
+		</Alert>
 	{:else if mentors.length === 0}
 		<EmptyState
 			title={i18n.t('mentorMatches.empty')}

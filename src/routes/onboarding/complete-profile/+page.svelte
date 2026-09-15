@@ -13,6 +13,7 @@
 	import type { SkillDomain } from '$types';
 	import type { Component } from 'svelte';
 	import { Code2, Palette, Gamepad2, Shield, Brain, Cloud, Users } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let step = $state<1 | 2>(1);
 	let loading = $state(false);
@@ -181,9 +182,9 @@
 		</p>
 
 		{#if error}
-			<div class="mb-4 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+			<Alert tone="error" size="sm" class="mb-4">
 				{error}
-			</div>
+			</Alert>
 		{/if}
 
 		<form onsubmit={submit} class="flex flex-col gap-4">

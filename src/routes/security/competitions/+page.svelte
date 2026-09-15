@@ -42,6 +42,7 @@
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { Tournament } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let rows = $state<Tournament[]>([]);
 	let loading = $state(true);
@@ -124,9 +125,9 @@
 	{#if loading}
 		<Skeleton class="h-64 w-full" rounded="xl" />
 	{:else if loadError}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-4 py-3 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{loadError}
-		</p>
+		</Alert>
 	{:else if rows.length === 0}
 		<EmptyState
 			title={i18n.t('securityCompetitions.empty')}

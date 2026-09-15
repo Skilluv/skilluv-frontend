@@ -24,6 +24,7 @@
 	import EmptyState from '$lib/components/ui/EmptyState.svelte';
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
 	import { ConfirmDangerousDialog } from '$lib/components/moderation';
+	import Alert from '$components/ui/Alert.svelte';
 	import {
 		VOUCHING_QUEUE_STATUSES,
 		type VouchingQueueRow,
@@ -182,9 +183,9 @@
 			{/each}
 		</div>
 	{:else if !allowed}
-		<div class="rounded-2xl border border-warning/40 bg-warning/5 p-6 text-center" role="alert">
-			<p class="text-sm text-text-primary">{i18n.t('moderation.vouchings.noAccess')}</p>
-		</div>
+		<Alert tone="warning" size="lg" align="center">
+			{i18n.t('moderation.vouchings.noAccess')}
+		</Alert>
 	{:else}
 		<div
 			class="mb-5 flex flex-wrap items-center gap-2"
@@ -219,9 +220,9 @@
 				{/each}
 			</div>
 		{:else if loadError}
-			<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-				<p class="text-sm text-error">{loadError}</p>
-			</div>
+			<Alert tone="error" size="lg" align="center">
+				{loadError}
+			</Alert>
 		{:else if rows.length === 0}
 			<EmptyState variant="seal-intact" title={i18n.t('moderation.vouchings.queueEmpty')} />
 		{:else}

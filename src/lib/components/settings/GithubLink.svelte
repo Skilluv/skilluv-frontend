@@ -21,13 +21,28 @@
 	 */
 	import { onMount } from 'svelte';
 	import { GitBranch, RefreshCw } from '@lucide/svelte';
-	import { githubApi, connectUrl, cvUrl } from '$api/github';
+	import { githubApi, cvUrl } from '$api/github';
+	import { githubLinkUrl } from '$api/oauth_links';
+	import { page } from '$app/state';
 	import { SkilluError } from '$api/client';
 	import { auth } from '$stores/auth.svelte';
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';
 	import Button from '$components/ui/Button.svelte';
+	import OAuthLinkError from './OAuthLinkError.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+
+	/**
+	 * Where the consent screen sends the browser back to.
+	 *
+	 * This used to be `connectUrl()`, which took no return path at all — so
+	 * the callback ended on the API origin and the person read
+	 * `{"connected":true}` on a domain they never chose to visit, with the
+	 * back button as their only exit and a settings page behind it still
+	 * showing the old state. The success redirect and the failure one both
+	 * need somewhere to go, and this is it.
+	 */
+	let connectHref = $derived(githubLinkUrl(page.url.pathname));
 
 	let repos = $state<unknown[]>([]);
 	let loading = $state(true);
@@ -100,6 +115,11 @@
 		<p class="text-sm text-text-muted">{i18n.t('githubLink.subtitle')}</p>
 	</div>
 
+	<!-- Outside the loading branch: the failure is about the link, not about
+	     the repository list, and it has no reason to wait on a fetch that is
+	     answering a different question. -->
+	<OAuthLinkError providers={['github']} retryHref={() => connectHref} />
+
 	{#if loading}
 		<Skeleton class="h-20 w-full" rounded="xl" />
 	{:else}
@@ -111,7 +131,12 @@
 
 		<div class="flex flex-wrap gap-2">
 			<!-- A link, not a button: this navigates into a consent screen. -->
-			<Button href={connectUrl()} size="sm" variant={connected ? 'ghost' : 'accent'}>
+			<Button
+				href={connectHref}
+				size="sm"
+				variant={connected ? 'ghost' : 'accent'}
+				data-sveltekit-reload
+			>
 				{connected ? i18n.t('githubLink.reconnectCta') : i18n.t('githubLink.connectCta')}
 			</Button>
 

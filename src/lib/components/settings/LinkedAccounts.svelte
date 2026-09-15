@@ -34,6 +34,7 @@
 		linkUrl,
 		isSignInProvider,
 		LINKABLE_PROVIDERS,
+		type LinkableProvider,
 		type LinkedProvider
 	} from '$api/oauth_links';
 	import { SkilluError } from '$api/client';
@@ -42,6 +43,7 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import OAuthLinkError from './OAuthLinkError.svelte';
 
 	let providers = $state<LinkedProvider[]>([]);
 	let loading = $state(true);
@@ -117,6 +119,19 @@
 		<p class="text-sm text-text-muted">{i18n.t('linkedAccounts.subtitle')}</p>
 	</div>
 
+	<!-- Why the last attempt did not take, when the callback sent one back.
+	     Outside the loading branch: the failure is about the link, not about
+	     the list of providers, and waiting on that fetch would hide it for as
+	     long as the fetch takes — or for good, if it fails.
+
+	     The parameter is namespaced by provider, so this row of connect
+	     buttons can say which of them refused rather than leaving the reader
+	     to guess. -->
+	<OAuthLinkError
+		providers={LINKABLE_PROVIDERS}
+		retryHref={(provider) => linkUrl(provider as LinkableProvider, returnTo)}
+	/>
+
 	{#if loading}
 		<Skeleton class="h-24 w-full" rounded="xl" />
 	{:else}
@@ -171,7 +186,12 @@
 				{#if !linked.has(provider)}
 					<!-- A link, not a button: this navigates into a consent screen and
 					     comes back through a callback the server handles. -->
-					<Button href={linkUrl(provider, returnTo)} size="sm" variant="ghost">
+					<Button
+						href={linkUrl(provider, returnTo)}
+						size="sm"
+						variant="ghost"
+						data-sveltekit-reload
+					>
 						{i18n.t('linkedAccounts.linkCta', { provider })}
 					</Button>
 				{/if}

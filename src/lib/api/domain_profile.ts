@@ -2,6 +2,7 @@ import type {
 	ApiResponse,
 	DomainProfileAnswers,
 	DomainQuestionSpec,
+	DomainRecommendation,
 	MentorMatches,
 	ProfileDomain
 } from '$lib/types';
@@ -13,6 +14,25 @@ export interface DomainProfileResponse {
 	domain: string;
 	/** Empty object when the wizard was never filled in. */
 	answers: DomainProfileAnswers;
+	/** When the wizard was answered. Null means never. */
+	completed_at: string | null;
+	/**
+	 * When somebody said stop asking.
+	 *
+	 * Not the same as having answered nothing: the first means "stop", the
+	 * second means "ask again". Anything deciding whether to prompt has to
+	 * read this one and not the emptiness of `answers`.
+	 */
+	skipped_at: string | null;
+	/**
+	 * What to do first, given what was just said.
+	 *
+	 * Present on the answer to `put` and absent everywhere else — it is the
+	 * reply to having answered, not a property of the profile, and a read
+	 * carrying one would invite showing month-one advice to somebody in their
+	 * sixth month.
+	 */
+	recommendation?: DomainRecommendation;
 }
 
 /**
@@ -22,10 +42,11 @@ export interface DomainProfileResponse {
  * Level and goal sort what gets recommended; rank, badges and craft score read
  * proofs and none of this is one.
  *
- * The body is `deny_unknown_fields`, so a key the vocabulary does not know
- * rejects the **whole** request rather than saving part of it. Callers that
- * hold extra answers must therefore try the full body and fall back — see
- * `designWizard` in `$stores/design_wizard.svelte`.
+ * Which keys a domain accepts is served by `questions` below rather than
+ * hardcoded anywhere. A body carrying a key the domain does not ask is
+ * refused **whole** rather than saved in part, so a caller that guesses the
+ * vocabulary loses every answer in the request and not just the wrong one —
+ * which is the reason to render the form from the registry instead.
  */
 export const domainProfileApi = {
 	get(domain: ProfileDomain) {

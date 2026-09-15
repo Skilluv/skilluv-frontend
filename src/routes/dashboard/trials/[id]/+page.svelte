@@ -26,6 +26,7 @@
 	import Modal from '$components/ui/Modal.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { TRIAL_SUMMARY_MAX, type TrialHours } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let trialId = $derived($page.params.id ?? '');
 
@@ -120,9 +121,9 @@
 			<Skeleton class="h-48 w-full" rounded="xl" />
 		</div>
 	{:else if loadError}
-		<div class="mt-6 rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center" class="mt-6">
+			{loadError}
+		</Alert>
 	{:else if hours}
 		<header class="mt-6 mb-6 flex flex-wrap items-end justify-between gap-4">
 			<div>

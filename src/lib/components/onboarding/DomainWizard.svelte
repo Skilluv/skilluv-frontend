@@ -20,10 +20,12 @@
 	 *
 	 * Skippable throughout: an onboarding nobody can leave is a wall.
 	 *
-	 * `/design/onboarding` predates the questions endpoint and stays as it is —
-	 * it asks three things this one cannot (a portfolio, which has a real home
-	 * as an external signal) and carries a store that keeps what the server
-	 * refuses.
+	 * Every domain goes through here, `design` included. It used to have a
+	 * hand-rolled wizard of its own, written when the backend stored three of
+	 * its seven answers and refused the rest; the registry now accepts all of
+	 * them, so the second implementation had nothing left to justify it —
+	 * including its family list, which it built from `GET /orientations` and
+	 * therefore from a different query than the one validating the answer.
 	 */
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -35,7 +37,15 @@
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
-	import type { DomainAnswerValue, DomainQuestionSpec, ProfileDomain } from '$types';
+	import TagInput from '$components/ui/TagInput.svelte';
+	import RecommendationPanel from './RecommendationPanel.svelte';
+	import Alert from '$components/ui/Alert.svelte';
+	import type {
+		DomainAnswerValue,
+		DomainQuestionSpec,
+		DomainRecommendation,
+		ProfileDomain
+	} from '$types';
 
 	interface Props {
 		domain: ProfileDomain;
@@ -55,6 +65,18 @@
 	let loadError = $state('');
 	let saving = $state(false);
 	let skipping = $state(false);
+
+	/**
+	 * What the save came back with, and the reason finishing no longer
+	 * navigates straight away.
+	 *
+	 * The backend answers the wizard with a plan — a headline, the reasoning
+	 * behind it, guides and a first month. It was being discarded: the page
+	 * toasted "Saved." and left. Somebody who has just answered six questions
+	 * and is shown a toast concludes the questions were paperwork, which is
+	 * the one impression the wizard exists to avoid.
+	 */
+	let recommendation = $state<DomainRecommendation | null>(null);
 
 	let current = $derived(questions[step] ?? null);
 	let total = $derived(questions.length);
@@ -84,8 +106,15 @@
 			questions = specs.value.data ?? [];
 			// Re-entering the wizard shows what was answered last time rather
 			// than an empty form somebody has to fill in again.
+			//
+			// Every stored value is kept, including one for a question this
+			// domain has stopped asking: it is not rendered, and it is not
+			// sent back either, because `filledAnswers` walks the questions
+			// the registry served rather than whatever is in this object.
 			if (existing.status === 'fulfilled') {
-				answers = { ...(existing.value.data?.answers ?? {}) } as Record<string, DomainAnswerValue>;
+				for (const [key, value] of Object.entries(existing.value.data?.answers ?? {})) {
+					if (value !== undefined) answers[key] = value;
+				}
 			}
 		} catch (err) {
 			loadError = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
@@ -129,7 +158,15 @@
 	function optionLabel(key: string, value: string): string {
 		const path = `domainWizard.options.${key}.${value}`;
 		const label = i18n.t(path);
-		return label === path ? value : label;
+		if (label !== path) return label;
+		// Several questions answer with a discipline slug — quality and
+		// leadership both ask which domains you want to work *on*, and
+		// communication asks what you write about. Those names are already
+		// translated once, under `common.domains`, and copying the twelve into
+		// three more maps is three more places for them to disagree.
+		const shared = `common.domains.${value}`;
+		const sharedLabel = i18n.t(shared);
+		return sharedLabel === shared ? value : sharedLabel;
 	}
 
 	function questionLabel(key: string): string {
@@ -144,25 +181,49 @@
 		return hint === path ? '' : hint;
 	}
 
-	/** Only what was actually answered. An empty string is not an answer. */
+	/**
+	 * Only what was actually answered, to a question this domain still asks.
+	 *
+	 * An empty string is not an answer, and neither is a value stored against
+	 * a question that has since been dropped. The second matters: the prior
+	 * answers are loaded back so nobody refills a form they have filled, and
+	 * a key the registry no longer serves would ride along on the next save
+	 * and be refused — taking the whole body with it, because an unknown key
+	 * rejects the request rather than being ignored. So the questions that
+	 * were served are the list, and `answers` is only the lookup.
+	 */
 	function filledAnswers(): Record<string, unknown> {
 		const body: Record<string, unknown> = {};
-		for (const [key, value] of Object.entries(answers)) {
+		for (const question of questions) {
+			const value = answers[question.key];
 			if (Array.isArray(value)) {
-				if (value.length > 0) body[key] = value;
+				if (value.length > 0) body[question.key] = value;
 			} else if (value) {
-				body[key] = value;
+				body[question.key] = value;
 			}
 		}
 		return body;
 	}
 
+	/**
+	 * Save, and show what the answers bought.
+	 *
+	 * The plan replaces the wizard in place rather than arriving on a page of
+	 * its own: it is the reply to *these* answers, and a navigation between
+	 * the two would let somebody arrive at it from a link with nothing behind
+	 * it. `doneHref` becomes the button under the plan instead.
+	 *
+	 * A save that stores the answers but returns no plan is still a success —
+	 * the recommendation is `skip_serializing_if = "Option::is_none"` on the
+	 * wire, so its absence is a shape, not a failure. The toast covers it.
+	 */
 	async function save() {
 		saving = true;
 		try {
-			await domainProfileApi.put(domain, filledAnswers());
+			const res = await domainProfileApi.put(domain, filledAnswers());
+			recommendation = res.data?.recommendation ?? null;
 			toast.success(i18n.t('domainWizard.savedToast'));
-			await goto(doneHref);
+			if (!recommendation) await goto(doneHref);
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : i18n.t('errors.generic'));
 		} finally {
@@ -191,18 +252,22 @@
 </svelte:head>
 
 <div class="mx-auto max-w-2xl px-4 py-10" data-testid={testId}>
-	<header class="mb-8">
-		<h1 class="text-3xl font-bold text-text-primary">{title}</h1>
-		<p class="mt-2 text-text-muted">{subtitle}</p>
-		<p class="mt-3 text-xs text-text-muted">{i18n.t('domainWizard.notAClaim')}</p>
-	</header>
+	{#if !recommendation}
+		<header class="mb-8">
+			<h1 class="text-3xl font-bold text-text-primary">{title}</h1>
+			<p class="mt-2 text-text-muted">{subtitle}</p>
+			<p class="mt-3 text-xs text-text-muted">{i18n.t('domainWizard.notAClaim')}</p>
+		</header>
+	{/if}
 
-	{#if loading}
+	{#if recommendation}
+		<RecommendationPanel plan={recommendation} {doneHref} />
+	{:else if loading}
 		<Skeleton class="h-64 w-full" rounded="xl" />
 	{:else if loadError}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{loadError}
+		</Alert>
 	{:else if total === 0}
 		<p class="text-sm text-text-muted">{i18n.t('domainWizard.noQuestions')}</p>
 	{:else if current}
@@ -240,6 +305,24 @@
 								...answers,
 								[current.key]: (e.currentTarget as HTMLInputElement).value
 							})}
+					/>
+				</div>
+			{:else if current.answer === 'multi' && current.allowed.length === 0}
+				<!-- Several answers, from a vocabulary the platform does not
+				     own: a tester's tools run from Playwright to a screen
+				     reader to a spreadsheet. This branch used to fall through
+				     to the chip row below, which iterates `allowed` and so
+				     rendered nothing at all — the question was visible and
+				     unanswerable. -->
+				<div class="mt-4">
+					<TagInput
+						id="wizard-{current.key}"
+						label={questionLabel(current.key)}
+						max={current.max_selections ?? undefined}
+						maxLength={current.max_len ?? undefined}
+						placeholder={i18n.t('domainWizard.tagPlaceholder')}
+						value={Array.isArray(answers[current.key]) ? (answers[current.key] as string[]) : []}
+						onchange={(v) => (answers = { ...answers, [current.key]: v })}
 					/>
 				</div>
 			{:else}

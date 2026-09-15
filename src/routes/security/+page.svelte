@@ -30,6 +30,8 @@
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { SEVERITY_TIERS, type SecurityReference, type SecurityScope } from '$types';
+	import { OnboardingCta } from '$components/onboarding';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let scope = $state<SecurityScope | null>(null);
 	let reference = $state<SecurityReference | null>(null);
@@ -81,14 +83,20 @@
 			{i18n.t('securityScope.title')}
 		</h1>
 		<p class="text-sm text-text-muted">{i18n.t('securityScope.subtitle')}</p>
+		<!-- The wizard sorts what gets recommended here. Offered rather
+		     than imposed, and hidden from signed-out readers, for whom the
+		     destination is a sign-in wall and not an invitation. -->
+		<div class="pt-1">
+			<OnboardingCta domain="security" />
+		</div>
 	</header>
 
 	{#if loading}
 		<Skeleton class="h-96 w-full" rounded="xl" />
 	{:else if loadError}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-4 py-3 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{loadError}
-		</p>
+		</Alert>
 	{:else if scope}
 		<section class="rounded-xl border border-success/40 bg-success/5 p-5">
 			<h2 class="text-sm font-bold text-text">{i18n.t('securityScope.safeHarbourTitle')}</h2>

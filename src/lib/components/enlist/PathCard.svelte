@@ -61,6 +61,25 @@
 
 	const plate = $derived(domainPlate(orientation.primary_domain));
 
+	/**
+	 * The three marks under the description: named tools first, categories next.
+	 *
+	 * `stack` holds the trade's actual tools and is empty for most of the
+	 * catalogue, because one is recorded only where the trade's own description
+	 * names it. Empty means "not recorded", not "none" and not an error — so the
+	 * tags fill the row instead, and the two are told apart rather than blended:
+	 * `lottie` is a tool somebody will be working in, `3d` is a family.
+	 *
+	 * Slugs are shown as written. `cinema-4d` is the name the trade gave, and
+	 * prettifying it here would be this screen inventing product names.
+	 */
+	const marks = $derived(
+		[
+			...orientation.stack.map((text) => ({ text, tool: true })),
+			...orientation.tags.map((text) => ({ text, tool: false }))
+		].slice(0, 3)
+	);
+
 	/** Two letters, cut from the words rather than the string: "Developpeur Web" gives DW. */
 	const monogram = $derived(
 		orientation.name
@@ -127,13 +146,20 @@
 			<span class="card__desc">{orientation.description}</span>
 		{/if}
 
-		<!-- The row that will carry the tool marks once orientations have a
-		     structured stack (SKI-367). Until then the tags stand in: they are
-		     categories rather than tools, so they are set as labels, not logos. -->
-		{#if orientation.tags.length > 0}
+		<!-- The tools of the trade when the trade names them, its categories
+		     otherwise.
+
+		     Only seven of the catalogue's orientations carry a stack, because one
+		     is written down only where the trade's own description names the tool
+		     outright. An empty stack means "not recorded" and is the ordinary
+		     case: it must not read as an error, and it must not be filled in with
+		     plausible-looking tools — on the screen where somebody picks a trade,
+		     an invented tool reads as a requirement. So the tags stand in, marked
+		     as what they are. -->
+		{#if marks.length > 0}
 			<span class="card__tags">
-				{#each orientation.tags.slice(0, 3) as tag (tag)}
-					<span class="card__tag">{tag}</span>
+				{#each marks as mark (mark.text)}
+					<span class="card__tag" class:card__tag--tool={mark.tool}>{mark.text}</span>
 				{/each}
 			</span>
 		{/if}
@@ -322,6 +348,11 @@
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
 		color: var(--sk-text-muted);
+	}
+	/* A named tool is a harder fact than a category, and reads as one. */
+	.card__tag--tool {
+		border-color: color-mix(in srgb, var(--sk-accent) 45%, var(--sk-border));
+		color: var(--sk-text-primary);
 	}
 
 	.card__state {

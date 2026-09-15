@@ -29,6 +29,7 @@
 	import Input from '$components/ui/Input.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { DeclaredCredential } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let credentials = $state<DeclaredCredential[]>([]);
 	let loading = $state(true);
@@ -119,9 +120,9 @@
 	     is no reason to take away the only thing on the page somebody can act
 	     on. The error is shown, and the form stays. -->
 	{#if loadError}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-4 py-3 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{loadError}
-		</p>
+		</Alert>
 	{/if}
 
 	{#if loading}

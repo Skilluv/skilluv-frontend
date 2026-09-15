@@ -24,6 +24,7 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let { data } = $props<{ data: { code: string } }>();
 
@@ -126,12 +127,14 @@
 		<Skeleton class="h-64 w-full" rounded="xl" />
 		<p class="mt-4 text-center text-sm text-text-muted">{i18n.t('attestationVerify.checking')}</p>
 	{:else if state.status === 'error'}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-8 text-center" role="alert">
-			<p class="text-sm text-error">{state.message}</p>
-			<Button variant="ghost" size="sm" class="mt-4" href="/">
-				{i18n.t('errors.backHome')}
-			</Button>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{state.message}
+			{#snippet action()}
+				<Button variant="ghost" size="sm" href="/">
+					{i18n.t('errors.backHome')}
+				</Button>
+			{/snippet}
+		</Alert>
 	{:else}
 		<section
 			class="overflow-hidden rounded-2xl border bg-surface-elevated {isValid
@@ -207,22 +210,22 @@
 					</dl>
 
 					{#if isRevoked}
-						<div class="rounded-xl border border-error/40 bg-error/5 p-4 text-sm" role="note">
+						<Alert tone="error" role="none">
 							{#if attestation.revoked_at}
-								<p class="font-semibold text-error">
+								<p class="font-semibold">
 									{i18n.t('attestationVerify.revokedOn', {
 										date: formatDate(attestation.revoked_at)
 									})}
 								</p>
 							{/if}
 							{#if attestation.revoke_reason}
-								<p class="mt-1 text-text-muted">
+								<p class="mt-1 opacity-90">
 									{i18n.t('attestationVerify.revokeReason', {
 										reason: attestation.revoke_reason
 									})}
 								</p>
 							{/if}
-						</div>
+						</Alert>
 					{/if}
 
 					{#if isValid}

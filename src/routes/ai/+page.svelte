@@ -19,11 +19,11 @@
 	import { aiDomainApi } from '$lib/api/ai_domain';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
-	import { auth } from '$stores/auth.svelte';
-	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import { OnboardingCta } from '$components/onboarding';
+	import Alert from '$components/ui/Alert.svelte';
 	import {
 		AI_ARTIFACT_SUBTYPES,
 		type AiArtifact,
@@ -104,10 +104,10 @@
 			<p class="mt-2 text-text-muted">{i18n.t('aiDomain.subtitle')}</p>
 		</div>
 		<!-- The wizard sorts what gets recommended. Offered rather than
-		     imposed: an onboarding nobody can leave is a wall. -->
-		{#if auth.user}
-			<Button variant="ghost" href="/ai/onboarding">{i18n.t('aiDomain.onboardingCta')}</Button>
-		{/if}
+		     imposed: an onboarding nobody can leave is a wall. The guard and
+		     the wording moved into the shared component, so the seven hubs
+		     that now carry this link cannot word it seven ways. -->
+		<OnboardingCta domain="ai" />
 	</header>
 
 	<section class="mb-12">
@@ -147,9 +147,9 @@
 				{/each}
 			</div>
 		{:else if loadError}
-			<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-				<p class="text-sm text-error">{loadError}</p>
-			</div>
+			<Alert tone="error" size="lg" align="center">
+				{loadError}
+			</Alert>
 		{:else if artifacts.length === 0}
 			<EmptyState
 				variant="scroll"

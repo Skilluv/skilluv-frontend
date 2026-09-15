@@ -10,6 +10,7 @@
 	import Pagination from '$components/ui/Pagination.svelte';
 	import type { InterestRequest, InterestStatus } from '$lib/types';
 	import { Mail, Clock, Check, X, Inbox, ArrowRight } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	// Filtre local — l'API renvoie tous les statuts, on filtre côté client
 	// pour éviter un round-trip supplémentaire à chaque changement d'onglet.
@@ -145,14 +146,14 @@
 			{/each}
 		</div>
 	{:else if error}
-		<div class="rounded-2xl border border-error/30 bg-error/10 p-6 text-center text-sm text-error">
+		<Alert tone="error" size="lg" align="center">
 			{error}
-			<div class="mt-3">
+			{#snippet action()}
 				<Button variant="ghost" onclick={load}>
 					{i18n.locale === 'fr' ? 'Réessayer' : 'Retry'}
 				</Button>
-			</div>
-		</div>
+			{/snippet}
+		</Alert>
 	{:else if visible.length === 0}
 		<div class="rounded-2xl border border-border bg-surface-elevated p-10 text-center">
 			<div class="mb-3 inline-flex justify-center text-text-muted">

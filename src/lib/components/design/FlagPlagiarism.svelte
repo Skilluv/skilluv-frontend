@@ -23,6 +23,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import Modal from '$components/ui/Modal.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	interface Props {
 		submissionId: string;
@@ -99,9 +100,9 @@
 		/>
 
 		{#if errorText}
-			<p class="rounded-lg border border-error/40 bg-error/5 px-3 py-2 text-sm text-error">
+			<Alert tone="error" size="sm">
 				{errorText}
-			</p>
+			</Alert>
 		{/if}
 
 		<div class="flex justify-end gap-2">

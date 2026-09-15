@@ -15,6 +15,7 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { ExternalLink, Download, ArrowLeft } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let { data } = $props<{ data: { sliceId: string } }>();
 
@@ -143,12 +144,12 @@
 			</p>
 		</div>
 	{:else if view.status === 'error'}
-		<div class="rounded-2xl border border-error/30 bg-error/5 p-6 text-sm text-error">
+		<Alert tone="error" size="lg">
 			{view.message}
-			<div class="mt-3">
+			{#snippet action()}
 				<Button variant="secondary" size="sm" onclick={load}>{i18n.t('p26.validation.retryBtn')}</Button>
-			</div>
-		</div>
+			{/snippet}
+		</Alert>
 	{:else}
 		{@const item = view.item}
 		{@const domain = domainFromLabels(item)}

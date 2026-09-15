@@ -9,6 +9,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import { ChevronLeft, Target } from '@lucide/svelte';
 	import { auth } from '$lib/stores/auth.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let teamId = $derived(($page.params as Record<string, string>).team_id ?? '');
 
@@ -84,9 +85,9 @@
 		<Skeleton class="mb-4 h-10 w-1/2" />
 		<Skeleton class="h-32 w-full" rounded="xl" />
 	{:else if error}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{error}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{error}
+		</Alert>
 	{:else}
 		<section aria-labelledby="open-slots-title">
 			<h2 id="open-slots-title" class="mb-4 text-xl font-bold text-text-primary">

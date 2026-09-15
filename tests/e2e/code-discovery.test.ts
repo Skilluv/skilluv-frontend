@@ -11,9 +11,16 @@ import { gotoHydrated } from './utils/hydration';
  * one either: the reads were `undefined` and the markup simply skipped them.
  * The list rendered titles and nothing else.
  *
- * So the fixture below is copied from `FirstIssueRow` in `routes/code.rs`
- * rather than written to suit the page, and the assertions are on what a
- * reader ends up with — a way in, a reward, a repository — not on classes.
+ * So the fixture below is copied from the endpoint's own row type rather than
+ * written to suit the page, and the assertions are on what a reader ends up
+ * with — a way in, a reward, a repository — not on classes.
+ *
+ * That row type moved. The page read `/code/first-issues`, which is
+ * `#[deprecated]` upstream and is implemented by calling the open pool with
+ * `domain=code&slice_type=github_issue`; it now reads the pool directly. Same
+ * query, same rows, three fields under their real names — `external_url` for
+ * `issue_url`, `tags` for `languages`, and the surface arriving as
+ * `slice_type_name`.
  */
 type ApiRoute = { path: string; handler: (route: Route) => Promise<void> | void };
 
@@ -37,25 +44,31 @@ function json(body: unknown, status = 200) {
 
 const SLICE_ID = '7f3d1c88-0a2b-4c9e-9f11-2b6d5a4e8c30';
 
-const FIRST_ISSUES = {
+const OPEN_POOL = {
 	data: {
-		issues: [
+		slices: [
 			{
 				slice_id: SLICE_ID,
 				title: 'Fix the retry backoff on flaky uploads',
+				slice_type: 'github_issue',
+				slice_type_name: 'Upstream issue',
+				domain: 'code',
+				subtype: null,
 				difficulty: 2,
 				fragments_reward: 120,
 				project_slug: 'skilluv-core',
 				project_name: 'Skilluv Core',
-				issue_url: 'https://github.com/skilluv/core/issues/412',
+				external_url: 'https://github.com/skilluv/core/issues/412',
 				orientation_slug: 'backend',
 				orientation_name: 'Backend',
-				languages: ['Rust', 'SQL'],
-				ingested_at: '2026-08-01T10:00:00Z'
+				tags: ['Rust', 'SQL'],
+				opened_at: '2026-08-01T10:00:00Z'
 			}
 		],
+		domain: 'code',
+		slice_type: 'github_issue',
 		orientation: null,
-		language: null,
+		tag: null,
 		max_difficulty: 3
 	}
 };
@@ -78,7 +91,7 @@ const TOP_LANGUAGES = { data: { languages: [{ language: 'TypeScript', artifacts:
 test.describe('Code discovery', () => {
 	test.beforeEach(async ({ page }) => {
 		await mockApi(page, [
-			{ path: '/code/first-issues', handler: json(FIRST_ISSUES) },
+			{ path: '/open-slices', handler: json(OPEN_POOL) },
 			{ path: '/code/ecosystems', handler: json(ECOSYSTEMS) },
 			{ path: '/code/languages/top', handler: json(TOP_LANGUAGES) }
 		]);
@@ -97,7 +110,7 @@ test.describe('Code discovery', () => {
 	test('it still offers the upstream issue, read before anything is claimed', async ({ page }) => {
 		await gotoHydrated(page, '/code');
 
-		const out = page.getByRole('link', { name: /ouvrir|open/i }).first();
+		const out = page.getByTestId('code-first-issues-list').getByRole('link', { name: /source|upstream/i }).first();
 		await expect(out).toHaveAttribute('href', 'https://github.com/skilluv/core/issues/412');
 		// External and user-supplied: it must not pass referrer or ranking.
 		await expect(out).toHaveAttribute('rel', /noopener/);

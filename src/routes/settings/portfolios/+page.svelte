@@ -43,6 +43,7 @@
 	import Select from '$components/ui/Select.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { PortfolioDeclaration, PortfolioPlatform } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	/** The domains `portfolio_platforms` is actually seeded for. */
 	const DOMAINS = [
@@ -212,9 +213,9 @@
 		<Skeleton class="h-64 w-full" rounded="xl" />
 	{:else}
 		{#if loadError}
-			<p class="rounded-lg border border-error/40 bg-error/5 px-4 py-3 text-sm text-error">
+			<Alert tone="error" size="sm">
 				{loadError}
-			</p>
+			</Alert>
 		{/if}
 
 		<div class="flex flex-wrap items-end justify-between gap-3">
@@ -328,9 +329,9 @@
 			<p class="text-xs text-text-muted">{i18n.t('portfolioSettings.figuresOptional')}</p>
 
 			{#if formError}
-				<p class="rounded-lg border border-error/40 bg-error/5 px-3 py-2 text-sm text-error">
+				<Alert tone="error" size="sm">
 					{formError}
-				</p>
+				</Alert>
 			{/if}
 		{/if}
 	</div>

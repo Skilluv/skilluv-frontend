@@ -31,6 +31,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Select from '$components/ui/Select.svelte';
 	import { DESIGN_SUBTYPES } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	interface Props {
 		/** Attaches the upload to a slice when there is one. */
@@ -228,9 +229,9 @@
 	{/if}
 
 	{#if errorText}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-3 py-2 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{errorText}
-		</p>
+		</Alert>
 	{/if}
 
 	{#if finishedSessionId}

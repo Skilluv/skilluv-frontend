@@ -143,6 +143,20 @@ export interface EnlistTranslations {
 			notReadyTitle: string;
 			notReadyBody: string;
 			notReadyCta: string;
+			/**
+			 * The two states this step used to sit silent in.
+			 *
+			 * `loading` started true and was cleared only by the fetch the page
+			 * makes when it has a discipline to fetch for. With no session, or a
+			 * session declaring none, it waited on a request it had decided not to
+			 * make — skeletons for ever, on a step whose navbar is removed.
+			 */
+			needsSessionTitle: string;
+			needsSessionBody: string;
+			needsSessionCta: string;
+			needsDomainTitle: string;
+			needsDomainBody: string;
+			needsDomainCta: string;
 		};
 	};
 }

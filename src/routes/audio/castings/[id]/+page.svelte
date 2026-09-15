@@ -37,6 +37,7 @@
 	import Modal from '$components/ui/Modal.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { AUDITION_NOTES_MAX, type CastingDetail } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let castingId = $derived($page.params.id ?? '');
 
@@ -179,9 +180,9 @@
 			<Skeleton class="h-48 w-full" rounded="xl" />
 		</div>
 	{:else if loadError}
-		<div class="mt-6 rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center" class="mt-6">
+			{loadError}
+		</Alert>
 	{:else if casting && detail}
 		<article class="mt-6" data-testid="casting-detail">
 			<div class="mb-3 flex flex-wrap items-center gap-2">

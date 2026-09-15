@@ -8,6 +8,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { i18n } from '$lib/i18n';
 	import { ArrowLeft } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let loading = $state(true);
 	let saving = $state(false);
@@ -85,9 +86,9 @@
 	<p class="mb-8 text-text-muted">{i18n.t('settings.availability.subtitle')}</p>
 
 	{#if loadError}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{loadError}
+		</Alert>
 	{:else}
 		<div class="flex flex-col gap-5 rounded-2xl border border-border bg-surface-elevated p-6">
 			{#if loading}

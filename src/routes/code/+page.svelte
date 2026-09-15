@@ -2,11 +2,19 @@
 	/**
 	 * The way in for somebody who has written no code here yet.
 	 *
-	 * `first-issues` is the one list on this platform that does not assume a
-	 * record. Everything else — recommendations, matched projects, the craft
-	 * score — reads what somebody has already done. This is for the person who
-	 * has done nothing on Skilluv and is deciding whether to start, which is
-	 * the moment that decides whether they ever have a record at all.
+	 * The first-issues list is the one list on this platform that does not
+	 * assume a record. Everything else — recommendations, matched projects,
+	 * the craft score — reads what somebody has already done. This is for the
+	 * person who has done nothing on Skilluv and is deciding whether to
+	 * start, which is the moment that decides whether they ever have a record
+	 * at all.
+	 *
+	 * It reads `GET /api/open-slices?domain=code&slice_type=github_issue`.
+	 * `/api/code/first-issues` is the same query behind a route of its own and
+	 * is deprecated upstream: it was never about code, it reads
+	 * `project_slices` filtered to one surface, and every other trade has
+	 * slices of the same shape. The language box filters on `tag`, which is
+	 * what that endpoint calls the thing each domain tags its work with.
 	 *
 	 * So it is public, it leads, and it is never sorted by anything that
 	 * rewards existing standing. A "good first issue" list ranked by
@@ -22,50 +30,37 @@
 	 */
 	import { onMount } from 'svelte';
 	import { Code2, ExternalLink } from '@lucide/svelte';
-	import {
-		codeDiscoveryApi,
-		type Ecosystem,
-		type FirstIssue,
-		type LanguageCount
-	} from '$api/code_discovery';
+	import { codeDiscoveryApi, type Ecosystem, type LanguageCount } from '$api/code_discovery';
 	import { i18n } from '$lib/i18n';
-	import Badge from '$components/ui/Badge.svelte';
 	import Button from '$components/ui/Button.svelte';
-	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Input from '$components/ui/Input.svelte';
-	import Skeleton from '$components/ui/Skeleton.svelte';
+	import { OnboardingCta } from '$components/onboarding';
+	import { OpenSlicesList } from '$components/slices';
 
 	// Typed from the client rather than a local bag of optional fields. The bag
 	// is what let this page read `html_url`, `repository` and `count` — none of
 	// which the backend sends — without a single compile error.
 
-	let issues = $state<FirstIssue[]>([]);
 	let ecosystems = $state<Ecosystem[]>([]);
 	let topLanguages = $state<LanguageCount[]>([]);
 	let loading = $state(true);
-	let language = $state('');
 
 	/**
-	 * Where the work is actually done.
+	 * What is typed, and what is applied.
 	 *
-	 * The row carries `slice_id`: these issues are served as project slices, so
-	 * the slice page is where one is claimed, delivered and — through the
-	 * deliverables pipeline — paid its `fragments_reward`. Linking only to
-	 * GitHub sent people out of the platform at the exact moment they were
-	 * ready to start.
+	 * Two variables rather than one, because the list refetches whenever its
+	 * filter changes and a single bound value would fire a request per
+	 * keystroke. `appliedLanguage` moves only when the button is pressed.
 	 */
-	function sliceHref(issue: FirstIssue): string {
-		return `/slices/${issue.slice_id}`;
-	}
+	let language = $state('');
+	let appliedLanguage = $state('');
 
 	async function load() {
 		loading = true;
-		const [i, e, t] = await Promise.allSettled([
-			codeDiscoveryApi.firstIssues(language.trim() ? { language: language.trim() } : undefined),
+		const [e, t] = await Promise.allSettled([
 			codeDiscoveryApi.ecosystems(),
 			codeDiscoveryApi.topLanguages()
 		]);
-		if (i.status === 'fulfilled') issues = i.value.data?.issues ?? [];
 		if (e.status === 'fulfilled') ecosystems = e.value.data?.ecosystems ?? [];
 		if (t.status === 'fulfilled') topLanguages = t.value.data?.languages ?? [];
 		loading = false;
@@ -88,6 +83,12 @@
 			{i18n.t('codeDiscovery.title')}
 		</h1>
 		<p class="text-sm text-text-muted">{i18n.t('codeDiscovery.subtitle')}</p>
+		<!-- The wizard sorts what gets recommended here. Offered rather
+		     than imposed, and hidden from signed-out readers, for whom the
+		     destination is a sign-in wall and not an invitation. -->
+		<div class="pt-1">
+			<OnboardingCta domain="code" />
+		</div>
 	</header>
 
 	<section class="space-y-3" data-testid="code-first-issues">
@@ -101,62 +102,23 @@
 			<div class="w-40">
 				<Input placeholder={i18n.t('codeDiscovery.languagePlaceholder')} bind:value={language} />
 			</div>
-			<Button size="sm" variant="ghost" onclick={load}>{i18n.t('codeDiscovery.filterCta')}</Button>
+			<Button size="sm" variant="ghost" onclick={() => (appliedLanguage = language.trim())}>
+				{i18n.t('codeDiscovery.filterCta')}
+			</Button>
 		</div>
 
-		{#if loading}
-			<Skeleton class="h-48 w-full" rounded="xl" />
-		{:else if issues.length === 0}
-			<EmptyState
-				title={i18n.t('codeDiscovery.noIssues')}
-				body={i18n.t('codeDiscovery.noIssuesHint')}
-				size="sm"
-			/>
-		{:else}
-			<ul class="space-y-2">
-				{#each issues as issue (issue.slice_id)}
-					<li class="rounded-xl border border-border bg-surface-elevated p-4">
-						<div class="flex flex-wrap items-start justify-between gap-3">
-							<!-- The title leads to the slice, not to GitHub: this is where
-							     the issue is claimed and where the reward is paid. -->
-							<a
-								href={sliceHref(issue)}
-								class="min-w-0 flex-1 text-sm font-medium text-text-primary hover:text-accent"
-							>
-								{issue.title}
-							</a>
-							{#if issue.issue_url}
-								<a
-									href={issue.issue_url}
-									target="_blank"
-									rel="noopener noreferrer nofollow ugc"
-									class="inline-flex shrink-0 items-center gap-1 text-xs text-accent hover:underline"
-								>
-									{i18n.t('codeDiscovery.openIssue')}
-									<ExternalLink size={11} />
-								</a>
-							{/if}
-						</div>
-						<div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-text-muted">
-							<a href="/projects" class="hover:text-text-primary">{issue.project_name}</a>
-							<span aria-hidden="true">·</span>
-							<span>{i18n.t(`common.difficulty.${issue.difficulty}`)}</span>
-							<!-- Shown because it is the answer to "why would I take this
-							     one", and the backend sends it on every row. -->
-							<span class="font-semibold text-accent">
-								{i18n.t('codeDiscovery.reward', { n: issue.fragments_reward })}
-							</span>
-							{#each issue.languages.slice(0, 3) as lang (lang)}
-								<Badge size="sm">{lang}</Badge>
-							{/each}
-							{#if issue.orientation_name}
-								<span class="text-text-muted">{issue.orientation_name}</span>
-							{/if}
-						</div>
-					</li>
-				{/each}
-			</ul>
-		{/if}
+		<!-- The pool, scoped to this trade and this surface. The rows were
+		     rendered here by hand against a deprecated endpoint that returns
+		     the same data under three different field names; one component
+		     means this page and `/open-slices` cannot show it two ways. The
+		     trade is not repeated per row: every row here is code. -->
+		<OpenSlicesList
+			domain="code"
+			sliceType="github_issue"
+			tag={appliedLanguage || undefined}
+			showDomain={false}
+			testId="code-first-issues-list"
+		/>
 	</section>
 
 	{#if !loading && ecosystems.length > 0}

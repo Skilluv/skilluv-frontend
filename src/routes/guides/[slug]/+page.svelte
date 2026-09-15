@@ -17,6 +17,7 @@
 	import Markdown from '$components/ui/Markdown.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { Guide } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let slug = $derived($page.params.slug ?? '');
 
@@ -70,9 +71,9 @@
 			<Skeleton class="h-64 w-full" rounded="xl" />
 		</div>
 	{:else if loadError}
-		<div class="mt-6 rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center" class="mt-6">
+			{loadError}
+		</Alert>
 	{:else if guide}
 		<article class="mt-6" data-testid="guide-article">
 			<div class="mb-3 flex flex-wrap items-center gap-2">

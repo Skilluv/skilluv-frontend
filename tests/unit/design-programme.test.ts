@@ -22,18 +22,6 @@ function ok(data: unknown, status = 200) {
 	};
 }
 
-function fail(status: number, code: string) {
-	return {
-		ok: false,
-		status,
-		json: () =>
-			Promise.resolve({
-				error: { code, message: 'nope' },
-				meta: { request_id: 'r', timestamp: '2026-08-17' }
-			})
-	};
-}
-
 function tournament(overrides: Record<string, unknown> = {}) {
 	return {
 		id: 't1',
@@ -199,97 +187,278 @@ describe('design profile', () => {
 	});
 });
 
-describe('the wizard holds what the server will not take', () => {
-	it('sends everything when the server accepts it, and keeps nothing back', async () => {
-		fetchMock.mockResolvedValue(ok({ domain: 'design', answers: {} }));
-		const { designWizard } = await import('../../src/lib/stores/design_wizard.svelte');
-		designWizard.level = 'senior';
-		designWizard.weeklyHours = 'gt10';
-		designWizard.goal = 'paid_missions';
-		designWizard.setFamilies(['brand-identity']);
-		designWizard.setMainTool('figma');
+describe('the design wizard is the shared wizard', () => {
+	it('reads its questions from the registry rather than from the trade catalogue', async () => {
+		fetchMock.mockResolvedValue(ok([]));
+		const { domainProfileApi } = await import('../../src/lib/api/domain_profile');
+		await domainProfileApi.questions('design');
 
-		const result = await designWizard.save();
+		// The hand-rolled wizard built its trade list from `GET /orientations`
+		// with no parameters — fifty rows across eleven domains, ordered by
+		// domain, with `design` fifth. This endpoint answers with the same
+		// query the validator runs, so what is offered is what is accepted.
+		expect(fetchMock.mock.calls[0][0]).toBe('/api/users/me/domain-profile/design/questions');
+	});
 
-		expect(result.fullySaved).toBe(true);
+	it('sends every answer in one request, with nothing held back on the device', async () => {
+		fetchMock.mockResolvedValue(
+			ok({ domain: 'design', answers: {}, completed_at: null, skipped_at: null })
+		);
+		const { domainProfileApi } = await import('../../src/lib/api/domain_profile');
+		await domainProfileApi.put('design', {
+			level: 'senior',
+			weekly_hours: 'gt10',
+			goal: 'paid_missions',
+			preferred_families: ['design-brand-identity'],
+			challenge_preference: 'contest',
+			main_tool: 'figma',
+			portfolio_url: 'https://behance.net/ada'
+		});
+
+		// One request, not two. The old store sent the full body, waited for
+		// the 400 and re-sent a subset — which stopped being necessary the day
+		// the registry grew these keys, and had been dropping the two answers
+		// the server already accepted.
 		expect(fetchMock).toHaveBeenCalledTimes(1);
 		expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({
 			level: 'senior',
 			weekly_hours: 'gt10',
 			goal: 'paid_missions',
-			preferred_families: ['brand-identity'],
-			main_tool: 'figma'
+			preferred_families: ['design-brand-identity'],
+			challenge_preference: 'contest',
+			main_tool: 'figma',
+			portfolio_url: 'https://behance.net/ada'
 		});
-		expect(designWizard.heldLocally).toBe(false);
 	});
 
-	it('falls back to the supported subset when the shape is refused', async () => {
-		fetchMock
-			.mockResolvedValueOnce(fail(400, 'VALIDATION_ERROR'))
-			.mockResolvedValueOnce(ok({ domain: 'design', answers: {} }));
-		const { designWizard } = await import('../../src/lib/stores/design_wizard.svelte');
-		designWizard.level = 'debutant';
-		designWizard.goal = 'learning';
-		designWizard.setChallengePreference('contest');
-
-		const result = await designWizard.save();
-
-		expect(result.fullySaved).toBe(false);
-		expect(fetchMock).toHaveBeenCalledTimes(2);
-		// The second body carries only what the vocabulary knows.
-		expect(JSON.parse(fetchMock.mock.calls[1][1].body)).toEqual({
-			level: 'debutant',
-			goal: 'learning'
-		});
-		expect(designWizard.heldLocally).toBe(true);
-	});
-
-	it('a failure that is not about shape surfaces instead of losing answers', async () => {
-		fetchMock.mockResolvedValue(fail(500, 'INTERNAL'));
-		const { designWizard } = await import('../../src/lib/stores/design_wizard.svelte');
-		designWizard.level = 'senior';
-		designWizard.setMainTool('blender');
-
-		await expect(designWizard.save()).rejects.toThrow();
-		// One attempt: a 500 must not be retried with less data.
-		expect(fetchMock).toHaveBeenCalledTimes(1);
-	});
-
-	it('with no extra answers there is a single request and nothing held', async () => {
-		fetchMock.mockResolvedValue(ok({ domain: 'design', answers: {} }));
-		const { designWizard } = await import('../../src/lib/stores/design_wizard.svelte');
-		designWizard.level = 'practitioner';
-
-		const result = await designWizard.save();
-
-		expect(result.fullySaved).toBe(true);
-		expect(fetchMock).toHaveBeenCalledTimes(1);
-		expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({ level: 'practitioner' });
-	});
-
-	it('caps the families answer at three', async () => {
-		const { designWizard } = await import('../../src/lib/stores/design_wizard.svelte');
-		designWizard.setFamilies(['a', 'b', 'c', 'd', 'e']);
-		expect(designWizard.pending.preferred_families).toEqual(['a', 'b', 'c']);
-	});
-
-	it('every vocabulary value the wizard offers has copy in both locales', async () => {
-		const { DOMAIN_LEVELS, DOMAIN_WEEKLY_HOURS, DOMAIN_GOALS } = await import(
-			'../../src/lib/types'
+	it('surfaces the plan the save comes back with', async () => {
+		const plan = {
+			headline: 'Trente jours, un livrable.',
+			because: 'Une traversée complète vaut mieux que trois débuts.',
+			guides: ['toolkit-design'],
+			feed_query: '/api/users/me/next-challenges',
+			next_steps: ['Déclare un métier.']
+		};
+		fetchMock.mockResolvedValue(
+			ok({
+				domain: 'design',
+				answers: {},
+				completed_at: null,
+				skipped_at: null,
+				recommendation: plan
+			})
 		);
-		const { designFr } = await import('../../src/lib/i18n/design.fr');
-		const { designEn } = await import('../../src/lib/i18n/design.en');
-		for (const level of DOMAIN_LEVELS) {
-			expect(designFr.designWizard.levels[level]).toBeTruthy();
-			expect(designEn.designWizard.levels[level]).toBeTruthy();
+		const { domainProfileApi } = await import('../../src/lib/api/domain_profile');
+		const res = await domainProfileApi.put('design', { level: 'debutant' });
+
+		// The wizard used to toast and navigate away, discarding this.
+		expect(res.data.recommendation).toEqual(plan);
+	});
+
+	it('records a dismissal as a dismissal', async () => {
+		fetchMock.mockResolvedValue(ok(null, 204));
+		const { domainProfileApi } = await import('../../src/lib/api/domain_profile');
+		await domainProfileApi.skip('design');
+
+		// `skipped_at` and an empty answer set are different states: the first
+		// means stop asking, the second means ask again.
+		expect(fetchMock.mock.calls[0][0]).toBe('/api/users/me/domain-profile/design/skip');
+		expect(fetchMock.mock.calls[0][1].method).toBe('POST');
+	});
+});
+
+describe('every discipline can be onboarded', () => {
+	it('each of the twelve has a wizard URL and a place to land', async () => {
+		const { PROFILE_DOMAINS } = await import('../../src/lib/types');
+		const { onboardingHref, onboardingDoneHref, isProfileDomain } = await import(
+			'../../src/lib/utils/domain_onboarding'
+		);
+
+		// The backend serves questions for every domain in `SKILL_DOMAINS`.
+		// Three of them had a page; the rest were unreachable, `code` included
+		// — and code has a ladder, goals and a tools question of its own.
+		for (const domain of PROFILE_DOMAINS) {
+			expect(isProfileDomain(domain)).toBe(true);
+			expect(onboardingHref(domain)).toBe(`/onboarding/domain/${domain}`);
+			expect(onboardingDoneHref(domain).startsWith('/')).toBe(true);
 		}
-		for (const hours of DOMAIN_WEEKLY_HOURS) {
-			expect(designFr.designWizard.weeklyHours[hours]).toBeTruthy();
-			expect(designEn.designWizard.weeklyHours[hours]).toBeTruthy();
+	});
+
+	it('refuses a slug the platform does not know', async () => {
+		const { isProfileDomain } = await import('../../src/lib/utils/domain_onboarding');
+		expect(isProfileDomain('gardening')).toBe(false);
+		expect(isProfileDomain('')).toBe(false);
+	});
+});
+
+describe('the wizard has copy for every vocabulary the backend serves', () => {
+	// Mirrors `routes::domain_profile`. A value served with no label renders
+	// as its own slug rather than as a blank chip, so this is a quality gate
+	// and not a crash guard — but a wizard offering `oscp_or_offsec` as a
+	// button is a wizard nobody finished.
+	const VOCABULARIES: Record<string, string[]> = {
+		level: [
+			'debutant',
+			'apprentissage',
+			'practitioner',
+			'senior',
+			'researcher',
+			'beginner',
+			'junior',
+			'mid',
+			'staff'
+		],
+		weekly_hours: ['lt3', '3_10', 'gt10', 'fulltime', 'under_5', '5_to_15', '15_to_40'],
+		goal: [
+			'learning',
+			'portfolio',
+			'paid_missions',
+			'academic_research',
+			'startup',
+			'learn',
+			'build_portfolio',
+			'find_paid_work',
+			'contribute_upstream',
+			'publish_library',
+			'become_mentor',
+			'ship_own_product'
+		],
+		compute: ['none', 'personal_gpu', 'cloud_small', 'cloud_large', 'enterprise'],
+		main_frameworks: ['pytorch', 'jax', 'tensorflow', 'candle', 'mlx', 'other'],
+		challenge_preference: [
+			'individual',
+			'contest',
+			'both',
+			'undecided',
+			'upstream_contributions',
+			'solo_shipped_apps',
+			'published_libraries',
+			'long_team_projects',
+			'short_hackathons'
+		],
+		main_tool: ['figma', 'adobe', 'sketch', 'blender', 'after_effects', 'other'],
+		security_certifications: [
+			'none',
+			'security_plus',
+			'oscp_or_offsec',
+			'ceh',
+			'cissp_or_cism',
+			'gcih_or_giac',
+			'cloud_security',
+			'other'
+		],
+		security_lab_setup: ['browser_only', 'local_tools', 'local_vms', 'home_lab', 'cloud'],
+		main_formats: [
+			'documentation',
+			'articles',
+			'talks',
+			'video',
+			'livestream',
+			'podcast',
+			'translation',
+			'research'
+		],
+		audio_destination: ['game', 'motion', 'podcast', 'brand', 'ui', 'cross'],
+		main_daws: [
+			'reaper',
+			'ardour',
+			'logic',
+			'fl_studio',
+			'ableton',
+			'cubase',
+			'pro_tools',
+			'audacity',
+			'other'
+		],
+		quality_background: [
+			'developer_moving_across',
+			'professional_tester',
+			'support_or_operations',
+			'career_change',
+			'student',
+			'other'
+		],
+		leadership_level: ['aspiring', 'emerging', 'lead', 'senior_lead', 'executive'],
+		leadership_context: ['employed_team', 'open_source', 'community', 'own_venture', 'none_yet'],
+		main_settings: [
+			'bootcamp',
+			'school',
+			'university',
+			'in_company',
+			'community',
+			'self_paced',
+			'one_to_one'
+		],
+		learner_level: ['beginner', 'junior', 'mid', 'senior', 'mixed']
+	};
+
+	/** The questions asked across the twelve domains, from the same registry. */
+	const QUESTION_KEYS = [
+		...Object.keys(VOCABULARIES),
+		'preferred_families',
+		'huggingface_username',
+		'portfolio_url',
+		'main_tools',
+		'github_username',
+		'security_tools',
+		'subject_domain',
+		'dev_to_username',
+		'blog_url',
+		'soundcloud_username',
+		'bandcamp_username',
+		'quality_target_domains',
+		'quality_tools',
+		'leadership_target_domains',
+		'leadership_tools'
+	];
+
+	it('labels every option in both locales', async () => {
+		const { fr } = await import('../../src/lib/i18n/fr');
+		const { en } = await import('../../src/lib/i18n/en');
+		const frOptions = fr.domainWizard.options as unknown as Record<string, Record<string, string>>;
+		const enOptions = en.domainWizard.options as unknown as Record<string, Record<string, string>>;
+		for (const [key, values] of Object.entries(VOCABULARIES)) {
+			for (const value of values) {
+				expect(frOptions[key]?.[value], `fr ${key}.${value}`).toBeTruthy();
+				expect(enOptions[key]?.[value], `en ${key}.${value}`).toBeTruthy();
+			}
 		}
-		for (const goal of DOMAIN_GOALS) {
-			expect(designFr.designWizard.goals[goal]).toBeTruthy();
-			expect(designEn.designWizard.goals[goal]).toBeTruthy();
+	});
+
+	it('labels every question in both locales', async () => {
+		const { fr } = await import('../../src/lib/i18n/fr');
+		const { en } = await import('../../src/lib/i18n/en');
+		const frQ = fr.domainWizard.questions as unknown as Record<string, string>;
+		const enQ = en.domainWizard.questions as unknown as Record<string, string>;
+		for (const key of QUESTION_KEYS) {
+			expect(frQ[key], `fr ${key}`).toBeTruthy();
+			expect(enQ[key], `en ${key}`).toBeTruthy();
+		}
+	});
+
+	it('titles and subtitles every discipline in both locales', async () => {
+		const { PROFILE_DOMAINS } = await import('../../src/lib/types');
+		const { fr } = await import('../../src/lib/i18n/fr');
+		const { en } = await import('../../src/lib/i18n/en');
+		const frTitles = fr.domainWizard.titles as unknown as Record<string, string>;
+		const enSubtitles = en.domainWizard.subtitles as unknown as Record<string, string>;
+		for (const domain of [...PROFILE_DOMAINS, 'generic']) {
+			expect(frTitles[domain], `fr ${domain}`).toBeTruthy();
+			expect(enSubtitles[domain], `en ${domain}`).toBeTruthy();
+		}
+	});
+
+	it('reads the discipline answers from the one place they are already translated', async () => {
+		// `quality_target_domains` and `leadership_target_domains` answer with
+		// discipline slugs and have no map of their own on purpose: copying
+		// the twelve names into two more places is two more places for them to
+		// drift out of step with `common.domains`.
+		const { fr } = await import('../../src/lib/i18n/fr');
+		const { PROFILE_DOMAINS } = await import('../../src/lib/types');
+		const frDomains = fr.common.domains as unknown as Record<string, string>;
+		expect('quality_target_domains' in fr.domainWizard.options).toBe(false);
+		for (const domain of PROFILE_DOMAINS) {
+			expect(frDomains[domain], domain).toBeTruthy();
 		}
 	});
 });

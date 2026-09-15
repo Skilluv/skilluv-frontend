@@ -33,6 +33,7 @@
 	import SegmentedControl from '$components/ui/SegmentedControl.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { TerrainProposal, ToolkitRow } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	const DOMAIN = 'design';
 
@@ -106,9 +107,9 @@
 	{#if loading}
 		<Skeleton class="h-64 w-full" rounded="xl" />
 	{:else if loadError}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-4 py-3 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{loadError}
-		</p>
+		</Alert>
 	{:else}
 		<section class="space-y-4" data-testid="design-toolkit">
 			<h2 class="text-sm font-bold uppercase tracking-wider text-text-muted">

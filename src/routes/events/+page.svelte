@@ -9,6 +9,7 @@
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
 	import EmptyState from '$lib/components/ui/EmptyState.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let events = $state<SkilluvEvent[]>([]);
 	let myEvents = $state<MyEventRow[]>([]);
@@ -48,9 +49,9 @@
 			{/each}
 		</div>
 	{:else if error}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{error}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{error}
+		</Alert>
 	{:else}
 		{#if myEvents.length > 0}
 			<section class="mb-10" aria-labelledby="my-events-title">

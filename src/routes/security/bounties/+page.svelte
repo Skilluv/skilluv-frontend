@@ -30,6 +30,7 @@
 	import Select from '$components/ui/Select.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { SEVERITY_TIERS, type BountyClaim, type BountyProgramme } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let programmes = $state<BountyProgramme[]>([]);
 	let note = $state('');
@@ -158,9 +159,9 @@
 	{#if loading}
 		<Skeleton class="h-64 w-full" rounded="xl" />
 	{:else if loadError}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-4 py-3 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{loadError}
-		</p>
+		</Alert>
 	{:else}
 		<section class="space-y-3" data-testid="bounty-programmes">
 			<div class="flex flex-wrap items-center justify-between gap-2">

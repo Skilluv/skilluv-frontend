@@ -75,7 +75,17 @@ export interface LanguageCount {
 }
 
 export const codeDiscoveryApi = {
-	/** Issues suitable for a first contribution. Public. */
+	/**
+	 * Issues suitable for a first contribution. Public.
+	 *
+	 * @deprecated Use `openSlicesApi.list({ domain: 'code', slice_type:
+	 * 'github_issue' })`. The route is `#[deprecated]` upstream and is
+	 * implemented by calling the open pool with exactly those two filters: it
+	 * was never about code — it reads `project_slices` filtered to one
+	 * surface, and every other trade has slices of the same shape. Kept so a
+	 * caller outside this repo is not broken by the rename; nothing here
+	 * calls it.
+	 */
 	firstIssues(params?: { language?: string; limit?: number; max_difficulty?: number }) {
 		return api.get<ApiResponse<FirstIssuesResponse>>('/code/first-issues', params);
 	},

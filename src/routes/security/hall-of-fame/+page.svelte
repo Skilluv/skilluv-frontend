@@ -24,6 +24,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type { FindingReporter, HallOfFame } from '$types';
 	import { FeaturedTalent } from '$components/domain';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let board = $state<HallOfFame | null>(null);
 	let loading = $state(true);
@@ -102,9 +103,9 @@
 	{#if loading}
 		<Skeleton class="h-80 w-full" rounded="xl" />
 	{:else if loadError}
-		<p class="rounded-lg border border-error/40 bg-error/5 px-4 py-3 text-sm text-error">
+		<Alert tone="error" size="sm">
 			{loadError}
-		</p>
+		</Alert>
 	{:else if isEmpty}
 		<EmptyState
 			title={i18n.t('securityHallOfFame.empty')}

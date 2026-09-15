@@ -8,6 +8,7 @@
 	import { i18n } from '$lib/i18n';
 	import { checkPassword } from '$lib/utils/password';
 	import { Check } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let password = $state('');
 	let confirmPassword = $state('');
@@ -73,9 +74,9 @@
 		<p class="mb-8 text-center text-sm text-text-muted">{i18n.t('auth.reset.subtitle')}</p>
 
 		{#if error}
-			<div class="mb-4 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error" role="alert">
+			<Alert tone="error" size="sm" class="mb-4">
 				{error}
-			</div>
+			</Alert>
 		{/if}
 
 		<form onsubmit={handleSubmit} class="flex flex-col gap-4">

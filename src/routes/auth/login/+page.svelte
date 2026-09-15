@@ -12,6 +12,7 @@
 	import { postLoginDestination } from '$lib/utils/post_login';
 	import { KeyRound, Building2 } from '@lucide/svelte';
 	import SsoButton from '$components/ui/SsoButton.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let identifier = $state('');
 	let password = $state('');
@@ -213,9 +214,9 @@
 	<p class="mb-8 text-center text-sm text-text-muted">{i18n.t('auth.login.subtitle')}</p>
 
 	{#if error}
-		<div class="mb-4 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error" role="alert">
+		<Alert tone="error" size="sm" class="mb-4">
 			{error}
-		</div>
+		</Alert>
 	{/if}
 
 	<form onsubmit={handleLogin} class="flex flex-col gap-4">

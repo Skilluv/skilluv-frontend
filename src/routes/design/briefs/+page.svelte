@@ -29,6 +29,7 @@
 	import Select from '$components/ui/Select.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { DESIGN_SUBTYPES, type DesignBriefProposal, type Orientation } from '$types';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let proposals = $state<DesignBriefProposal[]>([]);
 	let orientations = $state<Orientation[]>([]);
@@ -216,9 +217,9 @@
 		</div>
 
 		{#if errorText}
-			<p class="rounded-lg border border-error/40 bg-error/5 px-3 py-2 text-sm text-error">
+			<Alert tone="error" size="sm">
 				{errorText}
-			</p>
+			</Alert>
 		{/if}
 
 		<Button size="sm" loading={sending} disabled={!canSend} onclick={propose}>

@@ -10,6 +10,7 @@ export * from './postmvp';
 // tournament and mission endpoints, so their types are here rather than in a
 // `design`-prefixed silo that would hide the reuse.
 export * from './design';
+export * from './open_slices';
 
 // Voice castings — the audio domain's own hiring loop.
 export * from './audio';
@@ -124,7 +125,8 @@ export type Theme = ThemeBase | `${ThemeBase}-light`;
  *
  * There is no catalogue endpoint to check it against; `/capabilities` and
  * `/capability-rules` both 404. So this is maintained by hand and drifts by
- * default. `domain_curator` was already missing when this note was written.
+ * default. `domain_curator` was already missing when this note was written, and
+ * `rite_reviewer:{domain}` was added the day the backend started granting it.
  */
 export type Capability =
 	| 'challenger'
@@ -147,7 +149,27 @@ export type Capability =
 	 * `auth.can('domain_curator')` did not compile and the gate could not be
 	 * written at all.
 	 */
-	| 'domain_curator';
+	| 'domain_curator'
+	/**
+	 * Reads the published rites of one discipline, and nothing else.
+	 *
+	 * Granted automatically to whoever passes their own trade's rite. It exists
+	 * to break a circle: settling a rite needed `admin`, `mentor` or
+	 * `domain_curator`; only `mentor` was automatic, at five attestations or
+	 * three mentoring sessions, both of which need validated work, which needs
+	 * one of those same capabilities. Nothing broke that loop on its own — it
+	 * was broken by hand, once, for one account, and stayed broken for every
+	 * newcomer of every discipline.
+	 *
+	 * Parameterised by discipline, so it is written as a template rather than
+	 * twelve members: the union still refuses a typo, which is the whole reason
+	 * this list is closed.
+	 *
+	 * It opens one door only. Nothing on slices, missions, contests or
+	 * attestations, and the older rule stands: nobody reads their own
+	 * submission.
+	 */
+	| `rite_reviewer:${SkillDomain}`;
 
 /** Type d'entreprise P24 — drive les sections conditionnelles dashboard/register. */
 export type EnterpriseType = 'direct_hire' | 'staffing_agency' | 'remote_international';
@@ -500,6 +522,16 @@ export interface Orientation {
 	primary_domain: SkillDomain;
 	secondary_domains: SkillDomain[];
 	tags: string[];
+	/**
+	 * The named tools of the trade, as slugs: `cinema-4d`, `lottie`, `rive`.
+	 *
+	 * Empty is the common case and a legitimate answer meaning "not recorded",
+	 * never an error. A tool is written down only when the trade's own
+	 * description names it outright; most do not. Inventing plausible tools on
+	 * the screen where somebody picks their trade would be worse than showing
+	 * nothing, because it would be read as what the trade requires.
+	 */
+	stack: string[];
 	is_curated: boolean;
 	is_archived: boolean;
 }

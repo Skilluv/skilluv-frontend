@@ -12,6 +12,7 @@
 	import type { CompanySize, Enterprise } from '$types';
 	import { INDUSTRIES, industryItems } from '$lib/data/industries';
 	import { Undo2 } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let enterprise = $state<Enterprise | null>(null);
 	let memberCount = $state(0);
@@ -263,9 +264,9 @@
 			</h2>
 
 			{#if error}
-				<div class="mb-5 rounded-2xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+				<Alert tone="error" size="sm" class="mb-5">
 					{error}
-				</div>
+				</Alert>
 			{/if}
 
 			<div class="space-y-4">

@@ -36,7 +36,7 @@
 	     to record that it is leaving for a provider before the browser goes, and
 	     it must stay a real link: the OAuth start is a server redirect, and a
 	     button would lose middle-click and "open in new tab". -->
-	<a {href} {onclick} class={cls}>
+	<a {href} {onclick} class={cls} data-sveltekit-reload>
 		<BrandIcon name={provider} size={16} />
 		{displayLabel}
 	</a>

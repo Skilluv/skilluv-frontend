@@ -6,6 +6,7 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import { certificationsApi, type DiplomaVerification } from '$api/certifications';
 	import { SkilluError } from '$api/client';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let code = $derived(page.params.code?.toUpperCase() ?? '');
 	let diploma = $state<DiplomaVerification | null>(null);
@@ -134,12 +135,13 @@
 			</div>
 
 			{#if diploma.status === 'revoked' && diploma.revoke_reason}
-				<div class="mt-6 rounded-xl border border-error/40 bg-error/5 p-4">
-					<p class="text-xs font-bold uppercase tracking-wider text-error mb-1">
-						{i18n.locale === 'fr' ? 'Motif de révocation' : 'Revoke reason'}
-					</p>
-					<p class="text-sm">{diploma.revoke_reason}</p>
-				</div>
+				<Alert
+					tone="error"
+					class="mt-6"
+					title={i18n.locale === 'fr' ? 'Motif de révocation' : 'Revoke reason'}
+				>
+					{diploma.revoke_reason}
+				</Alert>
 			{/if}
 		</div>
 

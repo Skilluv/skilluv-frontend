@@ -12,28 +12,12 @@
 	 * Skippable, and skipping is recorded as such rather than saved as an empty
 	 * answer — otherwise the wizard reappears for exactly the people who
 	 * dismissed it.
+	 *
+	 * `security_tools` is asked as several free-text answers. It rendered as an
+	 * empty row until the wizard grew a widget for that shape: the question was
+	 * on screen, captioned, and impossible to answer.
 	 */
-	import { i18n } from '$lib/i18n';
-	import { DomainWizard } from '$components/onboarding';
-	import { MentorMatches, NextChallenges } from '$components/domain';
+	import { DomainOnboarding } from '$components/onboarding';
 </script>
 
-<DomainWizard
-	domain="security"
-	doneHref="/security"
-	testId="security-onboarding"
-	title={i18n.t('domainWizard.titles.security')}
-	subtitle={i18n.t('domainWizard.subtitles.security')}
-/>
-
-<!-- O-02 and O-03 for cyber. Both endpoints are domain-parameterised
-     (`/users/me/next-challenges?domain=`, `/domains/{domain}/mentors/for-me`)
-     and had a design-only surface, so a security researcher had two live
-     endpoints and nothing calling them. Placed here for the same reason as on
-     the design wizard: the moment somebody has just said what they want is the
-     moment a suggestion and a mentor mean something. Both render their own
-     empty state, so an account that skipped the questions sees no hole. -->
-<div class="mx-auto max-w-3xl space-y-10 px-4 pb-12" data-testid="security-next-steps">
-	<NextChallenges domain="security" testPrefix="security" />
-	<MentorMatches domain="security" testPrefix="security" />
-</div>
+<DomainOnboarding domain="security" />

@@ -8,6 +8,7 @@
 	import EmptyState from '$lib/components/ui/EmptyState.svelte';
 	import { ConfirmDangerousDialog } from '$lib/components/moderation';
 	import { toast } from '$lib/stores/toast.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let challenges = $state<CommunityReviewItem[]>([]);
 	let loading = $state(true);
@@ -119,9 +120,9 @@
 			{/each}
 		</div>
 	{:else if !allowed}
-		<div class="rounded-2xl border border-warning/40 bg-warning/5 p-6 text-center" role="alert">
-			<p class="text-sm text-text-primary">{i18n.t('errors.forbiddenMessage')}</p>
-		</div>
+		<Alert tone="warning" size="lg" align="center">
+			{i18n.t('errors.forbiddenMessage')}
+		</Alert>
 	{:else if loading}
 		<div class="space-y-3">
 			{#each Array(3) as _}
@@ -129,9 +130,9 @@
 			{/each}
 		</div>
 	{:else if loadError}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{loadError}
+		</Alert>
 	{:else if challenges.length === 0}
 		<EmptyState variant="scroll" title={i18n.t('community.empty')} />
 	{:else}

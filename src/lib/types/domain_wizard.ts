@@ -36,3 +36,36 @@ export interface DomainQuestionSpec {
 
 /** What one question is currently answered with, before it is sent. */
 export type DomainAnswerValue = string | string[];
+
+/**
+ * What to do first, given what was just answered.
+ *
+ * Returned by `PUT /users/me/domain-profile/{domain}` and by nothing else:
+ * the backend calls it "the reply to having answered, not a property of the
+ * profile", which is why a read never carries one. Showing month-one advice
+ * to somebody in their sixth month would be the same mistake from the other
+ * direction.
+ *
+ * The prose is authored server-side, in `services::onboarding_recommendation`,
+ * as explicit rules rather than a score — "you said beginner, web and five
+ * hours a week, so here is the web guide". It arrives already written and is
+ * rendered verbatim; there is no i18n key for it, because the sentence a
+ * person reads is the sentence the rule produced.
+ */
+export interface DomainRecommendation {
+	/** One sentence, second person. The first thing read. */
+	headline: string;
+	/** Why this and not something else, so it can be argued with. */
+	because: string;
+	/** Guide slugs, resolved by the front to `/guides/{slug}`. */
+	guides: string[];
+	/**
+	 * A ready-made query against the domain's feed — an **API** path, not a
+	 * route. Deliberately not rendered as a link: `/api/code/first-issues?…`
+	 * is not a page, and offering it as one would hand somebody raw JSON. The
+	 * suggestions below the wizard are the browsable form of the same intent.
+	 */
+	feed_query: string;
+	/** What to aim at in the first month. Three, four when an answer earns it. */
+	next_steps: string[];
+}

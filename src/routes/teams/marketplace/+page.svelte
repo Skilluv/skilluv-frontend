@@ -12,6 +12,7 @@
 	import { OrientationSoftBlock } from '$lib/components/orientations';
 	import { activeOrientations } from '$lib/utils/orientations';
 	import { auth } from '$lib/stores/auth.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let slots = $state<TeamMarketplaceSlot[]>([]);
 	let page = $state(1);
@@ -202,9 +203,9 @@
 				{/each}
 			</div>
 		{:else if error}
-			<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-				<p class="text-sm text-error">{error}</p>
-			</div>
+			<Alert tone="error" size="lg" align="center">
+				{error}
+			</Alert>
 		{:else if slots.length === 0}
 			{#if hasFilters}
 				<EmptyState

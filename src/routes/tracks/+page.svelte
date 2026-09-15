@@ -6,6 +6,7 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	let tracks = $state<Track[]>([]);
 	let loading = $state(true);
@@ -41,9 +42,9 @@
 			{/each}
 		</div>
 	{:else if loadError}
-		<div class="rounded-2xl border border-error/40 bg-error/5 p-6 text-center" role="alert">
-			<p class="text-sm text-error">{loadError}</p>
-		</div>
+		<Alert tone="error" size="lg" align="center">
+			{loadError}
+		</Alert>
 	{:else if tracks.length === 0}
 		<EmptyState variant="scroll" title={i18n.t('tracks.emptyTitle')} body={i18n.t('tracks.emptyBody')} />
 	{:else}
