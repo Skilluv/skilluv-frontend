@@ -131,7 +131,12 @@
 
 		<div class="flex flex-wrap gap-2">
 			<!-- A link, not a button: this navigates into a consent screen. -->
-			<Button href={connectHref} size="sm" variant={connected ? 'ghost' : 'accent'}>
+			<Button
+				href={connectHref}
+				size="sm"
+				variant={connected ? 'ghost' : 'accent'}
+				data-sveltekit-reload
+			>
 				{connected ? i18n.t('githubLink.reconnectCta') : i18n.t('githubLink.connectCta')}
 			</Button>
 

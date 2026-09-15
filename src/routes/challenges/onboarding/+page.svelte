@@ -408,7 +408,7 @@
 						     to do one thing would reopen the door we closed, and
 						     they would have to find their own way back to a step
 						     they were in the middle of. -->
-						<Button variant="accent" href={githubLinkUrl(returnTo)}>
+						<Button variant="accent" href={githubLinkUrl(returnTo)} data-sveltekit-reload>
 							{i18n.t('enlist.rite.needsGithubCta')}
 						</Button>
 					</div>

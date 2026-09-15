@@ -77,6 +77,7 @@
 		<!-- A link, not a button: this navigates into a consent screen. -->
 		<Button
 			href={linkUrl('discord', returnTo)}
+			data-sveltekit-reload
 			size="sm"
 			variant="primary"
 			data-testid="discord-link-cta"

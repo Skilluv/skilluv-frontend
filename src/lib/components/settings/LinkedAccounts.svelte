@@ -186,7 +186,12 @@
 				{#if !linked.has(provider)}
 					<!-- A link, not a button: this navigates into a consent screen and
 					     comes back through a callback the server handles. -->
-					<Button href={linkUrl(provider, returnTo)} size="sm" variant="ghost">
+					<Button
+						href={linkUrl(provider, returnTo)}
+						size="sm"
+						variant="ghost"
+						data-sveltekit-reload
+					>
 						{i18n.t('linkedAccounts.linkCta', { provider })}
 					</Button>
 				{/if}

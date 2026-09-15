@@ -116,7 +116,7 @@
 </script>
 
 {#snippet retry()}
-	<Button href={retryUrl} size="sm" variant="secondary">
+	<Button href={retryUrl} size="sm" variant="secondary" data-sveltekit-reload>
 		{i18n.t('oauthLink.retryCta')}
 	</Button>
 {/snippet}
