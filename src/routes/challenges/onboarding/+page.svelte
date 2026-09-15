@@ -208,6 +208,21 @@
 	</h1>
 	<p class="mb-8 text-text-muted">{i18n.t('enlist.rite.subtitle')}</p>
 
+	<!-- Why the last attempt did not take, when there was one.
+	     Above everything the page loads, and outside every branch below,
+	     because it describes the navigation that just happened rather than
+	     the state of the rite. Nested under `missingGithub` it needed the
+	     challenge to have loaded, the rite not to have started and a trade to
+	     be declared before it would appear — and a refusal reaches this page
+	     in all the other cases too, where it showed nothing at all.
+
+	     This is also the step with no navbar, so it was the last exit. -->
+	<OAuthLinkError
+		providers={['github']}
+		retryHref={() => githubLinkUrl(returnTo)}
+		class="mb-6 text-left"
+	/>
+
 	{#if partialTrades}
 		<p
 			class="mb-6 rounded-2xl border border-warning/30 bg-warning-soft px-4 py-3 text-sm text-text-primary"
@@ -327,17 +342,6 @@
 					</div>
 				</div>
 			{:else if missingGithub}
-				<!-- Why the last attempt did not take, when there was one. This
-				     is the step the callback returns to, and it is the step with
-				     no navbar: somebody whose link was refused here used to be
-				     returned to an unchanged screen with no reason given, which
-				     reads as "nothing happened". -->
-				<OAuthLinkError
-					providers={['github']}
-					retryHref={() => githubLinkUrl(returnTo)}
-					class="mb-4 text-left"
-				/>
-
 				<!-- Checked before the button rather than after the click: the API
 				     answers 400 for a missing GitHub account, and a refusal you
 				     could have predicted is a refusal you should have prevented. -->

@@ -23,6 +23,7 @@
 	 * every reload, and it would travel in any link copied out of the address
 	 * bar — one failed attempt becoming a permanent banner.
 	 */
+	import { tick } from 'svelte';
 	import { replaceState } from '$app/navigation';
 	import { page } from '$app/state';
 	import { i18n } from '$lib/i18n';
@@ -89,11 +90,28 @@
 		// twice for one refusal.
 		if (!found || !providers.includes(found.provider)) return;
 		failure = found;
-		// Same path, parameter gone. `replaceState` rather than `goto`: this
-		// is tidying the address bar, not a navigation — `goto` would re-run
-		// the load functions, and a history entry would let the back button
-		// replay the failure.
-		replaceState(`${page.url.pathname}${cleanedSearch}`, page.state);
+
+		// Tidying the address bar, and nothing more.
+		//
+		// `replaceState` rather than `goto`: `goto` would re-run the load
+		// functions, and a history entry would let the back button replay the
+		// failure.
+		//
+		// Deferred and guarded because it throws when the router has not
+		// initialised yet, and this component renders at the top of its page
+		// now — early enough to hit exactly that. Thrown from an effect
+		// during hydration it took the rest of the page down with it, so the
+		// banner it exists to show never appeared. The message matters; the
+		// tidy URL is a courtesy, and it is allowed to fail.
+		void tick().then(() => {
+			try {
+				replaceState(`${page.url.pathname}${cleanedSearch}`, page.state);
+			} catch {
+				// Router not ready. The parameter stays for this view and goes
+				// on the next navigation, which is a far smaller cost than a
+				// page that did not render.
+			}
+		});
 	});
 </script>
 

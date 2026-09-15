@@ -119,6 +119,19 @@
 		<p class="text-sm text-text-muted">{i18n.t('linkedAccounts.subtitle')}</p>
 	</div>
 
+	<!-- Why the last attempt did not take, when the callback sent one back.
+	     Outside the loading branch: the failure is about the link, not about
+	     the list of providers, and waiting on that fetch would hide it for as
+	     long as the fetch takes — or for good, if it fails.
+
+	     The parameter is namespaced by provider, so this row of connect
+	     buttons can say which of them refused rather than leaving the reader
+	     to guess. -->
+	<OAuthLinkError
+		providers={LINKABLE_PROVIDERS}
+		retryHref={(provider) => linkUrl(provider as LinkableProvider, returnTo)}
+	/>
+
 	{#if loading}
 		<Skeleton class="h-24 w-full" rounded="xl" />
 	{:else}
@@ -167,15 +180,6 @@
 		{:else}
 			<p class="text-sm text-text-muted">{i18n.t('linkedAccounts.none')}</p>
 		{/if}
-
-		<!-- Why the last attempt did not take, when the callback sent one
-		     back. The parameter is namespaced by provider, so a row of four
-		     connect buttons can say which of them refused rather than
-		     leaving the reader to guess. -->
-		<OAuthLinkError
-			providers={LINKABLE_PROVIDERS}
-			retryHref={(provider) => linkUrl(provider as LinkableProvider, returnTo)}
-		/>
 
 		<div class="flex flex-wrap gap-2">
 			{#each LINKABLE_PROVIDERS as provider (provider)}

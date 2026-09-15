@@ -217,6 +217,33 @@ test.describe('a provider link that did not take', () => {
 		await expect.poll(() => page.url()).not.toContain('linkedin_error');
 	});
 
+	test('shows on the rite step whatever state the rite is in', async ({ page, context }) => {
+		await context.addCookies([
+			{ name: 'access_token', value: 'challenger', domain: 'localhost', path: '/' }
+		]);
+		// Every endpoint the step reads is down, so the page renders its own
+		// error branch. The banner used to live five conditions deep — under
+		// the challenge having loaded, the rite not having started and a trade
+		// being declared — so in this state, and in several ordinary ones, a
+		// refused link returned somebody to an unchanged screen saying
+		// nothing. It describes the navigation, not the rite.
+		await page.route('**/api/**', (route) =>
+			route.fulfill({
+				status: 500,
+				contentType: 'application/json',
+				body: JSON.stringify({
+					error: { code: 'INTERNAL', message: 'down' },
+					meta: { request_id: 'r', timestamp: '2026-09-15' }
+				})
+			})
+		);
+
+		await gotoHydrated(page, '/challenges/onboarding?github_error=already_linked');
+
+		await expect(page.getByText(/déjà lié à un autre profil Skilluv/)).toBeVisible();
+		await expect.poll(() => page.url()).not.toContain('github_error');
+	});
+
 	test('no i18n key leaks as a raw dotted path', async ({ page }) => {
 		await page.route('**/api/**', (route) => json({ data: {} })(route));
 		await gotoHydrated(page, '/open-slices');

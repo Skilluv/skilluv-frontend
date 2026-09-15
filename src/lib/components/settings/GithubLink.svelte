@@ -115,6 +115,11 @@
 		<p class="text-sm text-text-muted">{i18n.t('githubLink.subtitle')}</p>
 	</div>
 
+	<!-- Outside the loading branch: the failure is about the link, not about
+	     the repository list, and it has no reason to wait on a fetch that is
+	     answering a different question. -->
+	<OAuthLinkError providers={['github']} retryHref={() => connectHref} />
+
 	{#if loading}
 		<Skeleton class="h-20 w-full" rounded="xl" />
 	{:else}
@@ -123,11 +128,6 @@
 				{i18n.t('githubLink.repoCount', { n: repos.length })}
 			</p>
 		{/if}
-
-		<!-- Why the last attempt did not take, when the callback sent one
-		     back. Above the button, because it is the reason somebody is
-		     about to press it a second time. -->
-		<OAuthLinkError providers={['github']} retryHref={() => connectHref} />
 
 		<div class="flex flex-wrap gap-2">
 			<!-- A link, not a button: this navigates into a consent screen. -->
