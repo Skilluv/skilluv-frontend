@@ -244,6 +244,19 @@ test.describe('a provider link that did not take', () => {
 		await expect.poll(() => page.url()).not.toContain('github_error');
 	});
 
+	test('the rite step does not wait on a request it decided not to make', async ({ page }) => {
+		// Signed out, so the page has no discipline to fetch a rite for. It
+		// used to sit on skeletons for ever: `loading` starts true and only
+		// the fetch clears it, and the fetch only runs when there is a
+		// discipline. The navbar is removed on this step, so there was not
+		// even a link off it.
+		await page.route('**/api/**', (route) => json({ data: {} })(route));
+		await gotoHydrated(page, '/challenges/onboarding');
+
+		await expect(page.getByText(/Connecte-toi pour commencer/)).toBeVisible();
+		await expect(page.getByRole('link', { name: 'Se connecter' })).toBeVisible();
+	});
+
 	test('no i18n key leaks as a raw dotted path', async ({ page }) => {
 		await page.route('**/api/**', (route) => json({ data: {} })(route));
 		await gotoHydrated(page, '/open-slices');

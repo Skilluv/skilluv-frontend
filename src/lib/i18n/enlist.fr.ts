@@ -105,7 +105,15 @@ export const enlistFr: EnlistTranslations = {
 			notReadyTitle: 'Ce premier geste n’est pas encore ouvert',
 			notReadyBody:
 				'Ton domaine est enregistré et ton compte est actif. Le rite d’entrée de cette voie ouvre bientôt — en attendant, le catalogue complet t’est déjà accessible.',
-			notReadyCta: 'Voir les challenges'
+			notReadyCta: 'Voir les challenges',
+			needsSessionTitle: 'Connecte-toi pour commencer',
+			needsSessionBody:
+				'Ce premier geste appartient à un compte — il copie un starter sur ton propre GitHub, et ça ne se fait pour personne. Connecte-toi et tu reviens ici.',
+			needsSessionCta: 'Se connecter',
+			needsDomainTitle: 'Déclare d’abord un domaine',
+			needsDomainBody:
+				'Le starter copié est choisi selon ton domaine, donc il n’y a pas de premier geste à montrer tant que tu n’en as pas un. C’est l’affaire d’un instant, et ça se change ensuite.',
+			needsDomainCta: 'Choisir mon domaine'
 		}
 	}
 };

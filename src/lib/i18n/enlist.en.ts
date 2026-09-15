@@ -105,7 +105,15 @@ export const enlistEn: EnlistTranslations = {
 			notReadyTitle: 'This first act is not open yet',
 			notReadyBody:
 				'Your domain is registered and your account is active. The entry rite for this path opens soon — the full catalogue is already yours in the meantime.',
-			notReadyCta: 'Browse the challenges'
+			notReadyCta: 'Browse the challenges',
+			needsSessionTitle: 'Sign in to start',
+			needsSessionBody:
+				'This first act belongs to an account — it forks a starter onto your own GitHub, and there is no way to do that for nobody. Sign in and you land back here.',
+			needsSessionCta: 'Sign in',
+			needsDomainTitle: 'Declare a discipline first',
+			needsDomainBody:
+				'The starter that gets forked is chosen from your discipline, so there is no first act to show until you have one. It takes a moment and you can change it later.',
+			needsDomainCta: 'Choose my discipline'
 		}
 	}
 };
