@@ -1276,6 +1276,12 @@ export const en: Translations = {
 			}
 		}
 	},
+	tagInput: {
+		upTo: 'Up to {n}.',
+		atCeiling: '{n} at most. Remove one to add another.',
+		remove: 'Remove {value}'
+	},
+
 	onboardingIndex: {
 		title: 'Set up what gets recommended to you',
 		subtitle:

@@ -1478,6 +1478,18 @@ export interface Translations
 		};
 	};
 	/**
+	 * Several free-text answers, entered one at a time.
+	 *
+	 * The widget's own words, not a domain's: it is a UI primitive, and the
+	 * question it is answering supplies its label from elsewhere.
+	 */
+	tagInput: {
+		upTo: string;
+		atCeiling: string;
+		remove: string;
+	};
+
+	/**
 	 * The onboarding index: one card per discipline.
 	 *
 	 * `hubCta` lives here rather than beside each discipline's own copy so

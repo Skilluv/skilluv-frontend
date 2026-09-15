@@ -1285,6 +1285,12 @@ export const fr: Translations = {
 			}
 		}
 	},
+	tagInput: {
+		upTo: 'Jusqu’à {n}.',
+		atCeiling: '{n} au maximum. Retires-en un pour en ajouter un autre.',
+		remove: 'Retirer {value}'
+	},
+
 	onboardingIndex: {
 		title: 'Règle ce qu’on te propose',
 		subtitle:
