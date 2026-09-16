@@ -113,7 +113,9 @@
 		</h3>
 
 		{#if outcomes}
-			<dl class="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
+			<dl
+				class="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3"
+			>
 				{#each Object.entries(outcomes) as [key, value] (key)}
 					<div class="bg-surface-elevated p-3 text-center">
 						<dt class="text-xs text-text-muted">{key}</dt>

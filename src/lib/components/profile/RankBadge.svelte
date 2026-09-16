@@ -32,7 +32,9 @@
 </script>
 
 <span
-	class="inline-flex items-center rounded-lg border font-bold capitalize {titleStyles[title]} {sizeStyles[size]}"
+	class="inline-flex items-center rounded-lg border font-bold capitalize {titleStyles[
+		title
+	]} {sizeStyles[size]}"
 >
 	{i18n.t(`common.titles.${title}`)}
 	{#if stars > 0}

@@ -76,7 +76,12 @@ describe('the vocabulary is served, not hardcoded', () => {
 				default_embargo_days: 90,
 				contact: 'security@skill-uv.com',
 				policy_url: 'https://example.test/security',
-				research_mode: { header: 'X-Security-Research', handle_header: 'X-H', multiplier: 5, how: '' }
+				research_mode: {
+					header: 'X-Security-Research',
+					handle_header: 'X-H',
+					multiplier: 5,
+					how: ''
+				}
 			})
 		);
 		const { securityApi } = await import('../../src/lib/api/security');
@@ -89,7 +94,9 @@ describe('the vocabulary is served, not hardcoded', () => {
 describe('reporting', () => {
 	it('a report carries its proof keys and comes back with the promised date', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ report: { id: 'f1', title: 'x', status: 'submitted', triage_due_by: '2026-09-01T00:00:00Z' } })
+			ok({
+				report: { id: 'f1', title: 'x', status: 'submitted', triage_due_by: '2026-09-01T00:00:00Z' }
+			})
 		);
 		const { securityApi } = await import('../../src/lib/api/security');
 		const res = await securityApi.submitReport({
@@ -217,7 +224,9 @@ describe('practice', () => {
 	});
 
 	it('the scoreboard reads the all-time rows', async () => {
-		fetchMock.mockResolvedValue(ok({ all_time: [{ username: 'ada', solves: 3, first_solves: 1 }] }));
+		fetchMock.mockResolvedValue(
+			ok({ all_time: [{ username: 'ada', solves: 3, first_solves: 1 }] })
+		);
 		const { securityApi } = await import('../../src/lib/api/security');
 		const res = await securityApi.scoreboard();
 		expect(fetchMock.mock.calls[0][0]).toBe('/api/security/ctf/scoreboard');
@@ -253,7 +262,9 @@ describe('reading what was found', () => {
 	it('an anonymous reporter keeps a stable alias rather than disappearing', async () => {
 		fetchMock.mockResolvedValue(
 			ok({
-				top_contributors: [{ reporter: { alias: 'anonymous-ab12cd' }, findings: 4, top_severity: 5 }],
+				top_contributors: [
+					{ reporter: { alias: 'anonymous-ab12cd' }, findings: 4, top_severity: 5 }
+				],
 				recent_findings: [],
 				stats: { confirmed: 4, published: 0, fixed: 0, by_severity: null, reporters: 1 }
 			})
@@ -295,7 +306,12 @@ describe('reading what was found', () => {
 				documents: {},
 				compliance: [{ framework: 'SOC 2', state: 'not_started' }],
 				contacts: {},
-				disclosure_programme: { safe_harbour: true, default_embargo_days: 90, triage_sla_days: 5, hall_of_fame: '/x' }
+				disclosure_programme: {
+					safe_harbour: true,
+					default_embargo_days: 90,
+					triage_sla_days: 5,
+					hall_of_fame: '/x'
+				}
 			})
 		);
 		const { securityApi } = await import('../../src/lib/api/security');
@@ -310,7 +326,12 @@ describe('reading what was found', () => {
 describe('research mode', () => {
 	it('a token is issued once and only its prefix comes back later', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ token: 'skr_secret', details: { token_prefix: 'skr_sec' }, header: 'X-Security-Research', note: '' })
+			ok({
+				token: 'skr_secret',
+				details: { token_prefix: 'skr_sec' },
+				header: 'X-Security-Research',
+				note: ''
+			})
 		);
 		const { securityApi } = await import('../../src/lib/api/security');
 		const res = await securityApi.issueResearchToken({ label: 'laptop' });
@@ -332,7 +353,10 @@ describe('research mode', () => {
 describe('bounties elsewhere', () => {
 	it('the listing ships the note saying we run none of them', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ programmes: [], note: 'Curated, not endorsed. This platform does not run any of these.' })
+			ok({
+				programmes: [],
+				note: 'Curated, not endorsed. This platform does not run any of these.'
+			})
 		);
 		const { securityApi } = await import('../../src/lib/api/security');
 		const res = await securityApi.externalBounties({ paid_only: true });

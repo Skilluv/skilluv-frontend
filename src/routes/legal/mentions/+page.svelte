@@ -10,30 +10,45 @@
 {#if i18n.locale === 'fr'}
 	<h1>Mentions légales</h1>
 	<p class="lede">
-		Informations légales concernant l'éditeur, l'hébergeur et l'exploitation de la plateforme Skilluv,
-		conformément à l'article 6-III de la loi pour la confiance dans l'économie numérique (LCEN) du
-		21 juin 2004.
+		Informations légales concernant l'éditeur, l'hébergeur et l'exploitation de la plateforme
+		Skilluv, conformément à l'article 6-III de la loi pour la confiance dans l'économie numérique
+		(LCEN) du 21 juin 2004.
 	</p>
 
 	<h2>1. Éditeur du site</h2>
-	<p>
-		La plateforme Skilluv (ci-après « Skilluv ») est éditée par&nbsp;:
-	</p>
+	<p>La plateforme Skilluv (ci-après « Skilluv ») est éditée par&nbsp;:</p>
 	<ul>
-		<li><strong>Raison sociale&nbsp;:</strong> <span class="todo">[TODO : raison sociale]</span></li>
-		<li><strong>Forme juridique&nbsp;:</strong> <span class="todo">[TODO : SAS / SARL / EI / autre]</span></li>
-		<li><strong>Capital social&nbsp;:</strong> <span class="todo">[TODO : montant en EUR / XOF]</span></li>
-		<li><strong>Siège social&nbsp;:</strong> <span class="todo">[TODO : adresse complète, ville, pays]</span></li>
-		<li><strong>Immatriculation&nbsp;:</strong> <span class="todo">[TODO : RCS / RCCM + numéro]</span></li>
+		<li>
+			<strong>Raison sociale&nbsp;:</strong> <span class="todo">[TODO : raison sociale]</span>
+		</li>
+		<li>
+			<strong>Forme juridique&nbsp;:</strong>
+			<span class="todo">[TODO : SAS / SARL / EI / autre]</span>
+		</li>
+		<li>
+			<strong>Capital social&nbsp;:</strong> <span class="todo">[TODO : montant en EUR / XOF]</span>
+		</li>
+		<li>
+			<strong>Siège social&nbsp;:</strong>
+			<span class="todo">[TODO : adresse complète, ville, pays]</span>
+		</li>
+		<li>
+			<strong>Immatriculation&nbsp;:</strong> <span class="todo">[TODO : RCS / RCCM + numéro]</span>
+		</li>
 		<li><strong>Numéro SIRET / IFU&nbsp;:</strong> <span class="todo">[TODO]</span></li>
-		<li><strong>TVA intracommunautaire&nbsp;:</strong> <span class="todo">[TODO si applicable]</span></li>
-		<li><strong>Adresse e-mail&nbsp;:</strong> <span class="todo">[TODO : contact@skilluv.…]</span></li>
+		<li>
+			<strong>TVA intracommunautaire&nbsp;:</strong> <span class="todo">[TODO si applicable]</span>
+		</li>
+		<li>
+			<strong>Adresse e-mail&nbsp;:</strong> <span class="todo">[TODO : contact@skilluv.…]</span>
+		</li>
 		<li><strong>Téléphone&nbsp;:</strong> <span class="todo">[TODO]</span></li>
 	</ul>
 
 	<h2>2. Directeur de la publication</h2>
 	<p>
-		Le directeur de la publication est&nbsp;: <span class="todo">[TODO : nom, prénom, qualité]</span>.
+		Le directeur de la publication est&nbsp;: <span class="todo">[TODO : nom, prénom, qualité]</span
+		>.
 	</p>
 
 	<h2>3. Hébergement</h2>
@@ -48,8 +63,8 @@
 	<h2>4. Contact</h2>
 	<p>
 		Pour toute demande relative au site ou à son contenu, vous pouvez nous écrire à
-		<span class="todo">[TODO : contact@skilluv.…]</span> ou par voie postale à l'adresse du siège
-		social indiquée ci-dessus.
+		<span class="todo">[TODO : contact@skilluv.…]</span> ou par voie postale à l'adresse du siège social
+		indiquée ci-dessus.
 	</p>
 
 	<h2>5. Propriété intellectuelle</h2>
@@ -61,9 +76,9 @@
 	</p>
 	<p>
 		Toute reproduction, représentation, modification, publication, adaptation ou exploitation de
-		tout ou partie des éléments du site, par quelque procédé que ce soit et sur quelque support
-		que ce soit, est interdite sans l'autorisation écrite préalable de l'éditeur. Toute exploitation
-		non autorisée est susceptible de constituer une contrefaçon sanctionnée par les articles
+		tout ou partie des éléments du site, par quelque procédé que ce soit et sur quelque support que
+		ce soit, est interdite sans l'autorisation écrite préalable de l'éditeur. Toute exploitation non
+		autorisée est susceptible de constituer une contrefaçon sanctionnée par les articles
 		L.&nbsp;335-2 et suivants du Code de la propriété intellectuelle.
 	</p>
 
@@ -97,8 +112,8 @@
 	</p>
 
 	<div class="callout">
-		<strong>Note&nbsp;:</strong> ce document est un modèle. Il doit être relu et complété par un
-		professionnel du droit avant publication officielle.
+		<strong>Note&nbsp;:</strong> ce document est un modèle. Il doit être relu et complété par un professionnel
+		du droit avant publication officielle.
 	</div>
 {:else}
 	<h1>Legal notice</h1>
@@ -114,8 +129,13 @@
 		<li><strong>Legal name:</strong> <span class="todo">[TODO: legal name]</span></li>
 		<li><strong>Legal form:</strong> <span class="todo">[TODO: company type]</span></li>
 		<li><strong>Share capital:</strong> <span class="todo">[TODO: amount]</span></li>
-		<li><strong>Registered office:</strong> <span class="todo">[TODO: full address, city, country]</span></li>
-		<li><strong>Company registration:</strong> <span class="todo">[TODO: RCS / RCCM number]</span></li>
+		<li>
+			<strong>Registered office:</strong>
+			<span class="todo">[TODO: full address, city, country]</span>
+		</li>
+		<li>
+			<strong>Company registration:</strong> <span class="todo">[TODO: RCS / RCCM number]</span>
+		</li>
 		<li><strong>Tax ID / VAT number:</strong> <span class="todo">[TODO if applicable]</span></li>
 		<li><strong>Email:</strong> <span class="todo">[TODO: contact@skilluv.…]</span></li>
 		<li><strong>Phone:</strong> <span class="todo">[TODO]</span></li>
@@ -136,21 +156,20 @@
 	<h2>4. Contact</h2>
 	<p>
 		For any request regarding the site or its content, contact us at
-		<span class="todo">[TODO: contact@skilluv.…]</span> or by mail at the registered office address
-		above.
+		<span class="todo">[TODO: contact@skilluv.…]</span> or by mail at the registered office address above.
 	</p>
 
 	<h2>5. Intellectual property</h2>
 	<p>
 		All elements making up the Skilluv platform (including the name, logo, visual identity, text,
 		illustrations, photographs, videos, source code, architecture, database, trademarks and logos)
-		are protected by intellectual property law and remain the exclusive property of the publisher
-		or its partners.
+		are protected by intellectual property law and remain the exclusive property of the publisher or
+		its partners.
 	</p>
 	<p>
 		Any reproduction, representation, modification, publication, adaptation or exploitation of all
-		or part of the site, by any means and on any medium, is prohibited without the publisher's
-		prior written authorisation.
+		or part of the site, by any means and on any medium, is prohibited without the publisher's prior
+		written authorisation.
 	</p>
 
 	<h2>6. User content</h2>
@@ -181,7 +200,7 @@
 	</p>
 
 	<div class="callout">
-		<strong>Note:</strong> this document is a template. It must be reviewed and completed by a
-		qualified legal professional before official publication.
+		<strong>Note:</strong> this document is a template. It must be reviewed and completed by a qualified
+		legal professional before official publication.
 	</div>
 {/if}

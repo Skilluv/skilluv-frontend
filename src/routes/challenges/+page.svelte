@@ -64,9 +64,22 @@
 		}
 	}
 
-	function applyFilter() { currentPage = 1; loadChallenges(); }
-	function nextPage() { if (currentPage < totalPages) { currentPage++; loadChallenges(); } }
-	function prevPage() { if (currentPage > 1) { currentPage--; loadChallenges(); } }
+	function applyFilter() {
+		currentPage = 1;
+		loadChallenges();
+	}
+	function nextPage() {
+		if (currentPage < totalPages) {
+			currentPage++;
+			loadChallenges();
+		}
+	}
+	function prevPage() {
+		if (currentPage > 1) {
+			currentPage--;
+			loadChallenges();
+		}
+	}
 </script>
 
 <svelte:head>
@@ -74,10 +87,11 @@
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-10 sm:py-16">
-
 	<!-- Header -->
 	<div class="mb-8 sm:mb-10">
-		<h1 class="text-4xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-3 sm:mb-4">
+		<h1
+			class="text-4xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-3 sm:mb-4"
+		>
 			{i18n.t('challenges.title')}<span class="text-accent">.</span>
 		</h1>
 		<p class="text-base sm:text-lg text-text-muted max-w-2xl">{i18n.t('challenges.subtitle')}</p>
@@ -160,7 +174,7 @@
 			variant="search"
 			title={i18n.locale === 'fr' ? 'Rien à trouver ici.' : 'Nothing to find here.'}
 			body={i18n.locale === 'fr'
-				? 'Essaie d\'autres mots ou d\'autres filtres — ou propose ce challenge à la commu.'
+				? "Essaie d'autres mots ou d'autres filtres — ou propose ce challenge à la commu."
 				: 'Try different words or filters — or propose this challenge to the community.'}
 		>
 			{#snippet action()}
@@ -176,6 +190,13 @@
 			{/each}
 		</div>
 
-		<Pagination current={currentPage} total={totalPages} onchange={(p) => { currentPage = p; loadChallenges(); }} />
+		<Pagination
+			current={currentPage}
+			total={totalPages}
+			onchange={(p) => {
+				currentPage = p;
+				loadChallenges();
+			}}
+		/>
 	{/if}
 </div>

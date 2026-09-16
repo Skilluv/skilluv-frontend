@@ -58,7 +58,11 @@
 				candidates,
 				top_n: limit
 			});
-			const result = await aiApi.pollJob<{ recommendations: ChallengeRecommendation[] }>(enq.data.job_id, 20, 1500);
+			const result = await aiApi.pollJob<{ recommendations: ChallengeRecommendation[] }>(
+				enq.data.job_id,
+				20,
+				1500
+			);
 			recos = result?.recommendations ?? [];
 		} catch {
 			errored = true;
@@ -70,8 +74,13 @@
 	onMount(() => void build());
 
 	function growthLabel(g: string): { label: string; variant: 'success' | 'primary' | 'warning' } {
-		if (g === 'consolidation') return { label: i18n.locale === 'fr' ? 'Consolidation' : 'Consolidation', variant: 'success' };
-		if (g === 'stretch') return { label: i18n.locale === 'fr' ? 'Stretch' : 'Stretch', variant: 'warning' };
+		if (g === 'consolidation')
+			return {
+				label: i18n.locale === 'fr' ? 'Consolidation' : 'Consolidation',
+				variant: 'success'
+			};
+		if (g === 'stretch')
+			return { label: i18n.locale === 'fr' ? 'Stretch' : 'Stretch', variant: 'warning' };
 		return { label: i18n.locale === 'fr' ? 'Growth' : 'Growth', variant: 'primary' };
 	}
 </script>
@@ -79,7 +88,11 @@
 {#if auth.isAuthenticated}
 	<section class="rounded-2xl border border-border bg-surface-elevated overflow-hidden">
 		<div class="flex items-center gap-3 border-b border-border bg-surface-elevated/60 p-5">
-			<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-lg text-accent">★</div>
+			<div
+				class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-lg text-accent"
+			>
+				★
+			</div>
 			<div class="flex-1">
 				<p class="text-xs font-bold uppercase tracking-widest text-accent">Skilluv AI</p>
 				<h3 class="text-base font-semibold">
@@ -91,18 +104,26 @@
 		<div class="p-6">
 			{#if loading}
 				<div class="flex items-center gap-3 py-4">
-					<div class="h-6 w-6 animate-spin rounded-full border-2 border-primary/20 border-t-primary"></div>
+					<div
+						class="h-6 w-6 animate-spin rounded-full border-2 border-primary/20 border-t-primary"
+					></div>
 					<p class="text-sm text-text-muted">
-						{i18n.locale === 'fr' ? 'L\'IA choisit tes 5 prochains challenges...' : 'AI is picking your next 5 challenges...'}
+						{i18n.locale === 'fr'
+							? "L'IA choisit tes 5 prochains challenges..."
+							: 'AI is picking your next 5 challenges...'}
 					</p>
 				</div>
 			{:else if errored}
 				<p class="text-sm text-text-muted">
-					{i18n.locale === 'fr' ? 'Recos indisponibles pour l\'instant.' : 'Recommendations unavailable right now.'}
+					{i18n.locale === 'fr'
+						? "Recos indisponibles pour l'instant."
+						: 'Recommendations unavailable right now.'}
 				</p>
 			{:else if recos && recos.length === 0}
 				<p class="text-sm text-text-muted">
-					{i18n.locale === 'fr' ? 'Aucune reco à afficher — reviens après quelques challenges.' : 'No recommendation yet — come back after a few challenges.'}
+					{i18n.locale === 'fr'
+						? 'Aucune reco à afficher — reviens après quelques challenges.'
+						: 'No recommendation yet — come back after a few challenges.'}
 				</p>
 			{:else if recos}
 				<div class="space-y-2">
@@ -112,7 +133,11 @@
 							href={`/challenges/${r.challenge_id}`}
 							class="flex items-center gap-3 rounded-xl border border-border bg-surface-overlay p-3 hover:border-primary hover:bg-primary/5 transition-colors"
 						>
-							<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-lg text-primary">◎</div>
+							<div
+								class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-lg text-primary"
+							>
+								◎
+							</div>
 							<div class="min-w-0 flex-1">
 								<div class="flex items-center gap-2 mb-1">
 									<Badge variant={g.variant} size="sm">{g.label}</Badge>

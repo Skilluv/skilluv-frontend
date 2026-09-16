@@ -289,7 +289,6 @@ export function jamAcceptsEntries(jam: GameJam, now = new Date()): boolean {
 export function jamIsVoting(jam: GameJam, now = new Date()): boolean {
 	const t = now.getTime();
 	return (
-		new Date(jam.submission_deadline).getTime() <= t &&
-		new Date(jam.voting_deadline).getTime() > t
+		new Date(jam.submission_deadline).getTime() <= t && new Date(jam.voting_deadline).getTime() > t
 	);
 }

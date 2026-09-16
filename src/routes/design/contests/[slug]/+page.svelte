@@ -46,9 +46,7 @@
 	let myEntry = $derived(
 		auth.user ? (submissions.find((s) => s.participant_id === auth.user?.id) ?? null) : null
 	);
-	let isOver = $derived(
-		contest ? new Date(contest.ends_at).getTime() <= Date.now() : false
-	);
+	let isOver = $derived(contest ? new Date(contest.ends_at).getTime() <= Date.now() : false);
 	let isConcluded = $derived(contest?.status === 'concluded');
 	let canSubmit = $derived(!!auth.user && !!contest && !isOver && contest.status !== 'cancelled');
 
@@ -61,9 +59,7 @@
 	);
 	let deliverables = $derived(
 		Array.isArray(contest?.rules?.deliverables)
-			? (contest.rules.deliverables as unknown[]).filter(
-					(d): d is string => typeof d === 'string'
-				)
+			? (contest.rules.deliverables as unknown[]).filter((d): d is string => typeof d === 'string')
 			: []
 	);
 
@@ -155,11 +151,16 @@
 </script>
 
 <svelte:head>
-	<title>{contest ? `${contest.name} | Skilluv` : `${i18n.t('designContests.title')} | Skilluv`}</title>
+	<title
+		>{contest ? `${contest.name} | Skilluv` : `${i18n.t('designContests.title')} | Skilluv`}</title
+	>
 	{#if contest}
 		<meta name="description" content={contest.description ?? i18n.t('designContests.subtitle')} />
 		<meta property="og:title" content="{contest.name} | Skilluv" />
-		<meta property="og:description" content={contest.description ?? i18n.t('designContests.subtitle')} />
+		<meta
+			property="og:description"
+			content={contest.description ?? i18n.t('designContests.subtitle')}
+		/>
 		{#if moodboard}
 			<meta property="og:image" content={moodboard} />
 		{/if}
@@ -340,7 +341,11 @@
 										{juror.juror_user_id.slice(0, 8)}
 									</span>
 									<Badge
-										variant={juror.accepted_at ? 'success' : juror.declined_at ? 'default' : 'accent'}
+										variant={juror.accepted_at
+											? 'success'
+											: juror.declined_at
+												? 'default'
+												: 'accent'}
 										size="sm"
 									>
 										{juror.accepted_at

@@ -154,7 +154,9 @@
 	</div>
 
 	{#if kind === 'brief_template'}
-		<p class="mb-6 rounded-xl border border-border bg-surface-elevated px-4 py-3 text-sm text-text-muted">
+		<p
+			class="mb-6 rounded-xl border border-border bg-surface-elevated px-4 py-3 text-sm text-text-muted"
+		>
 			{i18n.t('guides.briefNotice')}
 		</p>
 	{/if}

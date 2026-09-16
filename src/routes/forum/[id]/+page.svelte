@@ -81,11 +81,17 @@
 
 	function fmtDate(iso: string): string {
 		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
-			day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+			day: '2-digit',
+			month: 'short',
+			year: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit'
 		}).format(new Date(iso));
 	}
 
-	let isAuthor = $derived(auth.isAuthenticated && post !== null && post.author_id === auth.user?.id);
+	let isAuthor = $derived(
+		auth.isAuthenticated && post !== null && post.author_id === auth.user?.id
+	);
 	let isQuestion = $derived(post?.kind === 'question');
 
 	// --- Moderation state ---
@@ -130,7 +136,12 @@
 			modDialogOpen = false;
 			const prevAction = modDialogAction;
 			modDialogAction = null;
-			if (prevAction === 'hide' || prevAction === 'unhide' || prevAction === 'lock' || prevAction === 'unlock') {
+			if (
+				prevAction === 'hide' ||
+				prevAction === 'unhide' ||
+				prevAction === 'lock' ||
+				prevAction === 'unlock'
+			) {
 				await load();
 			}
 		} catch (err) {
@@ -184,15 +195,27 @@
 				<Badge variant={isQuestion ? 'primary' : 'accent'} size="sm">{post.kind}</Badge>
 				{#if post.pinned}<Badge variant="accent" size="sm">▲ Pin</Badge>{/if}
 				{#if post.locked}<Badge variant="error" size="sm">
-					<svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
-					<span class="ml-1">Locked</span>
-				</Badge>{/if}
+						<svg
+							class="h-3 w-3"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="2"
+							><path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+							/></svg
+						>
+						<span class="ml-1">Locked</span>
+					</Badge>{/if}
 				{#if post.accepted_answer_id}
 					<Badge variant="success" size="sm">✓ {i18n.locale === 'fr' ? 'Résolu' : 'Solved'}</Badge>
 				{/if}
 				{#if post.bounty_fragments > 0}
 					<Badge variant="accent" size="sm">
-						★ {post.bounty_fragments} {i18n.locale === 'fr' ? 'fragments' : 'fragments'}
+						★ {post.bounty_fragments}
+						{i18n.locale === 'fr' ? 'fragments' : 'fragments'}
 					</Badge>
 				{/if}
 			</div>
@@ -266,24 +289,34 @@
 		<section>
 			<h2 class="mb-4 text-xs font-bold uppercase tracking-wider text-accent">
 				{isQuestion
-					? (i18n.locale === 'fr' ? `${comments.length} réponse${comments.length > 1 ? 's' : ''}` : `${comments.length} answer${comments.length > 1 ? 's' : ''}`)
-					: (i18n.locale === 'fr' ? `${comments.length} commentaire${comments.length > 1 ? 's' : ''}` : `${comments.length} comment${comments.length > 1 ? 's' : ''}`)}
+					? i18n.locale === 'fr'
+						? `${comments.length} réponse${comments.length > 1 ? 's' : ''}`
+						: `${comments.length} answer${comments.length > 1 ? 's' : ''}`
+					: i18n.locale === 'fr'
+						? `${comments.length} commentaire${comments.length > 1 ? 's' : ''}`
+						: `${comments.length} comment${comments.length > 1 ? 's' : ''}`}
 			</h2>
 
 			<div class="space-y-3">
 				{#each comments as c}
 					<article
-						class="rounded-2xl border {c.accepted ? 'border-success/40 bg-success/5' : 'border-border bg-surface-elevated'} p-5"
+						class="rounded-2xl border {c.accepted
+							? 'border-success/40 bg-success/5'
+							: 'border-border bg-surface-elevated'} p-5"
 					>
 						{#if c.accepted}
-							<Badge variant="success" size="sm">✓ {i18n.locale === 'fr' ? 'Réponse acceptée' : 'Accepted answer'}</Badge>
+							<Badge variant="success" size="sm"
+								>✓ {i18n.locale === 'fr' ? 'Réponse acceptée' : 'Accepted answer'}</Badge
+							>
 						{/if}
 						<div class="mt-2 flex items-start justify-between gap-3">
 							<div class="flex items-center gap-2 text-sm text-text-muted">
 								<span class="font-semibold text-text-primary">@{c.author_username ?? '?'}</span>
 								<span>·</span>
 								<span>{fmtDate(c.created_at)}</span>
-								{#if c.edited}<span class="italic">({i18n.locale === 'fr' ? 'modifié' : 'edited'})</span>{/if}
+								{#if c.edited}<span class="italic"
+										>({i18n.locale === 'fr' ? 'modifié' : 'edited'})</span
+									>{/if}
 							</div>
 							<div class="flex items-center gap-1 text-sm shrink-0">
 								<button
@@ -310,11 +343,21 @@
 
 			<!-- New comment form -->
 			{#if auth.isAuthenticated && !post.locked}
-				<form onsubmit={submitComment} class="mt-6 rounded-2xl border border-border bg-surface-elevated p-5">
-					<label for="new-c" class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
+				<form
+					onsubmit={submitComment}
+					class="mt-6 rounded-2xl border border-border bg-surface-elevated p-5"
+				>
+					<label
+						for="new-c"
+						class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted"
+					>
 						{isQuestion
-							? (i18n.locale === 'fr' ? 'Votre réponse' : 'Your answer')
-							: (i18n.locale === 'fr' ? 'Votre commentaire' : 'Your comment')}
+							? i18n.locale === 'fr'
+								? 'Votre réponse'
+								: 'Your answer'
+							: i18n.locale === 'fr'
+								? 'Votre commentaire'
+								: 'Your comment'}
 					</label>
 					<textarea
 						id="new-c"
@@ -339,8 +382,21 @@
 					</Button>
 				</div>
 			{:else}
-				<div class="mt-6 rounded-2xl border border-warning/30 bg-warning/5 p-4 text-center text-sm text-text-muted flex items-center justify-center gap-2">
-					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+				<div
+					class="mt-6 rounded-2xl border border-warning/30 bg-warning/5 p-4 text-center text-sm text-text-muted flex items-center justify-center gap-2"
+				>
+					<svg
+						class="h-4 w-4"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						stroke-width="2"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+						/></svg
+					>
 					<span>{i18n.locale === 'fr' ? 'Ce fil est verrouillé.' : 'This thread is locked.'}</span>
 				</div>
 			{/if}
@@ -358,7 +414,9 @@
 />
 
 {#if modDialogOpen && modDialogAction === 'mute_user'}
-	<div class="fixed bottom-4 right-4 z-[91] flex items-center gap-2 rounded-xl border border-border bg-surface-elevated px-4 py-3 shadow-lg">
+	<div
+		class="fixed bottom-4 right-4 z-[91] flex items-center gap-2 rounded-xl border border-border bg-surface-elevated px-4 py-3 shadow-lg"
+	>
 		<label for="mute_duration" class="text-xs font-semibold text-text-muted">
 			{i18n.t('moderation.durationHours')}
 		</label>

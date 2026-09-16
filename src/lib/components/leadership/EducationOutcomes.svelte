@@ -60,10 +60,10 @@
 		if (curriculumSliceId) calls.push(educationApi.adoptions(curriculumSliceId));
 		const [o, a] = await Promise.allSettled(calls);
 		if (o.status === 'fulfilled') {
-			outcomes = ((o.value as { data?: { outcomes?: unknown[] } }).data?.outcomes) ?? [];
+			outcomes = (o.value as { data?: { outcomes?: unknown[] } }).data?.outcomes ?? [];
 		}
 		if (a?.status === 'fulfilled') {
-			adoptions = ((a.value as { data?: { adoptions?: unknown[] } }).data?.adoptions) ?? [];
+			adoptions = (a.value as { data?: { adoptions?: unknown[] } }).data?.adoptions ?? [];
 		}
 		loading = false;
 	}
@@ -118,12 +118,7 @@
 				<p class="text-xs text-text-muted">{i18n.t('educationOutcomes.clearedNote')}</p>
 				{#if confirmCleared}
 					<div class="flex flex-wrap gap-2">
-						<Button
-							size="sm"
-							loading={busy}
-							onclick={declareCleared}
-							data-testid="declare-cleared"
-						>
+						<Button size="sm" loading={busy} onclick={declareCleared} data-testid="declare-cleared">
 							{i18n.t('educationOutcomes.clearedConfirmCta')}
 						</Button>
 						<Button size="sm" variant="ghost" onclick={() => (confirmCleared = false)}>

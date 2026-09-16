@@ -72,7 +72,9 @@
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
-<div class="mx-auto flex min-h-[60vh] max-w-lg flex-col items-center justify-center px-4 text-center">
+<div
+	class="mx-auto flex min-h-[60vh] max-w-lg flex-col items-center justify-center px-4 text-center"
+>
 	{#if state === 'working'}
 		<Loader2 size={32} strokeWidth={1.5} class="animate-spin text-text-muted" />
 		<p class="mt-4 text-sm text-text-muted">{i18n.t('newsletter.confirmPage.working')}</p>

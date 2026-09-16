@@ -195,8 +195,7 @@ test.describe('SKI-49 SSO departure', () => {
 				handler: (route) => {
 					// `slug` is the field the API requires; the read side is the one
 					// that calls it `orientation_slug`.
-					if (route.request().method() === 'POST')
-						calls.push(route.request().postDataJSON().slug);
+					if (route.request().method() === 'POST') calls.push(route.request().postDataJSON().slug);
 					return json({ data: {} })(route);
 				}
 			},
@@ -205,7 +204,10 @@ test.describe('SKI-49 SSO departure', () => {
 
 		await gotoHydrated(page, '/onboarding/complete-profile');
 		await page.getByRole('checkbox').check();
-		await page.getByRole('button', { name: /Terminer|Finish|Continuer/i }).first().click();
+		await page
+			.getByRole('button', { name: /Terminer|Finish|Continuer/i })
+			.first()
+			.click();
 
 		await expect.poll(() => calls.length, { timeout: 10_000 }).toBe(3);
 		expect(calls).toEqual(['complete-profile', 'backend-developer', 'frontend-developer']);
@@ -255,7 +257,10 @@ test.describe('SKI-49 SSO departure', () => {
 		// Step 1 this time, since nothing was chosen on a fresco.
 		await page.getByRole('button', { name: /Code/i }).first().click();
 		await page.getByRole('checkbox').check();
-		await page.getByRole('button', { name: /Terminer|Finish|Continuer/i }).first().click();
+		await page
+			.getByRole('button', { name: /Terminer|Finish|Continuer/i })
+			.first()
+			.click();
 
 		await page.waitForTimeout(1500);
 		expect(posted).toBe(0);

@@ -34,9 +34,7 @@
 	let badgeUserSrc = $derived(attestationApi.badgeUserUrl(username));
 	let badgeUserFailed = $state(false);
 
-	let userMarkdown = $derived(
-		`[![Skilluv](${badgeUserSrc})](${SITE}/profile/${username})`
-	);
+	let userMarkdown = $derived(`[![Skilluv](${badgeUserSrc})](${SITE}/profile/${username})`);
 	let userHtml = $derived(
 		`<a href="${SITE}/profile/${username}"><img src="${badgeUserSrc}" alt="Skilluv" width="140" height="20" /></a>`
 	);
@@ -82,7 +80,9 @@
 	aria-label={i18n.t('p26.badges.ariaLabel')}
 >
 	<div class="px-5 py-3 border-b border-border">
-		<span class="text-xs font-bold uppercase tracking-wider text-text-muted">{i18n.t('p26.badges.sectionLabel')}</span>
+		<span class="text-xs font-bold uppercase tracking-wider text-text-muted"
+			>{i18n.t('p26.badges.sectionLabel')}</span
+		>
 	</div>
 
 	<div class="p-5 space-y-6">
@@ -93,7 +93,9 @@
 				{i18n.t('p26.badges.personalDesc')}
 			</p>
 
-			<div class="mb-4 flex items-center justify-center rounded-lg border border-border bg-surface-overlay p-4">
+			<div
+				class="mb-4 flex items-center justify-center rounded-lg border border-border bg-surface-overlay p-4"
+			>
 				{#if badgeUserFailed}
 					<span class="text-xs text-text-muted">{i18n.t('p26.badges.notGenerated')}</span>
 				{:else}
@@ -109,7 +111,9 @@
 			<!-- Markdown snippet -->
 			<div class="mb-3">
 				<div class="flex items-center justify-between mb-1">
-					<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">{i18n.t('p26.badges.markdownLabel')}</span>
+					<span class="text-xs font-semibold uppercase tracking-wider text-text-muted"
+						>{i18n.t('p26.badges.markdownLabel')}</span
+					>
 					<Button variant="ghost" size="sm" onclick={() => handleCopy(userMarkdown)}>
 						<Copy size={12} strokeWidth={2} />
 						{i18n.t('p26.badges.copyBtn')}
@@ -120,13 +124,19 @@
 				     a non-interactive element; axe wins here and the block is exposed as a
 				     named region. -->
 				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-				<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs" tabindex="0" role="region" aria-label={i18n.t('p26.badges.markdownLabel')}><code>{userMarkdown}</code></pre>
+				<pre
+					class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs"
+					tabindex="0"
+					role="region"
+					aria-label={i18n.t('p26.badges.markdownLabel')}><code>{userMarkdown}</code></pre>
 			</div>
 
 			<!-- HTML snippet -->
 			<div>
 				<div class="flex items-center justify-between mb-1">
-					<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">{i18n.t('p26.badges.htmlLabel')}</span>
+					<span class="text-xs font-semibold uppercase tracking-wider text-text-muted"
+						>{i18n.t('p26.badges.htmlLabel')}</span
+					>
 					<Button variant="ghost" size="sm" onclick={() => handleCopy(userHtml)}>
 						<Copy size={12} strokeWidth={2} />
 						{i18n.t('p26.badges.copyBtn')}
@@ -137,7 +147,11 @@
 				     a non-interactive element; axe wins here and the block is exposed as a
 				     named region. -->
 				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-				<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs" tabindex="0" role="region" aria-label={i18n.t('p26.badges.htmlLabel')}><code>{userHtml}</code></pre>
+				<pre
+					class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs"
+					tabindex="0"
+					role="region"
+					aria-label={i18n.t('p26.badges.htmlLabel')}><code>{userHtml}</code></pre>
 			</div>
 		</div>
 
@@ -161,17 +175,26 @@
 								</span>
 							</h3>
 
-							<div class="mb-3 flex items-center justify-center rounded-lg border border-border bg-surface-overlay p-4">
+							<div
+								class="mb-3 flex items-center justify-center rounded-lg border border-border bg-surface-overlay p-4"
+							>
 								<img
-									src={attestationApi.badgeRepoUrl(project.github_repo_owner, project.github_repo_name)}
-									alt={i18n.t('p26.badges.repoBadgeAlt', { repo: `${project.github_repo_owner}/${project.github_repo_name}` })}
+									src={attestationApi.badgeRepoUrl(
+										project.github_repo_owner,
+										project.github_repo_name
+									)}
+									alt={i18n.t('p26.badges.repoBadgeAlt', {
+										repo: `${project.github_repo_owner}/${project.github_repo_name}`
+									})}
 									class="h-8"
 								/>
 							</div>
 
 							<div class="mb-3">
 								<div class="flex items-center justify-between mb-1">
-									<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">{i18n.t('p26.badges.markdownLabel')}</span>
+									<span class="text-xs font-semibold uppercase tracking-wider text-text-muted"
+										>{i18n.t('p26.badges.markdownLabel')}</span
+									>
 									<Button variant="ghost" size="sm" onclick={() => handleCopy(md)}>
 										<Copy size={12} strokeWidth={2} />
 										{i18n.t('p26.badges.copyBtn')}
@@ -182,12 +205,18 @@
 								     a non-interactive element; axe wins here and the block is exposed as a
 								     named region. -->
 								<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-								<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs" tabindex="0" role="region" aria-label={i18n.t('p26.badges.markdownLabel')}><code>{md}</code></pre>
+								<pre
+									class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs"
+									tabindex="0"
+									role="region"
+									aria-label={i18n.t('p26.badges.markdownLabel')}><code>{md}</code></pre>
 							</div>
 
 							<div>
 								<div class="flex items-center justify-between mb-1">
-									<span class="text-xs font-semibold uppercase tracking-wider text-text-muted">{i18n.t('p26.badges.htmlLabel')}</span>
+									<span class="text-xs font-semibold uppercase tracking-wider text-text-muted"
+										>{i18n.t('p26.badges.htmlLabel')}</span
+									>
 									<Button variant="ghost" size="sm" onclick={() => handleCopy(html)}>
 										<Copy size={12} strokeWidth={2} />
 										{i18n.t('p26.badges.copyBtn')}
@@ -198,7 +227,11 @@
 								     a non-interactive element; axe wins here and the block is exposed as a
 								     named region. -->
 								<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-								<pre class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs" tabindex="0" role="region" aria-label={i18n.t('p26.badges.htmlLabel')}><code>{html}</code></pre>
+								<pre
+									class="bg-surface-overlay rounded-xl p-3 overflow-x-auto text-xs"
+									tabindex="0"
+									role="region"
+									aria-label={i18n.t('p26.badges.htmlLabel')}><code>{html}</code></pre>
 							</div>
 						</div>
 					{/each}

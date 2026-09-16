@@ -31,7 +31,9 @@
 	let loadError = $state('');
 
 	let isOpen = $derived(
-		contest ? new Date(contest.ends_at).getTime() > Date.now() && contest.status !== 'cancelled' : false
+		contest
+			? new Date(contest.ends_at).getTime() > Date.now() && contest.status !== 'cancelled'
+			: false
 	);
 	let canVote = $derived(!!auth.user && isOpen);
 

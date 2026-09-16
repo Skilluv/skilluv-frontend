@@ -26,9 +26,7 @@
 		onClick
 	}: Props = $props();
 
-	const dim = $derived(
-		size === 'sm' ? 64 : size === 'md' ? 96 : size === 'lg' ? 128 : 192
-	);
+	const dim = $derived(size === 'sm' ? 64 : size === 'md' ? 96 : size === 'lg' ? 128 : 192);
 	const keySize = $derived(dim / 3);
 
 	const label = $derived(
@@ -64,7 +62,9 @@
 		text-align: center;
 		border-style: solid;
 		border-width: 1px;
-		box-shadow: var(--shadow-md), inset 0 -8px 16px rgba(0, 0, 0, 0.15);
+		box-shadow:
+			var(--shadow-md),
+			inset 0 -8px 16px rgba(0, 0, 0, 0.15);
 		font-family: var(--font-sans);
 		font-weight: 600;
 		cursor: default;

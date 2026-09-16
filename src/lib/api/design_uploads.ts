@@ -181,11 +181,7 @@ export function maxBytesFor(subtype: string): number | null {
  * and sending Skilluv's session cookie or CSRF header to a third-party bucket
  * would leak both to somewhere they have no business being.
  */
-async function putPart(
-	part: DesignUploadPart,
-	body: Blob,
-	signal?: AbortSignal
-): Promise<string> {
+async function putPart(part: DesignUploadPart, body: Blob, signal?: AbortSignal): Promise<string> {
 	const res = await fetch(part.url, {
 		method: 'PUT',
 		body,

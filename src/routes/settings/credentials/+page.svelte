@@ -136,7 +136,10 @@
 		     moment a claim renders like a confirmation. -->
 		{#each [{ rows: split.verified, title: i18n.t('securityCredentials.verifiedTitle'), verified: true }, { rows: split.declared, title: i18n.t('securityCredentials.declaredTitle'), verified: false }] as block (block.title)}
 			{#if block.rows.length > 0}
-				<section class="space-y-2" data-testid="credentials-{block.verified ? 'verified' : 'declared'}">
+				<section
+					class="space-y-2"
+					data-testid="credentials-{block.verified ? 'verified' : 'declared'}"
+				>
 					<div>
 						<h2 class="text-sm font-bold uppercase tracking-wider text-text-muted">
 							{block.title}
@@ -160,7 +163,8 @@
 										</p>
 										<p class="text-xs text-text-muted">
 											{credential.issuer}
-											{#if credential.level} · {credential.level}{/if}
+											{#if credential.level}
+												· {credential.level}{/if}
 										</p>
 									</div>
 									<div class="flex flex-wrap items-center gap-2">
@@ -198,16 +202,31 @@
 			{/if}
 		{/each}
 
-		<section class="rounded-xl border border-border bg-surface-elevated p-5 space-y-3" data-testid="credential-form">
+		<section
+			class="rounded-xl border border-border bg-surface-elevated p-5 space-y-3"
+			data-testid="credential-form"
+		>
 			<h2 class="text-sm font-bold text-text">{i18n.t('securityCredentials.addTitle')}</h2>
 
 			<div class="grid gap-3 sm:grid-cols-2">
-				<Input label={i18n.t('securityCredentials.fieldIssuer')} bind:value={issuer} data-testid="credential-issuer" />
+				<Input
+					label={i18n.t('securityCredentials.fieldIssuer')}
+					bind:value={issuer}
+					data-testid="credential-issuer"
+				/>
 				<Input label={i18n.t('securityCredentials.fieldName')} bind:value={name} />
 				<Input label={i18n.t('securityCredentials.fieldLevel')} bind:value={level} />
 				<Input label={i18n.t('securityCredentials.fieldCredentialId')} bind:value={credentialId} />
-				<Input label={i18n.t('securityCredentials.fieldIssuedOn')} type="date" bind:value={issuedOn} />
-				<Input label={i18n.t('securityCredentials.fieldExpiresOn')} type="date" bind:value={expiresOn} />
+				<Input
+					label={i18n.t('securityCredentials.fieldIssuedOn')}
+					type="date"
+					bind:value={issuedOn}
+				/>
+				<Input
+					label={i18n.t('securityCredentials.fieldExpiresOn')}
+					type="date"
+					bind:value={expiresOn}
+				/>
 			</div>
 
 			<Input

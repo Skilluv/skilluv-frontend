@@ -27,8 +27,7 @@
 			const result = await attestationApi.verify(data.hash);
 			state = { status: 'ready', result };
 		} catch (err) {
-			const message =
-				err instanceof SkilluError ? err.message : i18n.t('p26.verify.fallbackError');
+			const message = err instanceof SkilluError ? err.message : i18n.t('p26.verify.fallbackError');
 			state = { status: 'error', message };
 		}
 	});
@@ -235,13 +234,16 @@
 				</h2>
 				<div class="flex flex-wrap items-center gap-2">
 					<Badge variant={domainVariant(valid.domain)}>{valid.domain}</Badge>
-					<Badge variant="default">{i18n.t('p26.verify.difficultyBadge', { n: valid.difficulty })}</Badge>
+					<Badge variant="default"
+						>{i18n.t('p26.verify.difficultyBadge', { n: valid.difficulty })}</Badge
+					>
 					{#if valid.merged_upstream}
 						<Badge variant="accent">{i18n.t('p26.verify.mergedUpstream')}</Badge>
 					{/if}
 				</div>
 				<p class="text-sm text-text-muted">
-					{i18n.t('p26.verify.repoLabel')} <span class="font-mono text-text-primary">{valid.repo}</span>
+					{i18n.t('p26.verify.repoLabel')}
+					<span class="font-mono text-text-primary">{valid.repo}</span>
 				</p>
 				<Button variant="secondary" href={valid.pr_url} target="_blank" rel="noopener noreferrer">
 					<ExternalLink size={16} />
@@ -270,10 +272,9 @@
 				<div class="text-xs uppercase tracking-wider text-text-subtle mb-1">
 					{i18n.t('p26.verify.attestationId')}
 				</div>
-				<code
-					class="font-mono text-xs text-text-muted break-all"
-					title={data.hash}
-				>{shortHash(data.hash)}</code>
+				<code class="font-mono text-xs text-text-muted break-all" title={data.hash}
+					>{shortHash(data.hash)}</code
+				>
 			</footer>
 		</article>
 	{/if}

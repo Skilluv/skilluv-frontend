@@ -11,13 +11,7 @@ import { gotoHydrated } from './utils/hydration';
  * is a surface nobody can open on their first day.
  */
 
-const PAGES = [
-	'/requests',
-	'/creator',
-	'/work',
-	'/settings/portfolios',
-	'/security/competitions'
-];
+const PAGES = ['/requests', '/creator', '/work', '/settings/portfolios', '/security/competitions'];
 
 test.describe('Business pillar pages', () => {
 	test('the solicitations inbox renders and says what it cannot list', async ({ page }) => {

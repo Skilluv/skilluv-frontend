@@ -270,9 +270,8 @@ describe('the design wizard is the shared wizard', () => {
 describe('every discipline can be onboarded', () => {
 	it('each of the twelve has a wizard URL and a place to land', async () => {
 		const { PROFILE_DOMAINS } = await import('../../src/lib/types');
-		const { onboardingHref, onboardingDoneHref, isProfileDomain } = await import(
-			'../../src/lib/utils/domain_onboarding'
-		);
+		const { onboardingHref, onboardingDoneHref, isProfileDomain } =
+			await import('../../src/lib/utils/domain_onboarding');
 
 		// The backend serves questions for every domain in `SKILL_DOMAINS`.
 		// Three of them had a page; the rest were unreachable, `code` included

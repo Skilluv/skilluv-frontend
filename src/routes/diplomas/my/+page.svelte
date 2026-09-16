@@ -26,7 +26,9 @@
 
 	function fmtDate(iso: string): string {
 		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
-			day: '2-digit', month: 'short', year: 'numeric'
+			day: '2-digit',
+			month: 'short',
+			year: 'numeric'
 		}).format(new Date(iso));
 	}
 
@@ -74,7 +76,7 @@
 		<div class="rounded-2xl border border-border bg-surface-elevated p-12 text-center">
 			<div class="mb-4 text-5xl text-text-muted">◈</div>
 			<p class="mb-2 text-lg font-semibold">
-				{i18n.locale === 'fr' ? 'Aucun diplôme pour l\'instant' : 'No diploma yet'}
+				{i18n.locale === 'fr' ? "Aucun diplôme pour l'instant" : 'No diploma yet'}
 			</p>
 			<p class="mb-6 text-sm text-text-muted">
 				{i18n.locale === 'fr'
@@ -98,11 +100,15 @@
 							</div>
 							<h2 class="text-xl font-bold">{d.certification.title}</h2>
 							<p class="mt-1 text-sm text-text-muted">
-								{i18n.locale === 'fr' ? 'Émis' : 'Issued'} {fmtDate(d.issued_at)} · {i18n.locale === 'fr' ? 'valide' : 'valid'} {fmtDate(d.expires_at)}
+								{i18n.locale === 'fr' ? 'Émis' : 'Issued'}
+								{fmtDate(d.issued_at)} · {i18n.locale === 'fr' ? 'valide' : 'valid'}
+								{fmtDate(d.expires_at)}
 							</p>
 						</div>
 						<div class="flex flex-col items-end gap-2 shrink-0">
-							<div class="rounded-lg border border-border bg-surface-overlay px-3 py-1.5 font-mono text-sm font-bold tracking-widest">
+							<div
+								class="rounded-lg border border-border bg-surface-overlay px-3 py-1.5 font-mono text-sm font-bold tracking-widest"
+							>
 								{d.verification_code}
 							</div>
 							<div class="flex gap-2">

@@ -31,5 +31,4 @@ test.describe('@parcours enterprise-sso-settings', () => {
 		// gates. A investiguer cote back : quelle capability est requise pour
 		// enterprise/settings/sso (probablement enterprise_admin ou similaire).
 	});
-
 });

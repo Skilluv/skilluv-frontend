@@ -4,11 +4,7 @@
 	import { SkilluError } from '$lib/api/client';
 	import { i18n } from '$lib/i18n';
 	import type { Wallet, WalletTransaction } from '$lib/types';
-	import {
-		WalletBalanceCard,
-		TransactionRow,
-		PayoutRequestModal
-	} from '$lib/components/wallet';
+	import { WalletBalanceCard, TransactionRow, PayoutRequestModal } from '$lib/components/wallet';
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import { Download } from '@lucide/svelte';
@@ -35,7 +31,9 @@
 				walletApi.transactions({ limit: 50 })
 			]);
 			if (wRes.status === 'fulfilled') wallet = wRes.value.data.wallet;
-			else loadError = wRes.reason instanceof SkilluError ? wRes.reason.message : i18n.t('wallet.loadError');
+			else
+				loadError =
+					wRes.reason instanceof SkilluError ? wRes.reason.message : i18n.t('wallet.loadError');
 			if (tRes.status === 'fulfilled') transactions = tRes.value.data.transactions;
 		} finally {
 			loading = false;
@@ -94,7 +92,10 @@
 			aria-labelledby="wallet-history-title"
 		>
 			<header class="border-b border-border px-4 py-3">
-				<h2 id="wallet-history-title" class="text-xs font-bold uppercase tracking-wider text-text-muted">
+				<h2
+					id="wallet-history-title"
+					class="text-xs font-bold uppercase tracking-wider text-text-muted"
+				>
 					{i18n.t('wallet.historyTitle')}
 				</h2>
 			</header>
@@ -108,7 +109,6 @@
 				</ul>
 			{/if}
 		</section>
-
 	{/if}
 
 	<!-- SKI-328. The wallet showed a balance and no way to reach money already

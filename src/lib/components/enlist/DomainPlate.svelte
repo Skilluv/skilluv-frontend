@@ -128,7 +128,10 @@
 	.plate__name {
 		margin: 0;
 		font-family: 'Fraunces Variable', Georgia, serif;
-		font-variation-settings: 'opsz' 144, 'SOFT' 30, 'WONK' 1;
+		font-variation-settings:
+			'opsz' 144,
+			'SOFT' 30,
+			'WONK' 1;
 		font-weight: 700;
 		font-size: clamp(3rem, 11vw, 7.5rem);
 		line-height: 0.92;

@@ -173,7 +173,8 @@
 	}
 
 	async function removePasskey(id: string) {
-		if (!confirm(i18n.locale === 'fr' ? 'Supprimer cette passkey ?' : 'Delete this passkey?')) return;
+		if (!confirm(i18n.locale === 'fr' ? 'Supprimer cette passkey ?' : 'Delete this passkey?'))
+			return;
 		try {
 			await webauthnApi.remove(id);
 			passkeys = passkeys.filter((p) => p.id !== id);
@@ -184,10 +185,7 @@
 	}
 
 	async function renamePasskey(id: string, current: string | null) {
-		const label = prompt(
-			i18n.locale === 'fr' ? 'Nouveau nom :' : 'New label:',
-			current ?? ''
-		);
+		const label = prompt(i18n.locale === 'fr' ? 'Nouveau nom :' : 'New label:', current ?? '');
 		if (!label) return;
 		try {
 			await webauthnApi.rename(id, label.trim());
@@ -213,7 +211,8 @@
 	}
 
 	async function revokeSession(id: string) {
-		if (!confirm(i18n.locale === 'fr' ? 'Déconnecter cet appareil ?' : 'Sign out this device?')) return;
+		if (!confirm(i18n.locale === 'fr' ? 'Déconnecter cet appareil ?' : 'Sign out this device?'))
+			return;
 		try {
 			await authApi.revokeSession(id);
 			sessions = sessions.filter((s) => s.id !== id);
@@ -224,12 +223,21 @@
 	}
 
 	async function revokeAllOthers() {
-		if (!confirm(i18n.locale === 'fr' ? 'Déconnecter tous les autres appareils ?' : 'Sign out all other devices?')) return;
+		if (
+			!confirm(
+				i18n.locale === 'fr'
+					? 'Déconnecter tous les autres appareils ?'
+					: 'Sign out all other devices?'
+			)
+		)
+			return;
 		sessionsBusy = true;
 		try {
 			await authApi.revokeAllOtherSessions();
 			await loadSessions();
-			toast.success(i18n.locale === 'fr' ? 'Autres sessions terminées.' : 'Other sessions revoked.');
+			toast.success(
+				i18n.locale === 'fr' ? 'Autres sessions terminées.' : 'Other sessions revoked.'
+			);
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : 'Erreur');
 		} finally {
@@ -284,8 +292,6 @@
 	}
 </script>
 
-
-
 <svelte:head>
 	<title>{i18n.locale === 'fr' ? 'Sécurité' : 'Security'} | Skilluv</title>
 </svelte:head>
@@ -293,21 +299,31 @@
 <div class="mx-auto max-w-2xl px-4 py-8">
 	{#if showBack}
 		<div class="mb-6 flex items-center gap-3">
-			<a href="/settings" class="text-sm text-text-muted hover:text-text-primary">← {i18n.t('settings.title')}</a>
+			<a href="/settings" class="text-sm text-text-muted hover:text-text-primary"
+				>← {i18n.t('settings.title')}</a
+			>
 		</div>
 	{/if}
 	<h1 class="mb-8 text-2xl font-bold">{i18n.locale === 'fr' ? 'Sécurité' : 'Security'}</h1>
 
 	<!-- Email de connexion -->
 	<section class="mb-8">
-		<h2 class="mb-4 text-lg font-semibold">{i18n.locale === 'fr' ? 'Adresse email' : 'Email address'}</h2>
-		<div class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6">
+		<h2 class="mb-4 text-lg font-semibold">
+			{i18n.locale === 'fr' ? 'Adresse email' : 'Email address'}
+		</h2>
+		<div
+			class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6"
+		>
 			<div class="min-w-0">
 				<p class="truncate font-medium">{auth.user?.email}</p>
 				<p class="text-xs text-text-muted">
 					{auth.user?.email_verified
-						? i18n.locale === 'fr' ? 'Vérifiée' : 'Verified'
-						: i18n.locale === 'fr' ? 'Non vérifiée' : 'Not verified'}
+						? i18n.locale === 'fr'
+							? 'Vérifiée'
+							: 'Verified'
+						: i18n.locale === 'fr'
+							? 'Non vérifiée'
+							: 'Not verified'}
 				</p>
 			</div>
 			<Button variant="ghost" size="sm" onclick={() => (emailChangeOpen = true)}>
@@ -318,7 +334,9 @@
 
 	<!-- TOTP -->
 	<section class="mb-8">
-		<h2 class="mb-4 text-lg font-semibold">{i18n.locale === 'fr' ? 'Application 2FA (TOTP)' : 'Authenticator app (TOTP)'}</h2>
+		<h2 class="mb-4 text-lg font-semibold">
+			{i18n.locale === 'fr' ? 'Application 2FA (TOTP)' : 'Authenticator app (TOTP)'}
+		</h2>
 		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 			<div class="mb-4 flex items-center justify-between gap-4">
 				<div class="min-w-0">
@@ -366,7 +384,9 @@
 					class="rounded-lg px-3 py-1 text-xs font-medium
 						{email2faEnabled ? 'bg-success/15 text-success' : 'bg-surface-overlay text-text-muted'}"
 				>
-					{email2faEnabled ? i18n.t('settings.security.enabled') : i18n.t('settings.security.disabled')}
+					{email2faEnabled
+						? i18n.t('settings.security.enabled')
+						: i18n.t('settings.security.disabled')}
 				</span>
 			</div>
 			{#if !email2faEnabled}
@@ -380,7 +400,7 @@
 				</Button>
 				{#if !auth.user?.email_verified}
 					<p class="mt-2 text-xs text-text-muted">
-						{i18n.locale === 'fr' ? 'Vérifie ton email d\'abord.' : 'Verify your email first.'}
+						{i18n.locale === 'fr' ? "Vérifie ton email d'abord." : 'Verify your email first.'}
 					</p>
 				{/if}
 			{:else}
@@ -414,23 +434,32 @@
 				{:else}
 					<ul class="mb-4 flex flex-col gap-2">
 						{#each passkeys as pk}
-							<li class="flex items-center justify-between rounded-xl border border-border bg-surface p-3">
+							<li
+								class="flex items-center justify-between rounded-xl border border-border bg-surface p-3"
+							>
 								<div class="min-w-0">
 									<p class="truncate text-sm font-medium">
 										{pk.label ?? (i18n.locale === 'fr' ? 'Sans nom' : 'Unnamed')}
 									</p>
 									<p class="text-xs text-text-muted">
-										{i18n.locale === 'fr' ? 'Ajoutée' : 'Added'} {relativeTime(pk.created_at)}
+										{i18n.locale === 'fr' ? 'Ajoutée' : 'Added'}
+										{relativeTime(pk.created_at)}
 										{#if pk.last_used_at}
 											· {i18n.locale === 'fr' ? 'utilisée' : 'used'} {relativeTime(pk.last_used_at)}
 										{/if}
 									</p>
 								</div>
 								<div class="flex gap-1">
-									<button class="text-xs text-text-muted hover:text-accent" onclick={() => renamePasskey(pk.id, pk.label)}>
+									<button
+										class="text-xs text-text-muted hover:text-accent"
+										onclick={() => renamePasskey(pk.id, pk.label)}
+									>
 										{i18n.locale === 'fr' ? 'Renommer' : 'Rename'}
 									</button>
-									<button class="text-xs text-error hover:underline" onclick={() => removePasskey(pk.id)}>
+									<button
+										class="text-xs text-error hover:underline"
+										onclick={() => removePasskey(pk.id)}
+									>
 										{i18n.locale === 'fr' ? 'Supprimer' : 'Delete'}
 									</button>
 								</div>
@@ -447,7 +476,9 @@
 
 	<!-- Sessions -->
 	<section class="mb-8">
-		<h2 class="mb-4 text-lg font-semibold">{i18n.locale === 'fr' ? 'Sessions actives' : 'Active sessions'}</h2>
+		<h2 class="mb-4 text-lg font-semibold">
+			{i18n.locale === 'fr' ? 'Sessions actives' : 'Active sessions'}
+		</h2>
 		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 			{#if sessions.length === 0}
 				<p class="text-sm text-text-muted italic">
@@ -456,22 +487,30 @@
 			{:else}
 				<ul class="mb-4 flex flex-col gap-2">
 					{#each sessions as s}
-						<li class="flex items-center justify-between rounded-xl border border-border bg-surface p-3">
+						<li
+							class="flex items-center justify-between rounded-xl border border-border bg-surface p-3"
+						>
 							<div class="min-w-0">
 								<p class="truncate text-sm font-medium">
 									{s.user_agent ?? (i18n.locale === 'fr' ? 'Appareil inconnu' : 'Unknown device')}
 									{#if s.id === currentSessionId}
-										<span class="ml-2 rounded bg-accent/20 px-1.5 py-0.5 text-[10px] font-semibold text-accent">
+										<span
+											class="ml-2 rounded bg-accent/20 px-1.5 py-0.5 text-[10px] font-semibold text-accent"
+										>
 											{i18n.locale === 'fr' ? 'CET APPAREIL' : 'THIS DEVICE'}
 										</span>
 									{/if}
 								</p>
 								<p class="text-xs text-text-muted">
-									{s.ip ?? '—'} · {i18n.locale === 'fr' ? 'dernière activité' : 'last active'} {relativeTime(s.last_used_at)}
+									{s.ip ?? '—'} · {i18n.locale === 'fr' ? 'dernière activité' : 'last active'}
+									{relativeTime(s.last_used_at)}
 								</p>
 							</div>
 							{#if s.id !== currentSessionId}
-								<button class="text-xs text-error hover:underline" onclick={() => revokeSession(s.id)}>
+								<button
+									class="text-xs text-error hover:underline"
+									onclick={() => revokeSession(s.id)}
+								>
 									{i18n.locale === 'fr' ? 'Terminer' : 'Revoke'}
 								</button>
 							{/if}
@@ -489,10 +528,14 @@
 </div>
 
 <!-- Modal: TOTP setup -->
-<Modal open={totpSetupOpen} title={i18n.locale === 'fr' ? 'Activer 2FA' : 'Enable 2FA'} onclose={() => (totpSetupOpen = false)}>
+<Modal
+	open={totpSetupOpen}
+	title={i18n.locale === 'fr' ? 'Activer 2FA' : 'Enable 2FA'}
+	onclose={() => (totpSetupOpen = false)}
+>
 	<p class="mb-3 text-sm text-text-muted">
 		{i18n.locale === 'fr'
-			? 'Scanne ce QR code dans ton app d\'authentification, puis entre le code affiché.'
+			? "Scanne ce QR code dans ton app d'authentification, puis entre le code affiché."
 			: 'Scan this QR code in your authenticator app, then enter the displayed code.'}
 	</p>
 	{#if totpOtpauthUrl}
@@ -504,45 +547,83 @@
 			height="200"
 		/>
 	{/if}
-	<p class="mb-3 break-all rounded bg-surface-overlay p-2 text-xs font-mono text-text-muted">{totpSecret}</p>
-	<Input label={i18n.locale === 'fr' ? 'Code à 6 chiffres' : '6-digit code'} bind:value={totpConfirmCode} placeholder="123456" />
+	<p class="mb-3 break-all rounded bg-surface-overlay p-2 text-xs font-mono text-text-muted">
+		{totpSecret}
+	</p>
+	<Input
+		label={i18n.locale === 'fr' ? 'Code à 6 chiffres' : '6-digit code'}
+		bind:value={totpConfirmCode}
+		placeholder="123456"
+	/>
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (totpSetupOpen = false)}>{i18n.t('common.actions.cancel')}</Button>
-		<Button variant="primary" loading={totpBusy} onclick={confirmTotpEnable}>{i18n.locale === 'fr' ? 'Activer' : 'Enable'}</Button>
+		<Button variant="ghost" onclick={() => (totpSetupOpen = false)}
+			>{i18n.t('common.actions.cancel')}</Button
+		>
+		<Button variant="primary" loading={totpBusy} onclick={confirmTotpEnable}
+			>{i18n.locale === 'fr' ? 'Activer' : 'Enable'}</Button
+		>
 	{/snippet}
 </Modal>
 
 <!-- Modal: TOTP disable -->
-<Modal open={totpDisableOpen} title={i18n.locale === 'fr' ? 'Désactiver 2FA' : 'Disable 2FA'} onclose={() => (totpDisableOpen = false)}>
+<Modal
+	open={totpDisableOpen}
+	title={i18n.locale === 'fr' ? 'Désactiver 2FA' : 'Disable 2FA'}
+	onclose={() => (totpDisableOpen = false)}
+>
 	<p class="mb-3 text-sm text-text-muted">
 		{i18n.locale === 'fr' ? 'Entre un code TOTP pour confirmer.' : 'Enter a TOTP code to confirm.'}
 	</p>
-	<Input label={i18n.locale === 'fr' ? 'Code à 6 chiffres' : '6-digit code'} bind:value={totpDisableCode} placeholder="123456" />
+	<Input
+		label={i18n.locale === 'fr' ? 'Code à 6 chiffres' : '6-digit code'}
+		bind:value={totpDisableCode}
+		placeholder="123456"
+	/>
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (totpDisableOpen = false)}>{i18n.t('common.actions.cancel')}</Button>
-		<Button variant="danger" loading={totpBusy} onclick={confirmTotpDisable}>{i18n.locale === 'fr' ? 'Désactiver' : 'Disable'}</Button>
+		<Button variant="ghost" onclick={() => (totpDisableOpen = false)}
+			>{i18n.t('common.actions.cancel')}</Button
+		>
+		<Button variant="danger" loading={totpBusy} onclick={confirmTotpDisable}
+			>{i18n.locale === 'fr' ? 'Désactiver' : 'Disable'}</Button
+		>
 	{/snippet}
 </Modal>
 
 <!-- Modal: backup codes regenerate -->
-<Modal open={backupRegenOpen} title={i18n.locale === 'fr' ? 'Régénérer les codes de secours' : 'Regenerate backup codes'} onclose={() => (backupRegenOpen = false)}>
+<Modal
+	open={backupRegenOpen}
+	title={i18n.locale === 'fr' ? 'Régénérer les codes de secours' : 'Regenerate backup codes'}
+	onclose={() => (backupRegenOpen = false)}
+>
 	<p class="mb-3 text-sm text-text-muted">
 		{i18n.locale === 'fr'
 			? 'Les anciens codes seront invalidés. Entre un code TOTP pour confirmer.'
 			: 'The old codes will be invalidated. Enter a TOTP code to confirm.'}
 	</p>
-	<Input label={i18n.locale === 'fr' ? 'Code à 6 chiffres' : '6-digit code'} bind:value={backupRegenCode} placeholder="123456" />
+	<Input
+		label={i18n.locale === 'fr' ? 'Code à 6 chiffres' : '6-digit code'}
+		bind:value={backupRegenCode}
+		placeholder="123456"
+	/>
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (backupRegenOpen = false)}>{i18n.t('common.actions.cancel')}</Button>
-		<Button variant="primary" loading={totpBusy} onclick={regenerateBackupCodes}>{i18n.locale === 'fr' ? 'Régénérer' : 'Regenerate'}</Button>
+		<Button variant="ghost" onclick={() => (backupRegenOpen = false)}
+			>{i18n.t('common.actions.cancel')}</Button
+		>
+		<Button variant="primary" loading={totpBusy} onclick={regenerateBackupCodes}
+			>{i18n.locale === 'fr' ? 'Régénérer' : 'Regenerate'}</Button
+		>
 	{/snippet}
 </Modal>
 
 <!-- Modal: display backup codes (one-shot) -->
-<Modal open={backupCodesModalOpen} title={i18n.locale === 'fr' ? 'Codes de secours' : 'Backup codes'} onclose={() => (backupCodesModalOpen = false)}>
+<Modal
+	open={backupCodesModalOpen}
+	title={i18n.locale === 'fr' ? 'Codes de secours' : 'Backup codes'}
+	onclose={() => (backupCodesModalOpen = false)}
+>
 	<p class="mb-3 text-sm text-text-muted">
 		{i18n.locale === 'fr'
-			? 'Conserve ces codes en lieu sûr. Chacun ne peut être utilisé qu\'une fois. Ils ne seront plus affichés.'
+			? "Conserve ces codes en lieu sûr. Chacun ne peut être utilisé qu'une fois. Ils ne seront plus affichés."
 			: 'Store these codes safely. Each can be used once. They will not be shown again.'}
 	</p>
 	<div class="mb-3 grid grid-cols-2 gap-2 rounded-xl bg-surface-overlay p-4 font-mono text-sm">
@@ -551,49 +632,94 @@
 		{/each}
 	</div>
 	{#snippet actions()}
-		<Button variant="ghost" onclick={copyBackupCodes}>{i18n.locale === 'fr' ? 'Copier' : 'Copy'}</Button>
-		<Button variant="primary" onclick={() => (backupCodesModalOpen = false)}>{i18n.locale === 'fr' ? 'J\'ai noté' : 'I saved them'}</Button>
+		<Button variant="ghost" onclick={copyBackupCodes}
+			>{i18n.locale === 'fr' ? 'Copier' : 'Copy'}</Button
+		>
+		<Button variant="primary" onclick={() => (backupCodesModalOpen = false)}
+			>{i18n.locale === 'fr' ? "J'ai noté" : 'I saved them'}</Button
+		>
 	{/snippet}
 </Modal>
 
 <!-- Modal: email 2FA disable -->
-<Modal open={email2faDisableOpen} title={i18n.locale === 'fr' ? 'Désactiver Email 2FA' : 'Disable Email 2FA'} onclose={() => (email2faDisableOpen = false)}>
+<Modal
+	open={email2faDisableOpen}
+	title={i18n.locale === 'fr' ? 'Désactiver Email 2FA' : 'Disable Email 2FA'}
+	onclose={() => (email2faDisableOpen = false)}
+>
 	<p class="mb-3 text-sm text-text-muted">
 		{i18n.locale === 'fr' ? 'Confirme avec ton mot de passe.' : 'Confirm with your password.'}
 	</p>
-	<Input type="password" label={i18n.t('settings.password.current')} bind:value={email2faDisablePassword} />
+	<Input
+		type="password"
+		label={i18n.t('settings.password.current')}
+		bind:value={email2faDisablePassword}
+	/>
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (email2faDisableOpen = false)}>{i18n.t('common.actions.cancel')}</Button>
-		<Button variant="danger" loading={email2faBusy} onclick={disableEmail2fa}>{i18n.locale === 'fr' ? 'Désactiver' : 'Disable'}</Button>
+		<Button variant="ghost" onclick={() => (email2faDisableOpen = false)}
+			>{i18n.t('common.actions.cancel')}</Button
+		>
+		<Button variant="danger" loading={email2faBusy} onclick={disableEmail2fa}
+			>{i18n.locale === 'fr' ? 'Désactiver' : 'Disable'}</Button
+		>
 	{/snippet}
 </Modal>
 
 <!-- Modal: add passkey -->
-<Modal open={addPasskeyOpen} title={i18n.locale === 'fr' ? 'Ajouter une passkey' : 'Add a passkey'} onclose={() => (addPasskeyOpen = false)}>
+<Modal
+	open={addPasskeyOpen}
+	title={i18n.locale === 'fr' ? 'Ajouter une passkey' : 'Add a passkey'}
+	onclose={() => (addPasskeyOpen = false)}
+>
 	<p class="mb-3 text-sm text-text-muted">
 		{i18n.locale === 'fr'
 			? 'Donne un nom pour reconnaître cet appareil plus tard.'
 			: 'Give it a name so you can recognise this device later.'}
 	</p>
-	<Input label={i18n.locale === 'fr' ? 'Nom (optionnel)' : 'Label (optional)'} bind:value={newPasskeyLabel} placeholder="MacBook Touch ID" />
+	<Input
+		label={i18n.locale === 'fr' ? 'Nom (optionnel)' : 'Label (optional)'}
+		bind:value={newPasskeyLabel}
+		placeholder="MacBook Touch ID"
+	/>
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (addPasskeyOpen = false)}>{i18n.t('common.actions.cancel')}</Button>
-		<Button variant="primary" loading={passkeyBusy} onclick={enrolPasskey}>{i18n.locale === 'fr' ? 'Ajouter' : 'Add'}</Button>
+		<Button variant="ghost" onclick={() => (addPasskeyOpen = false)}
+			>{i18n.t('common.actions.cancel')}</Button
+		>
+		<Button variant="primary" loading={passkeyBusy} onclick={enrolPasskey}
+			>{i18n.locale === 'fr' ? 'Ajouter' : 'Add'}</Button
+		>
 	{/snippet}
 </Modal>
 
 <!-- Modal: change email -->
-<Modal open={emailChangeOpen} title={i18n.locale === 'fr' ? 'Changer d\'email' : 'Change email'} onclose={() => (emailChangeOpen = false)}>
+<Modal
+	open={emailChangeOpen}
+	title={i18n.locale === 'fr' ? "Changer d'email" : 'Change email'}
+	onclose={() => (emailChangeOpen = false)}
+>
 	<p class="mb-3 text-sm text-text-muted">
 		{i18n.locale === 'fr'
 			? 'Un lien de confirmation sera envoyé à la nouvelle adresse.'
 			: 'A confirmation link will be sent to the new address.'}
 	</p>
-	<Input type="email" label={i18n.locale === 'fr' ? 'Nouvel email' : 'New email'} bind:value={emailChangeNew} autocomplete="email" />
-	<Input type="password" label={i18n.t('settings.password.current')} bind:value={emailChangePassword} autocomplete="current-password" />
+	<Input
+		type="email"
+		label={i18n.locale === 'fr' ? 'Nouvel email' : 'New email'}
+		bind:value={emailChangeNew}
+		autocomplete="email"
+	/>
+	<Input
+		type="password"
+		label={i18n.t('settings.password.current')}
+		bind:value={emailChangePassword}
+		autocomplete="current-password"
+	/>
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (emailChangeOpen = false)}>{i18n.t('common.actions.cancel')}</Button>
-		<Button variant="primary" loading={emailChangeBusy} onclick={submitEmailChange}>{i18n.locale === 'fr' ? 'Envoyer' : 'Send'}</Button>
+		<Button variant="ghost" onclick={() => (emailChangeOpen = false)}
+			>{i18n.t('common.actions.cancel')}</Button
+		>
+		<Button variant="primary" loading={emailChangeBusy} onclick={submitEmailChange}
+			>{i18n.locale === 'fr' ? 'Envoyer' : 'Send'}</Button
+		>
 	{/snippet}
 </Modal>
-

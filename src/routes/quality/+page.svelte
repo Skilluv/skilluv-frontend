@@ -184,7 +184,9 @@
 						</div>
 
 						{#if row.rejected_reason}
-							<p class="mt-2 rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-muted">
+							<p
+								class="mt-2 rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-muted"
+							>
 								{row.rejected_reason}
 							</p>
 						{/if}

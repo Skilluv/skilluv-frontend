@@ -30,7 +30,8 @@
 
 	const variants: Record<string, string> = {
 		primary: 'bg-primary text-primary-fg hover:bg-primary-hover',
-		secondary: 'border border-border text-text-primary hover:bg-surface-overlay hover:border-text-muted',
+		secondary:
+			'border border-border text-text-primary hover:bg-surface-overlay hover:border-text-muted',
 		ghost: 'text-text-muted hover:text-text-primary hover:bg-surface-overlay',
 		accent: 'bg-accent text-accent-fg hover:bg-accent-hover',
 		danger: 'bg-error text-error-fg hover:brightness-90'
@@ -46,15 +47,24 @@
 </script>
 
 {#if href && !disabled}
-	<a {href} class={classes} {...(rest as HTMLAnchorAttributes)}>
+	<a {href} class={classes} {...rest as HTMLAnchorAttributes}>
 		{@render children()}
 	</a>
 {:else}
 	<button class={classes} disabled={disabled || loading} {...rest}>
 		{#if loading}
-			<svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+			<svg
+				class="h-4 w-4 animate-spin"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 24 24"
+			>
 				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+				<path
+					class="opacity-75"
+					fill="currentColor"
+					d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+				/>
 			</svg>
 		{/if}
 		{@render children()}

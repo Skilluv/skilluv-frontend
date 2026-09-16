@@ -141,7 +141,9 @@
 						<span class="text-xs font-bold uppercase tracking-widest text-text-muted">
 							{i18n.t('howItWorks.reviewLabel')}
 						</span>
-						<span class="ml-auto font-mono text-xs text-text-muted">{i18n.t('commonExtra.exampleLabel')}</span>
+						<span class="ml-auto font-mono text-xs text-text-muted"
+							>{i18n.t('commonExtra.exampleLabel')}</span
+						>
 					</div>
 					<div class="flex flex-col gap-4 p-5">
 						<p class="border-l-2 border-accent pl-4 text-sm leading-relaxed">
@@ -150,7 +152,9 @@
 						<p class="border-l-2 border-border pl-4 text-sm leading-relaxed text-text-muted">
 							{i18n.t('howItWorks.reviewReply')}
 						</p>
-						<p class="flex items-center gap-2 border-t border-border pt-3 text-xs font-bold text-success">
+						<p
+							class="flex items-center gap-2 border-t border-border pt-3 text-xs font-bold text-success"
+						>
 							<span class="h-1.5 w-1.5 rounded-full bg-success"></span>
 							{i18n.t('howItWorks.reviewOutcome')}
 						</p>
@@ -160,9 +164,7 @@
 
 			<!-- 04 — the proof that comes out of it -->
 			<div use:scrollReveal class="grid items-center gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-20">
-				<div
-					class="order-2 rounded-2xl border-2 border-cat-share bg-surface-share p-6 lg:order-1"
-				>
+				<div class="order-2 rounded-2xl border-2 border-cat-share bg-surface-share p-6 lg:order-1">
 					<p class="mb-3 text-[10px] uppercase tracking-widest text-text-muted">
 						{i18n.t('howItWorks.profileLabel')} · {i18n.t('commonExtra.exampleLabel')}
 					</p>

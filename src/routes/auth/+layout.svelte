@@ -105,7 +105,10 @@
 	.auth-card :global(h1),
 	.auth-card :global(h2) {
 		font-family: 'Fraunces Variable', Georgia, serif;
-		font-variation-settings: 'opsz' 48, 'SOFT' 40, 'WONK' 0.5;
+		font-variation-settings:
+			'opsz' 48,
+			'SOFT' 40,
+			'WONK' 0.5;
 		letter-spacing: -0.02em;
 		line-height: 1.1;
 	}
@@ -118,7 +121,10 @@
 		max-width: 460px;
 		text-align: center;
 		font-family: 'Fraunces Variable', Georgia, serif;
-		font-variation-settings: 'opsz' 48, 'SOFT' 40, 'WONK' 0.6;
+		font-variation-settings:
+			'opsz' 48,
+			'SOFT' 40,
+			'WONK' 0.6;
 		font-size: 1.125rem;
 		font-weight: 500;
 		color: var(--sk-text-muted);

@@ -79,7 +79,9 @@
 						</div>
 						<div class="flex items-center gap-2">
 							<Badge variant={row.completed_at ? 'success' : 'accent'} size="sm">
-								{row.completed_at ? i18n.t('tracks.completedBadge') : i18n.t('tracks.inProgressBadge')}
+								{row.completed_at
+									? i18n.t('tracks.completedBadge')
+									: i18n.t('tracks.inProgressBadge')}
 							</Badge>
 							<Button variant="ghost" size="sm" href={`/tracks/${row.slug}`}>
 								{i18n.t('tracks.viewCta')}

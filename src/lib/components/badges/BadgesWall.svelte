@@ -24,7 +24,11 @@
 	let stampsCount = $derived(badges?.event_stamps_count ?? 0);
 
 	let hasAnyBadge = $derived(
-		patches.length > 0 || medals.length > 0 || crests.length > 0 || sealsCount > 0 || stampsCount > 0
+		patches.length > 0 ||
+			medals.length > 0 ||
+			crests.length > 0 ||
+			sealsCount > 0 ||
+			stampsCount > 0
 	);
 </script>
 
@@ -133,13 +137,16 @@
 	{/if}
 
 	{#if sealsCount > 0 || stampsCount > 0}
-		<section
-			class="grid gap-4 sm:grid-cols-2"
-			aria-label={i18n.t('badges.sections.countersLabel')}
-		>
+		<section class="grid gap-4 sm:grid-cols-2" aria-label={i18n.t('badges.sections.countersLabel')}>
 			{#if sealsCount > 0}
-				<div class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-6">
-					<ChallengeSeal challengeId="total" label={i18n.t('badges.sections.seal')} date={new Date().toISOString()} />
+				<div
+					class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-6"
+				>
+					<ChallengeSeal
+						challengeId="total"
+						label={i18n.t('badges.sections.seal')}
+						date={new Date().toISOString()}
+					/>
 					<div>
 						<p class="text-3xl font-bold text-text-primary">{sealsCount}</p>
 						<p class="text-sm text-text-muted">{i18n.t('badges.sections.sealsCount')}</p>
@@ -147,7 +154,9 @@
 				</div>
 			{/if}
 			{#if stampsCount > 0}
-				<div class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-6">
+				<div
+					class="flex items-center gap-4 rounded-2xl border border-border bg-surface-elevated p-6"
+				>
 					<EventStamp eventName="Skilluv" year={new Date().getFullYear()} />
 					<div>
 						<p class="text-3xl font-bold text-text-primary">{stampsCount}</p>
@@ -159,7 +168,9 @@
 	{/if}
 
 	{#if !hasAnyBadge}
-		<section class="rounded-2xl border border-dashed border-border bg-surface-elevated p-8 text-center">
+		<section
+			class="rounded-2xl border border-dashed border-border bg-surface-elevated p-8 text-center"
+		>
 			<p class="text-sm text-text-muted">
 				{isOwn ? i18n.t('badges.empty.own') : i18n.t('badges.empty.public')}
 			</p>

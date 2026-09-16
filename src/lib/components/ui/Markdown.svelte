@@ -36,7 +36,9 @@
 		{:else if span.kind === 'emphasis'}
 			<em class="italic">{span.value}</em>
 		{:else if span.kind === 'code'}
-			<code class="rounded bg-surface-overlay px-1.5 py-0.5 font-mono text-[0.9em] text-text-primary">
+			<code
+				class="rounded bg-surface-overlay px-1.5 py-0.5 font-mono text-[0.9em] text-text-primary"
+			>
 				{span.value}
 			</code>
 		{:else if span.kind === 'link'}
@@ -91,7 +93,7 @@
 		{:else if block.kind === 'codeblock'}
 			<pre
 				class="mt-4 overflow-x-auto rounded-xl border border-border bg-surface-overlay p-4 font-mono text-xs text-text-primary"><code
-				>{block.value}</code
+					>{block.value}</code
 				></pre>
 		{:else if block.kind === 'table'}
 			<!-- Its own scroll container: a wide table must never make the page

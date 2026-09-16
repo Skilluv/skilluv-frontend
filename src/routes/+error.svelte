@@ -24,7 +24,9 @@
 
 	<div class="flex gap-3">
 		<Button variant="accent" href="/">{i18n.t('errors.backHome')}</Button>
-		<Button variant="secondary" onclick={() => window.location.reload()}>{i18n.t('errors.retryBtn')}</Button>
+		<Button variant="secondary" onclick={() => window.location.reload()}
+			>{i18n.t('errors.retryBtn')}</Button
+		>
 	</div>
 
 	{#if $page.error?.errorId}

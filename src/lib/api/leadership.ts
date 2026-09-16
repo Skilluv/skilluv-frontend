@@ -180,9 +180,7 @@ export const leadershipApi = {
 	},
 
 	myRetrospectives() {
-		return api.get<ApiResponse<{ retrospectives: Retrospective[] }>>(
-			'/leadership/retrospectives'
-		);
+		return api.get<ApiResponse<{ retrospectives: Retrospective[] }>>('/leadership/retrospectives');
 	},
 
 	recordRetrospective(input: RetrospectiveInput) {
@@ -199,9 +197,9 @@ export const leadershipApi = {
 	 * retrospective whose actions nobody resolved is a meeting. Render both.
 	 */
 	actions(retrospectiveId: string) {
-		return api.get<
-			ApiResponse<{ actions: RetrospectiveAction[]; followthrough: unknown }>
-		>(`/leadership/retrospectives/${encodeURIComponent(retrospectiveId)}/actions`);
+		return api.get<ApiResponse<{ actions: RetrospectiveAction[]; followthrough: unknown }>>(
+			`/leadership/retrospectives/${encodeURIComponent(retrospectiveId)}/actions`
+		);
 	},
 
 	addAction(retrospectiveId: string, input: ActionInput) {

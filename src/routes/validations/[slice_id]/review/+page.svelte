@@ -89,7 +89,8 @@
 			if (err instanceof SkilluError && err.status === 400) {
 				submitError = i18n.t('p26.validation.errClaimerSelf');
 			} else {
-				submitError = err instanceof SkilluError ? err.message : i18n.t('p26.validation.errApprove');
+				submitError =
+					err instanceof SkilluError ? err.message : i18n.t('p26.validation.errApprove');
 			}
 		} finally {
 			approving = false;
@@ -147,7 +148,9 @@
 		<Alert tone="error" size="lg">
 			{view.message}
 			{#snippet action()}
-				<Button variant="secondary" size="sm" onclick={load}>{i18n.t('p26.validation.retryBtn')}</Button>
+				<Button variant="secondary" size="sm" onclick={load}
+					>{i18n.t('p26.validation.retryBtn')}</Button
+				>
 			{/snippet}
 		</Alert>
 	{:else}
@@ -163,14 +166,20 @@
 			</h1>
 			<div class="flex flex-wrap gap-2">
 				<Badge variant={domainVariant(domain)}>{domain}</Badge>
-				<Badge variant="accent">{i18n.t('p26.validation.difficultyBadge', { n: item.slice.difficulty })}</Badge>
-				<Badge variant="success">{i18n.t('p26.validation.statusBadge', { status: item.slice.status })}</Badge>
+				<Badge variant="accent"
+					>{i18n.t('p26.validation.difficultyBadge', { n: item.slice.difficulty })}</Badge
+				>
+				<Badge variant="success"
+					>{i18n.t('p26.validation.statusBadge', { status: item.slice.status })}</Badge
+				>
 			</div>
 		</header>
 
 		{#if approveResult}
 			<div class="mb-6 rounded-2xl border border-success/30 bg-success/10 p-6">
-				<h2 class="mb-2 text-lg font-semibold text-success">{i18n.t('p26.validation.approvedTitle')}</h2>
+				<h2 class="mb-2 text-lg font-semibold text-success">
+					{i18n.t('p26.validation.approvedTitle')}
+				</h2>
 				<p class="mb-4 text-sm text-text-muted">
 					{i18n.t('p26.validation.approvedFragments', { n: approveResult.fragments_credited })}
 				</p>
@@ -212,7 +221,14 @@
 
 				<div class="mt-5 flex items-center gap-3 border-t border-border pt-4">
 					{#if item.claimer_avatar_url}
-						<img src={item.claimer_avatar_url} alt="" width="36" height="36" loading="lazy" class="h-9 w-9 rounded-full object-cover" />
+						<img
+							src={item.claimer_avatar_url}
+							alt=""
+							width="36"
+							height="36"
+							loading="lazy"
+							class="h-9 w-9 rounded-full object-cover"
+						/>
 					{:else}
 						<div class="h-9 w-9 rounded-full bg-surface-overlay"></div>
 					{/if}
@@ -241,9 +257,10 @@
 					rows="6"
 					disabled={busy}
 					class="w-full rounded-xl border border-border bg-surface-overlay p-3 text-sm text-text-primary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-					placeholder={i18n.t('p26.validation.feedbackPh')}
-				></textarea>
-				<p class="mt-1 text-xs text-text-muted">{i18n.t('p26.validation.feedbackCounter', { n: feedback.length })}</p>
+					placeholder={i18n.t('p26.validation.feedbackPh')}></textarea>
+				<p class="mt-1 text-xs text-text-muted">
+					{i18n.t('p26.validation.feedbackCounter', { n: feedback.length })}
+				</p>
 
 				{#if submitError}
 					<p class="mt-3 text-sm text-error" role="alert">{submitError}</p>

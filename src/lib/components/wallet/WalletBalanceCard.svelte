@@ -43,7 +43,10 @@
 			<WalletIcon size={18} strokeWidth={2} />
 		</div>
 		<div>
-			<h2 id="wallet-balance-title" class="text-xs font-bold uppercase tracking-wider text-text-muted">
+			<h2
+				id="wallet-balance-title"
+				class="text-xs font-bold uppercase tracking-wider text-text-muted"
+			>
 				{i18n.t('wallet.balanceLabel')}
 			</h2>
 			{#if wallet}

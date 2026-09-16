@@ -132,7 +132,9 @@
 						class="mt-1 h-4 w-4 rounded border-border accent-accent focus:ring-2 focus:ring-accent"
 					/>
 					<div>
-						<p class="font-medium text-text-primary">{i18n.t('privacyPage.consents.marketingLabel')}</p>
+						<p class="font-medium text-text-primary">
+							{i18n.t('privacyPage.consents.marketingLabel')}
+						</p>
 						<p class="text-sm text-text-muted">{i18n.t('privacyPage.consents.marketingHint')}</p>
 					</div>
 				</label>
@@ -146,7 +148,9 @@
 						class="mt-1 h-4 w-4 rounded border-border accent-accent focus:ring-2 focus:ring-accent"
 					/>
 					<div>
-						<p class="font-medium text-text-primary">{i18n.t('privacyPage.consents.analyticsLabel')}</p>
+						<p class="font-medium text-text-primary">
+							{i18n.t('privacyPage.consents.analyticsLabel')}
+						</p>
 						<p class="text-sm text-text-muted">{i18n.t('privacyPage.consents.analyticsHint')}</p>
 					</div>
 				</label>

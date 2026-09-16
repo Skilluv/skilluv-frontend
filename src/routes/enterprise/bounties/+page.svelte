@@ -4,7 +4,12 @@
 	import { replaceState } from '$app/navigation';
 	import { i18n } from '$lib/i18n';
 	import { auth } from '$stores/auth.svelte';
-	import { bountiesApi, type Bounty, type BountyStatus, type CreateBountyPayload } from '$api/bounties';
+	import {
+		bountiesApi,
+		type Bounty,
+		type BountyStatus,
+		type CreateBountyPayload
+	} from '$api/bounties';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
@@ -106,7 +111,9 @@
 	// l'URL ne matche pas le format attendu, ce qui alimente à la fois la
 	// validation client et l'affichage du feedback sous le champ.
 	let parsedIssue = $derived.by(() => {
-		const m = createIssueUrl.trim().match(/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/issues\/(\d+)/);
+		const m = createIssueUrl
+			.trim()
+			.match(/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/issues\/(\d+)/);
 		if (!m) return null;
 		return { owner: m[1], repo: m[2], number: parseInt(m[3], 10) };
 	});
@@ -120,7 +127,9 @@
 		e.preventDefault();
 		if (!parsedIssue || createBusy) return;
 		if (!createTitle.trim() || !createDescription.trim()) {
-			toast.error(i18n.locale === 'fr' ? 'Titre et description requis' : 'Title and description required');
+			toast.error(
+				i18n.locale === 'fr' ? 'Titre et description requis' : 'Title and description required'
+			);
 			return;
 		}
 		const reward = parseFloat(createReward);
@@ -179,9 +188,26 @@
 	} {
 		const labels: Record<BountyStatus, string> =
 			i18n.locale === 'fr'
-				? { open: 'Ouverte', claimed: 'Réservée', in_review: 'En revue', paid: 'Payée', cancelled: 'Annulée', expired: 'Expirée' }
-				: { open: 'Open', claimed: 'Claimed', in_review: 'In review', paid: 'Paid', cancelled: 'Cancelled', expired: 'Expired' };
-		const variants: Record<BountyStatus, 'default' | 'primary' | 'accent' | 'success' | 'warning' | 'error'> = {
+				? {
+						open: 'Ouverte',
+						claimed: 'Réservée',
+						in_review: 'En revue',
+						paid: 'Payée',
+						cancelled: 'Annulée',
+						expired: 'Expirée'
+					}
+				: {
+						open: 'Open',
+						claimed: 'Claimed',
+						in_review: 'In review',
+						paid: 'Paid',
+						cancelled: 'Cancelled',
+						expired: 'Expired'
+					};
+		const variants: Record<
+			BountyStatus,
+			'default' | 'primary' | 'accent' | 'success' | 'warning' | 'error'
+		> = {
 			open: 'primary',
 			claimed: 'accent',
 			in_review: 'warning',
@@ -195,7 +221,9 @@
 	// Stats agrégées
 	let totalCredits = $derived(bounties.reduce((sum, b) => sum + Number(b.reward_credits), 0));
 	let openCount = $derived(bounties.filter((b) => b.status === 'open').length);
-	let claimedCount = $derived(bounties.filter((b) => b.status === 'claimed' || b.status === 'in_review').length);
+	let claimedCount = $derived(
+		bounties.filter((b) => b.status === 'claimed' || b.status === 'in_review').length
+	);
 	let paidCount = $derived(bounties.filter((b) => b.status === 'paid').length);
 
 	const statusFilters: { value: 'all' | BountyStatus; label: string }[] = $derived([
@@ -317,7 +345,9 @@
 		<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
 			{#each bounties as b (b.id)}
 				{@const s = statusMeta(b.status)}
-				<article class="group flex flex-col overflow-hidden rounded-xl border border-border bg-surface-elevated transition-colors hover:border-primary/40">
+				<article
+					class="group flex flex-col overflow-hidden rounded-xl border border-border bg-surface-elevated transition-colors hover:border-primary/40"
+				>
 					<div class="flex items-center gap-3 border-b border-border px-4 py-2.5">
 						<Badge variant={s.variant} size="sm">{s.label}</Badge>
 						<span class="ml-auto max-w-[160px] truncate font-mono text-xs text-text-muted">
@@ -568,7 +598,9 @@
 	onclose={closeCancel}
 >
 	<div class="flex gap-4">
-		<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-error/10 text-error">
+		<div
+			class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-error/10 text-error"
+		>
 			<Trash2 size={20} strokeWidth={2} />
 		</div>
 		<p class="text-sm leading-relaxed text-text-muted">

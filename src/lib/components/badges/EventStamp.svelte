@@ -10,13 +10,7 @@
 		size?: 'sm' | 'md' | 'hero';
 	}
 
-	let {
-		eventName,
-		year,
-		color = 'var(--color-accent)',
-		keyOverlay,
-		size = 'md'
-	}: Props = $props();
+	let { eventName, year, color = 'var(--color-accent)', keyOverlay, size = 'md' }: Props = $props();
 
 	const dim = $derived(size === 'sm' ? 64 : size === 'md' ? 96 : 144);
 </script>
@@ -52,7 +46,9 @@
 		color: rgba(244, 237, 224, 0.95);
 		font-family: var(--font-sans);
 		text-align: center;
-		box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.25), var(--shadow-sm);
+		box-shadow:
+			inset 0 -4px 8px rgba(0, 0, 0, 0.25),
+			var(--shadow-sm);
 	}
 	.stamp__key-overlay {
 		position: absolute;
@@ -69,7 +65,10 @@
 	.stamp__name {
 		font-family: var(--font-display);
 		font-weight: 700;
-		font-variation-settings: 'opsz' 24, 'SOFT' 40, 'WONK' 0.5;
+		font-variation-settings:
+			'opsz' 24,
+			'SOFT' 40,
+			'WONK' 0.5;
 		font-size: 0.75rem;
 		letter-spacing: 0.05em;
 		line-height: 1;

@@ -25,8 +25,8 @@ test.describe('@parcours verify-hash', () => {
 		// Un h1 est toujours rendu (soit success, soit error), la page ne blanche jamais.
 		await expect(page.locator('h1').first()).toBeVisible({ timeout: 15_000 });
 		// CTA "Retour" toujours present sur l'etat invalid.
-		await expect(
-			page.getByRole('link', { name: /accueil|home/i }).first()
-		).toBeVisible({ timeout: 10_000 });
+		await expect(page.getByRole('link', { name: /accueil|home/i }).first()).toBeVisible({
+			timeout: 10_000
+		});
 	});
 });

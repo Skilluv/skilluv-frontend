@@ -198,7 +198,13 @@ describe('walletApi', () => {
 
 	it('withdraw() poste montant + devise sur un endpoint unique', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ amount: '10.00', currency: 'EUR', provider: 'stripe', reference: 'tr_1', status: 'completed' })
+			ok({
+				amount: '10.00',
+				currency: 'EUR',
+				provider: 'stripe',
+				reference: 'tr_1',
+				status: 'completed'
+			})
 		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
 		await walletApi.withdraw({ amount: '10.00', currency: 'EUR', rail: 'bank_account' });
@@ -213,7 +219,13 @@ describe('walletApi', () => {
 
 	it('withdraw() en XOF vise le meme endpoint', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ amount: '5000', currency: 'XOF', provider: 'mtn', reference: 'ref_1', status: 'pending' })
+			ok({
+				amount: '5000',
+				currency: 'XOF',
+				provider: 'mtn',
+				reference: 'ref_1',
+				status: 'pending'
+			})
 		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
 		await walletApi.withdraw({ amount: '5000', currency: 'XOF', rail: 'mobile_money' });
@@ -267,10 +279,7 @@ describe('agencyClientsApi', () => {
 		fetchMock.mockResolvedValue(ok([]));
 		const { agencyClientsApi } = await import('../../src/lib/api/agency_clients');
 		await agencyClientsApi.list();
-		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/enterprises/me/agency-clients',
-			expect.anything()
-		);
+		expect(fetchMock).toHaveBeenCalledWith('/api/enterprises/me/agency-clients', expect.anything());
 	});
 
 	it('create() sends the payload', async () => {
@@ -292,10 +301,7 @@ describe('enterpriseTypesApi', () => {
 		fetchMock.mockResolvedValue(ok({ enterprise_type: 'direct_hire', type_config: {} }));
 		const { enterpriseTypesApi } = await import('../../src/lib/api/enterprise_types');
 		await enterpriseTypesApi.get();
-		expect(fetchMock).toHaveBeenCalledWith(
-			'/api/enterprises/me/type-config',
-			expect.anything()
-		);
+		expect(fetchMock).toHaveBeenCalledWith('/api/enterprises/me/type-config', expect.anything());
 	});
 
 	it('patch() sends staffing agency config', async () => {

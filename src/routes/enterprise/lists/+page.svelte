@@ -7,7 +7,15 @@
 	import { i18n } from '$lib/i18n';
 	import { X } from '@lucide/svelte';
 
-	let lists = $state<{ id: string; name: string; description: string | null; talent_count: number; created_at: string }[]>([]);
+	let lists = $state<
+		{
+			id: string;
+			name: string;
+			description: string | null;
+			talent_count: number;
+			created_at: string;
+		}[]
+	>([]);
 	let loading = $state(true);
 	let error = $state('');
 	let creating = $state(false);
@@ -15,7 +23,9 @@
 	let newName = $state('');
 	let newDesc = $state('');
 
-	$effect(() => { loadLists(); });
+	$effect(() => {
+		loadLists();
+	});
 
 	async function loadLists() {
 		loading = true;
@@ -51,7 +61,9 @@
 		try {
 			await enterpriseApi.deleteList(id);
 			lists = lists.filter((l) => l.id !== id);
-		} catch { /* silent */ }
+		} catch {
+			/* silent */
+		}
 	}
 </script>
 
@@ -71,11 +83,21 @@
 	</div>
 
 	{#if showForm}
-		<form onsubmit={createList} class="mb-6 rounded-2xl border border-border bg-surface-elevated p-4">
+		<form
+			onsubmit={createList}
+			class="mb-6 rounded-2xl border border-border bg-surface-elevated p-4"
+		>
 			<div class="flex flex-col gap-3">
-				<Input label={i18n.t('enterprise.lists.listName')} placeholder="" bind:value={newName} required />
+				<Input
+					label={i18n.t('enterprise.lists.listName')}
+					placeholder=""
+					bind:value={newName}
+					required
+				/>
 				<Input label={i18n.t('enterprise.lists.description')} placeholder="" bind:value={newDesc} />
-				<Button variant="primary" size="sm" type="submit" loading={creating}>{i18n.t('enterprise.lists.createBtn')}</Button>
+				<Button variant="primary" size="sm" type="submit" loading={creating}
+					>{i18n.t('enterprise.lists.createBtn')}</Button
+				>
 			</div>
 		</form>
 	{/if}
@@ -88,8 +110,19 @@
 		</div>
 	{:else if lists.length === 0 && !showForm}
 		<div class="rounded-2xl border border-border bg-surface-elevated p-16 text-center">
-			<div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-overlay text-text-muted">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+			<div
+				class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-overlay text-text-muted"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-6 w-6"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
 					<line x1="8" x2="21" y1="6" y2="6" />
 					<line x1="8" x2="21" y1="12" y2="12" />
 					<line x1="8" x2="21" y1="18" y2="18" />
@@ -103,7 +136,9 @@
 	{:else}
 		<div class="flex flex-col gap-3">
 			{#each lists as list}
-				<div class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-4">
+				<div
+					class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-4"
+				>
 					<a href="/enterprise/lists/{list.id}" class="flex-1">
 						<p class="font-medium hover:text-accent">{list.name}</p>
 						<div class="flex items-center gap-3 text-xs text-text-muted">
@@ -113,7 +148,12 @@
 							{/if}
 						</div>
 					</a>
-					<button class="text-text-muted hover:text-error" onclick={() => deleteList(list.id)} title={i18n.t('common.actions.delete')} aria-label={i18n.t('common.actions.delete')}>
+					<button
+						class="text-text-muted hover:text-error"
+						onclick={() => deleteList(list.id)}
+						title={i18n.t('common.actions.delete')}
+						aria-label={i18n.t('common.actions.delete')}
+					>
 						<X size={16} strokeWidth={2} />
 					</button>
 				</div>

@@ -18,7 +18,12 @@ test.describe('@parcours enterprise-bookmarks', () => {
 	test('/enterprise/bookmarks rend la liste bookmarks', async ({ page }, testInfo) => {
 		await page.goto('/enterprise/bookmarks');
 		await page.waitForLoadState('domcontentloaded');
-		await expect(page.getByRole('heading', { name: /Bookmarks|Signets/i, level: 1 })).toBeVisible({ timeout: 15_000 });
-		await page.screenshot({ path: testInfo.outputPath('enterprise-bookmarks.png'), fullPage: true });
+		await expect(page.getByRole('heading', { name: /Bookmarks|Signets/i, level: 1 })).toBeVisible({
+			timeout: 15_000
+		});
+		await page.screenshot({
+			path: testInfo.outputPath('enterprise-bookmarks.png'),
+			fullPage: true
+		});
 	});
 });

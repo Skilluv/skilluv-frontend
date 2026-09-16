@@ -29,7 +29,8 @@ export const enlistEn: EnlistTranslations = {
 			chosen: 'Your selection',
 			primary: 'Main',
 			primaryHint: 'What your profile leads with.',
-			modeNote: 'Learning or practising: that is what your profile will say. You can change it whenever you like.',
+			modeNote:
+				'Learning or practising: that is what your profile will say. You can change it whenever you like.',
 			modeLabel: '{name}: learning or practising',
 			remove: 'Remove {name}',
 			mustPickOne: 'Pick at least one trade to continue.',
@@ -96,10 +97,12 @@ export const enlistEn: EnlistTranslations = {
 			},
 			openFork: 'Open my fork',
 			openPr: 'See pull request #{n}',
-			reviewNote: 'We see your pull request the moment it opens. A reviewer settles it after that: the rite passes then, not before.',
+			reviewNote:
+				'We see your pull request the moment it opens. A reviewer settles it after that: the rite passes then, not before.',
 			needsTrade: 'Pick a trade first: the starter we fork for you is chosen from it.',
 			needsTradeCta: 'Pick my trade',
-			needsGithub: 'This rite happens on GitHub. Link your account so we can fork the starter there.',
+			needsGithub:
+				'This rite happens on GitHub. Link your account so we can fork the starter there.',
 			needsGithubCta: 'Link my GitHub account',
 			tradeNotActive:
 				'{name} is recorded as a trade you are learning. The first act needs one you are practising — it is the same trade, and this switches it.',

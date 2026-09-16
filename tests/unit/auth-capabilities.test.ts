@@ -131,9 +131,7 @@ describe('AuthState capabilities', () => {
 	it('logout() clears capabilities', async () => {
 		fetchMock.mockResolvedValue(ok({}));
 		const { auth } = await import('../../src/lib/stores/auth.svelte');
-		auth.capabilities = [
-			{ capability: 'mentor', granted_at: '2026-01-01', granted_reason: 'x' }
-		];
+		auth.capabilities = [{ capability: 'mentor', granted_at: '2026-01-01', granted_reason: 'x' }];
 		await auth.logout();
 		expect(auth.capabilities).toEqual([]);
 	});

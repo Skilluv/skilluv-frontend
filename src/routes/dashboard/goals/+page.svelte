@@ -83,7 +83,11 @@
 			{/snippet}
 		</Alert>
 	{:else if goals.length === 0}
-		<EmptyState variant="scroll" title={i18n.t('goals.emptyTitle')} body={i18n.t('goals.emptyBody')}>
+		<EmptyState
+			variant="scroll"
+			title={i18n.t('goals.emptyTitle')}
+			body={i18n.t('goals.emptyBody')}
+		>
 			{#snippet action()}
 				<Button variant="accent" onclick={() => (formOpen = true)}>{i18n.t('goals.newCta')}</Button>
 			{/snippet}

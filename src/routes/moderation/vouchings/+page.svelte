@@ -25,11 +25,7 @@
 	import Skeleton from '$lib/components/ui/Skeleton.svelte';
 	import { ConfirmDangerousDialog } from '$lib/components/moderation';
 	import Alert from '$components/ui/Alert.svelte';
-	import {
-		VOUCHING_QUEUE_STATUSES,
-		type VouchingQueueRow,
-		type VouchingQueueStatus
-	} from '$types';
+	import { VOUCHING_QUEUE_STATUSES, type VouchingQueueRow, type VouchingQueueStatus } from '$types';
 
 	const PER_PAGE = 50;
 

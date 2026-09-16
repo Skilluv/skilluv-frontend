@@ -249,7 +249,8 @@ export const designWorkflowFr: DesignWorkflowTranslations = {
 		flagIntro:
 			'L’auteur est prévenu, en entier, et reçoit un délai pour répondre avant toute décision.',
 		flagReason: 'Ce qui a été copié',
-		flagReasonHint: 'Assez précis pour que quelqu’un qui n’a vu ni l’un ni l’autre puisse vérifier.',
+		flagReasonHint:
+			'Assez précis pour que quelqu’un qui n’a vu ni l’un ni l’autre puisse vérifier.',
 		flagEvidence: 'Lien vers l’original',
 		flagEvidenceHint:
 			'Obligatoire : une accusation sans rien à regarder est une accusation invérifiable.',

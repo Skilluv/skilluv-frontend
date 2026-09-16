@@ -130,8 +130,20 @@
 		</div>
 
 		<div class="grid gap-4 sm:grid-cols-2">
-			<Input label={i18n.t('cohorts.formStartsAt')} type="date" min={today} bind:value={startsAt} required />
-			<Input label={i18n.t('cohorts.formEndsAt')} type="date" min={startsAt || today} bind:value={endsAt} required />
+			<Input
+				label={i18n.t('cohorts.formStartsAt')}
+				type="date"
+				min={today}
+				bind:value={startsAt}
+				required
+			/>
+			<Input
+				label={i18n.t('cohorts.formEndsAt')}
+				type="date"
+				min={startsAt || today}
+				bind:value={endsAt}
+				required
+			/>
 		</div>
 
 		<div class="grid gap-4 sm:grid-cols-2">

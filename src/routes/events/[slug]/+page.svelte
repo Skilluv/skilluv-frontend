@@ -35,7 +35,10 @@
 				auth.isAuthenticated ? badgeEventsApi.myEvents() : Promise.resolve(null)
 			]);
 			if (detailRes.status === 'fulfilled') detail = detailRes.value.data;
-			else if (detailRes.reason instanceof SkilluError && detailRes.reason.code === 'RESOURCE_NOT_FOUND') {
+			else if (
+				detailRes.reason instanceof SkilluError &&
+				detailRes.reason.code === 'RESOURCE_NOT_FOUND'
+			) {
 				error = i18n.t('errors.notFoundMessage');
 			} else {
 				error = i18n.t('events.loadError');
@@ -104,7 +107,10 @@
 	{:else if event}
 		<article>
 			<header class="mb-6 flex items-center gap-2 flex-wrap">
-				<Badge variant={status === 'active' ? 'accent' : status === 'upcoming' ? 'primary' : 'default'} size="sm">
+				<Badge
+					variant={status === 'active' ? 'accent' : status === 'upcoming' ? 'primary' : 'default'}
+					size="sm"
+				>
 					{i18n.t(`events.${status}`)}
 				</Badge>
 				{#if event.is_partner}
@@ -115,19 +121,31 @@
 			<h1 class="mb-4 text-4xl font-bold text-text-primary">{event.name}</h1>
 			<p class="mb-6 text-lg text-text-muted">{event.description}</p>
 
-			<dl class="mb-8 grid gap-3 rounded-2xl border border-border bg-surface-elevated p-5 sm:grid-cols-2">
+			<dl
+				class="mb-8 grid gap-3 rounded-2xl border border-border bg-surface-elevated p-5 sm:grid-cols-2"
+			>
 				<div>
-					<dt class="mb-1 flex items-center gap-1.5 text-xs uppercase tracking-wide text-text-muted">
+					<dt
+						class="mb-1 flex items-center gap-1.5 text-xs uppercase tracking-wide text-text-muted"
+					>
 						<Calendar size={12} strokeWidth={2} aria-hidden="true" />
-						{i18n.t('events.startsOn', { date: '' }).replace(/\{date\}\s*$/, '').trim() || 'Starts'}
+						{i18n
+							.t('events.startsOn', { date: '' })
+							.replace(/\{date\}\s*$/, '')
+							.trim() || 'Starts'}
 					</dt>
 					<dd class="font-medium text-text-primary">{fmtDate(event.starts_at)}</dd>
 				</div>
 				{#if event.ends_at}
 					<div>
-						<dt class="mb-1 flex items-center gap-1.5 text-xs uppercase tracking-wide text-text-muted">
+						<dt
+							class="mb-1 flex items-center gap-1.5 text-xs uppercase tracking-wide text-text-muted"
+						>
 							<Calendar size={12} strokeWidth={2} aria-hidden="true" />
-							{i18n.t('events.endsOn', { date: '' }).replace(/\{date\}\s*$/, '').trim() || 'Ends'}
+							{i18n
+								.t('events.endsOn', { date: '' })
+								.replace(/\{date\}\s*$/, '')
+								.trim() || 'Ends'}
 						</dt>
 						<dd class="font-medium text-text-primary">{fmtDate(event.ends_at)}</dd>
 					</div>
@@ -140,7 +158,12 @@
 				{:else if status === 'ended'}
 					<Button variant="ghost" disabled>{i18n.t('events.ended')}</Button>
 				{:else}
-					<Button variant="primary" onclick={joinEvent} loading={joining} disabled={!auth.isAuthenticated}>
+					<Button
+						variant="primary"
+						onclick={joinEvent}
+						loading={joining}
+						disabled={!auth.isAuthenticated}
+					>
 						{i18n.t('events.joinCta')}
 					</Button>
 				{/if}

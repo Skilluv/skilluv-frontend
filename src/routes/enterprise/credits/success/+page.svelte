@@ -46,7 +46,9 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
-<div class="relative mx-auto flex min-h-[80vh] max-w-3xl flex-col items-center justify-center px-4 py-16 text-center">
+<div
+	class="relative mx-auto flex min-h-[80vh] max-w-3xl flex-col items-center justify-center px-4 py-16 text-center"
+>
 	{#if burst}
 		<div class="pointer-events-none absolute inset-0 flex items-center justify-center">
 			<ParticleBurst trigger={burst} count={40} />
@@ -54,7 +56,9 @@
 	{/if}
 
 	<!-- Big check icon -->
-	<div class="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-success/15 text-success animate-[fragment-burst_600ms_ease-out]">
+	<div
+		class="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-success/15 text-success animate-[fragment-burst_600ms_ease-out]"
+	>
 		<Check size={48} strokeWidth={2.5} />
 	</div>
 
@@ -107,7 +111,8 @@
 
 	{#if sessionId}
 		<p class="mt-8 font-mono text-xs text-text-muted">
-			{i18n.locale === 'fr' ? 'Référence transaction :' : 'Transaction reference:'} {sessionId.slice(0, 24)}…
+			{i18n.locale === 'fr' ? 'Référence transaction :' : 'Transaction reference:'}
+			{sessionId.slice(0, 24)}…
 		</p>
 	{/if}
 </div>

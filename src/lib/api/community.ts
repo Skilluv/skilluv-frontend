@@ -20,7 +20,10 @@ interface CreateCommunityChallenge {
 
 export const communityApi = {
 	create(data: CreateCommunityChallenge) {
-		return api.post<ApiResponse<{ challenge: Challenge; message: string }>>('/community/challenges', data);
+		return api.post<ApiResponse<{ challenge: Challenge; message: string }>>(
+			'/community/challenges',
+			data
+		);
 	},
 
 	mine() {
@@ -40,6 +43,9 @@ export const communityApi = {
 	},
 
 	popular(page?: number, perPage?: number) {
-		return api.get<ApiPaginatedResponse<Challenge>>('/community/challenges/popular', { page, per_page: perPage });
+		return api.get<ApiPaginatedResponse<Challenge>>('/community/challenges/popular', {
+			page,
+			per_page: perPage
+		});
 	}
 };

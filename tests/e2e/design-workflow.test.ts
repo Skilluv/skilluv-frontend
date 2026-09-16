@@ -74,10 +74,7 @@ test.describe('design workflow pages', () => {
 		for (const path of WORKFLOW_PAGES) {
 			await gotoHydrated(page, path);
 			const body = await page.locator('body').innerText();
-			expect(
-				body,
-				`raw i18n key leaked on ${path}`
-			).not.toMatch(
+			expect(body, `raw i18n key leaked on ${path}`).not.toMatch(
 				/\b(designWorkshop|designUpload|designTools|designBriefs|nextChallenges|missionWork|designPlagiarism|designIterationStories|designSeries)\.[a-zA-Z]+/
 			);
 		}

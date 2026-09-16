@@ -77,9 +77,7 @@
 		}
 	});
 
-	const domainName = $derived(
-		enlist.domain ? i18n.t(`disciplines.${enlist.domain}.label`) : ''
-	);
+	const domainName = $derived(enlist.domain ? i18n.t(`disciplines.${enlist.domain}.label`) : '');
 
 	function validate(): boolean {
 		const errors: Record<string, string> = {};
@@ -135,7 +133,9 @@
 			const { failed } = await enlist.replay();
 			enlist.clear();
 
-			await goto(failed.length > 0 ? '/challenges/onboarding?trades=partial' : '/challenges/onboarding');
+			await goto(
+				failed.length > 0 ? '/challenges/onboarding?trades=partial' : '/challenges/onboarding'
+			);
 		} catch (err) {
 			error = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
 			loading = false;
@@ -162,7 +162,8 @@
 			<dt>{i18n.t('enlist.account.domainLabel')}</dt>
 			<dd>
 				<span>{domainName}</span>
-				<a href="/auth/register/domain?d={enlist.domain}">{i18n.t('enlist.account.changeDomain')}</a>
+				<a href="/auth/register/domain?d={enlist.domain}">{i18n.t('enlist.account.changeDomain')}</a
+				>
 			</dd>
 		</div>
 		{#if enlist.picks.length > 0}
@@ -170,7 +171,8 @@
 				<dt>{i18n.t('enlist.account.tradesLabel')}</dt>
 				<dd>
 					<span>{enlist.picks.map((p) => p.name).join(' · ')}</span>
-					<a href="/auth/register/path?d={enlist.domain}">{i18n.t('enlist.account.changeTrades')}</a>
+					<a href="/auth/register/path?d={enlist.domain}">{i18n.t('enlist.account.changeTrades')}</a
+					>
 				</dd>
 			</div>
 		{/if}
@@ -329,7 +331,10 @@
 	.pact__title {
 		margin: 0.75rem 0 0;
 		font-family: 'Fraunces Variable', Georgia, serif;
-		font-variation-settings: 'opsz' 96, 'SOFT' 40, 'WONK' 1;
+		font-variation-settings:
+			'opsz' 96,
+			'SOFT' 40,
+			'WONK' 1;
 		font-weight: 700;
 		font-size: clamp(2rem, 5vw, 3rem);
 		line-height: 1.02;

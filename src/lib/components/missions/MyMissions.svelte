@@ -45,9 +45,7 @@
 		{ value: 'rejected' as const, label: i18n.t('missions.applicationStatuses.rejected') }
 	]);
 
-	let visible = $derived(
-		tab === 'all' ? rows : rows.filter((r) => r.application_status === tab)
-	);
+	let visible = $derived(tab === 'all' ? rows : rows.filter((r) => r.application_status === tab));
 
 	function label(group: string, value: string): string {
 		const key = `missions.${group}.${value}`;

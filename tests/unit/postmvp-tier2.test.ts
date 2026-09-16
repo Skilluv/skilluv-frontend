@@ -30,7 +30,12 @@ describe('cohortsApi', () => {
 	it('list() filters by orientation slug, not id', async () => {
 		fetchMock.mockResolvedValue(ok({ cohorts: [], limit: 24, offset: 0 }));
 		const { cohortsApi } = await import('../../src/lib/api/cohorts');
-		await cohortsApi.list({ orientation: 'dev-frontend', upcoming_only: true, limit: 24, offset: 0 });
+		await cohortsApi.list({
+			orientation: 'dev-frontend',
+			upcoming_only: true,
+			limit: 24,
+			offset: 0
+		});
 		expect(fetchMock.mock.calls[0][0]).toBe(
 			'/api/cohorts?orientation=dev-frontend&upcoming_only=true&limit=24&offset=0'
 		);

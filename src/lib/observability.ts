@@ -87,8 +87,7 @@ class Observability {
 		const mod = await import('posthog-js');
 		mod.default.init(key, {
 			api_host:
-				(import.meta.env.PUBLIC_POSTHOG_HOST as string | undefined) ??
-				'https://eu.i.posthog.com',
+				(import.meta.env.PUBLIC_POSTHOG_HOST as string | undefined) ?? 'https://eu.i.posthog.com',
 			person_profiles: 'identified_only',
 			capture_pageview: true,
 			capture_pageleave: true

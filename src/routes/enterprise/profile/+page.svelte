@@ -44,8 +44,7 @@
 	// converti FR/EN pour rester cohérent avec la sélection.
 	let industryOptions = $derived(industryItems(i18n.locale === 'fr' ? 'fr' : 'en'));
 	let industryDisplayLabel = $derived(
-		INDUSTRIES.find((it) => it.value === industry)?.[i18n.locale === 'fr' ? 'fr' : 'en']
-			?? industry
+		INDUSTRIES.find((it) => it.value === industry)?.[i18n.locale === 'fr' ? 'fr' : 'en'] ?? industry
 	);
 
 	// Snapshot des valeurs à l'arrivée du profil, mis à jour après chaque
@@ -119,7 +118,8 @@
 	async function save(e: SubmitEvent) {
 		e.preventDefault();
 		if (!companyName.trim()) {
-			error = i18n.locale === 'fr' ? "Le nom de l'entreprise est requis." : 'Company name is required.';
+			error =
+				i18n.locale === 'fr' ? "Le nom de l'entreprise est requis." : 'Company name is required.';
 			return;
 		}
 		saving = true;
@@ -157,7 +157,9 @@
 		}
 
 		if (file.size > 2 * 1024 * 1024) {
-			toast.error(i18n.locale === 'fr' ? 'Fichier trop volumineux (max 2 Mo).' : 'File too large (max 2MB).');
+			toast.error(
+				i18n.locale === 'fr' ? 'Fichier trop volumineux (max 2 Mo).' : 'File too large (max 2MB).'
+			);
 			input.value = '';
 			return;
 		}
@@ -194,18 +196,22 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Profil entreprise | Skilluv' : 'Enterprise profile | Skilluv'}</title>
+	<title
+		>{i18n.locale === 'fr' ? 'Profil entreprise | Skilluv' : 'Enterprise profile | Skilluv'}</title
+	>
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-10 sm:py-14">
 	<!-- Header -->
 	<div class="mb-8">
 		<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight mb-3">
-			{i18n.locale === 'fr' ? "Profil entreprise" : 'Enterprise profile'}<span class="text-accent">.</span>
+			{i18n.locale === 'fr' ? 'Profil entreprise' : 'Enterprise profile'}<span class="text-accent"
+				>.</span
+			>
 		</h1>
 		<p class="text-base sm:text-lg text-text-muted max-w-2xl">
 			{i18n.locale === 'fr'
-				? "Ces informations sont visibles par les talents que vous contactez."
+				? 'Ces informations sont visibles par les talents que vous contactez.'
 				: 'This information is visible to the talents you contact.'}
 		</p>
 	</div>
@@ -221,13 +227,22 @@
 					{i18n.locale === 'fr' ? 'Aperçu talent' : 'Talent view'}
 				</span>
 				<span class="ml-auto text-xs text-text-muted">
-					{memberCount} {i18n.locale === 'fr' ? 'membres' : 'members'}
+					{memberCount}
+					{i18n.locale === 'fr' ? 'membres' : 'members'}
 				</span>
 			</div>
 			<div class="p-5 flex items-start gap-4">
-				<div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-surface-overlay text-2xl font-black text-primary overflow-hidden">
+				<div
+					class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-surface-overlay text-2xl font-black text-primary overflow-hidden"
+				>
 					{#if logoUrl}
-						<img src={logoUrl} alt={companyName} width="64" height="64" class="h-full w-full object-cover" />
+						<img
+							src={logoUrl}
+							alt={companyName}
+							width="64"
+							height="64"
+							class="h-full w-full object-cover"
+						/>
 					{:else}
 						{companyName?.[0]?.toUpperCase() ?? '?'}
 					{/if}
@@ -286,7 +301,9 @@
 						bind:value={description}
 						rows="4"
 						maxlength="1000"
-						placeholder={i18n.locale === 'fr' ? 'Décrivez brièvement votre entreprise…' : 'Briefly describe your company…'}
+						placeholder={i18n.locale === 'fr'
+							? 'Décrivez brièvement votre entreprise…'
+							: 'Briefly describe your company…'}
 						class="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none resize-y"
 					></textarea>
 					<p class="mt-1 text-[11px] text-text-muted">
@@ -308,8 +325,12 @@
 							size="lg"
 							shape="rounded"
 							searchable
-							searchPlaceholder={i18n.locale === 'fr' ? 'Rechercher un secteur…' : 'Search an industry…'}
-							placeholder={i18n.locale === 'fr' ? '— Sélectionnez un secteur —' : '— Select an industry —'}
+							searchPlaceholder={i18n.locale === 'fr'
+								? 'Rechercher un secteur…'
+								: 'Search an industry…'}
+							placeholder={i18n.locale === 'fr'
+								? '— Sélectionnez un secteur —'
+								: '— Select an industry —'}
 							items={industryOptions}
 							bind:value={industry}
 							class="w-full"
@@ -322,9 +343,18 @@
 						{i18n.locale === 'fr' ? 'Logo' : 'Logo'}
 					</label>
 					<div class="flex items-center gap-4">
-						<div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-surface-overlay text-2xl font-black text-primary overflow-hidden border border-border">
+						<div
+							class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-surface-overlay text-2xl font-black text-primary overflow-hidden border border-border"
+						>
 							{#if logoUrl}
-								<img src={logoUrl} alt="" width="64" height="64" loading="lazy" class="h-full w-full object-cover" />
+								<img
+									src={logoUrl}
+									alt=""
+									width="64"
+									height="64"
+									loading="lazy"
+									class="h-full w-full object-cover"
+								/>
 							{:else}
 								{companyName?.[0]?.toUpperCase() ?? '?'}
 							{/if}
@@ -346,8 +376,12 @@
 								onclick={() => logoInput?.click()}
 							>
 								{logoUrl
-									? (i18n.locale === 'fr' ? 'Remplacer' : 'Replace')
-									: (i18n.locale === 'fr' ? 'Uploader' : 'Upload')}
+									? i18n.locale === 'fr'
+										? 'Remplacer'
+										: 'Replace'
+									: i18n.locale === 'fr'
+										? 'Uploader'
+										: 'Upload'}
 							</Button>
 							{#if logoUrl}
 								<Button
@@ -363,9 +397,7 @@
 						</div>
 					</div>
 					<p class="mt-1.5 text-[11px] text-text-muted">
-						{i18n.locale === 'fr'
-							? 'JPEG, PNG ou WebP. 2 Mo max.'
-							: 'JPEG, PNG or WebP. 2MB max.'}
+						{i18n.locale === 'fr' ? 'JPEG, PNG ou WebP. 2 Mo max.' : 'JPEG, PNG or WebP. 2MB max.'}
 					</p>
 				</div>
 
@@ -408,19 +440,21 @@
 	onclose={() => (discardModalOpen = false)}
 >
 	<div class="flex gap-4">
-		<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-warning/10 text-warning">
+		<div
+			class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-warning/10 text-warning"
+		>
 			<Undo2 size={20} strokeWidth={2} />
 		</div>
 		<p class="text-sm leading-relaxed text-text-muted">
 			{i18n.locale === 'fr'
-				? 'Toutes vos modifications non enregistrées seront perdues. Les valeurs d\'origine seront restaurées.'
+				? "Toutes vos modifications non enregistrées seront perdues. Les valeurs d'origine seront restaurées."
 				: 'All your unsaved changes will be lost. Original values will be restored.'}
 		</p>
 	</div>
 
 	{#snippet actions()}
 		<Button variant="ghost" onclick={() => (discardModalOpen = false)}>
-			{i18n.locale === 'fr' ? 'Continuer l\'édition' : 'Keep editing'}
+			{i18n.locale === 'fr' ? "Continuer l'édition" : 'Keep editing'}
 		</Button>
 		<Button variant="danger" onclick={confirmDiscard}>
 			{i18n.locale === 'fr' ? 'Annuler les modifications' : 'Discard changes'}

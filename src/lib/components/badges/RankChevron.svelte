@@ -11,9 +11,7 @@
 	let { level, size = 'sm', showLabel = false }: Props = $props();
 
 	const rankName = $derived(RANK_NAMES[level]);
-	const symbol = $derived(
-		level === 4 ? '♛' : level === 5 ? '❋' : '⋆'.repeat(level)
-	);
+	const symbol = $derived(level === 4 ? '♛' : level === 5 ? '❋' : '⋆'.repeat(level));
 
 	const height = $derived(size === 'sm' ? 24 : size === 'md' ? 48 : 96);
 </script>

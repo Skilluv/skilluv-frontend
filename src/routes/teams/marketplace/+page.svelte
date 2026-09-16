@@ -230,7 +230,11 @@
 			<ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
 				{#each slots as slot (slot.slot_id)}
 					<li>
-						<SlotCard {slot} onJoin={openJoin} joining={joining && dialogSlot?.slot_id === slot.slot_id} />
+						<SlotCard
+							{slot}
+							onJoin={openJoin}
+							joining={joining && dialogSlot?.slot_id === slot.slot_id}
+						/>
 					</li>
 				{/each}
 			</ul>

@@ -137,7 +137,8 @@ export async function setupEnterpriseSession(
 		firstName: ENTERPRISE_FIXED.firstName,
 		lastName: ENTERPRISE_FIXED.lastName,
 		companyName: ENTERPRISE_FIXED.companyName,
-		totpSecretBase32: previous?.email === ENTERPRISE_FIXED.email ? previous.totpSecretBase32 : undefined,
+		totpSecretBase32:
+			previous?.email === ENTERPRISE_FIXED.email ? previous.totpSecretBase32 : undefined,
 		backupCodes: previous?.email === ENTERPRISE_FIXED.email ? previous.backupCodes : undefined
 	};
 
@@ -250,9 +251,7 @@ async function armTotp(
 	});
 	if (!setupRes.ok()) {
 		const body = await setupRes.text().catch(() => '');
-		throw new Error(
-			`armTotp: totp/setup = ${setupRes.status()}. Body: ${body.slice(0, 300)}`
-		);
+		throw new Error(`armTotp: totp/setup = ${setupRes.status()}. Body: ${body.slice(0, 300)}`);
 	}
 	const setupJson = (await setupRes.json()) as {
 		data: { secret_base32: string; otpauth_url?: string };
@@ -276,9 +275,7 @@ async function armTotp(
 		});
 		if (!enableRes.ok()) {
 			const body = await enableRes.text().catch(() => '');
-			throw new Error(
-				`armTotp: totp/enable = ${enableRes.status()}. Body: ${body.slice(0, 300)}`
-			);
+			throw new Error(`armTotp: totp/enable = ${enableRes.status()}. Body: ${body.slice(0, 300)}`);
 		}
 	}
 	const enJson = (await enableRes.json()) as { data: { backup_codes?: string[] } };
@@ -307,7 +304,10 @@ async function fallbackRegister(
 
 	// STEP 2
 	await expect(
-		page.locator('h1').filter({ hasText: /entreprise|company/i }).first()
+		page
+			.locator('h1')
+			.filter({ hasText: /entreprise|company/i })
+			.first()
 	).toBeVisible({ timeout: 10_000 });
 	await page.getByPlaceholder(/Skilluv Inc/i).fill(creds.companyName);
 	await page.getByPlaceholder(/https:\/\/entreprise\.com/).fill('https://flemart.com');

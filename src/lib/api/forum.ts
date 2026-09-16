@@ -51,10 +51,7 @@ export const forumApi = {
 	 * already pinned.
 	 */
 	togglePin(postId: string) {
-		return api.post<ApiResponse<unknown>>(
-			`/forum/posts/${encodeURIComponent(postId)}/pin`,
-			{}
-		);
+		return api.post<ApiResponse<unknown>>(`/forum/posts/${encodeURIComponent(postId)}/pin`, {});
 	},
 
 	/**
@@ -66,25 +63,37 @@ export const forumApi = {
 	 * deletion wearing another word.
 	 */
 	toggleLock(postId: string) {
-		return api.post<ApiResponse<unknown>>(
-			`/forum/posts/${encodeURIComponent(postId)}/lock`,
-			{}
-		);
+		return api.post<ApiResponse<unknown>>(`/forum/posts/${encodeURIComponent(postId)}/lock`, {});
 	},
 
 	categories() {
 		return api.get<ApiResponse<{ categories: ForumCategory[] }>>('/forum/categories');
 	},
 
-	listPosts(params?: { category?: string; kind?: PostKind; sort?: PostSort; page?: number; per_page?: number }) {
-		return api.get<ApiResponse<{ posts: ForumPost[] }>>('/forum/posts', params as Record<string, string | number>);
+	listPosts(params?: {
+		category?: string;
+		kind?: PostKind;
+		sort?: PostSort;
+		page?: number;
+		per_page?: number;
+	}) {
+		return api.get<ApiResponse<{ posts: ForumPost[] }>>(
+			'/forum/posts',
+			params as Record<string, string | number>
+		);
 	},
 
 	get(id: string) {
 		return api.get<ApiResponse<{ post: ForumPost; comments: unknown[] }>>(`/forum/posts/${id}`);
 	},
 
-	create(data: { category_slug: string; kind: PostKind; title: string; body: string; bounty_fragments?: number }) {
+	create(data: {
+		category_slug: string;
+		kind: PostKind;
+		title: string;
+		body: string;
+		bounty_fragments?: number;
+	}) {
 		return api.post<ApiResponse<{ post: ForumPost }>>('/forum/posts', data);
 	},
 
@@ -97,7 +106,9 @@ export const forumApi = {
 	},
 
 	acceptAnswer(postId: string, commentId: string) {
-		return api.post<ApiResponse<{ accepted: boolean }>>(`/forum/posts/${postId}/accept-answer`, { comment_id: commentId });
+		return api.post<ApiResponse<{ accepted: boolean }>>(`/forum/posts/${postId}/accept-answer`, {
+			comment_id: commentId
+		});
 	},
 
 	search(query: string) {

@@ -86,7 +86,7 @@ const eventRows = [
 		id: 'e1',
 		slug: 'skilluv-fest-2026',
 		name: 'Skilluv Fest 2026',
-		description: 'Le hackathon flagship de l\'année.',
+		description: "Le hackathon flagship de l'année.",
 		event_type: 'hackathon',
 		domain_focus: ['code'],
 		location_type: 'online',

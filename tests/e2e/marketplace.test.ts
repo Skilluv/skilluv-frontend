@@ -61,7 +61,9 @@ const item = {
 
 test.describe('Le catalogue', () => {
 	test('montre le prix, la licence et la note', async ({ page }) => {
-		await mockApi(page, [{ path: '/marketplace/items', handler: json({ data: { items: [item] } }) }]);
+		await mockApi(page, [
+			{ path: '/marketplace/items', handler: json({ data: { items: [item] } }) }
+		]);
 
 		await gotoHydrated(page, '/marketplace');
 

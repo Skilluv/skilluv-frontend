@@ -47,7 +47,10 @@
 		return i18n.t(`p26.slice.status.${s}`);
 	}
 
-	const STATUS_VARIANT: Record<SliceStatus, 'default' | 'primary' | 'accent' | 'success' | 'warning' | 'error'> = {
+	const STATUS_VARIANT: Record<
+		SliceStatus,
+		'default' | 'primary' | 'accent' | 'success' | 'warning' | 'error'
+	> = {
 		open: 'primary',
 		claimed: 'accent',
 		in_progress: 'warning',
@@ -90,14 +93,21 @@
 		claimGateBlocked = false;
 		try {
 			const res = await slicesApi.claim(slice.id);
-			slice = { ...slice, status: 'claimed', claimed_by_user_id: auth.user?.id ?? null, fork_repo_url: res.data.fork_repo_url ?? slice.fork_repo_url };
+			slice = {
+				...slice,
+				status: 'claimed',
+				claimed_by_user_id: auth.user?.id ?? null,
+				fork_repo_url: res.data.fork_repo_url ?? slice.fork_repo_url
+			};
 			toast.success(i18n.t('p26.slice.toastReserved'));
 			await invalidateAll();
 		} catch (err) {
 			if (err instanceof SkilluError && err.status === 403) {
 				claimGateBlocked = true;
 			} else {
-				toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.slice.toastReserveError'));
+				toast.error(
+					err instanceof SkilluError ? err.message : i18n.t('p26.slice.toastReserveError')
+				);
 			}
 		} finally {
 			claiming = false;
@@ -173,7 +183,9 @@
 							<Badge variant="accent">{o}</Badge>
 						{/each}
 					{/if}
-					<Badge variant="default">{i18n.t('p26.slice.difficultyBadge', { n: slice.difficulty })}</Badge>
+					<Badge variant="default"
+						>{i18n.t('p26.slice.difficultyBadge', { n: slice.difficulty })}</Badge
+					>
 					{#if slice.claim_expires_at && (slice.status === 'claimed' || slice.status === 'in_progress')}
 						{@const dl = fmtDaysLeft(slice.claim_expires_at)}
 						{#if dl}
@@ -256,7 +268,8 @@
 				</h2>
 				<ol class="relative border-l border-border pl-6 space-y-4">
 					{#each STATUS_ORDER as st, i (st)}
-						{@const reached = i <= currentIdx && slice.status !== 'closed' && slice.status !== 'expired'}
+						{@const reached =
+							i <= currentIdx && slice.status !== 'closed' && slice.status !== 'expired'}
 						{@const current = i === currentIdx}
 						<li class="relative">
 							<span
@@ -269,7 +282,11 @@
 								{/if}
 							</span>
 							<span
-								class="text-sm {current ? 'font-semibold text-text-primary' : reached ? 'text-text-primary' : 'text-text-muted'}"
+								class="text-sm {current
+									? 'font-semibold text-text-primary'
+									: reached
+										? 'text-text-primary'
+										: 'text-text-muted'}"
 							>
 								{statusLabel(st)}
 							</span>
@@ -309,7 +326,9 @@
 
 				{#if canSubmitPr}
 					<div class="rounded-2xl border border-border bg-surface-elevated p-5">
-						<h3 class="text-base font-semibold text-text-primary mb-4">{i18n.t('p26.slice.submitPrTitle')}</h3>
+						<h3 class="text-base font-semibold text-text-primary mb-4">
+							{i18n.t('p26.slice.submitPrTitle')}
+						</h3>
 						<form onsubmit={doSubmitPr} class="space-y-4">
 							<div>
 								<label for="pr-url" class="block text-sm font-medium text-text-primary mb-1.5">
@@ -325,7 +344,11 @@
 								/>
 							</div>
 							<label class="flex items-start gap-3 text-sm cursor-pointer">
-								<input type="checkbox" bind:checked={announce} class="mt-0.5 rounded border-border" />
+								<input
+									type="checkbox"
+									bind:checked={announce}
+									class="mt-0.5 rounded border-border"
+								/>
 								<span>
 									<span class="text-text-primary">{i18n.t('p26.slice.announceLabel')}</span>
 									<span class="block text-xs text-text-muted mt-0.5">
@@ -359,10 +382,14 @@
 				{#if isMine && (slice.status === 'submitted' || slice.status === 'ci_green')}
 					<div class="flex flex-wrap items-center gap-3">
 						{#if slice.submitted_pr_url}
-							<Button variant="secondary" href={slice.submitted_pr_url}>{i18n.t('p26.slice.viewPr')}</Button>
+							<Button variant="secondary" href={slice.submitted_pr_url}
+								>{i18n.t('p26.slice.viewPr')}</Button
+							>
 						{/if}
 						<Badge variant={slice.status === 'ci_green' ? 'success' : 'warning'}>
-							{slice.status === 'ci_green' ? i18n.t('p26.slice.ciGreen') : i18n.t('p26.slice.ciPending')}
+							{slice.status === 'ci_green'
+								? i18n.t('p26.slice.ciGreen')
+								: i18n.t('p26.slice.ciPending')}
 						</Badge>
 					</div>
 				{/if}
@@ -446,20 +473,20 @@
 			     fun, so this is the evidence — and it renders nothing on a slice
 			     that is not a game. -->
 			<div class="mt-4">
-				<PlaytestPanel sliceId={slice.id} isMine={isMine} />
+				<PlaytestPanel sliceId={slice.id} {isMine} />
 			</div>
 
 			<!-- What a leadership artefact is evidence of: not that a document
 			     was written, but that something happened because of it. -->
 			<div class="mt-4">
-				<ArtefactPanel sliceId={slice.id} isMine={isMine} />
+				<ArtefactPanel sliceId={slice.id} {isMine} />
 			</div>
 
 			<!-- Benchmarks and safety reports: the two claims only a second person
 			     can settle. Renders nothing on a slice that has neither, which is
 			     most of them. -->
 			<div class="mt-4">
-				<EvidencePanels sliceId={slice.id} isMine={isMine} />
+				<EvidencePanels sliceId={slice.id} {isMine} />
 			</div>
 
 			<!-- Diary -->

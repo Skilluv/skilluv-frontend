@@ -65,9 +65,7 @@ test.describe('SKI-103 public attestation verification', () => {
 		await mockApi(page, [{ path: `/verify/${HASH}`, handler: json(VALID) }, ...common]);
 		await gotoHydrated(page, `/verify/${HASH}`);
 
-		await expect(
-			page.getByRole('heading', { name: 'Attestation Skilluv verifiee' })
-		).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'Attestation Skilluv verifiee' })).toBeVisible();
 		await expect(page.getByText('Kofi Adjovi')).toBeVisible();
 		await expect(page.getByText('Ama Doe')).toBeVisible();
 		await expect(page.getByText('skilluv/skilluv-backend')).toBeVisible();

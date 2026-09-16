@@ -88,7 +88,8 @@
 				</div>
 				{#if entry.prize_fragments_awarded > 0}
 					<p class="mt-2 text-xs text-accent">
-						+{entry.prize_fragments_awarded.toLocaleString()} {i18n.t('common.fragments')}
+						+{entry.prize_fragments_awarded.toLocaleString()}
+						{i18n.t('common.fragments')}
 					</p>
 				{/if}
 			</div>

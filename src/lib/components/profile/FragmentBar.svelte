@@ -49,7 +49,9 @@
 
 		{#if isComplete}
 			<!-- Flash doré à 100% -->
-			<div class="absolute inset-0 animate-[fade-in_300ms_ease-out] rounded-full bg-yellow-400/20"></div>
+			<div
+				class="absolute inset-0 animate-[fade-in_300ms_ease-out] rounded-full bg-yellow-400/20"
+			></div>
 		{/if}
 	</div>
 </div>

@@ -116,7 +116,11 @@
 		{disabled}
 		aria-expanded={open}
 		aria-haspopup="listbox"
-		class="inline-flex w-full items-center gap-2 {shape === 'rounded' ? 'rounded-xl' : 'rounded-full'} border border-border bg-surface-elevated {sizes[size]} font-medium text-text-primary transition-colors hover:border-primary/40 focus:outline-none focus:border-primary/60 disabled:opacity-50 disabled:cursor-not-allowed"
+		class="inline-flex w-full items-center gap-2 {shape === 'rounded'
+			? 'rounded-xl'
+			: 'rounded-full'} border border-border bg-surface-elevated {sizes[
+			size
+		]} font-medium text-text-primary transition-colors hover:border-primary/40 focus:outline-none focus:border-primary/60 disabled:opacity-50 disabled:cursor-not-allowed"
 	>
 		<span class="flex-1 text-left truncate">{currentLabel}</span>
 		<svg
@@ -157,16 +161,15 @@
 						aria-selected={value === it.value}
 						onclick={() => select(it.value)}
 						disabled={it.disabled}
-						class="flex w-full items-center rounded-lg px-3 py-2 text-sm text-left transition-colors duration-150 hover:bg-primary/10 hover:text-primary {value === it.value
+						class="flex w-full items-center rounded-lg px-3 py-2 text-sm text-left transition-colors duration-150 hover:bg-primary/10 hover:text-primary {value ===
+						it.value
 							? 'bg-primary/10 text-primary font-semibold'
 							: 'text-text-primary'} disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
 					>
 						{it.label}
 					</button>
 				{:else}
-					<p class="px-3 py-4 text-center text-xs text-text-muted">
-						—
-					</p>
+					<p class="px-3 py-4 text-center text-xs text-text-muted">—</p>
 				{/each}
 			</div>
 		</div>

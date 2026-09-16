@@ -168,266 +168,282 @@
 		</div>
 	{:else if guild}
 		<div data-testid="guild-page" class="contents">
-		<!-- Header -->
-		<header class="mb-8 flex flex-col gap-6 sm:flex-row sm:items-start">
-			<div
-				class="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border-4 text-3xl font-black"
-				style={`border-color: ${guildColor}; color: ${guildColor}`}
-			>
-				{guild.tag}
-			</div>
-			<div class="min-w-0 flex-1">
-				<h1 class="text-4xl sm:text-5xl font-black tracking-tight">{guild.name}</h1>
-				<p class="mt-2 text-sm text-text-muted">
-					{guild.description ?? (i18n.locale === 'fr' ? 'Aucune description' : 'No description')}
-				</p>
-				{#if auth.isAuthenticated}
-					<div class="mt-4">
-						<Button variant="accent" loading={applying} onclick={apply}>
-							{i18n.locale === 'fr' ? 'Postuler pour rejoindre' : 'Apply to join'}
-						</Button>
-					</div>
-				{/if}
-			</div>
-		</header>
-
-		<!-- Stats grid -->
-		<div class="mb-10 grid gap-3 grid-cols-2 sm:grid-cols-4">
-			<div class="rounded-2xl border border-border bg-surface-elevated p-5">
-				<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
-					{i18n.locale === 'fr' ? 'Membres' : 'Members'}
-				</p>
-				<p class="mt-1 text-3xl font-black">{guild.member_count ?? 0}</p>
-			</div>
-			<div class="rounded-2xl border border-border bg-surface-elevated p-5">
-				<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
-					{i18n.locale === 'fr' ? 'Fragments' : 'Fragments'}
-				</p>
-				<p class="mt-1 text-3xl font-black text-primary">{(guild.total_fragments ?? 0).toLocaleString()}</p>
-			</div>
-			<div class="rounded-2xl border border-border bg-surface-elevated p-5">
-				<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
-					▲ {i18n.locale === 'fr' ? 'Wars' : 'Wars'}
-				</p>
-				<p class="mt-1 text-2xl font-black">
-					<span class="text-success">{guild.total_wars_won ?? 0}W</span>
-					<span class="text-text-muted text-lg">/</span>
-					<span class="text-error">{guild.total_wars_lost ?? 0}L</span>
-				</p>
-			</div>
-			<div class="rounded-2xl border border-border bg-surface-elevated p-5">
-				<p class="text-xs font-bold uppercase tracking-wider text-text-muted">Win rate</p>
-				<p class="mt-1 text-3xl font-black text-accent">{winRate}%</p>
-			</div>
-		</div>
-
-		<!-- Tabs: composition / wars / members -->
-		<div class="mb-4 flex flex-wrap gap-2" role="tablist" aria-label={i18n.t('guilds.tabsLabel')}>
-			{#each [{ id: 'composition', label: i18n.t('guilds.tabComposition') }, { id: 'wars', label: i18n.t('guilds.tabWars') }, { id: 'members', label: i18n.t('guilds.tabMembers') }, ...(canManage ? [{ id: 'applications', label: i18n.t('guilds.tabApplications') }, { id: 'invitations', label: i18n.t('guilds.tabInvitations') }] : [])] as t (t.id)}
-				<button
-					type="button"
-					role="tab"
-					id={`guild-tab-${t.id}`}
-					data-testid={`guild-tab-${t.id}`}
-					aria-selected={tab === t.id}
-					aria-controls={`guild-panel-${t.id}`}
-					onclick={() => (tab = t.id as Tab)}
-					class="rounded-full border px-4 py-2 text-sm font-medium transition-colors {tab === t.id
-						? 'border-accent bg-accent/10 text-accent'
-						: 'border-border text-text-muted hover:text-text-primary'}"
+			<!-- Header -->
+			<header class="mb-8 flex flex-col gap-6 sm:flex-row sm:items-start">
+				<div
+					class="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border-4 text-3xl font-black"
+					style={`border-color: ${guildColor}; color: ${guildColor}`}
 				>
-					{t.label}
-				</button>
-			{/each}
-		</div>
+					{guild.tag}
+				</div>
+				<div class="min-w-0 flex-1">
+					<h1 class="text-4xl sm:text-5xl font-black tracking-tight">{guild.name}</h1>
+					<p class="mt-2 text-sm text-text-muted">
+						{guild.description ?? (i18n.locale === 'fr' ? 'Aucune description' : 'No description')}
+					</p>
+					{#if auth.isAuthenticated}
+						<div class="mt-4">
+							<Button variant="accent" loading={applying} onclick={apply}>
+								{i18n.locale === 'fr' ? 'Postuler pour rejoindre' : 'Apply to join'}
+							</Button>
+						</div>
+					{/if}
+				</div>
+			</header>
 
-		{#if tab === 'composition'}
-			<div
-				id="guild-panel-composition"
-				role="tabpanel"
-				aria-labelledby="guild-tab-composition"
-				data-testid="composition-panel"
-				class="grid grid-cols-1 gap-3 sm:grid-cols-3"
-			>
-				{#each [{ key: 'owner', label: i18n.t('guilds.roleOwner'), n: composition.owner }, { key: 'officer', label: i18n.t('guilds.roleOfficer'), n: composition.officer }, { key: 'member', label: i18n.t('guilds.roleMember'), n: composition.member }] as row (row.key)}
-					<div class="rounded-2xl border border-border bg-surface-elevated p-5">
-						<p class="text-xs font-bold uppercase tracking-wider text-text-muted">{row.label}</p>
-						<p class="mt-1 text-3xl font-black text-text-primary">{row.n}</p>
-					</div>
+			<!-- Stats grid -->
+			<div class="mb-10 grid gap-3 grid-cols-2 sm:grid-cols-4">
+				<div class="rounded-2xl border border-border bg-surface-elevated p-5">
+					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
+						{i18n.locale === 'fr' ? 'Membres' : 'Members'}
+					</p>
+					<p class="mt-1 text-3xl font-black">{guild.member_count ?? 0}</p>
+				</div>
+				<div class="rounded-2xl border border-border bg-surface-elevated p-5">
+					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
+						{i18n.locale === 'fr' ? 'Fragments' : 'Fragments'}
+					</p>
+					<p class="mt-1 text-3xl font-black text-primary">
+						{(guild.total_fragments ?? 0).toLocaleString()}
+					</p>
+				</div>
+				<div class="rounded-2xl border border-border bg-surface-elevated p-5">
+					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
+						▲ {i18n.locale === 'fr' ? 'Wars' : 'Wars'}
+					</p>
+					<p class="mt-1 text-2xl font-black">
+						<span class="text-success">{guild.total_wars_won ?? 0}W</span>
+						<span class="text-text-muted text-lg">/</span>
+						<span class="text-error">{guild.total_wars_lost ?? 0}L</span>
+					</p>
+				</div>
+				<div class="rounded-2xl border border-border bg-surface-elevated p-5">
+					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">Win rate</p>
+					<p class="mt-1 text-3xl font-black text-accent">{winRate}%</p>
+				</div>
+			</div>
+
+			<!-- Tabs: composition / wars / members -->
+			<div class="mb-4 flex flex-wrap gap-2" role="tablist" aria-label={i18n.t('guilds.tabsLabel')}>
+				{#each [{ id: 'composition', label: i18n.t('guilds.tabComposition') }, { id: 'wars', label: i18n.t('guilds.tabWars') }, { id: 'members', label: i18n.t('guilds.tabMembers') }, ...(canManage ? [{ id: 'applications', label: i18n.t('guilds.tabApplications') }, { id: 'invitations', label: i18n.t('guilds.tabInvitations') }] : [])] as t (t.id)}
+					<button
+						type="button"
+						role="tab"
+						id={`guild-tab-${t.id}`}
+						data-testid={`guild-tab-${t.id}`}
+						aria-selected={tab === t.id}
+						aria-controls={`guild-panel-${t.id}`}
+						onclick={() => (tab = t.id as Tab)}
+						class="rounded-full border px-4 py-2 text-sm font-medium transition-colors {tab === t.id
+							? 'border-accent bg-accent/10 text-accent'
+							: 'border-border text-text-muted hover:text-text-primary'}"
+					>
+						{t.label}
+					</button>
 				{/each}
 			</div>
-		{:else if tab === 'wars'}
-			<div
-				id="guild-panel-wars"
-				role="tabpanel"
-				aria-labelledby="guild-tab-wars"
-				data-testid="wars-panel"
-			>
-				{#if wars.length === 0}
-					<div class="rounded-2xl border border-border bg-surface-elevated p-8 text-center text-sm text-text-muted">
-						{i18n.t('guilds.warsEmpty')}
-					</div>
-				{:else}
-					<ul class="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface-elevated" role="list">
-						{#each wars as war (war.id)}
-							<li class="flex flex-wrap items-center justify-between gap-3 p-4">
-								<div class="min-w-0">
-									<p class="truncate font-semibold text-text-primary">
-										{war.challenger_name} <span class="text-text-muted">vs</span> {war.opponent_name}
-									</p>
-									{#if war.starts_at}
-										<p class="text-xs text-text-muted">{fmtDate(war.starts_at)}</p>
-									{/if}
-								</div>
-								<Badge variant={war.status === 'concluded' ? 'success' : 'accent'} size="sm">
-									{i18n.t(`guilds.warStatus.${war.status}`)}
-								</Badge>
-							</li>
-						{/each}
-					</ul>
-				{/if}
-			</div>
-		{:else if tab === 'applications'}
-			<div
-				id="guild-panel-applications"
-				role="tabpanel"
-				aria-labelledby="guild-tab-applications"
-				data-testid="applications-panel"
-			>
-				{#if applications.length === 0}
-					<div class="rounded-2xl border border-border bg-surface-elevated p-8 text-center text-sm text-text-muted">
-						{i18n.t('guilds.manage.applicationsEmpty')}
-					</div>
-				{:else}
-					<ul class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
-						{#each applications as a (a.id)}
-							<li class="flex flex-wrap items-center gap-3 p-4" data-testid="application-row">
-								<div class="min-w-0 flex-1">
-									<p class="font-semibold truncate">
-										{a.applicant.display_name ?? a.applicant.username ?? a.applicant.id}
-									</p>
-									{#if a.applicant.username}
-										<p class="font-mono text-xs text-text-muted">@{a.applicant.username}</p>
-									{/if}
-									{#if a.message}
-										<p class="mt-1 text-sm text-text-muted">{a.message}</p>
-									{/if}
-									<p class="mt-1 text-xs text-text-muted">{fmtDate(a.applied_at)}</p>
-								</div>
-								<div class="flex shrink-0 gap-2">
-									<Button
-										variant="accent"
-										size="sm"
-										loading={deciding === a.id}
-										onclick={() => decide(a.id, true)}
-									>
-										{i18n.t('guilds.manage.accept')}
-									</Button>
+
+			{#if tab === 'composition'}
+				<div
+					id="guild-panel-composition"
+					role="tabpanel"
+					aria-labelledby="guild-tab-composition"
+					data-testid="composition-panel"
+					class="grid grid-cols-1 gap-3 sm:grid-cols-3"
+				>
+					{#each [{ key: 'owner', label: i18n.t('guilds.roleOwner'), n: composition.owner }, { key: 'officer', label: i18n.t('guilds.roleOfficer'), n: composition.officer }, { key: 'member', label: i18n.t('guilds.roleMember'), n: composition.member }] as row (row.key)}
+						<div class="rounded-2xl border border-border bg-surface-elevated p-5">
+							<p class="text-xs font-bold uppercase tracking-wider text-text-muted">{row.label}</p>
+							<p class="mt-1 text-3xl font-black text-text-primary">{row.n}</p>
+						</div>
+					{/each}
+				</div>
+			{:else if tab === 'wars'}
+				<div
+					id="guild-panel-wars"
+					role="tabpanel"
+					aria-labelledby="guild-tab-wars"
+					data-testid="wars-panel"
+				>
+					{#if wars.length === 0}
+						<div
+							class="rounded-2xl border border-border bg-surface-elevated p-8 text-center text-sm text-text-muted"
+						>
+							{i18n.t('guilds.warsEmpty')}
+						</div>
+					{:else}
+						<ul
+							class="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface-elevated"
+							role="list"
+						>
+							{#each wars as war (war.id)}
+								<li class="flex flex-wrap items-center justify-between gap-3 p-4">
+									<div class="min-w-0">
+										<p class="truncate font-semibold text-text-primary">
+											{war.challenger_name} <span class="text-text-muted">vs</span>
+											{war.opponent_name}
+										</p>
+										{#if war.starts_at}
+											<p class="text-xs text-text-muted">{fmtDate(war.starts_at)}</p>
+										{/if}
+									</div>
+									<Badge variant={war.status === 'concluded' ? 'success' : 'accent'} size="sm">
+										{i18n.t(`guilds.warStatus.${war.status}`)}
+									</Badge>
+								</li>
+							{/each}
+						</ul>
+					{/if}
+				</div>
+			{:else if tab === 'applications'}
+				<div
+					id="guild-panel-applications"
+					role="tabpanel"
+					aria-labelledby="guild-tab-applications"
+					data-testid="applications-panel"
+				>
+					{#if applications.length === 0}
+						<div
+							class="rounded-2xl border border-border bg-surface-elevated p-8 text-center text-sm text-text-muted"
+						>
+							{i18n.t('guilds.manage.applicationsEmpty')}
+						</div>
+					{:else}
+						<ul
+							class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden"
+						>
+							{#each applications as a (a.id)}
+								<li class="flex flex-wrap items-center gap-3 p-4" data-testid="application-row">
+									<div class="min-w-0 flex-1">
+										<p class="font-semibold truncate">
+											{a.applicant.display_name ?? a.applicant.username ?? a.applicant.id}
+										</p>
+										{#if a.applicant.username}
+											<p class="font-mono text-xs text-text-muted">@{a.applicant.username}</p>
+										{/if}
+										{#if a.message}
+											<p class="mt-1 text-sm text-text-muted">{a.message}</p>
+										{/if}
+										<p class="mt-1 text-xs text-text-muted">{fmtDate(a.applied_at)}</p>
+									</div>
+									<div class="flex shrink-0 gap-2">
+										<Button
+											variant="accent"
+											size="sm"
+											loading={deciding === a.id}
+											onclick={() => decide(a.id, true)}
+										>
+											{i18n.t('guilds.manage.accept')}
+										</Button>
+										<Button
+											variant="ghost"
+											size="sm"
+											loading={deciding === a.id}
+											onclick={() => decide(a.id, false)}
+										>
+											{i18n.t('guilds.manage.reject')}
+										</Button>
+									</div>
+								</li>
+							{/each}
+						</ul>
+					{/if}
+				</div>
+			{:else if tab === 'invitations'}
+				<div
+					id="guild-panel-invitations"
+					role="tabpanel"
+					aria-labelledby="guild-tab-invitations"
+					data-testid="invitations-panel"
+				>
+					{#if invitations.length === 0}
+						<div
+							class="rounded-2xl border border-border bg-surface-elevated p-8 text-center text-sm text-text-muted"
+						>
+							{i18n.t('guilds.manage.invitationsEmpty')}
+						</div>
+					{:else}
+						<ul
+							class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden"
+						>
+							{#each invitations as inv (inv.id)}
+								<li class="flex flex-wrap items-center gap-3 p-4" data-testid="invitation-row">
+									<div class="min-w-0 flex-1">
+										{#if inv.invitee}
+											<p class="font-semibold truncate">
+												{inv.invitee.display_name ?? inv.invitee.username ?? inv.invitee.id}
+											</p>
+											{#if inv.invitee.username}
+												<p class="font-mono text-xs text-text-muted">@{inv.invitee.username}</p>
+											{/if}
+										{:else}
+											<!-- Link invitation: nobody is named, anyone holding the
+										     token can join, which is precisely why revoking matters. -->
+											<p class="font-semibold">{i18n.t('guilds.manage.linkInvitation')}</p>
+										{/if}
+										<p class="mt-1 text-xs text-text-muted">
+											{i18n.t('guilds.manage.expiresOn', { date: fmtDate(inv.expires_at) })}
+										</p>
+									</div>
 									<Button
 										variant="ghost"
 										size="sm"
-										loading={deciding === a.id}
-										onclick={() => decide(a.id, false)}
+										loading={revoking === inv.id}
+										onclick={() => revokeInvitation(inv.id)}
 									>
-										{i18n.t('guilds.manage.reject')}
+										{i18n.t('guilds.manage.revoke')}
 									</Button>
-								</div>
-							</li>
-						{/each}
-					</ul>
-				{/if}
-			</div>
-		{:else if tab === 'invitations'}
-			<div
-				id="guild-panel-invitations"
-				role="tabpanel"
-				aria-labelledby="guild-tab-invitations"
-				data-testid="invitations-panel"
-			>
-				{#if invitations.length === 0}
-					<div class="rounded-2xl border border-border bg-surface-elevated p-8 text-center text-sm text-text-muted">
-						{i18n.t('guilds.manage.invitationsEmpty')}
-					</div>
-				{:else}
-					<ul class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
-						{#each invitations as inv (inv.id)}
-							<li class="flex flex-wrap items-center gap-3 p-4" data-testid="invitation-row">
-								<div class="min-w-0 flex-1">
-									{#if inv.invitee}
-										<p class="font-semibold truncate">
-											{inv.invitee.display_name ?? inv.invitee.username ?? inv.invitee.id}
-										</p>
-										{#if inv.invitee.username}
-											<p class="font-mono text-xs text-text-muted">@{inv.invitee.username}</p>
-										{/if}
-									{:else}
-										<!-- Link invitation: nobody is named, anyone holding the
-										     token can join, which is precisely why revoking matters. -->
-										<p class="font-semibold">{i18n.t('guilds.manage.linkInvitation')}</p>
-									{/if}
-									<p class="mt-1 text-xs text-text-muted">
-										{i18n.t('guilds.manage.expiresOn', { date: fmtDate(inv.expires_at) })}
-									</p>
-								</div>
-								<Button
-									variant="ghost"
-									size="sm"
-									loading={revoking === inv.id}
-									onclick={() => revokeInvitation(inv.id)}
+								</li>
+							{/each}
+						</ul>
+					{/if}
+				</div>
+			{:else}
+				<div id="guild-panel-members" role="tabpanel" aria-labelledby="guild-tab-members">
+					{#if members.length === 0}
+						<div
+							class="rounded-2xl border border-border bg-surface-elevated p-8 text-center text-sm text-text-muted"
+						>
+							{i18n.t('guilds.membersEmpty')}
+						</div>
+					{:else}
+						<div
+							data-testid="members-list"
+							class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden"
+						>
+							{#each members as m (m.user_id)}
+								<a
+									href={`/profile/${m.username}`}
+									class="flex items-center gap-3 p-4 hover:bg-surface-overlay transition-colors"
 								>
-									{i18n.t('guilds.manage.revoke')}
-								</Button>
-							</li>
-						{/each}
-					</ul>
-				{/if}
-			</div>
-		{:else}
-			<div
-				id="guild-panel-members"
-				role="tabpanel"
-				aria-labelledby="guild-tab-members"
-			>
-				{#if members.length === 0}
-					<div class="rounded-2xl border border-border bg-surface-elevated p-8 text-center text-sm text-text-muted">
-						{i18n.t('guilds.membersEmpty')}
-					</div>
-				{:else}
-					<div
-						data-testid="members-list"
-						class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden"
-					>
-						{#each members as m (m.user_id)}
-							<a
-								href={`/profile/${m.username}`}
-								class="flex items-center gap-3 p-4 hover:bg-surface-overlay transition-colors"
-							>
-								<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg font-black text-primary shrink-0">
-									{m.display_name.charAt(0)}
-								</div>
-								<div class="min-w-0 flex-1">
-									<div class="flex items-center gap-2">
-										<span class="font-semibold truncate">{m.display_name}</span>
-										{#if m.role === 'owner'}
-											<Badge variant="warning" size="sm">{i18n.t('guilds.roleOwner')}</Badge>
-										{:else if m.role === 'officer'}
-											<Badge variant="accent" size="sm">{i18n.t('guilds.roleOfficer')}</Badge>
-										{/if}
+									<div
+										class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg font-black text-primary shrink-0"
+									>
+										{m.display_name.charAt(0)}
 									</div>
-									<div class="font-mono text-xs text-text-muted">@{m.username}</div>
-								</div>
-								<div class="text-right shrink-0">
-									<div class="text-sm font-black text-primary">
-										{(m.total_fragments ?? 0).toLocaleString()}
+									<div class="min-w-0 flex-1">
+										<div class="flex items-center gap-2">
+											<span class="font-semibold truncate">{m.display_name}</span>
+											{#if m.role === 'owner'}
+												<Badge variant="warning" size="sm">{i18n.t('guilds.roleOwner')}</Badge>
+											{:else if m.role === 'officer'}
+												<Badge variant="accent" size="sm">{i18n.t('guilds.roleOfficer')}</Badge>
+											{/if}
+										</div>
+										<div class="font-mono text-xs text-text-muted">@{m.username}</div>
 									</div>
-									<div class="text-xs text-text-muted">{i18n.t('common.fragments')}</div>
-								</div>
-							</a>
-						{/each}
-					</div>
-				{/if}
-			</div>
-		{/if}
+									<div class="text-right shrink-0">
+										<div class="text-sm font-black text-primary">
+											{(m.total_fragments ?? 0).toLocaleString()}
+										</div>
+										<div class="text-xs text-text-muted">{i18n.t('common.fragments')}</div>
+									</div>
+								</a>
+							{/each}
+						</div>
+					{/if}
+				</div>
+			{/if}
 		</div>
 	{:else}
 		<!-- Unknown or unreachable slug. Without this branch the page rendered

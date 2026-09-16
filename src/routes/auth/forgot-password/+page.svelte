@@ -34,7 +34,9 @@
 <div class="animate-[fade-in_300ms_ease-out]">
 	{#if sent}
 		<div class="text-center">
-			<div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success/10 text-success">
+			<div
+				class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success/10 text-success"
+			>
 				<Check size={32} strokeWidth={2.5} />
 			</div>
 			<h1 class="mb-2 text-2xl font-bold">{i18n.t('auth.forgot.sentTitle')}</h1>
@@ -71,7 +73,9 @@
 		</form>
 
 		<p class="mt-6 text-center text-sm text-text-muted">
-			<a href="/auth/login" class="font-medium text-primary hover:underline">{i18n.t('auth.forgot.backToLogin')}</a>
+			<a href="/auth/login" class="font-medium text-primary hover:underline"
+				>{i18n.t('auth.forgot.backToLogin')}</a
+			>
 		</p>
 	{/if}
 </div>

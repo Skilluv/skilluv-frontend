@@ -27,12 +27,40 @@ export const RANK_NAMES: Record<RankLevel, string> = {
 };
 
 /** Signification symbolique des 5 clés — voir keys-semantics.md */
-export const KEY_MEANINGS: Record<KeyType, { fr: string; en: string; label_fr: string; label_en: string }> = {
-	circle: { label_fr: 'Preuve', label_en: 'Proof', fr: 'Cycle bouclé, terminé, prouvé', en: 'Cycle closed, finished, proven' },
-	trefle: { label_fr: 'Craft', label_en: 'Craft', fr: 'Maîtrise artisanale, constance', en: 'Artisan mastery, consistency' },
-	rosace: { label_fr: 'Création', label_en: 'Creation', fr: 'Inventer, proposer, forker', en: 'Invent, propose, fork' },
-	star: { label_fr: 'Impact', label_en: 'Impact', fr: 'Ton travail utilisé dans le réel', en: 'Your work used in the real world' },
-	heart: { label_fr: 'Entraide', label_en: 'Care', fr: 'Aider un autre — la signature LUV', en: 'Helping others — the LUV signature' }
+export const KEY_MEANINGS: Record<
+	KeyType,
+	{ fr: string; en: string; label_fr: string; label_en: string }
+> = {
+	circle: {
+		label_fr: 'Preuve',
+		label_en: 'Proof',
+		fr: 'Cycle bouclé, terminé, prouvé',
+		en: 'Cycle closed, finished, proven'
+	},
+	trefle: {
+		label_fr: 'Craft',
+		label_en: 'Craft',
+		fr: 'Maîtrise artisanale, constance',
+		en: 'Artisan mastery, consistency'
+	},
+	rosace: {
+		label_fr: 'Création',
+		label_en: 'Creation',
+		fr: 'Inventer, proposer, forker',
+		en: 'Invent, propose, fork'
+	},
+	star: {
+		label_fr: 'Impact',
+		label_en: 'Impact',
+		fr: 'Ton travail utilisé dans le réel',
+		en: 'Your work used in the real world'
+	},
+	heart: {
+		label_fr: 'Entraide',
+		label_en: 'Care',
+		fr: 'Aider un autre — la signature LUV',
+		en: 'Helping others — the LUV signature'
+	}
 };
 
 export type BadgeSize = 'sm' | 'md' | 'lg' | 'hero';

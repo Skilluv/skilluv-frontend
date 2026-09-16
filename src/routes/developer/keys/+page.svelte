@@ -18,14 +18,18 @@
 	const permissions = ['read:profile', 'read:skills', 'read:badges', 'read:leaderboard', '*'];
 	let selectedPerms = $state<string[]>(['read:profile']);
 
-	$effect(() => { loadKeys(); });
+	$effect(() => {
+		loadKeys();
+	});
 
 	async function loadKeys() {
 		loading = true;
 		try {
 			const res = await developerApi.listKeys();
 			keys = res.data.keys;
-		} catch { /* silent */ }
+		} catch {
+			/* silent */
+		}
 		loading = false;
 	}
 
@@ -53,7 +57,9 @@
 			await developerApi.deleteKey(id);
 			keys = keys.filter((k) => k.id !== id);
 			toast.success('Key deleted.');
-		} catch { /* silent */ }
+		} catch {
+			/* silent */
+		}
 	}
 
 	async function regenerate(id: string) {
@@ -62,7 +68,9 @@
 			newSecret = res.data.secret;
 			showSecret = true;
 			toast.success('Key regenerated.');
-		} catch { /* silent */ }
+		} catch {
+			/* silent */
+		}
 	}
 </script>
 
@@ -75,19 +83,25 @@
 	</div>
 
 	{#if showCreate}
-		<form onsubmit={createKey} class="mb-6 rounded-2xl border border-border bg-surface-elevated p-4">
+		<form
+			onsubmit={createKey}
+			class="mb-6 rounded-2xl border border-border bg-surface-elevated p-4"
+		>
 			<div class="flex flex-col gap-3">
 				<Input label="Key name" placeholder="My integration" bind:value={newName} required />
 				<div>
 					<p class="mb-1.5 text-sm font-medium">Permissions</p>
 					<div class="flex flex-wrap gap-2">
 						{#each permissions as perm}
-							<label class="flex items-center gap-1.5 rounded-lg bg-surface-overlay px-3 py-1.5 text-xs">
+							<label
+								class="flex items-center gap-1.5 rounded-lg bg-surface-overlay px-3 py-1.5 text-xs"
+							>
 								<input
 									type="checkbox"
 									checked={selectedPerms.includes(perm)}
 									onchange={() => {
-										if (selectedPerms.includes(perm)) selectedPerms = selectedPerms.filter(p => p !== perm);
+										if (selectedPerms.includes(perm))
+											selectedPerms = selectedPerms.filter((p) => p !== perm);
 										else selectedPerms = [...selectedPerms, perm];
 									}}
 									class="accent-accent"
@@ -113,11 +127,15 @@
 	{:else}
 		<div class="flex flex-col gap-3">
 			{#each keys as key}
-				<div class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-4">
+				<div
+					class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-4"
+				>
 					<div>
 						<p class="font-medium">{key.name}</p>
 						<div class="flex items-center gap-2 text-xs text-text-muted">
-							<code class="rounded bg-surface-overlay px-1.5 py-0.5">{key.permissions.join(', ')}</code>
+							<code class="rounded bg-surface-overlay px-1.5 py-0.5"
+								>{key.permissions.join(', ')}</code
+							>
 							{#if key.last_used_at}
 								<span>Last used: {new Date(key.last_used_at).toLocaleDateString()}</span>
 							{:else}
@@ -136,15 +154,35 @@
 </div>
 
 <!-- Secret modal -->
-<Modal open={showSecret} title="Your API Key Secret" onclose={() => { showSecret = false; newSecret = ''; }}>
-	<p class="mb-3 text-sm text-text-muted">Copy this secret now. You won't be able to see it again.</p>
-	<div class="rounded-xl bg-surface-overlay p-3 font-mono text-sm break-all select-all">{newSecret}</div>
+<Modal
+	open={showSecret}
+	title="Your API Key Secret"
+	onclose={() => {
+		showSecret = false;
+		newSecret = '';
+	}}
+>
+	<p class="mb-3 text-sm text-text-muted">
+		Copy this secret now. You won't be able to see it again.
+	</p>
+	<div class="rounded-xl bg-surface-overlay p-3 font-mono text-sm break-all select-all">
+		{newSecret}
+	</div>
 
 	{#snippet actions()}
 		<Button
 			variant="primary"
-			onclick={() => { navigator.clipboard.writeText(newSecret); toast.success('Copied!'); }}
-		>Copy</Button>
-		<Button variant="ghost" onclick={() => { showSecret = false; newSecret = ''; }}>Done</Button>
+			onclick={() => {
+				navigator.clipboard.writeText(newSecret);
+				toast.success('Copied!');
+			}}>Copy</Button
+		>
+		<Button
+			variant="ghost"
+			onclick={() => {
+				showSecret = false;
+				newSecret = '';
+			}}>Done</Button
+		>
 	{/snippet}
 </Modal>

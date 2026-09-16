@@ -58,9 +58,7 @@ test.beforeEach(async ({ page }) => {
 test.describe('S4.6 public diploma verification', () => {
 	// Deliberately anonymous: a recruiter checking a credential has no account.
 	test('un diplome valide affiche son titulaire et sa certification', async ({ page }) => {
-		await mockApi(page, [
-			{ path: `/diplomas/verify/${CODE}`, handler: json({ data: diploma() }) }
-		]);
+		await mockApi(page, [{ path: `/diplomas/verify/${CODE}`, handler: json({ data: diploma() }) }]);
 		await gotoHydrated(page, `/diplomas/verify/${CODE}`);
 
 		await expect(page.getByText('Ama Doe')).toBeVisible();

@@ -18,7 +18,9 @@ test.describe('@parcours enterprise-bounties-listing', () => {
 	test('/enterprise/bounties rend le listing owner', async ({ page }, testInfo) => {
 		await page.goto('/enterprise/bounties');
 		await page.waitForLoadState('domcontentloaded');
-		await expect(page.getByRole('heading', { name: /My bounties|Mes bounties/i, level: 1 })).toBeVisible({ timeout: 15_000 });
+		await expect(
+			page.getByRole('heading', { name: /My bounties|Mes bounties/i, level: 1 })
+		).toBeVisible({ timeout: 15_000 });
 		await page.screenshot({ path: testInfo.outputPath('enterprise-bounties.png'), fullPage: true });
 	});
 });

@@ -71,13 +71,6 @@
 
 <!-- `data-sveltekit-reload` as well as the handler: the attribute covers the
      gestures above, which never reach it. -->
-<Button
-	{href}
-	{variant}
-	{size}
-	class={className}
-	onclick={go}
-	data-sveltekit-reload
->
+<Button {href} {variant} {size} class={className} onclick={go} data-sveltekit-reload>
 	{@render children()}
 </Button>

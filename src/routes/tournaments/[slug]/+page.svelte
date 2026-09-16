@@ -84,7 +84,9 @@
 		registering = true;
 		try {
 			await tournamentApi.register(slug);
-			toast.success(i18n.locale === 'fr' ? 'Inscrit·e au tournoi !' : 'Registered for the tournament!');
+			toast.success(
+				i18n.locale === 'fr' ? 'Inscrit·e au tournoi !' : 'Registered for the tournament!'
+			);
 			await load();
 		} catch (e) {
 			toast.error(e instanceof SkilluError ? e.message : 'Erreur');
@@ -95,15 +97,22 @@
 
 	function fmtDate(iso: string): string {
 		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
-			day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+			day: '2-digit',
+			month: 'long',
+			year: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit'
 		}).format(new Date(iso));
 	}
 
 	function rankColor(rank: number): string {
-		return rank === 1 ? 'text-warning'
-			: rank === 2 ? 'text-text-muted'
-			: rank === 3 ? 'text-accent'
-			: 'text-text-muted';
+		return rank === 1
+			? 'text-warning'
+			: rank === 2
+				? 'text-text-muted'
+				: rank === 3
+					? 'text-accent'
+					: 'text-text-muted';
 	}
 
 	let isActive = $derived.by(() => {
@@ -164,7 +173,9 @@
 					<Badge variant="primary" size="sm">{tournament.skill_domain}</Badge>
 				{/if}
 			</div>
-			<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">{tournament.name}</h1>
+			<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
+				{tournament.name}
+			</h1>
 			{#if tournament.description}
 				<p class="mt-4 text-lg text-text-muted">{tournament.description}</p>
 			{/if}
@@ -202,7 +213,7 @@
 					{:else if isActive || isUpcoming}
 						<div class="mt-3">
 							<Button variant="accent" loading={registering} onclick={register}>
-								{i18n.locale === 'fr' ? 'S\'inscrire' : 'Register'}
+								{i18n.locale === 'fr' ? "S'inscrire" : 'Register'}
 							</Button>
 						</div>
 					{/if}
@@ -216,7 +227,9 @@
 				<h2 class="mb-4 text-xs font-bold uppercase tracking-wider text-accent">
 					{i18n.locale === 'fr' ? 'Classement' : 'Leaderboard'}
 				</h2>
-				<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+				<div
+					class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden"
+				>
 					<!-- SKI-302 — the standing names its entrants: `leaderboard_of`
 					     COALESCEs the user and guild joins, so one pair of fields
 					     covers both. A row whose account is gone keeps its rank
@@ -252,13 +265,18 @@
 										{i18n.locale === 'fr' ? 'Toi' : 'You'}
 									{:else}
 										{e.participant_type === 'guild'
-											? (i18n.locale === 'fr' ? 'Guilde' : 'Guild')
-											: (i18n.locale === 'fr' ? 'Participant' : 'Entrant')}
+											? i18n.locale === 'fr'
+												? 'Guilde'
+												: 'Guild'
+											: i18n.locale === 'fr'
+												? 'Participant'
+												: 'Entrant'}
 									{/if}
 								</div>
 								{#if e.prize_fragments_awarded > 0}
 									<div class="text-xs text-text-muted">
-										+{e.prize_fragments_awarded} {i18n.t('common.fragments')}
+										+{e.prize_fragments_awarded}
+										{i18n.t('common.fragments')}
 									</div>
 								{/if}
 							</div>

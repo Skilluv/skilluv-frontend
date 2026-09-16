@@ -95,7 +95,12 @@ test.describe('Enterprise passkey bypasses TOTP', () => {
 					id: 'fake',
 					rawId: 'AA',
 					type: 'public-key',
-					response: { authenticatorData: 'AA', clientDataJSON: 'AA', signature: 'AA', userHandle: 'AA' },
+					response: {
+						authenticatorData: 'AA',
+						clientDataJSON: 'AA',
+						signature: 'AA',
+						userHandle: 'AA'
+					},
 					clientExtensionResults: {}
 				})
 			};
@@ -124,7 +129,13 @@ test.describe('Enterprise passkey bypasses TOTP', () => {
 						body: JSON.stringify({
 							data: {
 								ceremony_handle: 'c1',
-								publicKey: { challenge: 'YWJj', timeout: 60000, rpId: 'localhost', allowCredentials: [], userVerification: 'preferred' }
+								publicKey: {
+									challenge: 'YWJj',
+									timeout: 60000,
+									rpId: 'localhost',
+									allowCredentials: [],
+									userVerification: 'preferred'
+								}
 							},
 							meta: { request_id: 'r1', timestamp: '' }
 						})

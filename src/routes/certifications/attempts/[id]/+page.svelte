@@ -62,7 +62,9 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Tentative de certification' : 'Certification attempt'} | Skilluv</title>
+	<title
+		>{i18n.locale === 'fr' ? 'Tentative de certification' : 'Certification attempt'} | Skilluv</title
+	>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
@@ -71,7 +73,11 @@
 		<!-- Result screen -->
 		<div class="text-center">
 			{#if result.passed}
-				<div class="mb-6 mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-success/15 text-5xl text-success animate-[fragment-burst_600ms_ease-out]">✓</div>
+				<div
+					class="mb-6 mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-success/15 text-5xl text-success animate-[fragment-burst_600ms_ease-out]"
+				>
+					✓
+				</div>
 				<p class="mb-4 text-xs font-bold uppercase tracking-widest text-success">
 					{i18n.locale === 'fr' ? 'Certification obtenue' : 'Certification passed'}
 				</p>
@@ -80,11 +86,19 @@
 					<span class="text-primary">{result.certification_title}</span>
 				</h1>
 			{:else}
-				<div class="mb-6 mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-warning/15 text-5xl text-warning">⧗</div>
+				<div
+					class="mb-6 mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-warning/15 text-5xl text-warning"
+				>
+					⧗
+				</div>
 				<h1 class="text-4xl sm:text-5xl font-black leading-[1.05] tracking-tight">
 					{result.overtime
-						? (i18n.locale === 'fr' ? 'Temps écoulé.' : 'Time expired.')
-						: (i18n.locale === 'fr' ? 'Score insuffisant.' : 'Score below threshold.')}
+						? i18n.locale === 'fr'
+							? 'Temps écoulé.'
+							: 'Time expired.'
+						: i18n.locale === 'fr'
+							? 'Score insuffisant.'
+							: 'Score below threshold.'}
 				</h1>
 			{/if}
 
@@ -94,7 +108,11 @@
 						<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 							{i18n.locale === 'fr' ? 'Ton score' : 'Your score'}
 						</p>
-						<p class="text-5xl font-black tracking-tight {result.passed ? 'text-success' : 'text-warning'}">
+						<p
+							class="text-5xl font-black tracking-tight {result.passed
+								? 'text-success'
+								: 'text-warning'}"
+						>
 							{result.score}
 						</p>
 					</div>
@@ -111,7 +129,9 @@
 						<p class="mb-2 text-xs font-bold uppercase tracking-wider text-text-muted">
 							{i18n.locale === 'fr' ? 'Code de vérification' : 'Verification code'}
 						</p>
-						<div class="rounded-lg border border-border bg-surface-overlay px-6 py-4 text-center font-mono text-2xl font-bold tracking-widest">
+						<div
+							class="rounded-lg border border-border bg-surface-overlay px-6 py-4 text-center font-mono text-2xl font-bold tracking-widest"
+						>
 							{result.verification_code}
 						</div>
 					</div>
@@ -148,7 +168,7 @@
 			</h1>
 			<p class="mt-8 max-w-lg mx-auto text-lg text-text-muted">
 				{i18n.locale === 'fr'
-					? "Une fois lancée, la certification tourne en continu. Le timer démarre. Termine tous les challenges avant la fin du temps imparti."
+					? 'Une fois lancée, la certification tourne en continu. Le timer démarre. Termine tous les challenges avant la fin du temps imparti.'
 					: 'Once started, the certification runs continuously. Timer starts. Complete all challenges before time runs out.'}
 			</p>
 			<div class="mt-10">
@@ -160,19 +180,41 @@
 	{:else}
 		<!-- In progress -->
 		<div>
-			<div class="mb-8 rounded-2xl border {overtime ? 'border-error/40' : remaining < 300 ? 'border-warning/40' : 'border-primary/30'} bg-surface-elevated p-8">
+			<div
+				class="mb-8 rounded-2xl border {overtime
+					? 'border-error/40'
+					: remaining < 300
+						? 'border-warning/40'
+						: 'border-primary/30'} bg-surface-elevated p-8"
+			>
 				<div class="flex items-center justify-between gap-4">
 					<div>
 						<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 							{overtime
-								? (i18n.locale === 'fr' ? 'Temps dépassé' : 'Overtime')
-								: (i18n.locale === 'fr' ? 'Temps restant' : 'Time remaining')}
+								? i18n.locale === 'fr'
+									? 'Temps dépassé'
+									: 'Overtime'
+								: i18n.locale === 'fr'
+									? 'Temps restant'
+									: 'Time remaining'}
 						</p>
-						<div class="mt-2 text-6xl font-black tracking-tight font-mono {overtime ? 'text-error' : remaining < 300 ? 'text-warning' : 'text-primary'}">
+						<div
+							class="mt-2 text-6xl font-black tracking-tight font-mono {overtime
+								? 'text-error'
+								: remaining < 300
+									? 'text-warning'
+									: 'text-primary'}"
+						>
 							{fmtTime(remaining)}
 						</div>
 					</div>
-					<Button variant="accent" size="lg" loading={submitting} onclick={submit} disabled={overtime && !starting}>
+					<Button
+						variant="accent"
+						size="lg"
+						loading={submitting}
+						onclick={submit}
+						disabled={overtime && !starting}
+					>
 						{i18n.locale === 'fr' ? 'Terminer et soumettre' : 'Finish & submit'}
 					</Button>
 				</div>
@@ -193,7 +235,9 @@
 							href={`/challenges/${cid}`}
 							class="flex items-center gap-3 rounded-xl border border-border bg-surface-overlay p-3 hover:border-primary hover:bg-primary/5 transition-colors"
 						>
-							<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-sm font-bold text-primary">
+							<div
+								class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-sm font-bold text-primary"
+							>
 								{i + 1}
 							</div>
 							<div class="flex-1 font-mono text-xs truncate">{cid}</div>

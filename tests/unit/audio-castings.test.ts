@@ -44,8 +44,20 @@ const blindDetail = {
 	},
 	blind: true,
 	auditions: [
-		{ id: 'a1', voice: 'voix 1', notes_md: null, duration_ms: 41000, submitted_at: '2026-08-01T00:00:00Z' },
-		{ id: 'a2', voice: 'voix 2', notes_md: 'plus bas', duration_ms: 38000, submitted_at: '2026-08-02T00:00:00Z' }
+		{
+			id: 'a1',
+			voice: 'voix 1',
+			notes_md: null,
+			duration_ms: 41000,
+			submitted_at: '2026-08-01T00:00:00Z'
+		},
+		{
+			id: 'a2',
+			voice: 'voix 2',
+			notes_md: 'plus bas',
+			duration_ms: 38000,
+			submitted_at: '2026-08-02T00:00:00Z'
+		}
 	]
 };
 
@@ -136,7 +148,9 @@ describe('audioCastingsApi', () => {
 	});
 
 	it('listening is a signed URL with a life span, never a stable link', async () => {
-		fetchMock.mockResolvedValue(ok({ url: 'https://storage.test/x?sig=1', expires_in_seconds: 300 }));
+		fetchMock.mockResolvedValue(
+			ok({ url: 'https://storage.test/x?sig=1', expires_in_seconds: 300 })
+		);
 		const { audioCastingsApi } = await import('../../src/lib/api/audio');
 		const res = await audioCastingsApi.listen('f1');
 		expect(fetchMock.mock.calls[0][0]).toBe('/api/audio/files/f1/listen');
@@ -148,9 +162,8 @@ describe('audioCastingsApi', () => {
 
 describe('the casting contract', () => {
 	it('mirrors the four statuses and the server-side defaults', async () => {
-		const { CASTING_STATUSES, CASTING_DEFAULT_MAX_SECONDS, CASTING_BRIEF_MAX } = await import(
-			'../../src/lib/types/audio'
-		);
+		const { CASTING_STATUSES, CASTING_DEFAULT_MAX_SECONDS, CASTING_BRIEF_MAX } =
+			await import('../../src/lib/types/audio');
 		expect([...CASTING_STATUSES]).toEqual(['open', 'reviewing', 'selected', 'cancelled']);
 		expect(CASTING_DEFAULT_MAX_SECONDS).toBe(90);
 		expect(CASTING_BRIEF_MAX).toBe(8000);

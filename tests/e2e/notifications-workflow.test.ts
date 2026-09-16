@@ -97,8 +97,12 @@ test.describe('SKI-97 enriched notification bodies', () => {
 		]);
 		await gotoHydrated(page, '/notifications');
 
-		await expect(page.getByText('Tu as claim la slice Parser ISO. 7 jours pour livrer.')).toBeVisible();
-		await expect(page.getByText('Ta PR a passé la CI, en attente de validation Skilluv')).toBeVisible();
+		await expect(
+			page.getByText('Tu as claim la slice Parser ISO. 7 jours pour livrer.')
+		).toBeVisible();
+		await expect(
+			page.getByText('Ta PR a passé la CI, en attente de validation Skilluv')
+		).toBeVisible();
 		await expect(
 			page.getByText('Ta PR a été mergée sur skilluv/skilluv-backend. Bonus de 120 fragments.')
 		).toBeVisible();
@@ -111,7 +115,9 @@ test.describe('SKI-97 enriched notification bodies', () => {
 			'en'
 		);
 		await gotoHydrated(page, '/notifications');
-		await expect(page.getByText('You claimed the slice ISO parser. 7 days to deliver.')).toBeVisible();
+		await expect(
+			page.getByText('You claimed the slice ISO parser. 7 days to deliver.')
+		).toBeVisible();
 	});
 
 	test('traduit le statut d une candidature validateur', async ({ page }) => {
@@ -136,7 +142,9 @@ test.describe('SKI-97 inline CTAs', () => {
 		]);
 		await gotoHydrated(page, '/notifications');
 
-		await expect(page.getByText('Ta PR a été refusée par @ama. Raison : Tests absents')).toBeVisible();
+		await expect(
+			page.getByText('Ta PR a été refusée par @ama. Raison : Tests absents')
+		).toBeVisible();
 		await expect(page.getByRole('link', { name: 'Voir raisons et reclaim' })).toHaveAttribute(
 			'href',
 			'/slices/s-9'
@@ -209,7 +217,9 @@ test.describe('SKI-97 inline CTAs', () => {
 
 	test('une validation propose le PDF de l attestation', async ({ page }) => {
 		const hash = 'c'.repeat(64);
-		await signIn(page, [notif('n1', 'slice_validated', { attestation_hash: hash, slice_id: 's-1' })]);
+		await signIn(page, [
+			notif('n1', 'slice_validated', { attestation_hash: hash, slice_id: 's-1' })
+		]);
 		await gotoHydrated(page, '/notifications');
 
 		// Absolute backend URL: the PDF is served outside this app.
@@ -243,9 +253,13 @@ test.describe('SKI-97 grouping', () => {
 		await gotoHydrated(page, '/notifications');
 
 		await expect(page.getByTestId('notif-group-count')).toHaveCount(1);
-		await expect(page.getByTestId('notif-group-count')).toHaveText('3 notifications sur ce challenge');
+		await expect(page.getByTestId('notif-group-count')).toHaveText(
+			'3 notifications sur ce challenge'
+		);
 		// The second slice keeps its own row.
-		await expect(page.getByText('Tu as claim la slice Autre slice. 7 jours pour livrer.')).toBeVisible();
+		await expect(
+			page.getByText('Tu as claim la slice Autre slice. 7 jours pour livrer.')
+		).toBeVisible();
 	});
 
 	test('ne regroupe pas des slices differentes', async ({ page }) => {

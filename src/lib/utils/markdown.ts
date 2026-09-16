@@ -85,13 +85,7 @@ export interface RuleBlock {
 }
 
 export type Block =
-	| HeadingBlock
-	| ParagraphBlock
-	| ListBlock
-	| QuoteBlock
-	| CodeBlock
-	| TableBlock
-	| RuleBlock;
+	HeadingBlock | ParagraphBlock | ListBlock | QuoteBlock | CodeBlock | TableBlock | RuleBlock;
 
 /** Only schemes a reader can safely be sent to. `javascript:` is the point. */
 const SAFE_LINK = /^(https?:\/\/|mailto:|\/)/i;
@@ -260,7 +254,11 @@ export function parseMarkdown(source: string): Block[] {
 
 		// A table is a row followed by a delimiter row. Without the delimiter
 		// it is just a line containing pipes, and it stays a paragraph.
-		if (trimmed.includes('|') && i + 1 < lines.length && TABLE_DELIMITER.test(lines[i + 1].trim())) {
+		if (
+			trimmed.includes('|') &&
+			i + 1 < lines.length &&
+			TABLE_DELIMITER.test(lines[i + 1].trim())
+		) {
 			flushParagraph();
 			const header = splitRow(trimmed).map(parseInline);
 			i += 2;

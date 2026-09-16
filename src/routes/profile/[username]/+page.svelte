@@ -53,9 +53,16 @@
 	let username = $derived($page.params.username ?? '');
 
 	let user = $state<UserPublic | null>(null);
-	let stats = $state<{ challenges_completed: number; total_fragments: number; streak_current: number; trust_score: number } | null>(null);
+	let stats = $state<{
+		challenges_completed: number;
+		total_fragments: number;
+		streak_current: number;
+		trust_score: number;
+	} | null>(null);
 	let heatmap = $state<HeatmapEntry[]>([]);
-	let badges = $state<{ slug: string; name: string; icon: string; category: string; earned_at: string }[]>([]);
+	let badges = $state<
+		{ slug: string; name: string; icon: string; category: string; earned_at: string }[]
+	>([]);
 	let badgesData = $state<UserBadgesResponse | null>(null);
 	let orientations = $state<UserOrientation[]>([]);
 	let publicCapabilities = $state<UserCapability[]>([]);
@@ -120,12 +127,14 @@
 			// P17/P16/P18.4 — chargements enrichis, tolérants aux 404 tant que le
 			// backend n'a pas encore les endpoints publics correspondants.
 			if (user?.id) {
-				const [badgesRes, orientationsRes, capabilitiesRes, projectsRes] = await Promise.allSettled([
-					badgesApi.forUser(user.id),
-					orientationsApi.forUser(user.id),
-					capabilitiesApi.forUser(user.id),
-					projectsApi.forUser(name)
-				]);
+				const [badgesRes, orientationsRes, capabilitiesRes, projectsRes] = await Promise.allSettled(
+					[
+						badgesApi.forUser(user.id),
+						orientationsApi.forUser(user.id),
+						capabilitiesApi.forUser(user.id),
+						projectsApi.forUser(name)
+					]
+				);
 				if (badgesRes.status === 'fulfilled') badgesData = badgesRes.value.data;
 				// Both answer envelopes, and both were read as the array inside.
 				// A profile therefore showed nobody's trades and nobody's
@@ -162,7 +171,12 @@
 	<title>{user ? `${user.display_name} | Skilluv` : `${i18n.t('profile.title')} | Skilluv`}</title>
 	{#if user}
 		<meta property="og:title" content="{user.display_name} | Skilluv" />
-		<meta property="og:description" content="{i18n.t(`common.titles.${user.title}`)} · {stats?.total_fragments ?? 0} {i18n.t('common.fragments')} · Skilluv" />
+		<meta
+			property="og:description"
+			content="{i18n.t(`common.titles.${user.title}`)} · {stats?.total_fragments ?? 0} {i18n.t(
+				'common.fragments'
+			)} · Skilluv"
+		/>
 	{/if}
 </svelte:head>
 
@@ -171,7 +185,6 @@
 {/if}
 
 <div class="mx-auto max-w-5xl px-4 py-8">
-
 	{#if loading}
 		<!-- Skeleton: profile header -->
 		<div class="rounded-xl border border-border bg-surface-elevated overflow-hidden mb-6">
@@ -204,7 +217,6 @@
 				<Skeleton class="h-24 w-full" rounded="xl" />
 			</div>
 		</div>
-
 	{:else if error}
 		<div class="py-16 text-center">
 			<!-- A real heading, not a styled paragraph: the error state used to
@@ -213,7 +225,6 @@
 			<p class="text-text-muted mb-6">{error}</p>
 			<Button variant="secondary" href="/leaderboards">{i18n.t('errors.backHome')}</Button>
 		</div>
-
 	{:else if user && stats}
 		<!-- Profile card -->
 		<div class="rounded-xl border border-border bg-surface-elevated overflow-hidden mb-6">
@@ -221,9 +232,19 @@
 			<div class="p-6">
 				<div class="flex items-start gap-5">
 					<!-- Avatar -->
-					<div class="shrink-0 h-16 w-16 rounded-full bg-surface-overlay flex items-center justify-center text-2xl font-bold {rankColor(user.title)}">
+					<div
+						class="shrink-0 h-16 w-16 rounded-full bg-surface-overlay flex items-center justify-center text-2xl font-bold {rankColor(
+							user.title
+						)}"
+					>
 						{#if user.avatar_url}
-							<img src={user.avatar_url} alt={user.display_name} width="64" height="64" class="h-16 w-16 rounded-full object-cover" />
+							<img
+								src={user.avatar_url}
+								alt={user.display_name}
+								width="64"
+								height="64"
+								class="h-16 w-16 rounded-full object-cover"
+							/>
 						{:else}
 							{user.display_name.charAt(0).toUpperCase()}
 						{/if}
@@ -236,17 +257,22 @@
 							<span class="text-xs text-text-muted font-mono">@{user.username}</span>
 						</div>
 						<div class="mt-1 flex items-center gap-2 flex-wrap">
-							<span class="text-sm font-semibold capitalize {rankColor(user.title)}">{i18n.t(`common.titles.${user.title}`)}</span>
+							<span class="text-sm font-semibold capitalize {rankColor(user.title)}"
+								>{i18n.t(`common.titles.${user.title}`)}</span
+							>
 							{#if user.golden_stars > 0}
 								<span class="text-amber-400 text-sm">{'★'.repeat(user.golden_stars)}</span>
 							{/if}
 							<div class="flex items-center gap-1.5">
 								<div class="h-2 w-2 rounded-full {domainStyle(user.skill_domain).dot}"></div>
-								<span class="text-xs text-text-muted">{i18n.t(`common.domains.${user.skill_domain}`)}</span>
+								<span class="text-xs text-text-muted"
+									>{i18n.t(`common.domains.${user.skill_domain}`)}</span
+								>
 							</div>
 							{#if user.country || user.city}
 								<span class="text-xs text-text-muted">
-									{#if user.city}{user.city}{/if}{#if user.city && user.country}, {/if}{#if user.country}{geo.label(user.country)}{/if}
+									{#if user.city}{user.city}{/if}{#if user.city && user.country},
+									{/if}{#if user.country}{geo.label(user.country)}{/if}
 								</span>
 							{/if}
 						</div>
@@ -267,26 +293,69 @@
 				{#if user.github || user.linkedin || user.website || user.twitter}
 					<div class="mt-4 pt-4 border-t border-border flex flex-wrap gap-4">
 						{#if user.github}
-							<a href="https://github.com/{user.github}" target="_blank" rel="noopener" class="flex items-center gap-1.5 text-xs text-text-muted transition-colors duration-200 hover:text-text-primary">
-								<svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+							<a
+								href="https://github.com/{user.github}"
+								target="_blank"
+								rel="noopener"
+								class="flex items-center gap-1.5 text-xs text-text-muted transition-colors duration-200 hover:text-text-primary"
+							>
+								<svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24"
+									><path
+										d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+									/></svg
+								>
 								{user.github}
 							</a>
 						{/if}
 						{#if user.linkedin}
-							<a href="https://linkedin.com/in/{user.linkedin}" target="_blank" rel="noopener" class="flex items-center gap-1.5 text-xs text-text-muted transition-colors duration-200 hover:text-text-primary">
-								<svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+							<a
+								href="https://linkedin.com/in/{user.linkedin}"
+								target="_blank"
+								rel="noopener"
+								class="flex items-center gap-1.5 text-xs text-text-muted transition-colors duration-200 hover:text-text-primary"
+							>
+								<svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24"
+									><path
+										d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+									/></svg
+								>
 								{user.linkedin}
 							</a>
 						{/if}
 						{#if user.twitter}
-							<a href="https://x.com/{user.twitter}" target="_blank" rel="noopener" class="flex items-center gap-1.5 text-xs text-text-muted transition-colors duration-200 hover:text-text-primary">
-								<svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+							<a
+								href="https://x.com/{user.twitter}"
+								target="_blank"
+								rel="noopener"
+								class="flex items-center gap-1.5 text-xs text-text-muted transition-colors duration-200 hover:text-text-primary"
+							>
+								<svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24"
+									><path
+										d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+									/></svg
+								>
 								@{user.twitter}
 							</a>
 						{/if}
 						{#if user.website}
-							<a href={user.website} target="_blank" rel="noopener" class="flex items-center gap-1.5 text-xs text-text-muted transition-colors duration-200 hover:text-text-primary">
-								<svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+							<a
+								href={user.website}
+								target="_blank"
+								rel="noopener"
+								class="flex items-center gap-1.5 text-xs text-text-muted transition-colors duration-200 hover:text-text-primary"
+							>
+								<svg
+									class="h-3.5 w-3.5"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									stroke-width="2"
+									><path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+									/></svg
+								>
 								{user.website.replace(/^https?:\/\//, '')}
 							</a>
 						{/if}
@@ -305,11 +374,15 @@
 					<p class="text-[11px] text-text-muted">{i18n.t('profile.stats.challenges')}</p>
 				</div>
 				<div class="p-4 text-center">
-					<p class="text-2xl font-bold">{stats.streak_current}<span class="text-sm text-text-muted font-normal">j</span></p>
+					<p class="text-2xl font-bold">
+						{stats.streak_current}<span class="text-sm text-text-muted font-normal">j</span>
+					</p>
 					<p class="text-[11px] text-text-muted">{i18n.t('profile.stats.streak')}</p>
 				</div>
 				<div class="p-4 text-center">
-					<p class="text-2xl font-bold">{stats.trust_score}<span class="text-sm text-text-muted font-normal">%</span></p>
+					<p class="text-2xl font-bold">
+						{stats.trust_score}<span class="text-sm text-text-muted font-normal">%</span>
+					</p>
 					<p class="text-[11px] text-text-muted">{i18n.t('profile.stats.trust')}</p>
 				</div>
 			</div>
@@ -331,8 +404,12 @@
 					size={280}
 					animated
 					emptyMessage={isOwnProfile
-						? (i18n.locale === 'fr' ? 'Ton trousseau attend.' : 'Your keyring awaits.')
-						: (i18n.locale === 'fr' ? 'Aucune clé pour l\'instant.' : 'No keys yet.')}
+						? i18n.locale === 'fr'
+							? 'Ton trousseau attend.'
+							: 'Your keyring awaits.'
+						: i18n.locale === 'fr'
+							? "Aucune clé pour l'instant."
+							: 'No keys yet.'}
 				/>
 			</div>
 			{#if derivedKeys.length === 0 && isOwnProfile}
@@ -351,14 +428,15 @@
 
 		<!-- Content grid: main + sidebar -->
 		<div class="grid lg:grid-cols-3 gap-6">
-
 			<!-- Main content -->
 			<div class="lg:col-span-2 space-y-6">
 				<!-- Heatmap -->
 				{#if heatmap.length > 0}
 					<div class="rounded-xl border border-border bg-surface-elevated overflow-hidden">
 						<div class="px-5 py-3 border-b border-border">
-							<span class="text-xs font-bold uppercase tracking-wider text-text-muted">{i18n.t('profile.sections.activity')}</span>
+							<span class="text-xs font-bold uppercase tracking-wider text-text-muted"
+								>{i18n.t('profile.sections.activity')}</span
+							>
 						</div>
 						<div class="p-5">
 							<Heatmap data={heatmap} />
@@ -371,7 +449,9 @@
 				{#if profileUserId}
 					<div class="rounded-xl border border-border bg-surface-elevated overflow-hidden">
 						<div class="px-5 py-3 border-b border-border">
-							<span class="text-xs font-bold uppercase tracking-wider text-text-muted">{i18n.t('profile.sections.skills')}</span>
+							<span class="text-xs font-bold uppercase tracking-wider text-text-muted"
+								>{i18n.t('profile.sections.skills')}</span
+							>
 						</div>
 						<div class="p-5">
 							<SkillTree userId={profileUserId} />
@@ -478,8 +558,15 @@
 				{/if}
 
 				<div class="rounded-xl border border-border bg-surface-elevated p-5">
-					<p class="text-xs text-text-muted mb-1">{i18n.locale === 'fr' ? 'Membre depuis' : 'Member since'}</p>
-					<p class="text-sm font-medium">{new Date(user.member_since).toLocaleDateString(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', { month: 'long', year: 'numeric' })}</p>
+					<p class="text-xs text-text-muted mb-1">
+						{i18n.locale === 'fr' ? 'Membre depuis' : 'Member since'}
+					</p>
+					<p class="text-sm font-medium">
+						{new Date(user.member_since).toLocaleDateString(
+							i18n.locale === 'fr' ? 'fr-FR' : 'en-US',
+							{ month: 'long', year: 'numeric' }
+						)}
+					</p>
 				</div>
 			</div>
 		</div>

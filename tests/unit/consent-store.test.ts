@@ -25,9 +25,7 @@ vi.mock('$lib/api/privacy', () => ({
 }));
 
 // Import AFTER mocks are wired up.
-const { consent, __resetConsentForTests } = await import(
-	'../../src/lib/stores/consent.svelte'
-);
+const { consent, __resetConsentForTests } = await import('../../src/lib/stores/consent.svelte');
 
 describe('consent store', () => {
 	beforeEach(() => {

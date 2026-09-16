@@ -35,11 +35,7 @@
 </script>
 
 {#if visible}
-	<div
-		class="border-b border-accent/30 bg-accent/10 px-4 py-3"
-		role="status"
-		aria-live="polite"
-	>
+	<div class="border-b border-accent/30 bg-accent/10 px-4 py-3" role="status" aria-live="polite">
 		<div class="mx-auto flex max-w-7xl items-center gap-3">
 			<Compass size={18} strokeWidth={2} class="shrink-0 text-accent" aria-hidden="true" />
 			<div class="flex-1 min-w-0">

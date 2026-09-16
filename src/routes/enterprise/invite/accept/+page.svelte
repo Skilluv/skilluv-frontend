@@ -11,13 +11,7 @@
 	import Alert from '$components/ui/Alert.svelte';
 
 	type Phase =
-		| 'loading'
-		| 'confirm'
-		| 'accepting'
-		| 'done'
-		| 'error'
-		| 'email-mismatch'
-		| 'not-logged-in';
+		'loading' | 'confirm' | 'accepting' | 'done' | 'error' | 'email-mismatch' | 'not-logged-in';
 
 	let phase = $state<Phase>('loading');
 	let error = $state('');
@@ -64,14 +58,13 @@
 		} catch {
 			// Best-effort — the auth store already clears local state on failure.
 		}
-		goto(
-			`/auth/login?redirect=${encodeURIComponent('/enterprise/invite/accept?token=' + token)}`
-		);
+		goto(`/auth/login?redirect=${encodeURIComponent('/enterprise/invite/accept?token=' + token)}`);
 	}
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? "Invitation entreprise" : 'Enterprise invitation'} | Skilluv</title>
+	<title>{i18n.locale === 'fr' ? 'Invitation entreprise' : 'Enterprise invitation'} | Skilluv</title
+	>
 </svelte:head>
 
 <div class="flex min-h-[100vh] flex-col items-center justify-center px-4 py-12">
@@ -96,7 +89,7 @@
 				<p class="mb-8 text-base text-text-muted">
 					{i18n.locale === 'fr'
 						? "Vous devez vous connecter à votre compte Skilluv pour accepter cette invitation. Si vous n'avez pas encore de compte, créez-en un — l'invitation sera automatiquement acceptée après votre inscription."
-						: 'You need to sign in to your Skilluv account to accept this invitation. If you don\'t have an account yet, create one — the invitation will be automatically accepted after signup.'}
+						: "You need to sign in to your Skilluv account to accept this invitation. If you don't have an account yet, create one — the invitation will be automatically accepted after signup."}
 				</p>
 				<div class="flex flex-col gap-3">
 					<Button
@@ -113,17 +106,19 @@
 						href={`/auth/register?redirect=${encodeURIComponent('/enterprise/invite/accept?token=' + token)}`}
 						class="w-full"
 					>
-						{i18n.locale === 'fr' ? "Créer un compte" : 'Create an account'}
+						{i18n.locale === 'fr' ? 'Créer un compte' : 'Create an account'}
 					</Button>
 				</div>
 			{:else if phase === 'confirm'}
 				<h1 class="mb-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">
 					{i18n.locale === 'fr' ? 'Rejoindre' : 'Join'}<br />
-					<span class="text-accent">{i18n.locale === 'fr' ? "l'entreprise ?" : 'the enterprise?'}</span>
+					<span class="text-accent"
+						>{i18n.locale === 'fr' ? "l'entreprise ?" : 'the enterprise?'}</span
+					>
 				</h1>
 				<p class="mb-8 text-base text-text-muted">
 					{i18n.locale === 'fr'
-						? "Vous avez été invité à rejoindre une entreprise en tant que recruteur. Vous pourrez sourcer des talents, poster des bounties et gérer les crédits partagés."
+						? 'Vous avez été invité à rejoindre une entreprise en tant que recruteur. Vous pourrez sourcer des talents, poster des bounties et gérer les crédits partagés.'
 						: 'You have been invited to join an enterprise as a recruiter. You will be able to source talents, post bounties and manage shared credits.'}
 				</p>
 				<div class="rounded-2xl border border-border bg-surface-elevated p-5 mb-6">
@@ -162,11 +157,13 @@
 				</div>
 			{:else if phase === 'email-mismatch'}
 				<h1 class="mb-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">
-					{i18n.locale === 'fr' ? 'Mauvais compte' : 'Wrong account'}<span class="text-accent">.</span>
+					{i18n.locale === 'fr' ? 'Mauvais compte' : 'Wrong account'}<span class="text-accent"
+						>.</span
+					>
 				</h1>
 				<p class="mb-6 text-base text-text-muted">
 					{i18n.locale === 'fr'
-						? "Cette invitation a été envoyée à une adresse email différente de celle de ton compte actuel."
+						? 'Cette invitation a été envoyée à une adresse email différente de celle de ton compte actuel.'
 						: 'This invitation was sent to a different email address than the one on your current account.'}
 				</p>
 				<div class="mb-6 rounded-2xl border border-border bg-surface-elevated p-4 text-sm">
@@ -185,7 +182,7 @@
 						{i18n.locale === 'fr' ? 'Changer de compte' : 'Switch account'}
 					</Button>
 					<Button variant="ghost" size="lg" href="/" class="w-full">
-						{i18n.locale === 'fr' ? 'Retour à l\'accueil' : 'Back to home'}
+						{i18n.locale === 'fr' ? "Retour à l'accueil" : 'Back to home'}
 					</Button>
 				</div>
 			{:else if phase === 'error'}

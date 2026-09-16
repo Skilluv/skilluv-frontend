@@ -166,9 +166,10 @@
 
 	async function handlePasskeyLogin() {
 		if (!identifier.trim()) {
-			error = i18n.locale === 'fr'
-				? "Entre ton email ou pseudo d'abord"
-				: 'Enter your email or username first';
+			error =
+				i18n.locale === 'fr'
+					? "Entre ton email ou pseudo d'abord"
+					: 'Enter your email or username first';
 			return;
 		}
 		error = '';
@@ -196,8 +197,7 @@
 	}
 
 	function oauth(provider: 'google' | 'linkedin' | 'github') {
-		const base =
-			provider === 'github' ? '/api/auth/github/login' : `/api/auth/${provider}/start`;
+		const base = provider === 'github' ? '/api/auth/github/login' : `/api/auth/${provider}/start`;
 		// Propagate an enterprise recruiter invite through the OAuth roundtrip
 		// so the backend callback can consume it (with strict email match).
 		const url = inviteToken ? `${base}?invite_token=${encodeURIComponent(inviteToken)}` : base;
@@ -261,7 +261,10 @@
 					autocomplete="current-password"
 					required
 				/>
-				<a href="/auth/forgot-password" class="mt-1 block text-right text-xs text-text-muted hover:text-primary">
+				<a
+					href="/auth/forgot-password"
+					class="mt-1 block text-right text-xs text-text-muted hover:text-primary"
+				>
 					{i18n.t('auth.login.forgotPassword')}
 				</a>
 			</div>
@@ -275,7 +278,11 @@
 						autocomplete="one-time-code"
 						required
 					/>
-					<button type="button" class="-mt-2 text-left text-xs text-text-muted hover:text-accent" onclick={() => (useBackupCode = true)}>
+					<button
+						type="button"
+						class="-mt-2 text-left text-xs text-text-muted hover:text-accent"
+						onclick={() => (useBackupCode = true)}
+					>
 						{i18n.locale === 'fr' ? 'Utiliser un code de secours' : 'Use a backup code'}
 					</button>
 				{:else}
@@ -285,7 +292,11 @@
 						bind:value={backupCode}
 						required
 					/>
-					<button type="button" class="-mt-2 text-left text-xs text-text-muted hover:text-accent" onclick={() => (useBackupCode = false)}>
+					<button
+						type="button"
+						class="-mt-2 text-left text-xs text-text-muted hover:text-accent"
+						onclick={() => (useBackupCode = false)}
+					>
 						{i18n.locale === 'fr' ? 'Utiliser un code TOTP' : 'Use a TOTP code'}
 					</button>
 				{/if}
@@ -307,8 +318,15 @@
 
 		<!-- Passkey -->
 		{#if passkeySupported}
-			<Button variant="ghost" size="lg" class="mb-3 w-full" loading={passkeyBusy} onclick={handlePasskeyLogin}>
-				<KeyRound size={16} strokeWidth={2} /> {i18n.locale === 'fr' ? 'Se connecter avec une passkey' : 'Sign in with a passkey'}
+			<Button
+				variant="ghost"
+				size="lg"
+				class="mb-3 w-full"
+				loading={passkeyBusy}
+				onclick={handlePasskeyLogin}
+			>
+				<KeyRound size={16} strokeWidth={2} />
+				{i18n.locale === 'fr' ? 'Se connecter avec une passkey' : 'Sign in with a passkey'}
 			</Button>
 		{/if}
 
@@ -328,6 +346,8 @@
 
 	<p class="mt-6 text-center text-sm text-text-muted">
 		{i18n.t('auth.login.noAccount')}
-		<a href="/auth/register" class="font-medium text-primary hover:underline">{i18n.t('auth.login.registerLink')}</a>
+		<a href="/auth/register" class="font-medium text-primary hover:underline"
+			>{i18n.t('auth.login.registerLink')}</a
+		>
 	</p>
 </div>

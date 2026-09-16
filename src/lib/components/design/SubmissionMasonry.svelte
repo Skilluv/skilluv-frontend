@@ -79,10 +79,7 @@
 						<Badge variant="accent" size="sm">{i18n.t('designContests.yourEntry')}</Badge>
 					{/if}
 					{#if submission.status !== 'submitted'}
-						<Badge
-							variant={submission.status === 'accepted' ? 'success' : 'default'}
-							size="sm"
-						>
+						<Badge variant={submission.status === 'accepted' ? 'success' : 'default'} size="sm">
 							{i18n.t(`designContests.submissionStatuses.${submission.status}`)}
 						</Badge>
 					{/if}
@@ -99,7 +96,9 @@
 					<p class="mt-1 text-xs text-text-muted">{submission.judge_notes}</p>
 				{/if}
 
-				<div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
+				<div
+					class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3"
+				>
 					<div class="flex items-center gap-3 text-xs">
 						<a
 							href={submission.artifact_url}

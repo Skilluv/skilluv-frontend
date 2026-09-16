@@ -42,7 +42,11 @@ function hsl(hex: string): { h: number; s: number; l: number } {
 	if (max === r) h = ((g - b) / d) % 6;
 	else if (max === g) h = (b - r) / d + 2;
 	else h = (r - g) / d + 4;
-	return { h: Math.round((((h * 60) % 360) + 360) % 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+	return {
+		h: Math.round((((h * 60) % 360) + 360) % 360),
+		s: Math.round(s * 100),
+		l: Math.round(l * 100)
+	};
 }
 
 describe('catalogue and stylesheet', () => {
@@ -79,10 +83,9 @@ describe('the near-miss rule', () => {
 						: Math.abs(l - LOGO.lightness) >= ESCAPE.lightness
 							? 'lightness'
 							: 'nothing';
-			expect(
-				isNearMiss(h, s, l),
-				`${key} ${accent} is H${h} S${s} L${l} — escapes by ${why}`
-			).toBe(false);
+			expect(isNearMiss(h, s, l), `${key} ${accent} is H${h} S${s} L${l} — escapes by ${why}`).toBe(
+				false
+			);
 		}
 	);
 

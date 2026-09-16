@@ -103,9 +103,7 @@
 
 	const unread = $derived(notifications.unreadCount);
 	const label = $derived(
-		unread > 0
-			? i18n.t('notifications.bellUnread', { n: unread })
-			: i18n.t('notifications.bell')
+		unread > 0 ? i18n.t('notifications.bellUnread', { n: unread }) : i18n.t('notifications.bell')
 	);
 </script>
 

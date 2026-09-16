@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+
 - **Backend contract sync (2026-07-16)** — refonte alignée sur les endpoints réels de `skilluv-backend`, discovered post-MVP. All 12 previously-listed backend gaps are now resolved on the server side; the frontend was re-shaped 1-for-1:
   - **`walletApi` refonte complète** — routes moved from `/talent/wallet/*` to `/users/me/wallet/*`. `WalletBalance` + `PayoutRequest` types dropped in favor of a unified `Wallet` (dual EUR/XOF balances, `stripe_kyc_status` embedded, `momo_phone_verified` embedded). Withdraw endpoints split into `withdraw/stripe` and `withdraw/momo` with `{amount, currency}` bodies. Stripe onboard now requires an ISO-2 country and returns `onboarding_url` (not `url`). Momo phone registration moved to `/wallet/momo/phone` with `{phone, provider?}` body.
   - **Page `/wallet` refactorisée** — dropped the separate payouts section (payouts are ledger transactions), dual balance card, KYC / momo verification badges surfaced directly, CSV statement download link, `PayoutRow` component deleted.
@@ -25,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **i18n** — clés wallet ajoutées: `amountAboveBalance`, `stripe.countryLabel`, `momo.providerWave`, `downloadStatement`. Actions forum renommées `actionHide|actionUnhide|actionLock|actionUnlock` avec leurs bodies de confirmation. Suppression des clés obsolètes (`actionDelete`, `actionMarkSpam`, `confirmDeleteBody`, `confirmSpamBody`). **538 clés référencées / 744 par langue à parité FR+EN.**
 
 ### Added
+
 - **A11y hardening** — 10 of 12 preexisting `svelte-check` warnings resolved (labels without controls converted to `<p>` on non-form contexts, SCIM token input wired to its label via `id`/`for`, MultiSelect chip remove-button lifted out of the outer button as `<span role="button">`). 2 remaining warnings live on the deactivated terminal module (`TerminalConfirm`, `TerminalEmulator`) which is dead code slated for later reactivation — documented in FEATURE-MATRIX cross-cutting quality row.
 - **axe-core in Playwright** — new `@axe-core/playwright` dev-dep + `tests/e2e/utils/a11y.ts` helper `expectNoSeriousA11yViolations()` that fails on any WCAG 2 A/AA critical or serious violation. Wired into the profile-badges e2e as the first coverage point; other suites can adopt it via a one-line import.
 - **Lighthouse CI mobile** — new job in `.github/workflows/ci.yml` running `@lhci/cli` against 3 representative URLs (`/`, `/challenges`, `/pricing`) with mobile emulation. Assertions: accessibility ≥ 0.9 (error), performance/best-practices/SEO warnings at 0.7 / 0.85 / 0.85. Config in `lighthouserc.json`, results uploaded to LHCI temporary public storage.
@@ -32,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **README.fr.md MVP block** — top-level status block mirroring the English README (11 phases livrées, feature bullets, link to CHANGELOG + FEATURE-MATRIX, i18n scope narrowed to FR + EN).
 
 ### Removed
+
 - Arabic locale (`ar.ts`) and RTL support — maintenance cost was outweighing the audience benefit for the current MVP scope. `ar` is no longer offered in the settings language picker, dropped from `Locale`, removed from `RTL_LOCALES` (direction is now always `ltr`), and removed from the `i18n:check` script. The `ar` value in the enterprise talents' spoken-languages catalog is data, not UI locale, and stays untouched.
 
 ---
@@ -43,6 +46,7 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 ### Added
 
 **FE-M1 — Types + API modules P16-P25**
+
 - Extended `types/index.ts` with 20+ new interfaces (Orientation, UserOrientation, Capability, UserCapability, Rank, BadgeItem, UserBadgesResponse, BadgeRule, BadgeEvent, EnterpriseType, TypeConfigStaffing/RemoteIntl, AgencyClient, TeamRoleSlot, TeamMarketplaceSlot, WalletBalance, WalletTransaction, PayoutRequest) plus re-exports from `badges/types.ts` as single source of truth.
 - Extended `UserPrivate` with `capabilities`, `orientations`, `rank`, `enterprise_type`.
 - Migration helper `rankFromTitle()` for smooth Title (legacy P5) → Rank (P17) transition.
@@ -50,6 +54,7 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 - 36 unit tests covering signatures, routes, payloads, expiry logic.
 
 **FE-M4 — Capabilities UI**
+
 - `AuthState.capabilities` + `can(cap)` getter + `refreshCapabilities()` for standalone reload.
 - `<CapabilityBadge>` — reusable component wrapping existing `ui/Badge`, mapping icon + variant per capability, native tooltip.
 - `<ContributionSection>` — public/own profile section listing active capabilities, filtering expired.
@@ -57,6 +62,7 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 - i18n FR/EN/AR — 14 capability labels + descriptions + navigation entries.
 
 **FE-M11 — Tests + docs + deploy + hardening**
+
 - `client.ts` — safe-methods (GET/HEAD) auto-retry on network throw only (backoff 1s / 3s / 9s, 3 retries). Writes never auto-retry — user-driven for explicit intent. Server-side errors (5xx) surface immediately (MVP §0.11).
 - `src/lib/observability.ts` — Sentry + PostHog opt-in via `PUBLIC_SENTRY_DSN` / `PUBLIC_POSTHOG_KEY` env vars, graceful no-op in dev/without SDKs installed. Wired at app boot from root layout (MVP §0.9).
 - CI (`.github/workflows/ci.yml`) — new `e2e` job running Playwright with Chromium + failure report upload, plus `i18n:check` step on the main check job.
@@ -68,6 +74,7 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 - 4 unit tests on the retry policy (retry-then-succeed, exhaustion, POST no-retry, 5xx no-retry).
 
 **FE-M8 — Talent wallet + payouts**
+
 - `<WalletBalanceCard>` — fragments balance + EUR equivalent + last-updated timestamp + "Request payout" CTA (disabled below the 100-fragment minimum).
 - `<TransactionRow>` — history row with type icon (earn / payout / adjustment), amount, description, truncated `entry_hash` display (hash-chained audit).
 - `<PayoutRow>` — payout row with status badge (5 states) + settled_at + failure_reason + currency-formatted amount + fragment count.
@@ -79,6 +86,7 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 - 3 Playwright e2e — balance + history render, payout modal + Stripe status, Mobile Money method switch reveals operator + number fields.
 
 **FE-M9 — Community moderation inline**
+
 - `<ConfirmDangerousDialog>` — reusable modal with required-reason input, danger CTA, cancel guard while submitting.
 - `<InlineModerateButton>` — capability-gated dropdown menu (only renders when `auth.can(capability)` is true) with role="menu" a11y wiring.
 - Forum post moderation — inline dropdown on `/forum/[id]` with 3 actions (delete, mark spam, mute author) + mute-duration selector overlay (24h / 3d / 7d).
@@ -89,6 +97,7 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 - 8 unit tests covering all `moderationApi` routes (forum × 2, community × 2, plagiarism × 3) and `communityApi.pendingReview` + 2 Playwright e2e (curator approve happy path, non-curator forbidden guard).
 
 **FE-M10 — Events + privacy/GDPR + season indicator**
+
 - New `privacyApi` module — GET/PATCH `/users/me/consents` (marketing + analytics), POST `/users/me/gdpr-export` (RGPD legal dump), POST `/users/me/data-export` (product bundle), GET `/users/me/exports/{jobId}` (poll), POST `/users/me/delete` (30-day soft delete).
 - `<EventCard>` — reusable card with status derivation (active/upcoming/ended) + partner badge + start/end dates.
 - New pages `/events` (list + "My events" section with earned-stamp badges) and `/events/[slug]` (detail + join lifecycle with authenticated gate).
@@ -98,6 +107,7 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 - 7 unit tests (privacyApi 5 routes + badgeEventsApi 4 routes + currentSeason) + 2 Playwright e2e (events list render + join lifecycle).
 
 **FE-M7 — Web Push VAPID polish**
+
 - Service worker `/service-worker.js` now forwards push payloads to a focused client via `postMessage` instead of firing a redundant OS-level notification; background pushes still surface as native notifications.
 - New `<PushForegroundListener>` component mounted in the root layout — listens for `serviceWorker` message events, shows an in-app toast, and refreshes the notifications badge count.
 - `<PushToggle>` migrated from hardcoded FR/EN string ternaries to `i18n.t()` keys covering all states (on / off / blocked / unsupported / toasts).
@@ -105,6 +115,7 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 - 9 unit tests: `urlBase64ToUint8Array` decode / URL-safe / padding, `arrayBufferToBase64Url` round-trip / null handling / padding stripping, `pushApi` VAPID / subscribe / unsubscribe route verification. Playwright coverage deferred to FE-M11 CI hardening — the SW + Notification API pair does not mock reliably in headless browsers.
 
 **FE-M5 — Team marketplace + role slots**
+
 - `<RoleBadge>` — reusable role indicator built on top of `ui/Badge`.
 - `<SlotCard>` — marketplace slot card with team name, challenge link, role badge, min-level, required skill, join CTA + view-team link.
 - `<FillSlotDialog>` — confirmation modal with slot summary, skill-check row, and low-level warning shown when user proficiency is below `min_proficiency_level`.
@@ -114,6 +125,7 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 - 5 unit tests (filter serialization, slot lifecycle, createSlot payload) + 3 Playwright e2e (marketplace render, join flow, orientation soft-block).
 
 **FE-M6 — Enterprise types + agency clients**
+
 - `<EnterpriseTypeCard>` — 3 visual cards (direct_hire, staffing_agency, remote_international) with icon + label + description + 3 benefits, aria-pressed state.
 - `<EnterpriseTypeSelector>` — fieldset wrapper with grid of cards + bindable value + onchange callback.
 - `/enterprise/register` — new step 3 inserted between company and TOTP setup, PATCHes `/enterprises/me/type-config` on submit, skippable (keeps backend default direct_hire).
@@ -123,6 +135,7 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 - 4 unit tests (enterpriseTypesApi get/patch payload, agencyClientsApi CRUD lifecycle) + 2 Playwright e2e (add client + owner-only guard).
 
 **FE-M2 — Onboarding orientations**
+
 - `<OrientationCard>` — reusable visual card (domain dot, name, description, tags, selection state, disabled state, link/button dual mode).
 - `<OrientationSelector>` — grid + domain filter + cap-3 enforcement + primary radio + mode toggle (learning/active) + working languages + timezone inputs + submit with validation.
 - `<OrientationPromptBanner>` — sticky non-blocking banner in root layout for authenticated candidates with zero orientations (soft-block, per MVP §0.7 — no interstitial modal).
@@ -135,6 +148,7 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 - 4 unit tests on orientations lifecycle + 4 Playwright e2e covering catalog render / domain filter / 3-orientation cap / submit confirmation.
 
 **FE-M3 — Badges profile display**
+
 - `<BadgesWall>` — rank chevron + skill patches wall + medals + guild crests + seals/stamps counters + empty state, all connected to `UserBadgesResponse`.
 - `<OrientationList>` — user orientations chip list (primary + secondary + working languages + timezone).
 - `/profile/[username]` refactored to consume `badgesApi.forUser`, `orientationsApi.forUser`, `capabilitiesApi.forUser` via `Promise.allSettled` (tolerant of missing backend endpoints).
@@ -145,11 +159,13 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 - New tracker `docs/BACKEND-GAPS.md` documenting all expected backend endpoints per FE phase with contract and fallback behavior.
 
 ### Changed
+
 - `AuthState.init()` now loads capabilities in cascade after `/auth/me`.
 - `AuthState.logout()` / `clear()` reset capabilities.
 - BadgesWall replaces the previous client-side patch derivation on the profile page (which hacked SkillPatch cycling from generic P5 badges).
 
 ### Fixed
+
 - Missing `ranger` and `doyen` translations in `common.titles` — added to FR/EN/AR.
 
 ---
@@ -157,6 +173,7 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 ## [0.2.0] — 2026-07-15 — Design System v2
 
 ### Added
+
 - **Design System v2**: typography overhaul (Fraunces + Bricolage Grotesque) and realignment of the 5 themes.
 - **Badge system**: scout badge components + design-system playground.
 - **Per-route categorical coloring**: applied globally via `data-route`, properly scoped to `<main>`.
@@ -166,11 +183,13 @@ Full MVP shipped in 11 sequential phases (FE-M1 → FE-M11) — see per-phase no
 - **Auth/onboarding first impression**: wordmark, craft ambiance, Fraunces.
 
 ### Changed
+
 - Palettes rebuilt with a clear luminance ladder and bold chromatic surfaces.
 - Categorical surface tokens applied across landing components.
 - Sync `neon` → `vesperal` in `EnterpriseHeader`.
 
 ### Fixed
+
 - 11 `svelte-check` errors resolved.
 - Font loading: direct `--font-sans` override in unlayered `:root`, hardcoded literals as final fallback.
 - `@theme` split compliant with Tailwind v4 spec (standard + inline).

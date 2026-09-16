@@ -19,7 +19,8 @@ export const securityEn: SecurityTranslations = {
 			'A token raises your rate limit by {n}× and grants nothing else. It is not permission to test anything not listed above.',
 		researchModeCta: 'Get a token',
 		rewardsTitle: 'What a confirmed finding is worth',
-		rewardsHint: 'Read from the platform, not printed here: the table moves and a stale figure is a broken promise.',
+		rewardsHint:
+			'Read from the platform, not printed here: the table moves and a stale figure is a broken promise.',
 		fragmentsFor: '{n} fragments',
 		orientationsTitle: 'The five branches',
 		reviewerGroup: 'Reviewed by {group}'
@@ -153,7 +154,8 @@ export const securityEn: SecurityTranslations = {
 		offlineNote:
 			'You download the artefact and open it in your own tools, on your own machine. Only your answers come back — nothing you run is sent to Skilluv.',
 		empty: 'No lab available.',
-		emptyHint: 'Labs are built from real incidents, so they arrive in batches rather than steadily.',
+		emptyHint:
+			'Labs are built from real incidents, so they arrive in batches rather than steadily.',
 		filterAll: 'All',
 		openCta: 'Open',
 		lockedCta: 'See what it needs',
@@ -256,7 +258,8 @@ export const securityEn: SecurityTranslations = {
 		labelField: 'Label',
 		daysField: 'Days',
 		issuedTitle: 'Your token',
-		issuedOnce: 'Shown once. Copy it now — a reload loses it, and issuing another replaces this one.',
+		issuedOnce:
+			'Shown once. Copy it now — a reload loses it, and issuing another replaces this one.',
 		copyCta: 'Copy',
 		copiedToast: 'Copied.',
 		headerLabel: 'Send it in',

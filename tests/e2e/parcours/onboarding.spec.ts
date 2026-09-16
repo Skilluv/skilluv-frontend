@@ -17,7 +17,9 @@ test.describe('@parcours onboarding-bonjour-skilluv', () => {
 	test.skip(!HAS_STATE, 'requires user-setup.spec.ts run first');
 	if (HAS_STATE) test.use({ storageState: STATE });
 
-	test('affiche la page Bonjour Skilluv ou redirect challenges (compte deja complete)', async ({ page }) => {
+	test('affiche la page Bonjour Skilluv ou redirect challenges (compte deja complete)', async ({
+		page
+	}) => {
 		await page.goto('/onboarding/bonjour-skilluv?next=/challenges/onboarding');
 		await page.waitForLoadState('domcontentloaded');
 		// Compte fresh → page onboarding visible. Compte deja profile_completed

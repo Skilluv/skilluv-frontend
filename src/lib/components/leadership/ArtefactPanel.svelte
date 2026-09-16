@@ -85,109 +85,108 @@
 	onMount(load);
 </script>
 
-
 {#if loading}
-		<Skeleton class="h-20 w-full" rounded="xl" />
-	{:else if links.length > 0 || isMine}
-		<section class="space-y-3" data-testid="leadership-artefact">
-			<h3 class="flex items-center gap-2 text-sm font-bold text-text">
-				<Link2 size={16} />
-				{i18n.t('leadershipArtefact.title')}
-			</h3>
+	<Skeleton class="h-20 w-full" rounded="xl" />
+{:else if links.length > 0 || isMine}
+	<section class="space-y-3" data-testid="leadership-artefact">
+		<h3 class="flex items-center gap-2 text-sm font-bold text-text">
+			<Link2 size={16} />
+			{i18n.t('leadershipArtefact.title')}
+		</h3>
 
-			{#if links.length > 0}
-				<ul class="space-y-2">
-					{#each links as l (l.id)}
-						<li class="flex flex-wrap items-center gap-2 rounded-xl border border-border p-3 text-sm">
-							<span class="min-w-0 flex-1 text-text">{l.link_kind}</span>
-							{#if l.note}
-								<span class="text-xs text-text-muted">{l.note}</span>
-							{/if}
-							<!-- Agreed, or claimed. Rendering both alike would let anybody
+		{#if links.length > 0}
+			<ul class="space-y-2">
+				{#each links as l (l.id)}
+					<li class="flex flex-wrap items-center gap-2 rounded-xl border border-border p-3 text-sm">
+						<span class="min-w-0 flex-1 text-text">{l.link_kind}</span>
+						{#if l.note}
+							<span class="text-xs text-text-muted">{l.note}</span>
+						{/if}
+						<!-- Agreed, or claimed. Rendering both alike would let anybody
 							     attach themselves to any project. -->
-							{#if l.acknowledged_at}
-								<Badge size="sm" variant="success">
-									{i18n.t('leadershipArtefact.acknowledged', { date: fmtDate(l.acknowledged_at) })}
-								</Badge>
-							{:else}
-								<Badge size="sm" variant="warning">
-									{i18n.t('leadershipArtefact.pending')}
-								</Badge>
-								{#if !isMine}
-									<!-- Open to anybody who is not the author. The server
+						{#if l.acknowledged_at}
+							<Badge size="sm" variant="success">
+								{i18n.t('leadershipArtefact.acknowledged', { date: fmtDate(l.acknowledged_at) })}
+							</Badge>
+						{:else}
+							<Badge size="sm" variant="warning">
+								{i18n.t('leadershipArtefact.pending')}
+							</Badge>
+							{#if !isMine}
+								<!-- Open to anybody who is not the author. The server
 									     decides; this only offers. -->
-									<Button
-										size="sm"
-										variant="ghost"
-										loading={busy[l.id]}
-										onclick={() =>
-											run(
-												l.id,
-												() => leadershipApi.acknowledgeLink(l.id),
-												i18n.t('leadershipArtefact.acknowledgedToast')
-											)}
-										data-testid="acknowledge-link"
-									>
-										{i18n.t('leadershipArtefact.acknowledgeCta')}
-									</Button>
-								{/if}
+								<Button
+									size="sm"
+									variant="ghost"
+									loading={busy[l.id]}
+									onclick={() =>
+										run(
+											l.id,
+											() => leadershipApi.acknowledgeLink(l.id),
+											i18n.t('leadershipArtefact.acknowledgedToast')
+										)}
+									data-testid="acknowledge-link"
+								>
+									{i18n.t('leadershipArtefact.acknowledgeCta')}
+								</Button>
 							{/if}
-						</li>
-					{/each}
-				</ul>
-			{/if}
+						{/if}
+					</li>
+				{/each}
+			</ul>
+		{/if}
 
-			<div class="flex flex-wrap gap-2">
-				{#if isMine}
-					<!-- The author's half. The other half is somebody else's. -->
-					<Button
-						size="sm"
-						variant="ghost"
-						loading={busy.declare}
-						onclick={() =>
-							run(
-								'declare',
-								() => leadershipApi.declareRedaction(sliceId),
-								i18n.t('leadershipArtefact.declaredToast')
-							)}
-					>
-						<ShieldCheck size={15} />
-						{i18n.t('leadershipArtefact.declareCta')}
-					</Button>
-					<Button
-						size="sm"
-						variant="ghost"
-						loading={busy.adoption}
-						onclick={() =>
-							run(
-								'adoption',
-								() => leadershipApi.recordAdoption(sliceId),
-								i18n.t('leadershipArtefact.adoptionToast')
-							)}
-					>
-						{i18n.t('leadershipArtefact.adoptionCta')}
-					</Button>
-				{:else}
-					<!-- Offered to everybody and refused with a 403 without the
+		<div class="flex flex-wrap gap-2">
+			{#if isMine}
+				<!-- The author's half. The other half is somebody else's. -->
+				<Button
+					size="sm"
+					variant="ghost"
+					loading={busy.declare}
+					onclick={() =>
+						run(
+							'declare',
+							() => leadershipApi.declareRedaction(sliceId),
+							i18n.t('leadershipArtefact.declaredToast')
+						)}
+				>
+					<ShieldCheck size={15} />
+					{i18n.t('leadershipArtefact.declareCta')}
+				</Button>
+				<Button
+					size="sm"
+					variant="ghost"
+					loading={busy.adoption}
+					onclick={() =>
+						run(
+							'adoption',
+							() => leadershipApi.recordAdoption(sliceId),
+							i18n.t('leadershipArtefact.adoptionToast')
+						)}
+				>
+					{i18n.t('leadershipArtefact.adoptionCta')}
+				</Button>
+			{:else}
+				<!-- Offered to everybody and refused with a 403 without the
 					     capability. The server is the authority on who reviews. -->
-					<Button
-						size="sm"
-						variant="ghost"
-						loading={busy.confirm}
-						onclick={() =>
-							run(
-								'confirm',
-								() => leadershipApi.confirmRedaction(sliceId),
-								i18n.t('leadershipArtefact.confirmedToast')
-							)}
-						data-testid="confirm-redaction"
-					>
-						<ShieldCheck size={15} />
-						{i18n.t('leadershipArtefact.confirmCta')}
-					</Button>
-				{/if}
-			</div>
+				<Button
+					size="sm"
+					variant="ghost"
+					loading={busy.confirm}
+					onclick={() =>
+						run(
+							'confirm',
+							() => leadershipApi.confirmRedaction(sliceId),
+							i18n.t('leadershipArtefact.confirmedToast')
+						)}
+					data-testid="confirm-redaction"
+				>
+					<ShieldCheck size={15} />
+					{i18n.t('leadershipArtefact.confirmCta')}
+				</Button>
+			{/if}
+		</div>
 
-			<p class="text-xs text-text-muted">{i18n.t('leadershipArtefact.redactionNote')}</p>
-		</section>
-	{/if}
+		<p class="text-xs text-text-muted">{i18n.t('leadershipArtefact.redactionNote')}</p>
+	</section>
+{/if}

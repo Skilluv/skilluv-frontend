@@ -128,7 +128,7 @@ test.describe('Agency clients page', () => {
 	test('shows empty state and adds a new client', async ({ page }) => {
 		await gotoHydrated(page, '/enterprise/agency-clients');
 		await expect(page.getByRole('heading', { name: 'Mes clients' })).toBeVisible();
-		await expect(page.getByText('Aucun client pour l\'instant.')).toBeVisible();
+		await expect(page.getByText("Aucun client pour l'instant.")).toBeVisible();
 
 		await page.getByRole('button', { name: /Créer mon premier client/i }).click();
 		await page.getByLabel('Nom du client').fill('Acme SAS');

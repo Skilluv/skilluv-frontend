@@ -46,7 +46,11 @@
 		>
 			<Shield size={iconSize} strokeWidth={2} />
 			<span>{i18n.t('moderation.buttonLabel')}</span>
-			<ChevronDown size={iconSize} strokeWidth={2} class={open ? 'rotate-180 transition-transform' : 'transition-transform'} />
+			<ChevronDown
+				size={iconSize}
+				strokeWidth={2}
+				class={open ? 'rotate-180 transition-transform' : 'transition-transform'}
+			/>
 		</button>
 
 		{#if open}

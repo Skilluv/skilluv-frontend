@@ -22,8 +22,12 @@
 
 	// Privacy
 	let privacy = $state<PrivacySettings>({
-		show_email: false, show_heatmap: true, show_skill_tree: true,
-		show_badges: true, show_streak: true, allow_interest_requests: true
+		show_email: false,
+		show_heatmap: true,
+		show_skill_tree: true,
+		show_badges: true,
+		show_streak: true,
+		allow_interest_requests: true
 	});
 	let savingPrivacy = $state(false);
 
@@ -50,9 +54,12 @@
 
 	// Load privacy on mount
 	$effect(() => {
-		profileApi.getPrivacy().then((res) => {
-			privacy = res.data.privacy;
-		}).catch(() => {});
+		profileApi
+			.getPrivacy()
+			.then((res) => {
+				privacy = res.data.privacy;
+			})
+			.catch(() => {});
 	});
 
 	async function changePassword() {
@@ -133,7 +140,9 @@
 			{#each locales as loc}
 				<button
 					class="rounded-xl border p-3 text-left transition-all
-						{i18n.locale === loc.value ? 'border-accent bg-accent/10' : 'border-border hover:border-text-muted'}"
+						{i18n.locale === loc.value
+						? 'border-accent bg-accent/10'
+						: 'border-border hover:border-text-muted'}"
 					onclick={() => i18n.setLocale(loc.value)}
 				>
 					<p class="text-sm font-medium">{loc.direct ?? i18n.t(loc.labelKey)}</p>
@@ -238,9 +247,22 @@
 	<section class="mb-8">
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.password.title')}</h2>
 		<div class="flex flex-col gap-4 rounded-2xl border border-border bg-surface-elevated p-6">
-			<Input label={i18n.t('settings.password.current')} type="password" bind:value={currentPassword} autocomplete="current-password" />
-			<Input label={i18n.t('settings.password.new')} type="password" bind:value={newPassword} autocomplete="new-password" hint={i18n.t('auth.password.hint')} />
-			<Button variant="primary" loading={savingPassword} onclick={changePassword}>{i18n.t('settings.password.changeBtn')}</Button>
+			<Input
+				label={i18n.t('settings.password.current')}
+				type="password"
+				bind:value={currentPassword}
+				autocomplete="current-password"
+			/>
+			<Input
+				label={i18n.t('settings.password.new')}
+				type="password"
+				bind:value={newPassword}
+				autocomplete="new-password"
+				hint={i18n.t('auth.password.hint')}
+			/>
+			<Button variant="primary" loading={savingPassword} onclick={changePassword}
+				>{i18n.t('settings.password.changeBtn')}</Button
+			>
 		</div>
 	</section>
 
@@ -248,14 +270,7 @@
 	<section class="mb-8">
 		<h2 class="mb-4 text-lg font-semibold">{i18n.t('settings.privacy.title')}</h2>
 		<div class="flex flex-col gap-3 rounded-2xl border border-border bg-surface-elevated p-6">
-			{#each [
-				{ key: 'show_heatmap', label: i18n.t('settings.privacy.showHeatmap') },
-				{ key: 'show_skill_tree', label: i18n.t('settings.privacy.showSkillTree') },
-				{ key: 'show_badges', label: i18n.t('settings.privacy.showBadges') },
-				{ key: 'show_streak', label: i18n.t('settings.privacy.showStreak') },
-				{ key: 'show_email', label: i18n.t('settings.privacy.showEmail') },
-				{ key: 'allow_interest_requests', label: i18n.t('settings.privacy.allowInterests') }
-			] as setting}
+			{#each [{ key: 'show_heatmap', label: i18n.t('settings.privacy.showHeatmap') }, { key: 'show_skill_tree', label: i18n.t('settings.privacy.showSkillTree') }, { key: 'show_badges', label: i18n.t('settings.privacy.showBadges') }, { key: 'show_streak', label: i18n.t('settings.privacy.showStreak') }, { key: 'show_email', label: i18n.t('settings.privacy.showEmail') }, { key: 'allow_interest_requests', label: i18n.t('settings.privacy.allowInterests') }] as setting}
 				<label class="flex items-center justify-between">
 					<span class="text-sm">{setting.label}</span>
 					<input
@@ -265,7 +280,9 @@
 					/>
 				</label>
 			{/each}
-			<Button variant="primary" size="sm" loading={savingPrivacy} onclick={savePrivacy} class="mt-2">{i18n.t('common.actions.save')}</Button>
+			<Button variant="primary" size="sm" loading={savingPrivacy} onclick={savePrivacy} class="mt-2"
+				>{i18n.t('common.actions.save')}</Button
+			>
 		</div>
 	</section>
 
@@ -277,7 +294,11 @@
 			class="flex items-center justify-between rounded-2xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent"
 		>
 			<div>
-				<p class="font-medium">{i18n.locale === 'fr' ? '2FA, passkeys, sessions, email' : '2FA, passkeys, sessions, email'}</p>
+				<p class="font-medium">
+					{i18n.locale === 'fr'
+						? '2FA, passkeys, sessions, email'
+						: '2FA, passkeys, sessions, email'}
+				</p>
 				<p class="text-xs text-text-muted">
 					{i18n.locale === 'fr'
 						? 'Gère toute la sécurité de ton compte.'
@@ -285,9 +306,13 @@
 				</p>
 			</div>
 			<div class="flex items-center gap-2">
-				<span class="rounded-lg px-3 py-1 text-xs font-medium
-					{auth.user?.totp_enabled ? 'bg-success/15 text-success' : 'bg-surface-overlay text-text-muted'}">
-					{auth.user?.totp_enabled ? '2FA ' + i18n.t('settings.security.enabled') : '2FA ' + i18n.t('settings.security.disabled')}
+				<span
+					class="rounded-lg px-3 py-1 text-xs font-medium
+					{auth.user?.totp_enabled ? 'bg-success/15 text-success' : 'bg-surface-overlay text-text-muted'}"
+				>
+					{auth.user?.totp_enabled
+						? '2FA ' + i18n.t('settings.security.enabled')
+						: '2FA ' + i18n.t('settings.security.disabled')}
 				</span>
 				<span class="text-text-muted">→</span>
 			</div>
@@ -308,14 +333,22 @@
 	</section>
 </div>
 
-<Modal open={showDeleteModal} title={i18n.t('settings.danger.deleteModalTitle')} onclose={() => (showDeleteModal = false)}>
+<Modal
+	open={showDeleteModal}
+	title={i18n.t('settings.danger.deleteModalTitle')}
+	onclose={() => (showDeleteModal = false)}
+>
 	<p class="mb-4 text-sm text-text-muted">
 		{i18n.t('settings.danger.deleteModalMessage')}
 	</p>
 	<Input label={i18n.t('settings.password.current')} type="password" bind:value={deletePassword} />
 
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (showDeleteModal = false)}>{i18n.t('common.actions.cancel')}</Button>
-		<Button variant="danger" loading={deleting} onclick={deleteAccount}>{i18n.t('settings.danger.deleteConfirmBtn')}</Button>
+		<Button variant="ghost" onclick={() => (showDeleteModal = false)}
+			>{i18n.t('common.actions.cancel')}</Button
+		>
+		<Button variant="danger" loading={deleting} onclick={deleteAccount}
+			>{i18n.t('settings.danger.deleteConfirmBtn')}</Button
+		>
 	{/snippet}
 </Modal>

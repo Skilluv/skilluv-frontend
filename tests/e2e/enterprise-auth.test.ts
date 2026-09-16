@@ -75,10 +75,9 @@ async function submitAndExpectLoginPost(page: Page) {
 	const submit = page.locator('button[type="submit"]');
 	await expect(async () => {
 		const posted = page
-			.waitForRequest(
-				(r) => r.url().includes('/api/auth/login') && r.method() === 'POST',
-				{ timeout: 1500 }
-			)
+			.waitForRequest((r) => r.url().includes('/api/auth/login') && r.method() === 'POST', {
+				timeout: 1500
+			})
 			.catch(() => null);
 		await submit.click();
 		expect(await posted, 'POST /auth/login fired').not.toBeNull();
@@ -152,9 +151,7 @@ test.describe('Enterprise register', () => {
 
 		// Try to submit without terms → blocked
 		await page.getByRole('button', { name: /Créer/i }).click();
-		await expect(
-			page.getByText(/Vous devez accepter les CGU/i)
-		).toBeVisible();
+		await expect(page.getByText(/Vous devez accepter les CGU/i)).toBeVisible();
 
 		// Accept terms + submit → step 3
 		await page.getByRole('checkbox').last().check(); // last checkbox = terms
@@ -171,16 +168,19 @@ test.describe('Enterprise register', () => {
 		// Step 4 — dual gate: verify email + set up 2FA
 		await expect(page.getByText(/Vérifie ton email/i)).toBeVisible();
 		await expect(page.getByText(/Active ton 2FA/i)).toBeVisible();
-		await expect(
-			page.getByRole('link', { name: /Configurer mon 2FA/i })
-		).toHaveAttribute('href', /\/enterprise\/onboarding/);
+		await expect(page.getByRole('link', { name: /Configurer mon 2FA/i })).toHaveAttribute(
+			'href',
+			/\/enterprise\/onboarding/
+		);
 	});
 });
 
 // ─── Login: role-aware redirect + navbar polish ──────────────────
 
 test.describe('Enterprise login', () => {
-	test('login as enterprise → /enterprise/dashboard (not /challenges/onboarding)', async ({ page }) => {
+	test('login as enterprise → /enterprise/dashboard (not /challenges/onboarding)', async ({
+		page
+	}) => {
 		await mockApi(page, [
 			{
 				path: '/auth/login',

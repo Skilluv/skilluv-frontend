@@ -206,8 +206,7 @@
 					bind:value={response}
 					rows="6"
 					class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text focus:border-accent focus:outline-none"
-					data-testid="design-plagiarism-response"
-				></textarea>
+					data-testid="design-plagiarism-response"></textarea>
 				<Button size="sm" loading={sending} disabled={!response.trim()} onclick={respond}>
 					{i18n.t('designPlagiarism.respondCta')}
 				</Button>

@@ -25,12 +25,8 @@
 	];
 
 	let known = $derived(KNOWN.includes(terms));
-	let label = $derived(
-		known ? i18n.t(`missions.ipTerms.${terms as MissionIpTerms}`) : terms
-	);
-	let hint = $derived(
-		known ? i18n.t(`missions.ipTermsHints.${terms as MissionIpTerms}`) : ''
-	);
+	let label = $derived(known ? i18n.t(`missions.ipTerms.${terms as MissionIpTerms}`) : terms);
+	let hint = $derived(known ? i18n.t(`missions.ipTermsHints.${terms as MissionIpTerms}`) : '');
 
 	let tone = $derived(
 		terms === 'full_ownership_client'

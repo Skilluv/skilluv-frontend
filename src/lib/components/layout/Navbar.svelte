@@ -156,13 +156,58 @@
 		if (path === '/') return 'home';
 		if (auth.isAuthenticated) {
 			if (path.startsWith('/challenges')) return 'challenges';
-			if (['/bounties', '/certifications', '/diplomas', '/mentors', '/mentorship', '/assistant', '/talent-offers', '/design'].some((p) => path === p || path.startsWith(p + '/'))) return 'grow';
-			if (['/feed', '/forum', '/guilds', '/tournaments', '/messages', '/leaderboards', '/community', '/cohorts', '/dashboard/peer-matching'].some((p) => path === p || path.startsWith(p + '/'))) return 'community';
-			if (['/enterprise', '/for-companies', '/pricing'].some((p) => path === p || path.startsWith(p + '/'))) return 'enterprise';
+			if (
+				[
+					'/bounties',
+					'/certifications',
+					'/diplomas',
+					'/mentors',
+					'/mentorship',
+					'/assistant',
+					'/talent-offers',
+					'/design'
+				].some((p) => path === p || path.startsWith(p + '/'))
+			)
+				return 'grow';
+			if (
+				[
+					'/feed',
+					'/forum',
+					'/guilds',
+					'/tournaments',
+					'/messages',
+					'/leaderboards',
+					'/community',
+					'/cohorts',
+					'/dashboard/peer-matching'
+				].some((p) => path === p || path.startsWith(p + '/'))
+			)
+				return 'community';
+			if (
+				['/enterprise', '/for-companies', '/pricing'].some(
+					(p) => path === p || path.startsWith(p + '/')
+				)
+			)
+				return 'enterprise';
 		} else {
-			if (['/challenges', '/community', '/bounties', '/certifications', '/mentors'].some((p) => path === p || path.startsWith(p + '/'))) return 'discover';
-			if (['/forum', '/guilds', '/tournaments', '/leaderboards'].some((p) => path === p || path.startsWith(p + '/'))) return 'community';
-			if (['/for-companies', '/enterprise', '/pricing'].some((p) => path === p || path.startsWith(p + '/'))) return 'enterprise';
+			if (
+				['/challenges', '/community', '/bounties', '/certifications', '/mentors'].some(
+					(p) => path === p || path.startsWith(p + '/')
+				)
+			)
+				return 'discover';
+			if (
+				['/forum', '/guilds', '/tournaments', '/leaderboards'].some(
+					(p) => path === p || path.startsWith(p + '/')
+				)
+			)
+				return 'community';
+			if (
+				['/for-companies', '/enterprise', '/pricing'].some(
+					(p) => path === p || path.startsWith(p + '/')
+				)
+			)
+				return 'enterprise';
 		}
 		return null;
 	});
@@ -244,13 +289,19 @@
 					href: '/challenges',
 					icon: Target,
 					label: i18n.t('common.nav.challenges'),
-					description: i18n.locale === 'fr' ? 'Résous des défis dans 4 domaines' : 'Solve challenges in 4 domains'
+					description:
+						i18n.locale === 'fr'
+							? 'Résous des défis dans 4 domaines'
+							: 'Solve challenges in 4 domains'
 				},
 				{
 					href: '/community/challenges',
 					icon: Pencil,
 					label: i18n.locale === 'fr' ? 'Communauté' : 'Community',
-					description: i18n.locale === 'fr' ? 'Challenges créés par la communauté' : 'Community-created challenges'
+					description:
+						i18n.locale === 'fr'
+							? 'Challenges créés par la communauté'
+							: 'Community-created challenges'
 				},
 				{
 					// Unclaimed work across all twelve trades. The pool endpoint
@@ -273,10 +324,19 @@
 			// off the scope page, which is why they are not repeated here.
 			title: i18n.t('common.domains.security'),
 			items: [
-				{ href: '/security/missions', icon: Briefcase, label: i18n.t('missions.boards.security.title'), description: i18n.t('missions.boards.security.subtitle') },
+				{
+					href: '/security/missions',
+					icon: Briefcase,
+					label: i18n.t('missions.boards.security.title'),
+					description: i18n.t('missions.boards.security.subtitle')
+				},
 				{ href: '/ctf', icon: Flag, label: i18n.t('securityPractice.ctfTitle') },
 				{ href: '/blue-lab', icon: ShieldCheck, label: i18n.t('blueLab.title') },
-				{ href: '/security/competitions', icon: Trophy, label: i18n.t('securityCompetitions.title') },
+				{
+					href: '/security/competitions',
+					icon: Trophy,
+					label: i18n.t('securityCompetitions.title')
+				},
 				{ href: '/security/hall-of-fame', icon: Star, label: i18n.t('securityHallOfFame.title') },
 				{ href: '/security', icon: Lock, label: i18n.t('securityScope.title') },
 				{ href: '/trust', icon: BadgeCheck, label: i18n.t('securityTrust.title') }
@@ -289,19 +349,26 @@
 					href: '/bounties',
 					icon: Hexagon,
 					label: 'Bounties',
-					description: i18n.locale === 'fr' ? 'Résous une issue GitHub, gagne des fragments' : 'Solve a GitHub issue, earn fragments'
+					description:
+						i18n.locale === 'fr'
+							? 'Résous une issue GitHub, gagne des fragments'
+							: 'Solve a GitHub issue, earn fragments'
 				},
 				{
 					href: '/certifications',
 					icon: BadgeCheck,
 					label: 'Certifications',
-					description: i18n.locale === 'fr' ? 'Diplômes vérifiables en ligne' : 'Online-verifiable diplomas'
+					description:
+						i18n.locale === 'fr' ? 'Diplômes vérifiables en ligne' : 'Online-verifiable diplomas'
 				},
 				{
 					href: '/mentors',
 					icon: Star,
 					label: 'Mentorship',
-					description: i18n.locale === 'fr' ? 'Sessions 1-on-1 avec un expert' : '1-on-1 sessions with an expert'
+					description:
+						i18n.locale === 'fr'
+							? 'Sessions 1-on-1 avec un expert'
+							: '1-on-1 sessions with an expert'
 				}
 			]
 		}
@@ -310,10 +377,37 @@
 	let communityGroups = $derived([
 		{
 			items: [
-				{ href: '/forum', icon: MessageSquare, label: 'Forum', description: i18n.locale === 'fr' ? 'Questions, réponses, bounties fragments' : 'Q&A with fragment bounties' },
-				{ href: '/guilds', icon: Shield, label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds', description: i18n.locale === 'fr' ? 'Rejoins une écurie style F1/MMO' : 'Join an F1/MMO-style team' },
-				{ href: '/tournaments', icon: Trophy, label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments', description: i18n.locale === 'fr' ? 'Compétitions mensuelles chronométrées' : 'Timed monthly competitions' },
-				{ href: '/leaderboards', icon: TrendingUp, label: i18n.t('common.nav.leaderboards'), description: i18n.locale === 'fr' ? 'Top 100 par discipline' : 'Top 100 by discipline' }
+				{
+					href: '/forum',
+					icon: MessageSquare,
+					label: 'Forum',
+					description:
+						i18n.locale === 'fr'
+							? 'Questions, réponses, bounties fragments'
+							: 'Q&A with fragment bounties'
+				},
+				{
+					href: '/guilds',
+					icon: Shield,
+					label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds',
+					description:
+						i18n.locale === 'fr' ? 'Rejoins une écurie style F1/MMO' : 'Join an F1/MMO-style team'
+				},
+				{
+					href: '/tournaments',
+					icon: Trophy,
+					label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments',
+					description:
+						i18n.locale === 'fr'
+							? 'Compétitions mensuelles chronométrées'
+							: 'Timed monthly competitions'
+				},
+				{
+					href: '/leaderboards',
+					icon: TrendingUp,
+					label: i18n.t('common.nav.leaderboards'),
+					description: i18n.locale === 'fr' ? 'Top 100 par discipline' : 'Top 100 by discipline'
+				}
 			]
 		}
 	]);
@@ -321,25 +415,68 @@
 	let talentGrowGroups = $derived([
 		{
 			items: [
-				{ href: '/bounties', icon: Hexagon, label: 'Bounties OSS', description: i18n.locale === 'fr' ? 'Gagne des fragments sur des issues GitHub' : 'Earn fragments on GitHub issues' },
-				{ href: '/certifications', icon: BadgeCheck, label: 'Certifications', description: i18n.locale === 'fr' ? 'Passe une certification, obtiens un diplôme' : 'Take a certification, get a diploma' },
-				{ href: '/diplomas/my', icon: GraduationCap, label: i18n.locale === 'fr' ? 'Mes diplômes' : 'My diplomas' }
+				{
+					href: '/bounties',
+					icon: Hexagon,
+					label: 'Bounties OSS',
+					description:
+						i18n.locale === 'fr'
+							? 'Gagne des fragments sur des issues GitHub'
+							: 'Earn fragments on GitHub issues'
+				},
+				{
+					href: '/certifications',
+					icon: BadgeCheck,
+					label: 'Certifications',
+					description:
+						i18n.locale === 'fr'
+							? 'Passe une certification, obtiens un diplôme'
+							: 'Take a certification, get a diploma'
+				},
+				{
+					href: '/diplomas/my',
+					icon: GraduationCap,
+					label: i18n.locale === 'fr' ? 'Mes diplômes' : 'My diplomas'
+				}
 			]
 		},
 		{
 			title: 'Mentorship',
 			items: [
-				{ href: '/mentors', icon: Star, label: i18n.locale === 'fr' ? 'Trouver un mentor' : 'Find a mentor' },
-				{ href: '/mentorship/sessions', icon: Target, label: i18n.locale === 'fr' ? 'Mes sessions' : 'My sessions' },
-				{ href: '/dashboard/mentor', icon: Pencil, label: i18n.locale === 'fr' ? 'Devenir mentor' : 'Become a mentor', badge: '80%' }
+				{
+					href: '/mentors',
+					icon: Star,
+					label: i18n.locale === 'fr' ? 'Trouver un mentor' : 'Find a mentor'
+				},
+				{
+					href: '/mentorship/sessions',
+					icon: Target,
+					label: i18n.locale === 'fr' ? 'Mes sessions' : 'My sessions'
+				},
+				{
+					href: '/dashboard/mentor',
+					icon: Pencil,
+					label: i18n.locale === 'fr' ? 'Devenir mentor' : 'Become a mentor',
+					badge: '80%'
+				}
 			]
 		},
 		{
 			// Skilluv Design (SKI-237, SKI-248): contests and paid missions.
 			title: i18n.t('common.domains.design'),
 			items: [
-				{ href: '/design/contests', icon: Palette, label: i18n.t('designContests.title'), description: i18n.t('designContests.subtitle') },
-				{ href: '/design/missions', icon: Briefcase, label: i18n.t('missions.boards.design.title'), description: i18n.t('missions.boards.design.subtitle') }
+				{
+					href: '/design/contests',
+					icon: Palette,
+					label: i18n.t('designContests.title'),
+					description: i18n.t('designContests.subtitle')
+				},
+				{
+					href: '/design/missions',
+					icon: Briefcase,
+					label: i18n.t('missions.boards.design.title'),
+					description: i18n.t('missions.boards.design.subtitle')
+				}
 			]
 		},
 		{
@@ -351,10 +488,19 @@
 			// off the scope page, which is why they are not repeated here.
 			title: i18n.t('common.domains.security'),
 			items: [
-				{ href: '/security/missions', icon: Briefcase, label: i18n.t('missions.boards.security.title'), description: i18n.t('missions.boards.security.subtitle') },
+				{
+					href: '/security/missions',
+					icon: Briefcase,
+					label: i18n.t('missions.boards.security.title'),
+					description: i18n.t('missions.boards.security.subtitle')
+				},
 				{ href: '/ctf', icon: Flag, label: i18n.t('securityPractice.ctfTitle') },
 				{ href: '/blue-lab', icon: ShieldCheck, label: i18n.t('blueLab.title') },
-				{ href: '/security/competitions', icon: Trophy, label: i18n.t('securityCompetitions.title') },
+				{
+					href: '/security/competitions',
+					icon: Trophy,
+					label: i18n.t('securityCompetitions.title')
+				},
 				{ href: '/security/hall-of-fame', icon: Star, label: i18n.t('securityHallOfFame.title') },
 				{ href: '/security', icon: Lock, label: i18n.t('securityScope.title') },
 				{ href: '/trust', icon: BadgeCheck, label: i18n.t('securityTrust.title') }
@@ -364,8 +510,18 @@
 			// The AI domain of work — not the assistant, which is below.
 			title: i18n.t('common.domains.ai'),
 			items: [
-				{ href: '/ai', icon: Sparkles, label: i18n.t('aiDomain.title'), description: i18n.t('aiDomain.subtitle') },
-				{ href: '/ai/missions', icon: Briefcase, label: i18n.t('missions.boards.ai.title'), description: i18n.t('missions.boards.ai.subtitle') }
+				{
+					href: '/ai',
+					icon: Sparkles,
+					label: i18n.t('aiDomain.title'),
+					description: i18n.t('aiDomain.subtitle')
+				},
+				{
+					href: '/ai/missions',
+					icon: Briefcase,
+					label: i18n.t('missions.boards.ai.title'),
+					description: i18n.t('missions.boards.ai.subtitle')
+				}
 			]
 		},
 		{
@@ -396,8 +552,18 @@
 		{
 			// Post-MVP tier 3 — the assistant and the reverse marketplace.
 			items: [
-				{ href: '/assistant', icon: Sparkles, label: i18n.t('assistant.title'), description: i18n.t('assistant.subtitle') },
-				{ href: '/talent-offers', icon: Clock, label: i18n.t('talentOffers.title'), description: i18n.t('talentOffers.subtitle') }
+				{
+					href: '/assistant',
+					icon: Sparkles,
+					label: i18n.t('assistant.title'),
+					description: i18n.t('assistant.subtitle')
+				},
+				{
+					href: '/talent-offers',
+					icon: Clock,
+					label: i18n.t('talentOffers.title'),
+					description: i18n.t('talentOffers.subtitle')
+				}
 			]
 		}
 	]);
@@ -405,10 +571,18 @@
 	let talentCommunityGroups = $derived([
 		{
 			items: [
-				{ href: '/feed', icon: Rss, label: i18n.locale === 'fr' ? "Fil d'activité" : 'Activity feed' },
+				{
+					href: '/feed',
+					icon: Rss,
+					label: i18n.locale === 'fr' ? "Fil d'activité" : 'Activity feed'
+				},
 				{ href: '/forum', icon: MessageSquare, label: 'Forum' },
 				{ href: '/guilds', icon: Shield, label: i18n.locale === 'fr' ? 'Guildes' : 'Guilds' },
-				{ href: '/tournaments', icon: Trophy, label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments' },
+				{
+					href: '/tournaments',
+					icon: Trophy,
+					label: i18n.locale === 'fr' ? 'Tournois' : 'Tournaments'
+				},
 				{ href: '/messages', icon: MessageSquare, label: 'Messages' },
 				{ href: '/mentions', icon: AtSign, label: i18n.t('mentions.title') },
 				{ href: '/leaderboards', icon: TrendingUp, label: i18n.t('common.nav.leaderboards') }
@@ -417,8 +591,18 @@
 		{
 			// Post-MVP tier 2 — learning together rather than alone.
 			items: [
-				{ href: '/cohorts', icon: CalendarRange, label: i18n.t('cohorts.title'), description: i18n.t('cohorts.subtitle') },
-				{ href: '/dashboard/peer-matching', icon: Handshake, label: i18n.t('peerMatching.title'), description: i18n.t('peerMatching.subtitle') }
+				{
+					href: '/cohorts',
+					icon: CalendarRange,
+					label: i18n.t('cohorts.title'),
+					description: i18n.t('cohorts.subtitle')
+				},
+				{
+					href: '/dashboard/peer-matching',
+					icon: Handshake,
+					label: i18n.t('peerMatching.title'),
+					description: i18n.t('peerMatching.subtitle')
+				}
 			]
 		}
 	]);
@@ -442,14 +626,34 @@
 		{
 			title: 'Sourcing',
 			items: [
-				{ href: '/for-companies', icon: Compass, label: i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works', description: i18n.locale === 'fr' ? 'Recruter sur la preuve, pas le CV' : 'Hire on proof, not resume' }
+				{
+					href: '/for-companies',
+					icon: Compass,
+					label: i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works',
+					description:
+						i18n.locale === 'fr' ? 'Recruter sur la preuve, pas le CV' : 'Hire on proof, not resume'
+				}
 			]
 		},
 		{
 			title: 'Business',
 			items: [
-				{ href: '/for-companies/bounties', icon: Hexagon, label: i18n.locale === 'fr' ? 'Sponsoriser une issue' : 'Sponsor an issue', description: i18n.locale === 'fr' ? 'Bounties open-source, payout au merge' : 'Open-source bounties, payout on merge' },
-				{ href: '/pricing', icon: Star, label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing', description: i18n.locale === 'fr' ? 'Pay-as-you-go multi-devise' : 'Pay-as-you-go multi-currency' }
+				{
+					href: '/for-companies/bounties',
+					icon: Hexagon,
+					label: i18n.locale === 'fr' ? 'Sponsoriser une issue' : 'Sponsor an issue',
+					description:
+						i18n.locale === 'fr'
+							? 'Bounties open-source, payout au merge'
+							: 'Open-source bounties, payout on merge'
+				},
+				{
+					href: '/pricing',
+					icon: Star,
+					label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing',
+					description:
+						i18n.locale === 'fr' ? 'Pay-as-you-go multi-devise' : 'Pay-as-you-go multi-currency'
+				}
 			]
 		},
 		{
@@ -466,7 +670,16 @@
 			// filing it under "Sourcing" implies it is not for sponsoring while
 			// filing it under "Business" implies the opposite.
 			items: [
-				{ href: '/enterprise/register', icon: Plus, label: i18n.locale === 'fr' ? 'Créer mon espace' : 'Create my space', description: i18n.locale === 'fr' ? 'Accès aux 13 filtres de sourcing' : 'Access to the 13 sourcing filters', badge: '2 min' }
+				{
+					href: '/enterprise/register',
+					icon: Plus,
+					label: i18n.locale === 'fr' ? 'Créer mon espace' : 'Create my space',
+					description:
+						i18n.locale === 'fr'
+							? 'Accès aux 13 filtres de sourcing'
+							: 'Access to the 13 sourcing filters',
+					badge: '2 min'
+				}
 			]
 		}
 	]);
@@ -475,7 +688,12 @@
 		{
 			title: 'Sourcing',
 			items: [
-				{ href: '/enterprise/talents', icon: Search, label: i18n.locale === 'fr' ? 'Recherche talents' : 'Search talents', description: i18n.locale === 'fr' ? '13 filtres croisés' : '13 cross filters' },
+				{
+					href: '/enterprise/talents',
+					icon: Search,
+					label: i18n.locale === 'fr' ? 'Recherche talents' : 'Search talents',
+					description: i18n.locale === 'fr' ? '13 filtres croisés' : '13 cross filters'
+				},
 				{ href: '/enterprise/bookmarks', icon: Bookmark, label: 'Bookmarks' },
 				{ href: '/enterprise/lists', icon: List, label: i18n.locale === 'fr' ? 'Listes' : 'Lists' },
 				{ href: '/enterprise/messages', icon: MessageSquare, label: 'Messages' }
@@ -484,22 +702,62 @@
 		{
 			title: i18n.locale === 'fr' ? 'Espace' : 'Space',
 			items: [
-				{ href: '/enterprise/profile', icon: Building2, label: i18n.locale === 'fr' ? 'Profil entreprise' : 'Enterprise profile', description: i18n.locale === 'fr' ? 'Nom, description, logo, taille' : 'Name, description, logo, size' },
-				{ href: '/enterprise/members', icon: Users, label: i18n.locale === 'fr' ? 'Membres' : 'Members', description: i18n.locale === 'fr' ? 'Inviter des recruteurs, gérer les rôles' : 'Invite recruiters, manage roles' }
+				{
+					href: '/enterprise/profile',
+					icon: Building2,
+					label: i18n.locale === 'fr' ? 'Profil entreprise' : 'Enterprise profile',
+					description:
+						i18n.locale === 'fr'
+							? 'Nom, description, logo, taille'
+							: 'Name, description, logo, size'
+				},
+				{
+					href: '/enterprise/members',
+					icon: Users,
+					label: i18n.locale === 'fr' ? 'Membres' : 'Members',
+					description:
+						i18n.locale === 'fr'
+							? 'Inviter des recruteurs, gérer les rôles'
+							: 'Invite recruiters, manage roles'
+				}
 			]
 		},
 		{
 			title: 'Bounties',
 			items: [
-				{ href: '/enterprise/bounties', icon: Hexagon, label: i18n.locale === 'fr' ? 'Mes bounties' : 'My bounties', description: i18n.locale === 'fr' ? 'Dashboard de mes issues sponsorisées' : 'Dashboard of my sponsored issues' },
-				{ href: '/enterprise/bounties/new', icon: Plus, label: i18n.locale === 'fr' ? 'Poster une bounty' : 'Post a bounty', description: i18n.locale === 'fr' ? 'Sponsoriser une nouvelle issue GitHub' : 'Sponsor a new GitHub issue' }
+				{
+					href: '/enterprise/bounties',
+					icon: Hexagon,
+					label: i18n.locale === 'fr' ? 'Mes bounties' : 'My bounties',
+					description:
+						i18n.locale === 'fr'
+							? 'Dashboard de mes issues sponsorisées'
+							: 'Dashboard of my sponsored issues'
+				},
+				{
+					href: '/enterprise/bounties/new',
+					icon: Plus,
+					label: i18n.locale === 'fr' ? 'Poster une bounty' : 'Post a bounty',
+					description:
+						i18n.locale === 'fr'
+							? 'Sponsoriser une nouvelle issue GitHub'
+							: 'Sponsor a new GitHub issue'
+				}
 			]
 		},
 		{
 			title: 'Business',
 			items: [
-				{ href: '/enterprise/credits', icon: Star, label: i18n.locale === 'fr' ? 'Crédits' : 'Credits' },
-				{ href: '/invoices', icon: FileText, label: i18n.locale === 'fr' ? 'Factures' : 'Invoices' },
+				{
+					href: '/enterprise/credits',
+					icon: Star,
+					label: i18n.locale === 'fr' ? 'Crédits' : 'Credits'
+				},
+				{
+					href: '/invoices',
+					icon: FileText,
+					label: i18n.locale === 'fr' ? 'Factures' : 'Invoices'
+				},
 				{ href: '/pricing', icon: Star, label: i18n.locale === 'fr' ? 'Tarifs' : 'Pricing' }
 			]
 		}
@@ -564,7 +822,13 @@
 		     (Fraunces WONK, easter egg: le LUV rouge se révèle au 2e regard) -->
 		<a href="/" class="col-start-1 flex items-center gap-2.5" aria-label="Skilluv accueil">
 			{#if tenant.isWhiteLabel && tenant.logoUrl}
-				<img src={tenant.logoUrl} alt={tenant.name} width="120" height="32" class="h-8 max-w-[120px] object-contain" />
+				<img
+					src={tenant.logoUrl}
+					alt={tenant.name}
+					width="120"
+					height="32"
+					class="h-8 max-w-[120px] object-contain"
+				/>
 				<span class="text-lg font-black tracking-tight text-text-primary truncate max-w-[160px]">
 					{tenant.name}
 				</span>
@@ -603,11 +867,16 @@
 		     a control, because the number would be right for a row that no
 		     longer exists. -->
 		<div data-testid="nav-pill" class="col-start-2 hidden justify-self-center xl:flex">
-			<div bind:this={pillContainer} class="relative flex items-center gap-1 rounded-full border border-border bg-surface-elevated p-1 shadow-sm">
+			<div
+				bind:this={pillContainer}
+				class="relative flex items-center gap-1 rounded-full border border-border bg-surface-elevated p-1 shadow-sm"
+			>
 				<!-- Sliding indicator (pill inversée qui glisse) -->
 				<span
 					aria-hidden="true"
-					class="pointer-events-none absolute left-0 top-0 rounded-full bg-text-primary will-change-transform {indicatorReady ? 'transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]' : ''}"
+					class="pointer-events-none absolute left-0 top-0 rounded-full bg-text-primary will-change-transform {indicatorReady
+						? 'transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]'
+						: ''}"
 					style={indicatorStyle}
 				></span>
 
@@ -615,7 +884,10 @@
 					href="/"
 					data-nav-key="home"
 					data-nav-active={activeKey === 'home'}
-					class="relative z-10 inline-flex items-center h-8 rounded-full px-3 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'home' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
+					class="relative z-10 inline-flex items-center h-8 rounded-full px-3 text-sm font-medium leading-none transition-colors duration-300 {activeKey ===
+					'home'
+						? 'text-surface'
+						: 'text-text-muted hover:text-text-primary'}"
 				>
 					{i18n.locale === 'fr' ? 'Accueil' : 'Home'}
 				</a>
@@ -625,7 +897,10 @@
 						href="/challenges"
 						data-nav-key="challenges"
 						data-nav-active={activeKey === 'challenges'}
-						class="relative z-10 inline-flex items-center h-8 rounded-full px-3 text-sm font-medium leading-none transition-colors duration-300 {activeKey === 'challenges' ? 'text-surface' : 'text-text-muted hover:text-text-primary'}"
+						class="relative z-10 inline-flex items-center h-8 rounded-full px-3 text-sm font-medium leading-none transition-colors duration-300 {activeKey ===
+						'challenges'
+							? 'text-surface'
+							: 'text-text-muted hover:text-text-primary'}"
 					>
 						{i18n.t('common.nav.challenges')}
 					</a>
@@ -635,7 +910,7 @@
 							active={activeKey === 'grow'}
 							label={i18n.locale === 'fr' ? 'Grandir' : 'Grow'}
 							groups={talentGrowGroups}
-												/>
+						/>
 					</div>
 					<div data-nav-active={activeKey === 'community'} class="relative z-10">
 						<NavDropdown
@@ -643,7 +918,7 @@
 							active={activeKey === 'community'}
 							label={i18n.locale === 'fr' ? 'Communauté' : 'Community'}
 							groups={talentCommunityGroups}
-												/>
+						/>
 					</div>
 					<div data-nav-active={activeKey === 'enterprise'} class="relative z-10">
 						<NavDropdown
@@ -651,7 +926,7 @@
 							active={activeKey === 'enterprise'}
 							label={i18n.locale === 'fr' ? 'Entreprises' : 'Enterprise'}
 							groups={enterpriseGroupsAuth}
-												/>
+						/>
 					</div>
 				{:else}
 					<div data-nav-active={activeKey === 'discover'} class="relative z-10">
@@ -660,7 +935,7 @@
 							active={activeKey === 'discover'}
 							label={i18n.locale === 'fr' ? 'Découvrir' : 'Discover'}
 							groups={discoverGroups}
-												/>
+						/>
 					</div>
 					<div data-nav-active={activeKey === 'community'} class="relative z-10">
 						<NavDropdown
@@ -668,7 +943,7 @@
 							active={activeKey === 'community'}
 							label={i18n.locale === 'fr' ? 'Communauté' : 'Community'}
 							groups={communityGroups}
-												/>
+						/>
 					</div>
 					<div data-nav-active={activeKey === 'enterprise'} class="relative z-10">
 						<NavDropdown
@@ -676,7 +951,7 @@
 							active={activeKey === 'enterprise'}
 							label={i18n.locale === 'fr' ? 'Entreprises' : 'Enterprise'}
 							groups={enterpriseGroupsAnon}
-												/>
+						/>
 					</div>
 				{/if}
 			</div>
@@ -687,7 +962,7 @@
 			<!-- Theme selector -->
 			<div class="relative" data-theme-dropdown>
 				<button
-					onclick={() => themeOpen = !themeOpen}
+					onclick={() => (themeOpen = !themeOpen)}
 					class="flex h-9 w-9 items-center justify-center rounded-full transition-colors duration-200 hover:bg-surface-overlay"
 					aria-label="Theme"
 				>
@@ -698,11 +973,16 @@
 				</button>
 
 				{#if themeOpen}
-					<div class="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-surface-elevated p-1.5 shadow-lg animate-in slide-in-from-top-2">
+					<div
+						class="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-surface-elevated p-1.5 shadow-lg animate-in slide-in-from-top-2"
+					>
 						{#each themes as t}
 							<button
 								onclick={() => selectTheme(t.key)}
-								class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors duration-200 hover:bg-surface-overlay {theme.base === t.key ? 'bg-surface-overlay text-text-primary' : 'text-text-muted'}"
+								class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors duration-200 hover:bg-surface-overlay {theme.base ===
+								t.key
+									? 'bg-surface-overlay text-text-primary'
+									: 'text-text-muted'}"
 							>
 								<div class="flex gap-0.5">
 									<div class="h-3.5 w-1.5 rounded-sm" style="background-color: {t.primary};"></div>
@@ -720,15 +1000,39 @@
 							class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted transition-colors duration-200 hover:bg-surface-overlay"
 						>
 							{#if theme.mode === 'dark'}
-								<svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-									<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+								<svg
+									class="h-3.5 w-3.5"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									stroke-width="2"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+									/>
 								</svg>
-								<span class="flex-1 text-left">{i18n.locale === 'fr' ? 'Mode clair' : 'Light mode'}</span>
+								<span class="flex-1 text-left"
+									>{i18n.locale === 'fr' ? 'Mode clair' : 'Light mode'}</span
+								>
 							{:else}
-								<svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-									<path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+								<svg
+									class="h-3.5 w-3.5"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									stroke-width="2"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+									/>
 								</svg>
-								<span class="flex-1 text-left">{i18n.locale === 'fr' ? 'Mode sombre' : 'Dark mode'}</span>
+								<span class="flex-1 text-left"
+									>{i18n.locale === 'fr' ? 'Mode sombre' : 'Dark mode'}</span
+								>
 							{/if}
 						</button>
 					</div>
@@ -767,7 +1071,9 @@
 						aria-haspopup="menu"
 						class="flex items-center gap-2 rounded-full border border-border bg-surface-elevated px-3 py-1 transition-colors duration-200 hover:bg-surface-overlay hover:border-text-muted"
 					>
-						<div class="h-6 w-6 rounded-full bg-accent/15 flex items-center justify-center text-[10px] font-bold text-accent">
+						<div
+							class="h-6 w-6 rounded-full bg-accent/15 flex items-center justify-center text-[10px] font-bold text-accent"
+						>
 							{auth.displayName?.[0] ?? '?'}
 						</div>
 						<span class="text-sm font-medium max-w-[100px] truncate">{auth.displayName}</span>
@@ -775,9 +1081,16 @@
 							<!-- Gamification title is a candidate-progression tier. It's
 							     meaningless (and confusing) for enterprise / recruiter /
 							     admin roles, so we hide the badge for them. -->
-							<span class="rounded bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold text-accent uppercase">{auth.title}</span>
+							<span
+								class="rounded bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold text-accent uppercase"
+								>{auth.title}</span
+							>
 						{/if}
-						<ChevronDown size={14} strokeWidth={2} class="text-text-muted {userMenuOpen ? 'rotate-180' : ''} transition-transform" />
+						<ChevronDown
+							size={14}
+							strokeWidth={2}
+							class="text-text-muted {userMenuOpen ? 'rotate-180' : ''} transition-transform"
+						/>
 					</button>
 
 					{#if userMenuOpen}
@@ -848,10 +1161,16 @@
 				</div>
 			{:else}
 				<div class="ml-1 h-5 w-px bg-border"></div>
-				<a href="/auth/login" class="rounded-full px-4 py-1.5 text-sm font-medium text-text-muted transition-colors duration-200 hover:text-text-primary">
+				<a
+					href="/auth/login"
+					class="rounded-full px-4 py-1.5 text-sm font-medium text-text-muted transition-colors duration-200 hover:text-text-primary"
+				>
 					{i18n.t('common.nav.login')}
 				</a>
-				<a href="/auth/register" class="ml-1 rounded-full bg-accent px-5 py-2 text-xs font-bold uppercase tracking-wider text-accent-fg shadow-sm transition-colors duration-200 hover:bg-accent-hover">
+				<a
+					href="/auth/register"
+					class="ml-1 rounded-full bg-accent px-5 py-2 text-xs font-bold uppercase tracking-wider text-accent-fg shadow-sm transition-colors duration-200 hover:bg-accent-hover"
+				>
 					{i18n.t('common.nav.register')}
 				</a>
 			{/if}
@@ -859,7 +1178,7 @@
 
 		<!-- Mobile burger -->
 		<button
-			onclick={() => mobileOpen = !mobileOpen}
+			onclick={() => (mobileOpen = !mobileOpen)}
 			class="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-elevated text-text-muted transition-colors duration-200 hover:bg-surface-overlay col-start-3 justify-self-end xl:hidden"
 			aria-label="Menu"
 		>
@@ -877,9 +1196,17 @@
 
 	<!-- Mobile menu -->
 	{#if mobileOpen}
-		<div class="border-t border-border bg-surface-elevated/95 backdrop-blur-md xl:hidden animate-in slide-in-from-top-2">
+		<div
+			class="border-t border-border bg-surface-elevated/95 backdrop-blur-md xl:hidden animate-in slide-in-from-top-2"
+		>
 			<div class="mx-auto max-w-7xl px-4 py-3 space-y-0.5">
-				<a href="/" onclick={() => mobileOpen = false} class="block rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 {isActive('/') ? 'text-text-primary bg-surface-overlay' : 'text-text-muted hover:bg-surface-overlay'}">
+				<a
+					href="/"
+					onclick={() => (mobileOpen = false)}
+					class="block rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 {isActive('/')
+						? 'text-text-primary bg-surface-overlay'
+						: 'text-text-muted hover:bg-surface-overlay'}"
+				>
 					{i18n.locale === 'fr' ? 'Accueil' : 'Home'}
 				</a>
 				{#each mobileLinks as link (link.href)}
@@ -911,7 +1238,10 @@
 					{#each themes as t}
 						<button
 							onclick={() => theme.set(t.key)}
-							class="h-6 w-6 rounded-full border-2 transition-colors duration-200 {theme.base === t.key ? 'border-text-primary' : 'border-transparent opacity-50'}"
+							class="h-6 w-6 rounded-full border-2 transition-colors duration-200 {theme.base ===
+							t.key
+								? 'border-text-primary'
+								: 'border-transparent opacity-50'}"
 							style="background-color: {t.primary};"
 							aria-label={t.label}
 						></button>
@@ -946,10 +1276,18 @@
 
 				{#if !auth.isAuthenticated}
 					<div class="flex gap-2 px-4 pt-1 pb-2">
-						<a href="/auth/login" onclick={() => mobileOpen = false} class="flex-1 rounded-lg border border-border px-4 py-2.5 text-center text-sm font-medium transition-colors duration-200 hover:bg-surface-overlay">
+						<a
+							href="/auth/login"
+							onclick={() => (mobileOpen = false)}
+							class="flex-1 rounded-lg border border-border px-4 py-2.5 text-center text-sm font-medium transition-colors duration-200 hover:bg-surface-overlay"
+						>
 							{i18n.t('common.nav.login')}
 						</a>
-						<a href="/auth/register" onclick={() => mobileOpen = false} class="flex-1 rounded-lg bg-accent px-4 py-2.5 text-center text-sm font-bold text-accent-fg transition-colors duration-200 hover:bg-accent-hover">
+						<a
+							href="/auth/register"
+							onclick={() => (mobileOpen = false)}
+							class="flex-1 rounded-lg bg-accent px-4 py-2.5 text-center text-sm font-bold text-accent-fg transition-colors duration-200 hover:bg-accent-hover"
+						>
 							{i18n.t('common.nav.register')}
 						</a>
 					</div>

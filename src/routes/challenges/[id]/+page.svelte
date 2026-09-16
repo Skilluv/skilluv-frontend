@@ -36,7 +36,10 @@
 	let securityKind = $derived(challenge?.security_kind ?? null);
 
 	const domainDot: Record<string, string> = {
-		code: 'bg-blue-500', design: 'bg-pink-500', game: 'bg-green-500', security: 'bg-red-500'
+		code: 'bg-blue-500',
+		design: 'bg-pink-500',
+		game: 'bg-green-500',
+		security: 'bg-red-500'
 	};
 
 	$effect(() => {
@@ -57,7 +60,6 @@
 		}
 	}
 
-
 	function formatDuration(minutes: number | null): string {
 		if (!minutes) return i18n.t('common.time.noLimit');
 		if (minutes < 60) return i18n.t('common.time.minutes', { n: minutes });
@@ -72,7 +74,6 @@
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-8">
-
 	{#if loading}
 		<!-- Skeleton -->
 		<div class="mb-6">
@@ -96,34 +97,42 @@
 				<Skeleton class="h-32 w-full" rounded="lg" />
 			</div>
 		</div>
-
 	{:else if error}
 		<div class="rounded-xl border border-border bg-surface-elevated p-12 text-center">
 			<p class="text-text-muted mb-4">{error}</p>
-			<Button variant="secondary" href="/challenges">{i18n.t('challenges.detail.backToCatalogue')}</Button>
+			<Button variant="secondary" href="/challenges"
+				>{i18n.t('challenges.detail.backToCatalogue')}</Button
+			>
 		</div>
-
 	{:else if challenge}
 		<!-- Back link -->
 		<div class="mb-6">
-			<a href="/challenges" class="text-sm text-text-muted transition-colors duration-200 hover:text-text-primary">
+			<a
+				href="/challenges"
+				class="text-sm text-text-muted transition-colors duration-200 hover:text-text-primary"
+			>
 				{i18n.t('challenges.detail.backToCatalogue')}
 			</a>
 		</div>
 
 		<!-- Challenge card -->
 		<div class="rounded-xl border border-border bg-surface-elevated overflow-hidden">
-
 			<!-- Header bar -->
 			<div class="flex items-center gap-2 border-b border-border px-5 py-3">
-				<div class="h-2.5 w-2.5 rounded-sm {domainDot[challenge.skill_domain] ?? 'bg-text-muted'}"></div>
-				<span class="text-xs font-mono text-text-muted capitalize">{i18n.t(`common.domains.${challenge.skill_domain}`)}</span>
+				<div
+					class="h-2.5 w-2.5 rounded-sm {domainDot[challenge.skill_domain] ?? 'bg-text-muted'}"
+				></div>
+				<span class="text-xs font-mono text-text-muted capitalize"
+					>{i18n.t(`common.domains.${challenge.skill_domain}`)}</span
+				>
 				{#if challenge.language}
 					<span class="text-xs text-text-muted">· {challenge.language}</span>
 				{/if}
 				<div class="ml-auto flex items-center gap-2">
 					{#if !challenge.ai_allowed}
-						<span class="border border-error/30 text-error rounded px-1.5 py-0.5 text-[10px]">{i18n.t('challenges.detail.noAi')}</span>
+						<span class="border border-error/30 text-error rounded px-1.5 py-0.5 text-[10px]"
+							>{i18n.t('challenges.detail.noAi')}</span
+						>
 					{/if}
 					<span class="text-[10px] text-text-muted border border-border rounded px-1.5 py-0.5">
 						{i18n.t(`common.difficulty.${challenge.difficulty}`)}
@@ -146,12 +155,18 @@
 				<p class="text-text-muted leading-relaxed mb-8">{challenge.description}</p>
 
 				<!-- Stats row -->
-				<div class="grid grid-cols-2 sm:grid-cols-4 gap-px bg-border rounded-lg overflow-hidden mb-8">
+				<div
+					class="grid grid-cols-2 sm:grid-cols-4 gap-px bg-border rounded-lg overflow-hidden mb-8"
+				>
 					<div class="bg-surface-elevated p-4 text-center">
 						<p class="text-xs text-text-muted mb-1">{i18n.t('challenges.detail.difficulty')}</p>
 						<div class="flex items-center justify-center gap-1 mb-1">
 							{#each Array(5) as _, idx}
-								<span class="h-1.5 w-1.5 rounded-full {idx < challenge.difficulty ? 'bg-accent' : 'bg-surface-overlay'}"></span>
+								<span
+									class="h-1.5 w-1.5 rounded-full {idx < challenge.difficulty
+										? 'bg-accent'
+										: 'bg-surface-overlay'}"
+								></span>
 							{/each}
 						</div>
 						<p class="text-sm font-medium">{i18n.t(`common.difficulty.${challenge.difficulty}`)}</p>
@@ -174,10 +189,13 @@
 				<div class="mb-6">
 					<div class="rounded-lg border border-border overflow-hidden">
 						<div class="px-4 py-2.5 border-b border-border">
-							<span class="text-xs font-bold uppercase tracking-wider text-text-muted">{i18n.t('challenges.detail.instructions')}</span>
+							<span class="text-xs font-bold uppercase tracking-wider text-text-muted"
+								>{i18n.t('challenges.detail.instructions')}</span
+							>
 						</div>
 						<div class="p-4">
-							<pre class="whitespace-pre-wrap font-sans text-sm leading-relaxed text-text-muted">{challenge.instructions}</pre>
+							<pre
+								class="whitespace-pre-wrap font-sans text-sm leading-relaxed text-text-muted">{challenge.instructions}</pre>
 						</div>
 					</div>
 				</div>
@@ -186,7 +204,9 @@
 					<div class="mb-6">
 						<div class="rounded-lg border border-border overflow-hidden">
 							<div class="px-4 py-2.5 border-b border-border">
-								<span class="text-xs font-bold uppercase tracking-wider text-text-muted">{i18n.t('challenges.detail.expectedOutput')}</span>
+								<span class="text-xs font-bold uppercase tracking-wider text-text-muted"
+									>{i18n.t('challenges.detail.expectedOutput')}</span
+								>
 							</div>
 							<div class="p-4">
 								<pre class="font-mono text-sm text-text-muted">{challenge.expected_output}</pre>

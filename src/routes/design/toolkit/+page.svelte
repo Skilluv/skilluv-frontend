@@ -218,7 +218,9 @@
 							{/if}
 
 							{#if terrain.declined_reason}
-								<p class="mt-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text-muted">
+								<p
+									class="mt-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text-muted"
+								>
 									{i18n.t('designPractice.declinedReason', { reason: terrain.declined_reason })}
 								</p>
 							{/if}

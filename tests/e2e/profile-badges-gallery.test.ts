@@ -148,7 +148,10 @@ test.describe('SKI-104 badge gallery', () => {
 		// which serves no /badge route.
 		const badge = section.getByAltText(/Skilluv badge kofi/i);
 		await expect(badge).toBeVisible();
-		await expect(badge).toHaveAttribute('src', /^https?:\/\/.+\/badge\/user\/kofi\/validated\.svg$/);
+		await expect(badge).toHaveAttribute(
+			'src',
+			/^https?:\/\/.+\/badge\/user\/kofi\/validated\.svg$/
+		);
 	});
 
 	test('les snippets pointent vers la meme image que l apercu', async ({ page }) => {

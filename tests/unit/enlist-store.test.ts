@@ -1,6 +1,11 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { enlist, MAX_PATHS } from '../../src/lib/stores/enlist.svelte';
-import { DOMAIN_PLATES, domainIndex, domainPlate, isPublicDomain } from '../../src/lib/data/domains';
+import {
+	DOMAIN_PLATES,
+	domainIndex,
+	domainPlate,
+	isPublicDomain
+} from '../../src/lib/data/domains';
 import { PUBLIC_DOMAINS } from '../../src/lib/utils/domains';
 
 describe('the domain catalogue', () => {

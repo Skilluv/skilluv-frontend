@@ -271,7 +271,11 @@ test.describe('Enlistment — trades', () => {
 			if (!tray || !ring) return null;
 			const t = tray.getBoundingClientRect();
 			const r = ring.getBoundingClientRect();
-			return { trayTop: Math.round(t.top), ringTop: Math.round(r.top), viewport: window.innerHeight };
+			return {
+				trayTop: Math.round(t.top),
+				ringTop: Math.round(r.top),
+				viewport: window.innerHeight
+			};
 		});
 
 		expect(box, 'tray or ring not found').not.toBeNull();

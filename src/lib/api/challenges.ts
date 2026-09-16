@@ -124,7 +124,9 @@ export const challengesApi = {
 	},
 
 	categories() {
-		return api.get<ApiResponse<{ categories: { category: string; tag_count: number }[] }>>('/challenges/categories');
+		return api.get<ApiResponse<{ categories: { category: string; tag_count: number }[] }>>(
+			'/challenges/categories'
+		);
 	},
 
 	featured() {
@@ -141,7 +143,9 @@ export const challengesApi = {
 	},
 
 	joinTeam(challengeId: string, teamId: string) {
-		return api.post<ApiResponse<{ message: string }>>(`/challenges/${challengeId}/team/${teamId}/join`);
+		return api.post<ApiResponse<{ message: string }>>(
+			`/challenges/${challengeId}/team/${teamId}/join`
+		);
 	},
 
 	listTeams(challengeId: string) {
@@ -149,6 +153,9 @@ export const challengesApi = {
 	},
 
 	submitTeam(challengeId: string, teamId: string, code: string, language?: string) {
-		return api.post<ApiResponse<{ submission: Submission; fragments_per_member: number }>>(`/challenges/${challengeId}/team/${teamId}/submit`, { code, language });
+		return api.post<ApiResponse<{ submission: Submission; fragments_per_member: number }>>(
+			`/challenges/${challengeId}/team/${teamId}/submit`,
+			{ code, language }
+		);
 	}
 };

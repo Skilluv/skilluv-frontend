@@ -55,7 +55,9 @@
 		<p class="py-8 text-center text-text-muted">{error}</p>
 	{:else if conversations.length === 0}
 		<div class="py-12 text-center">
-			<div class="mb-3 inline-flex justify-center text-text-muted"><MessageSquare size={40} strokeWidth={1.5} /></div>
+			<div class="mb-3 inline-flex justify-center text-text-muted">
+				<MessageSquare size={40} strokeWidth={1.5} />
+			</div>
 			<p class="text-text-muted">{i18n.t('enterprise.messages.empty')}</p>
 		</div>
 	{:else}
@@ -67,18 +69,26 @@
 						{conv.unread_count > 0 ? 'border-l-4 border-l-accent' : ''}"
 				>
 					<!-- Avatar -->
-					<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-overlay font-bold text-text-muted">
+					<div
+						class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-overlay font-bold text-text-muted"
+					>
 						{conv.other_party.name.charAt(0).toUpperCase()}
 					</div>
 
 					<!-- Content -->
 					<div class="flex-1 overflow-hidden">
 						<div class="flex items-center justify-between">
-							<p class="font-medium {conv.unread_count > 0 ? 'text-text-primary' : 'text-text-muted'}">
+							<p
+								class="font-medium {conv.unread_count > 0
+									? 'text-text-primary'
+									: 'text-text-muted'}"
+							>
 								{conv.other_party.name}
 							</p>
 							{#if conv.last_message}
-								<span class="shrink-0 text-xs text-text-muted">{formatDate(conv.last_message.created_at)}</span>
+								<span class="shrink-0 text-xs text-text-muted"
+									>{formatDate(conv.last_message.created_at)}</span
+								>
 							{/if}
 						</div>
 						{#if conv.last_message}
@@ -88,7 +98,9 @@
 
 					<!-- Unread badge -->
 					{#if conv.unread_count > 0}
-						<span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-fg">
+						<span
+							class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-fg"
+						>
 							{conv.unread_count}
 						</span>
 					{/if}

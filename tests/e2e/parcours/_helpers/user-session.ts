@@ -172,9 +172,7 @@ export async function setupUserSession(
 	}
 	if (!attempt.ok()) {
 		const body = await attempt.text().catch(() => '');
-		throw new Error(
-			`setupUserSession: login = ${attempt.status()}. Body: ${body.slice(0, 200)}`
-		);
+		throw new Error(`setupUserSession: login = ${attempt.status()}. Body: ${body.slice(0, 200)}`);
 	}
 
 	const statePath = userStoragePath();

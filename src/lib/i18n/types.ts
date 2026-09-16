@@ -27,7 +27,8 @@ export interface DisciplineCopy {
  * exactly like an MVP key while the two sets stay separately readable.
  */
 export interface Translations
-	extends PostMvpTranslations,
+	extends
+		PostMvpTranslations,
 		DesignTranslations,
 		DesignWorkflowTranslations,
 		SecurityTranslations,
@@ -139,7 +140,7 @@ export interface Translations
 	};
 	commonExtra: {
 		exampleLabel: string;
-	},
+	};
 	board: {
 		title: string;
 		titleAccent: string;

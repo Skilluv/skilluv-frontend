@@ -142,7 +142,8 @@
 							size="sm"
 							variant="ghost"
 							loading={busy[id]}
-							onclick={() => run(id, () => contestsApi.respond(id, true), i18n.t('contests.accepted'))}
+							onclick={() =>
+								run(id, () => contestsApi.respond(id, true), i18n.t('contests.accepted'))}
 						>
 							{i18n.t('contests.acceptCta')}
 						</Button>

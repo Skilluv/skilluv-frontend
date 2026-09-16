@@ -242,7 +242,9 @@
 				</div>
 
 				{#if detail.blind}
-					<p class="mb-3 rounded-xl border border-border bg-surface-elevated px-4 py-3 text-xs text-text-muted">
+					<p
+						class="mb-3 rounded-xl border border-border bg-surface-elevated px-4 py-3 text-xs text-text-muted"
+					>
 						{i18n.t('castings.blindNotice')}
 					</p>
 				{/if}

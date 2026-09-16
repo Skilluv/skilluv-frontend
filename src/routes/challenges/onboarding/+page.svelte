@@ -257,9 +257,7 @@
 		// cannot read is an answer it does not have.
 		if (providers.status === 'fulfilled' && Array.isArray(providers.value.data?.providers)) {
 			answered = true;
-			linked = providers.value.data.providers.some(
-				(p: LinkedProvider) => p.provider === 'github'
-			);
+			linked = providers.value.data.providers.some((p: LinkedProvider) => p.provider === 'github');
 		}
 
 		if (!linked && portfolios.status === 'fulfilled' && Array.isArray(portfolios.value.data)) {
@@ -338,7 +336,6 @@
 			loading = false;
 		}
 	}
-
 </script>
 
 <svelte:head>
@@ -445,7 +442,8 @@
 			<div class="mb-8 rounded-2xl border border-border bg-surface-elevated p-6">
 				<h3 class="mb-3 text-lg font-semibold">{i18n.t('challenges.sandbox.instructions')}</h3>
 				<div class="prose prose-sm text-text-muted">
-					<pre class="whitespace-pre-wrap font-sans text-sm leading-relaxed">{challenge.instructions}</pre>
+					<pre
+						class="whitespace-pre-wrap font-sans text-sm leading-relaxed">{challenge.instructions}</pre>
 				</div>
 			</div>
 

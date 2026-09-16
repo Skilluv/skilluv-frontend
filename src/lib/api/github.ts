@@ -43,9 +43,7 @@ export const githubApi = {
 
 	/** Somebody's public repositories, as last synced. */
 	repos(username: string) {
-		return api.get<ApiResponse<{ repos: unknown[] }>>(
-			`/u/${encodeURIComponent(username)}/repos`
-		);
+		return api.get<ApiResponse<{ repos: unknown[] }>>(`/u/${encodeURIComponent(username)}/repos`);
 	}
 };
 

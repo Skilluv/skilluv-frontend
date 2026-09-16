@@ -8,6 +8,7 @@
 	import Input from '$components/ui/Input.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import { Check, Copy, Mail, ShieldCheck, Users } from '@lucide/svelte';
+	import Alert from '$components/ui/Alert.svelte';
 
 	// Form state
 	let githubLogin = $state('');
@@ -130,7 +131,9 @@
 
 	<!-- Ce que fait Skilluv -->
 	<section class="space-y-4">
-		<h2 class="font-heading text-2xl text-text-primary">{i18n.t('p26.forMaintainers.whatSkilluvTitle')}</h2>
+		<h2 class="font-heading text-2xl text-text-primary">
+			{i18n.t('p26.forMaintainers.whatSkilluvTitle')}
+		</h2>
 		<ul class="space-y-3">
 			<li class="flex gap-3">
 				<Users class="text-primary shrink-0 mt-0.5" size={20} />
@@ -141,11 +144,10 @@
 			<li class="flex gap-3">
 				<Check class="text-primary shrink-0 mt-0.5" size={20} />
 				<span class="text-text-primary">
-					{i18n.t('p26.forMaintainers.whatSkilluvBullet2Prefix')} <code class="font-mono text-sm text-accent"
-						>skilluv-challenge</code
-					> {i18n.t('p26.forMaintainers.whatSkilluvBullet2Suffix')} <code class="font-mono text-sm text-accent"
-						>good first issue</code
-					>).
+					{i18n.t('p26.forMaintainers.whatSkilluvBullet2Prefix')}
+					<code class="font-mono text-sm text-accent">skilluv-challenge</code>
+					{i18n.t('p26.forMaintainers.whatSkilluvBullet2Suffix')}
+					<code class="font-mono text-sm text-accent">good first issue</code>).
 				</span>
 			</li>
 			<li class="flex gap-3">
@@ -159,7 +161,9 @@
 
 	<!-- Ce que vous recevez -->
 	<section class="space-y-4">
-		<h2 class="font-heading text-2xl text-text-primary">{i18n.t('p26.forMaintainers.whatReceiveTitle')}</h2>
+		<h2 class="font-heading text-2xl text-text-primary">
+			{i18n.t('p26.forMaintainers.whatReceiveTitle')}
+		</h2>
 		<ul class="space-y-3">
 			<li class="flex gap-3">
 				<Mail class="text-accent shrink-0 mt-0.5" size={20} />
@@ -185,7 +189,9 @@
 	<!-- Badge -->
 	<section class="space-y-4">
 		<div class="flex flex-wrap items-center gap-3">
-			<h2 class="font-heading text-2xl text-text-primary">{i18n.t('p26.forMaintainers.badgeTitle')}</h2>
+			<h2 class="font-heading text-2xl text-text-primary">
+				{i18n.t('p26.forMaintainers.badgeTitle')}
+			</h2>
 			<Badge variant="accent">{i18n.t('p26.forMaintainers.badgeNew')}</Badge>
 		</div>
 		<p class="text-text-muted">
@@ -193,7 +199,14 @@
 		</p>
 		<div class="rounded-2xl bg-surface-elevated p-6 space-y-4">
 			<div class="flex justify-center">
-				<img src={badgeUrl} alt={i18n.t('p26.forMaintainers.badgeAlt')} width="140" height="32" loading="lazy" class="h-8" />
+				<img
+					src={badgeUrl}
+					alt={i18n.t('p26.forMaintainers.badgeAlt')}
+					width="140"
+					height="32"
+					loading="lazy"
+					class="h-8"
+				/>
 			</div>
 			<div class="relative">
 				<textarea
@@ -201,8 +214,7 @@
 					rows="4"
 					aria-label={i18n.t('p26.forMaintainers.badgeMarkdownAria')}
 					class="w-full resize-none overflow-x-auto rounded-xl bg-surface-overlay p-4 text-xs font-mono text-text-primary focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
-					value={badgeMarkdown}
-				></textarea>
+					value={badgeMarkdown}></textarea>
 				<button
 					type="button"
 					onclick={copyBadge}
@@ -241,20 +253,13 @@
 
 	<!-- Form subscribe -->
 	<section class="space-y-4">
-		<h2 class="font-heading text-2xl text-text-primary">{i18n.t('p26.forMaintainers.formTitle')}</h2>
+		<h2 class="font-heading text-2xl text-text-primary">
+			{i18n.t('p26.forMaintainers.formTitle')}
+		</h2>
 		{#if submitSuccess}
-			<div
-				class="rounded-2xl border border-success/30 bg-success/10 p-6 space-y-3"
-				role="status"
-			>
-				<div class="flex items-center gap-2 text-success font-semibold">
-					<Check size={20} />
-					{i18n.t('p26.forMaintainers.successTitle')}
-				</div>
-				<p class="text-text-primary">
-					{i18n.t('p26.forMaintainers.successMessage', { email: submitSuccess.email })}
-				</p>
-			</div>
+			<Alert tone="success" size="lg" title={i18n.t('p26.forMaintainers.successTitle')}>
+				{i18n.t('p26.forMaintainers.successMessage', { email: submitSuccess.email })}
+			</Alert>
 		{:else}
 			<form
 				class="rounded-2xl bg-surface-elevated p-6 space-y-4"

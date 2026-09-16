@@ -45,7 +45,8 @@ export const portfoliosEn: PortfolioTranslations = {
 		handleLabel: 'Handle',
 		handlePlaceholder: 'your-username',
 		urlLabel: 'Profile URL',
-		urlHint: 'Filled in from your handle where the platform states its URL shape. Edit it if it is wrong.',
+		urlHint:
+			'Filled in from your handle where the platform states its URL shape. Edit it if it is wrong.',
 		itemsLabel: 'Count',
 		reachLabel: 'Reach',
 		figuresOptional: 'Both figures are optional. Leave them empty rather than guessing.',

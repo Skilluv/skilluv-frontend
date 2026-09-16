@@ -103,11 +103,7 @@
 {:else if loadError}
 	<Alert tone="error">{loadError}</Alert>
 {:else if slices.length === 0}
-	<EmptyState
-		title={i18n.t('openSlices.empty')}
-		body={i18n.t('openSlices.emptyHint')}
-		size="sm"
-	/>
+	<EmptyState title={i18n.t('openSlices.empty')} body={i18n.t('openSlices.emptyHint')} size="sm" />
 {:else}
 	<ul class="space-y-2" data-testid={testId}>
 		{#each slices as slice (slice.slice_id)}

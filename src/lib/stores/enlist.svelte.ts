@@ -56,8 +56,7 @@ function readStorage(): Persisted | null {
 		const picks = Array.isArray(parsed.picks)
 			? parsed.picks
 					.filter(
-						(p): p is PathPick =>
-							!!p && typeof p.slug === 'string' && typeof p.name === 'string'
+						(p): p is PathPick => !!p && typeof p.slug === 'string' && typeof p.name === 'string'
 					)
 					.slice(0, MAX_PATHS)
 			: [];

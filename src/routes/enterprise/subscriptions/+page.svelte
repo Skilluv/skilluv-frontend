@@ -54,9 +54,14 @@
 	}
 
 	async function cancelSub() {
-		if (!confirm(i18n.locale === 'fr'
-			? 'Annuler à la fin de la période courante ?'
-			: 'Cancel at end of current period?')) return;
+		if (
+			!confirm(
+				i18n.locale === 'fr'
+					? 'Annuler à la fin de la période courante ?'
+					: 'Cancel at end of current period?'
+			)
+		)
+			return;
 		cancelling = true;
 		try {
 			await subscriptionsApi.cancel();
@@ -73,8 +78,10 @@
 		const noDec = ['NGN', 'XOF', 'XAF', 'UGX', 'TZS', 'RWF', 'KES', 'GHS'].includes(curr);
 		try {
 			return new Intl.NumberFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
-				style: 'currency', currency: curr,
-				minimumFractionDigits: noDec ? 0 : 2, maximumFractionDigits: noDec ? 0 : 2
+				style: 'currency',
+				currency: curr,
+				minimumFractionDigits: noDec ? 0 : 2,
+				maximumFractionDigits: noDec ? 0 : 2
 			}).format(cents / 100);
 		} catch {
 			return `${(cents / 100).toFixed(noDec ? 0 : 2)} ${curr}`;
@@ -84,15 +91,23 @@
 	function fmtDate(iso: string | null): string {
 		if (!iso) return '—';
 		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
-			day: '2-digit', month: 'long', year: 'numeric'
+			day: '2-digit',
+			month: 'long',
+			year: 'numeric'
 		}).format(new Date(iso));
 	}
 
-	function statusMeta(s: string): { label: string; variant: 'success' | 'warning' | 'error' | 'default' } {
-		return s === 'active' || s === 'trialing' ? { label: s, variant: 'success' }
-			: s === 'past_due' ? { label: s, variant: 'warning' }
-			: s === 'canceled' || s === 'unpaid' ? { label: s, variant: 'error' }
-			: { label: s, variant: 'default' };
+	function statusMeta(s: string): {
+		label: string;
+		variant: 'success' | 'warning' | 'error' | 'default';
+	} {
+		return s === 'active' || s === 'trialing'
+			? { label: s, variant: 'success' }
+			: s === 'past_due'
+				? { label: s, variant: 'warning' }
+				: s === 'canceled' || s === 'unpaid'
+					? { label: s, variant: 'error' }
+					: { label: s, variant: 'default' };
 	}
 
 	function planLabel(slug: string): string {
@@ -110,7 +125,11 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Abonnements | Skilluv Enterprise' : 'Subscriptions | Skilluv Enterprise'}</title>
+	<title
+		>{i18n.locale === 'fr'
+			? 'Abonnements | Skilluv Enterprise'
+			: 'Subscriptions | Skilluv Enterprise'}</title
+	>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
@@ -149,7 +168,7 @@
 		{#if current}
 			{@const s = statusMeta(current.status)}
 			<div class="mb-8 rounded-2xl border border-border bg-surface-elevated p-6 sm:p-8">
-					<div class="mb-4 flex items-center gap-2 flex-wrap">
+				<div class="mb-4 flex items-center gap-2 flex-wrap">
 					<Badge variant={s.variant} size="md">{s.label}</Badge>
 					{#if current.cancel_at_period_end}
 						<Badge variant="warning" size="sm">
@@ -197,11 +216,18 @@
 					</p>
 					<h2 class="text-3xl font-black tracking-tight">
 						{current
-							? (i18n.locale === 'fr' ? 'Changer de plan.' : 'Change plan.')
-							: (i18n.locale === 'fr' ? 'Choisir un plan.' : 'Choose a plan.')}
+							? i18n.locale === 'fr'
+								? 'Changer de plan.'
+								: 'Change plan.'
+							: i18n.locale === 'fr'
+								? 'Choisir un plan.'
+								: 'Choose a plan.'}
 					</h2>
 				</div>
-				<a href="/pricing" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+				<a
+					href="/pricing"
+					class="inline-flex items-center gap-1 text-sm underline hover:text-primary"
+				>
 					{i18n.locale === 'fr' ? 'Comparer avec crédits' : 'Compare with credits'}
 					<ArrowRight size={14} strokeWidth={2} />
 				</a>
@@ -211,10 +237,18 @@
 				{#each plans as p, i}
 					{@const isCurrent = current?.plan_slug === p.slug}
 					{@const isBest = i === 1}
-					<article class="flex flex-col rounded-2xl border {isBest ? 'border-accent' : isCurrent ? 'border-primary' : 'border-border'} bg-surface-elevated p-6 relative">
+					<article
+						class="flex flex-col rounded-2xl border {isBest
+							? 'border-accent'
+							: isCurrent
+								? 'border-primary'
+								: 'border-border'} bg-surface-elevated p-6 relative"
+					>
 						{#if isBest && !isCurrent}
 							<div class="absolute -top-3 left-6">
-								<Badge variant="accent" size="md">{i18n.locale === 'fr' ? 'Recommandé' : 'Recommended'}</Badge>
+								<Badge variant="accent" size="md"
+									>{i18n.locale === 'fr' ? 'Recommandé' : 'Recommended'}</Badge
+								>
 							</div>
 						{/if}
 						{#if isCurrent}
@@ -237,7 +271,9 @@
 							<div class="text-xs text-text-muted">/ {i18n.locale === 'fr' ? 'mois' : 'month'}</div>
 						</div>
 
-						<div class="mb-6 flex-1 rounded-xl border border-border bg-surface-overlay p-4 text-center">
+						<div
+							class="mb-6 flex-1 rounded-xl border border-border bg-surface-overlay p-4 text-center"
+						>
 							<div class="text-2xl font-black text-primary">{p.credits_included}</div>
 							<div class="text-xs uppercase tracking-wider text-text-muted">
 								{i18n.locale === 'fr' ? 'crédits/mois' : 'credits/month'}
@@ -251,8 +287,12 @@
 							onclick={() => subscribe(p.slug)}
 						>
 							{isCurrent
-								? (i18n.locale === 'fr' ? 'Plan actuel' : 'Current')
-								: (i18n.locale === 'fr' ? 'Souscrire' : 'Subscribe')}
+								? i18n.locale === 'fr'
+									? 'Plan actuel'
+									: 'Current'
+								: i18n.locale === 'fr'
+									? 'Souscrire'
+									: 'Subscribe'}
 						</Button>
 					</article>
 				{/each}

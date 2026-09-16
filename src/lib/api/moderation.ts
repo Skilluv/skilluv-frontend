@@ -1,9 +1,4 @@
-import type {
-	ApiPaginatedResponse,
-	ApiResponse,
-	ForumModerateAction,
-	MuteScope
-} from '$lib/types';
+import type { ApiPaginatedResponse, ApiResponse, ForumModerateAction, MuteScope } from '$lib/types';
 import { createApiClient } from './client';
 
 const api = createApiClient();

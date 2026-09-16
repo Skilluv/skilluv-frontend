@@ -82,8 +82,7 @@ export const designFr: DesignTranslations = {
 		otherEntries: 'Les autres propositions',
 		yourEntry: 'Ta proposition',
 		noStanding: 'Pas encore classé',
-		awardsNotice:
-			'Un concours tranche un brief. Les awards annuels tranchent l’année.'
+		awardsNotice: 'Un concours tranche un brief. Les awards annuels tranchent l’année.'
 	},
 	missions: {
 		boards: {
@@ -93,12 +92,13 @@ export const designFr: DesignTranslations = {
 			},
 			security: {
 				title: 'Missions sécurité',
-				subtitle: 'Du travail payé, cadré par des entreprises, livré par des gens qui cassent avec méthode.'
+				subtitle:
+					'Du travail payé, cadré par des entreprises, livré par des gens qui cassent avec méthode.'
 			},
 			ai: {
 				title: 'Missions IA',
 				subtitle:
-					"Du travail payé sur des modèles, des jeux de données et des agents. Même workflow, même commission et même voie de litige que tous les autres domaines."
+					'Du travail payé sur des modèles, des jeux de données et des agents. Même workflow, même commission et même voie de litige que tous les autres domaines.'
 			}
 		},
 		howItWorksTitle: 'Comment ça marche',

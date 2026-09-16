@@ -73,9 +73,8 @@ describe('aiCompanionApi', () => {
 	});
 
 	it('the mirrored limits match what the backend enforces', async () => {
-		const { AI_DAILY_QUOTA, AI_MAX_PROMPT_CHARS, AI_MAX_CODE_CHARS } = await import(
-			'../../src/lib/api/ai_companion'
-		);
+		const { AI_DAILY_QUOTA, AI_MAX_PROMPT_CHARS, AI_MAX_CODE_CHARS } =
+			await import('../../src/lib/api/ai_companion');
 		// services::ai_companion — DAILY_QUOTA / MAX_PROMPT_CHARS / MAX_CODE_CHARS.
 		expect(AI_DAILY_QUOTA).toBe(10);
 		expect(AI_MAX_PROMPT_CHARS).toBe(4000);

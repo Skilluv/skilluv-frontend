@@ -78,10 +78,7 @@ export const peerMatchingApi = {
 
 	/** Each side writes its own notes and rating on the shared session row. */
 	checkIn(sessionId: string, payload: CheckInRequest) {
-		return api.patch<ApiResponse<{ session: PeerSession }>>(
-			`/peer-sessions/${sessionId}`,
-			payload
-		);
+		return api.patch<ApiResponse<{ session: PeerSession }>>(`/peer-sessions/${sessionId}`, payload);
 	},
 
 	cancelSession(sessionId: string) {

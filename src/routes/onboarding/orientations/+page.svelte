@@ -111,11 +111,7 @@
 			     only the two roles every member already has. -->
 			<div class="mx-auto mt-8 max-w-xl">
 				<DiscordLinkCard>
-					<Button
-						variant="ghost"
-						size="sm"
-						onclick={() => goto(resolve('/challenges/onboarding'))}
-					>
+					<Button variant="ghost" size="sm" onclick={() => goto(resolve('/challenges/onboarding'))}>
 						{i18n.t('orientations.catalog.continueCta')}
 					</Button>
 				</DiscordLinkCard>

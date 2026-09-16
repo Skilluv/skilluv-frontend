@@ -103,7 +103,13 @@
 			<p class="mt-1 text-sm text-text-muted">{i18n.t('securityScope.safeHarbourBody')}</p>
 			<div class="mt-3 flex flex-wrap items-center gap-3">
 				<Button href="/security/report" size="sm">{i18n.t('securityScope.reportCta')}</Button>
-				<Button href={scope.policy_url} size="sm" variant="ghost" target="_blank" rel="noopener noreferrer">
+				<Button
+					href={scope.policy_url}
+					size="sm"
+					variant="ghost"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
 					<ExternalLink size={14} />
 					{i18n.t('securityScope.policyCta')}
 				</Button>
@@ -117,7 +123,9 @@
 				</h2>
 				<ul class="space-y-1.5">
 					{#each scope.in_scope_hosts as host (host)}
-						<li class="rounded-lg border border-border bg-surface-elevated px-3 py-2 font-mono text-sm text-text">
+						<li
+							class="rounded-lg border border-border bg-surface-elevated px-3 py-2 font-mono text-sm text-text"
+						>
 							{host}
 						</li>
 					{/each}
@@ -125,7 +133,9 @@
 			</section>
 
 			<section class="space-y-2" data-testid="security-out-of-scope">
-				<h2 class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted">
+				<h2
+					class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted"
+				>
 					<TriangleAlert size={14} />
 					{i18n.t('securityScope.outOfScopeTitle')}
 				</h2>
@@ -133,7 +143,9 @@
 				     is a rule somebody can argue with after the fact. -->
 				<ul class="space-y-1.5">
 					{#each scope.out_of_scope as rule (rule)}
-						<li class="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-muted">
+						<li
+							class="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-muted"
+						>
 							{rule}
 						</li>
 					{/each}
@@ -141,8 +153,11 @@
 			</section>
 		</div>
 
-		<section class="flex flex-wrap gap-x-6 gap-y-2 rounded-xl border border-border bg-surface-elevated p-5 text-sm">
-			<span class="text-text">{i18n.t('securityScope.slaLabel', { n: scope.triage_sla_days })}</span>
+		<section
+			class="flex flex-wrap gap-x-6 gap-y-2 rounded-xl border border-border bg-surface-elevated p-5 text-sm"
+		>
+			<span class="text-text">{i18n.t('securityScope.slaLabel', { n: scope.triage_sla_days })}</span
+			>
 			<span class="text-text">
 				{i18n.t('securityScope.embargoLabel', { n: scope.default_embargo_days })}
 			</span>
@@ -152,7 +167,10 @@
 			</span>
 		</section>
 
-		<section class="rounded-xl border border-border bg-surface-elevated p-5" data-testid="security-research-mode-note">
+		<section
+			class="rounded-xl border border-border bg-surface-elevated p-5"
+			data-testid="security-research-mode-note"
+		>
 			<h2 class="text-sm font-bold text-text">{i18n.t('securityScope.researchModeTitle')}</h2>
 			<p class="mt-1 text-sm text-text-muted">
 				{i18n.t('securityScope.researchModeBody', { n: scope.research_mode.multiplier })}

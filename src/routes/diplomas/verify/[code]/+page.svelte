@@ -37,9 +37,11 @@
 	}
 
 	function statusColor(status: string) {
-		return status === 'valid' ? 'text-success'
-			: status === 'expired' ? 'text-warning'
-			: 'text-error';
+		return status === 'valid'
+			? 'text-success'
+			: status === 'expired'
+				? 'text-warning'
+				: 'text-error';
 	}
 
 	function statusLabel(status: string) {
@@ -57,7 +59,13 @@
 </script>
 
 <svelte:head>
-	<title>{diploma ? `${diploma.holder.display_name} | ${diploma.certification.title}` : (i18n.locale === 'fr' ? 'Vérification' : 'Verification')} | Skilluv</title>
+	<title
+		>{diploma
+			? `${diploma.holder.display_name} | ${diploma.certification.title}`
+			: i18n.locale === 'fr'
+				? 'Vérification'
+				: 'Verification'} | Skilluv</title
+	>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-14 sm:py-20">
@@ -83,7 +91,13 @@
 		</div>
 	{:else if diploma}
 		<!-- Big verification card -->
-		<div class="mb-6 rounded-2xl border {diploma.status === 'valid' ? 'border-success/40' : diploma.status === 'expired' ? 'border-warning/40' : 'border-error/40'} bg-surface-elevated p-8 sm:p-10">
+		<div
+			class="mb-6 rounded-2xl border {diploma.status === 'valid'
+				? 'border-success/40'
+				: diploma.status === 'expired'
+					? 'border-warning/40'
+					: 'border-error/40'} bg-surface-elevated p-8 sm:p-10"
+		>
 			<div class="mb-6 flex items-center justify-between">
 				<div>
 					<p class="text-xs font-bold uppercase tracking-widest text-text-muted">
@@ -93,7 +107,9 @@
 						{statusLabel(diploma.status)}
 					</div>
 				</div>
-				<div class="rounded-xl border border-border bg-surface-overlay px-4 py-2 font-mono text-lg font-bold tracking-widest">
+				<div
+					class="rounded-xl border border-border bg-surface-overlay px-4 py-2 font-mono text-lg font-bold tracking-widest"
+				>
 					{diploma.verification_code}
 				</div>
 			</div>
@@ -102,7 +118,9 @@
 				<p class="mb-1 text-xs font-bold uppercase tracking-wider text-text-muted">
 					{i18n.locale === 'fr' ? 'Attribué à' : 'Issued to'}
 				</p>
-				<div class="text-3xl sm:text-4xl font-black tracking-tight">{diploma.holder.display_name}</div>
+				<div class="text-3xl sm:text-4xl font-black tracking-tight">
+					{diploma.holder.display_name}
+				</div>
 				<div class="mt-1 font-mono text-sm text-text-muted">@{diploma.holder.username}</div>
 			</div>
 
@@ -127,8 +145,12 @@
 				<div>
 					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 						{diploma.status === 'expired'
-							? (i18n.locale === 'fr' ? 'Expiré le' : 'Expired')
-							: (i18n.locale === 'fr' ? 'Valide jusqu\'au' : 'Valid until')}
+							? i18n.locale === 'fr'
+								? 'Expiré le'
+								: 'Expired'
+							: i18n.locale === 'fr'
+								? "Valide jusqu'au"
+								: 'Valid until'}
 					</p>
 					<p class="mt-1 font-semibold">{fmtDate(diploma.expires_at)}</p>
 				</div>

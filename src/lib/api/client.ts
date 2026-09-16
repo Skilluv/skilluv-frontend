@@ -60,7 +60,9 @@ async function tryRefresh(customFetch: typeof fetch, baseUrl: string): Promise<b
 				return false;
 			} finally {
 				// Release after tick so the awaiting requests all see the same result.
-				queueMicrotask(() => { inflightRefresh = null; });
+				queueMicrotask(() => {
+					inflightRefresh = null;
+				});
 			}
 		})();
 	}
@@ -131,10 +133,7 @@ async function sleep(ms: number): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export function createApiClient(
-	customFetch: typeof fetch = fetch,
-	baseUrl: string = apiBase()
-) {
+export function createApiClient(customFetch: typeof fetch = fetch, baseUrl: string = apiBase()) {
 	async function fire(url: string, options?: RequestInit): Promise<Response> {
 		// Double-submit CSRF: echo the non-httpOnly CSRF cookie into the header on
 		// state-changing requests. The backend middleware checks that the header
@@ -239,9 +238,7 @@ export function createApiClient(
 							window.location.replace(`/enterprise/onboarding?next=${next}`);
 						}
 					} else if (!alreadyOnSecurity) {
-						window.location.replace(
-							`/settings/security?setup_totp=required&next=${next}`
-						);
+						window.location.replace(`/settings/security?setup_totp=required&next=${next}`);
 					}
 				} else if (code === 'AUTH_EMAIL_VERIFY_REQUIRED') {
 					if (!alreadyOnVerify) {

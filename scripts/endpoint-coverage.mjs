@@ -57,9 +57,22 @@ const UNREACHABLE = [
 ];
 
 const SKIP = [
-	'/admin', '/enterprise', '/webhooks', '/public/v1', '/v1/', '/scim',
-	'/health', '/metrics', '/.well-known', '/security.txt', '/manifest',
-	'/stripe/', '/dev/', '/email/', '/i18n/', '/oauth'
+	'/admin',
+	'/enterprise',
+	'/webhooks',
+	'/public/v1',
+	'/v1/',
+	'/scim',
+	'/health',
+	'/metrics',
+	'/.well-known',
+	'/security.txt',
+	'/manifest',
+	'/stripe/',
+	'/dev/',
+	'/email/',
+	'/i18n/',
+	'/oauth'
 ];
 
 function walk(dir, exts, out = []) {
@@ -75,7 +88,7 @@ function walk(dir, exts, out = []) {
 /** Collapse `${…}` with balanced braces, then `{id}` — both become `{}`. */
 function collapse(s) {
 	let out = '';
-	for (let i = 0; i < s.length; ) {
+	for (let i = 0; i < s.length;) {
 		if (s.startsWith('${', i)) {
 			let depth = 1;
 			let j = i + 2;
@@ -179,7 +192,9 @@ const rows = [...byModule.entries()]
 	.sort((a, b) => b[1].missing.length - a[1].missing.length || a[0].localeCompare(b[0]));
 
 for (const [mod, r] of rows) {
-	console.log(`${mod.padEnd(26)} ${String(r.done).padStart(3)}/${String(r.total).padEnd(3)} missing ${r.missing.length}`);
+	console.log(
+		`${mod.padEnd(26)} ${String(r.done).padStart(3)}/${String(r.total).padEnd(3)} missing ${r.missing.length}`
+	);
 	if (list) for (const p of r.missing) console.log('   ', p);
 }
 if (rows.length === 0) console.log('nothing left.');

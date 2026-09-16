@@ -238,7 +238,8 @@
 		<p class="flex items-center gap-2 text-sm text-success" data-testid="design-upload-done">
 			<FileCheck size={16} />
 			{i18n.t('designUpload.done')}
-			{#if previewStored}<span class="text-text-muted">{i18n.t('designUpload.previewDone')}</span>{/if}
+			{#if previewStored}<span class="text-text-muted">{i18n.t('designUpload.previewDone')}</span
+				>{/if}
 		</p>
 	{/if}
 

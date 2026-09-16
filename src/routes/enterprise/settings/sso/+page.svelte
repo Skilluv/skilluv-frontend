@@ -92,9 +92,10 @@
 			.filter(Boolean);
 
 		if (!form.email_domains.length) {
-			configError = i18n.locale === 'fr'
-				? 'Au moins un domaine email est requis.'
-				: 'At least one email domain is required.';
+			configError =
+				i18n.locale === 'fr'
+					? 'Au moins un domaine email est requis.'
+					: 'At least one email domain is required.';
 			saving = false;
 			return;
 		}
@@ -102,9 +103,10 @@
 		// empty to keep the previous value. In that case we skip the write —
 		// the current backend requires client_secret on upsert. Explicit UX:
 		if (config && !form.client_secret) {
-			configError = i18n.locale === 'fr'
-				? 'Ré-entre le client_secret de ton IdP pour confirmer la mise à jour.'
-				: 'Re-enter your IdP client_secret to confirm the update.';
+			configError =
+				i18n.locale === 'fr'
+					? 'Ré-entre le client_secret de ton IdP pour confirmer la mise à jour.'
+					: 'Re-enter your IdP client_secret to confirm the update.';
 			saving = false;
 			return;
 		}
@@ -208,7 +210,7 @@
 			// list groups from the frontend — or paste the token in below.
 			scimGroupsError =
 				i18n.locale === 'fr'
-					? "Colle ton token SCIM ci-dessous pour lister les groupes (ou régénère-le)."
+					? 'Colle ton token SCIM ci-dessous pour lister les groupes (ou régénère-le).'
 					: 'Paste your SCIM token below to list groups (or regenerate it).';
 			return;
 		}
@@ -223,10 +225,7 @@
 		}
 	}
 
-	async function setMappedRole(
-		groupId: string,
-		mappedRole: 'recruiter' | 'enterprise' | null
-	) {
+	async function setMappedRole(groupId: string, mappedRole: 'recruiter' | 'enterprise' | null) {
 		try {
 			await enterpriseSsoApi.setGroupMappedRole(groupId, mappedRole);
 			// Reflect the change locally without a refetch.
@@ -338,11 +337,7 @@
 					<label for="default-role-select" class="mb-1.5 block text-sm font-medium">
 						{i18n.locale === 'fr' ? 'Rôle par défaut' : 'Default role'}
 					</label>
-					<Select
-						items={defaultRoleOptions}
-						bind:value={form.default_role}
-						class="w-full"
-					/>
+					<Select items={defaultRoleOptions} bind:value={form.default_role} class="w-full" />
 					<p class="mt-1 text-xs text-text-muted">
 						{i18n.locale === 'fr'
 							? 'Rôle assigné aux users provisionnés (JIT au 1er login SSO ou via SCIM).'
@@ -410,8 +405,12 @@
 				<div class="flex flex-wrap gap-3">
 					<Button variant="accent" size="lg" type="submit" loading={saving}>
 						{config
-							? i18n.locale === 'fr' ? 'Mettre à jour' : 'Update'
-							: i18n.locale === 'fr' ? 'Enregistrer' : 'Save'}
+							? i18n.locale === 'fr'
+								? 'Mettre à jour'
+								: 'Update'
+							: i18n.locale === 'fr'
+								? 'Enregistrer'
+								: 'Save'}
 					</Button>
 					{#if config}
 						<Button variant="ghost" size="lg" onclick={deleteConfig} loading={deleting}>
@@ -521,10 +520,7 @@
 												onchange={(e) =>
 													setMappedRole(
 														g.id,
-														(e.currentTarget.value || null) as
-															| 'recruiter'
-															| 'enterprise'
-															| null
+														(e.currentTarget.value || null) as 'recruiter' | 'enterprise' | null
 													)}
 												class="h-8 rounded-lg border border-border bg-surface-elevated px-2 text-xs focus:border-primary focus:ring-1 focus:ring-primary"
 											>
@@ -574,9 +570,7 @@
 		</div>
 
 		<div>
-			<p class="mb-1 text-xs font-bold uppercase tracking-widest text-text-muted">
-				SCIM Base URL
-			</p>
+			<p class="mb-1 text-xs font-bold uppercase tracking-widest text-text-muted">SCIM Base URL</p>
 			<div class="flex items-center gap-2 rounded-lg border border-border bg-surface-overlay p-2">
 				<code class="flex-1 truncate font-mono text-xs">{scimBaseUrl}</code>
 				<button
@@ -591,12 +585,18 @@
 
 		<div class="rounded-xl border border-border bg-surface-overlay p-3 text-xs text-text-muted">
 			<p class="mb-1 font-medium">
-				{i18n.locale === 'fr' ? 'Dans ton IdP (Okta / Azure AD / …)' : 'In your IdP (Okta / Azure AD / …)'}
+				{i18n.locale === 'fr'
+					? 'Dans ton IdP (Okta / Azure AD / …)'
+					: 'In your IdP (Okta / Azure AD / …)'}
 			</p>
 			<ul class="ml-4 list-disc space-y-1">
 				<li>Base URL: {scimBaseUrl}</li>
 				<li>Auth: HTTP Header · <code>Authorization: Bearer &lt;token&gt;</code></li>
-				<li>{i18n.locale === 'fr' ? 'Push d’utilisateurs et de groupes activé.' : 'Enable Push Users and Push Groups.'}</li>
+				<li>
+					{i18n.locale === 'fr'
+						? 'Push d’utilisateurs et de groupes activé.'
+						: 'Enable Push Users and Push Groups.'}
+				</li>
 			</ul>
 		</div>
 	</div>

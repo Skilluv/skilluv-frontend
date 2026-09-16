@@ -7,11 +7,7 @@
  * A runner AVANT toute spec user necessitant storageState.
  */
 import { test, expect } from '@playwright/test';
-import {
-	setupUserSession,
-	userStoragePath,
-	userCredentialsPath
-} from './_helpers/user-session';
+import { setupUserSession, userStoragePath, userCredentialsPath } from './_helpers/user-session';
 import fs from 'node:fs';
 
 const HAS_BACK = Boolean(process.env.PUBLIC_API_BASE_URL);

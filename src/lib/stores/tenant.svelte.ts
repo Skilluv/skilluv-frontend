@@ -13,7 +13,9 @@ class TenantState {
 	loaded = $state(false);
 
 	get isRoot(): boolean {
-		return !this.current || this.current.id === ROOT_TENANT_ID || this.current.slug === ROOT_TENANT_SLUG;
+		return (
+			!this.current || this.current.id === ROOT_TENANT_ID || this.current.slug === ROOT_TENANT_SLUG
+		);
 	}
 
 	get isWhiteLabel(): boolean {

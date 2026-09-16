@@ -14,10 +14,7 @@
 	 */
 	import { onMount } from 'svelte';
 	import { BadgeCheck, Copy, Share2, XCircle } from '@lucide/svelte';
-	import {
-		attestationApi,
-		type IssuedAttestationVerifyResponse
-	} from '$api/attestation';
+	import { attestationApi, type IssuedAttestationVerifyResponse } from '$api/attestation';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';
@@ -34,9 +31,7 @@
 		| { status: 'error'; message: string }
 	>({ status: 'loading' });
 
-	let attestation = $derived(
-		state.status === 'ready' ? (state.result.attestation ?? null) : null
-	);
+	let attestation = $derived(state.status === 'ready' ? (state.result.attestation ?? null) : null);
 	let isValid = $derived(state.status === 'ready' && state.result.valid);
 	let isRevoked = $derived(state.status === 'ready' && state.result.reason === 'revoked');
 
@@ -92,9 +87,14 @@
 
 <svelte:head>
 	<title>
-		{attestation ? `${attestation.title} — Skilluv` : `${i18n.t('attestationVerify.title')} — Skilluv`}
+		{attestation
+			? `${attestation.title} — Skilluv`
+			: `${i18n.t('attestationVerify.title')} — Skilluv`}
 	</title>
-	<meta name="description" content={attestation?.description ?? i18n.t('attestationVerify.subtitle')} />
+	<meta
+		name="description"
+		content={attestation?.description ?? i18n.t('attestationVerify.subtitle')}
+	/>
 	<meta
 		property="og:title"
 		content={attestation ? `${attestation.title} — Skilluv` : i18n.t('attestationVerify.title')}
@@ -108,7 +108,10 @@
 		     social preview crops to. It is served with a one-hour cache rather
 		     than an immutable one, on purpose: an attestation can be revoked,
 		     and a card cached for a year would keep saying it holds. -->
-		<meta property="og:image" content={attestationApi.issuedCardUrl(attestation.verification_code)} />
+		<meta
+			property="og:image"
+			content={attestationApi.issuedCardUrl(attestation.verification_code)}
+		/>
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
 		<meta name="twitter:card" content="summary_large_image" />
@@ -265,7 +268,9 @@
 							{i18n.t('attestationVerify.codeLabel')}
 						</p>
 						<div class="mt-1.5 flex flex-wrap items-center gap-2">
-							<code class="rounded-lg bg-surface-overlay px-3 py-1.5 font-mono text-sm text-text-primary">
+							<code
+								class="rounded-lg bg-surface-overlay px-3 py-1.5 font-mono text-sm text-text-primary"
+							>
 								{attestation.verification_code}
 							</code>
 							<Button

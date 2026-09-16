@@ -4,7 +4,8 @@
 	import { auth } from '$stores/auth.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';
-	import FilterBar from '$components/ui/FilterBar.svelte';
+	import FilterBar from '$components/ui/FilterBar.svelte';
+
 	import Select from '$components/ui/Select.svelte';
 	import EmptyState from '$components/ui/EmptyState.svelte';
 	import { mentorshipApi, type MentorSummary } from '$api/mentorship';
@@ -24,7 +25,8 @@
 			const params: Record<string, string | number> = {};
 			if (filterExpertise) params.expertise = filterExpertise;
 			if (filterLanguage) params.language = filterLanguage;
-			if (typeof maxRateEur === 'number' && maxRateEur > 0) params.max_rate_cents = maxRateEur * 100;
+			if (typeof maxRateEur === 'number' && maxRateEur > 0)
+				params.max_rate_cents = maxRateEur * 100;
 			const res = await mentorshipApi.listMentors(params);
 			mentors = res.data.mentors;
 		} catch (e) {
@@ -36,7 +38,9 @@
 
 	function fmtRate(cents: number): string {
 		return new Intl.NumberFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
-			style: 'currency', currency: 'EUR', minimumFractionDigits: 0
+			style: 'currency',
+			currency: 'EUR',
+			minimumFractionDigits: 0
 		}).format(cents / 100);
 	}
 
@@ -45,9 +49,12 @@
 
 <svelte:head>
 	<title>{i18n.locale === 'fr' ? 'Mentors | Skilluv' : 'Mentors | Skilluv'}</title>
-	<meta name="description" content={i18n.locale === 'fr'
-		? 'Réserve une session 1-on-1 avec un mentor expérimenté, dans la discipline de ton choix.'
-		: 'Book a 1-on-1 session with an experienced mentor, in the discipline of your choice.'} />
+	<meta
+		name="description"
+		content={i18n.locale === 'fr'
+			? 'Réserve une session 1-on-1 avec un mentor expérimenté, dans la discipline de ton choix.'
+			: 'Book a 1-on-1 session with an experienced mentor, in the discipline of your choice.'}
+	/>
 </svelte:head>
 
 <!-- Hero -->
@@ -59,7 +66,9 @@
 	></div>
 	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
 		<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Mentorship</p>
-		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
+		<h1
+			class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight"
+		>
 			{#if i18n.locale === 'fr'}
 				1 heure.<br />
 				<span class="text-primary">Un mentor.</span>
@@ -135,7 +144,9 @@
 	{#if loading}
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 			{#each Array(6) as _}
-				<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-64 p-6"></div>
+				<div
+					class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-64 p-6"
+				></div>
 			{/each}
 		</div>
 	{:else if mentors.length === 0}
@@ -143,7 +154,7 @@
 			variant="search"
 			title={i18n.locale === 'fr' ? 'Aucun mentor à ces critères.' : 'No mentor for these filters.'}
 			body={i18n.locale === 'fr'
-				? 'Essaie d\'autres skills ou d\'autres domaines, la commu grandit chaque semaine.'
+				? "Essaie d'autres skills ou d'autres domaines, la commu grandit chaque semaine."
 				: 'Try different skills or domains, the community grows every week.'}
 		/>
 	{:else}
@@ -155,7 +166,9 @@
 				>
 					<!-- Header -->
 					<div class="mb-4 flex items-start gap-4">
-						<div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-2xl font-black text-primary">
+						<div
+							class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-2xl font-black text-primary"
+						>
 							{m.display_name.charAt(0)}
 						</div>
 						<div class="min-w-0 flex-1">
@@ -167,7 +180,9 @@
 								<p class="mt-1 text-sm">
 									<span class="text-warning">★</span>
 									<span class="font-bold">{m.avg_rating}</span>
-									<span class="text-text-muted text-xs">({m.total_sessions} {i18n.locale === 'fr' ? 'sessions' : 'sessions'})</span>
+									<span class="text-text-muted text-xs"
+										>({m.total_sessions} {i18n.locale === 'fr' ? 'sessions' : 'sessions'})</span
+									>
 								</p>
 							{/if}
 						</div>
@@ -189,7 +204,9 @@
 							<div class="text-2xl font-black text-accent">{fmtRate(m.hourly_rate_eur_cents)}</div>
 							<div class="text-xs text-text-muted">/ {i18n.locale === 'fr' ? 'heure' : 'hour'}</div>
 						</div>
-						<span class="text-xs font-bold uppercase tracking-wider text-primary group-hover:underline">
+						<span
+							class="text-xs font-bold uppercase tracking-wider text-primary group-hover:underline"
+						>
 							{i18n.locale === 'fr' ? 'Voir profil →' : 'View profile →'}
 						</span>
 					</div>
@@ -227,14 +244,14 @@
 			<span class="text-accent">{i18n.locale === 'fr' ? 'qui compte.' : 'that counts.'}</span>
 		</h2>
 		<div class="grid gap-5 sm:grid-cols-3">
-			{#each [
-				{ icon: '◎', fr: { t: 'Sur ton sujet, pas en théorie', d: 'Chaque mentor déclare ses domaines et ses compétences. Tu choisis sur cette base, et tu arrives avec ce sur quoi tu bloques.' }, en: { t: 'On your subject, not in theory', d: 'Every mentor declares their disciplines and what they can do. You choose on that basis, and you bring what you are stuck on.' } },
-				{ icon: '★', fr: { t: 'Reviews vérifiées', d: 'Seuls les mentorés ayant eu une session complétée peuvent noter. Une note affichée ici a été payée et suivie.' }, en: { t: 'Verified reviews', d: 'Only mentees with a completed session can rate. A rating shown here was paid for and attended.' } },
-				{ icon: '⌾', fr: { t: 'Payé comme tu peux', d: 'Carte ou Mobile Money, selon ton pays et la devise de la session.' }, en: { t: 'Paid the way you can', d: 'Card or Mobile Money, depending on your country and the session currency.' } }
-			] as p}
+			{#each [{ icon: '◎', fr: { t: 'Sur ton sujet, pas en théorie', d: 'Chaque mentor déclare ses domaines et ses compétences. Tu choisis sur cette base, et tu arrives avec ce sur quoi tu bloques.' }, en: { t: 'On your subject, not in theory', d: 'Every mentor declares their disciplines and what they can do. You choose on that basis, and you bring what you are stuck on.' } }, { icon: '★', fr: { t: 'Reviews vérifiées', d: 'Seuls les mentorés ayant eu une session complétée peuvent noter. Une note affichée ici a été payée et suivie.' }, en: { t: 'Verified reviews', d: 'Only mentees with a completed session can rate. A rating shown here was paid for and attended.' } }, { icon: '⌾', fr: { t: 'Payé comme tu peux', d: 'Carte ou Mobile Money, selon ton pays et la devise de la session.' }, en: { t: 'Paid the way you can', d: 'Card or Mobile Money, depending on your country and the session currency.' } }] as p}
 				{@const t = i18n.locale === 'fr' ? p.fr : p.en}
 				<div class="rounded-2xl border border-border bg-surface-elevated p-6">
-					<div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-xl text-primary">{p.icon}</div>
+					<div
+						class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-xl text-primary"
+					>
+						{p.icon}
+					</div>
 					<h3 class="text-base font-semibold">{t.t}</h3>
 					<p class="mt-2 text-sm leading-relaxed text-text-muted">{t.d}</p>
 				</div>

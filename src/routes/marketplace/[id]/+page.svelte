@@ -255,7 +255,11 @@
 							{i18n.t('marketplace.buyCta')}
 						</Button>
 					{:else if !auth.user}
-						<Button variant="accent" class="mt-5 w-full" href="/auth/login?redirect=/marketplace/{item.id}">
+						<Button
+							variant="accent"
+							class="mt-5 w-full"
+							href="/auth/login?redirect=/marketplace/{item.id}"
+						>
 							{i18n.t('marketplace.signInToBuy')}
 						</Button>
 					{/if}

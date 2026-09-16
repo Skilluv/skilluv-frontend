@@ -20,7 +20,10 @@ const PAGES = [
 	{ slug: 'home', path: '/' },
 	{ slug: 'pricing', path: '/pricing' },
 	{ slug: 'for-maintainers', path: '/for-maintainers' },
-	{ slug: 'verify', path: '/verify/000000000000000000000000000000000000000000000000000000000deadbeef' }
+	{
+		slug: 'verify',
+		path: '/verify/000000000000000000000000000000000000000000000000000000000deadbeef'
+	}
 ];
 
 async function main() {

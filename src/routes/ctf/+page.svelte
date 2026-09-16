@@ -129,7 +129,10 @@
 		{:else}
 			<ul class="space-y-3">
 				{#each ranges as row (row.challenge.id)}
-					<li class="rounded-xl border border-border bg-surface-elevated p-4" data-testid="ctf-range">
+					<li
+						class="rounded-xl border border-border bg-surface-elevated p-4"
+						data-testid="ctf-range"
+					>
 						<div class="flex flex-wrap items-start justify-between gap-2">
 							<div class="min-w-0 space-y-1">
 								<h3 class="truncate text-sm font-bold text-text">{row.challenge.title}</h3>
@@ -201,7 +204,10 @@
 									class="h-9 w-9 rounded-full object-cover"
 								/>
 							{/if}
-							<a href="/profile/{row.username}" class="truncate text-sm font-bold text-text hover:underline">
+							<a
+								href="/profile/{row.username}"
+								class="truncate text-sm font-bold text-text hover:underline"
+							>
 								{row.display_name ?? row.username}
 							</a>
 						</div>
@@ -214,7 +220,9 @@
 								</Badge>
 							{/if}
 							<span>{i18n.t('securityPractice.solves', { n: row.solves })}</span>
-							<span>{i18n.t('securityPractice.lastSolve', { date: fmtDate(row.last_solve_at) })}</span>
+							<span
+								>{i18n.t('securityPractice.lastSolve', { date: fmtDate(row.last_solve_at) })}</span
+							>
 						</div>
 					</li>
 				{/each}

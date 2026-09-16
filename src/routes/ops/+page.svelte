@@ -105,7 +105,9 @@
 	{:else}
 		{#if objectives.length > 0}
 			<section class="space-y-3" data-testid="ops-objectives">
-				<h2 class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted">
+				<h2
+					class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted"
+				>
 					<Gauge size={14} />
 					{i18n.t('ops.objectivesTitle')}
 				</h2>

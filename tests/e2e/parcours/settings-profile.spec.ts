@@ -15,7 +15,9 @@ test.describe('@parcours settings-profile', () => {
 	test.skip(!HAS_STATE, 'requires user-setup.spec.ts run first');
 	if (HAS_STATE) test.use({ storageState: STATE });
 
-	test('affiche le formulaire display-name + domaine (fillable, no mutation on shared fixture)', async ({ page }) => {
+	test('affiche le formulaire display-name + domaine (fillable, no mutation on shared fixture)', async ({
+		page
+	}) => {
 		await page.goto('/settings/profile');
 
 		// data-testid is spread onto the <input> element by Input.svelte — no need for .locator('input').

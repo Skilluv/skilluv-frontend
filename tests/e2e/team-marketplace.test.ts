@@ -162,7 +162,13 @@ test.describe('Team marketplace page', () => {
 						status: 200,
 						contentType: 'application/json',
 						body: JSON.stringify({
-							data: { slot_id: 's1', filled_by: 'u1', role_slug: 'backend', min_proficiency_level: 2, created_at: '2026-07-16' }
+							data: {
+								slot_id: 's1',
+								filled_by: 'u1',
+								role_slug: 'backend',
+								min_proficiency_level: 2,
+								created_at: '2026-07-16'
+							}
 						})
 					})
 			}

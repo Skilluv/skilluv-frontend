@@ -5,7 +5,10 @@ const api = createApiClient();
 
 export const notificationsApi = {
 	list(params?: { read?: boolean; page?: number; per_page?: number }) {
-		return api.get<ApiPaginatedResponse<Notification>>('/notifications', params as Record<string, string | number>);
+		return api.get<ApiPaginatedResponse<Notification>>(
+			'/notifications',
+			params as Record<string, string | number>
+		);
 	},
 
 	markRead(id: string) {

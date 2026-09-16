@@ -54,9 +54,7 @@
 			// Default label mirrors what the browser typically calls the local
 			// authenticator (Face ID / Windows Hello / …). The owner can rename
 			// it later from /enterprise/settings/security.
-			await webauthnApi.register(
-				i18n.locale === 'fr' ? 'Ce navigateur' : 'This browser'
-			);
+			await webauthnApi.register(i18n.locale === 'fr' ? 'Ce navigateur' : 'This browser');
 			passkeyAdded = true;
 		} catch (err) {
 			if (err instanceof SkilluError && err.code === 'WEBAUTHN_CEREMONY_CANCELLED') {
@@ -95,7 +93,9 @@
 	// --- Validation helpers ---
 	function looksLikeCommonPhrase(pwd: string): boolean {
 		const lowered = pwd.toLowerCase();
-		return ['password', 'motdepasse', '12345678', 'qwerty', 'azerty'].some((p) => lowered.includes(p));
+		return ['password', 'motdepasse', '12345678', 'qwerty', 'azerty'].some((p) =>
+			lowered.includes(p)
+		);
 	}
 
 	function includesIdentity(pwd: string): boolean {
@@ -123,9 +123,7 @@
 			fieldErrors.password = i18n.t(`auth.password.${verdict}`);
 		} else if (looksLikeCommonPhrase(password)) {
 			fieldErrors.password =
-				i18n.locale === 'fr'
-					? 'Évitez les mots de passe courants'
-					: 'Avoid common phrases';
+				i18n.locale === 'fr' ? 'Évitez les mots de passe courants' : 'Avoid common phrases';
 		} else if (includesIdentity(password)) {
 			fieldErrors.password =
 				i18n.locale === 'fr'
@@ -213,7 +211,7 @@
 		i18n.locale === 'fr' ? 'Vos infos' : 'Your info',
 		i18n.locale === 'fr' ? 'Votre entreprise' : 'Your company',
 		i18n.t('enterprise.types.stepTitle'),
-		i18n.locale === 'fr' ? 'C\'est parti' : 'All set'
+		i18n.locale === 'fr' ? "C'est parti" : 'All set'
 	]);
 </script>
 
@@ -236,7 +234,11 @@
 			<div class="flex items-center gap-2">
 				<span
 					class="flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors
-					{done ? 'bg-primary text-primary-fg' : current ? 'bg-accent text-accent-fg' : 'bg-surface-overlay text-text-muted'}"
+					{done
+						? 'bg-primary text-primary-fg'
+						: current
+							? 'bg-accent text-accent-fg'
+							: 'bg-surface-overlay text-text-muted'}"
 				>
 					{#if done}
 						<Check size={14} strokeWidth={2.5} />
@@ -244,7 +246,11 @@
 						{n}
 					{/if}
 				</span>
-				<span class="hidden sm:inline text-xs font-medium {current ? 'text-text-primary' : 'text-text-muted'}">
+				<span
+					class="hidden sm:inline text-xs font-medium {current
+						? 'text-text-primary'
+						: 'text-text-muted'}"
+				>
 					{label}
 				</span>
 			</div>
@@ -265,15 +271,23 @@
 			<!-- ═══════════ STEP 1 — Personal ═══════════ -->
 			<div class="animate-[fade-in_300ms_ease-out]">
 				<h1 class="mb-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">
-					{i18n.locale === 'fr' ? 'Créez votre compte' : 'Create your account'}<span class="text-accent">.</span>
+					{i18n.locale === 'fr' ? 'Créez votre compte' : 'Create your account'}<span
+						class="text-accent">.</span
+					>
 				</h1>
 				<p class="mb-8 text-base text-text-muted">
 					{i18n.locale === 'fr'
 						? 'Commençons par vos informations personnelles.'
-						: 'Let\'s start with your personal information.'}
+						: "Let's start with your personal information."}
 				</p>
 
-				<form onsubmit={(e) => { e.preventDefault(); goToStep2(); }} class="flex flex-col gap-4">
+				<form
+					onsubmit={(e) => {
+						e.preventDefault();
+						goToStep2();
+					}}
+					class="flex flex-col gap-4"
+				>
 					<div class="grid grid-cols-2 gap-3">
 						<Input
 							label={i18n.t('auth.register.firstName')}
@@ -332,8 +346,16 @@
 						     submit. -->
 						<PasswordRules {password} id="enterprise-password-rules" />
 						<ul class="mt-2 space-y-0.5 text-xs text-text-muted">
-							<li>{i18n.locale === 'fr' ? 'Pas de mots courants (ex : "password")' : 'No common phrases (e.g., "password")'}</li>
-							<li>{i18n.locale === 'fr' ? 'Ne peut inclure votre nom, identifiant ou email' : 'Cannot include your name, username or email'}</li>
+							<li>
+								{i18n.locale === 'fr'
+									? 'Pas de mots courants (ex : "password")'
+									: 'No common phrases (e.g., "password")'}
+							</li>
+							<li>
+								{i18n.locale === 'fr'
+									? 'Ne peut inclure votre nom, identifiant ou email'
+									: 'Cannot include your name, username or email'}
+							</li>
 						</ul>
 					</div>
 
@@ -388,7 +410,9 @@
 				</button>
 
 				<h1 class="mb-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">
-					{i18n.locale === 'fr' ? 'Votre entreprise' : 'Your company'}<span class="text-accent">.</span>
+					{i18n.locale === 'fr' ? 'Votre entreprise' : 'Your company'}<span class="text-accent"
+						>.</span
+					>
 				</h1>
 				<p class="mb-8 text-base text-text-muted">
 					{i18n.locale === 'fr'
@@ -432,8 +456,12 @@
 							size="lg"
 							shape="rounded"
 							searchable
-							searchPlaceholder={i18n.locale === 'fr' ? 'Rechercher un secteur…' : 'Search an industry…'}
-							placeholder={i18n.locale === 'fr' ? '— Sélectionnez un secteur —' : '— Select an industry —'}
+							searchPlaceholder={i18n.locale === 'fr'
+								? 'Rechercher un secteur…'
+								: 'Search an industry…'}
+							placeholder={i18n.locale === 'fr'
+								? '— Sélectionnez un secteur —'
+								: '— Select an industry —'}
 							items={industrySelectItems}
 							bind:value={industry}
 							class="w-full"
@@ -455,14 +483,34 @@
 						<span>
 							{#if i18n.locale === 'fr'}
 								J'accepte les
-								<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">CGU</a>
+								<a
+									href="/legal/terms"
+									target="_blank"
+									rel="noopener"
+									class="text-accent hover:underline">CGU</a
+								>
 								et la
-								<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">politique de confidentialité</a>.
+								<a
+									href="/legal/privacy"
+									target="_blank"
+									rel="noopener"
+									class="text-accent hover:underline">politique de confidentialité</a
+								>.
 							{:else}
 								I accept the
-								<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">Terms of Use</a>
+								<a
+									href="/legal/terms"
+									target="_blank"
+									rel="noopener"
+									class="text-accent hover:underline">Terms of Use</a
+								>
 								and the
-								<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">Privacy Policy</a>.
+								<a
+									href="/legal/privacy"
+									target="_blank"
+									rel="noopener"
+									class="text-accent hover:underline">Privacy Policy</a
+								>.
 							{/if}
 						</span>
 					</label>
@@ -519,7 +567,9 @@
 			     through the security page first, then the user can pick their
 			     destination once 2FA is armed. -->
 			<div class="animate-[fade-in_300ms_ease-out] text-center">
-				<div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-success/15 text-success">
+				<div
+					class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-success/15 text-success"
+				>
 					<Check size={32} strokeWidth={2.5} />
 				</div>
 				<h1 class="mb-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">
@@ -531,7 +581,9 @@
 						: `${companyName} is set up. Two mandatory steps remain before full access.`}
 				</p>
 
-				<div class="mb-4 rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 text-left text-sm">
+				<div
+					class="mb-4 rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 text-left text-sm"
+				>
 					<div class="mb-1 flex items-center gap-2 font-semibold text-accent">
 						<Mail size={16} strokeWidth={2.5} />
 						{i18n.locale === 'fr' ? '1. Vérifie ton email' : '1. Verify your email'}
@@ -543,7 +595,9 @@
 					</p>
 				</div>
 
-				<div class="mb-4 rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 text-left text-sm">
+				<div
+					class="mb-4 rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 text-left text-sm"
+				>
 					<div class="mb-1 flex items-center gap-2 font-semibold text-accent">
 						<ShieldCheck size={16} strokeWidth={2.5} />
 						{i18n.locale === 'fr' ? '2. Active ton 2FA' : '2. Set up 2FA'}
@@ -560,7 +614,9 @@
 				     skips (or the ceremony fails), TOTP still covers the 2FA
 				     requirement on this account. -->
 				{#if passkeySupported}
-					<div class="mb-8 rounded-2xl border border-primary/30 bg-primary/5 px-4 py-3 text-left text-sm">
+					<div
+						class="mb-8 rounded-2xl border border-primary/30 bg-primary/5 px-4 py-3 text-left text-sm"
+					>
 						<div class="mb-1 flex items-center gap-2 font-semibold text-primary">
 							<KeyRound size={16} strokeWidth={2.5} />
 							{i18n.locale === 'fr'
@@ -570,7 +626,7 @@
 						<p class="mb-3 text-text-muted">
 							{i18n.locale === 'fr'
 								? 'Ajoute une passkey (Face ID, Touch ID, Windows Hello, YubiKey…) sur ce navigateur : tes prochains logins seront instantanés, sans mot de passe ni code TOTP. Ça remplace pas le 2FA obligatoire ci-dessus, mais tu ne feras jamais les deux à la fois.'
-								: 'Add a passkey (Face ID, Touch ID, Windows Hello, YubiKey…) on this browser: your future logins become instant — no password, no TOTP code. It doesn\'t replace the mandatory 2FA above, but you\'ll never do both at once.'}
+								: "Add a passkey (Face ID, Touch ID, Windows Hello, YubiKey…) on this browser: your future logins become instant — no password, no TOTP code. It doesn't replace the mandatory 2FA above, but you'll never do both at once."}
 						</p>
 						{#if passkeyAdded}
 							<div class="flex items-center gap-2 rounded-lg bg-success/15 px-3 py-2 text-success">
@@ -599,12 +655,7 @@
 				{/if}
 
 				<div class="flex flex-col gap-3">
-					<Button
-						variant="accent"
-						size="lg"
-						href="/enterprise/onboarding"
-						class="w-full"
-					>
+					<Button variant="accent" size="lg" href="/enterprise/onboarding" class="w-full">
 						{i18n.locale === 'fr' ? 'Configurer mon 2FA' : 'Set up 2FA now'}
 					</Button>
 				</div>

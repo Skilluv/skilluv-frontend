@@ -80,8 +80,14 @@
 		}
 	}
 
-	function switchDomain(d: LeaderboardDomain) { domain = d; loadLeaderboard(); }
-	function switchPeriod(p: LeaderboardPeriod) { period = p; loadLeaderboard(); }
+	function switchDomain(d: LeaderboardDomain) {
+		domain = d;
+		loadLeaderboard();
+	}
+	function switchPeriod(p: LeaderboardPeriod) {
+		period = p;
+		loadLeaderboard();
+	}
 
 	function domainLabel(d: LeaderboardDomain): string {
 		if (d === 'global') return i18n.t('leaderboard.global');
@@ -94,7 +100,6 @@
 </svelte:head>
 
 <div class="mx-auto max-w-5xl px-4 py-12 sm:py-16">
-
 	<!-- Header -->
 	<div class="mb-10">
 		<h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-4">
@@ -127,20 +132,32 @@
 	{#if myRank && auth.isAuthenticated}
 		<div class="mb-10 rounded-2xl border border-border bg-surface-elevated overflow-hidden">
 			<div class="border-b border-border px-6 py-3">
-				<span class="text-xs font-bold uppercase tracking-wider text-text-muted">{i18n.t('leaderboard.yourRank')}</span>
+				<span class="text-xs font-bold uppercase tracking-wider text-text-muted"
+					>{i18n.t('leaderboard.yourRank')}</span
+				>
 			</div>
 			<div class="grid grid-cols-3 divide-x divide-border">
 				<div class="p-6 text-center">
 					<p class="text-5xl sm:text-6xl font-black tracking-tight">#{myRank.rank}</p>
-					<p class="text-xs uppercase tracking-wider text-text-muted mt-2">{i18n.locale === 'fr' ? 'Rang' : 'Rank'}</p>
+					<p class="text-xs uppercase tracking-wider text-text-muted mt-2">
+						{i18n.locale === 'fr' ? 'Rang' : 'Rank'}
+					</p>
 				</div>
 				<div class="p-6 text-center">
-					<p class="text-5xl sm:text-6xl font-black text-accent tracking-tight">{myRank.score.toLocaleString()} <span class="text-2xl align-middle">◆</span></p>
-					<p class="text-xs uppercase tracking-wider text-text-muted mt-2">{i18n.t('leaderboard.score')}</p>
+					<p class="text-5xl sm:text-6xl font-black text-accent tracking-tight">
+						{myRank.score.toLocaleString()} <span class="text-2xl align-middle">◆</span>
+					</p>
+					<p class="text-xs uppercase tracking-wider text-text-muted mt-2">
+						{i18n.t('leaderboard.score')}
+					</p>
 				</div>
 				<div class="p-6 text-center">
-					<p class="text-5xl sm:text-6xl font-black tracking-tight">{myRank.total_participants.toLocaleString()}</p>
-					<p class="text-xs uppercase tracking-wider text-text-muted mt-2">{i18n.t('leaderboard.participants')}</p>
+					<p class="text-5xl sm:text-6xl font-black tracking-tight">
+						{myRank.total_participants.toLocaleString()}
+					</p>
+					<p class="text-xs uppercase tracking-wider text-text-muted mt-2">
+						{i18n.t('leaderboard.participants')}
+					</p>
 				</div>
 			</div>
 		</div>
@@ -187,33 +204,62 @@
 
 	<!-- Leaderboard -->
 	{#if loading}
-		<div class="rounded-2xl border border-border bg-surface-elevated overflow-hidden" aria-busy="true">
+		<div
+			class="rounded-2xl border border-border bg-surface-elevated overflow-hidden"
+			aria-busy="true"
+		>
 			<!-- Header row : grid identique au tableau réel -->
-			<div class="grid grid-cols-[3rem_1fr_auto_6rem] gap-4 items-center px-5 py-2.5 border-b border-border">
-				<div class="h-3 w-3 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
-				<div class="h-3 w-16 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
-				<div class="hidden h-3 w-12 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] sm:block"></div>
-				<div class="h-3 w-12 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] justify-self-end"></div>
+			<div
+				class="grid grid-cols-[3rem_1fr_auto_6rem] gap-4 items-center px-5 py-2.5 border-b border-border"
+			>
+				<div
+					class="h-3 w-3 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+				></div>
+				<div
+					class="h-3 w-16 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+				></div>
+				<div
+					class="hidden h-3 w-12 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] sm:block"
+				></div>
+				<div
+					class="h-3 w-12 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] justify-self-end"
+				></div>
 			</div>
 
 			{#each Array(10) as _, idx}
-				<div class="grid grid-cols-[3rem_1fr_auto_6rem] gap-4 items-center px-5 py-3.5 {idx < 9 ? 'border-b border-border' : ''}">
+				<div
+					class="grid grid-cols-[3rem_1fr_auto_6rem] gap-4 items-center px-5 py-3.5 {idx < 9
+						? 'border-b border-border'
+						: ''}"
+				>
 					<!-- Rank -->
-					<div class="mx-auto h-5 w-5 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+					<div
+						class="mx-auto h-5 w-5 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+					></div>
 					<!-- User -->
 					<div class="flex items-center gap-3 min-w-0">
-						<div class="shrink-0 h-9 w-9 rounded-full bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+						<div
+							class="shrink-0 h-9 w-9 rounded-full bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+						></div>
 						<div class="min-w-0 space-y-1.5">
-							<div class="h-4 w-32 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
-							<div class="h-3 w-20 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] sm:hidden"></div>
+							<div
+								class="h-4 w-32 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+							></div>
+							<div
+								class="h-3 w-20 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] sm:hidden"
+							></div>
 						</div>
 					</div>
 					<!-- Title (desktop only) -->
 					<div class="hidden sm:flex items-center gap-1.5">
-						<div class="h-3 w-16 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+						<div
+							class="h-3 w-16 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+						></div>
 					</div>
 					<!-- Score -->
-					<div class="h-4 w-16 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] justify-self-end"></div>
+					<div
+						class="h-4 w-16 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite] justify-self-end"
+					></div>
 				</div>
 			{/each}
 		</div>
@@ -224,7 +270,9 @@
 	{:else}
 		<div class="rounded-2xl border border-border bg-surface-elevated overflow-hidden">
 			<!-- Table header -->
-			<div class="grid grid-cols-[3rem_1fr_auto_6rem] gap-4 items-center px-5 py-2.5 border-b border-border text-xs text-text-muted font-medium">
+			<div
+				class="grid grid-cols-[3rem_1fr_auto_6rem] gap-4 items-center px-5 py-2.5 border-b border-border text-xs text-text-muted font-medium"
+			>
 				<span>#</span>
 				<span>Talent</span>
 				<span class="hidden sm:block">{i18n.locale === 'fr' ? 'Titre' : 'Title'}</span>
@@ -241,19 +289,34 @@
 						{isMe ? 'bg-accent/5' : 'hover:bg-surface-overlay/30'}"
 				>
 					<!-- Rank -->
-					<span class="text-center font-bold {isTop3 ? 'text-lg' : 'text-sm text-text-muted'} {entry.rank === 1 ? 'text-amber-400' : ''}">{entry.rank}</span>
+					<span
+						class="text-center font-bold {isTop3
+							? 'text-lg'
+							: 'text-sm text-text-muted'} {entry.rank === 1 ? 'text-amber-400' : ''}"
+						>{entry.rank}</span
+					>
 
 					<!-- User -->
 					<div class="flex items-center gap-3 min-w-0">
-						<div class="shrink-0 h-9 w-9 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-bold {isMe ? 'text-accent' : 'text-text-muted'}">
+						<div
+							class="shrink-0 h-9 w-9 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-bold {isMe
+								? 'text-accent'
+								: 'text-text-muted'}"
+						>
 							{entry.display_name.charAt(0).toUpperCase()}
 						</div>
 						<div class="min-w-0">
-							<p class="text-sm font-semibold truncate {isMe ? 'text-accent' : ''}">{entry.display_name}</p>
+							<p class="text-sm font-semibold truncate {isMe ? 'text-accent' : ''}">
+								{entry.display_name}
+							</p>
 							<div class="flex items-center gap-1.5 sm:hidden">
-								<span class="text-[11px] capitalize {rankColor(entry.title)}">{i18n.t(`common.titles.${entry.title}`)}</span>
+								<span class="text-[11px] capitalize {rankColor(entry.title)}"
+									>{i18n.t(`common.titles.${entry.title}`)}</span
+								>
 								{#if entry.golden_stars > 0}
-									<span class="text-[11px] text-amber-400">{'★'.repeat(Math.min(entry.golden_stars, 3))}</span>
+									<span class="text-[11px] text-amber-400"
+										>{'★'.repeat(Math.min(entry.golden_stars, 3))}</span
+									>
 								{/if}
 							</div>
 						</div>
@@ -261,9 +324,13 @@
 
 					<!-- Title (desktop) -->
 					<div class="hidden sm:flex items-center gap-1.5">
-						<span class="text-xs capitalize {rankColor(entry.title)}">{i18n.t(`common.titles.${entry.title}`)}</span>
+						<span class="text-xs capitalize {rankColor(entry.title)}"
+							>{i18n.t(`common.titles.${entry.title}`)}</span
+						>
 						{#if entry.golden_stars > 0}
-							<span class="text-xs text-amber-400">{'★'.repeat(Math.min(entry.golden_stars, 3))}</span>
+							<span class="text-xs text-amber-400"
+								>{'★'.repeat(Math.min(entry.golden_stars, 3))}</span
+							>
 						{/if}
 						{#if entry.country}
 							<span class="text-[11px] text-text-muted ml-1">{entry.country}</span>
@@ -271,7 +338,9 @@
 					</div>
 
 					<!-- Score -->
-					<span class="text-sm font-mono font-semibold text-right {isMe ? 'text-accent' : ''}">{entry.score.toLocaleString()} ◆</span>
+					<span class="text-sm font-mono font-semibold text-right {isMe ? 'text-accent' : ''}"
+						>{entry.score.toLocaleString()} ◆</span
+					>
 				</a>
 			{/each}
 		</div>

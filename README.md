@@ -84,19 +84,19 @@ CI runs all four on every push to `main`. See [.github/workflows/ci.yml](.github
 
 ## Stack summary
 
-| Layer              | Technology                        |
-|--------------------|-----------------------------------|
-| Framework          | SvelteKit 2.55                    |
-| UI runtime         | Svelte 5.54 (runes)               |
-| Language           | TypeScript 5.9                    |
-| CSS                | Tailwind CSS 4.2                  |
-| Code editor        | Monaco Editor 0.55                |
-| Build              | Vite 8                            |
-| Unit tests         | Vitest 4.1                        |
-| E2E tests          | Playwright 1.58                   |
-| Runtime            | Node.js 22 (Alpine)               |
-| Typography         | Fraunces (display), Bricolage Grotesque (UI), JetBrains Mono (mono) |
-| Observability      | Sentry (errors, opt-in) + PostHog (analytics, opt-in) |
+| Layer         | Technology                                                          |
+| ------------- | ------------------------------------------------------------------- |
+| Framework     | SvelteKit 2.55                                                      |
+| UI runtime    | Svelte 5.54 (runes)                                                 |
+| Language      | TypeScript 5.9                                                      |
+| CSS           | Tailwind CSS 4.2                                                    |
+| Code editor   | Monaco Editor 0.55                                                  |
+| Build         | Vite 8                                                              |
+| Unit tests    | Vitest 4.1                                                          |
+| E2E tests     | Playwright 1.58                                                     |
+| Runtime       | Node.js 22 (Alpine)                                                 |
+| Typography    | Fraunces (display), Bricolage Grotesque (UI), JetBrains Mono (mono) |
+| Observability | Sentry (errors, opt-in) + PostHog (analytics, opt-in)               |
 
 ## Contributing
 

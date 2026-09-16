@@ -59,9 +59,7 @@
 	/** The vocabulary the backend accepts for perceived difficulty. */
 	const DIFFICULTIES = ['too_easy', 'just_right', 'too_hard'] as const;
 
-	let scoreItems = $derived(
-		[1, 2, 3, 4, 5].map((n) => ({ value: String(n), label: String(n) }))
-	);
+	let scoreItems = $derived([1, 2, 3, 4, 5].map((n) => ({ value: String(n), label: String(n) })));
 	let difficultyItems = $derived(
 		DIFFICULTIES.map((d) => ({ value: d as string, label: i18n.t(`playtest.difficulty.${d}`) }))
 	);
@@ -184,10 +182,7 @@
 					<!-- Optional and staying optional: forcing a bug report out of
 					     somebody who enjoyed it produces invented bugs. -->
 					<Input placeholder={i18n.t('playtest.bugsPlaceholder')} bind:value={bugs} />
-					<Input
-						placeholder={i18n.t('playtest.suggestionsPlaceholder')}
-						bind:value={suggestions}
-					/>
+					<Input placeholder={i18n.t('playtest.suggestionsPlaceholder')} bind:value={suggestions} />
 
 					<label class="flex items-center gap-2 text-sm text-text">
 						<input type="checkbox" bind:checked={again} class="accent-accent" />

@@ -115,102 +115,102 @@
 			<!-- A snippet is its own closure: the narrowing above does not
 			     reach in here, so it is stated again. -->
 			{#if profile}
-			{#if profile.languages.length > 0}
-				<div>
-					<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
-						{i18n.t('domainRecord.code.languagesTitle')}
-					</p>
-					<div class="mt-2 flex flex-wrap gap-2">
-						{#each profile.languages as language (language.language)}
-							<span
-								class="rounded-full border border-border bg-surface-overlay px-3 py-1 text-xs text-text-primary"
-							>
-								{language.language}
-								<span class="ml-1 text-text-muted">{language.artefacts}</span>
-							</span>
-						{/each}
-					</div>
-				</div>
-			{/if}
-
-			{#if profile.published_packages.length > 0}
-				<div>
-					<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
-						{i18n.t('domainRecord.code.packagesTitle')}
-					</p>
-					<ul class="mt-2 space-y-1.5" role="list">
-						{#each profile.published_packages as pkg (pkg.registry + pkg.package_name)}
-							<li class="flex flex-wrap items-center gap-x-3 text-sm">
-								<span class="font-mono text-text-primary">{pkg.package_name}</span>
-								<Badge variant="default" size="sm">{pkg.registry}</Badge>
-								{#if pkg.latest_version}
-									<span class="font-mono text-xs text-text-muted">{pkg.latest_version}</span>
-								{/if}
-								{#if pkg.downloads_recent !== null}
-									<span class="font-mono text-xs text-text-muted">
-										{fmtCount(pkg.downloads_recent)}
-									</span>
-								{/if}
-								<!-- The date the figures were read: a count with no date is a
-								     number nobody can weigh. -->
-								{#if pkg.fetched_at}
-									<span class="ml-auto text-xs text-text-muted">
-										{i18n.t('domainRecord.code.readOn', { date: fmtDate(pkg.fetched_at) })}
-									</span>
-								{/if}
-							</li>
-						{/each}
-					</ul>
-				</div>
-			{/if}
-
-			{#if profile.missions_completed.length > 0}
-				<div>
-					<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
-						{i18n.t('domainRecord.code.missionsTitle')}
-					</p>
-					<div class="mt-2 flex flex-wrap gap-2">
-						{#each profile.missions_completed as mission (mission.mission_type)}
-							<span
-								class="rounded-full border border-border bg-surface-overlay px-3 py-1 text-xs text-text-primary"
-							>
-								{mission.mission_type}
-								<span class="ml-1 text-text-muted">{mission.count}</span>
-							</span>
-						{/each}
-					</div>
-				</div>
-			{/if}
-
-			{#if profile.portfolios.length > 0}
-				<div>
-					<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
-						{i18n.t('domainRecord.code.portfoliosTitle')}
-					</p>
-					<ul class="mt-2 space-y-1.5" role="list">
-						{#each profile.portfolios as portfolio (portfolio.platform + portfolio.handle)}
-							<li class="flex flex-wrap items-center gap-x-3 text-sm">
-								<a
-									href={portfolio.profile_url}
-									target="_blank"
-									rel="noopener noreferrer nofollow ugc"
-									class="inline-flex items-center gap-1 text-text-primary hover:text-accent"
+				{#if profile.languages.length > 0}
+					<div>
+						<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
+							{i18n.t('domainRecord.code.languagesTitle')}
+						</p>
+						<div class="mt-2 flex flex-wrap gap-2">
+							{#each profile.languages as language (language.language)}
+								<span
+									class="rounded-full border border-border bg-surface-overlay px-3 py-1 text-xs text-text-primary"
 								>
-									{portfolio.handle}
-									<ExternalLink size={11} strokeWidth={2} />
-								</a>
-								<span class="text-xs text-text-muted">{portfolio.platform}</span>
-								<!-- Proved and claimed are two different statements. -->
-								<span class="ml-auto text-xs text-text-muted">
-									{portfolio.verified
-										? i18n.t('domainRecord.code.portfolioVerified')
-										: i18n.t('domainRecord.code.portfolioDeclared')}
+									{language.language}
+									<span class="ml-1 text-text-muted">{language.artefacts}</span>
 								</span>
-							</li>
-						{/each}
-					</ul>
-				</div>
-			{/if}
+							{/each}
+						</div>
+					</div>
+				{/if}
+
+				{#if profile.published_packages.length > 0}
+					<div>
+						<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
+							{i18n.t('domainRecord.code.packagesTitle')}
+						</p>
+						<ul class="mt-2 space-y-1.5" role="list">
+							{#each profile.published_packages as pkg (pkg.registry + pkg.package_name)}
+								<li class="flex flex-wrap items-center gap-x-3 text-sm">
+									<span class="font-mono text-text-primary">{pkg.package_name}</span>
+									<Badge variant="default" size="sm">{pkg.registry}</Badge>
+									{#if pkg.latest_version}
+										<span class="font-mono text-xs text-text-muted">{pkg.latest_version}</span>
+									{/if}
+									{#if pkg.downloads_recent !== null}
+										<span class="font-mono text-xs text-text-muted">
+											{fmtCount(pkg.downloads_recent)}
+										</span>
+									{/if}
+									<!-- The date the figures were read: a count with no date is a
+								     number nobody can weigh. -->
+									{#if pkg.fetched_at}
+										<span class="ml-auto text-xs text-text-muted">
+											{i18n.t('domainRecord.code.readOn', { date: fmtDate(pkg.fetched_at) })}
+										</span>
+									{/if}
+								</li>
+							{/each}
+						</ul>
+					</div>
+				{/if}
+
+				{#if profile.missions_completed.length > 0}
+					<div>
+						<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
+							{i18n.t('domainRecord.code.missionsTitle')}
+						</p>
+						<div class="mt-2 flex flex-wrap gap-2">
+							{#each profile.missions_completed as mission (mission.mission_type)}
+								<span
+									class="rounded-full border border-border bg-surface-overlay px-3 py-1 text-xs text-text-primary"
+								>
+									{mission.mission_type}
+									<span class="ml-1 text-text-muted">{mission.count}</span>
+								</span>
+							{/each}
+						</div>
+					</div>
+				{/if}
+
+				{#if profile.portfolios.length > 0}
+					<div>
+						<p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
+							{i18n.t('domainRecord.code.portfoliosTitle')}
+						</p>
+						<ul class="mt-2 space-y-1.5" role="list">
+							{#each profile.portfolios as portfolio (portfolio.platform + portfolio.handle)}
+								<li class="flex flex-wrap items-center gap-x-3 text-sm">
+									<a
+										href={portfolio.profile_url}
+										target="_blank"
+										rel="noopener noreferrer nofollow ugc"
+										class="inline-flex items-center gap-1 text-text-primary hover:text-accent"
+									>
+										{portfolio.handle}
+										<ExternalLink size={11} strokeWidth={2} />
+									</a>
+									<span class="text-xs text-text-muted">{portfolio.platform}</span>
+									<!-- Proved and claimed are two different statements. -->
+									<span class="ml-auto text-xs text-text-muted">
+										{portfolio.verified
+											? i18n.t('domainRecord.code.portfolioVerified')
+											: i18n.t('domainRecord.code.portfolioDeclared')}
+									</span>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				{/if}
 			{/if}
 		{/snippet}
 	</DomainRecord>

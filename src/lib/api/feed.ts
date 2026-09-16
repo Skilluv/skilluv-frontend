@@ -34,6 +34,9 @@ export interface FeedEvent {
 
 export const feedApi = {
 	me(params?: { page?: number; per_page?: number }) {
-		return api.get<ApiResponse<{ events: FeedEvent[] }>>('/feed/me', params as Record<string, number>);
+		return api.get<ApiResponse<{ events: FeedEvent[] }>>(
+			'/feed/me',
+			params as Record<string, number>
+		);
 	}
 };

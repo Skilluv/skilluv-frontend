@@ -61,11 +61,15 @@
 		class="fixed inset-x-3 bottom-3 z-[80] mx-auto max-w-md rounded-2xl border border-border bg-surface-elevated p-4 shadow-lg animate-[slide-up_200ms_ease-out] sm:inset-x-auto sm:right-6 sm:bottom-6"
 	>
 		<div class="flex items-start gap-3">
-			<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary">◈</div>
+			<div
+				class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary"
+			>
+				◈
+			</div>
 			<div class="min-w-0 flex-1">
 				<p class="text-xs font-bold uppercase tracking-wider text-accent">Skilluv</p>
 				<h3 class="mt-0.5 font-semibold">
-					{i18n.locale === 'fr' ? 'Installer l\'app ?' : 'Install the app?'}
+					{i18n.locale === 'fr' ? "Installer l'app ?" : 'Install the app?'}
 				</h3>
 				<p class="mt-1 text-xs text-text-muted">
 					{i18n.locale === 'fr'

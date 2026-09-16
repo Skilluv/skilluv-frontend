@@ -120,7 +120,9 @@
 		data-testid="audio-delivery"
 	>
 		<div class="flex items-center justify-between gap-2 border-b border-border px-5 py-3">
-			<span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted">
+			<span
+				class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted"
+			>
 				<AudioLines size={13} strokeWidth={2} />
 				{i18n.t('audioDelivery.title')}
 			</span>
@@ -142,12 +144,7 @@
 						onchange={upload}
 						data-testid="audio-upload-input"
 					/>
-					<Button
-						variant="ghost"
-						size="sm"
-						loading={uploading}
-						onclick={() => fileInput?.click()}
-					>
+					<Button variant="ghost" size="sm" loading={uploading} onclick={() => fileInput?.click()}>
 						<span class="inline-flex items-center gap-1.5">
 							<Upload size={12} strokeWidth={2} />
 							{i18n.t('audioDelivery.uploadCta')}
@@ -200,7 +197,9 @@
 										</p>
 
 										{#if file.loudness_lufs !== null || file.true_peak_dbfs !== null}
-											<p class="mt-1 flex flex-wrap items-center gap-x-3 font-mono text-xs text-text-muted">
+											<p
+												class="mt-1 flex flex-wrap items-center gap-x-3 font-mono text-xs text-text-muted"
+											>
 												{#if file.loudness_lufs !== null}
 													<span>{file.loudness_lufs.toFixed(1)} LUFS</span>
 												{/if}

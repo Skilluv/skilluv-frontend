@@ -20,12 +20,7 @@
 	);
 </script>
 
-<Modal
-	{open}
-	title={i18n.t('teams.fillDialog.title')}
-	onclose={onClose}
-	size="md"
->
+<Modal {open} title={i18n.t('teams.fillDialog.title')} onclose={onClose} size="md">
 	{#if slot}
 		<p class="text-sm text-text-muted">{i18n.t('teams.fillDialog.body')}</p>
 
@@ -37,7 +32,9 @@
 				</dd>
 			</div>
 			<div class="flex justify-between gap-3">
-				<dt class="text-text-muted">{i18n.t('teams.detail.minLevel', { n: slot.min_proficiency_level })}</dt>
+				<dt class="text-text-muted">
+					{i18n.t('teams.detail.minLevel', { n: slot.min_proficiency_level })}
+				</dt>
 				<dd class="font-medium text-text-primary">
 					{userLevel === null ? '—' : userLevel}
 				</dd>

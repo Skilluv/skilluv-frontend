@@ -15,10 +15,7 @@
 		apiHost?: string;
 	}
 
-	let {
-		domain = '',
-		apiHost = ''
-	}: Props = $props();
+	let { domain = '', apiHost = '' }: Props = $props();
 
 	let enabled = $derived(!dev && !!domain && !!apiHost);
 

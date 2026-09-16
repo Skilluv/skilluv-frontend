@@ -66,9 +66,7 @@
 			label: i18n.t(`capabilities.items.${c}.label`)
 		}))
 	);
-	let skillItems = $derived(
-		skills.map((s) => ({ value: s.id, label: s.display_name }))
-	);
+	let skillItems = $derived(skills.map((s) => ({ value: s.id, label: s.display_name })));
 	let levelItems = $derived(
 		[1, 2, 3, 4, 5].map((n) => ({ value: String(n), label: i18n.t('skillTree.levelLabel', { n }) }))
 	);

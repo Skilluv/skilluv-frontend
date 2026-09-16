@@ -43,7 +43,9 @@
 
 	function fmtRate(cents: number): string {
 		return new Intl.NumberFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
-			style: 'currency', currency: 'EUR', minimumFractionDigits: 0
+			style: 'currency',
+			currency: 'EUR',
+			minimumFractionDigits: 0
 		}).format(cents / 100);
 	}
 
@@ -112,7 +114,9 @@
 	{:else if mentor}
 		<!-- Header -->
 		<header class="mb-8 flex flex-col gap-6 sm:flex-row sm:items-start">
-			<div class="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-4xl font-black text-primary">
+			<div
+				class="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-4xl font-black text-primary"
+			>
 				{mentor.display_name.charAt(0)}
 			</div>
 			<div class="min-w-0 flex-1">
@@ -136,18 +140,23 @@
 		</header>
 
 		<!-- Book CTA -->
-		<div class="mb-8 rounded-2xl border border-accent/30 bg-gradient-to-br from-surface-elevated to-accent/5 p-6 sm:p-8">
+		<div
+			class="mb-8 rounded-2xl border border-accent/30 bg-gradient-to-br from-surface-elevated to-accent/5 p-6 sm:p-8"
+		>
 			<div class="flex flex-wrap items-end justify-between gap-4">
 				<div>
 					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Tarif' : 'Rate'}
 					</p>
 					<div class="flex items-baseline gap-3">
-						<span class="text-5xl font-black text-accent">{fmtRate(mentor.hourly_rate_eur_cents)}</span>
+						<span class="text-5xl font-black text-accent"
+							>{fmtRate(mentor.hourly_rate_eur_cents)}</span
+						>
 						<span class="text-lg text-text-muted">/ {i18n.locale === 'fr' ? 'heure' : 'hour'}</span>
 					</div>
 					<p class="mt-2 text-xs text-text-muted">
-						{i18n.locale === 'fr' ? 'Minimum' : 'Minimum'} {mentor.min_session_minutes} min
+						{i18n.locale === 'fr' ? 'Minimum' : 'Minimum'}
+						{mentor.min_session_minutes} min
 					</p>
 				</div>
 				<Button variant="accent" size="lg" onclick={() => (showBook = true)}>
@@ -191,11 +200,24 @@
 </div>
 
 <!-- Book modal -->
-<Modal open={showBook} title={i18n.locale === 'fr' ? 'Réserver une session' : 'Book a session'} onclose={() => (showBook = false)}>
-	<form onsubmit={(e) => { e.preventDefault(); void book(); }} class="space-y-4">
+<Modal
+	open={showBook}
+	title={i18n.locale === 'fr' ? 'Réserver une session' : 'Book a session'}
+	onclose={() => (showBook = false)}
+>
+	<form
+		onsubmit={(e) => {
+			e.preventDefault();
+			void book();
+		}}
+		class="space-y-4"
+	>
 		<div class="grid grid-cols-2 gap-3">
 			<div>
-				<label for="b-date" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+				<label
+					for="b-date"
+					class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted"
+				>
 					{i18n.locale === 'fr' ? 'Date' : 'Date'}
 				</label>
 				<input
@@ -208,7 +230,10 @@
 				/>
 			</div>
 			<div>
-				<label for="b-time" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+				<label
+					for="b-time"
+					class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted"
+				>
 					{i18n.locale === 'fr' ? 'Heure' : 'Time'}
 				</label>
 				<input
@@ -221,7 +246,10 @@
 			</div>
 		</div>
 		<div>
-			<label for="b-dur" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+			<label
+				for="b-dur"
+				class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted"
+			>
 				{i18n.locale === 'fr' ? 'Durée (minutes)' : 'Duration (minutes)'}
 			</label>
 			<Select
@@ -233,14 +261,21 @@
 			/>
 		</div>
 		<div>
-			<label for="b-notes" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
-				{i18n.locale === 'fr' ? 'Notes pour le mentor (optionnel)' : 'Notes for the mentor (optional)'}
+			<label
+				for="b-notes"
+				class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted"
+			>
+				{i18n.locale === 'fr'
+					? 'Notes pour le mentor (optionnel)'
+					: 'Notes for the mentor (optional)'}
 			</label>
 			<textarea
 				id="b-notes"
 				bind:value={bookNotes}
 				rows="3"
-				placeholder={i18n.locale === 'fr' ? 'Ce sur quoi tu veux travailler...' : 'What you want to work on...'}
+				placeholder={i18n.locale === 'fr'
+					? 'Ce sur quoi tu veux travailler...'
+					: 'What you want to work on...'}
 				class="w-full rounded-2xl border border-border bg-surface-overlay px-4 py-2 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none"
 			></textarea>
 		</div>
@@ -251,7 +286,9 @@
 					<span class="text-text-muted">
 						{bookDuration} min × {fmtRate(mentor.hourly_rate_eur_cents)}/h
 					</span>
-					<span class="text-2xl font-black text-accent">{fmtRate(priceForDuration(bookDuration))}</span>
+					<span class="text-2xl font-black text-accent"
+						>{fmtRate(priceForDuration(bookDuration))}</span
+					>
 				</div>
 				<!--
 					The commercial terms, at the only moment they are useful.

@@ -69,7 +69,10 @@
 	</title>
 	{#if contest}
 		<meta property="og:title" content="{i18n.t('designContests.resultsTitle')} | {contest.name}" />
-		<meta property="og:description" content={contest.description ?? i18n.t('designContests.subtitle')} />
+		<meta
+			property="og:description"
+			content={contest.description ?? i18n.t('designContests.subtitle')}
+		/>
 	{/if}
 </svelte:head>
 
@@ -119,10 +122,15 @@
 				<h2 class="mb-3 text-xs font-bold uppercase tracking-wider text-text-muted">
 					{i18n.t('designContests.otherEntries')}
 				</h2>
-				<ul class="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface-elevated" role="list">
+				<ul
+					class="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface-elevated"
+					role="list"
+				>
 					{#each beyondPodium as entry (entry.participant_id)}
 						{@const isMe = entry.participant_id === auth.user?.id}
-						<li class="flex items-center justify-between gap-3 px-5 py-3 {isMe ? 'bg-accent/5' : ''}">
+						<li
+							class="flex items-center justify-between gap-3 px-5 py-3 {isMe ? 'bg-accent/5' : ''}"
+						>
 							<span class="flex items-center gap-3">
 								<span class="w-8 font-mono text-sm text-text-muted">#{entry.rank}</span>
 								{#if isMe}

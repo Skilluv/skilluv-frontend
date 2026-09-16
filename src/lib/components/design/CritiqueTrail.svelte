@@ -120,9 +120,7 @@
 				rounds = trail.value.data?.rounds ?? [];
 			} else {
 				loadError =
-					trail.reason instanceof SkilluError
-						? trail.reason.message
-						: i18n.t('errors.generic');
+					trail.reason instanceof SkilluError ? trail.reason.message : i18n.t('errors.generic');
 			}
 
 			checks = ran.status === 'fulfilled' ? (ran.value.data?.checks ?? []) : [];
@@ -184,7 +182,9 @@
 				{loadError}
 			</Alert>
 		{:else if rounds.length === 0}
-			<p class="rounded-lg border border-border bg-surface-elevated px-4 py-6 text-sm text-text-muted">
+			<p
+				class="rounded-lg border border-border bg-surface-elevated px-4 py-6 text-sm text-text-muted"
+			>
 				{i18n.t('designWorkshop.trailEmpty')}
 			</p>
 		{:else}

@@ -93,7 +93,9 @@
 			if (err instanceof SkilluError && err.status === 400) {
 				toast.error(i18n.t('p26.validation.toastTakenByOther'));
 			} else {
-				toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.validation.toastPickupError'));
+				toast.error(
+					err instanceof SkilluError ? err.message : i18n.t('p26.validation.toastPickupError')
+				);
 			}
 			// Refetch pour resynchroniser la file (le back est source de verite).
 			await load();
@@ -115,7 +117,10 @@
 <div class="mx-auto max-w-5xl px-4 py-8">
 	<header class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 		<div>
-			<h1 class="font-heading text-3xl font-bold" style:font-family="'Fraunces Variable', Georgia, serif">
+			<h1
+				class="font-heading text-3xl font-bold"
+				style:font-family="'Fraunces Variable', Georgia, serif"
+			>
 				{i18n.t('p26.validation.queueTitle')}
 			</h1>
 			<p class="mt-1 text-sm text-text-muted">
@@ -148,14 +153,18 @@
 			body={i18n.t('p26.validation.notValidatorBody')}
 		>
 			{#snippet action()}
-				<Button variant="primary" href="/settings/validator-application/new">{i18n.t('p26.validation.applyCta')}</Button>
+				<Button variant="primary" href="/settings/validator-application/new"
+					>{i18n.t('p26.validation.applyCta')}</Button
+				>
 			{/snippet}
 		</EmptyState>
 	{:else if view.status === 'error'}
 		<Alert tone="error" size="lg">
 			{view.message}
 			{#snippet action()}
-				<Button variant="secondary" size="sm" onclick={load}>{i18n.t('p26.validation.retryBtn')}</Button>
+				<Button variant="secondary" size="sm" onclick={load}
+					>{i18n.t('p26.validation.retryBtn')}</Button
+				>
 			{/snippet}
 		</Alert>
 	{:else if visibleItems.length === 0}
@@ -168,7 +177,9 @@
 		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
 			{#each visibleItems as item (item.slice.id)}
 				{@const domain = domainFromLabels(item)}
-				<article class="flex flex-col gap-3 rounded-2xl border border-border bg-surface-elevated p-5">
+				<article
+					class="flex flex-col gap-3 rounded-2xl border border-border bg-surface-elevated p-5"
+				>
 					<div class="flex items-start justify-between gap-3">
 						<a
 							href={`/slices/${item.slice.id}`}
@@ -182,16 +193,14 @@
 					<div class="flex flex-wrap items-center gap-2">
 						<Badge>{shortRepo(item.repo_url)}</Badge>
 						<Badge variant={domainVariant(domain)}>{domain}</Badge>
-						<Badge variant="accent">{i18n.t('p26.validation.difficultyBadge', { n: item.slice.difficulty })}</Badge>
+						<Badge variant="accent"
+							>{i18n.t('p26.validation.difficultyBadge', { n: item.slice.difficulty })}</Badge
+						>
 					</div>
 
 					<div class="flex items-center gap-3 border-t border-border pt-3">
 						{#if item.claimer_avatar_url}
-							<img
-								src={item.claimer_avatar_url}
-								alt=""
-								class="h-8 w-8 rounded-full object-cover"
-							/>
+							<img src={item.claimer_avatar_url} alt="" class="h-8 w-8 rounded-full object-cover" />
 						{:else}
 							<div class="h-8 w-8 rounded-full bg-surface-overlay"></div>
 						{/if}

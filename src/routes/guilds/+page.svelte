@@ -39,7 +39,9 @@
 	></div>
 	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
 		<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Community</p>
-		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
+		<h1
+			class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight"
+		>
 			{#if i18n.locale === 'fr'}
 				Formez<br />
 				<span class="text-primary">votre guilde.</span>
@@ -50,7 +52,7 @@
 		</h1>
 		<p class="mt-8 max-w-2xl text-lg text-text-muted">
 			{i18n.locale === 'fr'
-				? "Rejoignez une guilde pour combattre, apprendre, cultiver. Guildes MMO au style écurie F1 : bannière, tag, chef, wars. Classement live sur la somme des fragments."
+				? 'Rejoignez une guilde pour combattre, apprendre, cultiver. Guildes MMO au style écurie F1 : bannière, tag, chef, wars. Classement live sur la somme des fragments.'
 				: 'Join a guild to fight, learn, cultivate. MMO-style guilds F1-team-inspired: banner, tag, leader, wars. Live ranking on total fragments.'}
 		</p>
 		<a
@@ -104,7 +106,15 @@
 				>
 					<!-- Rank -->
 					<div class="w-12 text-center shrink-0">
-						<div class="text-3xl font-black tracking-tight {i === 0 ? 'text-warning' : i === 1 ? 'text-text-muted' : i === 2 ? 'text-accent' : 'text-text-muted'}">
+						<div
+							class="text-3xl font-black tracking-tight {i === 0
+								? 'text-warning'
+								: i === 1
+									? 'text-text-muted'
+									: i === 2
+										? 'text-accent'
+										: 'text-text-muted'}"
+						>
 							{i + 1}
 						</div>
 					</div>
@@ -132,9 +142,12 @@
 
 					<!-- Stats -->
 					<div class="hidden sm:block text-right shrink-0">
-						<div class="text-2xl font-black text-primary">{(g.total_fragments ?? 0).toLocaleString()}</div>
+						<div class="text-2xl font-black text-primary">
+							{(g.total_fragments ?? 0).toLocaleString()}
+						</div>
 						<div class="text-xs text-text-muted">
-							{g.member_count} {i18n.locale === 'fr' ? 'membres' : 'members'}
+							{g.member_count}
+							{i18n.locale === 'fr' ? 'membres' : 'members'}
 						</div>
 					</div>
 				</a>

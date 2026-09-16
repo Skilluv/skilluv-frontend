@@ -22,12 +22,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { CohortOutcomes, EducationOutcomes } from '$components/leadership';
 	import Alert from '$components/ui/Alert.svelte';
-	import type {
-		CohortDetail,
-		CohortMemberListing,
-		CohortMessage,
-		CohortMilestone
-	} from '$types';
+	import type { CohortDetail, CohortMemberListing, CohortMessage, CohortMilestone } from '$types';
 
 	const MESSAGE_PAGE = 50;
 
@@ -53,11 +48,14 @@
 
 	let isMember = $derived(detail?.my_role != null);
 	let isOrganizer = $derived(detail?.my_role === 'organizer');
-	let isOver = $derived(
-		detail ? new Date(detail.cohort.ends_at).getTime() < Date.now() : false
-	);
+	let isOver = $derived(detail ? new Date(detail.cohort.ends_at).getTime() < Date.now() : false);
 	let canJoin = $derived(
-		!!auth.user && !!detail && !isMember && detail.cohort.is_public && detail.seats_left > 0 && !isOver
+		!!auth.user &&
+			!!detail &&
+			!isMember &&
+			detail.cohort.is_public &&
+			detail.seats_left > 0 &&
+			!isOver
 	);
 
 	/** Oldest first, so the thread reads top to bottom like a conversation. */
@@ -214,7 +212,9 @@
 </script>
 
 <svelte:head>
-	<title>{detail ? `${detail.cohort.name} | Skilluv` : `${i18n.t('cohorts.title')} | Skilluv`}</title>
+	<title
+		>{detail ? `${detail.cohort.name} | Skilluv` : `${i18n.t('cohorts.title')} | Skilluv`}</title
+	>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl px-4 py-8" data-testid="cohort-detail-page">
@@ -276,7 +276,8 @@
 					{#if canJoin}
 						<Button variant="accent" loading={busy} onclick={join}>{i18n.t('cohorts.join')}</Button>
 					{:else if isMember}
-						<Button variant="ghost" loading={busy} onclick={leave}>{i18n.t('cohorts.leave')}</Button>
+						<Button variant="ghost" loading={busy} onclick={leave}>{i18n.t('cohorts.leave')}</Button
+						>
 					{/if}
 				</div>
 			</div>
@@ -391,7 +392,9 @@
 											<p class="mt-0.5 text-xs {past ? 'text-text-muted' : 'text-accent'}">
 												{past
 													? i18n.t('cohorts.milestoneDone')
-													: i18n.t('cohorts.milestoneDue', { date: fmtDate(milestone.target_date) })}
+													: i18n.t('cohorts.milestoneDue', {
+															date: fmtDate(milestone.target_date)
+														})}
 											</p>
 										</div>
 										{#if isOrganizer}
@@ -436,8 +439,8 @@
 				     joining actually wants. The lead's acts are the lead's. -->
 				<section class="rounded-2xl border border-border bg-surface-elevated p-6">
 					<CohortOutcomes
-						cohortId={cohortId}
-						isOrganizer={isOrganizer}
+						{cohortId}
+						{isOrganizer}
 						members={members.map((m) => ({ user_id: m.user_id, display_name: m.display_name }))}
 					/>
 				</section>
@@ -446,7 +449,7 @@
 				     question on the same cohort: one asks whether somebody led the
 				     group, the other what the learners got. -->
 				<section class="rounded-2xl border border-border bg-surface-elevated p-6">
-					<EducationOutcomes cohortId={cohortId} isOrganizer={isOrganizer} />
+					<EducationOutcomes {cohortId} {isOrganizer} />
 				</section>
 			</div>
 		</div>

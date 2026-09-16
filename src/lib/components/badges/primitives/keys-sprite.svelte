@@ -10,7 +10,13 @@
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
 	<!-- Clé CERCLE — Preuve -->
 	<symbol id="key-circle" viewBox="0 0 100 300">
-		<g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+		<g
+			fill="none"
+			stroke="currentColor"
+			stroke-width="4"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
 			<circle cx="50" cy="42" r="30" />
 			<circle cx="50" cy="42" r="20" stroke-width="1.5" />
 			<line x1="50" y1="72" x2="50" y2="82" />
@@ -25,7 +31,13 @@
 
 	<!-- Clé TRÈFLE — Craft -->
 	<symbol id="key-trefle" viewBox="0 0 100 300">
-		<g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+		<g
+			fill="none"
+			stroke="currentColor"
+			stroke-width="4"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
 			<circle cx="50" cy="22" r="16" />
 			<circle cx="30" cy="52" r="16" />
 			<circle cx="70" cy="52" r="16" />
@@ -41,7 +53,13 @@
 
 	<!-- Clé ROSACE — Création (quatrefoil) -->
 	<symbol id="key-rosace" viewBox="0 0 100 300">
-		<g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+		<g
+			fill="none"
+			stroke="currentColor"
+			stroke-width="4"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
 			<circle cx="50" cy="16" r="14" />
 			<circle cx="24" cy="42" r="14" />
 			<circle cx="76" cy="42" r="14" />
@@ -59,7 +77,13 @@
 
 	<!-- Clé ÉTOILE — Impact -->
 	<symbol id="key-star" viewBox="0 0 100 300">
-		<g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+		<g
+			fill="none"
+			stroke="currentColor"
+			stroke-width="4"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
 			<circle cx="50" cy="42" r="30" />
 			<line x1="50" y1="72" x2="50" y2="82" />
 			<line x1="50" y1="82" x2="50" y2="238" />
@@ -74,8 +98,16 @@
 
 	<!-- Clé CŒUR — Luv (signature) -->
 	<symbol id="key-heart" viewBox="0 0 100 300">
-		<g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-			<path d="M 50 30 C 34 6 12 18 12 40 C 12 60 50 88 50 88 C 50 88 88 60 88 40 C 88 18 66 6 50 30 Z" />
+		<g
+			fill="none"
+			stroke="currentColor"
+			stroke-width="4"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
+			<path
+				d="M 50 30 C 34 6 12 18 12 40 C 12 60 50 88 50 88 C 50 88 88 60 88 40 C 88 18 66 6 50 30 Z"
+			/>
 			<line x1="50" y1="88" x2="50" y2="98" />
 			<line x1="50" y1="98" x2="50" y2="238" />
 			<line x1="46" y1="106" x2="46" y2="232" stroke-width="1.2" />

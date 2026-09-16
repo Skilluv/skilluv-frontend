@@ -198,7 +198,8 @@
 		{#if method === 'stripe'}
 			<div class="rounded-xl border border-border bg-surface-overlay p-4">
 				{#if stripeReady}
-					<Badge variant="success" size="md">{i18n.t('wallet.payoutModal.stripe.readyLabel')}</Badge>
+					<Badge variant="success" size="md">{i18n.t('wallet.payoutModal.stripe.readyLabel')}</Badge
+					>
 					{#if wallet?.stripe_account_id}
 						<p class="mt-2 text-xs font-mono text-text-muted">
 							{i18n.t('wallet.payoutModal.stripe.accountLabel', { id: wallet.stripe_account_id })}
@@ -280,7 +281,9 @@
 					disabled={momoReady}
 				/>
 				{#if momoReady}
-					<Badge variant="success" size="sm">{i18n.t('wallet.payoutModal.momo.verifiedLabel')}</Badge>
+					<Badge variant="success" size="sm"
+						>{i18n.t('wallet.payoutModal.momo.verifiedLabel')}</Badge
+					>
 				{:else}
 					<Button variant="secondary" onclick={registerMomo} loading={momoRegisterBusy}>
 						{i18n.t('wallet.payoutModal.momo.registerCta')}

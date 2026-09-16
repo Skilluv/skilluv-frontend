@@ -16,7 +16,9 @@ test.describe('@parcours guild admin', () => {
 	test.skip(!HAS_STATE, 'requires user-setup.spec.ts run first');
 	if (HAS_STATE) test.use({ storageState: STATE });
 
-	test('page guilds/{slug} affiche les onglets et le membre courant peut voir composition', async ({ page }) => {
+	test('page guilds/{slug} affiche les onglets et le membre courant peut voir composition', async ({
+		page
+	}) => {
 		await page.goto('/guilds');
 		// Target the cards explicitly: `a[href^="/guilds/"]` also matched the
 		// "create a guild" CTA, which navigated to /guilds/new and failed.

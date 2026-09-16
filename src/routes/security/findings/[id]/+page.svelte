@@ -77,7 +77,9 @@
 	{#if loading}
 		<Skeleton class="h-64 w-full" rounded="xl" />
 	{:else if missing || !finding}
-		<p class="rounded-xl border border-border bg-surface-elevated px-4 py-6 text-sm text-text-muted">
+		<p
+			class="rounded-xl border border-border bg-surface-elevated px-4 py-6 text-sm text-text-muted"
+		>
 			{i18n.t('securityFinding.notFound')}
 		</p>
 	{:else}
@@ -117,7 +119,9 @@
 			<p class="whitespace-pre-line text-sm text-text">{finding.description_md}</p>
 		{/if}
 
-		<dl class="grid gap-x-6 gap-y-2 rounded-xl border border-border bg-surface-elevated p-5 text-sm sm:grid-cols-2">
+		<dl
+			class="grid gap-x-6 gap-y-2 rounded-xl border border-border bg-surface-elevated p-5 text-sm sm:grid-cols-2"
+		>
 			<div class="flex flex-wrap justify-between gap-2">
 				<dt class="text-text-muted">{i18n.t('securityFinding.reportedBy')}</dt>
 				<dd class="text-text">
@@ -165,7 +169,13 @@
 		</dl>
 
 		{#if finding.writeup_url}
-			<Button href={finding.writeup_url} size="sm" variant="ghost" target="_blank" rel="noopener noreferrer">
+			<Button
+				href={finding.writeup_url}
+				size="sm"
+				variant="ghost"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
 				<ExternalLink size={14} />
 				{i18n.t('securityFinding.writeupCta')}
 			</Button>

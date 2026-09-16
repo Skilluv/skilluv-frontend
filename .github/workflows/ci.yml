@@ -32,6 +32,10 @@ jobs:
       - name: Secret scan -- source (SE-04)
         run: gitleaks detect --config .gitleaks.toml --source . --redact --verbose --exit-code 1
 
+      - name: Formatting
+        # Checked rather than written: a job that reformats is a job whose
+        # output nobody reviewed. `npm run format` is the fix.
+        run: npm run format:check
       - name: i18n parity + orphan-key check
         run: npm run i18n:check
       - name: XSS {@html} sink audit (FE-06)

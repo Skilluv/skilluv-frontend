@@ -95,8 +95,7 @@ export const domainProfileApi = {
 	 */
 	mentorMatches(domain: ProfileDomain, limit?: number) {
 		return api.get<ApiResponse<MentorMatches>>(`/domains/${domain}/mentors/for-me`, { limit });
-	},
-
+	}
 };
 
 /**

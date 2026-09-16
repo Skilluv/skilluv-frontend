@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<script>
-			(function() {
+			(function () {
 				if (localStorage.getItem('skilluv-terminal-mode') === 'true') {
 					localStorage.removeItem('skilluv-terminal-mode');
 				}
@@ -10,7 +10,8 @@
 				// Migration ex-noms → nouveaux noms alignés direction warm/scout
 				if (b === 'neon') b = 'vesperal';
 				if (b === 'terminal') b = 'scriptorium';
-				if (['forge','vesperal','arena','scriptorium','sakura','lagune'].indexOf(b) === -1) b = 'forge';
+				if (['forge', 'vesperal', 'arena', 'scriptorium', 'sakura', 'lagune'].indexOf(b) === -1)
+					b = 'forge';
 				localStorage.setItem('skilluv-theme', b);
 				// Light by default, and this literal is the one that decides: it runs
 				// before hydration. `stores/theme.svelte.ts` carries the same default

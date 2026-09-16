@@ -29,23 +29,39 @@
 	>
 		<!-- Header bar -->
 		<div class="flex items-center gap-2 border-b border-border px-4 py-2.5">
-			<div class="h-2.5 w-2.5 rounded-sm bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
-			<div class="h-3 w-14 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
-			<div class="ml-auto h-4 w-16 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+			<div
+				class="h-2.5 w-2.5 rounded-sm bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+			></div>
+			<div
+				class="h-3 w-14 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+			></div>
+			<div
+				class="ml-auto h-4 w-16 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+			></div>
 		</div>
 
 		<!-- Content — mêmes paddings et flex-1 que le card réel -->
 		<div class="p-4 flex-1 flex flex-col">
 			<!-- title placeholder (h-sm) -->
-			<div class="h-4 w-3/4 mb-2 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+			<div
+				class="h-4 w-3/4 mb-2 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+			></div>
 			<!-- 2-line desc placeholder (h-xs each) -->
-			<div class="h-3 w-full mb-1 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
-			<div class="h-3 w-5/6 mb-4 flex-1 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+			<div
+				class="h-3 w-full mb-1 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+			></div>
+			<div
+				class="h-3 w-5/6 mb-4 flex-1 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+			></div>
 
 			<!-- Footer -->
 			<div class="flex items-center justify-between">
-				<div class="h-3 w-20 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
-				<div class="h-4 w-14 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+				<div
+					class="h-3 w-20 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+				></div>
+				<div
+					class="h-4 w-14 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+				></div>
 			</div>
 		</div>
 	</div>
@@ -59,7 +75,9 @@
 		<!-- Header bar -->
 		<div class="flex items-center gap-2 border-b border-border px-4 py-2.5">
 			<div class="h-2.5 w-2.5 rounded-sm {domainStyle(challenge.skill_domain).dot}"></div>
-			<span class="text-xs font-mono text-text-muted capitalize">{i18n.t(`common.domains.${challenge.skill_domain}`)}</span>
+			<span class="text-xs font-mono text-text-muted capitalize"
+				>{i18n.t(`common.domains.${challenge.skill_domain}`)}</span
+			>
 			{#if challenge.language}
 				<span class="text-xs text-text-muted">· {challenge.language}</span>
 			{/if}
@@ -67,15 +85,27 @@
 				{i18n.t(`common.difficulty.${challenge.difficulty}`)}
 			</span>
 			{#if locked}
-				<svg class="h-3.5 w-3.5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+				<svg
+					class="h-3.5 w-3.5 text-text-muted"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					stroke-width="2"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+					/>
 				</svg>
 			{/if}
 		</div>
 
 		<!-- Content -->
 		<div class="p-4 flex-1 flex flex-col">
-			<h3 class="text-sm font-semibold mb-1 transition-colors duration-200 group-hover:text-accent">{challenge.title}</h3>
+			<h3 class="text-sm font-semibold mb-1 transition-colors duration-200 group-hover:text-accent">
+				{challenge.title}
+			</h3>
 			<p class="text-xs text-text-muted line-clamp-2 mb-4 flex-1">{challenge.description}</p>
 
 			<!-- Footer -->
@@ -83,10 +113,14 @@
 				<div class="flex items-center gap-3 text-xs text-text-muted">
 					<span>{formatDuration(challenge.duration_minutes)}</span>
 					{#if challenge.mode === 'team'}
-						<span class="border border-border rounded px-1.5 py-0.5 text-[10px]">{i18n.t('common.team')}</span>
+						<span class="border border-border rounded px-1.5 py-0.5 text-[10px]"
+							>{i18n.t('common.team')}</span
+						>
 					{/if}
 					{#if !challenge.ai_allowed}
-						<span class="border border-error/30 text-error rounded px-1.5 py-0.5 text-[10px]">{i18n.t('challenges.detail.noAi')}</span>
+						<span class="border border-error/30 text-error rounded px-1.5 py-0.5 text-[10px]"
+							>{i18n.t('challenges.detail.noAi')}</span
+						>
 					{/if}
 				</div>
 				<span class="text-sm font-bold text-accent">+{challenge.reward_fragments} ◆</span>

@@ -96,17 +96,29 @@ export const enterpriseApi = {
 	},
 
 	getProfile() {
-		return api.get<ApiResponse<{ enterprise: Enterprise; member_count: number }>>('/enterprise/profile');
+		return api.get<ApiResponse<{ enterprise: Enterprise; member_count: number }>>(
+			'/enterprise/profile'
+		);
 	},
 
-	updateProfile(data: Partial<Pick<Enterprise, 'company_name' | 'description' | 'website' | 'logo_url' | 'industry' | 'company_size'>>) {
+	updateProfile(
+		data: Partial<
+			Pick<
+				Enterprise,
+				'company_name' | 'description' | 'website' | 'logo_url' | 'industry' | 'company_size'
+			>
+		>
+	) {
 		return api.put<ApiResponse<{ enterprise: Enterprise }>>('/enterprise/profile', data);
 	},
 
 	uploadLogo(file: File) {
 		const formData = new FormData();
 		formData.append('logo', file);
-		return api.upload<ApiResponse<{ logo_url: string; enterprise: Enterprise }>>('/enterprise/logo', formData);
+		return api.upload<ApiResponse<{ logo_url: string; enterprise: Enterprise }>>(
+			'/enterprise/logo',
+			formData
+		);
 	},
 
 	deleteLogo() {
@@ -116,7 +128,9 @@ export const enterpriseApi = {
 	// --- Team ---
 
 	invite(email: string) {
-		return api.post<ApiResponse<{ message: string; invite_token: string }>>('/enterprise/invite', { email });
+		return api.post<ApiResponse<{ message: string; invite_token: string }>>('/enterprise/invite', {
+			email
+		});
 	},
 
 	acceptInvite(token: string) {
@@ -124,9 +138,9 @@ export const enterpriseApi = {
 	},
 
 	invitePreview(token: string) {
-		return api.get<
-			ApiResponse<{ email: string; company_name: string; account_exists: boolean }>
-		>(`/enterprise/invite/preview?token=${encodeURIComponent(token)}`);
+		return api.get<ApiResponse<{ email: string; company_name: string; account_exists: boolean }>>(
+			`/enterprise/invite/preview?token=${encodeURIComponent(token)}`
+		);
 	},
 
 	inviteRegisterAndAccept(payload: {
@@ -194,7 +208,10 @@ export const enterpriseApi = {
 		page?: number;
 		per_page?: number;
 	}) {
-		return api.get<ApiPaginatedResponse<TalentCard>>('/talents/search', params as Record<string, string | number>);
+		return api.get<ApiPaginatedResponse<TalentCard>>(
+			'/talents/search',
+			params as Record<string, string | number>
+		);
 	},
 
 	getTalentCard(username: string) {
@@ -212,7 +229,10 @@ export const enterpriseApi = {
 	},
 
 	listBookmarks(page?: number, perPage?: number) {
-		return api.get<ApiPaginatedResponse<BookmarkEntry>>('/enterprise/bookmarks', { page, per_page: perPage });
+		return api.get<ApiPaginatedResponse<BookmarkEntry>>('/enterprise/bookmarks', {
+			page,
+			per_page: perPage
+		});
 	},
 
 	// --- Talent Lists ---
@@ -226,7 +246,9 @@ export const enterpriseApi = {
 	},
 
 	getList(listId: string) {
-		return api.get<ApiResponse<{ list: TalentList; talents: TalentCard[] }>>(`/enterprise/lists/${listId}`);
+		return api.get<ApiResponse<{ list: TalentList; talents: TalentCard[] }>>(
+			`/enterprise/lists/${listId}`
+		);
 	},
 
 	updateList(listId: string, data: { name?: string; description?: string }) {
@@ -238,11 +260,15 @@ export const enterpriseApi = {
 	},
 
 	addTalentToList(listId: string, talentId: string) {
-		return api.post<ApiResponse<{ message: string }>>(`/enterprise/lists/${listId}/talents/${talentId}`);
+		return api.post<ApiResponse<{ message: string }>>(
+			`/enterprise/lists/${listId}/talents/${talentId}`
+		);
 	},
 
 	removeTalentFromList(listId: string, talentId: string) {
-		return api.delete<ApiResponse<{ message: string }>>(`/enterprise/lists/${listId}/talents/${talentId}`);
+		return api.delete<ApiResponse<{ message: string }>>(
+			`/enterprise/lists/${listId}/talents/${talentId}`
+		);
 	},
 
 	// --- Dashboard ---
@@ -259,7 +285,11 @@ export const enterpriseApi = {
 	// les frais d'inscription d'un talent invité. Payment: soit crédits, soit
 	// Stripe Checkout selon la config backend. --------------------------------
 
-	sponsorCertification(payload: { certification_slug: string; talent_id: string; message?: string }) {
+	sponsorCertification(payload: {
+		certification_slug: string;
+		talent_id: string;
+		message?: string;
+	}) {
 		return api.post<ApiResponse<{ attempt_id?: string; message: string; checkout_url?: string }>>(
 			'/enterprise/certifications/sponsor',
 			payload

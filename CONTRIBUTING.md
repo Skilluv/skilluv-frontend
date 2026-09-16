@@ -73,6 +73,7 @@ See the `README.md` for local setup instructions.
 ## Style guidelines
 
 Language-specific style is enforced by CI:
+
 - Rust: `cargo fmt` + `cargo clippy` (strict)
 - TypeScript/Svelte: `prettier` + `eslint`
 - Python: `ruff` + `black`

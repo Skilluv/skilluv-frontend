@@ -41,10 +41,9 @@ async function submitLogin(page: Page) {
 	const submit = page.getByRole('button', { name: 'Se connecter', exact: true });
 	await expect(async () => {
 		const posted = page
-			.waitForRequest(
-				(r) => r.url().includes('/api/auth/login') && r.method() === 'POST',
-				{ timeout: 1500 }
-			)
+			.waitForRequest((r) => r.url().includes('/api/auth/login') && r.method() === 'POST', {
+				timeout: 1500
+			})
 			.catch(() => null);
 		await submit.click();
 		expect(await posted, 'POST /auth/login fired').not.toBeNull();
@@ -371,7 +370,6 @@ test.describe('Enlistment — pact', () => {
 		await expect(backendErr.or(countryErr)).toBeVisible({ timeout: 5000 });
 	});
 });
-
 
 // ---------------------------------------------------------------------------
 // Login

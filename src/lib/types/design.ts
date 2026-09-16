@@ -106,12 +106,7 @@ export interface ContestRules {
 }
 
 /** Submission lifecycle, from the CHECK in migration 0189. */
-export const SUBMISSION_STATUSES = [
-	'submitted',
-	'accepted',
-	'rejected',
-	'disqualified'
-] as const;
+export const SUBMISSION_STATUSES = ['submitted', 'accepted', 'rejected', 'disqualified'] as const;
 
 export type SubmissionStatus = (typeof SUBMISSION_STATUSES)[number];
 

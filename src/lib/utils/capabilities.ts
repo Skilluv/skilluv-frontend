@@ -17,8 +17,7 @@ import { isPublicDomain } from '$lib/data/domains';
 
 /** Every capability name with the discipline taken off. */
 export type CapabilityFamily =
-	| Exclude<Capability, `rite_reviewer:${SkillDomain}`>
-	| 'rite_reviewer';
+	Exclude<Capability, `rite_reviewer:${SkillDomain}`> | 'rite_reviewer';
 
 const RITE_REVIEWER = 'rite_reviewer:';
 
@@ -38,7 +37,5 @@ export function capabilityDomain(capability: Capability): SkillDomain | null {
 
 /** The family, which is what decides how a capability is drawn and named. */
 export function capabilityFamily(capability: Capability): CapabilityFamily {
-	return capability.startsWith(RITE_REVIEWER)
-		? 'rite_reviewer'
-		: (capability as CapabilityFamily);
+	return capability.startsWith(RITE_REVIEWER) ? 'rite_reviewer' : (capability as CapabilityFamily);
 }

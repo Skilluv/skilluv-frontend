@@ -29,8 +29,15 @@
 		action?: Snippet;
 	}
 
-	let { domain, score, orientations, attestations = [], scoreNote, sections, action }: Props =
-		$props();
+	let {
+		domain,
+		score,
+		orientations,
+		attestations = [],
+		scoreNote,
+		sections,
+		action
+	}: Props = $props();
 </script>
 
 <section

@@ -18,8 +18,17 @@
 
 	// Devise → symbole court
 	const CURRENCY_SYMBOLS: Record<string, string> = {
-		EUR: '€', USD: '$', GBP: '£', NGN: '₦', GHS: '₵', EGP: 'E£',
-		ZAR: 'R', KES: 'KSh', MAD: 'DH', XOF: 'CFA', XAF: 'FCFA'
+		EUR: '€',
+		USD: '$',
+		GBP: '£',
+		NGN: '₦',
+		GHS: '₵',
+		EGP: 'E£',
+		ZAR: 'R',
+		KES: 'KSh',
+		MAD: 'DH',
+		XOF: 'CFA',
+		XAF: 'FCFA'
 	};
 
 	function fmtAmount(cents: number, currency: string): string {
@@ -101,7 +110,11 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Factures | Skilluv Enterprise' : 'Invoices | Skilluv Enterprise'}</title>
+	<title
+		>{i18n.locale === 'fr'
+			? 'Factures | Skilluv Enterprise'
+			: 'Invoices | Skilluv Enterprise'}</title
+	>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
@@ -139,7 +152,9 @@
 				<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 					{i18n.locale === 'fr' ? 'Total TTC' : 'Total incl. VAT'}
 				</p>
-				<p class="text-2xl font-black text-primary">{fmtAmount(totalTTC.amount, totalTTC.currency)}</p>
+				<p class="text-2xl font-black text-primary">
+					{fmtAmount(totalTTC.amount, totalTTC.currency)}
+				</p>
 			</div>
 		{/if}
 	</div>
@@ -162,14 +177,18 @@
 	{#if loading}
 		<div class="space-y-2">
 			{#each Array(5) as _}
-				<div class="animate-pulse rounded-xl border border-border bg-surface-elevated p-4 h-20"></div>
+				<div
+					class="animate-pulse rounded-xl border border-border bg-surface-elevated p-4 h-20"
+				></div>
 			{/each}
 		</div>
 	{:else if invoices.length === 0}
 		<div class="rounded-2xl border border-border bg-surface-elevated p-12 text-center">
-			<div class="mb-4 inline-flex justify-center text-text-muted"><FileText size={48} strokeWidth={1.5} /></div>
+			<div class="mb-4 inline-flex justify-center text-text-muted">
+				<FileText size={48} strokeWidth={1.5} />
+			</div>
 			<p class="mb-2 text-lg font-semibold">
-				{i18n.locale === 'fr' ? 'Aucune facture pour l\'instant' : 'No invoices yet'}
+				{i18n.locale === 'fr' ? "Aucune facture pour l'instant" : 'No invoices yet'}
 			</p>
 			<p class="mb-6 text-sm text-text-muted">
 				{i18n.locale === 'fr'
@@ -187,22 +206,34 @@
 					<div class="mb-4 flex items-baseline justify-between border-b border-border pb-2">
 						<h2 class="text-2xl font-black tracking-tight">{year}</h2>
 						<span class="text-xs font-mono text-text-muted">
-							{list.length} {list.length > 1 ? (i18n.locale === 'fr' ? 'factures' : 'invoices') : (i18n.locale === 'fr' ? 'facture' : 'invoice')}
+							{list.length}
+							{list.length > 1
+								? i18n.locale === 'fr'
+									? 'factures'
+									: 'invoices'
+								: i18n.locale === 'fr'
+									? 'facture'
+									: 'invoice'}
 						</span>
 					</div>
-					<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+					<div
+						class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden"
+					>
 						{#each list as inv}
 							<div class="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
 								<!-- Invoice number -->
 								<div class="min-w-0 flex-1">
 									<div class="flex items-center gap-2">
-										<span class="font-mono text-sm font-bold text-primary">{inv.invoice_number}</span>
+										<span class="font-mono text-sm font-bold text-primary"
+											>{inv.invoice_number}</span
+										>
 										<Badge variant="success" size="sm">
 											{i18n.locale === 'fr' ? 'Réglée' : 'Paid'}
 										</Badge>
 									</div>
 									<p class="mt-1 truncate text-sm text-text-muted">
-										{inv.description ?? (i18n.locale === 'fr' ? 'Achat de crédits' : 'Credit purchase')}
+										{inv.description ??
+											(i18n.locale === 'fr' ? 'Achat de crédits' : 'Credit purchase')}
 									</p>
 									<p class="mt-0.5 text-xs font-mono text-text-muted">{fmtDate(inv.issued_at)}</p>
 								</div>
@@ -210,7 +241,8 @@
 								<!-- Amounts -->
 								<div class="text-right shrink-0 pr-4">
 									<div class="text-xs text-text-muted">
-										{i18n.locale === 'fr' ? 'HT' : 'Net'} {fmtAmount(inv.amount_ht_cents, inv.currency)}
+										{i18n.locale === 'fr' ? 'HT' : 'Net'}
+										{fmtAmount(inv.amount_ht_cents, inv.currency)}
 										{#if inv.amount_tva_cents > 0}
 											· TVA {inv.tva_rate_pct.toFixed(1)}%
 										{/if}
@@ -227,8 +259,18 @@
 										class="inline-flex h-9 items-center gap-2 rounded-full border border-border px-4 text-sm font-medium hover:border-primary hover:text-primary transition-colors"
 										title={i18n.locale === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
 									>
-										<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-											<path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+										<svg
+											class="h-4 w-4"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+											stroke-width="2"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+											/>
 										</svg>
 										PDF
 									</button>

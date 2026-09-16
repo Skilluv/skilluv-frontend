@@ -59,7 +59,9 @@ test.describe('Mentors shop window', () => {
 		// Setting an hourly rate is not something a person looking to book is
 		// doing; that path moved under the dashboard.
 		const hero = page.locator('section').first();
-		await expect(hero.getByRole('link', { name: /devenir mentor|become a mentor/i })).toHaveCount(0);
+		await expect(hero.getByRole('link', { name: /devenir mentor|become a mentor/i })).toHaveCount(
+			0
+		);
 	});
 });
 

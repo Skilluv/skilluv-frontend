@@ -157,9 +157,15 @@
 		<ul class="space-y-3">
 			{#each reports as report (report.id)}
 				{@const hint = statusHint(report.status)}
-				<li class="rounded-xl border border-border bg-surface-elevated p-4" data-testid="security-report-row">
+				<li
+					class="rounded-xl border border-border bg-surface-elevated p-4"
+					data-testid="security-report-row"
+				>
 					<div class="flex flex-wrap items-start justify-between gap-2">
-						<a href="/security/findings/{report.id}" class="text-sm font-bold text-text hover:underline">
+						<a
+							href="/security/findings/{report.id}"
+							class="text-sm font-bold text-text hover:underline"
+						>
 							{report.title}
 						</a>
 						<div class="flex flex-wrap items-center gap-2">
@@ -196,7 +202,9 @@
 					</div>
 
 					{#if hint}
-						<p class="mt-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text-muted">
+						<p
+							class="mt-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text-muted"
+						>
 							{hint}
 						</p>
 					{/if}

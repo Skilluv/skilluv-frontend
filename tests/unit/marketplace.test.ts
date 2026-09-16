@@ -107,10 +107,9 @@ describe('marketplaceApi', () => {
 
 	it('a rating is one to five and hangs off a purchase, not an item', async () => {
 		fetchMock.mockResolvedValue(ok({ rated: 5 }));
-		const { marketplaceApi, } = await import('../../src/lib/api/marketplace');
-		const { MARKETPLACE_RATING_MIN, MARKETPLACE_RATING_MAX } = await import(
-			'../../src/lib/types/marketplace'
-		);
+		const { marketplaceApi } = await import('../../src/lib/api/marketplace');
+		const { MARKETPLACE_RATING_MIN, MARKETPLACE_RATING_MAX } =
+			await import('../../src/lib/types/marketplace');
 		await marketplaceApi.rate('p1', { rating: 5, review: 'solide' });
 		// Keyed on the purchase: a rating with no purchase behind it is noise.
 		expect(fetchMock.mock.calls[0][0]).toBe('/api/marketplace/purchases/p1/rate');

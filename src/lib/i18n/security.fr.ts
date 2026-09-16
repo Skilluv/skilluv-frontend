@@ -41,12 +41,12 @@ export const securityFr: SecurityTranslations = {
 		fieldTargetHost: 'Hôte',
 		fieldEndpoint: 'Endpoint affecté',
 		fieldSeverity: 'À quel point c’est grave, selon toi',
-		fieldSeverityHint: 'Ton évaluation. Le triage peut trancher autrement, et les deux sont gardées.',
+		fieldSeverityHint:
+			'Ton évaluation. Le triage peut trancher autrement, et les deux sont gardées.',
 		fieldCvss: 'Vecteur CVSS',
 		fieldCwe: 'CWE',
 		anonymousLabel: 'Signaler sans mon nom',
-		anonymousHint:
-			'Tu restes crédité en privé. Seul le hall of fame affiche un alias à la place.',
+		anonymousHint: 'Tu restes crédité en privé. Seul le hall of fame affiche un alias à la place.',
 		proofsTitle: 'Preuves',
 		proofsHint:
 			'Captures d’écran, un enregistrement, une courte vidéo. Téléversées d’abord, parce que tu les prends pendant que tu as encore l’exploit sous les yeux.',
@@ -131,12 +131,13 @@ export const securityFr: SecurityTranslations = {
 
 	securityCompetitions: {
 		title: 'Compétitions',
-		subtitle: "Attaquer, défendre ou auditer contre la montre — et contre tous les autres.",
+		subtitle: 'Attaquer, défendre ou auditer contre la montre — et contre tous les autres.',
 		liveTitle: 'En cours',
 		upcomingTitle: 'Inscriptions ouvertes',
 		pastTitle: 'Terminées',
 		empty: 'Aucune compétition programmée.',
-		emptyHint: "Elles fonctionnent par saisons plutôt qu'en continu, donc le tableau est vide entre deux.",
+		emptyHint:
+			"Elles fonctionnent par saisons plutôt qu'en continu, donc le tableau est vide entre deux.",
 		openCta: 'Ouvrir',
 		registerCta: "S'inscrire",
 		everyDomain: 'Ouverte à tous les domaines',
@@ -152,7 +153,8 @@ export const securityFr: SecurityTranslations = {
 
 	blueLab: {
 		title: 'Labs défensifs',
-		subtitle: 'Un artefact d’incident réel, et les questions auxquelles il doit te permettre de répondre.',
+		subtitle:
+			'Un artefact d’incident réel, et les questions auxquelles il doit te permettre de répondre.',
 		offlineNote:
 			'Tu télécharges l’artefact et tu l’ouvres dans tes propres outils, sur ta machine. Seules tes réponses reviennent — rien de ce que tu lances n’est envoyé à Skilluv.',
 		empty: 'Aucun lab disponible.',
@@ -165,7 +167,8 @@ export const securityFr: SecurityTranslations = {
 		minutes: '{n} min',
 		artifactTitle: "L'artefact",
 		artifactCta: 'Obtenir le lien de téléchargement',
-		artifactExpires: 'Ce lien cesse de fonctionner dans environ {n} min. Redemandes-en un si besoin.',
+		artifactExpires:
+			'Ce lien cesse de fonctionner dans environ {n} min. Redemandes-en un si besoin.',
 		tiers: {
 			easy: 'Facile',
 			medium: 'Moyen',
@@ -217,7 +220,8 @@ export const securityFr: SecurityTranslations = {
 
 	securityPractice: {
 		ctfTitle: 'Capture the flag',
-		ctfSubtitle: 'Des cibles qu’on héberge, des flags qu’on a plantés, et qui est arrivé le premier.',
+		ctfSubtitle:
+			'Des cibles qu’on héberge, des flags qu’on a plantés, et qui est arrivé le premier.',
 		scoreboardTitle: 'Classement',
 		scoreboardEmpty: 'Personne n’a encore résolu quoi que ce soit.',
 		solves: '{n} résolus',
@@ -323,7 +327,8 @@ export const securityFr: SecurityTranslations = {
 		fieldLevel: 'Niveau',
 		fieldCredentialId: 'Numéro de certification',
 		fieldEvidence: 'Lien public',
-		fieldEvidenceHint: 'Obligatoire : une certification que personne ne peut ouvrir est une phrase.',
+		fieldEvidenceHint:
+			'Obligatoire : une certification que personne ne peut ouvrir est une phrase.',
 		fieldIssuedOn: 'Obtenue le',
 		fieldExpiresOn: 'Expire le',
 		addCta: 'Enregistrer',

@@ -61,9 +61,7 @@ export const reviewQueueApi = {
 	},
 
 	task(id: string) {
-		return api.get<ApiResponse<{ task: ReviewTask }>>(
-			`/review-queue/${encodeURIComponent(id)}`
-		);
+		return api.get<ApiResponse<{ task: ReviewTask }>>(`/review-queue/${encodeURIComponent(id)}`);
 	},
 
 	/**

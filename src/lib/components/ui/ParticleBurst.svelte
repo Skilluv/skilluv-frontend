@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	interface Props {
 		/** Nombre de particules */
 		count?: number;
@@ -136,8 +135,5 @@
 	}
 </script>
 
-<canvas
-	bind:this={canvas}
-	class="pointer-events-none absolute inset-0 z-10"
-	class:hidden={!active}
+<canvas bind:this={canvas} class="pointer-events-none absolute inset-0 z-10" class:hidden={!active}
 ></canvas>

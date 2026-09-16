@@ -5,15 +5,7 @@
 	import { theme } from '$lib/stores/theme.svelte';
 	import { notifications } from '$lib/stores/notifications.svelte';
 	import type { ThemeBase } from '$lib/types';
-	import {
-		Bell,
-		ChevronDown,
-		Settings,
-		LogOut,
-		Sun,
-		Moon,
-		Check
-	} from '@lucide/svelte';
+	import { Bell, ChevronDown, Settings, LogOut, Sun, Moon, Check } from '@lucide/svelte';
 	import LogoutConfirmModal from './LogoutConfirmModal.svelte';
 	import EnterpriseSwitcher from './EnterpriseSwitcher.svelte';
 	import BrandLogo from '$components/layout/BrandLogo.svelte';
@@ -58,7 +50,10 @@
 >
 	<!-- Left: Skilluv logo + enterprise workspace switcher -->
 	<div class="flex items-center gap-3">
-		<a href="/enterprise/dashboard" class="flex items-center gap-2 text-lg font-black tracking-tight">
+		<a
+			href="/enterprise/dashboard"
+			class="flex items-center gap-2 text-lg font-black tracking-tight"
+		>
 			<BrandLogo variant="mark" size={24} />
 			<span>
 				<span class="text-accent">Skill</span><span class="text-text-primary">uv</span>
@@ -164,7 +159,9 @@
 				onclick={() => (userMenuOpen = !userMenuOpen)}
 				class="flex items-center gap-2 rounded-full border border-border bg-surface-elevated px-2 py-1 transition-colors duration-200 hover:border-text-muted hover:bg-surface-overlay"
 			>
-				<div class="flex h-6 w-6 items-center justify-center rounded-full bg-accent/15 text-[10px] font-bold text-accent">
+				<div
+					class="flex h-6 w-6 items-center justify-center rounded-full bg-accent/15 text-[10px] font-bold text-accent"
+				>
 					{auth.displayName?.[0] ?? '?'}
 				</div>
 				<span class="max-w-[140px] truncate text-sm font-medium">{auth.displayName}</span>

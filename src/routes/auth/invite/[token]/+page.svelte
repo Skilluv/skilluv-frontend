@@ -56,9 +56,7 @@
 	// will flip their role to `recruiter` and lock them out of the candidate
 	// workspace (XP/badges stay in DB but the layout is gone). We show a
 	// confirmation instead of silently pushing them to the accept page.
-	let showCandidateWarning = $derived(
-		auth.isAuthenticated && auth.user?.role === 'user'
-	);
+	let showCandidateWarning = $derived(auth.isAuthenticated && auth.user?.role === 'user');
 
 	async function loadPreview() {
 		loading = true;
@@ -77,7 +75,7 @@
 	onMount(() => {
 		if (!token) {
 			loading = false;
-			previewError = i18n.locale === 'fr' ? "Token manquant." : 'Missing token.';
+			previewError = i18n.locale === 'fr' ? 'Token manquant.' : 'Missing token.';
 			return;
 		}
 		void loadPreview();
@@ -91,14 +89,11 @@
 	});
 
 	function goSignIn() {
-		goto(
-			`/auth/login?redirect=${encodeURIComponent('/enterprise/invite/accept?token=' + token)}`
-		);
+		goto(`/auth/login?redirect=${encodeURIComponent('/enterprise/invite/accept?token=' + token)}`);
 	}
 
 	function oauth(provider: 'google' | 'linkedin' | 'github') {
-		const base =
-			provider === 'github' ? '/api/auth/github/login' : `/api/auth/${provider}/start`;
+		const base = provider === 'github' ? '/api/auth/github/login' : `/api/auth/${provider}/start`;
 		window.location.href = `${base}?invite_token=${encodeURIComponent(token)}`;
 	}
 
@@ -111,9 +106,8 @@
 	async function submitRegister(e: SubmitEvent) {
 		e.preventDefault();
 		if (!termsAccepted) {
-			submitError = i18n.locale === 'fr'
-				? "Vous devez accepter les Conditions."
-				: 'You must accept the Terms.';
+			submitError =
+				i18n.locale === 'fr' ? 'Vous devez accepter les Conditions.' : 'You must accept the Terms.';
 			return;
 		}
 		// Same rule as every other screen that asks for a password, from the
@@ -160,13 +154,16 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Invitation entreprise' : 'Enterprise invitation'} | Skilluv</title>
+	<title>{i18n.locale === 'fr' ? 'Invitation entreprise' : 'Enterprise invitation'} | Skilluv</title
+	>
 </svelte:head>
 
 <div class="animate-[fade-in_300ms_ease-out]">
 	{#if loading}
 		<div class="flex items-center justify-center py-16">
-			<div class="h-8 w-8 animate-spin rounded-full border-2 border-primary/20 border-t-primary"></div>
+			<div
+				class="h-8 w-8 animate-spin rounded-full border-2 border-primary/20 border-t-primary"
+			></div>
 		</div>
 	{:else if previewError}
 		<h1 class="mb-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">
@@ -210,20 +207,22 @@
 	{:else}
 		<h1 class="mb-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">
 			{i18n.locale === 'fr' ? 'Rejoindre' : 'Join'}<br />
-			<span class="text-accent break-words">{companyName}<span class="text-text-primary">.</span></span>
+			<span class="text-accent break-words"
+				>{companyName}<span class="text-text-primary">.</span></span
+			>
 		</h1>
 		<p class="mb-6 text-base text-text-muted">
 			{i18n.locale === 'fr'
-				? "Vous avez été invité en tant que recruteur."
+				? 'Vous avez été invité en tant que recruteur.'
 				: 'You have been invited as a recruiter.'}
 		</p>
 
-		<div class="mb-6 flex items-start gap-2 rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 text-sm text-accent">
+		<div
+			class="mb-6 flex items-start gap-2 rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 text-sm text-accent"
+		>
 			<ShieldCheck size={16} strokeWidth={2} class="mt-0.5 shrink-0" />
 			<span>
-				{i18n.locale === 'fr'
-					? 'Invitation liée à cet email :'
-					: 'Invitation tied to this email:'}
+				{i18n.locale === 'fr' ? 'Invitation liée à cet email :' : 'Invitation tied to this email:'}
 				<strong class="ml-1 font-mono">{email}</strong>
 			</span>
 		</div>

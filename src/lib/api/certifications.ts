@@ -6,7 +6,8 @@ const api = createApiClient();
 // --- Types ---
 
 export type CertLevel = 'foundation' | 'intermediate' | 'advanced' | 'expert';
-export type AttemptStatus = 'pending' | 'paid' | 'started' | 'passed' | 'failed' | 'expired' | 'refunded';
+export type AttemptStatus =
+	'pending' | 'paid' | 'started' | 'passed' | 'failed' | 'expired' | 'refunded';
 
 export interface Certification {
 	id: string;

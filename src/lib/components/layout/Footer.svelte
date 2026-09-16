@@ -142,13 +142,16 @@
 </script>
 
 <footer class="mt-auto px-4 pb-4">
-	<div class="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-border bg-surface-elevated">
+	<div
+		class="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-border bg-surface-elevated"
+	>
 		<div class="relative px-6 py-14 sm:px-12 sm:py-16 lg:px-16 lg:py-20">
-
 			<!-- ▓▓▓ 1. HEADLINE + NEWSLETTER ▓▓▓ -->
 			<div class="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
 				<div>
-					<h2 class="text-5xl sm:text-6xl font-black leading-none tracking-tighter text-text-primary">
+					<h2
+						class="text-5xl sm:text-6xl font-black leading-none tracking-tighter text-text-primary"
+					>
 						{#if i18n.locale === 'fr'}
 							Prêt à prouver<br />ce que tu sais faire<span class="text-accent"> ?</span>
 						{:else}
@@ -156,7 +159,10 @@
 						{/if}
 					</h2>
 
-					<form onsubmit={askConfirm} class="mt-10 flex items-center gap-2 rounded-full border border-border bg-surface p-1.5 max-w-lg">
+					<form
+						onsubmit={askConfirm}
+						class="mt-10 flex items-center gap-2 rounded-full border border-border bg-surface p-1.5 max-w-lg"
+					>
 						<input
 							type="email"
 							bind:value={email}
@@ -175,9 +181,7 @@
 
 					{#if outcome !== 'idle'}
 						<p
-							class="mt-2 max-w-lg text-sm {outcome === 'sent'
-								? 'text-success'
-								: 'text-error'}"
+							class="mt-2 max-w-lg text-sm {outcome === 'sent' ? 'text-success' : 'text-error'}"
 							role="status"
 							data-testid="newsletter-outcome"
 						>
@@ -214,7 +218,9 @@
 
 					<!-- Localisation éditorial style -->
 					<div>
-						<p class="text-5xl sm:text-6xl font-black leading-none tracking-tighter text-text-primary">
+						<p
+							class="text-5xl sm:text-6xl font-black leading-none tracking-tighter text-text-primary"
+						>
 							Cotonou<span class="text-accent">.</span>
 						</p>
 						<p class="mt-2 text-sm uppercase tracking-widest font-bold text-text-muted">
@@ -229,7 +235,10 @@
 				<ul class="flex flex-wrap items-baseline gap-x-6 gap-y-3 sm:gap-x-8">
 					{#each navLinks as link, i}
 						<li>
-							<a href={link.href} class="group inline-flex items-baseline text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-text-primary transition-colors duration-200 hover:text-accent">
+							<a
+								href={link.href}
+								class="group inline-flex items-baseline text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-text-primary transition-colors duration-200 hover:text-accent"
+							>
 								<span>{i18n.locale === 'fr' ? link.fr : link.en}</span>
 								<span class="text-accent">.</span>
 							</a>
@@ -240,7 +249,6 @@
 
 			<!-- ▓▓▓ 3. SELECTORS — Theme + Language en statement ▓▓▓ -->
 			<div class="mt-16 grid gap-12 border-t border-border pt-10 lg:grid-cols-2 lg:gap-16">
-
 				<!-- THEME : label uppercase + pastilles + toggle icon SVG -->
 				<div>
 					<p class="text-xs font-bold uppercase tracking-widest text-text-muted mb-5">
@@ -254,10 +262,17 @@
 								aria-label={t.label}
 							>
 								<span
-									class="h-10 w-10 rounded-full border-2 transition-all duration-200 {theme.base === t.key ? 'border-text-primary scale-105' : 'border-transparent opacity-60 group-hover:opacity-100'}"
+									class="h-10 w-10 rounded-full border-2 transition-all duration-200 {theme.base ===
+									t.key
+										? 'border-text-primary scale-105'
+										: 'border-transparent opacity-60 group-hover:opacity-100'}"
 									style="background-color: {t.accent};"
 								></span>
-								<span class="text-[10px] font-bold uppercase tracking-widest {theme.base === t.key ? 'text-text-primary' : 'text-text-muted group-hover:text-text-primary'}">
+								<span
+									class="text-[10px] font-bold uppercase tracking-widest {theme.base === t.key
+										? 'text-text-primary'
+										: 'text-text-muted group-hover:text-text-primary'}"
+								>
 									{t.label}
 								</span>
 							</button>
@@ -272,22 +287,51 @@
 							class="group flex flex-col items-center gap-2"
 							aria-label={theme.mode === 'dark' ? 'Switch to light' : 'Switch to dark'}
 						>
-							<span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-transparent text-text-muted transition-all duration-200 group-hover:border-text-primary group-hover:text-text-primary">
+							<span
+								class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-transparent text-text-muted transition-all duration-200 group-hover:border-text-primary group-hover:text-text-primary"
+							>
 								{#if theme.mode === 'dark'}
 									<!-- Sun icon -->
-									<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+									<svg
+										class="h-5 w-5"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										stroke-width="2"
+									>
 										<circle cx="12" cy="12" r="4" />
-										<path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+										<path
+											stroke-linecap="round"
+											d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+										/>
 									</svg>
 								{:else}
 									<!-- Moon icon -->
-									<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-										<path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+									<svg
+										class="h-5 w-5"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										stroke-width="2"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"
+										/>
 									</svg>
 								{/if}
 							</span>
-							<span class="text-[10px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-primary">
-								{theme.mode === 'dark' ? (i18n.locale === 'fr' ? 'Sombre' : 'Dark') : (i18n.locale === 'fr' ? 'Clair' : 'Light')}
+							<span
+								class="text-[10px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-primary"
+							>
+								{theme.mode === 'dark'
+									? i18n.locale === 'fr'
+										? 'Sombre'
+										: 'Dark'
+									: i18n.locale === 'fr'
+										? 'Clair'
+										: 'Light'}
 							</span>
 						</button>
 					</div>
@@ -301,7 +345,10 @@
 					<div class="flex items-baseline gap-4">
 						<button
 							onclick={() => i18n.setLocale('fr')}
-							class="text-4xl sm:text-5xl font-black tracking-tight transition-colors duration-200 {i18n.locale === 'fr' ? 'text-accent' : 'text-text-muted hover:text-text-primary'}"
+							class="text-4xl sm:text-5xl font-black tracking-tight transition-colors duration-200 {i18n.locale ===
+							'fr'
+								? 'text-accent'
+								: 'text-text-muted hover:text-text-primary'}"
 							aria-pressed={i18n.locale === 'fr'}
 						>
 							FR
@@ -309,7 +356,10 @@
 						<span class="text-3xl font-black text-border">/</span>
 						<button
 							onclick={() => i18n.setLocale('en')}
-							class="text-4xl sm:text-5xl font-black tracking-tight transition-colors duration-200 {i18n.locale === 'en' ? 'text-accent' : 'text-text-muted hover:text-text-primary'}"
+							class="text-4xl sm:text-5xl font-black tracking-tight transition-colors duration-200 {i18n.locale ===
+							'en'
+								? 'text-accent'
+								: 'text-text-muted hover:text-text-primary'}"
 							aria-pressed={i18n.locale === 'en'}
 						>
 							EN
@@ -322,7 +372,9 @@
 			</div>
 
 			<!-- ▓▓▓ 4. GROS LOGO + SOCIAL PILLS ▓▓▓ -->
-			<div class="mt-16 flex flex-col gap-8 border-t border-border pt-10 lg:flex-row lg:items-end lg:justify-between">
+			<div
+				class="mt-16 flex flex-col gap-8 border-t border-border pt-10 lg:flex-row lg:items-end lg:justify-between"
+			>
 				<!-- The mark itself, not a wordmark rebuilt from three spans. The
 				     artwork already carries the brand's colours, and the sign-off
 				     is the one place the real lockup earns its size. -->
@@ -346,11 +398,15 @@
 			</div>
 
 			<!-- ▓▓▓ 5. BOTTOM BAR ▓▓▓ -->
-			<div class="mt-10 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+			<div
+				class="mt-10 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between"
+			>
 				<!-- The mark rather than the word. `BrandLogo` carries `alt="Skilluv"`
 				     on its wordmark, so the line still reads "© 2026 Skilluv · Tous
 				     droits réservés" to anything that cannot see it. -->
-				<p class="flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-text-muted">
+				<p
+					class="flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-text-muted"
+				>
 					<span>© {year}</span>
 					<BrandLogo size={20} />
 					<span>· {i18n.locale === 'fr' ? 'Tous droits réservés' : 'All rights reserved'}</span>
@@ -358,7 +414,10 @@
 				<ul class="flex flex-wrap items-center gap-x-5 gap-y-2">
 					{#each legalLinks as link}
 						<li>
-							<a href={link.href} class="text-xs uppercase tracking-widest font-bold text-text-muted transition-colors duration-200 hover:text-text-primary">
+							<a
+								href={link.href}
+								class="text-xs uppercase tracking-widest font-bold text-text-muted transition-colors duration-200 hover:text-text-primary"
+							>
 								{i18n.locale === 'fr' ? link.fr : link.en}
 							</a>
 						</li>
@@ -396,14 +455,19 @@
 	size="sm"
 >
 	<div class="flex gap-4">
-		<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent">
+		<div
+			class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent"
+		>
 			<Mail size={20} strokeWidth={2} />
 		</div>
 		<div class="min-w-0">
 			<!-- The address as it was typed. A typo in it is invisible on a form
 			     that answers the same 202 to everything, and it is the only way
 			     back to somebody here. -->
-			<p class="break-all text-sm font-semibold text-text-primary" data-testid="newsletter-confirm-email">
+			<p
+				class="break-all text-sm font-semibold text-text-primary"
+				data-testid="newsletter-confirm-email"
+			>
 				{pending}
 			</p>
 			<p class="mt-2 text-sm leading-relaxed text-text-muted">

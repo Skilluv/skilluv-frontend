@@ -61,9 +61,17 @@ test.describe('@signup signup-user', () => {
 				localStorage.setItem('skilluv-consent-version', '1');
 				localStorage.setItem(
 					'skilluv-consent-v1',
-					JSON.stringify({ version: 1, functional: false, analytics: false, marketing: false, decidedAt: new Date().toISOString() })
+					JSON.stringify({
+						version: 1,
+						functional: false,
+						analytics: false,
+						marketing: false,
+						decidedAt: new Date().toISOString()
+					})
 				);
-			} catch { /* ignore */ }
+			} catch {
+				/* ignore */
+			}
 		});
 
 		// ---- STEP 1 : the entrance ----
@@ -78,7 +86,11 @@ test.describe('@signup signup-user', () => {
 		// Fallback : dismiss banner if it still appeared (race).
 		const banner = page.getByTestId('consent-banner');
 		if (await banner.isVisible().catch(() => false)) {
-			await banner.getByRole('button').first().click().catch(() => {});
+			await banner
+				.getByRole('button')
+				.first()
+				.click()
+				.catch(() => {});
 			await banner.waitFor({ state: 'hidden', timeout: 3_000 }).catch(() => {});
 		}
 		await page.screenshot({ path: testInfo.outputPath('step-1-entrance.png'), fullPage: true });
@@ -116,7 +128,10 @@ test.describe('@signup signup-user', () => {
 		await page.locator('input[type="password"]').fill(USER.password);
 
 		// Country picker (custom combobox). Ouvre + tape + sélectionne "Benin".
-		const countryTrigger = page.getByRole('button', { expanded: false }).filter({ hasText: /Sélectionner|Select a country|Pays|Country/i }).first();
+		const countryTrigger = page
+			.getByRole('button', { expanded: false })
+			.filter({ hasText: /Sélectionner|Select a country|Pays|Country/i })
+			.first();
 		// Fallback : trigger via label "Pays"/"Country"
 		const countryLabel = page.locator('span.text-sm', { hasText: /^(Pays|Country)$/ }).first();
 		if (await countryLabel.isVisible().catch(() => false)) {
@@ -142,14 +157,19 @@ test.describe('@signup signup-user', () => {
 		await page.getByTestId('enlist-submit').click();
 
 		const submitRes = await submitPromise.catch((e) => {
-			throw new Error(`BLOCAGE: aucune requête POST /api/auth/register détectée après click submit — ${e.message}`);
+			throw new Error(
+				`BLOCAGE: aucune requête POST /api/auth/register détectée après click submit — ${e.message}`
+			);
 		});
 
 		const status = submitRes.status();
 		const body = await submitRes.text().catch(() => '');
 
 		if (status < 200 || status >= 300) {
-			await page.screenshot({ path: testInfo.outputPath('step-5-submit-error.png'), fullPage: true });
+			await page.screenshot({
+				path: testInfo.outputPath('step-5-submit-error.png'),
+				fullPage: true
+			});
 			throw new Error(
 				`BLOCAGE: POST /api/auth/register a retourné ${status}. ` +
 					`Body: ${body.slice(0, 400)}. ` +
@@ -162,7 +182,10 @@ test.describe('@signup signup-user', () => {
 		// the redirect can lag the register response by a few hundred
 		// milliseconds.
 		await page.waitForURL(/\/challenges\/onboarding/, { timeout: 15_000 }).catch(async () => {
-			await page.screenshot({ path: testInfo.outputPath('step-5-no-redirect.png'), fullPage: true });
+			await page.screenshot({
+				path: testInfo.outputPath('step-5-no-redirect.png'),
+				fullPage: true
+			});
 			throw new Error(
 				`submit OK (${status}) but no redirect to /challenges/onboarding. Current URL: ${page.url()}`
 			);
@@ -190,7 +213,10 @@ test.describe('@signup signup-user', () => {
 			{ timeout: 15_000 }
 		);
 		const headingText = (await successHeading.textContent()) ?? '';
-		await page.screenshot({ path: testInfo.outputPath('step-5-verify-result.png'), fullPage: true });
+		await page.screenshot({
+			path: testInfo.outputPath('step-5-verify-result.png'),
+			fullPage: true
+		});
 		expect(
 			/success|vérifié|verifie|verified|confirm/i.test(headingText),
 			`verify-email heading = "${headingText}" (attendu success — si "error/erreur", token invalide ou déjà consommé)`

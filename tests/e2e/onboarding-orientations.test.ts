@@ -225,9 +225,7 @@ test.describe('Onboarding orientations flow', () => {
 		await expect(page.getByRole('heading', { name: 'Ta sélection' })).toBeVisible();
 		// "Dev frontend" also appears on the picker card; assert inside the
 		// summary, which is what this test is about.
-		await expect(
-			page.getByLabel('Ta sélection').getByText('Dev frontend')
-		).toBeVisible();
+		await expect(page.getByLabel('Ta sélection').getByText('Dev frontend')).toBeVisible();
 	});
 
 	test('submits selection and shows confirmation', async ({ page }) => {

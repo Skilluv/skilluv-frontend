@@ -29,7 +29,8 @@ export const enlistFr: EnlistTranslations = {
 			chosen: 'Ta sélection',
 			primary: 'Principal',
 			primaryHint: 'Ce que ton profil annonce en premier.',
-			modeNote: 'Apprentissage ou pratique : c’est ce que ton profil annoncera. Tu peux en changer quand tu veux.',
+			modeNote:
+				'Apprentissage ou pratique : c’est ce que ton profil annoncera. Tu peux en changer quand tu veux.',
 			modeLabel: '{name} : apprentissage ou pratique',
 			remove: 'Retirer {name}',
 			mustPickOne: 'Choisis au moins un métier pour continuer.',
@@ -96,10 +97,13 @@ export const enlistFr: EnlistTranslations = {
 			},
 			openFork: 'Ouvrir mon fork',
 			openPr: 'Voir la pull request #{n}',
-			reviewNote: 'On voit ta pull request dès qu’elle est ouverte. Un relecteur tranche ensuite : le rite passe en validé à ce moment-là, pas avant.',
-			needsTrade: 'Choisis d’abord un métier : le starter qu’on te forke est choisi à partir de lui.',
+			reviewNote:
+				'On voit ta pull request dès qu’elle est ouverte. Un relecteur tranche ensuite : le rite passe en validé à ce moment-là, pas avant.',
+			needsTrade:
+				'Choisis d’abord un métier : le starter qu’on te forke est choisi à partir de lui.',
 			needsTradeCta: 'Choisir mon métier',
-			needsGithub: 'Ce rite se joue sur GitHub. Lie ton compte pour qu’on puisse y forker le starter.',
+			needsGithub:
+				'Ce rite se joue sur GitHub. Lie ton compte pour qu’on puisse y forker le starter.',
 			needsGithubCta: 'Lier mon compte GitHub',
 			tradeNotActive:
 				'{name} est enregistré comme un métier que tu apprends. Le premier geste en demande un que tu pratiques — c’est le même métier, ce bouton bascule la mention.',

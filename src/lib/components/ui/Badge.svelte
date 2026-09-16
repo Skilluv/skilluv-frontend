@@ -61,6 +61,8 @@
 	};
 </script>
 
-<span class="inline-flex items-center gap-1 rounded-lg font-medium {variants[variant]} {sizes[size]}">
+<span
+	class="inline-flex items-center gap-1 rounded-lg font-medium {variants[variant]} {sizes[size]}"
+>
 	{@render children()}
 </span>

@@ -123,10 +123,7 @@ test.beforeEach(async ({ page, context }) => {
 
 test.describe('S3.7 guild management tabs', () => {
 	test('l owner voit les onglets candidatures et invitations', async ({ page }) => {
-		await mockApi(
-			page,
-			guildRoutes({ members: [member('u-challenger', 'owner', 'Kofi Adjovi')] })
-		);
+		await mockApi(page, guildRoutes({ members: [member('u-challenger', 'owner', 'Kofi Adjovi')] }));
 		await gotoHydrated(page, '/guilds/les-forgerons');
 
 		await expect(page.getByTestId('guild-tab-applications')).toBeVisible();
@@ -269,10 +266,7 @@ test.describe('S3.7 guild management tabs', () => {
 	});
 
 	test('sans candidature ni invitation, chaque onglet le dit', async ({ page }) => {
-		await mockApi(
-			page,
-			guildRoutes({ members: [member('u-challenger', 'owner', 'Kofi Adjovi')] })
-		);
+		await mockApi(page, guildRoutes({ members: [member('u-challenger', 'owner', 'Kofi Adjovi')] }));
 		await gotoHydrated(page, '/guilds/les-forgerons');
 
 		await page.getByTestId('guild-tab-applications').click();

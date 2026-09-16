@@ -236,7 +236,9 @@ test.describe('Livraison audio sur une slice', () => {
 		await mockApi(page, [
 			{
 				path: '/slices/s-1',
-				handler: json({ data: { slice: makeSlice({ slice_type: 'github_issue', primary_domain: 'code' }) } })
+				handler: json({
+					data: { slice: makeSlice({ slice_type: 'github_issue', primary_domain: 'code' }) }
+				})
 			}
 		]);
 

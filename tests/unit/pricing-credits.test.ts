@@ -53,7 +53,13 @@ describe('Pricing API', () => {
 			status: 200,
 			json: () =>
 				Promise.resolve({
-					data: { currency: 'NGN', psp: 'paystack', packs: [], subscriptions: [], refund_policy: { refused: 0.5, timeout_days: 30, timeout_refund: 0.5 } }
+					data: {
+						currency: 'NGN',
+						psp: 'paystack',
+						packs: [],
+						subscriptions: [],
+						refund_policy: { refused: 0.5, timeout_days: 30, timeout_refund: 0.5 }
+					}
 				})
 		});
 		vi.stubGlobal('fetch', mockFetch);

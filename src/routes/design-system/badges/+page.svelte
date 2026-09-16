@@ -48,15 +48,17 @@
 		<div class="ds-eyebrow">Design System · Playground interne</div>
 		<h1 class="ds-title font-hero">Badges & Trousseau</h1>
 		<p class="ds-lede">
-			Toutes les variantes du système. Placeholder SVG pour les clés — remplacer par les
-			assets Recraft finaux (voir <code>.working/prompt-recraft-vector.md</code>).
+			Toutes les variantes du système. Placeholder SVG pour les clés — remplacer par les assets
+			Recraft finaux (voir <code>.working/prompt-recraft-vector.md</code>).
 		</p>
 	</header>
 
 	<!-- SECTION 0a — Paliers de surface (démontrer la hiérarchie) -->
 	<section class="ds-section">
 		<h2 class="ds-section-title font-wonk">0. Paliers de surface — luminance claire</h2>
-		<p class="ds-note">Chaque niveau doit se distinguer sans effort. Cards en top de pages, modals en top de cards.</p>
+		<p class="ds-note">
+			Chaque niveau doit se distinguer sans effort. Cards en top de pages, modals en top de cards.
+		</p>
 		<div class="ds-surface-ladder">
 			<div class="ds-surface-box" style="background: var(--color-surface)">
 				<span>surface</span><small>fond page</small>
@@ -78,38 +80,58 @@
 
 	<!-- SECTION 0b — Zones catégorielles (couleurs audacieuses) -->
 	<section class="ds-section">
-		<h2 class="ds-section-title font-wonk">0b. Surfaces catégorielles — zones chromatiques audacieuses</h2>
+		<h2 class="ds-section-title font-wonk">
+			0b. Surfaces catégorielles — zones chromatiques audacieuses
+		</h2>
 		<p class="ds-note">
-			Persona × Melchior Leroux : marier des couleurs vives. Chaque zone du produit (challenges craft,
-			guildes create, mentorship share…) peut porter sa propre ambiance chromatique.
+			Persona × Melchior Leroux : marier des couleurs vives. Chaque zone du produit (challenges
+			craft, guildes create, mentorship share…) peut porter sa propre ambiance chromatique.
 		</p>
 		<div class="ds-zone-grid">
-			<article class="ds-zone" style="background: var(--color-surface-craft); border-color: var(--color-cat-craft)">
+			<article
+				class="ds-zone"
+				style="background: var(--color-surface-craft); border-color: var(--color-cat-craft)"
+			>
 				<div class="ds-zone-tag" style="background: var(--color-cat-craft)">CRAFT</div>
 				<h3 class="font-wonk">L'atelier des bâtisseurs</h3>
 				<p>Ambre sombre. Zone dev, build, ship. Cards défis code.</p>
 			</article>
-			<article class="ds-zone" style="background: var(--color-surface-create); border-color: var(--color-cat-create)">
+			<article
+				class="ds-zone"
+				style="background: var(--color-surface-create); border-color: var(--color-cat-create)"
+			>
 				<div class="ds-zone-tag" style="background: var(--color-cat-create)">CREATE</div>
 				<h3 class="font-wonk">La forge créative</h3>
 				<p>Rouge poppy. Zone design, motion, illustration. Cards challenges créatifs.</p>
 			</article>
-			<article class="ds-zone" style="background: var(--color-surface-understand); border-color: var(--color-cat-understand)">
+			<article
+				class="ds-zone"
+				style="background: var(--color-surface-understand); border-color: var(--color-cat-understand)"
+			>
 				<div class="ds-zone-tag" style="background: var(--color-cat-understand)">UNDERSTAND</div>
 				<h3 class="font-wonk">Le cabinet d'analyse</h3>
 				<p>Bleu de Prusse. Zone data, ML, research. Dashboards, insights.</p>
 			</article>
-			<article class="ds-zone" style="background: var(--color-surface-operate); border-color: var(--color-cat-operate)">
+			<article
+				class="ds-zone"
+				style="background: var(--color-surface-operate); border-color: var(--color-cat-operate)"
+			>
 				<div class="ds-zone-tag" style="background: var(--color-cat-operate)">OPERATE</div>
 				<h3 class="font-wonk">La salle des machines</h3>
 				<p>Sarcelle profonde. Zone devops, cloud, sécurité. Métriques, monitoring.</p>
 			</article>
-			<article class="ds-zone" style="background: var(--color-surface-share); border-color: var(--color-cat-share)">
+			<article
+				class="ds-zone"
+				style="background: var(--color-surface-share); border-color: var(--color-cat-share)"
+			>
 				<div class="ds-zone-tag" style="background: var(--color-cat-share)">SHARE</div>
 				<h3 class="font-wonk">Le foyer de la commu</h3>
 				<p>Bordeaux rose. Zone mentorship, entraide, guilde. Cœurs, sessions.</p>
 			</article>
-			<article class="ds-zone" style="background: var(--color-surface-meta); border-color: var(--color-cat-meta)">
+			<article
+				class="ds-zone"
+				style="background: var(--color-surface-meta); border-color: var(--color-cat-meta)"
+			>
 				<div class="ds-zone-tag" style="background: var(--color-cat-meta)">META</div>
 				<h3 class="font-wonk">La table du stratège</h3>
 				<p>Safran sombre. Zone product, growth, open source. Roadmap, initiatives.</p>
@@ -192,10 +214,30 @@
 	<section class="ds-section">
 		<h2 class="ds-section-title font-wonk">5. Guild crests</h2>
 		<div class="ds-row">
-			<GuildCrest guildName="Craft & Build" keys={['circle', 'trefle', 'rosace']} color="#c47a2e" memberCount={48} />
-			<GuildCrest guildName="Red Team" keys={['star', 'heart', 'circle']} color="#a04520" memberCount={89} />
-			<GuildCrest guildName="Open Garden" keys={['heart', 'rosace', 'trefle']} color="#2a9d8f" memberCount={156} />
-			<GuildCrest guildName="Cotonou Guild" keys={['circle', 'star', 'heart']} color="#457b9d" memberCount={22} />
+			<GuildCrest
+				guildName="Craft & Build"
+				keys={['circle', 'trefle', 'rosace']}
+				color="#c47a2e"
+				memberCount={48}
+			/>
+			<GuildCrest
+				guildName="Red Team"
+				keys={['star', 'heart', 'circle']}
+				color="#a04520"
+				memberCount={89}
+			/>
+			<GuildCrest
+				guildName="Open Garden"
+				keys={['heart', 'rosace', 'trefle']}
+				color="#2a9d8f"
+				memberCount={156}
+			/>
+			<GuildCrest
+				guildName="Cotonou Guild"
+				keys={['circle', 'star', 'heart']}
+				color="#457b9d"
+				memberCount={22}
+			/>
 		</div>
 	</section>
 
@@ -227,7 +269,13 @@
 		<div class="ds-row">
 			<AwardMedal variant="first-blood" label="First Blood" rarity="epic" awardedAt={new Date()} />
 			<AwardMedal variant="centurion" label="Centurion" rarity="legendary" awardedAt={new Date()} />
-			<AwardMedal variant="mentor-year" label="Mentor" rarity="legendary" awardedAt={new Date()} size="hero" />
+			<AwardMedal
+				variant="mentor-year"
+				label="Mentor"
+				rarity="legendary"
+				awardedAt={new Date()}
+				size="hero"
+			/>
 		</div>
 	</section>
 
@@ -245,7 +293,8 @@
 				<h2 class="font-wonk">Une baseline chaleureuse</h2>
 				<p>
 					Le body en <strong>Bricolage Grotesque</strong> — corps chaleureux, ligatures ludiques,
-					plus warm que Space Grotesk sans sacrifier la lisibilité. <code>const skill = 'luv';</code>
+					plus warm que Space Grotesk sans sacrifier la lisibilité.
+					<code>const skill = 'luv';</code>
 				</p>
 			</div>
 		</div>
@@ -428,7 +477,10 @@
 	}
 	.ds-wordmark {
 		font-size: 4rem;
-		font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 1;
+		font-variation-settings:
+			'opsz' 144,
+			'SOFT' 50,
+			'WONK' 1;
 	}
 	.ds-typo-stack {
 		display: flex;

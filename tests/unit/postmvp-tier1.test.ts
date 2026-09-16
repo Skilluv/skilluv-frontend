@@ -51,8 +51,15 @@ describe('bookmarksApi', () => {
 	it('listMine() drops undefined filters from the query string', async () => {
 		fetchMock.mockResolvedValue(ok({ bookmarks: [], limit: 50, offset: 0 }));
 		const { bookmarksApi } = await import('../../src/lib/api/bookmarks');
-		await bookmarksApi.listMine({ target_type: 'user', folder_slug: undefined, limit: 50, offset: 0 });
-		expect(fetchMock.mock.calls[0][0]).toBe('/api/users/me/bookmarks?target_type=user&limit=50&offset=0');
+		await bookmarksApi.listMine({
+			target_type: 'user',
+			folder_slug: undefined,
+			limit: 50,
+			offset: 0
+		});
+		expect(fetchMock.mock.calls[0][0]).toBe(
+			'/api/users/me/bookmarks?target_type=user&limit=50&offset=0'
+		);
 	});
 
 	it('the unfiled sentinel is what the no-folder bucket filters on', async () => {
@@ -104,7 +111,11 @@ describe('bookmarks index store', () => {
 	it('parallel callers share one in-flight load', async () => {
 		fetchMock.mockResolvedValue(ok({ bookmarks: [], limit: 100, offset: 0 }));
 		const { bookmarks } = await import('../../src/lib/stores/bookmarks.svelte');
-		await Promise.all([bookmarks.ensureLoaded(), bookmarks.ensureLoaded(), bookmarks.ensureLoaded()]);
+		await Promise.all([
+			bookmarks.ensureLoaded(),
+			bookmarks.ensureLoaded(),
+			bookmarks.ensureLoaded()
+		]);
 		expect(fetchMock).toHaveBeenCalledTimes(1);
 	});
 

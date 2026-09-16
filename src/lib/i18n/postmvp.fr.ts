@@ -401,8 +401,7 @@ export const postMvpFr: PostMvpTranslations = {
 			reputation_only: 'Parole publique'
 		},
 		stakeHints: {
-			rank_temporary:
-				'Si la caution est rompue, tu perds un rang pendant quatre-vingt-dix jours.',
+			rank_temporary: 'Si la caution est rompue, tu perds un rang pendant quatre-vingt-dix jours.',
 			reputation_only: 'Une déclaration publique, sans conséquence sur ton rang.'
 		},
 		vouchCta: 'Cautionner',

@@ -229,7 +229,9 @@
 						{ key: 'actions', label: '', align: 'right' }
 					]}
 					rows={pendingMembers.map((m) => ({ __raw: m }))}
-					emptyLabel={i18n.locale === 'fr' ? 'Aucune invitation en attente' : 'No pending invitations'}
+					emptyLabel={i18n.locale === 'fr'
+						? 'Aucune invitation en attente'
+						: 'No pending invitations'}
 				>
 					{#snippet cell(row, col)}
 						{@const m = row.__raw as Member}
@@ -295,22 +297,21 @@
 			     the narrowing the `{#if}` performs does not reach inside it,
 			     and reading the nullable field there is a type error. -->
 			{@const token = lastInviteToken}
-			<Alert
-				tone="success"
-				title={i18n.locale === 'fr' ? 'Lien généré' : 'Link generated'}
-			>
+			<Alert tone="success" title={i18n.locale === 'fr' ? 'Lien généré' : 'Link generated'}>
 				{i18n.locale === 'fr'
 					? "Partagez ce lien avec le recruteur invité. Il pourra l'accepter en un clic."
 					: 'Share this link with the invited recruiter. They can accept in one click.'}
 				{#snippet action()}
-				<div class="flex items-center gap-2">
-					<code class="flex-1 truncate rounded-lg bg-surface-overlay px-3 py-2 text-xs font-mono text-text-primary">
-						/enterprise/invite/accept?token={token.slice(0, 12)}…
-					</code>
-					<Button variant="secondary" size="sm" onclick={copyInviteLink}>
-						{i18n.locale === 'fr' ? 'Copier' : 'Copy'}
-					</Button>
-				</div>
+					<div class="flex items-center gap-2">
+						<code
+							class="flex-1 truncate rounded-lg bg-surface-overlay px-3 py-2 text-xs font-mono text-text-primary"
+						>
+							/enterprise/invite/accept?token={token.slice(0, 12)}…
+						</code>
+						<Button variant="secondary" size="sm" onclick={copyInviteLink}>
+							{i18n.locale === 'fr' ? 'Copier' : 'Copy'}
+						</Button>
+					</div>
 				{/snippet}
 			</Alert>
 		{/if}

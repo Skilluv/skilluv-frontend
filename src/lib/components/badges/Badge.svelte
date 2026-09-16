@@ -40,7 +40,7 @@
 		label={data.label}
 		date={data.awardedAt}
 		impact={data.impact}
-		size={data.size === 'lg' ? 'hero' : (data.size as 'sm' | 'md' | 'hero') ?? 'md'}
+		size={data.size === 'lg' ? 'hero' : ((data.size as 'sm' | 'md' | 'hero') ?? 'md')}
 	/>
 {:else if data.family === 'stamp' && data.eventName && data.eventYear}
 	<EventStamp
@@ -48,7 +48,7 @@
 		year={data.eventYear}
 		color={data.eventColor}
 		keyOverlay={data.keyType}
-		size={data.size === 'lg' ? 'hero' : (data.size as 'sm' | 'md' | 'hero') ?? 'md'}
+		size={data.size === 'lg' ? 'hero' : ((data.size as 'sm' | 'md' | 'hero') ?? 'md')}
 	/>
 {:else if data.family === 'medal' && data.medalVariant && data.label && data.rarity && data.awardedAt}
 	<AwardMedal
@@ -56,6 +56,6 @@
 		label={data.label}
 		rarity={data.rarity}
 		awardedAt={data.awardedAt}
-		size={data.size === 'sm' || data.size === 'lg' ? 'md' : (data.size as 'md' | 'hero') ?? 'md'}
+		size={data.size === 'sm' || data.size === 'lg' ? 'md' : ((data.size as 'md' | 'hero') ?? 'md')}
 	/>
 {/if}

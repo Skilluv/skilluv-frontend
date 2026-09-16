@@ -16,7 +16,7 @@ services:
     container_name: skilluv-frontend
     restart: unless-stopped
     ports:
-      - "${FRONTEND_PORT:-3000}:3000"
+      - '${FRONTEND_PORT:-3000}:3000'
     environment:
       NODE_ENV: production
       PORT: 3000
@@ -33,10 +33,10 @@ services:
       PUBLIC_POSTHOG_HOST: ${PUBLIC_POSTHOG_HOST:-https://eu.i.posthog.com}
       PUBLIC_APP_VERSION: ${PUBLIC_APP_VERSION:-dev}
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:3000/']
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 10s
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - 'host.docker.internal:host-gateway'

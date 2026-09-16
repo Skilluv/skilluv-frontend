@@ -32,12 +32,18 @@ test.describe('@parcours onboarding-full', () => {
 
 		await page.goto('/onboarding/complete-profile');
 		await page.waitForLoadState('networkidle');
-		await page.screenshot({ path: testInfo.outputPath('step-2-complete-profile.png'), fullPage: true });
+		await page.screenshot({
+			path: testInfo.outputPath('step-2-complete-profile.png'),
+			fullPage: true
+		});
 		await expect(page.locator('h1').first()).toBeVisible({ timeout: 15_000 });
 
 		await page.goto('/challenges/onboarding');
 		await page.waitForLoadState('networkidle');
-		await page.screenshot({ path: testInfo.outputPath('step-3-challenges-onboarding.png'), fullPage: true });
+		await page.screenshot({
+			path: testInfo.outputPath('step-3-challenges-onboarding.png'),
+			fullPage: true
+		});
 		await expect(page.locator('h1').first()).toBeVisible({ timeout: 15_000 });
 	});
 });

@@ -13,7 +13,7 @@
 	import {
 		notifData as ctx,
 		notifBody as renderBody,
-		notifAge as formatDate,
+		notifAge as formatDate
 	} from '$lib/utils/notifications';
 	import type { Notification } from '$types';
 	import { foldNotifications, actorsLine } from '$lib/utils/notificationGrouping';
@@ -99,7 +99,6 @@
 		return familyIcon[kind.split('.')[0]];
 	}
 
-
 	/**
 	 * The five kinds `promotion_notify` emits (SKI-43).
 	 *
@@ -121,7 +120,6 @@
 	}
 
 	/** Localised body for enriched types. Falls back to the backend `body`. */
-
 
 	let items = $state<Notification[]>([]);
 
@@ -215,7 +213,9 @@
 			await notificationsApi.markRead(notif.id);
 			notif.read = true;
 			notifications.decrement();
-		} catch { /* silent */ }
+		} catch {
+			/* silent */
+		}
 	}
 
 	// SKI-97 — decide a validator invitation without leaving the feed. The
@@ -253,9 +253,10 @@
 			await notificationsApi.markAllRead();
 			items.forEach((n) => (n.read = true));
 			notifications.reset();
-		} catch { /* silent */ }
+		} catch {
+			/* silent */
+		}
 	}
-
 </script>
 
 <svelte:head>
@@ -266,7 +267,9 @@
 	<div class="mb-6 flex items-center justify-between">
 		<h1 class="text-2xl font-bold">{i18n.t('notifications.title')}</h1>
 		{#if items.some((n) => !n.read)}
-			<Button variant="ghost" size="sm" onclick={markAllRead}>{i18n.t('notifications.markAllRead')}</Button>
+			<Button variant="ghost" size="sm" onclick={markAllRead}
+				>{i18n.t('notifications.markAllRead')}</Button
+			>
 		{/if}
 	</div>
 
@@ -278,7 +281,10 @@
 				{ value: 'all', label: i18n.t('notifications.all') }
 			]}
 			value={filterValue}
-			onchange={(v) => { filterRead = v === 'unread' ? false : undefined; loadNotifications(); }}
+			onchange={(v) => {
+				filterRead = v === 'unread' ? false : undefined;
+				loadNotifications();
+			}}
 			size="sm"
 		/>
 	</div>
@@ -288,15 +294,23 @@
 			{#each Array(5) as _}
 				<div class="flex w-full items-start gap-3 rounded-2xl border border-border bg-surface p-4">
 					<!-- type dot placeholder -->
-					<div class="mt-2 h-2 w-2 shrink-0 rounded-full bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+					<div
+						class="mt-2 h-2 w-2 shrink-0 rounded-full bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+					></div>
 					<div class="flex-1 space-y-2">
 						<!-- title -->
-						<div class="h-4 w-2/3 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+						<div
+							class="h-4 w-2/3 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+						></div>
 						<!-- body -->
-						<div class="h-3 w-full rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+						<div
+							class="h-3 w-full rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+						></div>
 					</div>
 					<!-- date -->
-					<div class="h-3 w-8 shrink-0 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"></div>
+					<div
+						class="h-3 w-8 shrink-0 rounded bg-surface-overlay animate-[skeleton-pulse_1.5s_ease-in-out_infinite]"
+					></div>
 				</div>
 			{/each}
 		</div>
@@ -307,7 +321,7 @@
 			variant="seal-intact"
 			title={i18n.locale === 'fr' ? 'Boîte vide.' : 'Inbox is quiet.'}
 			body={i18n.locale === 'fr'
-				? 'Quand quelqu\'un t\'aidera ou qu\'un challenge sera validé, tu recevras un sceau ici.'
+				? "Quand quelqu'un t'aidera ou qu'un challenge sera validé, tu recevras un sceau ici."
 				: 'When someone helps you or a challenge is validated, a seal will land here.'}
 		/>
 	{:else}
@@ -328,15 +342,16 @@
 							<Icon size={16} strokeWidth={2} />
 						</span>
 					{:else}
-						<span class="mt-2 h-2 w-2 shrink-0 rounded-full {typeColor[notif.notification_type] ?? 'text-text-muted'} bg-current"></span>
+						<span
+							class="mt-2 h-2 w-2 shrink-0 rounded-full {typeColor[notif.notification_type] ??
+								'text-text-muted'} bg-current"
+						></span>
 					{/if}
 
-					<button
-						type="button"
-						class="flex-1 text-left"
-						onclick={() => markRead(notif)}
-					>
-						<p class="text-sm font-medium {notif.read ? 'text-text-muted' : 'text-text-primary'}">{notif.title}</p>
+					<button type="button" class="flex-1 text-left" onclick={() => markRead(notif)}>
+						<p class="text-sm font-medium {notif.read ? 'text-text-muted' : 'text-text-primary'}">
+							{notif.title}
+						</p>
 						{#if actors}
 							<p class="text-xs text-text-muted" data-testid="notif-group-actors">{actors}</p>
 						{/if}
@@ -367,7 +382,10 @@
 							{@const invitationId = d.invitation_id}
 							<div class="mt-2 flex flex-wrap items-center gap-2">
 								{#if invitationDecisions[invitationId]}
-									<span class="text-xs font-medium text-text-muted" data-testid="invitation-outcome">
+									<span
+										class="text-xs font-medium text-text-muted"
+										data-testid="invitation-outcome"
+									>
 										{invitationDecisions[invitationId] === 'accepted'
 											? i18n.t('notifActions.acceptedOutcome')
 											: i18n.t('notifActions.declinedOutcome')}
@@ -405,7 +423,11 @@
 							</div>
 						{:else if notif.notification_type === 'slice_merged_upstream' && auth.user?.username}
 							<div class="mt-2">
-								<Button variant="ghost" size="sm" href={attestationApi.badgeUserUrl(auth.user.username)}>
+								<Button
+									variant="ghost"
+									size="sm"
+									href={attestationApi.badgeUserUrl(auth.user.username)}
+								>
 									{i18n.t('notifActions.shareBadge')}
 								</Button>
 							</div>

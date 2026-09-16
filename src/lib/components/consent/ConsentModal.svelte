@@ -80,12 +80,7 @@
 	});
 </script>
 
-<Modal
-	open={consent.modalOpen}
-	title={i18n.t('consent.modal.title')}
-	onclose={close}
-	size="lg"
->
+<Modal open={consent.modalOpen} title={i18n.t('consent.modal.title')} onclose={close} size="lg">
 	<p class="text-sm text-text-muted">{i18n.t('consent.modal.intro')}</p>
 
 	{#if consent.snapshot && decidedAtLabel}

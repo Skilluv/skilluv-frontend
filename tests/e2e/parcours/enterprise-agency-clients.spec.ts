@@ -16,10 +16,15 @@ test.describe('@parcours enterprise-agency-clients', () => {
 	if (HAS_STATE) test.use({ storageState: STATE });
 	test.setTimeout(60_000);
 
-	test('/enterprise/agency-clients rend la page (ou redirige si non-agence)', async ({ page }, testInfo) => {
+	test('/enterprise/agency-clients rend la page (ou redirige si non-agence)', async ({
+		page
+	}, testInfo) => {
 		await page.goto('/enterprise/agency-clients');
 		await page.waitForLoadState('domcontentloaded');
 		await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 15_000 });
-		await page.screenshot({ path: testInfo.outputPath('enterprise-agency-clients.png'), fullPage: true });
+		await page.screenshot({
+			path: testInfo.outputPath('enterprise-agency-clients.png'),
+			fullPage: true
+		});
 	});
 });

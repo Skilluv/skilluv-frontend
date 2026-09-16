@@ -216,9 +216,7 @@ test.describe('The onboarding steps', () => {
 		expect(href, 'settings is not part of onboarding').not.toContain('/settings');
 	});
 
-	test('once started, it shows the fork and says the review is a second step', async ({
-		page
-	}) => {
+	test('once started, it shows the fork and says the review is a second step', async ({ page }) => {
 		await page.route('**/api/onboarding/bonjour-skilluv/status', (route) =>
 			json({
 				data: {

@@ -24,7 +24,9 @@
 </script>
 
 <div
-	class="transition-opacity duration-200 ease-out {transitioning ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'}"
+	class="transition-opacity duration-200 ease-out {transitioning
+		? 'opacity-0 translate-y-1'
+		: 'opacity-100 translate-y-0'}"
 	class:transition-transform={transitioning}
 >
 	{@render children()}

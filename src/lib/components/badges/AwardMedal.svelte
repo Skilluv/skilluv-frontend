@@ -67,7 +67,10 @@
 	}
 	.medal__label {
 		font-weight: 700;
-		font-variation-settings: 'opsz' 24, 'SOFT' 40, 'WONK' 0.5;
+		font-variation-settings:
+			'opsz' 24,
+			'SOFT' 40,
+			'WONK' 0.5;
 		font-size: 0.75rem;
 		letter-spacing: 0.15em;
 		text-transform: uppercase;

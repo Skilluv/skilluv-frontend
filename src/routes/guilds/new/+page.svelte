@@ -167,8 +167,7 @@
 			<textarea
 				bind:value={description}
 				rows="3"
-				class="rounded-xl border border-border bg-surface-elevated p-3 text-sm"
-			></textarea>
+				class="rounded-xl border border-border bg-surface-elevated p-3 text-sm"></textarea>
 		</label>
 
 		<label class="flex items-center justify-between">
@@ -226,7 +225,9 @@
 						class="flex items-center justify-between rounded-xl border border-border px-3 py-2"
 						data-testid="cofounder-row"
 					>
-						<span class="text-sm">{c.display_name} <span class="text-text-muted">@{c.username}</span></span>
+						<span class="text-sm"
+							>{c.display_name} <span class="text-text-muted">@{c.username}</span></span
+						>
 						<button
 							type="button"
 							class="text-xs text-text-muted hover:text-error"

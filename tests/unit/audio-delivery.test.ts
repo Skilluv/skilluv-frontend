@@ -96,7 +96,9 @@ describe('audioDeliveryApi — files', () => {
 	});
 
 	it('listening is a signed URL with a life span', async () => {
-		fetchMock.mockResolvedValue(ok({ url: 'https://storage.test/f1?sig=x', expires_in_seconds: 300 }));
+		fetchMock.mockResolvedValue(
+			ok({ url: 'https://storage.test/f1?sig=x', expires_in_seconds: 300 })
+		);
 		const { audioCastingsApi } = await import('../../src/lib/api/audio');
 		const res = await audioCastingsApi.listen('f1');
 		expect(res.data.expires_in_seconds).toBeGreaterThan(0);
@@ -115,9 +117,7 @@ describe('audioDeliveryApi — sources', () => {
 	});
 
 	it('an empty list with a statement is a wholly original piece', async () => {
-		fetchMock.mockResolvedValue(
-			ok({ sources: [], declared_complete_at: '2026-08-01T00:00:00Z' })
-		);
+		fetchMock.mockResolvedValue(ok({ sources: [], declared_complete_at: '2026-08-01T00:00:00Z' }));
 		const { audioDeliveryApi } = await import('../../src/lib/api/audio');
 		const res = await audioDeliveryApi.sources('s1');
 		expect(res.data.declared_complete_at).not.toBeNull();
@@ -192,7 +192,9 @@ describe('project credits', () => {
 
 describe('the slice envelope', () => {
 	it('unwraps `{ data: { slice } }`, which is what the backend answers', async () => {
-		fetchMock.mockResolvedValue(ok({ slice: { id: 's1', title: 'Un thème', slice_type: 'audio_artifact' } }));
+		fetchMock.mockResolvedValue(
+			ok({ slice: { id: 's1', title: 'Un thème', slice_type: 'audio_artifact' } })
+		);
 		const { slicesApi } = await import('../../src/lib/api/slices');
 		const res = await slicesApi.get('s1');
 		// Typed as `ApiResponse<Slice>` before, so every field read off it was

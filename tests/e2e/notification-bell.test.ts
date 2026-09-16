@@ -83,10 +83,7 @@ test.describe('The notification bell', () => {
 		await expect(page.getByTestId('notification-count')).toHaveText('2');
 		// The number is on a coloured disc, which says nothing to a screen
 		// reader. It is in the accessible name too.
-		await expect(page.getByTestId('notification-bell')).toHaveAttribute(
-			'aria-label',
-			/2 non lues/
-		);
+		await expect(page.getByTestId('notification-bell')).toHaveAttribute('aria-label', /2 non lues/);
 	});
 
 	test('shows the five most recent, and asks for exactly five', async ({ page }) => {
@@ -145,11 +142,7 @@ test.describe('The notification bell', () => {
 		// on open would empty the badge for somebody who glanced and moved on.
 		expect(marked).toEqual([]);
 
-		await page
-			.getByTestId('notification-panel')
-			.getByRole('menuitem')
-			.first()
-			.click();
+		await page.getByTestId('notification-panel').getByRole('menuitem').first().click();
 		await expect.poll(() => marked).toEqual(['n1']);
 	});
 

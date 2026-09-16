@@ -48,7 +48,13 @@ export interface CreateBountyPayload {
 }
 
 export const bountiesApi = {
-	list(params?: { status?: BountyStatus; skill?: string; tag?: string; page?: number; per_page?: number }) {
+	list(params?: {
+		status?: BountyStatus;
+		skill?: string;
+		tag?: string;
+		page?: number;
+		per_page?: number;
+	}) {
 		return api.get<ApiResponse<{ bounties: Bounty[]; page: number; per_page: number }>>(
 			'/bounties',
 			params as Record<string, string | number>

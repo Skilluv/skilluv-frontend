@@ -40,9 +40,7 @@
 	let submitting = $state(false);
 
 	/** Only a Doyen may vouch; below that the action would only earn a 403. */
-	let viewerIsDoyen = $derived(
-		auth.user ? rankFromTitle(auth.user.title) === 'doyen' : false
-	);
+	let viewerIsDoyen = $derived(auth.user ? rankFromTitle(auth.user.title) === 'doyen' : false);
 	let canVouch = $derived(
 		!isOwn && viewerIsDoyen && !rows.some((r) => r.voucher_id === auth.user?.id)
 	);
@@ -150,7 +148,10 @@
 										{i18n.t('vouchings.vouchedBy', { name: voucherName(row) })}
 									</span>
 								{/if}
-								<Badge variant={row.at_stake_kind === 'rank_temporary' ? 'accent' : 'default'} size="sm">
+								<Badge
+									variant={row.at_stake_kind === 'rank_temporary' ? 'accent' : 'default'}
+									size="sm"
+								>
 									{i18n.t(`vouchings.stakes.${row.at_stake_kind}`)}
 								</Badge>
 							</p>
@@ -168,7 +169,12 @@
 	</section>
 {/if}
 
-<Modal open={formOpen} title={i18n.t('vouchings.formTitle')} onclose={() => (formOpen = false)} size="sm">
+<Modal
+	open={formOpen}
+	title={i18n.t('vouchings.formTitle')}
+	onclose={() => (formOpen = false)}
+	size="sm"
+>
 	<div class="space-y-4">
 		<div>
 			<span class="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-text-muted">
