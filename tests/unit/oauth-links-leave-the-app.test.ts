@@ -161,7 +161,7 @@ describe('the round trip can be traced after the fact', () => {
 	it('the switch outlives the round trip', () => {
 		// `?oauth_trace=1` has to persist, or it would be gone by the time
 		// the interesting step runs.
-		expect(trace).toContain("localStorage");
+		expect(trace).toContain('localStorage');
 		expect(trace).toMatch(/oauth_trace/);
 	});
 });

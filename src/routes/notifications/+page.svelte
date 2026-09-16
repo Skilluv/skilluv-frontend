@@ -13,7 +13,7 @@
 	import {
 		notifData as ctx,
 		notifBody as renderBody,
-		notifAge as formatDate,
+		notifAge as formatDate
 	} from '$lib/utils/notifications';
 	import type { Notification } from '$types';
 	import { foldNotifications, actorsLine } from '$lib/utils/notificationGrouping';

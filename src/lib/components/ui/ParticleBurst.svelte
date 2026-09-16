@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	interface Props {
 		/** Nombre de particules */
 		count?: number;

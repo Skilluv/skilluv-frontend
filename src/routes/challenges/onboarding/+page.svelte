@@ -257,9 +257,7 @@
 		// cannot read is an answer it does not have.
 		if (providers.status === 'fulfilled' && Array.isArray(providers.value.data?.providers)) {
 			answered = true;
-			linked = providers.value.data.providers.some(
-				(p: LinkedProvider) => p.provider === 'github'
-			);
+			linked = providers.value.data.providers.some((p: LinkedProvider) => p.provider === 'github');
 		}
 
 		if (!linked && portfolios.status === 'fulfilled' && Array.isArray(portfolios.value.data)) {
