@@ -70,7 +70,8 @@
 	 */
 	function hrefFor(suggestion: NextChallenge): string | null {
 		if (!suggestion.slug) return null;
-		const kind = suggestion.target_kind ?? (suggestion.format === 'contest' ? 'tournament' : 'slice');
+		const kind =
+			suggestion.target_kind ?? (suggestion.format === 'contest' ? 'tournament' : 'slice');
 		if (kind === 'tournament') return `/tournaments/${suggestion.slug}`;
 		if (kind === 'slice') return `/slices/${suggestion.id}`;
 		// A kind this build has not heard of: better unlinked than wrong.
@@ -109,7 +110,7 @@
 				</h2>
 				<p class="text-sm text-text-muted">{i18n.t('nextChallenges.subtitle')}</p>
 			</div>
-			<Button variant="ghost" size="sm" loading={loading} onclick={load}>
+			<Button variant="ghost" size="sm" {loading} onclick={load}>
 				<RefreshCw size={15} />
 				{i18n.t('nextChallenges.refresh')}
 			</Button>
@@ -151,7 +152,11 @@
 									<span>{i18n.t('nextChallenges.hours', { n: suggestion.estimated_hours })}</span>
 								{/if}
 								{#if suggestion.closes_at}
-									<span>{i18n.t('nextChallenges.closesAt', { date: fmtDate(suggestion.closes_at) })}</span>
+									<span
+										>{i18n.t('nextChallenges.closesAt', {
+											date: fmtDate(suggestion.closes_at)
+										})}</span
+									>
 								{/if}
 							</div>
 						</div>

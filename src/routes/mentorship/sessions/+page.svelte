@@ -74,7 +74,9 @@
 	async function complete(id: string) {
 		try {
 			await mentorshipApi.completeSession(id);
-			toast.success(i18n.locale === 'fr' ? 'Session marquée comme complétée' : 'Session marked completed');
+			toast.success(
+				i18n.locale === 'fr' ? 'Session marquée comme complétée' : 'Session marked completed'
+			);
 			await load();
 		} catch (e) {
 			toast.error(e instanceof SkilluError ? e.message : 'Erreur');
@@ -83,11 +85,17 @@
 
 	function fmtDate(iso: string): string {
 		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
-			day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+			day: '2-digit',
+			month: 'short',
+			year: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit'
 		}).format(new Date(iso));
 	}
 
-	function statusVariant(s: SessionStatus): 'default' | 'success' | 'warning' | 'error' | 'accent' | 'primary' {
+	function statusVariant(
+		s: SessionStatus
+	): 'default' | 'success' | 'warning' | 'error' | 'accent' | 'primary' {
 		if (s === 'completed') return 'success';
 		if (s === 'paid' || s === 'confirmed') return 'primary';
 		if (s === 'pending') return 'warning';
@@ -96,10 +104,12 @@
 		return 'default';
 	}
 
-	let upcoming = $derived(sessions.filter((s) =>
-		['pending', 'paid', 'confirmed'].includes(s.status) &&
-		new Date(s.scheduled_at) > new Date()
-	));
+	let upcoming = $derived(
+		sessions.filter(
+			(s) =>
+				['pending', 'paid', 'confirmed'].includes(s.status) && new Date(s.scheduled_at) > new Date()
+		)
+	);
 	let past = $derived(sessions.filter((s) => !upcoming.includes(s)));
 
 	onMount(() => {
@@ -133,7 +143,7 @@
 		<div class="rounded-2xl border border-border bg-surface-elevated p-12 text-center">
 			<div class="mb-4 text-5xl text-text-muted">◈</div>
 			<p class="mb-6 text-text-muted">
-				{i18n.locale === 'fr' ? 'Aucune session pour l\'instant.' : 'No sessions yet.'}
+				{i18n.locale === 'fr' ? "Aucune session pour l'instant." : 'No sessions yet.'}
 			</p>
 			<Button variant="accent" href="/mentors">
 				{i18n.locale === 'fr' ? 'Trouver un mentor' : 'Find a mentor'}
@@ -155,7 +165,8 @@
 										<Badge variant="default" size="sm">{s.role}</Badge>
 									</div>
 									<p class="font-semibold">
-										{i18n.locale === 'fr' ? 'Avec' : 'With'} {s.counterparty_name}
+										{i18n.locale === 'fr' ? 'Avec' : 'With'}
+										{s.counterparty_name}
 									</p>
 									<p class="mt-0.5 text-sm text-text-muted">
 										{fmtDate(s.scheduled_at)} · {s.duration_minutes} min
@@ -183,7 +194,9 @@
 				<h2 class="mb-4 text-xs font-bold uppercase tracking-wider text-text-muted">
 					{i18n.locale === 'fr' ? 'Historique' : 'Past'}
 				</h2>
-				<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+				<div
+					class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden"
+				>
 					{#each past as s}
 						<div class="p-4 flex items-center gap-4">
 							<div class="min-w-0 flex-1">
@@ -192,7 +205,8 @@
 									<Badge variant="default" size="sm">{s.role}</Badge>
 								</div>
 								<p class="mt-1 truncate text-sm">
-									{i18n.locale === 'fr' ? 'Avec' : 'With'} {s.counterparty_name}
+									{i18n.locale === 'fr' ? 'Avec' : 'With'}
+									{s.counterparty_name}
 								</p>
 								<p class="text-xs text-text-muted">{fmtDate(s.scheduled_at)}</p>
 							</div>
@@ -237,8 +251,7 @@
 		rows="5"
 		data-testid="dispute-reason"
 		class="w-full rounded-xl border border-border bg-surface p-3 text-sm"
-		placeholder={i18n.t('disputes.raisePlaceholder')}
-	></textarea>
+		placeholder={i18n.t('disputes.raisePlaceholder')}></textarea>
 
 	{#snippet actions()}
 		<Button variant="ghost" size="sm" onclick={() => (disputing = null)}>

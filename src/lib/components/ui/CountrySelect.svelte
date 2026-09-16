@@ -53,7 +53,10 @@
 		const q = query.trim().toLowerCase();
 		if (!q) return geo.countries;
 		return geo.countries.filter(
-			(c) => c.name.toLowerCase().includes(q) || c.iso3.toLowerCase().startsWith(q) || c.iso2.toLowerCase() === q
+			(c) =>
+				c.name.toLowerCase().includes(q) ||
+				c.iso3.toLowerCase().startsWith(q) ||
+				c.iso2.toLowerCase() === q
 		);
 	});
 
@@ -125,14 +128,22 @@
 			aria-expanded={open}
 		>
 			<span class="truncate {selected ? '' : 'text-text-muted'}">
-				{selected ? selected.name : (placeholder ?? (i18n.locale === 'fr' ? 'Sélectionner un pays' : 'Select a country'))}
+				{selected
+					? selected.name
+					: (placeholder ?? (i18n.locale === 'fr' ? 'Sélectionner un pays' : 'Select a country'))}
 			</span>
 			<span class="ml-2 flex shrink-0 items-center gap-1.5 text-text-muted">
 				{#if clearable && value}
 					<!-- spacer so the chevron stays aligned -->
 					<span class="inline-block h-3.5 w-3.5"></span>
 				{/if}
-				<svg class="h-4 w-4 transition-transform {open ? 'rotate-180' : ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<svg
+					class="h-4 w-4 transition-transform {open ? 'rotate-180' : ''}"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+				>
 					<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
 				</svg>
 			</span>
@@ -144,7 +155,13 @@
 				class="absolute right-9 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-text-muted hover:bg-surface-overlay hover:text-text-primary"
 				aria-label={i18n.locale === 'fr' ? 'Effacer' : 'Clear'}
 			>
-				<svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+				<svg
+					class="h-3.5 w-3.5"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.5"
+				>
 					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
 				</svg>
 			</button>
@@ -152,7 +169,9 @@
 	</div>
 
 	{#if open}
-		<div class="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-border bg-surface-elevated shadow-lg">
+		<div
+			class="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-border bg-surface-elevated shadow-lg"
+		>
 			<div class="border-b border-border p-2">
 				<input
 					bind:this={inputEl}
@@ -164,9 +183,13 @@
 			</div>
 			<ul class="max-h-64 overflow-y-auto py-1" role="listbox">
 				{#if geo.loading && geo.countries.length === 0}
-					<li class="px-3 py-2 text-sm text-text-muted">{i18n.locale === 'fr' ? 'Chargement…' : 'Loading…'}</li>
+					<li class="px-3 py-2 text-sm text-text-muted">
+						{i18n.locale === 'fr' ? 'Chargement…' : 'Loading…'}
+					</li>
 				{:else if filtered.length === 0}
-					<li class="px-3 py-2 text-sm text-text-muted">{i18n.locale === 'fr' ? 'Aucun pays' : 'No country'}</li>
+					<li class="px-3 py-2 text-sm text-text-muted">
+						{i18n.locale === 'fr' ? 'Aucun pays' : 'No country'}
+					</li>
 				{:else}
 					{#each filtered as c, i (c.iso3)}
 						<li>

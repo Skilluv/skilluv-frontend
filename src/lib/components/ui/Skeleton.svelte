@@ -16,7 +16,9 @@
 </script>
 
 <div
-	class="animate-[skeleton-pulse_1.5s_ease-in-out_infinite] bg-surface-overlay {radiusMap[rounded]} {className}"
+	class="animate-[skeleton-pulse_1.5s_ease-in-out_infinite] bg-surface-overlay {radiusMap[
+		rounded
+	]} {className}"
 	role="status"
 	aria-label="Chargement..."
 ></div>

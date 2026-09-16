@@ -52,7 +52,9 @@
 					<tr class="border-b border-border bg-surface/40">
 						{#each columns as col}
 							<th
-								class="px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-text-muted {alignClass(col.align)}"
+								class="px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-text-muted {alignClass(
+									col.align
+								)}"
 								style={col.width ? `width:${col.width}` : ''}
 							>
 								{col.label}

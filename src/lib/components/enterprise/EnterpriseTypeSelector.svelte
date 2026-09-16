@@ -19,16 +19,11 @@
 	}
 </script>
 
-<fieldset class="space-y-4" disabled={disabled}>
+<fieldset class="space-y-4" {disabled}>
 	<legend class="sr-only">{i18n.t('enterprise.types.legend')}</legend>
 	<div class="grid gap-4 md:grid-cols-3">
 		{#each types as t (t)}
-			<EnterpriseTypeCard
-				type={t}
-				selected={value === t}
-				{disabled}
-				onSelect={select}
-			/>
+			<EnterpriseTypeCard type={t} selected={value === t} {disabled} onSelect={select} />
 		{/each}
 	</div>
 </fieldset>

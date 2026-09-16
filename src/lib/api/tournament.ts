@@ -85,10 +85,7 @@ export const tournamentApi = {
 	 * it has to say so before the click rather than after.
 	 */
 	activateSeason(slug: string) {
-		return api.post<ApiResponse<Season>>(
-			`/seasons/${encodeURIComponent(slug)}/activate`,
-			{}
-		);
+		return api.post<ApiResponse<Season>>(`/seasons/${encodeURIComponent(slug)}/activate`, {});
 	},
 
 	/** Who stewards a project. */

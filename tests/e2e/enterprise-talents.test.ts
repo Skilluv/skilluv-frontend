@@ -106,7 +106,10 @@ test.describe('S6.5 enterprise talent search', () => {
 		await expect.poll(() => seen.length).toBeGreaterThan(0);
 		const before = seen.length;
 
-		await page.getByPlaceholder(/Rechercher —/).first().fill('rust');
+		await page
+			.getByPlaceholder(/Rechercher —/)
+			.first()
+			.fill('rust');
 		await page.getByRole('button', { name: 'Rechercher' }).click();
 
 		await expect.poll(() => seen.length).toBeGreaterThan(before);

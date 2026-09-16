@@ -187,7 +187,10 @@
 							/>
 						</div>
 						<Input placeholder="https://…" bind:value={hostingUrl} />
-						<Input placeholder={i18n.t('game.modDescriptionPlaceholder')} bind:value={description} />
+						<Input
+							placeholder={i18n.t('game.modDescriptionPlaceholder')}
+							bind:value={description}
+						/>
 						<div class="flex flex-wrap gap-2">
 							<Button size="sm" loading={sending} disabled={!canRegister} onclick={register}>
 								{i18n.t('game.saveCta')}

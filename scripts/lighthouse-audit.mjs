@@ -22,7 +22,10 @@ const PAGES = [
 	{ slug: 'challenges', path: '/challenges' },
 	{ slug: 'pricing', path: '/pricing' },
 	{ slug: 'for-maintainers', path: '/for-maintainers' },
-	{ slug: 'verify', path: '/verify/000000000000000000000000000000000000000000000000000000000deadbeef' }
+	{
+		slug: 'verify',
+		path: '/verify/000000000000000000000000000000000000000000000000000000000deadbeef'
+	}
 ];
 
 // Detecte le chromium bundled par Playwright (Windows dev sans Chrome installe).
@@ -32,7 +35,10 @@ async function resolveChromePath() {
 	const base = path.join(home, 'ms-playwright');
 	try {
 		const dirs = await fs.readdir(base);
-		const chromiumDirs = dirs.filter((d) => d.startsWith('chromium-')).sort().reverse();
+		const chromiumDirs = dirs
+			.filter((d) => d.startsWith('chromium-'))
+			.sort()
+			.reverse();
 		for (const d of chromiumDirs) {
 			const candidate = path.join(base, d, 'chrome-win64', 'chrome.exe');
 			try {
@@ -88,7 +94,7 @@ async function main() {
 	const chromePath = await resolveChromePath();
 	if (!chromePath) {
 		console.error(
-			"Chromium introuvable. Installer Chrome/Edge ou faire `npx playwright install chromium`."
+			'Chromium introuvable. Installer Chrome/Edge ou faire `npx playwright install chromium`.'
 		);
 		process.exit(1);
 	}
@@ -121,9 +127,7 @@ async function main() {
 					seo: Math.round((cats.seo?.score ?? 0) * 100)
 				};
 				summary.push(row);
-				console.log(
-					`perf ${row.perf}  a11y ${row.a11y}  best ${row.best}  seo ${row.seo}`
-				);
+				console.log(`perf ${row.perf}  a11y ${row.a11y}  best ${row.best}  seo ${row.seo}`);
 			} catch (err) {
 				console.log(`ECHEC (${err instanceof Error ? err.message : String(err)})`);
 				summary.push({ page: page.slug, perf: null, a11y: null, best: null, seo: null });

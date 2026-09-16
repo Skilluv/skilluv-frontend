@@ -6,19 +6,9 @@ const api = createApiClient();
 // --- Types (P26 v2 candidature validateur) ---
 
 export type ValidatorDomain =
-	| 'code'
-	| 'design'
-	| 'game'
-	| 'security'
-	| 'ops'
-	| 'ai'
-	| 'soft_skills';
+	'code' | 'design' | 'game' | 'security' | 'ops' | 'ai' | 'soft_skills';
 
-export type ValidatorApplicationStatus =
-	| 'pending'
-	| 'accepted'
-	| 'rejected'
-	| 'withdrawn';
+export type ValidatorApplicationStatus = 'pending' | 'accepted' | 'rejected' | 'withdrawn';
 
 export type ValidatorApplicationOrigin = 'user_apply' | 'admin_invite';
 
@@ -53,10 +43,7 @@ export const VALIDATOR_MIN_TENURE_DAYS = 90;
 export const validatorApplicationsApi = {
 	// SKI-81 candidature user
 	apply(payload: { domain: ValidatorDomain; motivation?: string }) {
-		return api.post<ApiResponse<{ application_id: string }>>(
-			'/me/apply-as-validator',
-			payload
-		);
+		return api.post<ApiResponse<{ application_id: string }>>('/me/apply-as-validator', payload);
 	},
 
 	// SKI-81 liste des candidatures/invitations du user

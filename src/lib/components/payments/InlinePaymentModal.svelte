@@ -2,11 +2,7 @@
 	import { i18n } from '$lib/i18n';
 	import { SkilluError } from '$lib/api/client';
 	import { toast } from '$stores/toast.svelte';
-	import {
-		paymentsApi,
-		waitForSettlement,
-		type PaymentMethod
-	} from '$lib/api/payments';
+	import { paymentsApi, waitForSettlement, type PaymentMethod } from '$lib/api/payments';
 	import Modal from '$components/ui/Modal.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
@@ -167,11 +163,7 @@
 			<svg class="h-8 w-8 animate-spin text-accent" viewBox="0 0 24 24" fill="none">
 				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
 				></circle>
-				<path
-					class="opacity-75"
-					fill="currentColor"
-					d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-				></path>
+				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
 			</svg>
 			<p class="text-sm font-medium">{i18n.t('payments.waiting')}</p>
 			<p class="text-xs text-text-muted">{i18n.t('payments.waitingHint')}</p>

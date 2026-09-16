@@ -105,7 +105,11 @@
 			if (err instanceof SkilluError && err.status === 403) {
 				toast.error(i18n.t('p26.validatorApplication.toastApplyCriteria'));
 			} else {
-				toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastApplyError'));
+				toast.error(
+					err instanceof SkilluError
+						? err.message
+						: i18n.t('p26.validatorApplication.toastApplyError')
+				);
 			}
 		} finally {
 			submitting = false;
@@ -139,14 +143,10 @@
 	</p>
 
 	<div class="mb-6 rounded-2xl border border-border bg-surface-elevated p-5">
-		<label for="domain-select" class="mb-2 block text-sm font-medium">{i18n.t('p26.validatorApplication.domainLabel')}</label>
-		<Select
-			items={DOMAINS}
-			bind:value={domain}
-			shape="rounded"
-			size="md"
-			class="w-full"
-		/>
+		<label for="domain-select" class="mb-2 block text-sm font-medium"
+			>{i18n.t('p26.validatorApplication.domainLabel')}</label
+		>
+		<Select items={DOMAINS} bind:value={domain} shape="rounded" size="md" class="w-full" />
 	</div>
 
 	<div class="mb-6 space-y-2 rounded-xl bg-surface-elevated p-4">
@@ -170,7 +170,9 @@
 				<span class="text-sm">
 					{i18n.t('p26.validatorApplication.rankLine')}
 					{#if !eligibility.rank}
-						<span class="text-text-muted"> — {i18n.t('p26.validatorApplication.rankMiss', { rank: stats.rank })}</span>
+						<span class="text-text-muted">
+							— {i18n.t('p26.validatorApplication.rankMiss', { rank: stats.rank })}</span
+						>
 					{/if}
 				</span>
 			</div>
@@ -187,7 +189,9 @@
 					{i18n.t('p26.validatorApplication.prsLine', { n: VALIDATOR_MIN_MERGED_PRS, domain })}
 					{#if !eligibility.prs}
 						<span class="text-text-muted">
-							— {i18n.t('p26.validatorApplication.prsMiss', { n: stats.merged_prs_by_domain?.[domain] ?? 0 })}
+							— {i18n.t('p26.validatorApplication.prsMiss', {
+								n: stats.merged_prs_by_domain?.[domain] ?? 0
+							})}
 						</span>
 					{/if}
 				</span>
@@ -205,7 +209,9 @@
 					{i18n.t('p26.validatorApplication.reposLine', { n: VALIDATOR_MIN_REPOS_COVERED })}
 					{#if !eligibility.repos}
 						<span class="text-text-muted">
-							— {i18n.t('p26.validatorApplication.reposMiss', { n: stats.repos_covered_by_domain?.[domain] ?? 0 })}
+							— {i18n.t('p26.validatorApplication.reposMiss', {
+								n: stats.repos_covered_by_domain?.[domain] ?? 0
+							})}
 						</span>
 					{/if}
 				</span>
@@ -222,7 +228,9 @@
 				<span class="text-sm">
 					{i18n.t('p26.validatorApplication.tenureLine', { n: VALIDATOR_MIN_TENURE_DAYS })}
 					{#if !eligibility.tenure}
-						<span class="text-text-muted"> — {i18n.t('p26.validatorApplication.tenureMiss', { n: stats.tenure_days })}</span>
+						<span class="text-text-muted">
+							— {i18n.t('p26.validatorApplication.tenureMiss', { n: stats.tenure_days })}</span
+						>
 					{/if}
 				</span>
 			</div>
@@ -230,16 +238,19 @@
 	</div>
 
 	<div class="mb-6 rounded-2xl border border-border bg-surface-elevated p-5">
-		<label for="motivation" class="mb-2 block text-sm font-medium">{i18n.t('p26.validatorApplication.motivationLabel')}</label>
+		<label for="motivation" class="mb-2 block text-sm font-medium"
+			>{i18n.t('p26.validatorApplication.motivationLabel')}</label
+		>
 		<textarea
 			id="motivation"
 			bind:value={motivation}
 			maxlength="500"
 			rows="5"
 			class="w-full rounded-xl border border-border bg-surface-overlay p-3 text-sm text-text-primary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-			placeholder={i18n.t('p26.validatorApplication.motivationPh')}
-		></textarea>
-		<p class="mt-1 text-xs text-text-muted">{i18n.t('p26.validatorApplication.motivationCounter', { n: motivation.length })}</p>
+			placeholder={i18n.t('p26.validatorApplication.motivationPh')}></textarea>
+		<p class="mt-1 text-xs text-text-muted">
+			{i18n.t('p26.validatorApplication.motivationCounter', { n: motivation.length })}
+		</p>
 	</div>
 
 	<Button variant="primary" disabled={!allOk || submitting} loading={submitting} onclick={submit}>

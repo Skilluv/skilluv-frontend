@@ -52,7 +52,12 @@ export type JobResponse<T> = JobPending | JobReady<T>;
 
 export const aiApi = {
 	/** Enqueue une demande de code review. Renvoie un job_id à polling. */
-	requestCodeReview(data: { submission_id: string; challenge_id: string; language: string; user_level?: string }) {
+	requestCodeReview(data: {
+		submission_id: string;
+		challenge_id: string;
+		language: string;
+		user_level?: string;
+	}) {
 		return api.post<ApiResponse<{ job_id: string }>>('/ai/code-review', data);
 	},
 

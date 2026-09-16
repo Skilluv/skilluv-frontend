@@ -55,16 +55,12 @@ describe('moderationApi.forum', () => {
 		await moderationApi.forum.moderatePost('post-1', { action: 'lock', reason: 'flame war' });
 		await moderationApi.forum.moderatePost('post-1', { action: 'unlock', reason: 'settled' });
 		await moderationApi.forum.moderatePost('post-1', { action: 'unhide', reason: 'ok now' });
-		const actions = fetchMock.mock.calls.map(
-			(c) => JSON.parse(c[1].body).action as string
-		);
+		const actions = fetchMock.mock.calls.map((c) => JSON.parse(c[1].body).action as string);
 		expect(actions).toEqual(['lock', 'unlock', 'unhide']);
 	});
 
 	it('muteUser() sends scope + duration + reason', async () => {
-		fetchMock.mockResolvedValue(
-			ok({ mute_id: 'm1', expires_at: '2026-07-17', scope: 'forum' })
-		);
+		fetchMock.mockResolvedValue(ok({ mute_id: 'm1', expires_at: '2026-07-17', scope: 'forum' }));
 		const { moderationApi } = await import('../../src/lib/api/moderation');
 		await moderationApi.forum.muteUser('u-9', {
 			reason: 'repeat offender',

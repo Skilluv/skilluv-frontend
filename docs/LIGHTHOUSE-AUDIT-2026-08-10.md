@@ -10,25 +10,25 @@ Fixes appliques dans le commit `chore(perf): CLS fallback fonts + img dimensions
 - `<link rel="preconnect" href="https://api.skill-uv.com" crossorigin />` dans `app.html` — coupe le cout DNS + TLS des premiers fetch API cote client.
 - 16 tags `<img>` : dimensions explicites `width` + `height` derivees des classes Tailwind parentes + `loading="lazy"` sur 7 below-the-fold.
 
-| Page                  | Perf | A11y | Best-practices | SEO |
-| --------------------- | ---: | ---: | -------------: | --: |
-| `/`                   |   74 |  100 |            100 | 100 |
-| `/challenges`         |   62 |  100 |             96 | 100 |
-| `/pricing`            |   77 |   95 |             96 | 100 |
-| `/for-maintainers`    |   85 |   96 |             96 | 100 |
-| `/verify/{hash}`      |   75 |   95 |            100 | 100 |
+| Page               | Perf | A11y | Best-practices | SEO |
+| ------------------ | ---: | ---: | -------------: | --: |
+| `/`                |   74 |  100 |            100 | 100 |
+| `/challenges`      |   62 |  100 |             96 | 100 |
+| `/pricing`         |   77 |   95 |             96 | 100 |
+| `/for-maintainers` |   85 |   96 |             96 | 100 |
+| `/verify/{hash}`   |   75 |   95 |            100 | 100 |
 
 Rerun : `npm run audit:lighthouse` (dev server) ou `LH_BASE_URL=http://localhost:4173 npm run audit:lighthouse` (preview).
 
 ## Baseline pre-fixes (pour reference)
 
-| Page                  | Perf | A11y | Best | SEO |
-| --------------------- | ---: | ---: | ---: | --: |
-| `/`                   |   74 |  100 |  100 | 100 |
-| `/challenges`         |   79 |  100 |   96 | 100 |
-| `/pricing`            |   76 |   95 |   96 | 100 |
-| `/for-maintainers`    |   76 |   96 |   96 | 100 |
-| `/verify/{hash}`      |   76 |   95 |  100 | 100 |
+| Page               | Perf | A11y | Best | SEO |
+| ------------------ | ---: | ---: | ---: | --: |
+| `/`                |   74 |  100 |  100 | 100 |
+| `/challenges`      |   79 |  100 |   96 | 100 |
+| `/pricing`         |   76 |   95 |   96 | 100 |
+| `/for-maintainers` |   76 |   96 |   96 | 100 |
+| `/verify/{hash}`   |   76 |   95 |  100 | 100 |
 
 ## Analyse
 

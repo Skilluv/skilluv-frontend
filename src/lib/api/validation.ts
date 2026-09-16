@@ -37,9 +37,7 @@ export const validationApi = {
 
 	// SKI-83 premier volontaire gagne
 	pickup(sliceId: string) {
-		return api.post<ApiResponse<{ picked_up: boolean }>>(
-			`/slices/${sliceId}/validation/pickup`
-		);
+		return api.post<ApiResponse<{ picked_up: boolean }>>(`/slices/${sliceId}/validation/pickup`);
 	},
 
 	// SKI-84 approve -> attestation + fragments

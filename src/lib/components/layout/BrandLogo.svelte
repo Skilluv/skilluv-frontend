@@ -75,9 +75,7 @@
 	 */
 	let onLightSurface = $derived(theme.mode === 'light');
 
-	let wordmark = $derived(
-		onLightSurface ? '/logo-wordmark-dark.png' : '/logo-wordmark-light.png'
-	);
+	let wordmark = $derived(onLightSurface ? '/logo-wordmark-dark.png' : '/logo-wordmark-light.png');
 </script>
 
 <span class="inline-flex items-center gap-2 {klass}">

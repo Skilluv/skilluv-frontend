@@ -100,16 +100,26 @@
 			{:else}
 				<ul class="space-y-3" role="list">
 					{#each openSlots as slot (slot.slot_id)}
-						<li class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-surface-elevated p-4">
+						<li
+							class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-surface-elevated p-4"
+						>
 							<div class="flex-1 min-w-0">
-								<RoleBadge roleSlug={slot.role_slug} displayName={slot.role_display_name} size="md" />
+								<RoleBadge
+									roleSlug={slot.role_slug}
+									displayName={slot.role_display_name}
+									size="md"
+								/>
 								<p class="mt-2 flex flex-wrap items-center gap-3 text-xs text-text-muted">
 									<span class="inline-flex items-center gap-1">
 										<Target size={12} strokeWidth={2} aria-hidden="true" />
 										{i18n.t('teams.detail.minLevel', { n: slot.min_proficiency_level })}
 									</span>
 									{#if slot.required_skill_slug}
-										<span>{i18n.t('teams.detail.skillRequired', { skill: slot.required_skill_slug })}</span>
+										<span
+											>{i18n.t('teams.detail.skillRequired', {
+												skill: slot.required_skill_slug
+											})}</span
+										>
 									{/if}
 								</p>
 							</div>
@@ -134,9 +144,15 @@
 				</h2>
 				<ul class="space-y-3" role="list">
 					{#each filledSlots as slot (slot.slot_id)}
-						<li class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-surface-elevated p-4 opacity-90">
+						<li
+							class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-surface-elevated p-4 opacity-90"
+						>
 							<div class="flex-1 min-w-0">
-								<RoleBadge roleSlug={slot.role_slug} displayName={slot.role_display_name} size="md" />
+								<RoleBadge
+									roleSlug={slot.role_slug}
+									displayName={slot.role_display_name}
+									size="md"
+								/>
 								<p class="mt-2 text-xs text-text-muted">
 									{i18n.t('teams.detail.slotFilled')} · {slot.filled_by}
 								</p>

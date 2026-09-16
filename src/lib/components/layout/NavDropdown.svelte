@@ -75,7 +75,11 @@
 	<button
 		onclick={toggle}
 		data-nav-key={navKey}
-		class="relative inline-flex items-center h-8 gap-1 rounded-full px-3 text-sm font-medium leading-none transition-colors duration-300 {active ? 'text-surface' : open ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'}"
+		class="relative inline-flex items-center h-8 gap-1 rounded-full px-3 text-sm font-medium leading-none transition-colors duration-300 {active
+			? 'text-surface'
+			: open
+				? 'text-text-primary'
+				: 'text-text-muted hover:text-text-primary'}"
 		aria-expanded={open}
 		aria-haspopup="menu"
 	>
@@ -116,7 +120,9 @@
 			<div class="p-2">
 				{#each groups as group, gi}
 					{#if group.title}
-						<p class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-widest text-text-muted">
+						<p
+							class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-widest text-text-muted"
+						>
 							{group.title}
 						</p>
 					{/if}
@@ -126,17 +132,28 @@
 							<a
 								href={item.href}
 								onclick={close}
-								class="group/item flex items-start gap-3 rounded-xl p-2.5 transition-colors duration-150 {isCurrentPage ? 'bg-primary/10' : 'hover:bg-primary/10'}"
+								class="group/item flex items-start gap-3 rounded-xl p-2.5 transition-colors duration-150 {isCurrentPage
+									? 'bg-primary/10'
+									: 'hover:bg-primary/10'}"
 								role="menuitem"
 							>
-								<div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors duration-150 group-hover/item:bg-primary/20">
+								<div
+									class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors duration-150 group-hover/item:bg-primary/20"
+								>
 									<item.icon size={18} strokeWidth={2} />
 								</div>
 								<div class="min-w-0 flex-1">
 									<div class="flex items-center gap-2">
-										<span class="font-semibold text-sm truncate {isCurrentPage ? 'text-primary' : 'text-text-primary group-hover/item:text-primary'} transition-colors duration-150">{item.label}</span>
+										<span
+											class="font-semibold text-sm truncate {isCurrentPage
+												? 'text-primary'
+												: 'text-text-primary group-hover/item:text-primary'} transition-colors duration-150"
+											>{item.label}</span
+										>
 										{#if item.badge}
-											<span class="rounded-full bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent">
+											<span
+												class="rounded-full bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent"
+											>
 												{item.badge}
 											</span>
 										{/if}

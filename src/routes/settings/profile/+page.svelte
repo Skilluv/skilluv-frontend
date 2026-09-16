@@ -104,11 +104,23 @@
 		</div>
 		<div class="grid grid-cols-2 gap-3">
 			<Input label="X/Twitter" placeholder="@handle" bind:value={twitter} />
-			<Input label={i18n.t('profile.links.website')} placeholder="https://..." bind:value={website} />
+			<Input
+				label={i18n.t('profile.links.website')}
+				placeholder="https://..."
+				bind:value={website}
+			/>
 		</div>
 		<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-			<CountrySelect label={i18n.t('settings.profileSection.country')} bind:value={country} clearable />
-			<CityAutocomplete label={i18n.t('settings.profileSection.city')} bind:value={city} {country} />
+			<CountrySelect
+				label={i18n.t('settings.profileSection.country')}
+				bind:value={country}
+				clearable
+			/>
+			<CityAutocomplete
+				label={i18n.t('settings.profileSection.city')}
+				bind:value={city}
+				{country}
+			/>
 		</div>
 
 		<Button variant="primary" loading={saving} onclick={save} data-testid="profile-save-btn">

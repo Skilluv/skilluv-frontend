@@ -78,9 +78,7 @@ test.describe('S4.4 bounty detail', () => {
 		).toBeVisible();
 		await expect(page.getByText('Le parser casse sur les offsets negatifs.')).toBeVisible();
 		await expect(page.getByText('80')).toBeVisible();
-		await expect(
-			page.getByRole('link', { name: /github\.com|issue/i }).first()
-		).toBeVisible();
+		await expect(page.getByRole('link', { name: /github\.com|issue/i }).first()).toBeVisible();
 	});
 
 	test('revendiquer une bounty ouverte appelle le back', async ({ page }) => {
@@ -123,7 +121,9 @@ test.describe('S4.4 bounty detail', () => {
 		await page.getByRole('button', { name: 'Attacher ma PR' }).click();
 
 		// The modal requires both the PR URL and its number.
-		await page.getByLabel('URL de la PR').fill('https://github.com/skilluv/skilluv-backend/pull/77');
+		await page
+			.getByLabel('URL de la PR')
+			.fill('https://github.com/skilluv/skilluv-backend/pull/77');
 		await page.getByLabel('Numéro').fill('77');
 		await page.getByRole('button', { name: 'Attacher', exact: true }).click();
 

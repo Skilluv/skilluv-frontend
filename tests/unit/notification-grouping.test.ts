@@ -106,12 +106,7 @@ describe('actorsLine', () => {
 		// off the list would say "and 0 others" when ten people took part.
 		const line = actorsLine(
 			notif({
-				group_actors: [
-					{ username: 'a' },
-					{ username: 'b' },
-					{ username: 'c' },
-					{ username: 'd' }
-				],
+				group_actors: [{ username: 'a' }, { username: 'b' }, { username: 'c' }, { username: 'd' }],
 				group_count: 10
 			}),
 			t

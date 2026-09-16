@@ -99,18 +99,13 @@ export type CommunityStatus = 'draft' | 'review' | 'approved' | 'rejected' | nul
 export type LeaderboardDomain = 'global' | SkillDomain;
 export type LeaderboardPeriod = 'alltime' | 'weekly' | 'monthly';
 export type ReportTargetType = 'user' | 'challenge' | 'message' | 'enterprise';
-export type ReportReason = 'spam' | 'harassment' | 'inappropriate' | 'cheating' | 'fake_profile' | 'other';
+export type ReportReason =
+	'spam' | 'harassment' | 'inappropriate' | 'cheating' | 'fake_profile' | 'other';
 export type ReportStatus = 'pending' | 'resolved' | 'dismissed';
 export type InterestStatus = 'pending' | 'accepted' | 'declined';
 export type CompanySize = '1-10' | '11-50' | '51-200' | '201-500' | '501-1000' | '1000+';
 export type UserRole = 'user' | 'recruiter' | 'enterprise' | 'admin';
-export type ThemeBase =
-	| 'forge'
-	| 'vesperal'
-	| 'arena'
-	| 'scriptorium'
-	| 'sakura'
-	| 'lagune';
+export type ThemeBase = 'forge' | 'vesperal' | 'arena' | 'scriptorium' | 'sakura' | 'lagune';
 export type ThemeMode = 'dark' | 'light';
 export type Theme = ThemeBase | `${ThemeBase}-light`;
 
@@ -648,7 +643,8 @@ export interface TypeConfigRemoteIntl {
 	tax_withholding_country?: string;
 }
 
-export type EnterpriseTypeConfig = TypeConfigStaffing | TypeConfigRemoteIntl | Record<string, never>;
+export type EnterpriseTypeConfig =
+	TypeConfigStaffing | TypeConfigRemoteIntl | Record<string, never>;
 
 export interface AgencyClient {
 	id: string;

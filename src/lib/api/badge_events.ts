@@ -103,10 +103,7 @@ export const badgeEventsApi = {
 	},
 
 	join(slug: string) {
-		return api.post<ApiResponse<JoinEventResponse>>(
-			`/events/${encodeURIComponent(slug)}/join`,
-			{}
-		);
+		return api.post<ApiResponse<JoinEventResponse>>(`/events/${encodeURIComponent(slug)}/join`, {});
 	},
 
 	myEvents() {

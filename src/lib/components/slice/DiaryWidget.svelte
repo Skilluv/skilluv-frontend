@@ -34,7 +34,8 @@
 			const res = await slicesApi.diary(sliceId);
 			entries = res.data.entries;
 		} catch (err) {
-			error = err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastError');
+			error =
+				err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastError');
 		} finally {
 			loading = false;
 		}
@@ -53,7 +54,9 @@
 			body = '';
 			toast.success(i18n.t('p26.slice.widgets.diaryToastPublished'));
 		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.slice.widgets.diaryToastError'));
+			toast.error(
+				err instanceof SkilluError ? err.message : i18n.t('p26.slice.widgets.diaryToastError')
+			);
 		} finally {
 			posting = false;
 		}
@@ -73,12 +76,18 @@
 	}
 
 	function initials(name: string): string {
-		return name.split(/\s+/).map((p) => p[0]?.toUpperCase() ?? '').join('').slice(0, 2);
+		return name
+			.split(/\s+/)
+			.map((p) => p[0]?.toUpperCase() ?? '')
+			.join('')
+			.slice(0, 2);
 	}
 </script>
 
 <section class="rounded-2xl border border-border bg-surface-elevated p-5">
-	<h2 class="text-lg font-semibold text-text-primary mb-4">{i18n.t('p26.slice.widgets.diaryTitle')}</h2>
+	<h2 class="text-lg font-semibold text-text-primary mb-4">
+		{i18n.t('p26.slice.widgets.diaryTitle')}
+	</h2>
 
 	{#if canPost}
 		<form onsubmit={submit} class="mb-6 space-y-3">
@@ -125,12 +134,22 @@
 								class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-surface-overlay text-[10px] font-semibold text-text-primary overflow-hidden shrink-0"
 							>
 								{#if e.author_avatar_url}
-									<img src={e.author_avatar_url} alt={e.author_display_name} width="28" height="28" loading="lazy" class="h-full w-full object-cover" />
+									<img
+										src={e.author_avatar_url}
+										alt={e.author_display_name}
+										width="28"
+										height="28"
+										loading="lazy"
+										class="h-full w-full object-cover"
+									/>
 								{:else}
 									{initials(e.author_display_name || e.author_username)}
 								{/if}
 							</span>
-							<a href={`/profile/${e.author_username}`} class="text-sm font-medium text-text-primary hover:text-accent truncate">
+							<a
+								href={`/profile/${e.author_username}`}
+								class="text-sm font-medium text-text-primary hover:text-accent truncate"
+							>
 								{e.author_display_name || e.author_username}
 							</a>
 							<span class="text-xs text-text-muted shrink-0">{fmtDate(e.created_at)}</span>

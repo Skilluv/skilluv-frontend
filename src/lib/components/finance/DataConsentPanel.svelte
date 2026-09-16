@@ -31,12 +31,7 @@
 	 */
 	import { onMount } from 'svelte';
 	import { ShieldCheck } from '@lucide/svelte';
-	import {
-		dataConsentApi,
-		isLive,
-		type DataConsent,
-		type DataPurpose
-	} from '$api/finance_data';
+	import { dataConsentApi, isLive, type DataConsent, type DataPurpose } from '$api/finance_data';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';
@@ -52,9 +47,7 @@
 	/** The server's own sentence about what withdrawal does. Shown verbatim. */
 	let withdrawalNote = $state('');
 
-	let liveBySlug = $derived(
-		new Map(consent.filter(isLive).map((c) => [c.purpose, c] as const))
-	);
+	let liveBySlug = $derived(new Map(consent.filter(isLive).map((c) => [c.purpose, c] as const)));
 
 	function share(row: DataConsent | undefined): string | null {
 		if (!row) return null;

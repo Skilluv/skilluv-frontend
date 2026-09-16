@@ -27,17 +27,14 @@ export const contestsApi = {
 
 	/** One contest, by slug. */
 	bySlug(slug: string) {
-		return api.get<ApiResponse<{ contest: unknown }>>(
-			`/contests/${encodeURIComponent(slug)}`
-		);
+		return api.get<ApiResponse<{ contest: unknown }>>(`/contests/${encodeURIComponent(slug)}`);
 	},
 
 	/** Answer an invitation. Accepting is not entering. */
 	respond(contestId: string, accept: boolean) {
-		return api.post<ApiResponse<unknown>>(
-			`/contests/${encodeURIComponent(contestId)}/respond`,
-			{ accept }
-		);
+		return api.post<ApiResponse<unknown>>(`/contests/${encodeURIComponent(contestId)}/respond`, {
+			accept
+		});
 	},
 
 	/** Hand in the work. */

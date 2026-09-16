@@ -87,7 +87,9 @@
 	{#if loading}
 		<Skeleton class="h-64 w-full" rounded="xl" />
 	{:else if missing}
-		<p class="rounded-xl border border-border bg-surface-elevated px-4 py-6 text-sm text-text-muted">
+		<p
+			class="rounded-xl border border-border bg-surface-elevated px-4 py-6 text-sm text-text-muted"
+		>
 			{i18n.t('designSeries.notFound')}
 		</p>
 	{:else if loadError}

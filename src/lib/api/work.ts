@@ -165,10 +165,7 @@ export const workApi = {
 	 * so a caller offers the lab's own list rather than a free-text field.
 	 */
 	contribute(id: string, body: { activity_type: string; summary_md: string }) {
-		return api.post<ApiResponse<unknown>>(
-			`/labs/${encodeURIComponent(id)}/contributions`,
-			body
-		);
+		return api.post<ApiResponse<unknown>>(`/labs/${encodeURIComponent(id)}/contributions`, body);
 	},
 
 	/**

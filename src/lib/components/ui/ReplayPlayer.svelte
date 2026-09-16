@@ -71,7 +71,10 @@
 			ontimeupdate={handleTimeUpdate}
 			onplay={() => (playing = true)}
 			onpause={() => (playing = false)}
-			onended={() => { playing = false; progress = 100; }}
+			onended={() => {
+				playing = false;
+				progress = 100;
+			}}
 		></video>
 
 		<!-- Play overlay -->
@@ -81,7 +84,9 @@
 				onclick={togglePlay}
 				aria-label="Play"
 			>
-				<div class="flex h-16 w-16 items-center justify-center rounded-full bg-accent/90 text-2xl text-accent-fg shadow-lg">
+				<div
+					class="flex h-16 w-16 items-center justify-center rounded-full bg-accent/90 text-2xl text-accent-fg shadow-lg"
+				>
 					▶
 				</div>
 			</button>
@@ -123,20 +128,26 @@
 				<button
 					class="rounded px-1.5 py-0.5 text-xs transition-colors
 						{speed === s ? 'bg-accent text-accent-fg' : 'text-text-muted hover:text-text-primary'}"
-					onclick={() => setSpeed(s)}
-				>{s}x</button>
+					onclick={() => setSpeed(s)}>{s}x</button
+				>
 			{/each}
 		</div>
 	</div>
 
 	<!-- Info bar -->
 	{#if title || originalDuration}
-		<div class="flex items-center justify-between border-t border-border px-4 py-2 text-xs text-text-muted">
+		<div
+			class="flex items-center justify-between border-t border-border px-4 py-2 text-xs text-text-muted"
+		>
 			{#if title}
 				<span class="font-medium">{title}</span>
 			{/if}
 			{#if originalDuration}
-				<span>{i18n.locale === 'fr' ? 'Durée originale' : 'Original duration'}: {formatTime(originalDuration)}</span>
+				<span
+					>{i18n.locale === 'fr' ? 'Durée originale' : 'Original duration'}: {formatTime(
+						originalDuration
+					)}</span
+				>
 			{/if}
 		</div>
 	{/if}

@@ -25,23 +25,65 @@ export const fr: Translations = {
 			period: 'Période'
 		},
 		actions: {
-			save: 'Sauvegarder', cancel: 'Annuler', delete: 'Supprimer', edit: 'Modifier',
-			search: 'Rechercher', retry: 'Réessayer', back: 'Retour', next: 'Suivant',
-			previous: 'Précédent', submit: 'Soumettre', confirm: 'Confirmer', close: 'Fermer',
-			create: 'Créer', loading: 'Chargement...', sending: 'Envoi...',
+			save: 'Sauvegarder',
+			cancel: 'Annuler',
+			delete: 'Supprimer',
+			edit: 'Modifier',
+			search: 'Rechercher',
+			retry: 'Réessayer',
+			back: 'Retour',
+			next: 'Suivant',
+			previous: 'Précédent',
+			submit: 'Soumettre',
+			confirm: 'Confirmer',
+			close: 'Fermer',
+			create: 'Créer',
+			loading: 'Chargement...',
+			sending: 'Envoi...',
 			loadMore: 'Voir plus'
 		},
 		nav: {
-			home: 'Accueil', challenges: 'Challenges', leaderboards: 'Classements',
-			profile: 'Profil', settings: 'Paramètres', notifications: 'Notifications',
-			login: 'Connexion', register: 'Commencer', logout: 'Déconnexion', community: 'Communauté'
+			home: 'Accueil',
+			challenges: 'Challenges',
+			leaderboards: 'Classements',
+			profile: 'Profil',
+			settings: 'Paramètres',
+			notifications: 'Notifications',
+			login: 'Connexion',
+			register: 'Commencer',
+			logout: 'Déconnexion',
+			community: 'Communauté'
 		},
-		domains: { code: 'Code', design: 'Design', game: 'Jeux Vidéo', security: 'Cybersécurité', ai: 'Intelligence artificielle', ops: 'Ops & Cloud', quality: 'Qualité & tests', leadership: 'Leadership', audio: 'Audio', communication: 'Communication', education: 'Enseignement', soft_skills: 'Communication & leadership' },
-		titles: { apprenti: 'Apprenti', ranger: 'Ranger', artisan: 'Artisan', maitre: 'Maître', doyen: 'Doyen', legende: 'Légende' },
+		domains: {
+			code: 'Code',
+			design: 'Design',
+			game: 'Jeux Vidéo',
+			security: 'Cybersécurité',
+			ai: 'Intelligence artificielle',
+			ops: 'Ops & Cloud',
+			quality: 'Qualité & tests',
+			leadership: 'Leadership',
+			audio: 'Audio',
+			communication: 'Communication',
+			education: 'Enseignement',
+			soft_skills: 'Communication & leadership'
+		},
+		titles: {
+			apprenti: 'Apprenti',
+			ranger: 'Ranger',
+			artisan: 'Artisan',
+			maitre: 'Maître',
+			doyen: 'Doyen',
+			legende: 'Légende'
+		},
 		difficulty: { 1: 'Débutant', 2: 'Facile', 3: 'Intermédiaire', 4: 'Avancé', 5: 'Expert' },
 		tone: { serious: 'Sérieux', fun: 'Loufoque', educational: 'Éducatif' },
 		time: { minutes: '{n} min', hours: '{n}h', noLimit: 'Libre', ago: 'il y a' },
-		fragments: 'fragments', streak: 'Streak', team: 'Équipe', votes: 'votes', page: 'Page'
+		fragments: 'fragments',
+		streak: 'Streak',
+		team: 'Équipe',
+		votes: 'votes',
+		page: 'Page'
 	},
 	launch: {
 		eyebrow: 'Ouverture',
@@ -65,7 +107,7 @@ export const fr: Translations = {
 		note: 'Première saison complète en juin 2027.'
 	},
 	commonExtra: {
-		exampleLabel: 'Exemple',
+		exampleLabel: 'Exemple'
 	},
 	board: {
 		title: 'Les autres attestent',
@@ -96,7 +138,8 @@ export const fr: Translations = {
 		titleAccent: 'Choisis la tienne.',
 		subtitle: 'Chacune porte sur un logiciel qui tourne, avec ses utilisateurs et ses exigences.',
 		emptyTitle: 'Le catalogue ouvre avec la bêta.',
-		emptyBody: 'Les premières missions arrivent le 11 janvier 2027. Prends ta place maintenant, tu seras prévenu le jour où elles s’ouvrent.',
+		emptyBody:
+			'Les premières missions arrivent le 11 janvier 2027. Prends ta place maintenant, tu seras prévenu le jour où elles s’ouvrent.',
 		emptyCta: 'Prendre ma place',
 		allCta: 'Toutes les missions',
 		reward: '+{n} fragments',
@@ -105,7 +148,8 @@ export const fr: Translations = {
 	ranks: {
 		title: 'Ton rang,',
 		titleAccent: 'tu le fabriques.',
-		subtitle: 'Cinq paliers, de l’Apprenti au Doyen. Ils ne se debloquent pas : ils se calculent sur ce que tu as reellement livre, et chacun remonte a la piece qui l’a valu.',
+		subtitle:
+			'Cinq paliers, de l’Apprenti au Doyen. Ils ne se debloquent pas : ils se calculent sur ce que tu as reellement livre, et chacun remonte a la piece qui l’a valu.',
 		apprentiMeaning: 'Premiers gestes, encadres de pres.',
 		rangerMeaning: 'Tu livres seul sur des missions cadrees.',
 		artisanMeaning: 'Tu prends en charge une piece de bout en bout.',
@@ -116,27 +160,35 @@ export const fr: Translations = {
 	otherLines: {
 		title: 'Sept lignes.',
 		titleAccent: 'Le talent n’en paie aucune.',
-		subtitle: 'Le contact talent s’achete en ligne, ci-dessus. Le reste se cadre avec vous : on en discute, on chiffre, on contractualise.',
+		subtitle:
+			'Le contact talent s’achete en ligne, ci-dessus. Le reste se cadre avec vous : on en discute, on chiffre, on contractualise.',
 		talentTitle: 'Talent',
-		talentBody: 'Recherche sur preuves, contact a l’unite, listes courtes construites par nos soins, tournois de recrutement.',
+		talentBody:
+			'Recherche sur preuves, contact a l’unite, listes courtes construites par nos soins, tournois de recrutement.',
 		talentWho: 'Entreprise',
 		workTitle: 'Work',
-		workBody: 'Primes sur vos issues, sous-traitance encadree, studios dedies, places de marche de missions par discipline.',
+		workBody:
+			'Primes sur vos issues, sous-traitance encadree, studios dedies, places de marche de missions par discipline.',
 		workWho: 'Entreprise',
 		brandTitle: 'Marque et evenements',
-		brandBody: 'Challenges a votre marque, hackathons, sponsoring de saison, campagnes aupres de la communaute.',
+		brandBody:
+			'Challenges a votre marque, hackathons, sponsoring de saison, campagnes aupres de la communaute.',
 		brandWho: 'Entreprise',
 		dataTitle: 'Data',
-		dataBody: 'Talent Score en API, licences, rapports sectoriels, marque blanche. Sous consentement explicite des talents.',
+		dataBody:
+			'Talent Score en API, licences, rapports sectoriels, marque blanche. Sous consentement explicite des talents.',
 		dataWho: 'Entreprise',
 		ecosystemTitle: 'Ecosysteme',
-		ecosystemBody: 'Place de marche creatrice, certification des reviewers, academie interne pour vos equipes.',
+		ecosystemBody:
+			'Place de marche creatrice, certification des reviewers, academie interne pour vos equipes.',
 		ecosystemWho: 'Entreprise et talent',
 		consultTitle: 'Conseil',
-		consultBody: 'Heure d’expertise avec un rang eleve, revue d’architecture par un pool senior, audit des competences d’une equipe.',
+		consultBody:
+			'Heure d’expertise avec un rang eleve, revue d’architecture par un pool senior, audit des competences d’une equipe.',
 		consultWho: 'Entreprise',
 		financeTitle: 'Finance',
-		financeBody: 'Avance sur mission en cours, prets adosses au parcours, assurance, fonds de soutien.',
+		financeBody:
+			'Avance sur mission en cours, prets adosses au parcours, assurance, fonds de soutien.',
 		financeWho: 'Talent',
 		cta: 'En parler'
 	},
@@ -144,15 +196,20 @@ export const fr: Translations = {
 		title: 'Comment ça marche',
 		subtitle: 'Quatre temps, du premier geste à la preuve.',
 		step1Title: 'Tu choisis un parcours',
-		step1Body: 'Développement backend, design d’interface, pentest web, sound design. Des itinéraires définis, chacun avec les compétences qu’il exige.',
+		step1Body:
+			'Développement backend, design d’interface, pentest web, sound design. Des itinéraires définis, chacun avec les compétences qu’il exige.',
 		step2Title: 'Tu reçois des missions',
-		step2Body: 'Graduées, du premier geste à la prise en charge complète. Chacune porte sur un logiciel qui existe vraiment, avec ses utilisateurs et ses exigences de qualité.',
+		step2Body:
+			'Graduées, du premier geste à la prise en charge complète. Chacune porte sur un logiciel qui existe vraiment, avec ses utilisateurs et ses exigences de qualité.',
 		step3Title: 'Tu livres, on examine, tu recommences',
-		step3Body: 'Chaque contribution passe devant quelqu’un de plus avancé. On te demande de reprendre, on discute tes choix. Les échanges de revue sont archivés : ils font partie de la preuve autant que le résultat.',
+		step3Body:
+			'Chaque contribution passe devant quelqu’un de plus avancé. On te demande de reprendre, on discute tes choix. Les échanges de revue sont archivés : ils font partie de la preuve autant que le résultat.',
 		step4Title: 'Tes preuves s’accumulent',
-		step4Body: 'Chaque livrable validé alimente ton profil public. Les rangs se calculent sur ce que tu as fabriqué, et chacun remonte à la pièce qui l’a valu.',
+		step4Body:
+			'Chaque livrable validé alimente ton profil public. Les rangs se calculent sur ce que tu as fabriqué, et chacun remonte à la pièce qui l’a valu.',
 		freeTitle: 'Et tu ne paies jamais.',
-		freeBody: 'Ni l’inscription, ni les missions, ni les revues, ni les attestations, ni la visibilité auprès des entreprises.',
+		freeBody:
+			'Ni l’inscription, ni les missions, ni les revues, ni les attestations, ni la visibilité auprès des entreprises.',
 		gradationLabel: 'Une sequence, pas un exercice isole',
 		gradation1Scope: 'Premier geste',
 		gradation1Body: 'Corriger un message d’erreur trompeur.',
@@ -175,57 +232,68 @@ export const fr: Translations = {
 		code: {
 			label: 'Code',
 			desc: 'Backend, frontend, mobile, systèmes, embarqué.',
-			about: 'Des challenges à coder : API, interfaces, apps mobiles, outils, systèmes. Tu rends du code qui tourne, et il est évalué.'
+			about:
+				'Des challenges à coder : API, interfaces, apps mobiles, outils, systèmes. Tu rends du code qui tourne, et il est évalué.'
 		},
 		design: {
 			label: 'Design',
 			desc: 'UI/UX, design systems, motion, illustration.',
-			about: 'Des interfaces qui tiennent à l’usage. D’un brief à un écran qu’on peut ouvrir, critiquer et améliorer.'
+			about:
+				'Des interfaces qui tiennent à l’usage. D’un brief à un écran qu’on peut ouvrir, critiquer et améliorer.'
 		},
 		security: {
 			label: 'Cybersécurité',
 			desc: 'Pentest, red team, forensics, cryptographie.',
-			about: 'Trouver ce qui casse avant quelqu’un d’autre. Des terrains faits pour être attaqués, et un rapport de ce que tu as trouvé.'
+			about:
+				'Trouver ce qui casse avant quelqu’un d’autre. Des terrains faits pour être attaqués, et un rapport de ce que tu as trouvé.'
 		},
 		game: {
 			label: 'Jeux vidéo',
 			desc: 'Programmation, game design, art et animation.',
-			about: 'Du jeu qui fonctionne. Une tranche qu’un autre peut prendre en main, et un playtest qui t’apprend autant que le tien.'
+			about:
+				'Du jeu qui fonctionne. Une tranche qu’un autre peut prendre en main, et un playtest qui t’apprend autant que le tien.'
 		},
 		ai: {
 			label: 'Intelligence artificielle',
 			desc: 'Data, machine learning, MLOps, agents et RAG.',
-			about: 'Des modèles et des pipelines qui répondent d’eux-mêmes. Tu mesures ce que ton système fait, au lieu de décrire ce qu’il devrait faire.'
+			about:
+				'Des modèles et des pipelines qui répondent d’eux-mêmes. Tu mesures ce que ton système fait, au lieu de décrire ce qu’il devrait faire.'
 		},
 		ops: {
 			label: 'Ops & Cloud',
 			desc: 'Cloud, CI/CD, conteneurs, fiabilité.',
-			about: 'Faire tourner. Déploiement, observabilité, coûts, et l’incident de trois heures du matin.'
+			about:
+				'Faire tourner. Déploiement, observabilité, coûts, et l’incident de trois heures du matin.'
 		},
 		quality: {
 			label: 'Qualité',
 			desc: 'Tests et automatisation, sur les quatre terrains.',
-			about: 'Pouvoir faire confiance à une release. Tu conçois les tests, tu les automatises, et tu dis clairement ce qui reste non couvert.'
+			about:
+				'Pouvoir faire confiance à une release. Tu conçois les tests, tu les automatises, et tu dis clairement ce qui reste non couvert.'
 		},
 		leadership: {
 			label: 'Leadership',
 			desc: 'Product, tech lead, production, management, mentorat.',
-			about: 'Amener une équipe à livrer. Périmètre, arbitrages, revues, et les conversations que personne n’aime et dont tout le monde a besoin.'
+			about:
+				'Amener une équipe à livrer. Périmètre, arbitrages, revues, et les conversations que personne n’aime et dont tout le monde a besoin.'
 		},
 		audio: {
 			label: 'Audio',
 			desc: 'Composition, sound design, voix, intégration sonore.',
-			about: 'Du son qui porte une scène. Composition, sound design, et le métier de les intégrer dans un build.'
+			about:
+				'Du son qui porte une scène. Composition, sound design, et le métier de les intégrer dans un build.'
 		},
 		communication: {
 			label: 'Communication',
 			desc: 'Documentation, evangelism, contenu, traduction.',
-			about: 'Rendre le travail lisible. Documentation, talks, articles et traduction, jugés sur le fait que quelqu’un ait compris.'
+			about:
+				'Rendre le travail lisible. Documentation, talks, articles et traduction, jugés sur le fait que quelqu’un ait compris.'
 		},
 		education: {
 			label: 'Enseignement',
 			desc: 'Formation, conception de cursus, pédagogie du code.',
-			about: 'Apprendre à quelqu’un à faire sans toi. Tu construis le parcours, les exercices et le retour qui va avec.'
+			about:
+				'Apprendre à quelqu’un à faire sans toi. Tu construis le parcours, les exercices et le retour qui va avec.'
 		}
 	},
 	newsletter: {
@@ -234,28 +302,35 @@ export const fr: Translations = {
 			title: 'Confirmation de ton inscription',
 			working: 'On confirme ton adresse…',
 			doneTitle: 'C’est confirmé',
-			doneBody: 'Ton adresse est sur la liste. La prochaine lettre Skilluv arrivera dans ta boîte, et chaque envoi porte un lien pour en sortir en un clic.',
+			doneBody:
+				'Ton adresse est sur la liste. La prochaine lettre Skilluv arrivera dans ta boîte, et chaque envoi porte un lien pour en sortir en un clic.',
 			home: 'Retour à l’accueil',
 			spentTitle: 'Ce lien a déjà servi',
-			spentBody: 'Un lien de confirmation ne marche qu’une fois, et il expire au bout de sept jours. Si tu as déjà cliqué, ton adresse est sur la liste et tu n’as rien à faire. Sinon, redonne ton adresse en bas de la page d’accueil : un nouveau lien partira, valable une semaine.',
+			spentBody:
+				'Un lien de confirmation ne marche qu’une fois, et il expire au bout de sept jours. Si tu as déjà cliqué, ton adresse est sur la liste et tu n’as rien à faire. Sinon, redonne ton adresse en bas de la page d’accueil : un nouveau lien partira, valable une semaine.',
 			retry: 'Redonner mon adresse',
 			failedTitle: 'On n’a pas pu confirmer',
-			failedBody: 'Quelque chose a lâché de notre côté, pas de ton fait. Réessaie dans un instant en rouvrant le lien du mail.'
+			failedBody:
+				'Quelque chose a lâché de notre côté, pas de ton fait. Réessaie dans un instant en rouvrant le lien du mail.'
 		},
 		unsubPage: {
 			title: 'Désabonnement',
 			working: 'On te retire de la liste…',
 			doneTitle: 'C’est fait',
-			doneBody: 'Cette adresse ne recevra plus la lettre Skilluv. On ne te demande pas pourquoi et il n’y a rien d’autre à faire.',
+			doneBody:
+				'Cette adresse ne recevra plus la lettre Skilluv. On ne te demande pas pourquoi et il n’y a rien d’autre à faire.',
 			rejoin: 'Revenir sur la liste',
 			unknownTitle: 'Ce lien ne correspond à rien',
-			unknownBody: 'Il a peut-être déjà servi, ou il a été coupé en chemin par le logiciel de messagerie. Si tu reçois encore la lettre, ouvre le lien du dernier envoi.',
+			unknownBody:
+				'Il a peut-être déjà servi, ou il a été coupé en chemin par le logiciel de messagerie. Si tu reçois encore la lettre, ouvre le lien du dernier envoi.',
 			failedTitle: 'On n’a pas pu te désabonner',
-			failedBody: 'Quelque chose a lâché de notre côté. Réessaie dans un instant — et si ça persiste, écris-nous, on te retire à la main.',
+			failedBody:
+				'Quelque chose a lâché de notre côté. Réessaie dans un instant — et si ça persiste, écris-nous, on te retire à la main.',
 			contact: 'Nous écrire'
 		},
 		confirmAction: 'Confirmer',
-		consent: 'Tu recevras la lettre Skilluv à cette adresse. Un lien de confirmation part d’abord par mail, et chaque envoi porte un lien pour te désabonner en un clic.',
+		consent:
+			'Tu recevras la lettre Skilluv à cette adresse. Un lien de confirmation part d’abord par mail, et chaque envoi porte un lien pour te désabonner en un clic.',
 		sent: 'Si cette adresse peut recevoir du courrier, un lien de confirmation est en route. Regarde ta boîte.',
 		invalid: 'Cette adresse ne ressemble pas à une adresse email.',
 		throttled: 'Trop de tentatives pour le moment. Réessaie dans une heure.',
@@ -264,7 +339,8 @@ export const fr: Translations = {
 	landing: {
 		title: 'Prouve ce que tu sais faire.',
 		titleAccent: 'Pour de vrai.',
-		subtitle: 'Une plateforme open source où l’on apprend en fabriquant. Chacun repart avec la preuve de ce qu’il a livré.',
+		subtitle:
+			'Une plateforme open source où l’on apprend en fabriquant. Chacun repart avec la preuve de ce qu’il a livré.',
 		cta: 'Commencer gratuitement',
 		ctaSecondary: 'Voir les challenges',
 		statDomains: 'Domaines',
@@ -278,15 +354,15 @@ export const fr: Translations = {
 		cardProfile: 'Mon Profil',
 		cardProfileDesc: 'Ton profil vivant, généré par tes preuves.',
 		cardLeaderboards: 'Classements',
-		cardLeaderboardsDesc: 'Les cent premiers par discipline, sur la semaine, le mois ou depuis toujours.'
+		cardLeaderboardsDesc:
+			'Les cent premiers par discipline, sur la semaine, le mois ou depuis toujours.'
 	},
 	auth: {
 		password: {
 			hint: '10 à 128 caractères, avec majuscule, minuscule, chiffre et symbole',
 			tooShort: 'Le mot de passe doit faire au moins 10 caractères.',
 			tooLong: 'Le mot de passe doit faire au plus 128 caractères.',
-			missingClass:
-				'Il faut au moins une majuscule, une minuscule, un chiffre et un symbole.',
+			missingClass: 'Il faut au moins une majuscule, une minuscule, un chiffre et un symbole.',
 			confirm: 'Confirme le mot de passe',
 			mismatch: 'Les deux mots de passe ne sont pas identiques.',
 			rules: {
@@ -301,7 +377,7 @@ export const fr: Translations = {
 			}
 		},
 		register: {
-			pickDomain: 'Qu\'est-ce qui te passionne ?',
+			pickDomain: "Qu'est-ce qui te passionne ?",
 			pickDomainSub: 'Choisis ton domaine principal. Tu pourras explorer les autres après.',
 			codeDesc: 'Développement web, mobile, backend, algorithmique...',
 			designDesc: 'UI/UX, graphisme, illustration, motion design...',
@@ -313,7 +389,7 @@ export const fr: Translations = {
 			changeDomain: '← Changer de domaine',
 			createAccount: 'Crée ton compte',
 			domain: 'Domaine',
-			username: 'Nom d\'utilisateur',
+			username: "Nom d'utilisateur",
 			email: 'Email',
 			firstName: 'Prénom',
 			lastName: 'Nom',
@@ -326,7 +402,7 @@ export const fr: Translations = {
 		login: {
 			title: 'Content de te revoir',
 			subtitle: 'Connecte-toi pour continuer ton parcours.',
-			identifier: 'Email ou nom d\'utilisateur',
+			identifier: "Email ou nom d'utilisateur",
 			password: 'Mot de passe',
 			forgotPassword: 'Mot de passe oublié ?',
 			totpLabel: 'Code TOTP (Google Authenticator)',
@@ -339,7 +415,7 @@ export const fr: Translations = {
 		},
 		forgot: {
 			title: 'Mot de passe oublié',
-			subtitle: 'Entre ton email, on t\'envoie un lien de réinitialisation.',
+			subtitle: "Entre ton email, on t'envoie un lien de réinitialisation.",
 			sendLink: 'Envoyer le lien',
 			sending: 'Envoi...',
 			sentTitle: 'Email envoyé',
@@ -376,9 +452,10 @@ export const fr: Translations = {
 		locked: 'Prérequis non atteints',
 		onboarding: {
 			title: 'Premier challenge',
-			onboardingLabel: 'Challenge d\'onboarding',
+			onboardingLabel: "Challenge d'onboarding",
 			startBtn: 'Commencer le challenge',
-			startRebuilding: 'Le lancement du rite est en cours de branchement sur le backend. Les instructions ci-dessus sont déjà les bonnes.',
+			startRebuilding:
+				'Le lancement du rite est en cours de branchement sur le backend. Les instructions ci-dessus sont déjà les bonnes.',
 			starting: 'Lancement...',
 			hint: '~10 minutes · Ton profil sera créé à la fin',
 			minutesLabel: '{n} minutes',
@@ -394,7 +471,8 @@ export const fr: Translations = {
 			difficulty: 'Difficulté',
 			mode: 'Mode',
 			startBtn: 'Commencer',
-			handInRebuilding: 'La remise est en cours de refonte : ce challenge se lit, il ne se rend pas encore.',
+			handInRebuilding:
+				'La remise est en cours de refonte : ce challenge se lit, il ne se rend pas encore.',
 			starting: 'Lancement...',
 			noAi: 'IA interdite'
 		},
@@ -405,7 +483,12 @@ export const fr: Translations = {
 	profile: {
 		title: 'Profil',
 		notFound: 'Profil introuvable.',
-		stats: { fragments: 'Fragments', challenges: 'Challenges', streak: 'Streak', trust: 'Confiance' },
+		stats: {
+			fragments: 'Fragments',
+			challenges: 'Challenges',
+			streak: 'Streak',
+			trust: 'Confiance'
+		},
 		sections: { activity: 'Activité', skills: 'Compétences', badges: 'Badges' },
 		noSkills: 'Aucune compétence encore. Complète ton premier challenge !',
 		links: { github: 'GitHub', linkedin: 'LinkedIn', twitter: 'X/Twitter', website: 'Site web' }
@@ -426,8 +509,8 @@ export const fr: Translations = {
 		register: {
 			title: 'Espace Entreprise',
 			subtitle: 'Recrutez sur la base de preuves, pas de CV.',
-			companyName: 'Nom de l\'entreprise',
-			companySize: 'Taille de l\'entreprise',
+			companyName: "Nom de l'entreprise",
+			companySize: "Taille de l'entreprise",
 			website: 'Site web',
 			industry: 'Secteur',
 			country: 'Pays',
@@ -435,48 +518,81 @@ export const fr: Translations = {
 			creating: 'Création...',
 			talentLink: 'Vous êtes un talent ?'
 		},
-		nav: { dashboard: 'Dashboard', talents: 'Talents', bookmarks: 'Favoris', lists: 'Listes', messages: 'Messages' },
+		nav: {
+			dashboard: 'Dashboard',
+			talents: 'Talents',
+			bookmarks: 'Favoris',
+			lists: 'Listes',
+			messages: 'Messages'
+		},
 		dashboard: {
-			title: 'Dashboard', subtitle: 'Vue d\'ensemble de votre activité de recrutement.',
-			myActivity: 'Mon activité', platform: 'Plateforme Skilluv',
-			bookmarks: 'Favoris', lists: 'Listes', interests: 'Demandes d\'intérêt',
-			conversations: 'Conversations', pending: 'en attente', accepted: 'acceptées',
-			totalTalents: 'Talents inscrits', active30d: 'Actifs (30j)',
-			avgFragments: 'Fragments moyens', byDomain: 'Par domaine',
-			searchTalents: 'Rechercher des talents', viewBookmarks: 'Voir mes favoris'
+			title: 'Dashboard',
+			subtitle: "Vue d'ensemble de votre activité de recrutement.",
+			myActivity: 'Mon activité',
+			platform: 'Plateforme Skilluv',
+			bookmarks: 'Favoris',
+			lists: 'Listes',
+			interests: "Demandes d'intérêt",
+			conversations: 'Conversations',
+			pending: 'en attente',
+			accepted: 'acceptées',
+			totalTalents: 'Talents inscrits',
+			active30d: 'Actifs (30j)',
+			avgFragments: 'Fragments moyens',
+			byDomain: 'Par domaine',
+			searchTalents: 'Rechercher des talents',
+			viewBookmarks: 'Voir mes favoris'
 		},
 		talents: {
-			title: 'Rechercher des talents', subtitle: 'Trouvez des compétences vérifiées, pas des CV.',
-			searchPlaceholder: 'Rechercher par nom, compétence...', searchBtn: 'Rechercher',
-			allLevels: 'Tous niveaux', byFragments: 'Par fragments', byRecent: 'Récents', byRelevance: 'Pertinence',
+			title: 'Rechercher des talents',
+			subtitle: 'Trouvez des compétences vérifiées, pas des CV.',
+			searchPlaceholder: 'Rechercher par nom, compétence...',
+			searchBtn: 'Rechercher',
+			allLevels: 'Tous niveaux',
+			byFragments: 'Par fragments',
+			byRecent: 'Récents',
+			byRelevance: 'Pertinence',
 			noResults: 'Aucun talent trouvé avec ces critères.',
-			addBookmark: 'Ajouter aux favoris', removeBookmark: 'Retirer des favoris'
+			addBookmark: 'Ajouter aux favoris',
+			removeBookmark: 'Retirer des favoris'
 		},
 		bookmarks: {
-			title: 'Favoris', subtitle: 'Talents que vous avez sauvegardés.',
+			title: 'Favoris',
+			subtitle: 'Talents que vous avez sauvegardés.',
 			empty: 'Aucun favori. Recherchez des talents pour en ajouter.',
-			emptyAction: 'Rechercher des talents', remove: 'Retirer'
+			emptyAction: 'Rechercher des talents',
+			remove: 'Retirer'
 		},
 		lists: {
-			title: 'Listes de talents', subtitle: 'Organisez vos candidats par liste.',
-			newList: '+ Nouvelle liste', cancelBtn: 'Annuler',
-			listName: 'Nom de la liste', description: 'Description', createBtn: 'Créer',
-			empty: 'Aucune liste créée.', talents: '{n} talent(s)',
+			title: 'Listes de talents',
+			subtitle: 'Organisez vos candidats par liste.',
+			newList: '+ Nouvelle liste',
+			cancelBtn: 'Annuler',
+			listName: 'Nom de la liste',
+			description: 'Description',
+			createBtn: 'Créer',
+			empty: 'Aucune liste créée.',
+			talents: '{n} talent(s)',
 			emptyList: 'Cette liste est vide. Ajoutez des talents depuis la recherche.',
-			emptyListAction: 'Rechercher des talents', backToLists: '← Retour aux listes'
+			emptyListAction: 'Rechercher des talents',
+			backToLists: '← Retour aux listes'
 		},
 		messages: {
-			title: 'Messages', subtitle: 'Vos conversations avec les talents.',
+			title: 'Messages',
+			subtitle: 'Vos conversations avec les talents.',
 			empty: 'Aucune conversation. Contactez un talent pour commencer.',
 			emptyAction: 'Rechercher des talents',
-			closed: 'Conversation fermée', inputPlaceholder: 'Écrire un message...', sendBtn: 'Envoyer'
+			closed: 'Conversation fermée',
+			inputPlaceholder: 'Écrire un message...',
+			sendBtn: 'Envoyer'
 		},
 		types: {
-			legend: 'Choisissez le type d\'entreprise',
-			stepTitle: 'Quel type d\'entreprise êtes-vous ?',
-			stepSubtitle: 'Skilluv adapte votre workspace, votre pipeline et vos options de paiement selon votre type. Modifiable plus tard.',
+			legend: "Choisissez le type d'entreprise",
+			stepTitle: "Quel type d'entreprise êtes-vous ?",
+			stepSubtitle:
+				'Skilluv adapte votre workspace, votre pipeline et vos options de paiement selon votre type. Modifiable plus tard.',
 			stepSubmit: 'Valider le type',
-			stepSkip: 'Passer pour l\'instant',
+			stepSkip: "Passer pour l'instant",
 			direct_hire: {
 				label: 'Recrutement direct',
 				description: 'Vous recrutez pour vos propres équipes.',
@@ -504,7 +620,7 @@ export const fr: Translations = {
 			subtitle: 'Gérez la liste de vos clients pour attribuer les talents en pipeline.',
 			addBtn: 'Ajouter un client',
 			edit: 'Modifier',
-			empty: 'Aucun client pour l\'instant.',
+			empty: "Aucun client pour l'instant.",
 			emptyAction: 'Créer mon premier client',
 			nameLabel: 'Nom du client',
 			nameError: 'Le nom du client est requis',
@@ -522,7 +638,8 @@ export const fr: Translations = {
 		},
 		eor: {
 			title: 'Configuration EOR',
-			subtitle: 'Employer of Record — définit le fournisseur qui gère le contrat, la paie et les retenues fiscales.',
+			subtitle:
+				'Employer of Record — définit le fournisseur qui gère le contrat, la paie et les retenues fiscales.',
 			providerLabel: 'Fournisseur EOR',
 			currencyLabel: 'Devise de paiement',
 			timezoneLabel: 'Fuseau horaire requis',
@@ -535,18 +652,21 @@ export const fr: Translations = {
 			agencyClientsDesc: 'Gérer votre portefeuille clients et les attributions.',
 			eorConfig: 'Config EOR',
 			eorConfigDesc: 'Fournisseur, devise, fuseau, retenue fiscale.',
-			manageType: 'Modifier le type d\'entreprise'
+			manageType: "Modifier le type d'entreprise"
 		}
 	},
 	notifications: {
-		title: 'Notifications', markAllRead: 'Tout marquer lu', unread: 'Non lues', all: 'Toutes',
+		title: 'Notifications',
+		markAllRead: 'Tout marquer lu',
+		unread: 'Non lues',
+		all: 'Toutes',
 		bell: 'Notifications',
 		bellUnread: 'Notifications, {n} non lues',
 		seeAll: 'Voir tout',
 		panelError: 'Impossible de charger les notifications.',
 		empty: 'Aucune notification.',
 		types: {
-			interest_request_received: 'Demande d\'intérêt reçue',
+			interest_request_received: "Demande d'intérêt reçue",
 			interest_accepted: 'Demande acceptée',
 			interest_declined: 'Demande déclinée',
 			new_message: 'Nouveau message',
@@ -623,27 +743,38 @@ export const fr: Translations = {
 			streakReminder: 'Rappel de série',
 			streakReminderDesc: 'Un rappel quand ta série est sur le point de tomber.',
 			marketing: 'Relances',
-			marketingDesc: 'Les emails qui reviennent vers toi quand tu décroches : ton établi est vide, ça fait deux semaines, rejoins une guilde. Désactivé par défaut.',
+			marketingDesc:
+				'Les emails qui reviennent vers toi quand tu décroches : ton établi est vide, ça fait deux semaines, rejoins une guilde. Désactivé par défaut.',
 			transactional:
 				'Les emails indispensables (vérification, mot de passe, sécurité, reçus de paiement) restent envoyés.',
 			saved: 'Préférences enregistrées',
 			loadError: 'Impossible de charger tes préférences email.'
 		},
 		theme: {
-			title: 'Thème', forge: 'Forge', forgeDesc: 'Ocre + terracotta — l\'atelier de l\'artisan',
-			vesperal: 'Vespéral', vesperalDesc: 'Bleu nuit + orange braise — la nuit à la lanterne',
-			arena: 'Arena', arenaDesc: 'Rouge héraldique + or — le tournoi médiéval',
-			scriptorium: 'Scriptorium', scriptoriumDesc: 'Parchemin + encre — le moine copiste',
-			sakura: 'Sakura', sakuraDesc: 'Prune + fleur de cerisier — saison des cerisiers',
-			lagune: 'Lagune', laguneDesc: 'Vert lagune + neutres — le seul thème pensé en plein jour'
+			title: 'Thème',
+			forge: 'Forge',
+			forgeDesc: "Ocre + terracotta — l'atelier de l'artisan",
+			vesperal: 'Vespéral',
+			vesperalDesc: 'Bleu nuit + orange braise — la nuit à la lanterne',
+			arena: 'Arena',
+			arenaDesc: 'Rouge héraldique + or — le tournoi médiéval',
+			scriptorium: 'Scriptorium',
+			scriptoriumDesc: 'Parchemin + encre — le moine copiste',
+			sakura: 'Sakura',
+			sakuraDesc: 'Prune + fleur de cerisier — saison des cerisiers',
+			lagune: 'Lagune',
+			laguneDesc: 'Vert lagune + neutres — le seul thème pensé en plein jour'
 		},
 		language: { title: 'Langue', fr: 'Français', en: 'English' },
 		profileSection: {
-			title: 'Profil', displayName: 'Nom d\'affichage',
-			bio: 'Bio', bioHint: 'Courte description visible sur ton profil',
+			title: 'Profil',
+			displayName: "Nom d'affichage",
+			bio: 'Bio',
+			bioHint: 'Courte description visible sur ton profil',
 			subtitle: 'Ce que les autres voient de toi sur Skilluv.',
 			domain: 'Domaine principal',
-			country: 'Pays', city: 'Ville',
+			country: 'Pays',
+			city: 'Ville',
 			saved: 'Profil mis à jour.'
 		},
 		availability: {
@@ -662,86 +793,149 @@ export const fr: Translations = {
 			saved: 'Disponibilité mise à jour.'
 		},
 		password: {
-			title: 'Mot de passe', current: 'Mot de passe actuel',
-			new: 'Nouveau mot de passe', changeBtn: 'Changer le mot de passe'
+			title: 'Mot de passe',
+			current: 'Mot de passe actuel',
+			new: 'Nouveau mot de passe',
+			changeBtn: 'Changer le mot de passe'
 		},
 		privacy: {
-			title: 'Confidentialité', showHeatmap: 'Afficher la heatmap',
-			showSkillTree: 'Afficher l\'arbre de compétences', showBadges: 'Afficher les badges',
-			showStreak: 'Afficher le streak', showEmail: 'Afficher l\'email',
-			allowInterests: 'Autoriser les demandes d\'intérêt entreprise'
+			title: 'Confidentialité',
+			showHeatmap: 'Afficher la heatmap',
+			showSkillTree: "Afficher l'arbre de compétences",
+			showBadges: 'Afficher les badges',
+			showStreak: 'Afficher le streak',
+			showEmail: "Afficher l'email",
+			allowInterests: "Autoriser les demandes d'intérêt entreprise"
 		},
 		security: {
-			title: 'Sécurité', twoFa: 'Authentification 2FA (TOTP)',
-			twoFaDesc: 'Google Authenticator / Authy', enabled: 'Activé', disabled: 'Désactivé'
+			title: 'Sécurité',
+			twoFa: 'Authentification 2FA (TOTP)',
+			twoFaDesc: 'Google Authenticator / Authy',
+			enabled: 'Activé',
+			disabled: 'Désactivé'
 		},
 		danger: {
 			title: 'Zone de danger',
-			deleteWarning: 'La suppression est irréversible. Toutes tes données seront effacées conformément au RGPD.',
-			deleteBtn: 'Supprimer mon compte', deleteModalTitle: 'Supprimer le compte',
+			deleteWarning:
+				'La suppression est irréversible. Toutes tes données seront effacées conformément au RGPD.',
+			deleteBtn: 'Supprimer mon compte',
+			deleteModalTitle: 'Supprimer le compte',
 			deleteModalMessage: 'Cette action est irréversible. Entre ton mot de passe pour confirmer.',
 			deleteConfirmBtn: 'Supprimer définitivement'
 		}
 	},
 	admin: {
 		dashboard: {
-			title: 'Dashboard Admin', platform: 'Plateforme', moderation: 'Modération',
-			users: 'Utilisateurs', activeUsers: 'actifs (30j)', challenges: 'Challenges', drafts: 'brouillons',
-			submissions: 'Soumissions', today: 'aujourd\'hui', wsConnections: 'connexions actives',
-			pendingReports: 'Signalements en attente', bans30d: 'Bans (30j)',
-			actionsToday: 'Actions admin (aujourd\'hui)', totalReports: 'Total signalements', resolved: 'résolus',
-			viewReports: 'Voir les signalements', manageChallenges: 'Gérer les challenges', reviewCommunity: 'Revue communauté'
+			title: 'Dashboard Admin',
+			platform: 'Plateforme',
+			moderation: 'Modération',
+			users: 'Utilisateurs',
+			activeUsers: 'actifs (30j)',
+			challenges: 'Challenges',
+			drafts: 'brouillons',
+			submissions: 'Soumissions',
+			today: "aujourd'hui",
+			wsConnections: 'connexions actives',
+			pendingReports: 'Signalements en attente',
+			bans30d: 'Bans (30j)',
+			actionsToday: "Actions admin (aujourd'hui)",
+			totalReports: 'Total signalements',
+			resolved: 'résolus',
+			viewReports: 'Voir les signalements',
+			manageChallenges: 'Gérer les challenges',
+			reviewCommunity: 'Revue communauté'
 		},
 		reports: {
-			title: 'Signalements', pending: 'En attente', resolvedLabel: 'Résolus', dismissed: 'Rejetés', allLabel: 'Tous',
-			resolveBtn: 'Résoudre', dismissBtn: 'Rejeter', reportedBy: 'Signalé par', noReports: 'Aucun signalement.'
+			title: 'Signalements',
+			pending: 'En attente',
+			resolvedLabel: 'Résolus',
+			dismissed: 'Rejetés',
+			allLabel: 'Tous',
+			resolveBtn: 'Résoudre',
+			dismissBtn: 'Rejeter',
+			reportedBy: 'Signalé par',
+			noReports: 'Aucun signalement.'
 		},
 		users: {
-			title: 'Utilisateurs', searchPlaceholder: 'Rechercher...', searchBtn: 'Chercher',
-			banBtn: 'Bannir', unbanBtn: 'Débannir', banned: 'Banni', banReason: 'Raison du ban :'
+			title: 'Utilisateurs',
+			searchPlaceholder: 'Rechercher...',
+			searchBtn: 'Chercher',
+			banBtn: 'Bannir',
+			unbanBtn: 'Débannir',
+			banned: 'Banni',
+			banReason: 'Raison du ban :'
 		},
-		challenges: { title: 'Challenges', total: 'challenges au total', publishBtn: 'Publier', archiveBtn: 'Archiver' },
+		challenges: {
+			title: 'Challenges',
+			total: 'challenges au total',
+			publishBtn: 'Publier',
+			archiveBtn: 'Archiver'
+		},
 		community: {
-			title: 'Revue communauté', subtitle: 'Challenges soumis par la communauté en attente de validation.',
-			approveBtn: 'Approuver', rejectBtn: 'Rejeter', rejectFeedback: 'Feedback pour le créateur :',
-			viewInstructions: 'Voir les instructions', by: 'par', empty: 'Aucun challenge en attente de revue.'
+			title: 'Revue communauté',
+			subtitle: 'Challenges soumis par la communauté en attente de validation.',
+			approveBtn: 'Approuver',
+			rejectBtn: 'Rejeter',
+			rejectFeedback: 'Feedback pour le créateur :',
+			viewInstructions: 'Voir les instructions',
+			by: 'par',
+			empty: 'Aucun challenge en attente de revue.'
 		},
 		audit: {
-			title: 'Audit log', date: 'Date', admin: 'Admin', action: 'Action', target: 'Cible',
-			details: 'Détails', empty: 'Aucune action enregistrée.'
+			title: 'Audit log',
+			date: 'Date',
+			admin: 'Admin',
+			action: 'Action',
+			target: 'Cible',
+			details: 'Détails',
+			empty: 'Aucune action enregistrée.'
 		}
 	},
 	community: {
-		title: 'Challenges communautaires', subtitle: 'Créés par la communauté, votés par les talents.',
-		myChallenges: 'Mes challenges', createBtn: 'Créer',
+		title: 'Challenges communautaires',
+		subtitle: 'Créés par la communauté, votés par les talents.',
+		myChallenges: 'Mes challenges',
+		createBtn: 'Créer',
 		empty: 'Aucun challenge communautaire pour le moment. Sois le premier !',
-		emptyFirst: 'Tu n\'as pas encore créé de challenge.',
+		emptyFirst: "Tu n'as pas encore créé de challenge.",
 		create: {
 			title: 'Créer un challenge',
-			subtitle: 'Propose un challenge à la communauté. Il sera revu par l\'équipe avant publication.',
-			challengeTitle: 'Titre', description: 'Description', instructions: 'Instructions',
+			subtitle:
+				"Propose un challenge à la communauté. Il sera revu par l'équipe avant publication.",
+			challengeTitle: 'Titre',
+			description: 'Description',
+			instructions: 'Instructions',
 			instructionsPlaceholder: 'Les instructions détaillées du challenge...',
-			domain: 'Domaine', difficulty: 'Difficulté', language: 'Langage', duration: 'Durée (minutes)',
-			durationPlaceholder: 'Pas de limite', expectedOutput: 'Sortie attendue',
+			domain: 'Domaine',
+			difficulty: 'Difficulté',
+			language: 'Langage',
+			duration: 'Durée (minutes)',
+			durationPlaceholder: 'Pas de limite',
+			expectedOutput: 'Sortie attendue',
 			expectedOutputPlaceholder: 'Optionnel — la sortie que le code doit produire',
 			submitForReview: 'Soumettre directement pour revue',
 			submitForReviewHint: 'sinon sauvegardé en brouillon',
-			submitBtn: 'Soumettre pour revue', saveDraft: 'Sauvegarder le brouillon',
-			creating: 'Création...', submitted: 'Challenge soumis pour revue !', draftSaved: 'Brouillon sauvegardé.'
+			submitBtn: 'Soumettre pour revue',
+			saveDraft: 'Sauvegarder le brouillon',
+			creating: 'Création...',
+			submitted: 'Challenge soumis pour revue !',
+			draftSaved: 'Brouillon sauvegardé.'
 		},
 		mine: {
-			title: 'Mes challenges', empty: 'Tu n\'as pas encore créé de challenge.', createFirst: 'Créer mon premier',
+			title: 'Mes challenges',
+			empty: "Tu n'as pas encore créé de challenge.",
+			createFirst: 'Créer mon premier',
 			status: { draft: 'Brouillon', review: 'En revue', approved: 'Approuvé', rejected: 'Rejeté' }
 		}
 	},
 	errors: {
 		notFound: 'Page introuvable',
-		notFoundMessage: 'Cette page n\'existe pas ou a été déplacée.',
+		notFoundMessage: "Cette page n'existe pas ou a été déplacée.",
 		forbidden: 'Accès refusé',
-		forbiddenMessage: 'Tu n\'as pas les permissions pour accéder à cette page.',
+		forbiddenMessage: "Tu n'as pas les permissions pour accéder à cette page.",
 		genericTitle: 'Quelque chose a planté',
 		genericMessage: 'Une erreur inattendue est survenue.',
-		backHome: 'Retour à l\'accueil',
+		backHome: "Retour à l'accueil",
 		retryBtn: 'Réessayer',
 		generic: 'Une erreur est survenue. Réessaie.'
 	},
@@ -824,9 +1018,11 @@ export const fr: Translations = {
 		inlineHint: 'Tu confirmes sur ton téléphone. Tu ne quittes pas cette page.',
 		pay: 'Envoyer la demande',
 		waiting: 'Demande envoyée sur ton téléphone',
-		waitingHint: 'Valide-la sur ton téléphone. Tu peux fermer cette fenêtre : le paiement sera pris en compte de toute façon.',
+		waitingHint:
+			'Valide-la sur ton téléphone. Tu peux fermer cette fenêtre : le paiement sera pris en compte de toute façon.',
 		done: 'Paiement confirmé.',
-		background: 'Toujours en attente chez ton opérateur. On continue de vérifier de notre côté, tu seras prévenu. Ne paie pas une deuxième fois.',
+		background:
+			'Toujours en attente chez ton opérateur. On continue de vérifier de notre côté, tu seras prévenu. Ne paie pas une deuxième fois.',
 		failed: 'Le paiement n’a pas abouti. Rien ne t’a été prélevé.',
 		noInline: 'Aucun opérateur ne permet de payer sans quitter la page depuis ton pays.',
 		otherMethod: 'Autre moyen de paiement',
@@ -834,7 +1030,8 @@ export const fr: Translations = {
 	},
 	wallet: {
 		title: 'Mon wallet',
-		subtitle: 'Convertis tes gains en euros (Stripe) ou francs CFA (Mobile Money). Historique hash-chainé pour audit.',
+		subtitle:
+			'Convertis tes gains en euros (Stripe) ou francs CFA (Mobile Money). Historique hash-chainé pour audit.',
 		balanceLabel: 'Solde',
 		balanceFragments: '{n} fragments',
 		balanceEur: '≈ {n} €',
@@ -842,7 +1039,7 @@ export const fr: Translations = {
 		requestPayoutCta: 'Demander un payout',
 		downloadStatement: 'Relevé CSV',
 		historyTitle: 'Historique',
-		historyEmpty: 'Aucune transaction pour l\'instant.',
+		historyEmpty: "Aucune transaction pour l'instant.",
 		payoutsTitle: 'Mes payouts',
 		payoutsEmpty: 'Aucun payout demandé.',
 		loadError: 'Impossible de charger le wallet. Réessaie plus tard.',
@@ -867,11 +1064,12 @@ export const fr: Translations = {
 			amountAboveBalance: 'Le montant dépasse ton solde disponible.',
 			methodLabel: 'Méthode de paiement',
 			methodStripeLabel: 'Stripe Connect (EUR)',
-			methodStripeDesc: 'Virement bancaire international via ton compte Stripe. KYC vérifié requis.',
+			methodStripeDesc:
+				'Virement bancaire international via ton compte Stripe. KYC vérifié requis.',
 			methodMomoLabel: 'Mobile Money (XOF)',
 			methodMomoDesc: 'Orange Money / MTN / Wave — numéro Mobile Money vérifié requis.',
 			stripe: {
-				notConnected: 'Ton compte Stripe n\'est pas encore connecté ou vérifié.',
+				notConnected: "Ton compte Stripe n'est pas encore connecté ou vérifié.",
 				connectCta: 'Connecter Stripe',
 				connectingLabel: 'Redirection…',
 				readyLabel: 'Stripe vérifié',
@@ -898,27 +1096,30 @@ export const fr: Translations = {
 		buttonLabel: 'Modérer',
 		reasonLabel: 'Raison',
 		reasonRequired: 'Une raison est requise pour cette action.',
-		reasonPlaceholder: 'Explique brièvement la décision (visible dans l\'audit log)',
+		reasonPlaceholder: "Explique brièvement la décision (visible dans l'audit log)",
 		confirmDanger: 'Confirmer',
 		cancel: 'Annuler',
 		durationHours: 'Durée',
 		toast: {
 			done: 'Action de modération enregistrée.',
-			failed: 'L\'action a échoué. Vérifie tes permissions ou réessaie.'
+			failed: "L'action a échoué. Vérifie tes permissions ou réessaie."
 		},
 		forum: {
 			actionHide: 'Masquer le post',
 			actionUnhide: 'Restaurer le post',
 			actionLock: 'Verrouiller le fil',
 			actionUnlock: 'Déverrouiller le fil',
-			actionMuteAuthor: 'Mettre l\'auteur en silence',
+			actionMuteAuthor: "Mettre l'auteur en silence",
 			menuLabel: 'Actions modération',
 			menuOpen: 'Ouvrir le menu modération',
-			confirmHideBody: 'Le post disparaît de la vue publique. Réversible via "Restaurer". Raison requise (>= 8 caractères).',
+			confirmHideBody:
+				'Le post disparaît de la vue publique. Réversible via "Restaurer". Raison requise (>= 8 caractères).',
 			confirmUnhideBody: 'Le post redevient visible publiquement.',
-			confirmLockBody: 'Personne ne pourra ajouter de nouveau commentaire tant que le fil reste verrouillé.',
+			confirmLockBody:
+				'Personne ne pourra ajouter de nouveau commentaire tant que le fil reste verrouillé.',
 			confirmUnlockBody: 'Le fil accepte à nouveau des commentaires.',
-			confirmMuteBody: 'L\'auteur ne pourra plus poster pendant la durée choisie. Raison requise (>= 8 caractères).',
+			confirmMuteBody:
+				"L'auteur ne pourra plus poster pendant la durée choisie. Raison requise (>= 8 caractères).",
 			muteDuration24: '24 heures',
 			muteDuration72: '3 jours',
 			muteDuration168: '7 jours'
@@ -929,12 +1130,12 @@ export const fr: Translations = {
 			confirmApproveTitle: 'Approuver ce challenge ?',
 			confirmApproveBody: 'Le challenge devient public et éligible aux fragments.',
 			confirmRejectTitle: 'Rejeter ce challenge ?',
-			confirmRejectBody: 'L\'auteur recevra ta raison. Il pourra soumettre une version corrigée.'
+			confirmRejectBody: "L'auteur recevra ta raison. Il pourra soumettre une version corrigée."
 		},
 		vouchings: {
 			title: 'File des cautions',
 			subtitle:
-				"Qui a mis son propre rang derrière qui. Rompre une caution coûte un rang pendant quatre-vingt-dix jours au garant : le coût est affiché avant la décision.",
+				'Qui a mis son propre rang derrière qui. Rompre une caution coûte un rang pendant quatre-vingt-dix jours au garant : le coût est affiché avant la décision.',
 			statuses: {
 				live: 'En cours',
 				broken: 'Rompues',
@@ -942,7 +1143,7 @@ export const fr: Translations = {
 			},
 			queueEmpty: 'Aucune caution dans cet état.',
 			flagged: 'Signalé',
-			flaggedHint: "Le compte cautionné porte un livrable révoqué ou un soupçon de multi-comptes.",
+			flaggedHint: 'Le compte cautionné porte un livrable révoqué ou un soupçon de multi-comptes.',
 			voucherLabel: 'Garant',
 			vouchedLabel: 'Cautionné',
 			rankAtStake: 'Rang {rank}',
@@ -958,12 +1159,13 @@ export const fr: Translations = {
 			brokeWithoutPenalty: "Caution rompue. Rien n'était en jeu, aucun rang n'a bougé.",
 			total: '{n} dans cet état',
 			loadMore: 'Charger la suite',
-			noAccess: 'Page réservée aux détenteurs des capabilities community_moderator et plagiarism_reviewer.'
+			noAccess:
+				'Page réservée aux détenteurs des capabilities community_moderator et plagiarism_reviewer.'
 		},
 		externalSignals: {
 			title: 'File des signaux externes',
 			subtitle:
-				"Comptes déclarés en attente de confirmation humaine. Confirmer dit que la personne possède le compte, jamais que Skilluv atteste du travail.",
+				'Comptes déclarés en attente de confirmation humaine. Confirmer dit que la personne possède le compte, jamais que Skilluv atteste du travail.',
 			queueEmpty: 'Aucun signal en attente.',
 			declaredOn: 'Déclaré le {date}',
 			openLink: 'Ouvrir le lien',
@@ -974,11 +1176,13 @@ export const fr: Translations = {
 				"La déclaration est détruite définitivement. Le motif part au journal d'audit, seule trace qui restera.",
 			verifiedToast: 'Signal confirmé.',
 			rejectedToast: 'Signal supprimé.',
-			noAccess: 'Page réservée aux détenteurs des capabilities community_moderator et community_curator.'
+			noAccess:
+				'Page réservée aux détenteurs des capabilities community_moderator et community_curator.'
 		},
 		plagiarism: {
 			title: 'File plagiat',
-			subtitle: 'Deliverables flaggés par le backend. Décide si le rendu reste valide ou est révoqué.',
+			subtitle:
+				'Deliverables flaggés par le backend. Décide si le rendu reste valide ou est révoqué.',
 			queueEmpty: 'Aucun deliverable à examiner.',
 			scoreLabel: 'Score plagiat',
 			flaggedOn: 'Flaggé le {date}',
@@ -986,9 +1190,9 @@ export const fr: Translations = {
 			markValidCta: 'Marquer valide',
 			revokeCta: 'Révoquer',
 			confirmValidTitle: 'Marquer ce rendu comme valide ?',
-			confirmValidBody: 'Le score de plagiat sera annulé et l\'auteur récupère ses fragments.',
+			confirmValidBody: "Le score de plagiat sera annulé et l'auteur récupère ses fragments.",
 			confirmRevokeTitle: 'Révoquer ce rendu ?',
-			confirmRevokeBody: 'Les fragments sont retirés et l\'auteur perd le badge associé.',
+			confirmRevokeBody: "Les fragments sont retirés et l'auteur perd le badge associé.",
 			noAccess: 'Cette page est réservée aux plagiarism_reviewer.'
 		}
 	},
@@ -1348,7 +1552,7 @@ export const fr: Translations = {
 			"Ce que les gens d'ici ont réellement publié, et ce qui vaut la peine d'être tenté ailleurs en ce moment. L'assistant est autre chose et vit sur sa propre page.",
 		artifactsTitle: 'Artefacts publiés',
 		artifactsHint:
-			"Uniquement du travail vérifié. Une soumission en attente répondrait de travers à la question pour laquelle cette liste existe.",
+			'Uniquement du travail vérifié. Une soumission en attente répondrait de travers à la question pour laquelle cette liste existe.',
 		artifactsEmpty: 'Rien de publié pour l’instant',
 		artifactsEmptyBody: 'Aucun artefact vérifié sous ce filtre.',
 		allSubtypes: 'Tout',
@@ -1363,7 +1567,7 @@ export const fr: Translations = {
 		openHub: 'Sur son hub',
 		competitionsTitle: 'À tenter',
 		competitionsHint:
-			"Compétitions et classements hors Skilluv, choisis par un curateur qui dit pourquoi celle-ci et pas les quarante autres.",
+			'Compétitions et classements hors Skilluv, choisis par un curateur qui dit pourquoi celle-ci et pas les quarante autres.',
 		competitionsEmpty: 'Rien d’ouvert en ce moment.',
 		closesIn: 'Ferme dans {n} jours',
 		rolling: 'En continu'
@@ -1454,8 +1658,7 @@ export const fr: Translations = {
 		backToList: 'Tous les castings',
 		briefTitle: 'Le personnage',
 		sampleLineTitle: 'La réplique',
-		sampleLineHint:
-			'Tout le monde enregistre celle-ci : c’est ce qui rend les prises comparables.',
+		sampleLineHint: 'Tout le monde enregistre celle-ci : c’est ce qui rend les prises comparables.',
 		takesTitle: 'Prises ({n})',
 		noTakes: "Personne n'a encore auditionné.",
 		noPlaybackNotice:
@@ -1499,8 +1702,7 @@ export const fr: Translations = {
 		emptyBody: 'Rien de publié pour ce filtre. Essaie une autre discipline.',
 		notFound: "Ce guide n'existe pas, ou n'est pas publié.",
 		backToList: 'Tous les guides',
-		otherLocaleNotice:
-			"Servi en {locale} : ce guide n'a pas encore été traduit dans ta langue."
+		otherLocaleNotice: "Servi en {locale} : ce guide n'a pas encore été traduit dans ta langue."
 	},
 	opportunities: {
 		title: 'Ce qu’on te demande',
@@ -1519,8 +1721,7 @@ export const fr: Translations = {
 		notInterested: 'Pas intéressé',
 		answeredToast: 'Réponse envoyée.',
 		declineTitle: 'Décliner celui-ci',
-		declineHint:
-			'Le motif est facultatif. Dix pitchs ne doivent pas dix explications.',
+		declineHint: 'Le motif est facultatif. Dix pitchs ne doivent pas dix explications.',
 		declinePlaceholder: 'Pas le bon moment, mauvaise stack, salaire trop bas…',
 		declineSubmit: 'Décliner',
 		campaignsTitle: 'Campagnes où tu es en shortlist',
@@ -1630,7 +1831,7 @@ export const fr: Translations = {
 		quality: {
 			bugsTitle: 'Défauts confirmés',
 			bugsHint:
-				"Uniquement ceux dont le correctif est parti et a été re-vérifié. Le correctif est en lien ; la reproduction non, volontairement.",
+				'Uniquement ceux dont le correctif est parti et a été re-vérifié. Le correctif est en lien ; la reproduction non, volontairement.',
 			severityUnreviewed: 'sévérité non revue',
 			seeTheFix: 'Voir le correctif',
 			testRunsTitle: 'Exécutions de tests vérifiées',
@@ -1640,8 +1841,7 @@ export const fr: Translations = {
 		},
 		ops: {
 			objectivesTitle: 'Objectifs tenus',
-			objectivesHint:
-				"Chacun avec le chiffre et sa source, pour qu'on puisse aller vérifier.",
+			objectivesHint: "Chacun avec le chiffre et sa source, pour qu'on puisse aller vérifier.",
 			objectiveFigures: '{achieved}% pour {target}% visés sur {days} jours',
 			met: 'Tenu',
 			missed: 'Manqué',
@@ -1672,7 +1872,7 @@ export const fr: Translations = {
 		security: {
 			findingsTitle: 'Findings confirmées',
 			findingsHint:
-				"Une finding encore sous embargo arrive sans son titre, et datée au mois : un titre est la moitié de la divulgation, et une date précise réduit la fenêtre.",
+				'Une finding encore sous embargo arrive sans son titre, et datée au mois : un titre est la moitié de la divulgation, et une date précise réduit la fenêtre.',
 			underEmbargo: 'Titre retenu jusqu’à la divulgation',
 			writeup: 'Writeup',
 			practiceTitle: 'Entraînement résolu',
@@ -1687,8 +1887,7 @@ export const fr: Translations = {
 		subtitle: 'Tout ce qui attend une réponse de ta part, au même endroit.',
 		waitingCount: '{n} en attente de toi',
 		empty: 'Rien ne t’attend.',
-		emptyHint:
-			'Les accompagnements, placements, bilans et programmes bêta apparaissent ici.',
+		emptyHint: 'Les accompagnements, placements, bilans et programmes bêta apparaissent ici.',
 		onboardingsTitle: 'Accompagnements',
 		onboardingMonths: 'Accompagnement de {n} mois',
 		onboardingConsent:
@@ -1848,7 +2047,8 @@ export const fr: Translations = {
 
 	ops: {
 		title: 'Exploitation',
-		subtitle: 'Les objectifs de service que tu as pris, les incidents que tu as menés, et ce qu’ils coûtent.',
+		subtitle:
+			'Les objectifs de service que tu as pris, les incidents que tu as menés, et ce qu’ils coûtent.',
 		empty: 'Rien d’enregistré pour le moment.',
 		emptyHint:
 			'Un objectif appartient à une slice ou à un projet — une cible toute seule ne promet rien.',
@@ -1932,8 +2132,7 @@ export const fr: Translations = {
 		title: 'Rétrospectives',
 		subtitle: 'Ce que tu as animé, et ce qui en est réellement sorti.',
 		empty: 'Aucune rétrospective enregistrée.',
-		emptyHint:
-			'Une rétrospective n’est une preuve de leadership qu’une fois ses actions résolues.',
+		emptyHint: 'Une rétrospective n’est une preuve de leadership qu’une fois ses actions résolues.',
 		participants: '{n} personnes',
 		shared: 'Partagée avec le groupe',
 		notShared: 'Pas encore repartagée',
@@ -2024,8 +2223,7 @@ export const fr: Translations = {
 		subtitle: 'Tes postes et leurs pipelines. Personne hors de ton entreprise ne peut les lire.',
 		plansTitle: 'Formules',
 		currentPlan: 'Tu es sur {plan}.',
-		noPlan:
-			'Aucune formule choisie — y compris la gratuite, qui se réclame comme les autres.',
+		noPlan: 'Aucune formule choisie — y compris la gratuite, qui se réclame comme les autres.',
 		currentBadge: 'Actuelle',
 		chooseCta: 'Choisir',
 		subscribed: 'Formule prise.',
@@ -2067,8 +2265,7 @@ export const fr: Translations = {
 		title: 'Rejoins tes salons sur Discord',
 		body: 'Tes métiers sont enregistrés. Lie ton compte Discord et tes rôles arrivent en quelques secondes, avec les salons qui vont avec — un message privé te les nomme.',
 		cta: 'Connecter Discord',
-		laterNote:
-			'Tu peux le faire plus tard depuis tes paramètres, rien ici n’en dépend.'
+		laterNote: 'Tu peux le faire plus tard depuis tes paramètres, rien ici n’en dépend.'
 	},
 
 	cv: {
@@ -2124,7 +2321,8 @@ export const fr: Translations = {
 		sponsoredHint: 'Une entreprise a payé pour que ce soit là. On préfère le dire.',
 		sponsoredBadge: 'Sponsorisé',
 		forYouTitle: 'Pour toi',
-		forYouHint: 'Lu depuis ton travail vérifié, donc ça se remplit à mesure que tu fais des choses.',
+		forYouHint:
+			'Lu depuis ton travail vérifié, donc ça se remplit à mesure que tu fais des choses.',
 		shelves: {}
 	},
 
@@ -2240,7 +2438,7 @@ export const fr: Translations = {
 		disconnected: 'Déconnecté.',
 		cancelCta: 'Annuler',
 		syncNote:
-			'Skilluv synchronise quand tu le demandes plutôt qu’en continu — il ne lit pas ton GitHub plus souvent que tu ne le veux.',
+			'Skilluv synchronise quand tu le demandes plutôt qu’en continu — il ne lit pas ton GitHub plus souvent que tu ne le veux.'
 	},
 
 	declaredCraft: {
@@ -2367,7 +2565,7 @@ export const fr: Translations = {
 		verifyCta: 'Vérifier',
 		highlightsTitle: 'À écouter en premier',
 		highlightsHint:
-			"Travaux publiés. Écouter un master passe par la slice à laquelle il appartient, sur un lien qui expire.",
+			'Travaux publiés. Écouter un master passe par la slice à laquelle il appartient, sur un lien qui expire.',
 		openWork: 'Ouvrir',
 		languagesTitle: 'Langues traduites vers',
 		languagesHint:
@@ -2386,19 +2584,20 @@ export const fr: Translations = {
 	},
 	events: {
 		title: 'Événements Skilluv',
-		subtitle: 'Rejoins un hackathon, un fest ou une saison thématique. Chaque événement rejoint donne un timbre à ta collection.',
+		subtitle:
+			'Rejoins un hackathon, un fest ou une saison thématique. Chaque événement rejoint donne un timbre à ta collection.',
 		active: 'En cours',
 		upcoming: 'Bientôt',
 		ended: 'Terminé',
 		partner: 'Partenaire',
-		empty: 'Aucun événement actif pour l\'instant. Reviens bientôt.',
+		empty: "Aucun événement actif pour l'instant. Reviens bientôt.",
 		loadError: 'Impossible de charger les événements. Réessaie plus tard.',
-		joinCta: 'Rejoindre l\'événement',
+		joinCta: "Rejoindre l'événement",
 		joinedCta: 'Déjà rejoint',
 		alreadyJoined: 'Tu as rejoint cet événement.',
 		backToList: 'Retour aux événements',
 		myEventsTitle: 'Mes événements',
-		myEventsEmpty: 'Tu n\'as pas encore rejoint d\'événement.',
+		myEventsEmpty: "Tu n'as pas encore rejoint d'événement.",
 		startsOn: 'Démarre le {date}',
 		endsOn: 'Se termine le {date}',
 		stampEarned: 'Timbre gagné',
@@ -2406,14 +2605,18 @@ export const fr: Translations = {
 	},
 	privacyPage: {
 		title: 'Confidentialité & données',
-		subtitle: 'Contrôle ce qu\'on collecte, ce qu\'on t\'envoie, et récupère tes données quand tu veux.',
+		subtitle:
+			"Contrôle ce qu'on collecte, ce qu'on t'envoie, et récupère tes données quand tu veux.",
 		consents: {
 			title: 'Consentements',
-			subtitle: 'Tu peux les changer à tout moment. Le nécessaire (auth, sécurité, facturation) ne dépend pas de ces choix.',
+			subtitle:
+				'Tu peux les changer à tout moment. Le nécessaire (auth, sécurité, facturation) ne dépend pas de ces choix.',
 			marketingLabel: 'Traceurs marketing',
-			marketingHint: 'Mesure d’audience publicitaire et reciblage. Ça ne décide pas des emails que tu reçois : ça se règle dans Préférences email.',
+			marketingHint:
+				'Mesure d’audience publicitaire et reciblage. Ça ne décide pas des emails que tu reçois : ça se règle dans Préférences email.',
 			analyticsLabel: 'Analytics produit',
-			analyticsHint: 'Statistiques anonymes pour comprendre comment tu utilises Skilluv et l\'améliorer.',
+			analyticsHint:
+				"Statistiques anonymes pour comprendre comment tu utilises Skilluv et l'améliorer.",
 			saved: 'Consentements enregistrés.'
 		},
 		gdpr: {
@@ -2423,7 +2626,7 @@ export const fr: Translations = {
 			pending: 'Export en préparation…',
 			ready: 'Export prêt.',
 			downloadCta: 'Télécharger',
-			failed: 'L\'export a échoué. Contacte le support.'
+			failed: "L'export a échoué. Contacte le support."
 		},
 		dataExport: {
 			title: 'Export produit',
@@ -2432,10 +2635,12 @@ export const fr: Translations = {
 		},
 		delete: {
 			title: 'Supprimer mon compte',
-			subtitle: 'Le compte entre en soft-delete pendant 30 jours. Après, tout est effacé définitivement.',
+			subtitle:
+				'Le compte entre en soft-delete pendant 30 jours. Après, tout est effacé définitivement.',
 			requestCta: 'Supprimer',
 			modalTitle: 'Confirmer la suppression',
-			modalBody: 'Ton compte sera désactivé immédiatement et supprimé définitivement dans 30 jours. Tu peux annuler pendant cette fenêtre en te reconnectant.',
+			modalBody:
+				'Ton compte sera désactivé immédiatement et supprimé définitivement dans 30 jours. Tu peux annuler pendant cette fenêtre en te reconnectant.',
 			reasonLabel: 'Raison (optionnel)',
 			cancelCta: 'Annuler',
 			confirmCta: 'Confirmer la suppression',
@@ -2451,14 +2656,16 @@ export const fr: Translations = {
 	push: {
 		title: 'Notifications navigateur',
 		category: 'Push',
-		description: 'Reçois une notif quand un talent te répond, un mentor accepte une session, ta bounty est payée…',
+		description:
+			'Reçois une notif quand un talent te répond, un mentor accepte une session, ta bounty est payée…',
 		statusOn: 'Activées',
 		statusOff: 'Inactives',
 		statusBlocked: 'Bloquées',
 		enableBtn: 'Activer les notifications',
 		disableBtn: 'Désactiver',
 		unsupported: 'Ce navigateur ne supporte pas les notifications push.',
-		blockedHint: 'Notifications bloquées dans le navigateur. Change les paramètres du site pour les réactiver.',
+		blockedHint:
+			'Notifications bloquées dans le navigateur. Change les paramètres du site pour les réactiver.',
 		toast: {
 			enabled: 'Notifications activées',
 			disabled: 'Notifications désactivées',
@@ -2477,9 +2684,11 @@ export const fr: Translations = {
 		slice_validated: 'Ta PR a été validée. Attestation générée. Fragments crédités.',
 		slice_rejected: 'Ta PR a été refusée par @{user}. Raison : {reason}',
 		slice_merged_upstream: 'Ta PR a été mergée sur {repo}. Bonus de {n} fragments.',
-		slice_pr_rejected_upstream: 'Ta PR a été fermée upstream sans merge. Tu peux reprendre la slice ou passer à autre chose.',
+		slice_pr_rejected_upstream:
+			'Ta PR a été fermée upstream sans merge. Tu peux reprendre la slice ou passer à autre chose.',
 		validator_application_status_changed: 'Ta candidature validateur ({domain}) a été {status}',
-		validator_invitation_received: 'Skilluv t’invite à devenir validateur {domain}. Raison : {notes}',
+		validator_invitation_received:
+			'Skilluv t’invite à devenir validateur {domain}. Raison : {notes}',
 		slice_upstream_closed: 'L’issue upstream {url} a été fermée. Ta claim a été relâchée.',
 		maintainer_digest_confirmation_sent: 'Email de confirmation envoyé',
 		maintainer_digest_subscribed: 'Ton abonnement digest est confirmé',
@@ -2577,7 +2786,7 @@ export const fr: Translations = {
 		browseCta: 'Parcourir le catalogue',
 		dashboardTitle: 'Mes parcours',
 		dashboardSubtitle: 'Les parcours que tu as rejoints.',
-		dashboardEmptyTitle: 'Tu n\'as rejoint aucun parcours',
+		dashboardEmptyTitle: "Tu n'as rejoint aucun parcours",
 		dashboardEmptyBody: 'Choisis un parcours pour structurer ta progression.'
 	},
 	teams: {
@@ -2588,12 +2797,14 @@ export const fr: Translations = {
 			viewCta: 'Voir',
 			memberCount: '{n} membre(s)',
 			capacity: 'max {max}',
-			emptyTitle: 'Tu ne fais partie d\'aucune équipe',
-			emptyBody: 'Rejoins un slot ouvert sur le marché des équipes pour démarrer un challenge collectif.'
+			emptyTitle: "Tu ne fais partie d'aucune équipe",
+			emptyBody:
+				'Rejoins un slot ouvert sur le marché des équipes pour démarrer un challenge collectif.'
 		},
 		marketplace: {
 			title: 'Marché des équipes',
-			subtitle: 'Rejoins un slot ouvert sur un challenge team. Skilluv te matche selon tes orientations et tes compétences prouvées.',
+			subtitle:
+				'Rejoins un slot ouvert sur un challenge team. Skilluv te matche selon tes orientations et tes compétences prouvées.',
 			filters: {
 				role: 'Rôle',
 				skill: 'Compétence',
@@ -2612,7 +2823,7 @@ export const fr: Translations = {
 			},
 			loadError: 'Impossible de charger le marché. Réessaie plus tard.',
 			joinCta: 'Rejoindre',
-			viewTeam: 'Voir l\'équipe',
+			viewTeam: "Voir l'équipe",
 			pageInfo: 'Page {page} sur {total}'
 		},
 		detail: {
@@ -2629,11 +2840,12 @@ export const fr: Translations = {
 		},
 		fillDialog: {
 			title: 'Rejoindre ce slot ?',
-			body: 'Une fois rejoint, tu t\'engages à livrer ta part. Tu pourras quitter tant que le challenge n\'a pas démarré.',
+			body: "Une fois rejoint, tu t'engages à livrer ta part. Tu pourras quitter tant que le challenge n'a pas démarré.",
 			confirmCta: 'Je rejoins',
 			cancelCta: 'Annuler',
 			skillCheckLabel: 'Vérification compétence',
-			warnLowLevel: 'Ton niveau sur cette compétence est en dessous du minimum requis. Tu peux quand même rejoindre — la team décide.'
+			warnLowLevel:
+				'Ton niveau sur cette compétence est en dessous du minimum requis. Tu peux quand même rejoindre — la team décide.'
 		},
 		leaveDialog: {
 			title: 'Quitter ce slot ?',
@@ -2649,7 +2861,7 @@ export const fr: Translations = {
 			crests: 'Écussons de guilde',
 			seal: 'Sceau',
 			sealsCount: 'sceaux de challenges',
-			stampsCount: 'timbres d\'événements',
+			stampsCount: "timbres d'événements",
 			countersLabel: 'Sceaux et timbres'
 		},
 		rank: {
@@ -2657,8 +2869,8 @@ export const fr: Translations = {
 			previous: 'Anciennement {previous}'
 		},
 		empty: {
-			own: 'Aucun badge pour l\'instant. Termine ton premier challenge pour en gagner.',
-			public: 'Cette personne n\'a pas encore de badges. Invite-la à contribuer.'
+			own: "Aucun badge pour l'instant. Termine ton premier challenge pour en gagner.",
+			public: "Cette personne n'a pas encore de badges. Invite-la à contribuer."
 		}
 	},
 	orientations: {
@@ -2676,12 +2888,13 @@ export const fr: Translations = {
 			active: 'Je pratique'
 		},
 		empty: {
-			own: 'Aucune orientation choisie. Ta playlist sera générique tant que tu n\'en choisis pas.',
+			own: "Aucune orientation choisie. Ta playlist sera générique tant que tu n'en choisis pas.",
 			public: 'Aucune orientation renseignée.'
 		},
 		selector: {
 			title: 'Choisis tes orientations',
-			subtitle: 'Sélectionne jusqu\'à {max} orientations. Ta playlist et ta communauté suivront tes choix.',
+			subtitle:
+				"Sélectionne jusqu'à {max} orientations. Ta playlist et ta communauté suivront tes choix.",
 			filterLabel: 'Filtrer par domaine',
 			allDomains: 'Tous les domaines',
 			emptyFilter: 'Aucune orientation dans ce domaine. Change le filtre.',
@@ -2692,24 +2905,27 @@ export const fr: Translations = {
 			workingLanguagesHint: 'Codes ISO séparés par des virgules (ex. fr,en,ar).',
 			timezoneLabel: 'Fuseau horaire',
 			timezoneHint: 'Format IANA (ex. Africa/Porto-Novo). Optionnel.',
-			tooMany: 'Maximum {max} orientations. Retire-en une avant d\'en ajouter une autre.',
+			tooMany: "Maximum {max} orientations. Retire-en une avant d'en ajouter une autre.",
 			mustPickOne: 'Choisis au moins une orientation.',
 			submit: 'Valider mes orientations'
 		},
 		banner: {
 			title: 'Choisis tes orientations métier',
-			subtitle: 'Ta playlist et tes recommandations Skilluv seront génériques tant que ce n\'est pas fait.',
+			subtitle:
+				"Ta playlist et tes recommandations Skilluv seront génériques tant que ce n'est pas fait.",
 			cta: 'Choisir'
 		},
 		softBlock: {
 			title: 'Cette section a besoin de tes orientations',
-			defaultReason: 'Skilluv personnalise cette page selon les orientations métier que tu choisis. Ça prend 30 secondes.',
+			defaultReason:
+				'Skilluv personnalise cette page selon les orientations métier que tu choisis. Ça prend 30 secondes.',
 			ctaPrimary: 'Choisir maintenant',
 			ctaLater: 'Plus tard'
 		},
 		catalog: {
 			title: 'Ton parcours Skilluv',
-			subtitle: 'Choisis 1 à 3 orientations. Skilluv construira ta playlist, tes team slots et tes badges autour.',
+			subtitle:
+				'Choisis 1 à 3 orientations. Skilluv construira ta playlist, tes team slots et tes badges autour.',
 			loadError: 'Impossible de charger le catalogue des orientations. Réessaie plus tard.',
 			savedTitle: 'Orientations enregistrées.',
 			savedSubtitle: 'Ta playlist personnalisée est prête sur ton dashboard.',
@@ -2721,36 +2937,78 @@ export const fr: Translations = {
 			secondaryDomains: 'Domaines secondaires',
 			tags: 'Compétences clés',
 			playlistTitle: 'Aperçu de ta playlist',
-			playlistSubtitle: 'Voici les 5 premiers items que Skilluv te proposerait si tu choisis cette orientation.',
-			playlistEmpty: 'Playlist personnalisée disponible une fois l\'orientation choisie.',
+			playlistSubtitle:
+				'Voici les 5 premiers items que Skilluv te proposerait si tu choisis cette orientation.',
+			playlistEmpty: "Playlist personnalisée disponible une fois l'orientation choisie.",
 			pickCta: 'Ajouter à ma sélection'
 		}
 	},
 	capabilities: {
 		sectionOwnTitle: 'Comment je contribue',
-		sectionOwnSubtitle: 'Tes rôles actifs sur Skilluv. Tu peux mentorer, curer, modérer selon ce que tu as gagné.',
+		sectionOwnSubtitle:
+			'Tes rôles actifs sur Skilluv. Tu peux mentorer, curer, modérer selon ce que tu as gagné.',
 		sectionPublicTitle: 'Comment cette personne contribue',
 		sectionPublicSubtitle: 'Rôles actifs sur Skilluv, gagnés par les preuves.',
-		empty: 'Aucun rôle actif pour l\'instant. Continue à contribuer, ils viendront.',
+		empty: "Aucun rôle actif pour l'instant. Continue à contribuer, ils viendront.",
 		expiresOn: 'Expire le {date}',
 		grantedOn: 'Obtenu le {date}',
 		items: {
-			challenger: { label: 'Challenger', description: 'Résout des challenges publiés et gagne des fragments.' },
+			challenger: {
+				label: 'Challenger',
+				description: 'Résout des challenges publiés et gagne des fragments.'
+			},
 			mentor: { label: 'Mentor', description: 'Anime des sessions 1-on-1 avec les talents.' },
-			project_steward: { label: 'Steward projet', description: 'Coordonne un projet communautaire, arbitre les slots.' },
-			pr_reviewer: { label: 'Reviewer PR', description: 'Valide les pull requests des bounties open-source.' },
-			bounty_funder: { label: 'Sponsor bounty', description: 'Finance des issues GitHub pour la communauté.' },
-			issue_proposer: { label: 'Proposeur d\'issues', description: 'Suggère des issues à transformer en bounties.' },
-			jury_tournament: { label: 'Juré tournoi', description: 'Note les rendus lors d\'un tournoi.' },
+			project_steward: {
+				label: 'Steward projet',
+				description: 'Coordonne un projet communautaire, arbitre les slots.'
+			},
+			pr_reviewer: {
+				label: 'Reviewer PR',
+				description: 'Valide les pull requests des bounties open-source.'
+			},
+			bounty_funder: {
+				label: 'Sponsor bounty',
+				description: 'Finance des issues GitHub pour la communauté.'
+			},
+			issue_proposer: {
+				label: "Proposeur d'issues",
+				description: 'Suggère des issues à transformer en bounties.'
+			},
+			jury_tournament: { label: 'Juré tournoi', description: "Note les rendus lors d'un tournoi." },
 			admin: { label: 'Administrateur', description: 'Accès plateforme complet.' },
-			enterprise_recruiter: { label: 'Recruteur entreprise', description: 'Sourcing talents pour un compte entreprise.' },
-			community_moderator: { label: 'Modérateur communauté', description: 'Modère les espaces communautaires transverses.' },
-			forum_moderator: { label: 'Modérateur forum', description: 'Supprime spam et abus sur le forum.' },
-			plagiarism_reviewer: { label: 'Reviewer plagiat', description: 'Décide de la validité des deliverables flaggés.' },
-			kyc_reviewer: { label: 'Reviewer KYC', description: 'Valide les documents d\'identité des payouts.' },
-			community_curator: { label: 'Curator communauté', description: 'Approuve ou rejette les challenges communautaires en revue.' },
-			domain_curator: { label: 'Curator de domaine', description: 'Tranche les rites d’entrée d’un domaine.' },
-			rite_reviewer: { label: 'Relecteur de rites {domain}', description: 'Lit les rites d’entrée publiés en {domain}. Obtenu en passant le sien, jamais sur son propre rendu.' }
+			enterprise_recruiter: {
+				label: 'Recruteur entreprise',
+				description: 'Sourcing talents pour un compte entreprise.'
+			},
+			community_moderator: {
+				label: 'Modérateur communauté',
+				description: 'Modère les espaces communautaires transverses.'
+			},
+			forum_moderator: {
+				label: 'Modérateur forum',
+				description: 'Supprime spam et abus sur le forum.'
+			},
+			plagiarism_reviewer: {
+				label: 'Reviewer plagiat',
+				description: 'Décide de la validité des deliverables flaggés.'
+			},
+			kyc_reviewer: {
+				label: 'Reviewer KYC',
+				description: "Valide les documents d'identité des payouts."
+			},
+			community_curator: {
+				label: 'Curator communauté',
+				description: 'Approuve ou rejette les challenges communautaires en revue.'
+			},
+			domain_curator: {
+				label: 'Curator de domaine',
+				description: 'Tranche les rites d’entrée d’un domaine.'
+			},
+			rite_reviewer: {
+				label: 'Relecteur de rites {domain}',
+				description:
+					'Lit les rites d’entrée publiés en {domain}. Obtenu en passant le sien, jamais sur son propre rendu.'
+			}
 		},
 		nav: {
 			forumModeration: 'Modération forum',
@@ -2787,28 +3045,34 @@ export const fr: Translations = {
 			share: 'Partager',
 			attestationId: 'Attestation ID',
 			reasonMalformed: 'Ce lien ne correspond pas au format d’une attestation Skilluv.',
-			reasonUnknown: 'Aucune attestation ne correspond a ce hash. Elle a peut-etre ete revoquee ou n’a jamais existe.',
+			reasonUnknown:
+				'Aucune attestation ne correspond a ce hash. Elle a peut-etre ete revoquee ou n’a jamais existe.',
 			copyToast: 'Lien copie dans le presse-papiers',
 			copyPrompt: 'Copiez ce lien :'
 		},
 		forMaintainers: {
 			seoTitle: 'Skilluv — Digest hebdo pour maintainers OSS',
-			seoDesc: 'Recevez chaque semaine un resume des contributions Skilluv sur vos repos open-source. Zero spam, unsubscribe en un clic.',
+			seoDesc:
+				'Recevez chaque semaine un resume des contributions Skilluv sur vos repos open-source. Zero spam, unsubscribe en un clic.',
 			ogDesc: 'Un email hebdomadaire, les contributions Skilluv sur vos repos. Zero spam.',
 			title: 'Vos contributeurs Skilluv, resumes une fois par semaine',
 			subtitle: 'Un digest hebdo, zero spam, unsubscribe en un clic.',
 			whatSkilluvTitle: 'Ce que fait Skilluv',
-			whatSkilluvBullet1: 'Notre communaute (afro-francophone, autodidactes, reconvertis) contribue a des OSS externes.',
+			whatSkilluvBullet1:
+				'Notre communaute (afro-francophone, autodidactes, reconvertis) contribue a des OSS externes.',
 			whatSkilluvBullet2Prefix: 'Sur les issues que vous labellisez',
 			whatSkilluvBullet2Suffix: '(ou celles publiques comme',
-			whatSkilluvBullet3: 'On valide leur travail avant merge — la validation Skilluv est un pre-filtre qualite.',
+			whatSkilluvBullet3:
+				'On valide leur travail avant merge — la validation Skilluv est un pre-filtre qualite.',
 			whatReceiveTitle: 'Ce que vous recevez',
-			whatReceiveBullet1: 'Digest hebdomadaire des PRs Skilluv sur vos repos (nb claims, PRs submit, PRs validated).',
+			whatReceiveBullet1:
+				'Digest hebdomadaire des PRs Skilluv sur vos repos (nb claims, PRs submit, PRs validated).',
 			whatReceiveBullet2: 'Zero spam : un email/semaine, avec unsubscribe en 1 clic.',
 			whatReceiveBullet3: 'Confidentialite : votre email n’est jamais partage.',
 			badgeTitle: 'Notre badge Skilluv',
 			badgeNew: 'nouveau',
-			badgeDesc: 'Ajoutez ce badge a votre README pour signaler que votre projet accueille les contributions Skilluv.',
+			badgeDesc:
+				'Ajoutez ce badge a votre README pour signaler que votre projet accueille les contributions Skilluv.',
 			badgeAlt: 'Badge Skilluv validated',
 			copyBtn: 'Copier',
 			copyAria: 'Copier le snippet',
@@ -2819,12 +3083,15 @@ export const fr: Translations = {
 			faqQ1: 'Comment Skilluv sait sur quels repos je bosse ?',
 			faqA1: 'Vous les listez a l’inscription. Vous pouvez modifier votre liste a tout moment.',
 			faqQ2: 'Puis-je m’abonner sans avoir de repo Skilluv-labelise ?',
-			faqA2: 'Oui — le digest sera vide en attendant que vous ajoutiez le label skilluv-challenge sur vos issues.',
+			faqA2:
+				'Oui — le digest sera vide en attendant que vous ajoutiez le label skilluv-challenge sur vos issues.',
 			faqQ3: 'Comment se desabonner ?',
-			faqA3: 'Un lien dans chaque email, ou l’URL /maintainer-digest/unsubscribe/{token} recue a l’inscription.',
+			faqA3:
+				'Un lien dans chaque email, ou l’URL /maintainer-digest/unsubscribe/{token} recue a l’inscription.',
 			formTitle: 'S’abonner',
 			successTitle: 'Confirmation demandee',
-			successMessage: 'Email de confirmation envoye a {email}. Cliquez sur le lien dans l’email pour activer votre abonnement.',
+			successMessage:
+				'Email de confirmation envoye a {email}. Cliquez sur le lien dans l’email pour activer votre abonnement.',
 			githubLabel: 'Login GitHub',
 			githubPh: 'ex. torvalds',
 			emailLabel: 'Email',
@@ -2960,7 +3227,8 @@ export const fr: Translations = {
 			filterAll: 'Toutes',
 			filterMine: 'Prises par moi',
 			notValidatorTitle: "Tu n'es pas encore validateur",
-			notValidatorBody: 'Pour acceder a la file, il faut candidater comme validateur sur au moins un domaine.',
+			notValidatorBody:
+				'Pour acceder a la file, il faut candidater comme validateur sur au moins un domaine.',
 			applyCta: 'Candidater',
 			retryBtn: 'Reessayer',
 			emptyTitle: 'Aucune PR a valider dans tes domaines',
@@ -2976,16 +3244,19 @@ export const fr: Translations = {
 			reviewSeoTitle: 'Reviewer une PR — Skilluv',
 			backToQueue: 'Retour a la queue',
 			notFoundTitle: 'Introuvable',
-			notFoundBody: "Ce challenge n'existe pas dans ta file de validation. Il a peut-etre deja ete traite.",
+			notFoundBody:
+				"Ce challenge n'existe pas dans ta file de validation. Il a peut-etre deja ete traite.",
 			reviewLoadError: 'Impossible de charger la review.',
 			statusBadge: 'status {status}',
 			approvedTitle: 'Validation approuvee',
 			approvedFragments: "{n} fragments credites. L'attestation est publique.",
 			attestationIdLabel: 'Attestation ID : {hash}',
 			downloadPdf: 'Telecharger le PDF',
-			warningPublicApprove: 'En approvant, tu genereras une attestation qui sera publique via /verify/{hash} et telechargeable en PDF. Les fragments seront credites au challenger et a toi.',
+			warningPublicApprove:
+				'En approvant, tu genereras une attestation qui sera publique via /verify/{hash} et telechargeable en PDF. Les fragments seront credites au challenger et a toi.',
 			reviewPrTitle: 'Reviewer la PR',
-			reviewIframeHint: "L'iframe est bloque par GitHub — utilise ce bouton pour ouvrir la PR dans un nouvel onglet.",
+			reviewIframeHint:
+				"L'iframe est bloque par GitHub — utilise ce bouton pour ouvrir la PR dans un nouvel onglet.",
 			openPrOnGithub: 'Ouvrir la PR sur GitHub',
 			verdictTitle: 'Ton verdict',
 			feedbackLabel: 'Feedback (obligatoire pour rejeter, 1-2000 caracteres)',
@@ -3002,10 +3273,12 @@ export const fr: Translations = {
 			newSeoTitle: 'Devenir validateur — Skilluv',
 			backToApplications: 'Mes candidatures',
 			newTitle: 'Devenir validateur Skilluv',
-			newSubtitle: "Les validateurs verifient les PRs Skilluv avant qu'elles soient marquees comme validees. Chaque validation te credite en fragments et augmente ta reputation.",
+			newSubtitle:
+				"Les validateurs verifient les PRs Skilluv avant qu'elles soient marquees comme validees. Chaque validation te credite en fragments et augmente ta reputation.",
 			domainLabel: 'Domaine',
 			thresholdsTitle: 'Seuils requis',
-			thresholdsUnavailable: "Chargement des stats indisponible pour l'instant. Tu peux candidater — le back verifiera les criteres.",
+			thresholdsUnavailable:
+				"Chargement des stats indisponible pour l'instant. Tu peux candidater — le back verifiera les criteres.",
 			thresholdsLoading: 'Chargement...',
 			rankLine: 'Rank Artisan minimum',
 			rankMiss: 'Tu es {rank}, il faut Artisan.',
@@ -3043,7 +3316,8 @@ export const fr: Translations = {
 			viewDetailBtn: 'Voir le detail',
 			withdrawBtn: 'Retirer',
 			listEmptyTitle: "Aucune candidature pour l'instant",
-			listEmptyBody: "Candidate sur un domaine ou tu maitrises pour rejoindre l'equipe de validateurs.",
+			listEmptyBody:
+				"Candidate sur un domaine ou tu maitrises pour rejoindre l'equipe de validateurs.",
 			listApplyCta: 'Candidater',
 			listEmptyFilterTitle: 'Aucune candidature dans ce filtre.',
 			listLoadError: 'Impossible de charger.',
@@ -3071,14 +3345,16 @@ export const fr: Translations = {
 			ariaLabel: 'Badges Skilluv',
 			sectionLabel: 'Badges Skilluv',
 			personalTitle: 'Badge Skilluv',
-			personalDesc: 'Colle ce badge dans ton profil GitHub, ton CV ou LinkedIn pour montrer ta communaute Skilluv.',
+			personalDesc:
+				'Colle ce badge dans ton profil GitHub, ton CV ou LinkedIn pour montrer ta communaute Skilluv.',
 			personalAlt: 'Skilluv badge {username}',
 			notGenerated: 'Badge pas encore genere',
 			markdownLabel: 'Markdown',
 			htmlLabel: 'HTML',
 			copyBtn: 'Copier',
 			reposTitle: 'Badges Skilluv pour tes repos',
-			reposDesc: 'Ajoute ces badges au README de tes repos pour montrer la communaute Skilluv active.',
+			reposDesc:
+				'Ajoute ces badges au README de tes repos pour montrer la communaute Skilluv active.',
 			repoBadgeAlt: 'Skilluv badge {repo}',
 			copyToastSuccess: 'Copie',
 			copyToastError: 'Impossible de copier'

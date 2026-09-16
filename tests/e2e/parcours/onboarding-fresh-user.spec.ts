@@ -35,7 +35,9 @@ test.describe('@parcours onboarding-fresh-user', () => {
 	test.skip(!HAS_BACK, 'requires PUBLIC_API_BASE_URL (back staging)');
 	test.setTimeout(120_000);
 
-	test('signup fresh user -> onboarding -> premier challenge accessible', async ({ page }, testInfo) => {
+	test('signup fresh user -> onboarding -> premier challenge accessible', async ({
+		page
+	}, testInfo) => {
 		// Pre-dismiss cookie banner pour eviter overlay.
 		await page.addInitScript(() => {
 			try {
@@ -88,9 +90,7 @@ test.describe('@parcours onboarding-fresh-user', () => {
 		await page.locator('input[type="password"]').fill(FRESH_USER.password);
 
 		// Country picker Benin
-		const countryLabel = page
-			.locator('span.text-sm', { hasText: /^(Pays|Country)$/ })
-			.first();
+		const countryLabel = page.locator('span.text-sm', { hasText: /^(Pays|Country)$/ }).first();
 		if (await countryLabel.isVisible().catch(() => false)) {
 			await countryLabel.locator('..').getByRole('button').first().click();
 		}
@@ -113,25 +113,25 @@ test.describe('@parcours onboarding-fresh-user', () => {
 		if (submitRes.status() < 200 || submitRes.status() >= 300) {
 			const body = await submitRes.text().catch(() => '');
 			await page.screenshot({ path: testInfo.outputPath('02b-submit-error.png'), fullPage: true });
-			throw new Error(
-				`Register failed ${submitRes.status()}. Body: ${body.slice(0, 400)}`
-			);
+			throw new Error(`Register failed ${submitRes.status()}. Body: ${body.slice(0, 400)}`);
 		}
 
 		// See signup-user.spec.ts: the welcome page does not exist, registration
 		// lands directly on /challenges/onboarding.
 		await page.waitForURL(/\/challenges\/onboarding/, { timeout: 15_000 });
-		await page.screenshot({ path: testInfo.outputPath('03-onboarding-welcome.png'), fullPage: true });
+		await page.screenshot({
+			path: testInfo.outputPath('03-onboarding-welcome.png'),
+			fullPage: true
+		});
 
 		// ---- STEP 3 : verify-email programmatique ----
 		const verify = await getVerifyToken(page, FRESH_USER.email);
 		expect(verify.token, 'dev-verify token').toBeTruthy();
 		await page.goto(`/auth/verify-email?token=${encodeURIComponent(verify.token)}`);
 		const heading = page.getByRole('heading', { level: 1 }).first();
-		await expect(heading).toHaveText(
-			/success|verifie|verified|confirm|error|erreur/i,
-			{ timeout: 15_000 }
-		);
+		await expect(heading).toHaveText(/success|verifie|verified|confirm|error|erreur/i, {
+			timeout: 15_000
+		});
 		await page.screenshot({ path: testInfo.outputPath('04-verify-email.png'), fullPage: true });
 
 		// ---- STEP 4 : complete-profile ----

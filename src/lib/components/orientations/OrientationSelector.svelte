@@ -130,7 +130,10 @@
 				</p>
 			</div>
 			<div class="w-52 shrink-0">
-				<label for="orientation-domain-filter" class="mb-1 block text-sm font-medium text-text-primary">
+				<label
+					for="orientation-domain-filter"
+					class="mb-1 block text-sm font-medium text-text-primary"
+				>
 					{i18n.t('orientations.selector.filterLabel')}
 				</label>
 				<select
@@ -157,7 +160,9 @@
 				/>
 			{/each}
 			{#if filteredCatalog.length === 0}
-				<p class="col-span-full rounded-lg bg-surface-overlay px-4 py-6 text-center text-sm text-text-muted">
+				<p
+					class="col-span-full rounded-lg bg-surface-overlay px-4 py-6 text-center text-sm text-text-muted"
+				>
 					{i18n.t('orientations.selector.emptyFilter')}
 				</p>
 			{/if}
@@ -174,8 +179,12 @@
 			</h3>
 			<ul class="space-y-3" role="list">
 				{#each selections as pick, i (pick.orientation.slug)}
-					<li class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-overlay p-3">
-						<span class="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-accent-fg">
+					<li
+						class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-overlay p-3"
+					>
+						<span
+							class="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-accent-fg"
+						>
 							{i + 1}
 						</span>
 						<span class="font-medium text-text-primary">{pick.orientation.name}</span>
@@ -260,14 +269,8 @@
 	{/if}
 
 	<div class="flex items-center justify-end gap-3">
-		<Button
-			type="submit"
-			variant="primary"
-			disabled={submitting || selections.length === 0}
-		>
-			{submitting
-				? i18n.t('common.actions.sending')
-				: i18n.t('orientations.selector.submit')}
+		<Button type="submit" variant="primary" disabled={submitting || selections.length === 0}>
+			{submitting ? i18n.t('common.actions.sending') : i18n.t('orientations.selector.submit')}
 		</Button>
 	</div>
 </form>

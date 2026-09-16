@@ -87,7 +87,13 @@ describe('walletApi Stripe flow', () => {
 	// une confiance qui n'est adossee a rien.
 	it('withdraw() en EUR passe par un endpoint unique', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ amount: '15.00', currency: 'EUR', provider: 'stripe', reference: 'tr_1', status: 'completed' })
+			ok({
+				amount: '15.00',
+				currency: 'EUR',
+				provider: 'stripe',
+				reference: 'tr_1',
+				status: 'completed'
+			})
 		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
 		await walletApi.withdraw({ amount: '15.00', currency: 'EUR', rail: 'bank_account' });
@@ -114,7 +120,13 @@ describe('walletApi Mobile Money flow', () => {
 
 	it('withdraw() en XOF passe par le meme endpoint', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ amount: '10000', currency: 'XOF', provider: 'mtn', reference: 'ref_1', status: 'pending' })
+			ok({
+				amount: '10000',
+				currency: 'XOF',
+				provider: 'mtn',
+				reference: 'ref_1',
+				status: 'pending'
+			})
 		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
 		await walletApi.withdraw({ amount: '10000', currency: 'XOF', rail: 'mobile_money' });
@@ -127,7 +139,13 @@ describe('walletApi Mobile Money flow', () => {
 
 	it('ne choisit jamais le prestataire, seulement le rail', async () => {
 		fetchMock.mockResolvedValue(
-			ok({ amount: '5000', currency: 'XOF', provider: 'fedapay', reference: 'r', status: 'pending' })
+			ok({
+				amount: '5000',
+				currency: 'XOF',
+				provider: 'fedapay',
+				reference: 'r',
+				status: 'pending'
+			})
 		);
 		const { walletApi } = await import('../../src/lib/api/wallet');
 		await walletApi.withdraw({ amount: '5000', currency: 'XOF', rail: 'mobile_money' });

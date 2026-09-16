@@ -122,7 +122,9 @@
 	{:else}
 		{#if studios.length > 0}
 			<section class="space-y-3" data-testid="work-studios">
-				<h2 class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted">
+				<h2
+					class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted"
+				>
 					<Building2 size={14} />
 					{i18n.t('work.studiosTitle')}
 				</h2>
@@ -143,9 +145,7 @@
 								<span>{i18n.t('work.dayRate', { amount: money(s.day_rate, s.currency) })}</span>
 								<span>{i18n.t('work.maxMembers', { n: s.max_members })}</span>
 								{#each s.domains as d (d)}
-									<span
-										class="rounded-full border border-border bg-surface-overlay px-2 py-0.5"
-									>
+									<span class="rounded-full border border-border bg-surface-overlay px-2 py-0.5">
 										{d}
 									</span>
 								{/each}
@@ -158,7 +158,9 @@
 
 		{#if labs.length > 0}
 			<section class="space-y-3" data-testid="work-labs">
-				<h2 class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted">
+				<h2
+					class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted"
+				>
 					<FlaskConical size={14} />
 					{i18n.t('work.labsTitle')}
 				</h2>
@@ -185,9 +187,7 @@
 								</Badge>
 								<span>{i18n.t('work.communityTarget', { n: l.community_target })}</span>
 								{#each l.activity_types as a (a)}
-									<span
-										class="rounded-full border border-border bg-surface-overlay px-2 py-0.5"
-									>
+									<span class="rounded-full border border-border bg-surface-overlay px-2 py-0.5">
 										{a}
 									</span>
 								{/each}
@@ -200,7 +200,9 @@
 
 		{#if proposals.length > 0}
 			<section class="space-y-3" data-testid="work-proposals">
-				<h2 class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted">
+				<h2
+					class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted"
+				>
 					<Lightbulb size={14} />
 					{i18n.t('work.proposalsTitle')}
 				</h2>
@@ -229,9 +231,7 @@
 									</span>
 								{/if}
 								{#each p.target_industries as t (t)}
-									<span
-										class="rounded-full border border-border bg-surface-overlay px-2 py-0.5"
-									>
+									<span class="rounded-full border border-border bg-surface-overlay px-2 py-0.5">
 										{t}
 									</span>
 								{/each}

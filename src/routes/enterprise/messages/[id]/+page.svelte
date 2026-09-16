@@ -76,11 +76,17 @@
 <div class="flex h-[calc(100vh-4rem)] flex-col">
 	<!-- Header -->
 	<div class="flex items-center gap-3 border-b border-border bg-surface-elevated px-4 py-3">
-		<a href="/enterprise/messages" class="text-text-muted hover:text-text-primary lg:hidden" aria-label={i18n.locale === 'fr' ? 'Retour' : 'Back'}>
+		<a
+			href="/enterprise/messages"
+			class="text-text-muted hover:text-text-primary lg:hidden"
+			aria-label={i18n.locale === 'fr' ? 'Retour' : 'Back'}
+		>
 			<ArrowLeft size={18} strokeWidth={2} />
 		</a>
 		{#if conversation}
-			<div class="flex h-8 w-8 items-center justify-center rounded-full bg-surface-overlay text-sm font-bold text-text-muted">
+			<div
+				class="flex h-8 w-8 items-center justify-center rounded-full bg-surface-overlay text-sm font-bold text-text-muted"
+			>
 				{conversation.other_party.name.charAt(0).toUpperCase()}
 			</div>
 			<div>
@@ -106,7 +112,8 @@
 			<div class="flex flex-col gap-3">
 				{#each messages as msg, i}
 					{@const isMe = msg.sender_id === auth.user?.id}
-					{@const showDate = i === 0 || formatDate(messages[i - 1].created_at) !== formatDate(msg.created_at)}
+					{@const showDate =
+						i === 0 || formatDate(messages[i - 1].created_at) !== formatDate(msg.created_at)}
 
 					{#if showDate}
 						<p class="my-2 text-center text-xs text-text-muted">{formatDate(msg.created_at)}</p>
@@ -132,7 +139,10 @@
 
 	<!-- Input -->
 	{#if conversation && !conversation.closed}
-		<form onsubmit={handleSend} class="flex items-center gap-3 border-t border-border bg-surface-elevated px-4 py-3">
+		<form
+			onsubmit={handleSend}
+			class="flex items-center gap-3 border-t border-border bg-surface-elevated px-4 py-3"
+		>
 			<input
 				bind:value={newMessage}
 				placeholder={i18n.t('enterprise.messages.inputPlaceholder')}
@@ -140,7 +150,13 @@
 				maxlength="5000"
 				disabled={sending}
 			/>
-			<Button variant="accent" size="sm" type="submit" loading={sending} disabled={!newMessage.trim()}>
+			<Button
+				variant="accent"
+				size="sm"
+				type="submit"
+				loading={sending}
+				disabled={!newMessage.trim()}
+			>
 				{i18n.t('enterprise.messages.sendBtn')}
 			</Button>
 		</form>

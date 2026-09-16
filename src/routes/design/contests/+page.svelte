@@ -39,9 +39,7 @@
 		})
 	);
 	let upcoming = $derived(
-		contests.filter(
-			(c) => new Date(c.starts_at).getTime() > Date.now() && c.status !== 'cancelled'
-		)
+		contests.filter((c) => new Date(c.starts_at).getTime() > Date.now() && c.status !== 'cancelled')
 	);
 	let past = $derived(
 		contests.filter((c) => new Date(c.ends_at).getTime() <= Date.now() || c.status === 'concluded')

@@ -320,8 +320,4 @@ export interface SecurityProfile {
 
 /** Any of the five, for the shared parts of the section. */
 export type DomainRecordProfile =
-	| CodeProfile
-	| QualityProfile
-	| OpsProfile
-	| LeadershipProfile
-	| SecurityProfile;
+	CodeProfile | QualityProfile | OpsProfile | LeadershipProfile | SecurityProfile;

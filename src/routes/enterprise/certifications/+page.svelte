@@ -92,7 +92,9 @@
 			if (err instanceof SkilluError) {
 				sponsorError =
 					err.code === 'NOT_FOUND'
-						? (i18n.locale === 'fr' ? 'Aucun talent avec ce pseudo' : 'No talent with that username')
+						? i18n.locale === 'fr'
+							? 'Aucun talent avec ce pseudo'
+							: 'No talent with that username'
 						: err.message;
 			} else {
 				sponsorError = i18n.t('errors.generic');
@@ -104,7 +106,10 @@
 
 	// Palette par niveau — pour donner à chaque tier une identité visuelle
 	// sans encombrer la card.
-	function levelStyle(l: CertLevel): { badge: 'default' | 'primary' | 'accent' | 'warning'; label: string } {
+	function levelStyle(l: CertLevel): {
+		badge: 'default' | 'primary' | 'accent' | 'warning';
+		label: string;
+	} {
 		const fr: Record<CertLevel, string> = {
 			foundation: 'Débutant',
 			intermediate: 'Intermédiaire',
@@ -146,7 +151,7 @@
 		<p class="text-sm text-text-muted">
 			{i18n.locale === 'fr'
 				? "Offrez à un talent une certification Skilluv — vous couvrez les frais d'inscription, il passe l'examen à son rythme."
-				: 'Cover a talent\'s Skilluv certification fees. They take the exam on their own schedule.'}
+				: "Cover a talent's Skilluv certification fees. They take the exam on their own schedule."}
 		</p>
 	</div>
 
@@ -158,7 +163,7 @@
 		<p class="text-text-muted leading-relaxed">
 			{i18n.locale === 'fr'
 				? "Choisissez une certification, renseignez le pseudo du talent que vous invitez. Il reçoit une notification et peut passer l'examen dans les 30 jours. Un diplôme vérifiable en ligne est émis en cas de réussite."
-				: 'Pick a certification, enter the invited talent\'s username. They get a notification and can take the exam within 30 days. A verifiable online diploma is issued on success.'}
+				: "Pick a certification, enter the invited talent's username. They get a notification and can take the exam within 30 days. A verifiable online diploma is issued on success."}
 		</p>
 	</div>
 
@@ -183,16 +188,22 @@
 				<Award size={40} strokeWidth={1.5} />
 			</div>
 			<p class="text-text-muted">
-				{i18n.locale === 'fr' ? 'Aucune certification disponible pour le moment.' : 'No certifications available right now.'}
+				{i18n.locale === 'fr'
+					? 'Aucune certification disponible pour le moment.'
+					: 'No certifications available right now.'}
 			</p>
 		</div>
 	{:else}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{#each certifications as cert (cert.id)}
 				{@const lvl = levelStyle(cert.level)}
-				<article class="flex flex-col rounded-2xl border border-border bg-surface-elevated p-5 transition-colors hover:border-primary/40">
+				<article
+					class="flex flex-col rounded-2xl border border-border bg-surface-elevated p-5 transition-colors hover:border-primary/40"
+				>
 					<div class="mb-3 flex items-start justify-between gap-2">
-						<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+						<div
+							class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary"
+						>
 							<BadgeCheck size={20} strokeWidth={2} />
 						</div>
 						<Badge variant={lvl.badge} size="sm">{lvl.label}</Badge>
@@ -244,7 +255,9 @@
 <Modal
 	open={sponsorOpen}
 	title={selectedCert
-		? (i18n.locale === 'fr' ? `Sponsoriser "${selectedCert.title}"` : `Sponsor "${selectedCert.title}"`)
+		? i18n.locale === 'fr'
+			? `Sponsoriser "${selectedCert.title}"`
+			: `Sponsor "${selectedCert.title}"`
 		: ''}
 	onclose={closeSponsor}
 >
@@ -255,7 +268,9 @@
 				<div>
 					<p class="font-semibold">{selectedCert.title}</p>
 					<p class="text-xs text-text-muted">
-						{selectedCert.duration_minutes} min · {selectedCert.challenges_count} challenges · {fmtPrice(selectedCert.price_eur_cents)}
+						{selectedCert.duration_minutes} min · {selectedCert.challenges_count} challenges · {fmtPrice(
+							selectedCert.price_eur_cents
+						)}
 					</p>
 				</div>
 			</div>
@@ -265,7 +280,7 @@
 				placeholder="kofi_dev"
 				bind:value={sponsorUsername}
 				hint={i18n.locale === 'fr'
-					? 'Le talent recevra une notification et pourra passer l\'examen dans les 30 jours.'
+					? "Le talent recevra une notification et pourra passer l'examen dans les 30 jours."
 					: 'The talent will get a notification and can take the exam within 30 days.'}
 				error={sponsorError}
 				required
@@ -281,7 +296,7 @@
 					rows="3"
 					placeholder={i18n.locale === 'fr'
 						? 'Un mot pour expliquer pourquoi vous invitez ce talent…'
-						: 'A note explaining why you\'re inviting this talent…'}
+						: "A note explaining why you're inviting this talent…"}
 					class="w-full rounded-xl border border-border bg-surface-elevated px-4 py-2.5 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none"
 				></textarea>
 			</div>

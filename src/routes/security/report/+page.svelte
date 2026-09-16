@@ -58,7 +58,10 @@
 	let submitted = $state<SubmittedReport | null>(null);
 
 	let targetKindOptions = $derived(
-		TARGET_KINDS.map((k) => ({ value: k as string, label: i18n.t(`securityReport.targetKinds.${k}`) }))
+		TARGET_KINDS.map((k) => ({
+			value: k as string,
+			label: i18n.t(`securityReport.targetKinds.${k}`)
+		}))
 	);
 
 	let severityOptions = $derived(
@@ -165,7 +168,11 @@
 			</Button>
 		</section>
 	{:else}
-		<Input label={i18n.t('securityReport.fieldTitle')} bind:value={title} data-testid="report-title" />
+		<Input
+			label={i18n.t('securityReport.fieldTitle')}
+			bind:value={title}
+			data-testid="report-title"
+		/>
 
 		<label class="flex flex-col gap-1">
 			<span class="text-sm font-medium text-text">{i18n.t('securityReport.fieldDescription')}</span>
@@ -173,8 +180,7 @@
 				bind:value={description}
 				rows="5"
 				class="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text focus:border-accent focus:outline-none"
-				data-testid="report-description"
-			></textarea>
+				data-testid="report-description"></textarea>
 			<span class="text-xs text-text-muted">{i18n.t('securityReport.fieldDescriptionHint')}</span>
 		</label>
 
@@ -184,8 +190,7 @@
 				bind:value={repro}
 				rows="7"
 				class="rounded-lg border border-border bg-surface px-3 py-2 font-mono text-sm text-text focus:border-accent focus:outline-none"
-				data-testid="report-repro"
-			></textarea>
+				data-testid="report-repro"></textarea>
 			<span class="text-xs text-text-muted">{i18n.t('securityReport.fieldReproHint')}</span>
 		</label>
 
@@ -224,7 +229,10 @@
 			<Input label={i18n.t('securityReport.fieldCwe')} bind:value={cwe} />
 		</div>
 
-		<section class="rounded-xl border border-border bg-surface-elevated p-5 space-y-3" data-testid="report-proofs">
+		<section
+			class="rounded-xl border border-border bg-surface-elevated p-5 space-y-3"
+			data-testid="report-proofs"
+		>
 			<div>
 				<h2 class="text-sm font-bold text-text">{i18n.t('securityReport.proofsTitle')}</h2>
 				<p class="mt-1 text-xs text-text-muted">{i18n.t('securityReport.proofsHint')}</p>
@@ -244,7 +252,9 @@
 			{#if proofKeys.length > 0}
 				<ul class="space-y-1.5">
 					{#each proofKeys as key (key)}
-						<li class="flex items-center justify-between gap-2 rounded-lg border border-border bg-surface px-3 py-2">
+						<li
+							class="flex items-center justify-between gap-2 rounded-lg border border-border bg-surface px-3 py-2"
+						>
 							<!-- A key, never a link: the backend will not give a proof of
 							     an unfixed vulnerability a stable address. -->
 							<code class="truncate font-mono text-xs text-text-muted">{key}</code>

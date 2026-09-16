@@ -20,6 +20,9 @@ test.describe('@parcours enterprise-bounties-new', () => {
 		await page.goto('/enterprise/bounties/new');
 		await page.waitForLoadState('domcontentloaded');
 		await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 15_000 });
-		await page.screenshot({ path: testInfo.outputPath('enterprise-bounties-new.png'), fullPage: true });
+		await page.screenshot({
+			path: testInfo.outputPath('enterprise-bounties-new.png'),
+			fullPage: true
+		});
 	});
 });

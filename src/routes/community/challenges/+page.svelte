@@ -12,7 +12,9 @@
 	let currentPage = $state(1);
 	let totalPages = $state(1);
 
-	$effect(() => { loadPopular(); });
+	$effect(() => {
+		loadPopular();
+	});
 
 	async function loadPopular() {
 		loading = true;
@@ -20,7 +22,9 @@
 			const res = await communityApi.popular(currentPage, 12);
 			challenges = res.data;
 			totalPages = res.pagination.total_pages;
-		} catch { /* silent */ }
+		} catch {
+			/* silent */
+		}
 		loading = false;
 	}
 
@@ -33,7 +37,9 @@
 				await communityApi.vote(ch.id);
 				ch.vote_count++;
 			}
-		} catch { /* silent */ }
+		} catch {
+			/* silent */
+		}
 	}
 </script>
 
@@ -51,8 +57,12 @@
 		</div>
 		<div class="flex flex-wrap gap-3">
 			{#if auth.isAuthenticated}
-				<Button variant="secondary" href="/community/challenges/mine">{i18n.t('community.myChallenges')}</Button>
-				<Button variant="accent" href="/community/challenges/create">{i18n.t('community.createBtn')}</Button>
+				<Button variant="secondary" href="/community/challenges/mine"
+					>{i18n.t('community.myChallenges')}</Button
+				>
+				<Button variant="accent" href="/community/challenges/create"
+					>{i18n.t('community.createBtn')}</Button
+				>
 			{/if}
 		</div>
 	</div>
@@ -65,9 +75,22 @@
 		</div>
 	{:else if challenges.length === 0}
 		<div class="rounded-2xl border border-border bg-surface-elevated p-16 text-center">
-			<div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-overlay text-text-muted">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-					<path d="M12 2v6m0 8v6M4.93 4.93l4.24 4.24m5.66 5.66 4.24 4.24M2 12h6m8 0h6M4.93 19.07l4.24-4.24m5.66-5.66 4.24-4.24" />
+			<div
+				class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-overlay text-text-muted"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-6 w-6"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path
+						d="M12 2v6m0 8v6M4.93 4.93l4.24 4.24m5.66 5.66 4.24 4.24M2 12h6m8 0h6M4.93 19.07l4.24-4.24m5.66-5.66 4.24-4.24"
+					/>
 				</svg>
 			</div>
 			<p class="text-base text-text-muted">{i18n.t('community.empty')}</p>
@@ -92,7 +115,10 @@
 		<Pagination
 			current={currentPage}
 			total={totalPages}
-			onchange={(p) => { currentPage = p; loadPopular(); }}
+			onchange={(p) => {
+				currentPage = p;
+				loadPopular();
+			}}
 			compact
 		/>
 	{/if}

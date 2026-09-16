@@ -63,7 +63,9 @@
 <div class="animate-[fade-in_300ms_ease-out]">
 	{#if success}
 		<div class="text-center">
-			<div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success/10 text-success">
+			<div
+				class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success/10 text-success"
+			>
 				<Check size={32} strokeWidth={2.5} />
 			</div>
 			<h1 class="mb-2 text-2xl font-bold">{i18n.t('auth.reset.successTitle')}</h1>

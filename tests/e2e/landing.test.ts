@@ -7,9 +7,7 @@ test.describe('Landing page', () => {
 		await expect(page.locator('h1')).toBeVisible();
 		// Both the navbar and the hero expose a signup CTA, so take the first
 		// rather than requiring a unique match (strict mode).
-		await expect(
-			page.getByRole('link', { name: /commencer|get started/i }).first()
-		).toBeVisible();
+		await expect(page.getByRole('link', { name: /commencer|get started/i }).first()).toBeVisible();
 	});
 
 	test('has correct meta tags', async ({ page }) => {

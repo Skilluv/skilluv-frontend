@@ -183,7 +183,9 @@
 	{:else}
 		<section class="space-y-3" data-testid="cv-experiences">
 			<div class="flex flex-wrap items-center justify-between gap-2">
-				<h2 class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted">
+				<h2
+					class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted"
+				>
 					<Briefcase size={14} />
 					{i18n.t('cv.experiencesTitle')}
 				</h2>
@@ -216,7 +218,9 @@
 				<div class="flex flex-wrap items-center gap-3 rounded-xl border border-border p-4">
 					<div class="min-w-0 flex-1">
 						<p class="text-sm font-bold text-text-primary">{x.title}</p>
-						<p class="text-xs text-text-muted">{x.company} · {fmtRange(x.started_on, x.ended_on)}</p>
+						<p class="text-xs text-text-muted">
+							{x.company} · {fmtRange(x.started_on, x.ended_on)}
+						</p>
 					</div>
 					{#if isCurrent(x)}
 						<Badge size="sm" variant="accent">{i18n.t('cv.current')}</Badge>
@@ -237,7 +241,9 @@
 
 		<section class="space-y-3" data-testid="cv-educations">
 			<div class="flex flex-wrap items-center justify-between gap-2">
-				<h2 class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted">
+				<h2
+					class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted"
+				>
 					<GraduationCap size={14} />
 					{i18n.t('cv.educationsTitle')}
 				</h2>
@@ -270,7 +276,8 @@
 					<div class="min-w-0 flex-1">
 						<p class="text-sm font-bold text-text-primary">{e.degree ?? e.school}</p>
 						<p class="text-xs text-text-muted">
-							{e.school}{#if e.field} · {e.field}{/if} · {fmtRange(e.started_on, e.ended_on)}
+							{e.school}{#if e.field}
+								· {e.field}{/if} · {fmtRange(e.started_on, e.ended_on)}
 						</p>
 					</div>
 					<Button
@@ -288,7 +295,9 @@
 		</section>
 
 		<section class="space-y-3" data-testid="cv-languages">
-			<h2 class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted">
+			<h2
+				class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted"
+			>
 				<Languages size={14} />
 				{i18n.t('cv.languagesTitle')}
 			</h2>

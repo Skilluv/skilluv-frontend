@@ -98,7 +98,11 @@ describe('a link that starts an OAuth flow leaves the app', () => {
 		// The opt-out is handed to `Button`, which renders the anchor. If it
 		// dropped unknown attributes, the markup above would be inert.
 		const button = readFileSync('src/lib/components/ui/Button.svelte', 'utf8');
-		expect(button).toContain('{...(rest as HTMLAnchorAttributes)}');
+		// Whitespace-insensitive: the assertion is about the spread reaching
+		// the anchor, not about how a formatter chose to wrap it.
+		expect(button.replace(/\s+/g, ' ')).toMatch(
+			/<a \{href\}[^>]*\{\.\.\.\(?rest as HTMLAnchorAttributes\)?\}/
+		);
 	});
 });
 

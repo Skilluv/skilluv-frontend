@@ -82,8 +82,7 @@ export const designEn: DesignTranslations = {
 		otherEntries: 'The other entries',
 		yourEntry: 'Your entry',
 		noStanding: 'Not ranked yet',
-		awardsNotice:
-			'A contest settles one brief. The annual awards settle the year.'
+		awardsNotice: 'A contest settles one brief. The annual awards settle the year.'
 	},
 	missions: {
 		boards: {

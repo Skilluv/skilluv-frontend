@@ -59,7 +59,9 @@
 				{i18n.t('p26.maintainerDigest.confirmInvalidTitle')}
 			</h1>
 			<p class="text-text-muted">{state.message}</p>
-			<Button variant="primary" href="/for-maintainers">{i18n.t('p26.maintainerDigest.confirmSubscribeAgain')}</Button>
+			<Button variant="primary" href="/for-maintainers"
+				>{i18n.t('p26.maintainerDigest.confirmSubscribeAgain')}</Button
+			>
 		{/if}
 	</div>
 </div>

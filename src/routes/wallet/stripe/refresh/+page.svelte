@@ -29,7 +29,9 @@
 	<title>{i18n.t('wallet.payoutModal.stripe.connectingLabel')} | Skilluv</title>
 </svelte:head>
 
-<div class="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-4 py-10 text-center">
+<div
+	class="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-4 py-10 text-center"
+>
 	{#if redirecting}
 		<Skeleton class="mb-4 h-24 w-24" rounded="full" />
 		<p class="text-sm text-text-muted">{i18n.t('wallet.payoutModal.stripe.connectingLabel')}</p>

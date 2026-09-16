@@ -50,6 +50,9 @@ export const pricingApi = {
 	 * - currency=USD → force la devise
 	 */
 	get(params?: { country?: string; currency?: string }) {
-		return api.get<ApiResponse<PricingResponse>>('/pricing', params as Record<string, string | undefined>);
+		return api.get<ApiResponse<PricingResponse>>(
+			'/pricing',
+			params as Record<string, string | undefined>
+		);
 	}
 };

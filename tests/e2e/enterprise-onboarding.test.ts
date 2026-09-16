@@ -51,9 +51,9 @@ const totpRoutes: ApiRoute[] = [
 ];
 
 async function signIn(page: Page, token: 'owner' | 'recruiter') {
-	await page.context().addCookies([
-		{ name: 'access_token', value: token, domain: 'localhost', path: '/' }
-	]);
+	await page
+		.context()
+		.addCookies([{ name: 'access_token', value: token, domain: 'localhost', path: '/' }]);
 }
 
 /** Welcome screen through to the 2FA step. */
@@ -150,7 +150,10 @@ test.describe('S6.12 enterprise onboarding', () => {
 		await page.getByRole('button', { name: 'Continuer' }).click();
 
 		await page.getByPlaceholder('https://acme.com').first().fill('https://acme.io');
-		await page.getByRole('button', { name: /Enregistrer|Continuer/ }).first().click();
+		await page
+			.getByRole('button', { name: /Enregistrer|Continuer/ })
+			.first()
+			.click();
 
 		await expect.poll(() => sent).not.toBeNull();
 	});

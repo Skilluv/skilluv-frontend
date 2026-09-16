@@ -67,7 +67,16 @@ describe('teamMarketplaceApi filters serialization', () => {
 describe('teamMarketplaceApi slot lifecycle', () => {
 	it('teamSlots + fillSlot + leaveSlot target the right routes', async () => {
 		fetchMock
-			.mockResolvedValueOnce(ok([{ slot_id: 's1', role_slug: 'backend', min_proficiency_level: 1, created_at: '2026-01-01' }]))
+			.mockResolvedValueOnce(
+				ok([
+					{
+						slot_id: 's1',
+						role_slug: 'backend',
+						min_proficiency_level: 1,
+						created_at: '2026-01-01'
+					}
+				])
+			)
 			.mockResolvedValueOnce(ok({ slot_id: 's1', filled_by: 'u1' }))
 			.mockResolvedValueOnce(ok({ slot_id: 's1', filled_by: null }));
 

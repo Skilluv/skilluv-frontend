@@ -33,7 +33,8 @@
 		if (!title.trim() || !body.trim() || !categorySlug || saving) return;
 		saving = true;
 		try {
-			const bounty = typeof bountyFragments === 'number' && bountyFragments > 0 ? bountyFragments : undefined;
+			const bounty =
+				typeof bountyFragments === 'number' && bountyFragments > 0 ? bountyFragments : undefined;
 			const res = await forumApi.create({
 				category_slug: categorySlug,
 				kind,
@@ -78,7 +79,10 @@
 		</h1>
 	</div>
 
-	<form onsubmit={submit} class="space-y-5 rounded-2xl border border-border bg-surface-elevated p-6">
+	<form
+		onsubmit={submit}
+		class="space-y-5 rounded-2xl border border-border bg-surface-elevated p-6"
+	>
 		<!-- Kind selector -->
 		<div>
 			<span class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
@@ -97,7 +101,10 @@
 
 		<!-- Category -->
 		<div>
-			<label for="cat" class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
+			<label
+				for="cat"
+				class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted"
+			>
 				{i18n.locale === 'fr' ? 'Catégorie' : 'Category'}
 			</label>
 			<Select
@@ -109,7 +116,10 @@
 
 		<!-- Title -->
 		<div>
-			<label for="title" class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
+			<label
+				for="title"
+				class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted"
+			>
 				{i18n.locale === 'fr' ? 'Titre' : 'Title'}
 			</label>
 			<input
@@ -117,14 +127,21 @@
 				bind:value={title}
 				required
 				maxlength="200"
-				placeholder={kind === 'question' ? (i18n.locale === 'fr' ? 'Comment... ?' : 'How to...?') : ''}
+				placeholder={kind === 'question'
+					? i18n.locale === 'fr'
+						? 'Comment... ?'
+						: 'How to...?'
+					: ''}
 				class="w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none"
 			/>
 		</div>
 
 		<!-- Body -->
 		<div>
-			<label for="body" class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
+			<label
+				for="body"
+				class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted"
+			>
 				{i18n.locale === 'fr' ? 'Contenu (markdown supporté)' : 'Content (markdown supported)'}
 			</label>
 			<textarea
@@ -139,8 +156,13 @@
 		<!-- Bounty (only for questions) -->
 		{#if kind === 'question'}
 			<div>
-				<label for="bounty" class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
-					{i18n.locale === 'fr' ? 'Bounty en fragments (optionnel)' : 'Bounty in fragments (optional)'}
+				<label
+					for="bounty"
+					class="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted"
+				>
+					{i18n.locale === 'fr'
+						? 'Bounty en fragments (optionnel)'
+						: 'Bounty in fragments (optional)'}
 				</label>
 				<input
 					id="bounty"
@@ -163,7 +185,11 @@
 			<Button variant="ghost" href="/forum">
 				{i18n.locale === 'fr' ? 'Annuler' : 'Cancel'}
 			</Button>
-			<Button variant="accent" loading={saving} disabled={!title.trim() || !body.trim() || !categorySlug}>
+			<Button
+				variant="accent"
+				loading={saving}
+				disabled={!title.trim() || !body.trim() || !categorySlug}
+			>
 				{i18n.locale === 'fr' ? 'Publier' : 'Publish'}
 			</Button>
 		</div>

@@ -233,7 +233,10 @@
 						>
 							{listing.cohort.name}
 						</a>
-						<Badge variant={p === 'running' ? 'success' : p === 'over' ? 'default' : 'accent'} size="sm">
+						<Badge
+							variant={p === 'running' ? 'success' : p === 'over' ? 'default' : 'accent'}
+							size="sm"
+						>
 							{i18n.t(`cohorts.${p}`)}
 						</Badge>
 					</div>

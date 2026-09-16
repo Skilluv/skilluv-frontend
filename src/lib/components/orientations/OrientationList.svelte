@@ -60,7 +60,9 @@
 
 		{#if primary?.working_languages && primary.working_languages.length > 0}
 			<p class="mt-4 text-xs text-text-muted">
-				{i18n.t('orientations.workingLanguages')}: {primary.working_languages.join(', ').toUpperCase()}
+				{i18n.t('orientations.workingLanguages')}: {primary.working_languages
+					.join(', ')
+					.toUpperCase()}
 			</p>
 		{/if}
 		{#if primary?.timezone}

@@ -198,7 +198,11 @@
 								</span>
 							{/if}
 						</span>
-						<span class="font-semibold {offer.price_cents_per_hour ? 'text-text-primary' : 'text-success'}">
+						<span
+							class="font-semibold {offer.price_cents_per_hour
+								? 'text-text-primary'
+								: 'text-success'}"
+						>
 							{offer.price_cents_per_hour
 								? i18n.t('talentOffers.pricePerHour', {
 										amount: fmtPrice(offer.price_cents_per_hour)

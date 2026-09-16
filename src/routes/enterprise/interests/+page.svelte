@@ -54,15 +54,22 @@
 		declined: requests.filter((r) => r.status === 'declined').length
 	});
 
-	let visible = $derived(
-		filter === 'all' ? requests : requests.filter((r) => r.status === filter)
-	);
+	let visible = $derived(filter === 'all' ? requests : requests.filter((r) => r.status === filter));
 
 	let filterItems = $derived([
 		{ value: 'all' as Filter, label: `${i18n.locale === 'fr' ? 'Tout' : 'All'} (${counts.all})` },
-		{ value: 'pending' as Filter, label: `${i18n.locale === 'fr' ? 'En attente' : 'Pending'} (${counts.pending})` },
-		{ value: 'accepted' as Filter, label: `${i18n.locale === 'fr' ? 'Acceptées' : 'Accepted'} (${counts.accepted})` },
-		{ value: 'declined' as Filter, label: `${i18n.locale === 'fr' ? 'Déclinées' : 'Declined'} (${counts.declined})` }
+		{
+			value: 'pending' as Filter,
+			label: `${i18n.locale === 'fr' ? 'En attente' : 'Pending'} (${counts.pending})`
+		},
+		{
+			value: 'accepted' as Filter,
+			label: `${i18n.locale === 'fr' ? 'Acceptées' : 'Accepted'} (${counts.accepted})`
+		},
+		{
+			value: 'declined' as Filter,
+			label: `${i18n.locale === 'fr' ? 'Déclinées' : 'Declined'} (${counts.declined})`
+		}
 	]);
 
 	function statusMeta(s: InterestStatus): {
@@ -125,7 +132,7 @@
 		<p class="text-sm text-text-muted">
 			{i18n.locale === 'fr'
 				? 'Suivi de toutes les demandes de contact que vous avez envoyées aux talents.'
-				: 'Track every contact request you\'ve sent to talents.'}
+				: "Track every contact request you've sent to talents."}
 		</p>
 	</div>
 
@@ -134,7 +141,8 @@
 		<SegmentedControl items={filterItems} bind:value={filter} />
 		{#if total > 0}
 			<p class="text-xs text-text-muted">
-				{i18n.locale === 'fr' ? 'Total' : 'Total'}: <span class="font-semibold text-text-primary tabular-nums">{total}</span>
+				{i18n.locale === 'fr' ? 'Total' : 'Total'}:
+				<span class="font-semibold text-text-primary tabular-nums">{total}</span>
 			</p>
 		{/if}
 	</div>
@@ -161,8 +169,12 @@
 			</div>
 			<p class="mb-4 text-text-muted">
 				{filter === 'all'
-					? (i18n.locale === 'fr' ? "Aucune demande envoyée pour l'instant." : 'No sent requests yet.')
-					: (i18n.locale === 'fr' ? 'Aucune demande dans cette catégorie.' : 'No requests in this category.')}
+					? i18n.locale === 'fr'
+						? "Aucune demande envoyée pour l'instant."
+						: 'No sent requests yet.'
+					: i18n.locale === 'fr'
+						? 'Aucune demande dans cette catégorie.'
+						: 'No requests in this category.'}
 			</p>
 			{#if filter === 'all'}
 				<Button variant="accent" href="/enterprise/talents">
@@ -175,10 +187,14 @@
 			{#each visible as req (req.id)}
 				{@const meta = statusMeta(req.status)}
 				{@const cooldown = req.status === 'declined' ? cooldownRemaining(req.created_at) : 0}
-				<article class="rounded-2xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/30">
+				<article
+					class="rounded-2xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/30"
+				>
 					<div class="flex items-start gap-3">
 						<!-- Avatar -->
-						<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+						<div
+							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary"
+						>
 							{(req.talent_display_name ?? req.talent_username ?? '?').charAt(0).toUpperCase()}
 						</div>
 
@@ -207,7 +223,9 @@
 							</div>
 
 							<!-- Message envoyé -->
-							<p class="mt-2 rounded-lg bg-surface-overlay/50 px-3 py-2 text-xs text-text-muted line-clamp-3">
+							<p
+								class="mt-2 rounded-lg bg-surface-overlay/50 px-3 py-2 text-xs text-text-muted line-clamp-3"
+							>
 								<span class="font-semibold text-text-primary">
 									{i18n.locale === 'fr' ? 'Votre message' : 'Your message'}:
 								</span>
@@ -215,14 +233,20 @@
 							</p>
 
 							<!-- Footer : date + action contextuelle -->
-							<div class="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-text-muted">
+							<div
+								class="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-text-muted"
+							>
 								<span class="flex items-center gap-1.5">
 									<Mail size={12} strokeWidth={2} />
-									{i18n.locale === 'fr' ? 'Envoyée' : 'Sent'} {fmtRelative(req.created_at)}
+									{i18n.locale === 'fr' ? 'Envoyée' : 'Sent'}
+									{fmtRelative(req.created_at)}
 								</span>
 
 								{#if req.status === 'accepted'}
-									<a href="/enterprise/messages" class="inline-flex items-center gap-1 text-accent hover:underline">
+									<a
+										href="/enterprise/messages"
+										class="inline-flex items-center gap-1 text-accent hover:underline"
+									>
 										{i18n.locale === 'fr' ? 'Ouvrir la conversation' : 'Open conversation'}
 										<ArrowRight size={12} strokeWidth={2} />
 									</a>
@@ -234,7 +258,9 @@
 									</span>
 								{:else if req.status === 'declined'}
 									<span class="text-text-muted">
-										{i18n.locale === 'fr' ? 'Cooldown terminé — vous pouvez recontacter' : 'Cooldown over — you can retry'}
+										{i18n.locale === 'fr'
+											? 'Cooldown terminé — vous pouvez recontacter'
+											: 'Cooldown over — you can retry'}
 									</span>
 								{/if}
 							</div>

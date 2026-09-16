@@ -47,7 +47,9 @@
 	{#if status === 'pending'}
 		<p class="text-text-muted">{i18n.locale === 'fr' ? 'Vérification…' : 'Verifying…'}</p>
 	{:else if status === 'ok'}
-		<h1 class="mb-4 text-2xl font-bold">{i18n.locale === 'fr' ? 'Email confirmé' : 'Email confirmed'}</h1>
+		<h1 class="mb-4 text-2xl font-bold">
+			{i18n.locale === 'fr' ? 'Email confirmé' : 'Email confirmed'}
+		</h1>
 		<p class="mb-6 text-text-muted">{message}</p>
 		<Button variant="accent" onclick={() => goto('/auth/login')}>
 			{i18n.locale === 'fr' ? 'Se reconnecter' : 'Sign in again'}

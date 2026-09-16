@@ -77,7 +77,10 @@ test.beforeEach(async ({ page, context }) => {
 test.describe('S6.10 enterprise messages', () => {
 	test('la liste affiche les conversations et le compteur non lu', async ({ page }) => {
 		await mockApi(page, [
-			{ path: '/contact/conversations', handler: json({ data: { conversations: [CONVERSATION] } }) },
+			{
+				path: '/contact/conversations',
+				handler: json({ data: { conversations: [CONVERSATION] } })
+			},
 			...common
 		]);
 		await gotoHydrated(page, '/enterprise/messages');
@@ -103,7 +106,10 @@ test.describe('S6.10 enterprise messages', () => {
 				path: '/contact/conversations/conv-1',
 				handler: json({ data: { conversation: CONVERSATION, messages: MESSAGES } })
 			},
-			{ path: '/contact/conversations', handler: json({ data: { conversations: [CONVERSATION] } }) },
+			{
+				path: '/contact/conversations',
+				handler: json({ data: { conversations: [CONVERSATION] } })
+			},
 			...common
 		]);
 		await gotoHydrated(page, '/enterprise/messages/conv-1');

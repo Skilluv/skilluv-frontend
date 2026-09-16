@@ -176,7 +176,10 @@
 								</span>
 							</div>
 							<p class="text-sm">
-								<a href="/profile/{item.user_id}" class="font-medium text-text-primary hover:text-accent font-mono text-xs">
+								<a
+									href="/profile/{item.user_id}"
+									class="font-medium text-text-primary hover:text-accent font-mono text-xs"
+								>
 									{item.user_id.slice(0, 8)}…
 								</a>
 							</p>

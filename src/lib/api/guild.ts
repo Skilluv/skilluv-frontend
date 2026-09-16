@@ -205,10 +205,9 @@ export const guildApi = {
 
 	/** Answer a war proposal. */
 	respondToWar(warId: string, accept: boolean) {
-		return api.post<ApiResponse<unknown>>(
-			`/guild-wars/${encodeURIComponent(warId)}/respond`,
-			{ accept }
-		);
+		return api.post<ApiResponse<unknown>>(`/guild-wars/${encodeURIComponent(warId)}/respond`, {
+			accept
+		});
 	},
 
 	/**
@@ -218,10 +217,9 @@ export const guildApi = {
 	 * result nobody signed is a result nobody can be asked about.
 	 */
 	concludeWar(warId: string, winnerGuildId: string) {
-		return api.post<ApiResponse<unknown>>(
-			`/guild-wars/${encodeURIComponent(warId)}/conclude`,
-			{ winner_guild_id: winnerGuildId }
-		);
+		return api.post<ApiResponse<unknown>>(`/guild-wars/${encodeURIComponent(warId)}/conclude`, {
+			winner_guild_id: winnerGuildId
+		});
 	},
 
 	/**
@@ -238,7 +236,9 @@ export const guildApi = {
 	},
 
 	apply(guildId: string, message?: string) {
-		return api.post<ApiResponse<{ application_id: string }>>(`/guilds/${guildId}/applications`, { message });
+		return api.post<ApiResponse<{ application_id: string }>>(`/guilds/${guildId}/applications`, {
+			message
+		});
 	},
 
 	proposeWar(challengerGuildId: string, opponentGuildId: string) {
@@ -249,6 +249,9 @@ export const guildApi = {
 	},
 
 	listWars(params?: { status?: string }) {
-		return api.get<ApiResponse<{ wars: GuildWar[] }>>('/guild-wars', params as Record<string, string>);
+		return api.get<ApiResponse<{ wars: GuildWar[] }>>(
+			'/guild-wars',
+			params as Record<string, string>
+		);
 	}
 };

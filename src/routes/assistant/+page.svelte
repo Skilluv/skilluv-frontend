@@ -13,11 +13,7 @@
 	 */
 	import { onMount } from 'svelte';
 	import { Info, Sparkles } from '@lucide/svelte';
-	import {
-		aiCompanionApi,
-		AI_MAX_CODE_CHARS,
-		AI_MAX_PROMPT_CHARS
-	} from '$lib/api/ai_companion';
+	import { aiCompanionApi, AI_MAX_CODE_CHARS, AI_MAX_PROMPT_CHARS } from '$lib/api/ai_companion';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';

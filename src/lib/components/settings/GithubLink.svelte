@@ -132,11 +132,7 @@
 
 		<div class="flex flex-wrap gap-2">
 			<!-- A link, not a button: this navigates into a consent screen. -->
-			<OAuthStartLink
-				href={connectHref}
-				size="sm"
-				variant={connected ? 'ghost' : 'accent'}
-			>
+			<OAuthStartLink href={connectHref} size="sm" variant={connected ? 'ghost' : 'accent'}>
 				{connected ? i18n.t('githubLink.reconnectCta') : i18n.t('githubLink.connectCta')}
 			</OAuthStartLink>
 

@@ -201,7 +201,10 @@
 					{#each board.recent_findings as finding (finding.id)}
 						<li class="rounded-xl border border-border bg-surface-elevated p-4">
 							<div class="flex flex-wrap items-start justify-between gap-2">
-								<a href="/security/findings/{finding.id}" class="text-sm font-bold text-text hover:underline">
+								<a
+									href="/security/findings/{finding.id}"
+									class="text-sm font-bold text-text hover:underline"
+								>
 									{finding.title}
 								</a>
 								<Badge size="sm">{severityLabel(finding.severity_tier)}</Badge>

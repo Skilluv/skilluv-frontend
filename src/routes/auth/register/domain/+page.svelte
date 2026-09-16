@@ -108,7 +108,9 @@
 		// Depend on the index so the wipe replays on every change.
 		const index = activeIndex;
 		if (!stage || reduceMotion) return;
-		const name = stage.querySelector(`[data-testid="domain-plate-${DOMAIN_PLATES[index].domain}"] h2`);
+		const name = stage.querySelector(
+			`[data-testid="domain-plate-${DOMAIN_PLATES[index].domain}"] h2`
+		);
 		if (!name) return;
 		const anim = gsap.fromTo(
 			name,

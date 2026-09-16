@@ -60,8 +60,14 @@
 			await mentorshipApi.upsertMyProfile({
 				headline: headline.trim(),
 				bio: bio.trim(),
-				expertise_areas: expertise.split(',').map((s) => s.trim()).filter(Boolean),
-				languages_spoken: languages.split(',').map((s) => s.trim()).filter(Boolean),
+				expertise_areas: expertise
+					.split(',')
+					.map((s) => s.trim())
+					.filter(Boolean),
+				languages_spoken: languages
+					.split(',')
+					.map((s) => s.trim())
+					.filter(Boolean),
 				hourly_rate_eur_cents: rateEur * 100,
 				min_session_minutes: minSessionMin,
 				active
@@ -96,7 +102,9 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Mon profil mentor | Skilluv' : 'My mentor profile | Skilluv'}</title>
+	<title
+		>{i18n.locale === 'fr' ? 'Mon profil mentor | Skilluv' : 'My mentor profile | Skilluv'}</title
+	>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
@@ -122,7 +130,11 @@
 		<!-- Connect status -->
 		<div class="mb-8 rounded-2xl border border-border bg-surface-elevated p-6">
 			<div class="mb-3 flex items-center gap-3">
-				<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-lg text-accent">◈</div>
+				<div
+					class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-lg text-accent"
+				>
+					◈
+				</div>
 				<div class="flex-1">
 					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">Stripe Connect</p>
 					<h3 class="text-base font-semibold">
@@ -139,15 +151,19 @@
 				</div>
 			{:else if connect?.onboarded}
 				<div class="flex items-center gap-2">
-					<Badge variant="warning" size="sm">⧗ {i18n.locale === 'fr' ? 'En vérification' : 'Under review'}</Badge>
+					<Badge variant="warning" size="sm"
+						>⧗ {i18n.locale === 'fr' ? 'En vérification' : 'Under review'}</Badge
+					>
 					<span class="text-sm text-text-muted">
-						{i18n.locale === 'fr' ? 'Stripe finalise la vérification.' : 'Stripe is completing verification.'}
+						{i18n.locale === 'fr'
+							? 'Stripe finalise la vérification.'
+							: 'Stripe is completing verification.'}
 					</span>
 				</div>
 			{:else}
 				<p class="mb-4 text-sm text-text-muted">
 					{i18n.locale === 'fr'
-						? 'Sans compte Connect, tu ne peux pas recevoir de paiements. L\'onboarding prend ~5 minutes.'
+						? "Sans compte Connect, tu ne peux pas recevoir de paiements. L'onboarding prend ~5 minutes."
 						: 'Without a Connect account you cannot receive payouts. Onboarding takes ~5 minutes.'}
 				</p>
 				<Button variant="accent" loading={onboarding} onclick={startOnboarding}>
@@ -157,9 +173,15 @@
 		</div>
 
 		<!-- Profile form -->
-		<form onsubmit={save} class="space-y-5 rounded-2xl border border-border bg-surface-elevated p-6">
+		<form
+			onsubmit={save}
+			class="space-y-5 rounded-2xl border border-border bg-surface-elevated p-6"
+		>
 			<div>
-				<label for="headline" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+				<label
+					for="headline"
+					class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted"
+				>
 					{i18n.locale === 'fr' ? 'Headline (1 phrase percutante)' : 'Headline (1 punchy sentence)'}
 				</label>
 				<input
@@ -167,12 +189,17 @@
 					bind:value={headline}
 					required
 					maxlength="200"
-					placeholder={i18n.locale === 'fr' ? 'Ex : Senior Rust engineer, 10 ans en systèmes distribués' : 'e.g. Senior Rust engineer, 10 years distributed systems'}
+					placeholder={i18n.locale === 'fr'
+						? 'Ex : Senior Rust engineer, 10 ans en systèmes distribués'
+						: 'e.g. Senior Rust engineer, 10 years distributed systems'}
 					class="w-full rounded-full border border-border bg-surface-overlay px-4 py-2 text-sm focus:border-primary focus:outline-none"
 				/>
 			</div>
 			<div>
-				<label for="bio" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+				<label
+					for="bio"
+					class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted"
+				>
 					{i18n.locale === 'fr' ? 'Bio complète' : 'Full bio'}
 				</label>
 				<textarea
@@ -185,7 +212,10 @@
 			</div>
 			<div class="grid grid-cols-2 gap-3">
 				<div>
-					<label for="rate" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+					<label
+						for="rate"
+						class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted"
+					>
 						{i18n.locale === 'fr' ? 'Tarif €/h' : 'Rate €/h'}
 					</label>
 					<input
@@ -199,7 +229,10 @@
 					/>
 				</div>
 				<div>
-					<label for="min" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+					<label
+						for="min"
+						class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted"
+					>
 						{i18n.locale === 'fr' ? 'Session min. (min)' : 'Min session (min)'}
 					</label>
 					<input
@@ -213,7 +246,10 @@
 				</div>
 			</div>
 			<div>
-				<label for="exp" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+				<label
+					for="exp"
+					class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted"
+				>
 					{i18n.locale === 'fr' ? 'Expertise (virgules)' : 'Expertise (comma-separated)'}
 				</label>
 				<input
@@ -224,8 +260,13 @@
 				/>
 			</div>
 			<div>
-				<label for="lang" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
-					{i18n.locale === 'fr' ? 'Langues parlées (virgules)' : 'Languages spoken (comma-separated)'}
+				<label
+					for="lang"
+					class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted"
+				>
+					{i18n.locale === 'fr'
+						? 'Langues parlées (virgules)'
+						: 'Languages spoken (comma-separated)'}
 				</label>
 				<input
 					id="lang"
@@ -237,7 +278,9 @@
 			<div class="flex items-center gap-2">
 				<input id="active" type="checkbox" bind:checked={active} class="h-4 w-4 accent-primary" />
 				<label for="active" class="text-sm">
-					{i18n.locale === 'fr' ? 'Profil visible dans la liste publique' : 'Profile visible in public list'}
+					{i18n.locale === 'fr'
+						? 'Profil visible dans la liste publique'
+						: 'Profile visible in public list'}
 				</label>
 			</div>
 			<div class="flex justify-end">

@@ -158,8 +158,7 @@
 					maxlength={5000}
 					placeholder={i18n.t('missions.coverLetterPlaceholder')}
 					class="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
-					required
-				></textarea>
+					required></textarea>
 			</div>
 
 			<div>

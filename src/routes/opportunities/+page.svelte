@@ -9,9 +9,12 @@
 
 <svelte:head>
 	<title>{i18n.locale === 'fr' ? 'Opportunités | Skilluv' : 'Opportunities | Skilluv'}</title>
-	<meta name="description" content={i18n.locale === 'fr'
-		? 'Sur Skilluv, tu ne fais pas que résoudre des défis. Bounties OSS, certifications, mentorship — construis ta preuve.'
-		: 'On Skilluv, you don\'t just solve challenges. OSS bounties, certifications, mentorship — build your proof.'} />
+	<meta
+		name="description"
+		content={i18n.locale === 'fr'
+			? 'Sur Skilluv, tu ne fais pas que résoudre des défis. Bounties OSS, certifications, mentorship — construis ta preuve.'
+			: "On Skilluv, you don't just solve challenges. OSS bounties, certifications, mentorship — build your proof."}
+	/>
 </svelte:head>
 
 <!-- Hero -->
@@ -25,7 +28,9 @@
 		<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">
 			{i18n.locale === 'fr' ? 'Au-delà des challenges' : 'Beyond challenges'}
 		</p>
-		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
+		<h1
+			class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight"
+		>
 			{#if i18n.locale === 'fr'}
 				Trois manières<br />
 				<span class="text-primary">de faire tes preuves.</span>
@@ -36,8 +41,8 @@
 		</h1>
 		<p class="mt-8 max-w-2xl text-lg text-text-muted">
 			{i18n.locale === 'fr'
-				? "Sur Skilluv, tu ne joues pas juste. Tu gagnes des fragments en résolvant des issues open-source. Tu prouves ta maîtrise avec des certifications vérifiables. Tu apprends de mentors expérimentés."
-				: 'On Skilluv, you don\'t just play. You earn fragments solving open-source issues. You prove mastery with verifiable certifications. You learn from experienced mentors.'}
+				? 'Sur Skilluv, tu ne joues pas juste. Tu gagnes des fragments en résolvant des issues open-source. Tu prouves ta maîtrise avec des certifications vérifiables. Tu apprends de mentors expérimentés.'
+				: "On Skilluv, you don't just play. You earn fragments solving open-source issues. You prove mastery with verifiable certifications. You learn from experienced mentors."}
 		</p>
 	</div>
 </section>
@@ -46,15 +51,24 @@
 <section class="mx-auto max-w-6xl px-4 py-20 sm:py-24">
 	<div class="grid gap-6 md:grid-cols-3">
 		<!-- Bounties -->
-		<article class="flex flex-col rounded-2xl border border-border bg-surface-elevated p-8 relative overflow-hidden">
-			<div aria-hidden="true" class="pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full bg-primary/10 blur-2xl"></div>
-			<div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-2xl text-primary">⬢</div>
+		<article
+			class="flex flex-col rounded-2xl border border-border bg-surface-elevated p-8 relative overflow-hidden"
+		>
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full bg-primary/10 blur-2xl"
+			></div>
+			<div
+				class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-2xl text-primary"
+			>
+				⬢
+			</div>
 			<h2 class="mb-3 text-2xl font-black tracking-tight">
 				{i18n.locale === 'fr' ? 'Bounties OSS' : 'OSS Bounties'}
 			</h2>
 			<p class="mb-4 flex-1 text-sm leading-relaxed text-text-muted">
 				{i18n.locale === 'fr'
-					? "Des entreprises postent des bounties sur leurs issues GitHub. Tu revendiques, tu ouvres une PR, elle est mergée : les crédits séquestrés deviennent tes fragments."
+					? 'Des entreprises postent des bounties sur leurs issues GitHub. Tu revendiques, tu ouvres une PR, elle est mergée : les crédits séquestrés deviennent tes fragments.'
 					: 'Companies post bounties on their GitHub issues. You claim, open a PR, it gets merged: escrowed credits become your fragments.'}
 			</p>
 			<div class="mb-4 space-y-2 text-sm">
@@ -64,7 +78,11 @@
 				</div>
 				<div class="flex items-center gap-2">
 					<span class="text-success">✓</span>
-					<span>{i18n.locale === 'fr' ? 'Fragments + bonus perseverance' : 'Fragments + perseverance bonus'}</span>
+					<span
+						>{i18n.locale === 'fr'
+							? 'Fragments + bonus perseverance'
+							: 'Fragments + perseverance bonus'}</span
+					>
 				</div>
 				<div class="flex items-center gap-2">
 					<span class="text-success">✓</span>
@@ -77,12 +95,23 @@
 		</article>
 
 		<!-- Certifications -->
-		<article class="flex flex-col rounded-2xl border border-accent/40 bg-surface-elevated p-8 relative overflow-hidden">
+		<article
+			class="flex flex-col rounded-2xl border border-accent/40 bg-surface-elevated p-8 relative overflow-hidden"
+		>
 			<div class="absolute -top-3 left-6">
-				<Badge variant="accent" size="md">★ {i18n.locale === 'fr' ? 'Recommandé' : 'Recommended'}</Badge>
+				<Badge variant="accent" size="md"
+					>★ {i18n.locale === 'fr' ? 'Recommandé' : 'Recommended'}</Badge
+				>
 			</div>
-			<div aria-hidden="true" class="pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full bg-accent/10 blur-2xl"></div>
-			<div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-2xl text-accent">◈</div>
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full bg-accent/10 blur-2xl"
+			></div>
+			<div
+				class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-2xl text-accent"
+			>
+				◈
+			</div>
 			<h2 class="mb-3 text-2xl font-black tracking-tight">
 				{i18n.locale === 'fr' ? 'Certifications' : 'Certifications'}
 			</h2>
@@ -94,15 +123,27 @@
 			<div class="mb-4 space-y-2 text-sm">
 				<div class="flex items-center gap-2">
 					<span class="text-success">✓</span>
-					<span>{i18n.locale === 'fr' ? 'Diplôme PDF téléchargeable' : 'Downloadable PDF diploma'}</span>
+					<span
+						>{i18n.locale === 'fr'
+							? 'Diplôme PDF téléchargeable'
+							: 'Downloadable PDF diploma'}</span
+					>
 				</div>
 				<div class="flex items-center gap-2">
 					<span class="text-success">✓</span>
-					<span>{i18n.locale === 'fr' ? 'Vérification publique par code' : 'Public code verification'}</span>
+					<span
+						>{i18n.locale === 'fr'
+							? 'Vérification publique par code'
+							: 'Public code verification'}</span
+					>
 				</div>
 				<div class="flex items-center gap-2">
 					<span class="text-success">✓</span>
-					<span>{i18n.locale === 'fr' ? 'Reconnu par les recruteurs' : 'Recognized by recruiters'}</span>
+					<span
+						>{i18n.locale === 'fr'
+							? 'Reconnu par les recruteurs'
+							: 'Recognized by recruiters'}</span
+					>
 				</div>
 			</div>
 			<Button variant="accent" href="/certifications">
@@ -111,29 +152,50 @@
 		</article>
 
 		<!-- Mentorship -->
-		<article class="flex flex-col rounded-2xl border border-border bg-surface-elevated p-8 relative overflow-hidden">
-			<div aria-hidden="true" class="pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full bg-primary/10 blur-2xl"></div>
-			<div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-2xl text-primary">★</div>
+		<article
+			class="flex flex-col rounded-2xl border border-border bg-surface-elevated p-8 relative overflow-hidden"
+		>
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full bg-primary/10 blur-2xl"
+			></div>
+			<div
+				class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-2xl text-primary"
+			>
+				★
+			</div>
 			<h2 class="mb-3 text-2xl font-black tracking-tight">
 				{i18n.locale === 'fr' ? 'Mentorship' : 'Mentorship'}
 			</h2>
 			<p class="mb-4 flex-1 text-sm leading-relaxed text-text-muted">
 				{i18n.locale === 'fr'
-					? "Réserve une session 1-on-1 avec un mentor Skilluv. Code review, prépa entretien, coaching carrière. Ou deviens mentor toi-même — 80% te reviennent."
+					? 'Réserve une session 1-on-1 avec un mentor Skilluv. Code review, prépa entretien, coaching carrière. Ou deviens mentor toi-même — 80% te reviennent.'
 					: 'Book a 1-on-1 session with a Skilluv mentor. Code review, interview prep, career coaching. Or become a mentor yourself — 80% is yours.'}
 			</p>
 			<div class="mb-4 space-y-2 text-sm">
 				<div class="flex items-center gap-2">
 					<span class="text-success">✓</span>
-					<span>{i18n.locale === 'fr' ? 'Refund automatique 100%/50%' : 'Automatic 100%/50% refund'}</span>
+					<span
+						>{i18n.locale === 'fr'
+							? 'Refund automatique 100%/50%'
+							: 'Automatic 100%/50% refund'}</span
+					>
 				</div>
 				<div class="flex items-center gap-2">
 					<span class="text-success">✓</span>
-					<span>{i18n.locale === 'fr' ? 'Mentors vérifiés Stripe Connect' : 'Stripe Connect verified mentors'}</span>
+					<span
+						>{i18n.locale === 'fr'
+							? 'Mentors vérifiés Stripe Connect'
+							: 'Stripe Connect verified mentors'}</span
+					>
 				</div>
 				<div class="flex items-center gap-2">
 					<span class="text-success">✓</span>
-					<span>{i18n.locale === 'fr' ? 'Reviews uniquement post-session' : 'Reviews only post-session'}</span>
+					<span
+						>{i18n.locale === 'fr'
+							? 'Reviews uniquement post-session'
+							: 'Reviews only post-session'}</span
+					>
 				</div>
 			</div>
 			<div class="flex flex-col gap-2">
@@ -156,12 +218,7 @@
 			<span class="text-accent">{i18n.locale === 'fr' ? 'ta preuve.' : 'your proof.'}</span>
 		</h2>
 		<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-			{#each [
-				{ n: '01', fr: { t: 'Crée ton compte', d: 'Choisis ton domaine principal. Complète ton premier challenge onboarding.' }, en: { t: 'Create account', d: 'Pick your main domain. Complete your first onboarding challenge.' } },
-				{ n: '02', fr: { t: 'Résous des challenges', d: 'Gagne des fragments. Fais grimper ton titre : Apprenti → Artisan → Maître → Légende.' }, en: { t: 'Solve challenges', d: 'Earn fragments. Level up: Apprentice → Artisan → Master → Legend.' } },
-				{ n: '03', fr: { t: 'Prouve tes compétences', d: 'Passe une certification. Résous une bounty OSS. Prends un mentor si besoin.' }, en: { t: 'Prove your skills', d: 'Take a certification. Solve an OSS bounty. Get a mentor if needed.' } },
-				{ n: '04', fr: { t: 'Sois recruté·e', d: 'Les entreprises te trouvent via tes preuves, pas ton CV. Recruteurs vérifient tes diplômes en 1 clic.' }, en: { t: 'Get hired', d: 'Companies find you via your proof, not your resume. Recruiters verify your diplomas in 1 click.' } }
-			] as step}
+			{#each [{ n: '01', fr: { t: 'Crée ton compte', d: 'Choisis ton domaine principal. Complète ton premier challenge onboarding.' }, en: { t: 'Create account', d: 'Pick your main domain. Complete your first onboarding challenge.' } }, { n: '02', fr: { t: 'Résous des challenges', d: 'Gagne des fragments. Fais grimper ton titre : Apprenti → Artisan → Maître → Légende.' }, en: { t: 'Solve challenges', d: 'Earn fragments. Level up: Apprentice → Artisan → Master → Legend.' } }, { n: '03', fr: { t: 'Prouve tes compétences', d: 'Passe une certification. Résous une bounty OSS. Prends un mentor si besoin.' }, en: { t: 'Prove your skills', d: 'Take a certification. Solve an OSS bounty. Get a mentor if needed.' } }, { n: '04', fr: { t: 'Sois recruté·e', d: 'Les entreprises te trouvent via tes preuves, pas ton CV. Recruteurs vérifient tes diplômes en 1 clic.' }, en: { t: 'Get hired', d: 'Companies find you via your proof, not your resume. Recruiters verify your diplomas in 1 click.' } }] as step}
 				{@const t = i18n.locale === 'fr' ? step.fr : step.en}
 				<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 					<div class="mb-3 text-4xl font-black text-primary">{step.n}</div>
@@ -190,8 +247,12 @@
 	<div class="mt-8 flex justify-center gap-3">
 		<Button variant="accent" size="lg" href={ctaHref}>
 			{auth.isAuthenticated
-				? (i18n.locale === 'fr' ? 'Voir les challenges' : 'See challenges')
-				: (i18n.locale === 'fr' ? 'Créer mon compte' : 'Create my account')}
+				? i18n.locale === 'fr'
+					? 'Voir les challenges'
+					: 'See challenges'
+				: i18n.locale === 'fr'
+					? 'Créer mon compte'
+					: 'Create my account'}
 		</Button>
 		<Button variant="ghost" size="lg" href="/leaderboards">
 			{i18n.locale === 'fr' ? 'Voir les classements' : 'See leaderboards'}

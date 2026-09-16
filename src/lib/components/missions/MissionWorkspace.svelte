@@ -307,7 +307,9 @@
 			<p class="text-xs text-text-muted">{i18n.t('missionWork.roundsNormal')}</p>
 
 			{#if rounds.length === 0}
-				<p class="rounded-lg border border-border bg-surface-elevated px-4 py-6 text-sm text-text-muted">
+				<p
+					class="rounded-lg border border-border bg-surface-elevated px-4 py-6 text-sm text-text-muted"
+				>
 					{i18n.t('missionWork.roundsEmpty')}
 				</p>
 			{:else}
@@ -339,7 +341,9 @@
 								<p class="mt-2 whitespace-pre-line text-sm text-text-muted">{round.notes_md}</p>
 							{/if}
 							{#if round.decision_reason}
-								<p class="mt-2 rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text">
+								<p
+									class="mt-2 rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text"
+								>
 									{round.decision_reason}
 								</p>
 							{/if}
@@ -410,7 +414,9 @@
 		</section>
 
 		<section class="space-y-3" data-testid="{testPrefix}-mission-ratings">
-			<h2 class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted">
+			<h2
+				class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted"
+			>
 				<Star size={15} />
 				{i18n.t('missionWork.ratingsTitle')}
 			</h2>
@@ -457,7 +463,9 @@
 		</section>
 
 		<section class="space-y-3" data-testid="{testPrefix}-mission-invoices">
-			<h2 class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted">
+			<h2
+				class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted"
+			>
 				<Receipt size={15} />
 				{i18n.t('missionWork.invoicesTitle')}
 			</h2>

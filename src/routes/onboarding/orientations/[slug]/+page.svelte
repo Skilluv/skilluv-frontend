@@ -31,7 +31,10 @@
 				orientationsApi.playlist(s)
 			]);
 			if (detailRes.status === 'fulfilled') orientation = detailRes.value.data;
-			else if (detailRes.reason instanceof SkilluError && detailRes.reason.code === 'RESOURCE_NOT_FOUND') {
+			else if (
+				detailRes.reason instanceof SkilluError &&
+				detailRes.reason.code === 'RESOURCE_NOT_FOUND'
+			) {
 				error = i18n.t('errors.notFoundMessage');
 			}
 			if (playlistRes.status === 'fulfilled') playlist = playlistRes.value.data;
@@ -142,8 +145,12 @@
 				{:else}
 					<ol class="space-y-2" role="list">
 						{#each playlist.slice(0, 5) as item, i (item.id)}
-							<li class="flex items-start gap-3 rounded-lg border border-border bg-surface-overlay p-3">
-								<span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-accent-fg">
+							<li
+								class="flex items-start gap-3 rounded-lg border border-border bg-surface-overlay p-3"
+							>
+								<span
+									class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-accent-fg"
+								>
 									{i + 1}
 								</span>
 								<div class="flex-1 min-w-0">
@@ -155,7 +162,9 @@
 								<span class="rounded bg-surface px-2 py-0.5 text-[10px] uppercase text-text-muted">
 									{item.type === 'challenge'
 										? i18n.t('common.nav.challenges')
-										: (i18n.locale === 'fr' ? 'Team' : 'Team')}
+										: i18n.locale === 'fr'
+											? 'Team'
+											: 'Team'}
 								</span>
 							</li>
 						{/each}

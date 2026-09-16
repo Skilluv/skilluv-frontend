@@ -42,10 +42,14 @@
 
 	function statusLabel(s: ValidatorApplicationStatus): string {
 		switch (s) {
-			case 'pending': return i18n.t('p26.validatorApplication.statusPending');
-			case 'accepted': return i18n.t('p26.validatorApplication.statusAccepted');
-			case 'rejected': return i18n.t('p26.validatorApplication.statusRejected');
-			case 'withdrawn': return i18n.t('p26.validatorApplication.statusWithdrawn');
+			case 'pending':
+				return i18n.t('p26.validatorApplication.statusPending');
+			case 'accepted':
+				return i18n.t('p26.validatorApplication.statusAccepted');
+			case 'rejected':
+				return i18n.t('p26.validatorApplication.statusRejected');
+			case 'withdrawn':
+				return i18n.t('p26.validatorApplication.statusWithdrawn');
 		}
 	}
 
@@ -83,7 +87,10 @@
 		} catch (err) {
 			view = {
 				status: 'error',
-				message: err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.listLoadError')
+				message:
+					err instanceof SkilluError
+						? err.message
+						: i18n.t('p26.validatorApplication.listLoadError')
 			};
 		}
 	}
@@ -103,7 +110,9 @@
 			toast.success(i18n.t('p26.validatorApplication.toastWithdrawn'));
 			await load();
 		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastError'));
+			toast.error(
+				err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastError')
+			);
 		} finally {
 			actingId = null;
 		}
@@ -116,7 +125,9 @@
 			toast.success(i18n.t('p26.validatorApplication.toastAccepted'));
 			await load();
 		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastError'));
+			toast.error(
+				err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastError')
+			);
 		} finally {
 			actingId = null;
 		}
@@ -166,7 +177,9 @@
 		<Alert tone="error" size="lg">
 			{view.message}
 			{#snippet action()}
-				<Button variant="secondary" size="sm" onclick={load}>{i18n.t('p26.validation.retryBtn')}</Button>
+				<Button variant="secondary" size="sm" onclick={load}
+					>{i18n.t('p26.validation.retryBtn')}</Button
+				>
 			{/snippet}
 		</Alert>
 	{:else if view.apps.length === 0}
@@ -176,7 +189,9 @@
 			body={i18n.t('p26.validatorApplication.listEmptyBody')}
 		>
 			{#snippet action()}
-				<Button variant="primary" href="/settings/validator-application/new">{i18n.t('p26.validatorApplication.listApplyCta')}</Button>
+				<Button variant="primary" href="/settings/validator-application/new"
+					>{i18n.t('p26.validatorApplication.listApplyCta')}</Button
+				>
 			{/snippet}
 		</EmptyState>
 	{:else if visibleApps.length === 0}
@@ -184,11 +199,15 @@
 	{:else}
 		<div class="flex flex-col gap-4">
 			{#each visibleApps as app (app.id)}
-				<article class="flex flex-col gap-3 rounded-2xl border border-border bg-surface-elevated p-5">
+				<article
+					class="flex flex-col gap-3 rounded-2xl border border-border bg-surface-elevated p-5"
+				>
 					<div class="flex flex-wrap items-center gap-2">
 						<Badge variant={domainVariant(app.domain)}>{app.domain}</Badge>
 						<Badge variant={app.origin === 'admin_invite' ? 'accent' : 'default'}>
-							{app.origin === 'admin_invite' ? i18n.t('p26.validatorApplication.originAdminInvite') : i18n.t('p26.validatorApplication.originApplication')}
+							{app.origin === 'admin_invite'
+								? i18n.t('p26.validatorApplication.originAdminInvite')
+								: i18n.t('p26.validatorApplication.originApplication')}
 						</Badge>
 						<Badge variant={STATUS_BADGE[app.status]}>{statusLabel(app.status)}</Badge>
 					</div>
@@ -199,7 +218,9 @@
 
 					{#if app.admin_notes}
 						<div class="rounded-lg bg-primary/10 p-3 text-sm">
-							<p class="mb-1 text-xs font-semibold text-primary">{i18n.t('p26.validatorApplication.adminNote')}</p>
+							<p class="mb-1 text-xs font-semibold text-primary">
+								{i18n.t('p26.validatorApplication.adminNote')}
+							</p>
 							<p>{app.admin_notes}</p>
 						</div>
 					{/if}

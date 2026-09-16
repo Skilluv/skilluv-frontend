@@ -34,14 +34,16 @@
 
 <svelte:element
 	this={href ? 'a' : 'button'}
-	href={href}
+	{href}
 	type={href ? undefined : 'button'}
 	role={href ? 'link' : 'button'}
 	aria-pressed={href ? undefined : selected}
 	aria-disabled={disabled ? true : undefined}
 	class="group relative flex h-full flex-col rounded-2xl border-2 bg-surface-elevated p-5 text-left transition-all duration-200 {selected
 		? 'border-accent shadow-md'
-		: 'border-border ' + style.hoverBorder} {disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}"
+		: 'border-border ' + style.hoverBorder} {disabled
+		? 'cursor-not-allowed opacity-50'
+		: 'cursor-pointer'}"
 	onclick={handleClick}
 	disabled={!href && disabled}
 >

@@ -46,7 +46,11 @@
 			{loadError}
 		</Alert>
 	{:else if tracks.length === 0}
-		<EmptyState variant="scroll" title={i18n.t('tracks.emptyTitle')} body={i18n.t('tracks.emptyBody')} />
+		<EmptyState
+			variant="scroll"
+			title={i18n.t('tracks.emptyTitle')}
+			body={i18n.t('tracks.emptyBody')}
+		/>
 	{:else}
 		<div class="grid gap-4 sm:grid-cols-2">
 			{#each tracks as track (track.id)}

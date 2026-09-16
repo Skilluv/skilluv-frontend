@@ -55,24 +55,18 @@
 	let checkInNotes = $state('');
 	let checkInRating = $state('4');
 
-	let orientationItems = $derived(
-		orientations.map((o) => ({ value: o.id, label: o.name }))
-	);
+	let orientationItems = $derived(orientations.map((o) => ({ value: o.id, label: o.name })));
 	let cadenceItems = $derived(
 		[1, 2, 3, 4, 5].map((n) => ({
 			value: String(n),
 			label: i18n.t('peerMatching.enrollCadenceUnit', { n })
 		}))
 	);
-	let ratingItems = $derived(
-		[1, 2, 3, 4, 5].map((n) => ({ value: String(n), label: String(n) }))
-	);
+	let ratingItems = $derived([1, 2, 3, 4, 5].map((n) => ({ value: String(n), label: String(n) })));
 	let enrolledIds = $derived(
 		new Set(enrollments.filter((e) => e.enrollment.active).map((e) => e.enrollment.orientation_id))
 	);
-	let proposalOrientations = $derived(
-		enrollments.filter((e) => e.enrollment.active)
-	);
+	let proposalOrientations = $derived(enrollments.filter((e) => e.enrollment.active));
 
 	async function load() {
 		loading = true;
@@ -363,7 +357,9 @@
 		{#if proposalsFor}
 			<section class="mt-6 rounded-2xl border border-border bg-surface-elevated p-5">
 				<div class="flex items-center justify-between">
-					<h2 class="text-sm font-bold text-text-primary">{i18n.t('peerMatching.proposalsTitle')}</h2>
+					<h2 class="text-sm font-bold text-text-primary">
+						{i18n.t('peerMatching.proposalsTitle')}
+					</h2>
 					<Button
 						variant="ghost"
 						size="sm"
@@ -398,7 +394,12 @@
 										</p>
 										<p class="mt-1.5 text-xs text-text-muted">{reasonLine(proposal)}</p>
 									</div>
-									<Button variant="accent" size="sm" loading={busy} onclick={() => createMatch(proposal)}>
+									<Button
+										variant="accent"
+										size="sm"
+										loading={busy}
+										onclick={() => createMatch(proposal)}
+									>
 										{i18n.t('peerMatching.proposalsPick')}
 									</Button>
 								</div>
@@ -490,7 +491,11 @@
 										{#each rows as session (session.id)}
 											{@const upcoming = new Date(session.session_at).getTime() > Date.now()}
 											<li class="flex flex-wrap items-center justify-between gap-2 text-sm">
-												<span class={session.canceled ? 'text-text-muted line-through' : 'text-text-primary'}>
+												<span
+													class={session.canceled
+														? 'text-text-muted line-through'
+														: 'text-text-primary'}
+												>
 													{fmtDateTime(session.session_at)}
 												</span>
 												<div class="flex items-center gap-2">
@@ -514,7 +519,11 @@
 														</Button>
 													{/if}
 													{#if !session.canceled && upcoming}
-														<Button variant="ghost" size="sm" onclick={() => cancelSession(session)}>
+														<Button
+															variant="ghost"
+															size="sm"
+															onclick={() => cancelSession(session)}
+														>
 															{i18n.t('peerMatching.sessionCancel')}
 														</Button>
 													{/if}
@@ -538,7 +547,11 @@
 	onclose={() => (scheduleFor = null)}
 	size="sm"
 >
-	<Input label={i18n.t('peerMatching.sessionSchedule')} type="datetime-local" bind:value={scheduleAt} />
+	<Input
+		label={i18n.t('peerMatching.sessionSchedule')}
+		type="datetime-local"
+		bind:value={scheduleAt}
+	/>
 
 	{#snippet actions()}
 		<Button variant="ghost" onclick={() => (scheduleFor = null)}>

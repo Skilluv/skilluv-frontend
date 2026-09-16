@@ -54,13 +54,13 @@
    Cf. CSS cascade spec (unlayered styles > layered styles).
    ============================================ */
 :root {
-	--font-sans: 'Bricolage Grotesque Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--font-sans:
+		'Bricolage Grotesque Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
 	--font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Consolas, monospace;
 	--default-font-family: var(--font-sans);
 	--default-mono-font-family: var(--font-mono);
 }
-
 
 /* @theme INLINE — pour les tokens qui référencent d'autres CSS variables.
    `inline` dit à Tailwind: "ne fige pas la valeur, garde le var()
@@ -280,39 +280,39 @@
 :root,
 [data-theme='forge'] {
 	/* Neutrals — paliers luminance ~10 pts entre chaque niveau */
-	--sk-surface: #18130f;             /* fond page — presque noir warm */
-	--sk-surface-alt: #221b16;         /* sections alternées — +6 pts */
-	--sk-surface-elevated: #2f2620;    /* CARDS — +12 pts vs surface */
+	--sk-surface: #18130f; /* fond page — presque noir warm */
+	--sk-surface-alt: #221b16; /* sections alternées — +6 pts */
+	--sk-surface-elevated: #2f2620; /* CARDS — +12 pts vs surface */
 	--sk-surface-elevated-hover: #3d3229; /* hover cards — +9 pts */
-	--sk-surface-overlay: #4a3d33;     /* modals — +9 pts */
+	--sk-surface-overlay: #4a3d33; /* modals — +9 pts */
 	--sk-border: #5a4738;
 	--sk-border-strong: #7a6350;
 
-	--sk-text: #f4ede0;                /* crème patinée */
-	--sk-text-muted: #c2b195;         /* AA: 4.99:1 on surface-overlay (was 4.42) */
+	--sk-text: #f4ede0; /* crème patinée */
+	--sk-text-muted: #c2b195; /* AA: 4.99:1 on surface-overlay (was 4.42) */
 
 	/* Surfaces catégorielles — zones colorées assumées (Persona-style) */
-	--sk-surface-craft: #3a2510;       /* ambre profond */
-	--sk-surface-create: #3a1418;      /* rouge sombre poppy */
-	--sk-surface-understand: #12212f;  /* bleu de Prusse */
-	--sk-surface-operate: #0e2825;     /* sarcelle profonde */
-	--sk-surface-share: #32191c;       /* bordeaux rose */
-	--sk-surface-meta: #2c2412;        /* safran sombre */
+	--sk-surface-craft: #3a2510; /* ambre profond */
+	--sk-surface-create: #3a1418; /* rouge sombre poppy */
+	--sk-surface-understand: #12212f; /* bleu de Prusse */
+	--sk-surface-operate: #0e2825; /* sarcelle profonde */
+	--sk-surface-share: #32191c; /* bordeaux rose */
+	--sk-surface-meta: #2c2412; /* safran sombre */
 
 	/* Accents chromatiques */
-	--sk-primary: #3a6a86;             /* bleu terreux (assombri pour contrast WCAG AA >= 4.5 avec text-primary-fg) */
+	--sk-primary: #3a6a86; /* bleu terreux (assombri pour contrast WCAG AA >= 4.5 avec text-primary-fg) */
 	--sk-primary-hover: #457b9d;
 	--sk-primary-fg: #f4ede0;
-	--sk-accent: #ff6c47;               /* ocre plus vif que #c47a2e — SIGNATURE */
+	--sk-accent: #ff6c47; /* ocre plus vif que #c47a2e — SIGNATURE */
 	--sk-accent-hover: #ff8b6a;
 	--sk-accent-fg: #18130f;
 
 	--sk-shadow-color: rgba(0, 0, 0, 0.5);
-	--sk-success: #25d474;             /* AA: 4.72:1 on bg-success/15 (was 3.66) */
+	--sk-success: #25d474; /* AA: 4.72:1 on bg-success/15 (was 3.66) */
 	--sk-success-soft: rgba(37, 212, 116, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
-	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
+	--sk-error: #c1272d; /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
 	--sk-error-soft: rgba(193, 39, 45, 0.2);
 	--sk-error-fg: #ffffff;
 	--sk-info: #457b9d;
@@ -334,9 +334,9 @@
 
 /* FORGE LIGHT — parchemin crème avec accents saturés */
 [data-theme='forge-light'] {
-	--sk-surface: #f4ede0;             /* crème */
-	--sk-surface-alt: #ecdfc3;         /* crème dense */
-	--sk-surface-elevated: #ffffff;    /* cards blanches, contraste fort */
+	--sk-surface: #f4ede0; /* crème */
+	--sk-surface-alt: #ecdfc3; /* crème dense */
+	--sk-surface-elevated: #ffffff; /* cards blanches, contraste fort */
 	--sk-surface-elevated-hover: #fbf6ea;
 	--sk-surface-overlay: #ffffff;
 	--sk-border: #c9b98e;
@@ -355,7 +355,7 @@
 	--sk-primary: #375f7a;
 	--sk-primary-hover: #2a4a5f;
 	--sk-primary-fg: #ffffff;
-	--sk-accent: #a03318;               /* terracotta profond pour AA sur crème */
+	--sk-accent: #a03318; /* terracotta profond pour AA sur crème */
 	--sk-accent-hover: #7a3418;
 	--sk-accent-fg: #ffffff;
 
@@ -398,7 +398,7 @@
 	--sk-border-strong: #5a6a95;
 
 	--sk-text: #f4e8c8;
-	--sk-text-muted: #beb098;         /* AA: 4.70:1 on surface-overlay (was 2.93) */
+	--sk-text-muted: #beb098; /* AA: 4.70:1 on surface-overlay (was 2.93) */
 
 	--sk-surface-craft: #2f2618;
 	--sk-surface-create: #38141a;
@@ -410,7 +410,7 @@
 	--sk-primary: #e9c46a;
 	--sk-primary-hover: #f4d68a;
 	--sk-primary-fg: #0a1024;
-	--sk-accent: #f2b8a0;                /* orange braise SIGNATURE */
+	--sk-accent: #f2b8a0; /* orange braise SIGNATURE */
 	--sk-accent-hover: #f7ba85;
 	--sk-accent-fg: #0a1024;
 
@@ -419,7 +419,7 @@
 	--sk-success-soft: rgba(37, 212, 116, 0.2);
 	--sk-warning: #f4a261;
 	--sk-warning-soft: rgba(244, 162, 97, 0.2);
-	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
+	--sk-error: #c1272d; /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
 	--sk-error-soft: rgba(193, 39, 45, 0.2);
 	--sk-error-fg: #ffffff;
 	--sk-info: #83c5be;
@@ -513,15 +513,15 @@
 	--sk-surface-share: #3a1e22;
 	--sk-surface-meta: #322815;
 
-	--sk-primary: #e9c46a;               /* or bannière */
+	--sk-primary: #e9c46a; /* or bannière */
 	--sk-primary-hover: #f4d68a;
 	--sk-primary-fg: #150808;
-	--sk-accent: #e63946;                 /* rouge héraldique SIGNATURE */
+	--sk-accent: #e63946; /* rouge héraldique SIGNATURE */
 	--sk-accent-hover: #f04b58;
-	--sk-accent-fg: #150808  /* AA 4.71:1 — le creme precedent tombait a 3.58:1 */;
+	--sk-accent-fg: #150808 /* AA 4.71:1 — le creme precedent tombait a 3.58:1 */;
 
 	--sk-shadow-color: rgba(0, 0, 0, 0.7);
-	--sk-success: #25d474;             /* AA: 4.72:1 on bg-success/15 (was 3.66) */
+	--sk-success: #25d474; /* AA: 4.72:1 on bg-success/15 (was 3.66) */
 	--sk-success-soft: rgba(37, 212, 116, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
@@ -622,7 +622,7 @@
 	--sk-primary: #83a598;
 	--sk-primary-hover: #a0bfb0;
 	--sk-primary-fg: #150f0a;
-	--sk-accent: #a8794e;                /* ocre encre plume — plus vif */
+	--sk-accent: #a8794e; /* ocre encre plume — plus vif */
 	--sk-accent-hover: #e9a460;
 	--sk-accent-fg: #150f0a;
 
@@ -725,10 +725,10 @@
 	--sk-surface-share: #3d1f2b;
 	--sk-surface-meta: #2c2412;
 
-	--sk-primary: #c47a2e;                /* rappel Forge — pont visuel */
+	--sk-primary: #c47a2e; /* rappel Forge — pont visuel */
 	--sk-primary-hover: #d68b3e;
 	--sk-primary-fg: #fce7ea;
-	--sk-accent: #e8a5c1;                 /* rose fleur SIGNATURE */
+	--sk-accent: #e8a5c1; /* rose fleur SIGNATURE */
 	--sk-accent-hover: #f0b8d0;
 	--sk-accent-fg: #180f20;
 
@@ -737,7 +737,7 @@
 	--sk-success-soft: rgba(37, 212, 116, 0.2);
 	--sk-warning: #e9c46a;
 	--sk-warning-soft: rgba(233, 196, 106, 0.2);
-	--sk-error: #c1272d;               /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
+	--sk-error: #c1272d; /* rouge (assombri pour contrast WCAG AA >= 4.5 avec text-white) */
 	--sk-error-soft: rgba(193, 39, 45, 0.2);
 	--sk-error-fg: #ffffff;
 	--sk-info: #b898c0;
@@ -781,7 +781,7 @@
 	--sk-primary-fg: #ffffff;
 	--sk-accent: #d4739c;
 	--sk-accent-hover: #b04870;
-	--sk-accent-fg: #1f1622  /* AA 5.63:1 — le blanc precedent tombait a 3.12:1 */;
+	--sk-accent-fg: #1f1622 /* AA 5.63:1 — le blanc precedent tombait a 3.12:1 */;
 
 	--sk-shadow-color: rgba(31, 22, 34, 0.15);
 	--sk-success: #157540;
@@ -936,7 +936,6 @@
 	--sk-info-on: #46a3b9;
 }
 
-
 /* ============================================
    COLORATION PAR ROUTE — chromatique globale
    `data-route` est posé sur <body> par +layout.svelte selon la 1re section URL.
@@ -1008,7 +1007,13 @@ main[data-route='admin'] {
 
 html,
 body {
-	font-family: 'Bricolage Grotesque Variable', 'Bricolage Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	font-family:
+		'Bricolage Grotesque Variable',
+		'Bricolage Fallback',
+		-apple-system,
+		BlinkMacSystemFont,
+		'Segoe UI',
+		sans-serif;
 }
 
 body {
@@ -1034,19 +1039,28 @@ h2,
 h3 {
 	font-family: 'Fraunces Variable', 'Fraunces Fallback', Georgia, 'Times New Roman', serif;
 	font-optical-sizing: auto;
-	font-variation-settings: 'opsz' 48, 'SOFT' 30, 'WONK' 0;
+	font-variation-settings:
+		'opsz' 48,
+		'SOFT' 30,
+		'WONK' 0;
 	letter-spacing: -0.02em;
 	line-height: 1.05;
 }
 
 .font-wonk {
 	font-family: 'Fraunces Variable', 'Fraunces Fallback', Georgia, serif;
-	font-variation-settings: 'opsz' 48, 'SOFT' 40, 'WONK' 0.5;
+	font-variation-settings:
+		'opsz' 48,
+		'SOFT' 40,
+		'WONK' 0.5;
 }
 
 .font-hero {
 	font-family: 'Fraunces Variable', 'Fraunces Fallback', Georgia, serif;
-	font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 1;
+	font-variation-settings:
+		'opsz' 144,
+		'SOFT' 50,
+		'WONK' 1;
 	letter-spacing: -0.03em;
 	line-height: 0.95;
 }
@@ -1097,7 +1111,10 @@ select:focus-visible,
 .wordmark {
 	font-family: 'Fraunces Variable', 'Fraunces Fallback', Georgia, serif;
 	font-weight: 800;
-	font-variation-settings: 'opsz' 96, 'SOFT' 50, 'WONK' 1;
+	font-variation-settings:
+		'opsz' 96,
+		'SOFT' 50,
+		'WONK' 1;
 	letter-spacing: -0.025em;
 }
 
@@ -1115,43 +1132,86 @@ select:focus-visible,
 
 /* Legacy conservées */
 @keyframes fragment-burst {
-	0% { transform: scale(0); opacity: 1; }
-	50% { transform: scale(1.2); opacity: 0.8; }
-	100% { transform: scale(1); opacity: 1; }
+	0% {
+		transform: scale(0);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(1.2);
+		opacity: 0.8;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
 }
 
 @keyframes pulse-glow {
-	0%, 100% { box-shadow: 0 0 0 0 var(--sk-primary); }
-	50% { box-shadow: 0 0 20px 4px var(--sk-primary); }
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 var(--sk-primary);
+	}
+	50% {
+		box-shadow: 0 0 20px 4px var(--sk-primary);
+	}
 }
 
 @keyframes slide-up {
-	from { transform: translateY(8px); opacity: 0; }
-	to { transform: translateY(0); opacity: 1; }
+	from {
+		transform: translateY(8px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
 }
 
 @keyframes fade-in {
-	from { opacity: 0; }
-	to { opacity: 1; }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 @keyframes skeleton-pulse {
-	0%, 100% { opacity: 0.4; }
-	50% { opacity: 0.7; }
+	0%,
+	100% {
+		opacity: 0.4;
+	}
+	50% {
+		opacity: 0.7;
+	}
 }
 
 @keyframes in {
-	from { opacity: 0; }
-	to { opacity: 1; }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 @keyframes slide-in-from-top {
-	from { opacity: 0; transform: translateY(-0.5rem); }
-	to { opacity: 1; transform: translateY(0); }
+	from {
+		opacity: 0;
+		transform: translateY(-0.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
-.animate-in { animation: in 0.2s ease-out; }
-.fade-in { animation-name: fade-in; }
+.animate-in {
+	animation: in 0.2s ease-out;
+}
+.fade-in {
+	animation-name: fade-in;
+}
 .slide-in-from-top-2 {
 	--tw-enter-translate-y: -0.5rem;
 	animation: slide-in-from-top 0.2s ease-out;
@@ -1160,8 +1220,13 @@ select:focus-visible,
 /* Nouvelles — vocabulaire scout */
 
 @keyframes sway {
-	0%, 100% { transform: rotate(-1.5deg); }
-	50% { transform: rotate(1.5deg); }
+	0%,
+	100% {
+		transform: rotate(-1.5deg);
+	}
+	50% {
+		transform: rotate(1.5deg);
+	}
 }
 .animate-sway {
 	animation: sway 4.5s var(--sk-ease-standard) infinite;
@@ -1169,28 +1234,60 @@ select:focus-visible,
 }
 
 @keyframes key-drop {
-	0% { transform: translateY(-40px) rotate(-20deg); opacity: 0; }
-	60% { transform: translateY(4px) rotate(6deg); opacity: 1; }
-	80% { transform: translateY(-2px) rotate(-3deg); }
-	100% { transform: translateY(0) rotate(0); }
+	0% {
+		transform: translateY(-40px) rotate(-20deg);
+		opacity: 0;
+	}
+	60% {
+		transform: translateY(4px) rotate(6deg);
+		opacity: 1;
+	}
+	80% {
+		transform: translateY(-2px) rotate(-3deg);
+	}
+	100% {
+		transform: translateY(0) rotate(0);
+	}
 }
-.animate-key-drop { animation: key-drop var(--sk-anim-unlock) var(--sk-ease-spring); }
+.animate-key-drop {
+	animation: key-drop var(--sk-anim-unlock) var(--sk-ease-spring);
+}
 
 @keyframes wax-press {
-	0% { transform: scale(1.4); opacity: 0; }
-	60% { transform: scale(0.92); opacity: 1; }
-	100% { transform: scale(1); }
+	0% {
+		transform: scale(1.4);
+		opacity: 0;
+	}
+	60% {
+		transform: scale(0.92);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1);
+	}
 }
-.animate-wax-press { animation: wax-press var(--sk-anim-medium) var(--sk-ease-spring); }
+.animate-wax-press {
+	animation: wax-press var(--sk-anim-medium) var(--sk-ease-spring);
+}
 
 @keyframes tilt-hover {
-	0% { transform: rotate(0deg) translateY(0); }
-	100% { transform: rotate(-2deg) translateY(-2px); }
+	0% {
+		transform: rotate(0deg) translateY(0);
+	}
+	100% {
+		transform: rotate(-2deg) translateY(-2px);
+	}
 }
 
 @keyframes codex-open {
-	0% { opacity: 0; transform: scale(0.94) rotateX(-8deg) translateY(12px); }
-	100% { opacity: 1; transform: scale(1) rotateX(0) translateY(0); }
+	0% {
+		opacity: 0;
+		transform: scale(0.94) rotateX(-8deg) translateY(12px);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) rotateX(0) translateY(0);
+	}
 }
 .animate-codex-open {
 	animation: codex-open var(--sk-anim-medium) var(--sk-ease-standard);
@@ -1198,15 +1295,28 @@ select:focus-visible,
 }
 
 @keyframes laurel-flash {
-	0% { opacity: 0; transform: scale(0.8); }
-	30% { opacity: 1; transform: scale(1.05); }
-	100% { opacity: 0.9; transform: scale(1); }
+	0% {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+	30% {
+		opacity: 1;
+		transform: scale(1.05);
+	}
+	100% {
+		opacity: 0.9;
+		transform: scale(1);
+	}
 }
-.animate-laurel-flash { animation: laurel-flash 1.6s var(--sk-ease-out); }
+.animate-laurel-flash {
+	animation: laurel-flash 1.6s var(--sk-ease-out);
+}
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-	*, *::before, *::after {
+	*,
+	*::before,
+	*::after {
 		animation-duration: 0.01ms !important;
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.01ms !important;

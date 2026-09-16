@@ -146,7 +146,7 @@
 
 <div class="p-6 lg:p-8">
 	<div class="mb-2 text-xs font-mono uppercase tracking-widest text-primary">
-		{i18n.locale === 'fr' ? 'Vue d\'ensemble' : 'Overview'}
+		{i18n.locale === 'fr' ? "Vue d'ensemble" : 'Overview'}
 	</div>
 	<h1 class="mb-2 font-hero text-4xl sm:text-5xl">{i18n.t('enterprise.dashboard.title')}</h1>
 	<p class="mb-8 text-lg text-text-muted max-w-2xl">{i18n.t('enterprise.dashboard.subtitle')}</p>
@@ -172,17 +172,21 @@
 						<div class="flex-1">
 							<p class="font-semibold text-warning">
 								{kyc.status === 'rejected'
-									? (i18n.locale === 'fr' ? 'KYC refusé' : 'KYC rejected')
-									: (i18n.locale === 'fr' ? 'KYC en cours de vérification' : 'KYC under review')}
+									? i18n.locale === 'fr'
+										? 'KYC refusé'
+										: 'KYC rejected'
+									: i18n.locale === 'fr'
+										? 'KYC en cours de vérification'
+										: 'KYC under review'}
 							</p>
 							<p class="text-text-muted">
 								{kyc.status === 'rejected'
-									? (i18n.locale === 'fr'
+									? i18n.locale === 'fr'
 										? 'Consultez le motif et reprenez la procédure.'
-										: 'Check the rejection reason and re-submit.')
-									: (i18n.locale === 'fr'
-										? 'Certaines actions restent bloquées tant que la validation n\'est pas terminée.'
-										: 'Some actions stay locked until the review is complete.')}
+										: 'Check the rejection reason and re-submit.'
+									: i18n.locale === 'fr'
+										? "Certaines actions restent bloquées tant que la validation n'est pas terminée."
+										: 'Some actions stay locked until the review is complete.'}
 							</p>
 						</div>
 						<ArrowRight size={16} strokeWidth={2} class="mt-0.5 shrink-0 text-warning" />
@@ -242,10 +246,16 @@
 				class="group flex flex-col justify-between rounded-xl border border-border bg-surface-elevated p-5 transition-colors hover:border-primary/40"
 			>
 				<div class="mb-3 flex items-center justify-between">
-					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+					<div
+						class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary"
+					>
 						<Wallet size={18} strokeWidth={2} />
 					</div>
-					<ArrowRight size={16} strokeWidth={2} class="text-text-muted opacity-0 transition-opacity group-hover:opacity-100" />
+					<ArrowRight
+						size={16}
+						strokeWidth={2}
+						class="text-text-muted opacity-0 transition-opacity group-hover:opacity-100"
+					/>
 				</div>
 				<p class="text-xs text-text-muted">
 					{i18n.locale === 'fr' ? 'Solde de crédits' : 'Credit balance'}
@@ -255,7 +265,9 @@
 				</p>
 				{#if creditBalance}
 					<p class="mt-1 text-xs text-text-muted">
-						{i18n.locale === 'fr' ? 'Utilisés' : 'Used'}: {parseBalance(creditBalance.total_used).toFixed(0)}
+						{i18n.locale === 'fr' ? 'Utilisés' : 'Used'}: {parseBalance(
+							creditBalance.total_used
+						).toFixed(0)}
 					</p>
 				{/if}
 			</a>
@@ -269,7 +281,11 @@
 					<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-accent/10 text-accent">
 						<Repeat size={18} strokeWidth={2} />
 					</div>
-					<ArrowRight size={16} strokeWidth={2} class="text-text-muted opacity-0 transition-opacity group-hover:opacity-100" />
+					<ArrowRight
+						size={16}
+						strokeWidth={2}
+						class="text-text-muted opacity-0 transition-opacity group-hover:opacity-100"
+					/>
 				</div>
 				<p class="text-xs text-text-muted">
 					{i18n.locale === 'fr' ? 'Abonnement' : 'Subscription'}
@@ -290,7 +306,10 @@
 							{subscription.status}
 						</Badge>
 						{#if subscriptionCanceled && subscription.current_period_end}
-							<span>{i18n.locale === 'fr' ? 'jusqu\'au' : 'until'} {fmtDate(subscription.current_period_end)}</span>
+							<span
+								>{i18n.locale === 'fr' ? "jusqu'au" : 'until'}
+								{fmtDate(subscription.current_period_end)}</span
+							>
 						{/if}
 					</div>
 				{:else}
@@ -310,14 +329,24 @@
 					class="group flex flex-col justify-between rounded-xl border border-border bg-surface-elevated p-5 transition-colors hover:border-primary/40"
 				>
 					<div class="mb-3 flex items-center justify-between">
-						<div class="flex h-9 w-9 items-center justify-center rounded-lg {kyc.status === 'approved' ? 'bg-success/10 text-success' : kyc.status === 'rejected' ? 'bg-error/10 text-error' : 'bg-warning/10 text-warning'}">
+						<div
+							class="flex h-9 w-9 items-center justify-center rounded-lg {kyc.status === 'approved'
+								? 'bg-success/10 text-success'
+								: kyc.status === 'rejected'
+									? 'bg-error/10 text-error'
+									: 'bg-warning/10 text-warning'}"
+						>
 							{#if kyc.status === 'approved'}
 								<ShieldCheck size={18} strokeWidth={2} />
 							{:else}
 								<ShieldAlert size={18} strokeWidth={2} />
 							{/if}
 						</div>
-						<ArrowRight size={16} strokeWidth={2} class="text-text-muted opacity-0 transition-opacity group-hover:opacity-100" />
+						<ArrowRight
+							size={16}
+							strokeWidth={2}
+							class="text-text-muted opacity-0 transition-opacity group-hover:opacity-100"
+						/>
 					</div>
 					<p class="text-xs text-text-muted">KYC</p>
 					<p class="mt-1 text-2xl font-bold">
@@ -341,10 +370,16 @@
 					class="group flex flex-col justify-between rounded-xl border border-border bg-surface-elevated p-5 transition-colors hover:border-primary/40"
 				>
 					<div class="mb-3 flex items-center justify-between">
-						<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+						<div
+							class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary"
+						>
 							<Building2 size={18} strokeWidth={2} />
 						</div>
-						<ArrowRight size={16} strokeWidth={2} class="text-text-muted opacity-0 transition-opacity group-hover:opacity-100" />
+						<ArrowRight
+							size={16}
+							strokeWidth={2}
+							class="text-text-muted opacity-0 transition-opacity group-hover:opacity-100"
+						/>
 					</div>
 					<p class="text-xs text-text-muted">
 						{i18n.locale === 'fr' ? 'Équipe' : 'Team'}
@@ -359,16 +394,24 @@
 
 		<!-- ═══════════ Mon activité ═══════════ -->
 		{#if myStats}
-			<h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">{i18n.t('enterprise.dashboard.myActivity')}</h2>
+			<h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">
+				{i18n.t('enterprise.dashboard.myActivity')}
+			</h2>
 			<div class="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<a href="/enterprise/bookmarks" class="group rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40">
+				<a
+					href="/enterprise/bookmarks"
+					class="group rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40"
+				>
 					<div class="mb-2 flex items-center gap-2 text-text-muted">
 						<Bookmark size={14} strokeWidth={2} />
 						<p class="text-xs">{i18n.t('enterprise.dashboard.bookmarks')}</p>
 					</div>
 					<p class="text-2xl font-bold">{myStats.bookmarks}</p>
 				</a>
-				<a href="/enterprise/lists" class="group rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40">
+				<a
+					href="/enterprise/lists"
+					class="group rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40"
+				>
 					<div class="mb-2 flex items-center gap-2 text-text-muted">
 						<List size={14} strokeWidth={2} />
 						<p class="text-xs">{i18n.t('enterprise.dashboard.lists')}</p>
@@ -382,12 +425,22 @@
 					</div>
 					<p class="text-2xl font-bold">{myStats.interest_requests.total}</p>
 					<div class="mt-1 flex flex-wrap gap-x-2 gap-y-0.5 text-xs text-text-muted">
-						<span class="text-warning">{myStats.interest_requests.pending} {i18n.t('enterprise.dashboard.pending')}</span>
-						<span class="text-success">{myStats.interest_requests.accepted} {i18n.t('enterprise.dashboard.accepted')}</span>
-						<span class="text-error">{myStats.interest_requests.declined} {i18n.locale === 'fr' ? 'déclinées' : 'declined'}</span>
+						<span class="text-warning"
+							>{myStats.interest_requests.pending} {i18n.t('enterprise.dashboard.pending')}</span
+						>
+						<span class="text-success"
+							>{myStats.interest_requests.accepted} {i18n.t('enterprise.dashboard.accepted')}</span
+						>
+						<span class="text-error"
+							>{myStats.interest_requests.declined}
+							{i18n.locale === 'fr' ? 'déclinées' : 'declined'}</span
+						>
 					</div>
 				</div>
-				<a href="/enterprise/messages" class="group rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40">
+				<a
+					href="/enterprise/messages"
+					class="group rounded-xl border border-border bg-surface-elevated p-4 transition-colors hover:border-primary/40"
+				>
 					<div class="mb-2 flex items-center gap-2 text-text-muted">
 						<MessageSquare size={14} strokeWidth={2} />
 						<p class="text-xs">{i18n.t('enterprise.dashboard.conversations')}</p>
@@ -404,7 +457,10 @@
 					<h2 class="text-sm font-semibold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Notifications récentes' : 'Recent notifications'}
 					</h2>
-					<a href="/notifications" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+					<a
+						href="/notifications"
+						class="inline-flex items-center gap-1 text-sm underline hover:text-primary"
+					>
 						{i18n.locale === 'fr' ? 'Tout voir' : 'View all'}
 						<ArrowRight size={14} strokeWidth={2} />
 					</a>
@@ -415,7 +471,9 @@
 							href="/notifications"
 							class="flex items-start gap-3 p-4 transition-colors hover:bg-surface-overlay"
 						>
-							<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+							<div
+								class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+							>
 								<Bell size={14} strokeWidth={2} />
 							</div>
 							<div class="min-w-0 flex-1">
@@ -435,7 +493,9 @@
 		{#if platformStats}
 			{@const totalByTitle = Object.values(platformStats.by_title).reduce((a, b) => a + b, 0)}
 			{@const totalByDomain = Object.values(platformStats.by_domain).reduce((a, b) => a + b, 0)}
-			<h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">{i18n.t('enterprise.dashboard.platform')}</h2>
+			<h2 class="mb-4 text-sm font-semibold uppercase tracking-wider text-text-muted">
+				{i18n.t('enterprise.dashboard.platform')}
+			</h2>
 
 			<!-- 3 stats simples -->
 			<div class="mb-4 grid gap-4 sm:grid-cols-3">
@@ -472,7 +532,8 @@
 							<div>
 								<div class="mb-1 flex items-center justify-between text-xs">
 									<span class="font-medium">{i18n.t(`common.domains.${domain}`)}</span>
-									<span class="text-text-muted tabular-nums">{count.toLocaleString()} · {pct}%</span>
+									<span class="text-text-muted tabular-nums">{count.toLocaleString()} · {pct}%</span
+									>
 								</div>
 								<div class="h-1.5 w-full overflow-hidden rounded-full bg-surface-overlay">
 									<div class="h-full bg-primary" style="width: {pct}%"></div>
@@ -494,7 +555,8 @@
 							<div>
 								<div class="mb-1 flex items-center justify-between text-xs">
 									<span class="font-medium">{i18n.t(`common.titles.${title}`)}</span>
-									<span class="text-text-muted tabular-nums">{count.toLocaleString()} · {pct}%</span>
+									<span class="text-text-muted tabular-nums">{count.toLocaleString()} · {pct}%</span
+									>
 								</div>
 								<div class="h-1.5 w-full overflow-hidden rounded-full bg-surface-overlay">
 									<div class="h-full bg-accent" style="width: {pct}%"></div>
@@ -516,7 +578,9 @@
 					class="group rounded-2xl border border-border bg-surface-elevated p-5 transition-colors hover:border-accent"
 				>
 					<div class="mb-3 flex items-center gap-3">
-						<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+						<div
+							class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent"
+						>
 							<UsersIcon size={18} strokeWidth={2} />
 						</div>
 						<h3 class="text-base font-bold text-text-primary">
@@ -528,7 +592,11 @@
 					</p>
 					<span class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-accent">
 						{i18n.locale === 'fr' ? 'Ouvrir' : 'Open'}
-						<ArrowRight size={14} strokeWidth={2.5} class="transition-transform group-hover:translate-x-0.5" />
+						<ArrowRight
+							size={14}
+							strokeWidth={2.5}
+							class="transition-transform group-hover:translate-x-0.5"
+						/>
 					</span>
 				</a>
 			</div>
@@ -538,7 +606,9 @@
 			</h2>
 			<div class="mb-8 rounded-2xl border border-border bg-surface-elevated p-5">
 				<div class="mb-3 flex items-center gap-3">
-					<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+					<div
+						class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent"
+					>
 						<Building2 size={18} strokeWidth={2} />
 					</div>
 					<div>
@@ -553,25 +623,33 @@
 				<dl class="grid gap-2 text-sm sm:grid-cols-2">
 					{#if 'eor_provider' in typeConfig && typeConfig.eor_provider}
 						<div>
-							<dt class="text-xs uppercase text-text-muted">{i18n.t('enterprise.eor.providerLabel')}</dt>
+							<dt class="text-xs uppercase text-text-muted">
+								{i18n.t('enterprise.eor.providerLabel')}
+							</dt>
 							<dd class="font-medium text-text-primary">{typeConfig.eor_provider}</dd>
 						</div>
 					{/if}
 					{#if 'preferred_currency' in typeConfig && typeConfig.preferred_currency}
 						<div>
-							<dt class="text-xs uppercase text-text-muted">{i18n.t('enterprise.eor.currencyLabel')}</dt>
+							<dt class="text-xs uppercase text-text-muted">
+								{i18n.t('enterprise.eor.currencyLabel')}
+							</dt>
 							<dd class="font-medium text-text-primary">{typeConfig.preferred_currency}</dd>
 						</div>
 					{/if}
 					{#if 'timezone_requirement' in typeConfig && typeConfig.timezone_requirement}
 						<div>
-							<dt class="text-xs uppercase text-text-muted">{i18n.t('enterprise.eor.timezoneLabel')}</dt>
+							<dt class="text-xs uppercase text-text-muted">
+								{i18n.t('enterprise.eor.timezoneLabel')}
+							</dt>
 							<dd class="font-medium text-text-primary">{typeConfig.timezone_requirement}</dd>
 						</div>
 					{/if}
 					{#if 'tax_withholding_country' in typeConfig && typeConfig.tax_withholding_country}
 						<div>
-							<dt class="text-xs uppercase text-text-muted">{i18n.t('enterprise.eor.taxCountryLabel')}</dt>
+							<dt class="text-xs uppercase text-text-muted">
+								{i18n.t('enterprise.eor.taxCountryLabel')}
+							</dt>
 							<dd class="font-medium text-text-primary">{typeConfig.tax_withholding_country}</dd>
 						</div>
 					{/if}
@@ -584,8 +662,12 @@
 			{i18n.locale === 'fr' ? 'Actions rapides' : 'Quick actions'}
 		</h2>
 		<div class="flex flex-wrap gap-3">
-			<Button variant="accent" href="/enterprise/talents">{i18n.t('enterprise.dashboard.searchTalents')}</Button>
-			<Button variant="secondary" href="/enterprise/bookmarks">{i18n.t('enterprise.dashboard.viewBookmarks')}</Button>
+			<Button variant="accent" href="/enterprise/talents"
+				>{i18n.t('enterprise.dashboard.searchTalents')}</Button
+			>
+			<Button variant="secondary" href="/enterprise/bookmarks"
+				>{i18n.t('enterprise.dashboard.viewBookmarks')}</Button
+			>
 			<Button variant="secondary" href="/enterprise/bounties/new">
 				{i18n.locale === 'fr' ? 'Poster une bounty' : 'Post a bounty'}
 			</Button>

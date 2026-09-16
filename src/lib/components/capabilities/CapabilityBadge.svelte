@@ -1,6 +1,10 @@
 <script lang="ts">
 	import type { Capability } from '$lib/types';
-	import { capabilityFamily, capabilityDomain, type CapabilityFamily } from '$lib/utils/capabilities';
+	import {
+		capabilityFamily,
+		capabilityDomain,
+		type CapabilityFamily
+	} from '$lib/utils/capabilities';
 	import Badge from '$lib/components/ui/Badge.svelte';
 	import { i18n } from '$lib/i18n';
 	import {

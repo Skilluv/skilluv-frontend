@@ -38,9 +38,7 @@ export const skillsExtraApi = {
 
 	/** What to learn next, for the caller. */
 	recommendations() {
-		return api.get<ApiResponse<{ recommendations: unknown[] }>>(
-			'/users/me/skill-recommendations'
-		);
+		return api.get<ApiResponse<{ recommendations: unknown[] }>>('/users/me/skill-recommendations');
 	}
 };
 

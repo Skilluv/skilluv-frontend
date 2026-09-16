@@ -66,7 +66,7 @@ describe('the burger is derived, not retyped', () => {
 		// One `{#each [` of literal hrefs inside the mobile panel is exactly how
 		// the drift started. There should be none.
 		const mobilePanel = NAVBAR.slice(NAVBAR.indexOf('<!-- Mobile menu -->'));
-		expect(mobilePanel).not.toContain("{#each [");
+		expect(mobilePanel).not.toContain('{#each [');
 	});
 });
 

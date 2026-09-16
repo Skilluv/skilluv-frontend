@@ -9,7 +9,17 @@
 	import { pricingApi, type PricingResponse } from '$api/pricing';
 	import { SkilluError } from '$api/client';
 	import { CONTACT_EMAIL } from '$lib/config/social';
-	import { Sparkles, Coins, Package, Boxes, Gem, ThumbsDown, Timer, Check, X } from '@lucide/svelte';
+	import {
+		Sparkles,
+		Coins,
+		Package,
+		Boxes,
+		Gem,
+		ThumbsDown,
+		Timer,
+		Check,
+		X
+	} from '@lucide/svelte';
 	import { ProgrammaticPlans } from '$components/pricing';
 
 	let data = $state<PricingResponse | null>(null);
@@ -19,10 +29,25 @@
 
 	// Devise → symbole / formattage court
 	const CURRENCY_SYMBOLS: Record<string, string> = {
-		EUR: '€', USD: '$', GBP: '£', CHF: 'CHF', CAD: 'C$', AUD: 'A$',
-		NGN: '₦', GHS: '₵', EGP: 'E£', ZAR: 'R', KES: 'KSh', UGX: 'USh',
-		TZS: 'TSh', RWF: 'FRw', MAD: 'DH', TND: 'TND', DZD: 'DA',
-		XOF: 'CFA', XAF: 'FCFA'
+		EUR: '€',
+		USD: '$',
+		GBP: '£',
+		CHF: 'CHF',
+		CAD: 'C$',
+		AUD: 'A$',
+		NGN: '₦',
+		GHS: '₵',
+		EGP: 'E£',
+		ZAR: 'R',
+		KES: 'KSh',
+		UGX: 'USh',
+		TZS: 'TSh',
+		RWF: 'FRw',
+		MAD: 'DH',
+		TND: 'TND',
+		DZD: 'DA',
+		XOF: 'CFA',
+		XAF: 'FCFA'
 	};
 
 	// Devises proposées dans le select
@@ -114,7 +139,9 @@
 		style="background-image: linear-gradient(var(--sk-text) 1px, transparent 1px), linear-gradient(90deg, var(--sk-text) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);"
 	></div>
 	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
-		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
+		<h1
+			class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight"
+		>
 			{#if i18n.locale === 'fr'}
 				Un crédit.<br />
 				<span class="text-primary">Un talent contacté.</span>
@@ -126,7 +153,7 @@
 		<p class="mt-8 max-w-2xl text-lg text-text-muted">
 			{i18n.locale === 'fr'
 				? "Payez à l'usage. Aucun abonnement caché. Refund automatique de 50 % si le talent décline ou ne répond pas. Prix ajustés à votre pays."
-				: 'Pay-as-you-go. No hidden subscription. Automatic 50% refund if the talent declines or doesn\'t reply. Prices adjusted to your country.'}
+				: "Pay-as-you-go. No hidden subscription. Automatic 50% refund if the talent declines or doesn't reply. Prices adjusted to your country."}
 		</p>
 	</div>
 </section>
@@ -135,13 +162,17 @@
      SÉLECTEUR DEVISE
      ============================================ -->
 <section class="border-b border-border bg-surface-elevated/40">
-	<div class="mx-auto max-w-6xl px-4 py-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+	<div
+		class="mx-auto max-w-6xl px-4 py-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+	>
 		<div>
 			<p class="mb-1 text-xs font-bold uppercase tracking-wider text-text-muted">
 				{i18n.locale === 'fr' ? 'Devise' : 'Currency'}
 			</p>
 			<h2 class="text-xl sm:text-2xl font-black tracking-tight">
-				{i18n.locale === 'fr' ? 'Affichez les prix dans votre devise.' : 'Show prices in your currency.'}
+				{i18n.locale === 'fr'
+					? 'Affichez les prix dans votre devise.'
+					: 'Show prices in your currency.'}
 			</h2>
 		</div>
 		<Select
@@ -157,7 +188,9 @@
      GRILLE DES PACKS
      ============================================ -->
 <section class="mx-auto max-w-6xl px-4 py-20 sm:py-24">
-	<h2 class="mb-12 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
+	<h2
+		class="mb-12 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight"
+	>
 		{i18n.locale === 'fr' ? 'Choisissez votre' : 'Choose your'}<br />
 		<span class="text-accent">{i18n.locale === 'fr' ? 'pack de crédits.' : 'credit pack.'}</span>
 	</h2>
@@ -189,16 +222,22 @@
 				{@const isBest = pack.slug === bestPack && data.packs.length > 1}
 				<article
 					class="group relative rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl
-					{isBest ? 'border-accent bg-surface-elevated' : 'border-border bg-surface-elevated hover:border-primary/40'}"
+					{isBest
+						? 'border-accent bg-surface-elevated'
+						: 'border-border bg-surface-elevated hover:border-primary/40'}"
 				>
 					{#if isBest}
-						<span class="absolute -top-3 left-6 inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent-fg shadow-sm ring-4 ring-surface">
+						<span
+							class="absolute -top-3 left-6 inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent-fg shadow-sm ring-4 ring-surface"
+						>
 							<Sparkles size={14} strokeWidth={2.5} />
 							{i18n.locale === 'fr' ? 'Meilleur ratio' : 'Best value'}
 						</span>
 					{/if}
 
-					<div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+					<div
+						class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary"
+					>
 						{#if pack.credits === 1}
 							<Coins size={20} strokeWidth={2} />
 						{:else if pack.credits <= 5}
@@ -211,7 +250,9 @@
 					</div>
 
 					<div class="mb-1 font-mono text-xs uppercase tracking-wider text-text-muted">
-						{i18n.locale === 'fr' ? `${pack.credits} crédit${pack.credits > 1 ? 's' : ''}` : `${pack.credits} credit${pack.credits > 1 ? 's' : ''}`}
+						{i18n.locale === 'fr'
+							? `${pack.credits} crédit${pack.credits > 1 ? 's' : ''}`
+							: `${pack.credits} credit${pack.credits > 1 ? 's' : ''}`}
 					</div>
 
 					<div class="mb-1 text-3xl font-black tracking-tight">
@@ -251,13 +292,16 @@
 							</div>
 							<div class="mb-1 text-2xl font-black tracking-tight">
 								{fmt(sub.price, data.currency)}
-								<span class="text-xs font-normal text-text-muted">/ {i18n.locale === 'fr' ? 'mois' : 'month'}</span>
+								<span class="text-xs font-normal text-text-muted"
+									>/ {i18n.locale === 'fr' ? 'mois' : 'month'}</span
+								>
 							</div>
 							<div class="mb-4 text-xs text-text-muted">
-								{sub.credits_included} {i18n.locale === 'fr' ? 'crédits inclus' : 'credits included'}
+								{sub.credits_included}
+								{i18n.locale === 'fr' ? 'crédits inclus' : 'credits included'}
 							</div>
 							<Button variant="secondary" href={buyHref}>
-								{i18n.locale === 'fr' ? 'S\'abonner' : 'Subscribe'}
+								{i18n.locale === 'fr' ? "S'abonner" : 'Subscribe'}
 							</Button>
 						</article>
 					{/each}
@@ -280,7 +324,9 @@
 					</p>
 					<h2 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
 						{i18n.locale === 'fr' ? 'Vous ne payez que' : 'You only pay for'}<br />
-						<span class="text-primary">{i18n.locale === 'fr' ? 'les vraies rencontres.' : 'real matches.'}</span>
+						<span class="text-primary"
+							>{i18n.locale === 'fr' ? 'les vraies rencontres.' : 'real matches.'}</span
+						>
 					</h2>
 					<p class="mt-6 max-w-xl text-base text-text-muted">
 						{i18n.locale === 'fr'
@@ -289,20 +335,38 @@
 					</p>
 				</div>
 				<div class="space-y-3">
-					<div class="flex items-start gap-4 rounded-2xl border border-border bg-surface-elevated p-5">
-						<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"><ThumbsDown size={16} strokeWidth={2} /></div>
+					<div
+						class="flex items-start gap-4 rounded-2xl border border-border bg-surface-elevated p-5"
+					>
+						<div
+							class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+						>
+							<ThumbsDown size={16} strokeWidth={2} />
+						</div>
 						<div>
 							<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 								{i18n.locale === 'fr' ? 'Talent décline' : 'Talent declines'}
 							</p>
 							<p class="mt-1 text-base">
-								<span class="text-2xl font-black text-primary">{Math.round(data.refund_policy.refused * 100)} %</span>
-								<span class="text-text-muted">{i18n.locale === 'fr' ? ' remboursé immédiatement' : ' refunded immediately'}</span>
+								<span class="text-2xl font-black text-primary"
+									>{Math.round(data.refund_policy.refused * 100)} %</span
+								>
+								<span class="text-text-muted"
+									>{i18n.locale === 'fr'
+										? ' remboursé immédiatement'
+										: ' refunded immediately'}</span
+								>
 							</p>
 						</div>
 					</div>
-					<div class="flex items-start gap-4 rounded-2xl border border-border bg-surface-elevated p-5">
-						<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent"><Timer size={16} strokeWidth={2} /></div>
+					<div
+						class="flex items-start gap-4 rounded-2xl border border-border bg-surface-elevated p-5"
+					>
+						<div
+							class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent"
+						>
+							<Timer size={16} strokeWidth={2} />
+						</div>
 						<div>
 							<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 								{i18n.locale === 'fr'
@@ -310,20 +374,32 @@
 									: `No reply after ${data.refund_policy.timeout_days} days`}
 							</p>
 							<p class="mt-1 text-base">
-								<span class="text-2xl font-black text-accent">{Math.round(data.refund_policy.timeout_refund * 100)} %</span>
-								<span class="text-text-muted">{i18n.locale === 'fr' ? ' remboursé automatiquement' : ' refunded automatically'}</span>
+								<span class="text-2xl font-black text-accent"
+									>{Math.round(data.refund_policy.timeout_refund * 100)} %</span
+								>
+								<span class="text-text-muted"
+									>{i18n.locale === 'fr'
+										? ' remboursé automatiquement'
+										: ' refunded automatically'}</span
+								>
 							</p>
 						</div>
 					</div>
-					<div class="flex items-start gap-4 rounded-2xl border border-border bg-surface-elevated p-5">
-						<div class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success"><Check size={16} strokeWidth={2.5} /></div>
+					<div
+						class="flex items-start gap-4 rounded-2xl border border-border bg-surface-elevated p-5"
+					>
+						<div
+							class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success"
+						>
+							<Check size={16} strokeWidth={2.5} />
+						</div>
 						<div>
 							<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 								{i18n.locale === 'fr' ? 'Le talent accepte' : 'Talent accepts'}
 							</p>
 							<p class="mt-1 text-sm text-text-muted">
 								{i18n.locale === 'fr'
-									? 'Le crédit est consommé, la conversation s\'ouvre.'
+									? "Le crédit est consommé, la conversation s'ouvre."
 									: 'Credit is consumed, the conversation opens.'}
 							</p>
 						</div>
@@ -351,21 +427,17 @@
 	</p>
 
 	<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		{#each [
-			{ key: 'talent', icon: Gem },
-			{ key: 'work', icon: Coins },
-			{ key: 'brand', icon: Sparkles },
-			{ key: 'data', icon: Boxes },
-			{ key: 'ecosystem', icon: Package },
-			{ key: 'consult', icon: Timer },
-			{ key: 'finance', icon: Coins }
-		] as line (line.key)}
+		{#each [{ key: 'talent', icon: Gem }, { key: 'work', icon: Coins }, { key: 'brand', icon: Sparkles }, { key: 'data', icon: Boxes }, { key: 'ecosystem', icon: Package }, { key: 'consult', icon: Timer }, { key: 'finance', icon: Coins }] as line (line.key)}
 			<div class="flex flex-col gap-3 rounded-2xl border border-border bg-surface-elevated p-6">
 				<div class="flex items-center gap-3">
-					<span class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+					<span
+						class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent"
+					>
 						<line.icon size={20} strokeWidth={2} />
 					</span>
-					<span class="ml-auto rounded-full border border-border px-2.5 py-0.5 text-[10px] uppercase tracking-widest text-text-muted">
+					<span
+						class="ml-auto rounded-full border border-border px-2.5 py-0.5 text-[10px] uppercase tracking-widest text-text-muted"
+					>
 						{i18n.t(`otherLines.${line.key}Who`)}
 					</span>
 				</div>
@@ -388,42 +460,91 @@
      COMPARAISON — Skilluv vs Classique
      ============================================ -->
 <section class="mx-auto max-w-6xl px-4 py-20 sm:py-24">
-	<h2 class="mb-12 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
+	<h2
+		class="mb-12 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight"
+	>
 		{i18n.locale === 'fr' ? 'Classique' : 'Classic'}<br />
 		<span class="text-accent">{i18n.locale === 'fr' ? 'vs Skilluv.' : 'vs Skilluv.'}</span>
 	</h2>
 	<div class="grid gap-4 sm:grid-cols-2">
 		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
-			<p class="mb-4 text-xs font-bold uppercase tracking-wider text-text-muted line-through decoration-error/50">
+			<p
+				class="mb-4 text-xs font-bold uppercase tracking-wider text-text-muted line-through decoration-error/50"
+			>
 				{i18n.locale === 'fr' ? 'Sites de recrutement classiques' : 'Classic recruiting platforms'}
 			</p>
 			<ul class="space-y-3 text-sm">
-				<li class="flex gap-2 items-start"><X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Abonnement mensuel obligatoire (500€+/mois)' : 'Mandatory monthly subscription (€500+/month)'}</li>
-				<li class="flex gap-2 items-start"><X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Payer même sans candidat contacté' : 'Pay even without contacting anyone'}</li>
-				<li class="flex gap-2 items-start"><X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Aucun refund si le candidat ignore' : 'No refund if candidate ignores you'}</li>
-				<li class="flex gap-2 items-start"><X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'CVs autodéclarés, non prouvés' : 'Self-declared, unproven resumes'}</li>
-				<li class="flex gap-2 items-start"><X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Prix en euros uniquement' : 'Euros-only pricing'}</li>
+				<li class="flex gap-2 items-start">
+					<X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr'
+						? 'Abonnement mensuel obligatoire (500€+/mois)'
+						: 'Mandatory monthly subscription (€500+/month)'}
+				</li>
+				<li class="flex gap-2 items-start">
+					<X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr'
+						? 'Payer même sans candidat contacté'
+						: 'Pay even without contacting anyone'}
+				</li>
+				<li class="flex gap-2 items-start">
+					<X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr'
+						? 'Aucun refund si le candidat ignore'
+						: 'No refund if candidate ignores you'}
+				</li>
+				<li class="flex gap-2 items-start">
+					<X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr'
+						? 'CVs autodéclarés, non prouvés'
+						: 'Self-declared, unproven resumes'}
+				</li>
+				<li class="flex gap-2 items-start">
+					<X size={16} strokeWidth={2.5} class="text-error shrink-0 mt-0.5" />{i18n.locale === 'fr'
+						? 'Prix en euros uniquement'
+						: 'Euros-only pricing'}
+				</li>
 			</ul>
 		</div>
 		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 			<p class="mb-4 text-xs font-bold uppercase tracking-wider text-accent">Skilluv</p>
 			<ul class="space-y-3 text-sm">
-				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Pay-as-you-go. Aucun abonnement caché.' : 'Pay-as-you-go. No hidden subscription.'}</li>
-				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Vous ne payez que les tentatives réelles' : 'You only pay for real attempts'}</li>
-				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Refund automatique 50 % si décline ou timeout' : 'Automatic 50% refund on decline or timeout'}</li>
-				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Profils alimentés par des soumissions évaluées' : 'Profiles fed by graded submissions'}</li>
-				<li class="flex gap-2 items-start"><Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale === 'fr' ? 'Prix locaux : EUR, USD, NGN, XOF, MAD…' : 'Local prices: EUR, USD, NGN, XOF, MAD…'}</li>
+				<li class="flex gap-2 items-start">
+					<Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale ===
+					'fr'
+						? 'Pay-as-you-go. Aucun abonnement caché.'
+						: 'Pay-as-you-go. No hidden subscription.'}
+				</li>
+				<li class="flex gap-2 items-start">
+					<Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale ===
+					'fr'
+						? 'Vous ne payez que les tentatives réelles'
+						: 'You only pay for real attempts'}
+				</li>
+				<li class="flex gap-2 items-start">
+					<Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale ===
+					'fr'
+						? 'Refund automatique 50 % si décline ou timeout'
+						: 'Automatic 50% refund on decline or timeout'}
+				</li>
+				<li class="flex gap-2 items-start">
+					<Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale ===
+					'fr'
+						? 'Profils alimentés par des soumissions évaluées'
+						: 'Profiles fed by graded submissions'}
+				</li>
+				<li class="flex gap-2 items-start">
+					<Check size={16} strokeWidth={2.5} class="text-success shrink-0 mt-0.5" />{i18n.locale ===
+					'fr'
+						? 'Prix locaux : EUR, USD, NGN, XOF, MAD…'
+						: 'Local prices: EUR, USD, NGN, XOF, MAD…'}
+				</li>
 			</ul>
 		</div>
-	
-	<!-- The two plans nobody buys on a whim: programmatic access to the talent
+
+		<!-- The two plans nobody buys on a whim: programmatic access to the talent
 	     score, and corporate learning seats. Under the human pricing rather than
 	     beside it — somebody comparing subscriptions is not the person buying an
 	     API key. -->
-	<div class="mx-auto mt-10 max-w-4xl px-4">
-		<ProgrammaticPlans />
+		<div class="mx-auto mt-10 max-w-4xl px-4">
+			<ProgrammaticPlans />
+		</div>
 	</div>
-</div>
 </section>
 
 <!-- ============================================
@@ -432,17 +553,41 @@
 <FaqSection
 	items={i18n.locale === 'fr'
 		? [
-			{ q: 'Comment se passe le refund ?', a: 'Automatiquement, sur votre solde de crédits. Vous n\'avez rien à faire : dès que le talent décline ou que 30 jours passent sans réponse, 50 % du crédit est recrédité.' },
-			{ q: 'Puis-je payer en franc CFA ou naira ?', a: 'Oui. Nous acceptons les paiements en EUR, USD, GBP, XOF, XAF, NGN, GHS, MAD, KES et d\'autres devises locales. Sélectionnez la vôtre en haut de la page pour afficher les prix correspondants.' },
-			{ q: 'Les crédits expirent-ils ?', a: 'Non. Un crédit acheté reste utilisable indéfiniment. Seuls les abonnements Pipeline offrent un renouvellement mensuel automatique.' },
-			{ q: 'Facture avec ma TVA ?', a: 'Oui. Chaque paiement génère une facture séquentielle SKL-YYYY-NNNNN téléchargeable en PDF depuis votre espace, avec les mentions légales requises.' }
-		]
+				{
+					q: 'Comment se passe le refund ?',
+					a: "Automatiquement, sur votre solde de crédits. Vous n'avez rien à faire : dès que le talent décline ou que 30 jours passent sans réponse, 50 % du crédit est recrédité."
+				},
+				{
+					q: 'Puis-je payer en franc CFA ou naira ?',
+					a: "Oui. Nous acceptons les paiements en EUR, USD, GBP, XOF, XAF, NGN, GHS, MAD, KES et d'autres devises locales. Sélectionnez la vôtre en haut de la page pour afficher les prix correspondants."
+				},
+				{
+					q: 'Les crédits expirent-ils ?',
+					a: 'Non. Un crédit acheté reste utilisable indéfiniment. Seuls les abonnements Pipeline offrent un renouvellement mensuel automatique.'
+				},
+				{
+					q: 'Facture avec ma TVA ?',
+					a: 'Oui. Chaque paiement génère une facture séquentielle SKL-YYYY-NNNNN téléchargeable en PDF depuis votre espace, avec les mentions légales requises.'
+				}
+			]
 		: [
-			{ q: 'How does the refund work?', a: 'Automatically, on your credit balance. Nothing to do: as soon as the talent declines or 30 days pass with no reply, 50% of the credit is returned.' },
-			{ q: 'Can I pay in CFA franc or naira?', a: 'Yes. We accept payments in EUR, USD, GBP, XOF, XAF, NGN, GHS, MAD, KES and other local currencies. Pick yours at the top of the page to see matching prices.' },
-			{ q: 'Do credits expire?', a: 'No. A purchased credit is usable indefinitely. Only Pipeline subscriptions auto-renew monthly.' },
-			{ q: 'Invoice with my VAT?', a: 'Yes. Every payment generates a sequential SKL-YYYY-NNNNN invoice, downloadable as PDF from your space with all legal mentions.' }
-		]}
+				{
+					q: 'How does the refund work?',
+					a: 'Automatically, on your credit balance. Nothing to do: as soon as the talent declines or 30 days pass with no reply, 50% of the credit is returned.'
+				},
+				{
+					q: 'Can I pay in CFA franc or naira?',
+					a: 'Yes. We accept payments in EUR, USD, GBP, XOF, XAF, NGN, GHS, MAD, KES and other local currencies. Pick yours at the top of the page to see matching prices.'
+				},
+				{
+					q: 'Do credits expire?',
+					a: 'No. A purchased credit is usable indefinitely. Only Pipeline subscriptions auto-renew monthly.'
+				},
+				{
+					q: 'Invoice with my VAT?',
+					a: 'Yes. Every payment generates a sequential SKL-YYYY-NNNNN invoice, downloadable as PDF from your space with all legal mentions.'
+				}
+			]}
 />
 
 <!-- ============================================
@@ -456,8 +601,12 @@
 		: 'Create your enterprise space for free. No credit card required.'}
 	ctaHref={buyHref}
 	ctaLabel={auth.isAuthenticated
-		? (i18n.locale === 'fr' ? 'Voir mes crédits' : 'View my credits')
-		: (i18n.locale === 'fr' ? 'Créer mon espace entreprise' : 'Create my enterprise space')}
+		? i18n.locale === 'fr'
+			? 'Voir mes crédits'
+			: 'View my credits'
+		: i18n.locale === 'fr'
+			? 'Créer mon espace entreprise'
+			: 'Create my enterprise space'}
 >
 	{#snippet secondary()}
 		<Button

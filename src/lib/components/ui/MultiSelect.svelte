@@ -136,14 +136,20 @@
 		{disabled}
 		aria-expanded={open}
 		aria-haspopup="listbox"
-		class="flex w-full items-center gap-1.5 {shape === 'rounded' ? 'rounded-xl' : 'rounded-full'} border border-border bg-surface-elevated {sizes[size]} py-1.5 text-left font-medium text-text-primary transition-colors hover:border-primary/40 focus:outline-none focus:border-primary/60 disabled:opacity-50 disabled:cursor-not-allowed"
+		class="flex w-full items-center gap-1.5 {shape === 'rounded'
+			? 'rounded-xl'
+			: 'rounded-full'} border border-border bg-surface-elevated {sizes[
+			size
+		]} py-1.5 text-left font-medium text-text-primary transition-colors hover:border-primary/40 focus:outline-none focus:border-primary/60 disabled:opacity-50 disabled:cursor-not-allowed"
 	>
 		{#if value.length === 0}
 			<span class="flex-1 truncate px-1.5 text-text-muted">{placeholder}</span>
 		{:else}
 			<div class="flex flex-1 flex-wrap items-center gap-1 overflow-hidden">
 				{#each visibleChips as v (v)}
-					<span class="inline-flex items-center gap-1 rounded-md bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary">
+					<span
+						class="inline-flex items-center gap-1 rounded-md bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary"
+					>
 						{labelMap.get(v) ?? v}
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<span
@@ -158,7 +164,9 @@
 					</span>
 				{/each}
 				{#if overflowCount > 0}
-					<span class="rounded-md bg-surface-overlay px-1.5 py-0.5 text-xs font-medium text-text-muted">
+					<span
+						class="rounded-md bg-surface-overlay px-1.5 py-0.5 text-xs font-medium text-text-muted"
+					>
 						+{overflowCount}
 					</span>
 				{/if}

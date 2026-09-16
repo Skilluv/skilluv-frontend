@@ -25,9 +25,7 @@ test.beforeEach(async ({ page }) => {
  * fixture. This is the only lever available: SSR auth escapes `page.route`.
  */
 async function signIn(context: BrowserContext, who: 'challenger' | 'validator') {
-	await context.addCookies([
-		{ name: 'access_token', value: who, domain: 'localhost', path: '/' }
-	]);
+	await context.addCookies([{ name: 'access_token', value: who, domain: 'localhost', path: '/' }]);
 }
 
 type ApiRoute = { path: string; handler: (route: Route) => Promise<void> | void };
@@ -228,7 +226,9 @@ test.describe('SKI-93 slice detail - claim', () => {
 		]);
 
 		await gotoClientSide(page, '/slices/s-1');
-		await expect(page.getByRole('heading', { name: 'Corriger le parsing des dates ISO' })).toBeVisible();
+		await expect(
+			page.getByRole('heading', { name: 'Corriger le parsing des dates ISO' })
+		).toBeVisible();
 		await expect(page.getByText("Criteres d'acceptation")).toBeVisible();
 
 		const claimBtn = page.getByRole('button', { name: 'Claim ce challenge' });
@@ -256,7 +256,10 @@ test.describe('SKI-93 slice detail - claim', () => {
 		await signIn(context, 'challenger');
 		await mockApi(page, [
 			...meRoutes(challenger),
-			{ path: '/slices/s-1', handler: json({ data: { slice: makeSlice({ min_rank: 'artisan' }) } }) },
+			{
+				path: '/slices/s-1',
+				handler: json({ data: { slice: makeSlice({ min_rank: 'artisan' }) } })
+			},
 			{
 				path: '/slices/s-1/claim',
 				handler: apiError(403, 'SLICE_RANK_TOO_LOW', 'rank insuffisant')
@@ -300,9 +303,7 @@ test.describe('SKI-93 slice detail - submit PR', () => {
 		await page
 			.getByLabel('URL de la Pull Request')
 			.fill('https://github.com/skilluv/skilluv-backend/pull/77');
-		await page
-			.getByText('Annoncer publiquement sur la PR que je contribue via Skilluv')
-			.click();
+		await page.getByText('Annoncer publiquement sur la PR que je contribue via Skilluv').click();
 		await page.getByRole('button', { name: 'Envoyer la PR' }).click();
 
 		await expect(page.getByText('PR soumise').first()).toBeVisible();
@@ -323,7 +324,10 @@ test.describe('SKI-93 slice detail - submit PR', () => {
 		await expect(page.getByRole('button', { name: 'Envoyer la PR' })).toBeDisabled();
 	});
 
-	test('a validated slice exposes the PDF and the public verify link', async ({ page, context }) => {
+	test('a validated slice exposes the PDF and the public verify link', async ({
+		page,
+		context
+	}) => {
 		await signIn(context, 'challenger');
 		const hash = 'a'.repeat(64);
 		await mockApi(page, [
@@ -469,14 +473,15 @@ test.describe('SKI-95 validation queue', () => {
 
 		await gotoHydrated(page, '/validations/queue');
 		await page.getByRole('button', { name: 'Prendre en charge' }).click();
-		await expect(
-			page.getByText('Ce challenge a ete pris par un autre validateur.')
-		).toBeVisible();
+		await expect(page.getByText('Ce challenge a ete pris par un autre validateur.')).toBeVisible();
 	});
 });
 
 test.describe('SKI-95 review approve / reject', () => {
-	const pickedUp = { ...queueItem(makeSlice({ status: 'pending_validation' })), picked_up_by_me: true };
+	const pickedUp = {
+		...queueItem(makeSlice({ status: 'pending_validation' })),
+		picked_up_by_me: true
+	};
 
 	test('approving generates a downloadable attestation', async ({ page, context }) => {
 		await signIn(context, 'validator');
@@ -526,7 +531,10 @@ test.describe('SKI-95 review approve / reject', () => {
 		expect(rejected).toEqual({ reason: 'Les tests ne couvrent pas les offsets negatifs.' });
 	});
 
-	test('approving your own PR (400) is refused with an explicit message', async ({ page, context }) => {
+	test('approving your own PR (400) is refused with an explicit message', async ({
+		page,
+		context
+	}) => {
 		await signIn(context, 'validator');
 		await mockApi(page, [
 			...meRoutes(validator, ['challenge_validator:code']),

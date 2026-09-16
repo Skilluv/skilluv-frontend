@@ -69,7 +69,12 @@
 	}
 </script>
 
-<Button variant="ghost" size="sm" onclick={() => (open = true)} data-testid="design-flag-plagiarism">
+<Button
+	variant="ghost"
+	size="sm"
+	onclick={() => (open = true)}
+	data-testid="design-flag-plagiarism"
+>
 	<Flag size={14} />
 	{i18n.t('designPlagiarism.flagCta')}
 </Button>
@@ -86,8 +91,7 @@
 				bind:value={reason}
 				rows="5"
 				class="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text focus:border-accent focus:outline-none"
-				data-testid="design-flag-reason"
-			></textarea>
+				data-testid="design-flag-reason"></textarea>
 			<span class="text-xs text-text-muted">{i18n.t('designPlagiarism.flagReasonHint')}</span>
 		</label>
 

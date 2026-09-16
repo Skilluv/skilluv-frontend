@@ -75,9 +75,9 @@ function membersRoute(members: unknown[]): ApiRoute {
 }
 
 async function signIn(page: Page, token: 'owner' | 'recruiter') {
-	await page.context().addCookies([
-		{ name: 'access_token', value: token, domain: 'localhost', path: '/' }
-	]);
+	await page
+		.context()
+		.addCookies([{ name: 'access_token', value: token, domain: 'localhost', path: '/' }]);
 }
 
 test.beforeEach(async ({ page }) => {

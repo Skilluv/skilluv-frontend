@@ -118,9 +118,7 @@
 		const prevStage = entry.stage;
 		const prevPos = entry.position;
 		const newPos = byStage[stage].length; // append à la fin de la colonne cible
-		entries = entries.map((x) =>
-			x.id === id ? { ...x, stage, position: newPos } : x
-		);
+		entries = entries.map((x) => (x.id === id ? { ...x, stage, position: newPos } : x));
 
 		try {
 			await pipelineApi.update(id, { stage, position: newPos });
@@ -231,9 +229,12 @@
 			await load();
 		} catch (err) {
 			if (err instanceof SkilluError) {
-				addError = err.code === 'NOT_FOUND'
-					? (i18n.locale === 'fr' ? 'Aucun talent avec ce pseudo' : 'No talent with that username')
-					: err.message;
+				addError =
+					err.code === 'NOT_FOUND'
+						? i18n.locale === 'fr'
+							? 'Aucun talent avec ce pseudo'
+							: 'No talent with that username'
+						: err.message;
 			} else {
 				addError = i18n.t('errors.generic');
 			}
@@ -345,7 +346,9 @@
 		</Alert>
 	{:else}
 		<!-- Kanban horizontal-scroll sur desktop étroit, 6 colonnes sur xl -->
-		<div class="grid auto-cols-[minmax(260px,1fr)] grid-flow-col gap-3 overflow-x-auto pb-4 xl:grid-flow-row xl:grid-cols-6">
+		<div
+			class="grid auto-cols-[minmax(260px,1fr)] grid-flow-col gap-3 overflow-x-auto pb-4 xl:grid-flow-row xl:grid-cols-6"
+		>
 			{#each PIPELINE_STAGES as stage}
 				{@const items = byStage[stage]}
 				{@const style = stageStyle(stage)}
@@ -366,7 +369,9 @@
 								{stageLabel(stage)}
 							</h2>
 						</div>
-						<span class="rounded-full bg-surface-overlay px-2 py-0.5 text-[10px] font-bold tabular-nums text-text-muted">
+						<span
+							class="rounded-full bg-surface-overlay px-2 py-0.5 text-[10px] font-bold tabular-nums text-text-muted"
+						>
 							{items.length}
 						</span>
 					</div>
@@ -383,10 +388,14 @@
 							>
 								<!-- Card header : grip + name + actions -->
 								<div class="mb-2 flex items-start gap-2">
-									<div class="cursor-grab text-text-muted opacity-40 transition-opacity group-hover:opacity-100 active:cursor-grabbing">
+									<div
+										class="cursor-grab text-text-muted opacity-40 transition-opacity group-hover:opacity-100 active:cursor-grabbing"
+									>
 										<GripVertical size={14} strokeWidth={2} />
 									</div>
-									<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
+									<div
+										class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary"
+									>
 										{entry.display_name.charAt(0).toUpperCase()}
 									</div>
 									<div class="min-w-0 flex-1">
@@ -434,11 +443,15 @@
 								<!-- Footer : salary + last action -->
 								<div class="flex items-center justify-between text-[10px] text-text-muted">
 									{#if entry.salary_proposed_eur !== null}
-										<span class="font-semibold text-accent">{fmtSalary(entry.salary_proposed_eur)}</span>
+										<span class="font-semibold text-accent"
+											>{fmtSalary(entry.salary_proposed_eur)}</span
+										>
 									{:else}
 										<span></span>
 									{/if}
-									<span class="tabular-nums">{fmtRelative(entry.last_action_at ?? entry.updated_at)}</span>
+									<span class="tabular-nums"
+										>{fmtRelative(entry.last_action_at ?? entry.updated_at)}</span
+									>
 								</div>
 							</article>
 						{/each}
@@ -446,7 +459,9 @@
 						<!-- Empty state par colonne — visible seulement quand vide et pas
 						     en cours de drag pour ne pas polluer visuellement. -->
 						{#if items.length === 0 && draggingId === null}
-							<div class="rounded-lg border border-dashed border-border/60 p-4 text-center text-[10px] text-text-muted">
+							<div
+								class="rounded-lg border border-dashed border-border/60 p-4 text-center text-[10px] text-text-muted"
+							>
 								{i18n.locale === 'fr' ? 'Vide' : 'Empty'}
 							</div>
 						{/if}
@@ -460,7 +475,7 @@
 <!-- ═══════════ Edit modal ═══════════ -->
 <Modal
 	open={editingEntry !== null}
-	title={i18n.locale === 'fr' ? 'Modifier l\'entrée' : 'Edit entry'}
+	title={i18n.locale === 'fr' ? "Modifier l'entrée" : 'Edit entry'}
 	onclose={closeEdit}
 >
 	{#if editingEntry}
@@ -473,14 +488,14 @@
 			</div>
 
 			<div>
-				<label for="pipeline-notes" class="mb-1.5 block text-sm font-medium">
-					Notes
-				</label>
+				<label for="pipeline-notes" class="mb-1.5 block text-sm font-medium"> Notes </label>
 				<textarea
 					id="pipeline-notes"
 					bind:value={editNotes}
 					rows="4"
-					placeholder={i18n.locale === 'fr' ? 'Notes internes (visibles par votre équipe uniquement)' : 'Internal notes (visible to your team only)'}
+					placeholder={i18n.locale === 'fr'
+						? 'Notes internes (visibles par votre équipe uniquement)'
+						: 'Internal notes (visible to your team only)'}
 					class="w-full rounded-xl border border-border bg-surface-elevated px-4 py-2.5 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none"
 				></textarea>
 			</div>
@@ -515,7 +530,9 @@
 			label={i18n.locale === 'fr' ? 'Pseudo du talent' : 'Talent username'}
 			placeholder="kofi_dev"
 			bind:value={addUsername}
-			hint={i18n.locale === 'fr' ? 'Trouve le pseudo sur son profil public.' : 'Find the username on their public profile.'}
+			hint={i18n.locale === 'fr'
+				? 'Trouve le pseudo sur son profil public.'
+				: 'Find the username on their public profile.'}
 			error={addError}
 			required
 		/>
@@ -553,12 +570,14 @@
 	onclose={cancelDelete}
 >
 	<div class="flex gap-4">
-		<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-error/10 text-error">
+		<div
+			class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-error/10 text-error"
+		>
 			<Trash2 size={20} strokeWidth={2} />
 		</div>
 		<p class="text-sm text-text-muted leading-relaxed">
 			{i18n.locale === 'fr'
-				? "Le talent sera retiré du Kanban. Les conversations et bookmarks restent intacts. Vous pourrez le réajouter à tout moment."
+				? 'Le talent sera retiré du Kanban. Les conversations et bookmarks restent intacts. Vous pourrez le réajouter à tout moment.'
 				: 'The talent will be removed from the Kanban. Conversations and bookmarks stay intact. You can re-add them anytime.'}
 		</p>
 	</div>

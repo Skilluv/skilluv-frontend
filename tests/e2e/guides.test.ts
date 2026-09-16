@@ -155,12 +155,12 @@ test.describe('Un guide', () => {
 
 		await gotoHydrated(page, '/guides/onboarding-audio-composition');
 
-		await expect(page.getByRole('heading', { name: 'Débuter en composition', level: 1 })).toBeVisible();
+		await expect(
+			page.getByRole('heading', { name: 'Débuter en composition', level: 1 })
+		).toBeVisible();
 		// The `#` heading of the body becomes a section heading under the page
 		// title, and the markers themselves never reach the reader.
-		await expect(
-			page.getByRole('heading', { name: 'Les trente premiers jours' })
-		).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'Les trente premiers jours' })).toBeVisible();
 		await expect(page.getByText('en premier', { exact: true })).toBeVisible();
 		await expect(page.locator('[data-testid="guide-article"] ol li')).toHaveCount(2);
 		await expect(page.locator('[data-testid="guide-article"] table')).toBeVisible();

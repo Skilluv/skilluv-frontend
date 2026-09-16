@@ -14,9 +14,7 @@
 		try {
 			await authApi.resendVerification();
 			toast.success(
-				i18n.locale === 'fr'
-					? 'Email de vérification renvoyé.'
-					: 'Verification email resent.'
+				i18n.locale === 'fr' ? 'Email de vérification renvoyé.' : 'Verification email resent.'
 			);
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : 'Erreur');
@@ -50,8 +48,12 @@
 					onclick={resend}
 				>
 					{sending
-						? i18n.locale === 'fr' ? 'Envoi…' : 'Sending…'
-						: i18n.locale === 'fr' ? 'Renvoyer le mail' : 'Resend email'}
+						? i18n.locale === 'fr'
+							? 'Envoi…'
+							: 'Sending…'
+						: i18n.locale === 'fr'
+							? 'Renvoyer le mail'
+							: 'Resend email'}
 				</button>
 				<button
 					class="text-text-muted hover:text-text-primary"

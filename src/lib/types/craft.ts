@@ -156,12 +156,7 @@ export interface EducationCraftProfile extends CraftProfile {
  * written by or for the person doing it. A listing meant for contributors
  * usually asks for the other three.
  */
-export const GUIDE_KINDS = [
-	'onboarding',
-	'toolkit',
-	'writeup_template',
-	'brief_template'
-] as const;
+export const GUIDE_KINDS = ['onboarding', 'toolkit', 'writeup_template', 'brief_template'] as const;
 
 export type GuideKind = (typeof GUIDE_KINDS)[number];
 

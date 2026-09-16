@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import {
-		validatorApplicationsApi,
-		type ValidatorApplication
-	} from '$api/validatorApplications';
+	import { validatorApplicationsApi, type ValidatorApplication } from '$api/validatorApplications';
 	import { SkilluError } from '$api/client';
 	import { auth } from '$stores/auth.svelte';
 	import { toast } from '$stores/toast.svelte';
@@ -55,7 +52,8 @@
 		} catch (err) {
 			view = {
 				status: 'error',
-				message: err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.inviteError')
+				message:
+					err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.inviteError')
 			};
 		}
 	}
@@ -70,7 +68,9 @@
 			toast.success(i18n.t('p26.validatorApplication.toastInviteAccepted'));
 			await goto('/settings/my-validator-applications');
 		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.inviteError'));
+			toast.error(
+				err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.inviteError')
+			);
 		} finally {
 			acting = null;
 		}
@@ -84,7 +84,9 @@
 			toast.success(i18n.t('p26.validatorApplication.toastInviteDeclined'));
 			await goto('/settings/my-validator-applications');
 		} catch (err) {
-			toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.inviteError'));
+			toast.error(
+				err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.inviteError')
+			);
 		} finally {
 			acting = null;
 		}
@@ -111,7 +113,9 @@
 		<Skeleton class="h-64 w-full rounded-2xl" />
 	{:else if view.status === 'not-found'}
 		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
-			<h1 class="mb-2 text-lg font-semibold">{i18n.t('p26.validatorApplication.inviteNotFoundTitle')}</h1>
+			<h1 class="mb-2 text-lg font-semibold">
+				{i18n.t('p26.validatorApplication.inviteNotFoundTitle')}
+			</h1>
 			<p class="text-sm text-text-muted">
 				{i18n.t('p26.validatorApplication.inviteNotFoundBody')}
 			</p>
@@ -120,7 +124,9 @@
 		<Alert tone="error" size="lg">
 			{view.message}
 			{#snippet action()}
-				<Button variant="secondary" size="sm" onclick={load}>{i18n.t('p26.validation.retryBtn')}</Button>
+				<Button variant="secondary" size="sm" onclick={load}
+					>{i18n.t('p26.validation.retryBtn')}</Button
+				>
 			{/snippet}
 		</Alert>
 	{:else}
@@ -143,7 +149,9 @@
 			</p>
 
 			<section class="mb-4">
-				<h2 class="mb-2 text-sm font-semibold">{i18n.t('p26.validatorApplication.inviteReasonTitle')}</h2>
+				<h2 class="mb-2 text-sm font-semibold">
+					{i18n.t('p26.validatorApplication.inviteReasonTitle')}
+				</h2>
 				{#if app.admin_notes}
 					<div class="rounded-lg bg-primary/10 p-3 text-sm">{app.admin_notes}</div>
 				{:else}
@@ -151,7 +159,9 @@
 				{/if}
 			</section>
 
-			<p class="text-xs text-text-muted">{i18n.t('p26.validatorApplication.inviteReceivedOn', { date: formatDate(app.created_at) })}</p>
+			<p class="text-xs text-text-muted">
+				{i18n.t('p26.validatorApplication.inviteReceivedOn', { date: formatDate(app.created_at) })}
+			</p>
 		</div>
 
 		<div class="flex flex-wrap gap-3">

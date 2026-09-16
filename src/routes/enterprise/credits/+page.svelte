@@ -12,8 +12,19 @@
 	import InlinePaymentModal from '$components/payments/InlinePaymentModal.svelte';
 	import { type Component } from 'svelte';
 	import {
-		ArrowUp, ArrowDown, ArrowRight, RotateCcw, Sparkles, Hexagon,
-		Coins, Package, Boxes, Gem, Star, BadgeCheck, Inbox
+		ArrowUp,
+		ArrowDown,
+		ArrowRight,
+		RotateCcw,
+		Sparkles,
+		Hexagon,
+		Coins,
+		Package,
+		Boxes,
+		Gem,
+		Star,
+		BadgeCheck,
+		Inbox
 	} from '@lucide/svelte';
 
 	let balance = $state<CreditBalance | null>(null);
@@ -35,19 +46,67 @@
 	let isOwner = $derived(auth.user?.role === 'enterprise');
 
 	// Reason → label + icône + variant Badge
-	const REASON_META: Record<string, { icon: Component; variant: 'success' | 'error' | 'accent' | 'primary' | 'default'; fr: string; en: string }> = {
+	const REASON_META: Record<
+		string,
+		{
+			icon: Component;
+			variant: 'success' | 'error' | 'accent' | 'primary' | 'default';
+			fr: string;
+			en: string;
+		}
+	> = {
 		purchase: { icon: ArrowUp, variant: 'success', fr: 'Achat', en: 'Purchase' },
-		spend_interest_request: { icon: ArrowDown, variant: 'default', fr: 'Contact talent', en: 'Talent contact' },
-		refund_refused: { icon: RotateCcw, variant: 'accent', fr: 'Refund (décliné)', en: 'Refund (declined)' },
-		refund_timeout: { icon: RotateCcw, variant: 'accent', fr: 'Refund (timeout)', en: 'Refund (timeout)' },
+		spend_interest_request: {
+			icon: ArrowDown,
+			variant: 'default',
+			fr: 'Contact talent',
+			en: 'Talent contact'
+		},
+		refund_refused: {
+			icon: RotateCcw,
+			variant: 'accent',
+			fr: 'Refund (décliné)',
+			en: 'Refund (declined)'
+		},
+		refund_timeout: {
+			icon: RotateCcw,
+			variant: 'accent',
+			fr: 'Refund (timeout)',
+			en: 'Refund (timeout)'
+		},
 		refund_admin: { icon: RotateCcw, variant: 'accent', fr: 'Refund admin', en: 'Admin refund' },
 		admin_grant: { icon: Sparkles, variant: 'primary', fr: 'Bonus admin', en: 'Admin grant' },
-		signup_bonus: { icon: Sparkles, variant: 'primary', fr: 'Bonus inscription', en: 'Signup bonus' },
+		signup_bonus: {
+			icon: Sparkles,
+			variant: 'primary',
+			fr: 'Bonus inscription',
+			en: 'Signup bonus'
+		},
 		promo_code: { icon: Sparkles, variant: 'primary', fr: 'Code promo', en: 'Promo code' },
-		subscription_grant: { icon: ArrowUp, variant: 'success', fr: 'Abonnement mensuel', en: 'Monthly subscription' },
-		spend_bounty_escrow: { icon: Hexagon, variant: 'default', fr: 'Bounty séquestre', en: 'Bounty escrow' },
-		spend_bounty_payout: { icon: Hexagon, variant: 'default', fr: 'Bounty payée', en: 'Bounty payout' },
-		refund_bounty_cancelled: { icon: RotateCcw, variant: 'accent', fr: 'Bounty annulée', en: 'Bounty cancelled' }
+		subscription_grant: {
+			icon: ArrowUp,
+			variant: 'success',
+			fr: 'Abonnement mensuel',
+			en: 'Monthly subscription'
+		},
+		spend_bounty_escrow: {
+			icon: Hexagon,
+			variant: 'default',
+			fr: 'Bounty séquestre',
+			en: 'Bounty escrow'
+		},
+		spend_bounty_payout: {
+			icon: Hexagon,
+			variant: 'default',
+			fr: 'Bounty payée',
+			en: 'Bounty payout'
+		},
+		refund_bounty_cancelled: {
+			icon: RotateCcw,
+			variant: 'accent',
+			fr: 'Bounty annulée',
+			en: 'Bounty cancelled'
+		}
 	};
 
 	async function loadAll() {
@@ -163,7 +222,9 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Crédits | Skilluv Enterprise' : 'Credits | Skilluv Enterprise'}</title>
+	<title
+		>{i18n.locale === 'fr' ? 'Crédits | Skilluv Enterprise' : 'Credits | Skilluv Enterprise'}</title
+	>
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-10 sm:py-14">
@@ -189,7 +250,10 @@
 					: 'Each credit = one talent reached. Automatic 50% refund if declined or no reply after 30 days.'}
 			</p>
 		</div>
-		<a href="/enterprise/credits/invoices" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+		<a
+			href="/enterprise/credits/invoices"
+			class="inline-flex items-center gap-1 text-sm underline hover:text-primary"
+		>
 			{i18n.locale === 'fr' ? 'Factures' : 'Invoices'}
 			<ArrowRight size={14} strokeWidth={2} />
 		</a>
@@ -197,7 +261,9 @@
 
 	<!-- Big balance display -->
 	{#if loading && !balance}
-		<div class="mb-10 h-40 animate-pulse rounded-2xl border border-border bg-surface-elevated"></div>
+		<div
+			class="mb-10 h-40 animate-pulse rounded-2xl border border-border bg-surface-elevated"
+		></div>
 	{:else if balance}
 		<div class="mb-10 grid gap-4 sm:grid-cols-3">
 			<div class="sm:col-span-2 rounded-2xl border border-border bg-surface-elevated p-8">
@@ -205,13 +271,16 @@
 					{i18n.locale === 'fr' ? 'Solde disponible' : 'Available balance'}
 				</p>
 				<div class="flex items-baseline gap-3">
-					<span class="text-6xl sm:text-7xl font-black tracking-tight text-primary">{fmtNum(balance.balance)}</span>
+					<span class="text-6xl sm:text-7xl font-black tracking-tight text-primary"
+						>{fmtNum(balance.balance)}</span
+					>
 					<span class="text-lg text-text-muted">
 						{i18n.locale === 'fr' ? 'crédits' : 'credits'}
 					</span>
 				</div>
 				<p class="mt-4 text-xs font-mono text-text-muted">
-					{i18n.locale === 'fr' ? 'Mise à jour :' : 'Updated:'} {fmtDate(balance.updated_at)}
+					{i18n.locale === 'fr' ? 'Mise à jour :' : 'Updated:'}
+					{fmtDate(balance.updated_at)}
 				</p>
 			</div>
 
@@ -250,7 +319,10 @@
 						{i18n.locale === 'fr' ? 'Ajoutez des crédits.' : 'Add credits.'}
 					</h2>
 				</div>
-				<a href="/pricing" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+				<a
+					href="/pricing"
+					class="inline-flex items-center gap-1 text-sm underline hover:text-primary"
+				>
 					{i18n.locale === 'fr' ? 'Voir tous les tarifs' : 'See all pricing'}
 					<ArrowRight size={14} strokeWidth={2} />
 				</a>
@@ -261,7 +333,9 @@
 					<article
 						class="rounded-2xl border border-border bg-surface-elevated p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
 					>
-						<div class="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+						<div
+							class="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary"
+						>
 							{#if pack.credits === 1}
 								<Coins size={18} strokeWidth={2} />
 							{:else if pack.credits <= 5}
@@ -273,7 +347,8 @@
 							{/if}
 						</div>
 						<div class="mb-1 font-mono text-xs uppercase tracking-wider text-text-muted">
-							{pack.credits} {i18n.locale === 'fr' ? 'crédit' : 'credit'}{pack.credits > 1 ? 's' : ''}
+							{pack.credits}
+							{i18n.locale === 'fr' ? 'crédit' : 'credit'}{pack.credits > 1 ? 's' : ''}
 						</div>
 						<div class="mb-4 text-2xl font-black tracking-tight">
 							{pack.price.toFixed(pricing.currency === 'EUR' || pricing.currency === 'USD' ? 2 : 0)}
@@ -299,7 +374,9 @@
 	<div class="mb-14 grid gap-6 {isOwner ? 'lg:grid-cols-2' : ''}">
 		<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 			<div class="mb-4 flex items-center gap-3">
-				<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent"><Star size={20} strokeWidth={2} /></div>
+				<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+					<Star size={20} strokeWidth={2} />
+				</div>
 				<div>
 					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Code promo' : 'Promo code'}
@@ -326,7 +403,11 @@
 		{#if isOwner}
 			<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 				<div class="mb-4 flex items-center gap-3">
-					<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary"><BadgeCheck size={20} strokeWidth={2} /></div>
+					<div
+						class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary"
+					>
+						<BadgeCheck size={20} strokeWidth={2} />
+					</div>
 					<div>
 						<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 							{i18n.locale === 'fr' ? 'Facturation' : 'Billing'}
@@ -359,7 +440,10 @@
 					{i18n.locale === 'fr' ? 'Vos mouvements.' : 'Your movements.'}
 				</h2>
 			</div>
-			<a href="/enterprise/credits/invoices" class="inline-flex items-center gap-1 text-sm underline hover:text-primary">
+			<a
+				href="/enterprise/credits/invoices"
+				class="inline-flex items-center gap-1 text-sm underline hover:text-primary"
+			>
 				{i18n.locale === 'fr' ? 'Voir les factures' : 'See invoices'}
 				<ArrowRight size={14} strokeWidth={2} />
 			</a>
@@ -368,23 +452,31 @@
 		{#if loading}
 			<div class="space-y-2">
 				{#each Array(6) as _}
-					<div class="animate-pulse rounded-xl border border-border bg-surface-elevated p-4 h-16"></div>
+					<div
+						class="animate-pulse rounded-xl border border-border bg-surface-elevated p-4 h-16"
+					></div>
 				{/each}
 			</div>
 		{:else if transactions.length === 0}
 			<div class="rounded-2xl border border-border bg-surface-elevated p-12 text-center">
-				<div class="mb-3 inline-flex justify-center text-text-muted"><Inbox size={40} strokeWidth={1.5} /></div>
+				<div class="mb-3 inline-flex justify-center text-text-muted">
+					<Inbox size={40} strokeWidth={1.5} />
+				</div>
 				<p class="text-text-muted">
-					{i18n.locale === 'fr' ? 'Aucun mouvement pour l\'instant.' : 'No movements yet.'}
+					{i18n.locale === 'fr' ? "Aucun mouvement pour l'instant." : 'No movements yet.'}
 				</p>
 			</div>
 		{:else}
-			<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+			<div
+				class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden"
+			>
 				{#each transactions as tx}
 					{@const meta = reasonMeta(tx.reason)}
 					{@const delta = parseFloat(tx.delta)}
 					<div class="flex items-center gap-4 p-4">
-						<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface-overlay text-text-primary">
+						<div
+							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface-overlay text-text-primary"
+						>
 							<meta.icon size={18} strokeWidth={2} />
 						</div>
 						<div class="min-w-0 flex-1">
@@ -402,11 +494,16 @@
 							<p class="mt-0.5 text-xs font-mono text-text-muted">{fmtDate(tx.created_at)}</p>
 						</div>
 						<div class="text-right">
-							<div class="font-mono font-black text-lg {delta >= 0 ? 'text-success' : 'text-text-primary'}">
+							<div
+								class="font-mono font-black text-lg {delta >= 0
+									? 'text-success'
+									: 'text-text-primary'}"
+							>
 								{fmtDelta(tx.delta)}
 							</div>
 							<div class="text-xs text-text-muted">
-								{i18n.locale === 'fr' ? 'solde' : 'balance'} {tx.balance_after}
+								{i18n.locale === 'fr' ? 'solde' : 'balance'}
+								{tx.balance_after}
 							</div>
 						</div>
 					</div>

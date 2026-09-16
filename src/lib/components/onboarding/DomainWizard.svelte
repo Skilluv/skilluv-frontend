@@ -297,9 +297,7 @@
 						name={current.key}
 						label={questionLabel(current.key)}
 						maxlength={current.max_len ?? undefined}
-						value={typeof answers[current.key] === 'string'
-							? (answers[current.key] as string)
-							: ''}
+						value={typeof answers[current.key] === 'string' ? (answers[current.key] as string) : ''}
 						oninput={(e) =>
 							(answers = {
 								...answers,
@@ -340,10 +338,7 @@
 									? toggleMulti(current, value)
 									: setSingle(current.key, value)}
 							aria-pressed={isChosen(current, value)}
-							class="rounded-xl border px-4 py-2 text-sm transition-colors {isChosen(
-								current,
-								value
-							)
+							class="rounded-xl border px-4 py-2 text-sm transition-colors {isChosen(current, value)
 								? 'border-accent bg-accent/10 text-accent'
 								: 'border-border bg-surface text-text-primary hover:border-accent/40'}"
 						>

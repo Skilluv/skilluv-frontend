@@ -65,7 +65,9 @@ const userWithoutOrientations = {
 describe('AuthState orientations lifecycle', () => {
 	it('populates user.orientations after init()', async () => {
 		fetchMock
-			.mockResolvedValueOnce(ok({ user: userWithoutOrientations, login_method: 'password', has_passkey: false }))
+			.mockResolvedValueOnce(
+				ok({ user: userWithoutOrientations, login_method: 'password', has_passkey: false })
+			)
 			.mockResolvedValueOnce(ok([])) // capabilities
 			// The envelope the endpoint actually answers. Mocked as a bare array,
 			// this test agreed with the client rather than with the server, and
@@ -95,7 +97,9 @@ describe('AuthState orientations lifecycle', () => {
 
 	it('refreshOrientations() tolerates a 404 (backend endpoint absent)', async () => {
 		fetchMock
-			.mockResolvedValueOnce(ok({ user: userWithoutOrientations, login_method: 'password', has_passkey: false }))
+			.mockResolvedValueOnce(
+				ok({ user: userWithoutOrientations, login_method: 'password', has_passkey: false })
+			)
 			.mockResolvedValueOnce(ok([])) // capabilities
 			.mockResolvedValueOnce(notFound()); // orientations 404
 

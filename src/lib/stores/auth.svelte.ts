@@ -1,4 +1,10 @@
-import type { UserPrivate, LoginMethod, Capability, UserCapability, UserOrientation } from '$lib/types';
+import type {
+	UserPrivate,
+	LoginMethod,
+	Capability,
+	UserCapability,
+	UserOrientation
+} from '$lib/types';
 import { api } from '$lib/api/client';
 import { capabilitiesApi, hasCapability } from '$lib/api/capabilities';
 import { orientationsApi } from '$lib/api/orientations';

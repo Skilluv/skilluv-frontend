@@ -13,17 +13,26 @@
 	let creating = $state(false);
 	let newUrl = $state('');
 
-	const availableEvents = ['challenge.completed', 'badge.earned', 'title.changed', 'leaderboard.updated'];
+	const availableEvents = [
+		'challenge.completed',
+		'badge.earned',
+		'title.changed',
+		'leaderboard.updated'
+	];
 	let selectedEvents = $state<string[]>(['challenge.completed']);
 
-	$effect(() => { loadWebhooks(); });
+	$effect(() => {
+		loadWebhooks();
+	});
 
 	async function loadWebhooks() {
 		loading = true;
 		try {
 			const res = await developerApi.listWebhooks();
 			webhooks = res.data.webhooks;
-		} catch { /* silent */ }
+		} catch {
+			/* silent */
+		}
 		loading = false;
 	}
 
@@ -48,7 +57,9 @@
 		try {
 			await developerApi.updateWebhook(wh.id, { active: !wh.active });
 			wh.active = !wh.active;
-		} catch { /* silent */ }
+		} catch {
+			/* silent */
+		}
 	}
 
 	async function testWebhook(id: string) {
@@ -65,7 +76,9 @@
 			await developerApi.deleteWebhook(id);
 			webhooks = webhooks.filter((w) => w.id !== id);
 			toast.success('Webhook deleted.');
-		} catch { /* silent */ }
+		} catch {
+			/* silent */
+		}
 	}
 </script>
 
@@ -78,19 +91,31 @@
 	</div>
 
 	{#if showCreate}
-		<form onsubmit={createWebhook} class="mb-6 rounded-2xl border border-border bg-surface-elevated p-4">
+		<form
+			onsubmit={createWebhook}
+			class="mb-6 rounded-2xl border border-border bg-surface-elevated p-4"
+		>
 			<div class="flex flex-col gap-3">
-				<Input label="Endpoint URL" type="url" placeholder="https://your-server.com/webhook" bind:value={newUrl} required />
+				<Input
+					label="Endpoint URL"
+					type="url"
+					placeholder="https://your-server.com/webhook"
+					bind:value={newUrl}
+					required
+				/>
 				<div>
 					<p class="mb-1.5 text-sm font-medium">Events</p>
 					<div class="flex flex-wrap gap-2">
 						{#each availableEvents as evt}
-							<label class="flex items-center gap-1.5 rounded-lg bg-surface-overlay px-3 py-1.5 text-xs">
+							<label
+								class="flex items-center gap-1.5 rounded-lg bg-surface-overlay px-3 py-1.5 text-xs"
+							>
 								<input
 									type="checkbox"
 									checked={selectedEvents.includes(evt)}
 									onchange={() => {
-										if (selectedEvents.includes(evt)) selectedEvents = selectedEvents.filter(e => e !== evt);
+										if (selectedEvents.includes(evt))
+											selectedEvents = selectedEvents.filter((e) => e !== evt);
 										else selectedEvents = [...selectedEvents, evt];
 									}}
 									class="accent-accent"
@@ -120,12 +145,16 @@
 					<div class="mb-2 flex items-center justify-between">
 						<div class="flex items-center gap-2">
 							<code class="text-sm font-medium">{wh.url}</code>
-							<Badge variant={wh.active ? 'success' : 'default'}>{wh.active ? 'Active' : 'Inactive'}</Badge>
+							<Badge variant={wh.active ? 'success' : 'default'}
+								>{wh.active ? 'Active' : 'Inactive'}</Badge
+							>
 						</div>
 					</div>
 					<div class="mb-3 flex flex-wrap gap-1.5">
 						{#each wh.events as evt}
-							<code class="rounded bg-surface-overlay px-1.5 py-0.5 text-xs text-text-muted">{evt}</code>
+							<code class="rounded bg-surface-overlay px-1.5 py-0.5 text-xs text-text-muted"
+								>{evt}</code
+							>
 						{/each}
 					</div>
 					<div class="flex gap-2">

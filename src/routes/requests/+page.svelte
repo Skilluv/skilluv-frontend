@@ -162,11 +162,7 @@
 		<Skeleton class="h-64 w-full" rounded="xl" />
 	{:else}
 		{#if nothingAtAll}
-			<EmptyState
-				title={i18n.t('requests.empty')}
-				body={i18n.t('requests.emptyHint')}
-				size="sm"
-			/>
+			<EmptyState title={i18n.t('requests.empty')} body={i18n.t('requests.emptyHint')} size="sm" />
 		{/if}
 
 		{#if onboardings.length > 0}
@@ -336,8 +332,7 @@
 										bind:value={replyText}
 										rows="4"
 										class="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text focus:border-accent focus:outline-none"
-										data-testid="assessment-reply"
-									></textarea>
+										data-testid="assessment-reply"></textarea>
 									<div class="flex flex-wrap gap-2">
 										<Button
 											size="sm"

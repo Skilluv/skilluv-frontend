@@ -19,14 +19,14 @@
 				? 'earn'
 				: 'adjustment'
 	);
-	let Icon = $derived(
-		kind === 'earn' ? ArrowDownLeft : kind === 'payout' ? ArrowUpRight : Wrench
-	);
+	let Icon = $derived(kind === 'earn' ? ArrowDownLeft : kind === 'payout' ? ArrowUpRight : Wrench);
 	let iconClass = $derived(
 		kind === 'earn' ? 'text-success' : kind === 'payout' ? 'text-accent' : 'text-text-muted'
 	);
 	let deltaNum = $derived(Number(tx.delta));
-	let amountLabel = $derived(deltaNum > 0 ? `+${deltaNum.toLocaleString()}` : deltaNum.toLocaleString());
+	let amountLabel = $derived(
+		deltaNum > 0 ? `+${deltaNum.toLocaleString()}` : deltaNum.toLocaleString()
+	);
 
 	function fmtDate(iso: string): string {
 		return new Date(iso).toLocaleDateString(i18n.locale, {
@@ -42,7 +42,9 @@
 </script>
 
 <li class="flex items-center gap-4 border-b border-border px-4 py-3 last:border-b-0">
-	<div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-overlay {iconClass}">
+	<div
+		class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-overlay {iconClass}"
+	>
 		<Icon size={16} strokeWidth={2} />
 	</div>
 	<div class="min-w-0 flex-1">
@@ -56,7 +58,11 @@
 			<span class="font-mono">{fmtHash(tx.ledger_hash)}</span>
 		</p>
 	</div>
-	<span class="shrink-0 text-right font-mono text-sm font-semibold {deltaNum > 0 ? 'text-success' : 'text-text-primary'}">
+	<span
+		class="shrink-0 text-right font-mono text-sm font-semibold {deltaNum > 0
+			? 'text-success'
+			: 'text-text-primary'}"
+	>
 		<span>{amountLabel}</span>
 		<span class="ml-1 text-xs text-text-muted">{tx.currency}</span>
 	</span>

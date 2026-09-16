@@ -13,7 +13,12 @@
 	import Select from '$components/ui/Select.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import { SavedTargetLink } from '$components/saved';
-	import { SAVED_TARGET_TYPES, type Bookmark, type BookmarkFolder, type SavedTargetType } from '$types';
+	import {
+		SAVED_TARGET_TYPES,
+		type Bookmark,
+		type BookmarkFolder,
+		type SavedTargetType
+	} from '$types';
 	import Alert from '$components/ui/Alert.svelte';
 
 	const PAGE_SIZE = 50;
@@ -131,7 +136,13 @@
 
 	<FilterBar label={i18n.t('bookmarks.filterType')} class="mb-6">
 		<Select items={typeItems} value={typeFilter} onchange={onTypeChange} size="sm" />
-		<Select items={folderItems} value={folderFilter} onchange={onFolderChange} size="sm" searchable />
+		<Select
+			items={folderItems}
+			value={folderFilter}
+			onchange={onFolderChange}
+			size="sm"
+			searchable
+		/>
 	</FilterBar>
 
 	{#if loading}

@@ -17,7 +17,9 @@ function fixedUsername(): string {
 			const j = JSON.parse(fs.readFileSync(userCredentialsPath(), 'utf-8'));
 			if (typeof j.username === 'string') return j.username;
 		}
-	} catch { /* ignore */ }
+	} catch {
+		/* ignore */
+	}
 	return USER_FIXED.username;
 }
 

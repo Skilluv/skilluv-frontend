@@ -130,15 +130,19 @@ async function main() {
 	const [ref, ...rest] = locales;
 	for (const other of rest) {
 		for (const k of ref.keys) {
-			if (!other.keys.has(k)) violations.push(`key "${k}" present in ${ref.locale}.ts but missing in ${other.locale}.ts`);
+			if (!other.keys.has(k))
+				violations.push(`key "${k}" present in ${ref.locale}.ts but missing in ${other.locale}.ts`);
 		}
 		for (const k of other.keys) {
-			if (!ref.keys.has(k)) violations.push(`key "${k}" present in ${other.locale}.ts but missing in ${ref.locale}.ts`);
+			if (!ref.keys.has(k))
+				violations.push(`key "${k}" present in ${other.locale}.ts but missing in ${ref.locale}.ts`);
 		}
 	}
 
 	if (violations.length === 0) {
-		process.stdout.write(`i18n-check ok: ${used.size} referenced keys, ${locales[0].keys.size} keys per locale\n`);
+		process.stdout.write(
+			`i18n-check ok: ${used.size} referenced keys, ${locales[0].keys.size} keys per locale\n`
+		);
 		process.exit(0);
 	}
 

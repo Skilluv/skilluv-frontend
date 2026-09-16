@@ -58,13 +58,48 @@
 	// $derived, not const: evaluated once, these labels froze on whichever locale
 	// happened to be active at first render and never followed a language switch.
 	const domains: { value: SkillDomain; label: string; desc: string; icon: Component }[] = $derived([
-		{ value: 'code', label: i18n.t('common.domains.code'), desc: i18n.t('auth.register.codeDesc'), icon: Code2 as Component },
-		{ value: 'design', label: i18n.t('common.domains.design'), desc: i18n.t('auth.register.designDesc'), icon: Palette as Component },
-		{ value: 'game', label: i18n.t('common.domains.game'), desc: i18n.t('auth.register.gameDesc'), icon: Gamepad2 as Component },
-		{ value: 'security', label: i18n.t('common.domains.security'), desc: i18n.t('auth.register.securityDesc'), icon: Shield as Component },
-		{ value: 'ai', label: i18n.t('common.domains.ai'), desc: i18n.t('auth.register.aiDesc'), icon: Brain as Component },
-		{ value: 'ops', label: i18n.t('common.domains.ops'), desc: i18n.t('auth.register.opsDesc'), icon: Cloud as Component },
-		{ value: 'soft_skills', label: i18n.t('common.domains.soft_skills'), desc: i18n.t('auth.register.softSkillsDesc'), icon: Users as Component }
+		{
+			value: 'code',
+			label: i18n.t('common.domains.code'),
+			desc: i18n.t('auth.register.codeDesc'),
+			icon: Code2 as Component
+		},
+		{
+			value: 'design',
+			label: i18n.t('common.domains.design'),
+			desc: i18n.t('auth.register.designDesc'),
+			icon: Palette as Component
+		},
+		{
+			value: 'game',
+			label: i18n.t('common.domains.game'),
+			desc: i18n.t('auth.register.gameDesc'),
+			icon: Gamepad2 as Component
+		},
+		{
+			value: 'security',
+			label: i18n.t('common.domains.security'),
+			desc: i18n.t('auth.register.securityDesc'),
+			icon: Shield as Component
+		},
+		{
+			value: 'ai',
+			label: i18n.t('common.domains.ai'),
+			desc: i18n.t('auth.register.aiDesc'),
+			icon: Brain as Component
+		},
+		{
+			value: 'ops',
+			label: i18n.t('common.domains.ops'),
+			desc: i18n.t('auth.register.opsDesc'),
+			icon: Cloud as Component
+		},
+		{
+			value: 'soft_skills',
+			label: i18n.t('common.domains.soft_skills'),
+			desc: i18n.t('auth.register.softSkillsDesc'),
+			icon: Users as Component
+		}
 	]);
 
 	function pickDomain(d: SkillDomain) {
@@ -79,7 +114,8 @@
 		if (!selectedDomain) return;
 
 		fieldErrors = {};
-		if (!country) fieldErrors.country = i18n.locale === 'fr' ? 'Sélectionnez un pays' : 'Pick a country';
+		if (!country)
+			fieldErrors.country = i18n.locale === 'fr' ? 'Sélectionnez un pays' : 'Pick a country';
 		if (!termsAccepted) {
 			fieldErrors.terms =
 				i18n.locale === 'fr'
@@ -136,24 +172,33 @@
 			{i18n.locale === 'fr' ? 'Étape 1 sur 2 · Ta première clé' : 'Step 1 of 2 · Your first key'}
 		</div>
 		<h1 class="mb-3 font-hero text-4xl sm:text-5xl">
-			{i18n.locale === 'fr' ? 'Choisis ton terrain' : 'Pick your ground'}<span class="text-accent">.</span>
+			{i18n.locale === 'fr' ? 'Choisis ton terrain' : 'Pick your ground'}<span class="text-accent"
+				>.</span
+			>
 		</h1>
 		<p class="mb-8 text-base text-text-muted leading-relaxed">
 			{i18n.locale === 'fr'
-				? "Une dernière étape avant de commencer — dis-nous ce que tu fais. Ton trousseau se remplira avec ce que tu prouveras."
-				: "One last step before you start — tell us what you do. Your keyring will fill up as you prove things."}
+				? 'Une dernière étape avant de commencer — dis-nous ce que tu fais. Ton trousseau se remplira avec ce que tu prouveras.'
+				: 'One last step before you start — tell us what you do. Your keyring will fill up as you prove things.'}
 		</p>
 
 		<div class="grid gap-3">
 			{#each domains as domain, i}
 				{@const ds = domainStyle(domain.value)}
-				{@const catBg = ['bg-surface-craft border-cat-craft', 'bg-surface-create border-cat-create', 'bg-surface-meta border-cat-meta', 'bg-surface-operate border-cat-operate'][i]}
+				{@const catBg = [
+					'bg-surface-craft border-cat-craft',
+					'bg-surface-create border-cat-create',
+					'bg-surface-meta border-cat-meta',
+					'bg-surface-operate border-cat-operate'
+				][i]}
 				<button
 					type="button"
 					class="flex items-center gap-4 rounded-2xl border-2 {catBg} p-4 text-left transition-transform duration-200 hover:-translate-y-0.5 {ds.hoverBorder}"
 					onclick={() => pickDomain(domain.value)}
 				>
-					<span class="flex h-12 w-12 items-center justify-center rounded-2xl {ds.bgSoft} {ds.text}">
+					<span
+						class="flex h-12 w-12 items-center justify-center rounded-2xl {ds.bgSoft} {ds.text}"
+					>
 						<domain.icon size={22} strokeWidth={2} />
 					</span>
 					<div class="min-w-0">
@@ -164,7 +209,11 @@
 			{/each}
 		</div>
 	{:else}
-		<button type="button" class="mb-6 text-sm text-text-muted hover:text-text-primary" onclick={() => (step = 1)}>
+		<button
+			type="button"
+			class="mb-6 text-sm text-text-muted hover:text-text-primary"
+			onclick={() => (step = 1)}
+		>
 			← {i18n.locale === 'fr' ? 'Changer de domaine' : 'Change domain'}
 		</button>
 
@@ -176,9 +225,12 @@
 		</h1>
 		<p class="mb-6 text-sm text-text-muted">
 			{i18n.locale === 'fr'
-				? "Ces infos aident à te matcher aux bons challenges."
+				? 'Ces infos aident à te matcher aux bons challenges.'
 				: 'This helps match you with the right challenges.'}
-			<span class="ml-1 rounded bg-surface-overlay px-2 py-0.5 text-xs font-semibold text-accent uppercase">{selectedDomain}</span>
+			<span
+				class="ml-1 rounded bg-surface-overlay px-2 py-0.5 text-xs font-semibold text-accent uppercase"
+				>{selectedDomain}</span
+			>
 		</p>
 
 		{#if error}
@@ -213,14 +265,34 @@
 				<span>
 					{#if i18n.locale === 'fr'}
 						J'accepte les
-						<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">CGU</a>
+						<a
+							href="/legal/terms"
+							target="_blank"
+							rel="noopener"
+							class="text-accent hover:underline">CGU</a
+						>
 						et la
-						<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">politique de confidentialité</a>.
+						<a
+							href="/legal/privacy"
+							target="_blank"
+							rel="noopener"
+							class="text-accent hover:underline">politique de confidentialité</a
+						>.
 					{:else}
 						I accept the
-						<a href="/legal/terms" target="_blank" rel="noopener" class="text-accent hover:underline">Terms of Service</a>
+						<a
+							href="/legal/terms"
+							target="_blank"
+							rel="noopener"
+							class="text-accent hover:underline">Terms of Service</a
+						>
 						and
-						<a href="/legal/privacy" target="_blank" rel="noopener" class="text-accent hover:underline">Privacy Policy</a>.
+						<a
+							href="/legal/privacy"
+							target="_blank"
+							rel="noopener"
+							class="text-accent hover:underline">Privacy Policy</a
+						>.
 					{/if}
 				</span>
 			</label>
@@ -230,8 +302,12 @@
 
 			<Button variant="accent" size="lg" type="submit" {loading} class="mt-2 w-full">
 				{loading
-					? i18n.locale === 'fr' ? 'Enregistrement…' : 'Saving…'
-					: i18n.locale === 'fr' ? 'Terminer' : 'Finish'}
+					? i18n.locale === 'fr'
+						? 'Enregistrement…'
+						: 'Saving…'
+					: i18n.locale === 'fr'
+						? 'Terminer'
+						: 'Finish'}
 			</Button>
 		</form>
 	{/if}

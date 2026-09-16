@@ -45,9 +45,7 @@
 	);
 
 	/** Doubled so the drift can loop on itself without a visible seam. */
-	const names = $derived(
-		DOMAIN_PLATES.map((plate) => i18n.t(`disciplines.${plate.domain}.label`))
-	);
+	const names = $derived(DOMAIN_PLATES.map((plate) => i18n.t(`disciplines.${plate.domain}.label`)));
 
 	let root = $state<HTMLElement | null>(null);
 	let band = $state<HTMLElement | null>(null);
@@ -177,7 +175,10 @@
 
 	.ready__name {
 		font-family: 'Fraunces Variable', Georgia, serif;
-		font-variation-settings: 'opsz' 144, 'SOFT' 30, 'WONK' 1;
+		font-variation-settings:
+			'opsz' 144,
+			'SOFT' 30,
+			'WONK' 1;
 		font-weight: 700;
 		font-size: clamp(3rem, 9vw, 7rem);
 		line-height: 1;
@@ -204,7 +205,10 @@
 	.ready__title {
 		margin: 0;
 		font-family: 'Fraunces Variable', Georgia, serif;
-		font-variation-settings: 'opsz' 144, 'SOFT' 40, 'WONK' 1;
+		font-variation-settings:
+			'opsz' 144,
+			'SOFT' 40,
+			'WONK' 1;
 		font-weight: 700;
 		font-size: clamp(2.75rem, 9vw, 6rem);
 		line-height: 0.96;

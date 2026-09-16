@@ -26,7 +26,11 @@
 	import Button from '$components/ui/Button.svelte';
 	import Input from '$components/ui/Input.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
-	import { DESIGN_CLOUD_PROVIDERS, type DesignCloudConnection, type DesignCloudInspection } from '$types';
+	import {
+		DESIGN_CLOUD_PROVIDERS,
+		type DesignCloudConnection,
+		type DesignCloudInspection
+	} from '$types';
 	import Alert from '$components/ui/Alert.svelte';
 
 	let connections = $state<DesignCloudConnection[]>([]);

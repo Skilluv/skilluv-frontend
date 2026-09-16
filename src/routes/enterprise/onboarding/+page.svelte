@@ -79,9 +79,7 @@
 
 	// The `next=` query param lets other flows (login, register) send the
 	// user here and then bounce them somewhere specific on completion.
-	const nextDestination = $derived(
-		page.url.searchParams.get('next') ?? '/enterprise/dashboard'
-	);
+	const nextDestination = $derived(page.url.searchParams.get('next') ?? '/enterprise/dashboard');
 
 	// We deliberately do NOT pre-fetch /api/enterprise/profile here — the
 	// require_enterprise_owner gate would 403 (no 2FA yet) and litter the
@@ -130,9 +128,7 @@
 		passkeyBusy = true;
 		passkeyError = '';
 		try {
-			await webauthnApi.register(
-				i18n.locale === 'fr' ? 'Ce navigateur' : 'This browser'
-			);
+			await webauthnApi.register(i18n.locale === 'fr' ? 'Ce navigateur' : 'This browser');
 			// Mirror the enrolment client-side so the enterprise gate is
 			// satisfied for downstream API calls (profile update, invite)
 			// without waiting for a full /auth/me refresh.
@@ -186,8 +182,7 @@
 
 	async function sendInvite() {
 		if (!inviteEmail.includes('@')) {
-			inviteError =
-				i18n.locale === 'fr' ? 'Adresse email invalide.' : 'Invalid email address.';
+			inviteError = i18n.locale === 'fr' ? 'Adresse email invalide.' : 'Invalid email address.';
 			return;
 		}
 		inviteBusy = true;
@@ -278,71 +273,77 @@
 		<!-- Bloc centré verticalement dans le viewport disponible (viewport
 		     moins la hauteur du EnterpriseHeader + l'indicateur d'étapes). -->
 		<div class="flex min-h-[calc(100vh-14rem)] items-center justify-center">
-		<div class="animate-[fade-in_300ms_ease-out] text-center">
-			<h1 class="mb-3 text-3xl sm:text-4xl font-black tracking-tight">
-				{i18n.locale === 'fr' ? 'Bienvenue' : 'Welcome'}<span class="text-accent">.</span>
-			</h1>
-			<p class="mx-auto mb-8 max-w-lg text-text-muted">
-				{isOwner
-					? i18n.locale === 'fr'
-						? 'Ton espace entreprise est presque prêt. Encore quelques minutes pour armer la sécurité, préciser ton profil et inviter ton équipe.'
-						: 'Your enterprise workspace is nearly ready. A few more minutes to lock down security, refine your profile and invite your team.'
-					: i18n.locale === 'fr'
-						? "Ton entreprise t'attend. Une dernière étape : armer un second facteur pour sécuriser ton accès."
-						: 'Your enterprise is waiting. One last step: arm a second factor to secure your access.'}
-			</p>
+			<div class="animate-[fade-in_300ms_ease-out] text-center">
+				<h1 class="mb-3 text-3xl sm:text-4xl font-black tracking-tight">
+					{i18n.locale === 'fr' ? 'Bienvenue' : 'Welcome'}<span class="text-accent">.</span>
+				</h1>
+				<p class="mx-auto mb-8 max-w-lg text-text-muted">
+					{isOwner
+						? i18n.locale === 'fr'
+							? 'Ton espace entreprise est presque prêt. Encore quelques minutes pour armer la sécurité, préciser ton profil et inviter ton équipe.'
+							: 'Your enterprise workspace is nearly ready. A few more minutes to lock down security, refine your profile and invite your team.'
+						: i18n.locale === 'fr'
+							? "Ton entreprise t'attend. Une dernière étape : armer un second facteur pour sécuriser ton accès."
+							: 'Your enterprise is waiting. One last step: arm a second factor to secure your access.'}
+				</p>
 
-			<div class="mx-auto mb-8 grid max-w-lg gap-3 text-left text-sm">
-				<div class="flex items-start gap-3 rounded-xl border border-border bg-surface-elevated p-4">
-					<KeyRound class="mt-0.5 shrink-0 text-accent" size={20} strokeWidth={2} />
-					<div>
-						<p class="font-semibold">
-							{i18n.locale === 'fr'
-								? '2FA obligatoire (TOTP ou passkey)'
-								: 'Mandatory 2FA (TOTP or passkey)'}
-						</p>
-						<p class="text-xs text-text-muted mt-0.5">
-							{i18n.locale === 'fr'
-								? 'Un facteur au choix suffit — tu peux ajouter le second plus tard.'
-								: 'One factor is enough — you can add the other later.'}
-						</p>
+				<div class="mx-auto mb-8 grid max-w-lg gap-3 text-left text-sm">
+					<div
+						class="flex items-start gap-3 rounded-xl border border-border bg-surface-elevated p-4"
+					>
+						<KeyRound class="mt-0.5 shrink-0 text-accent" size={20} strokeWidth={2} />
+						<div>
+							<p class="font-semibold">
+								{i18n.locale === 'fr'
+									? '2FA obligatoire (TOTP ou passkey)'
+									: 'Mandatory 2FA (TOTP or passkey)'}
+							</p>
+							<p class="text-xs text-text-muted mt-0.5">
+								{i18n.locale === 'fr'
+									? 'Un facteur au choix suffit — tu peux ajouter le second plus tard.'
+									: 'One factor is enough — you can add the other later.'}
+							</p>
+						</div>
 					</div>
+					{#if isOwner}
+						<div
+							class="flex items-start gap-3 rounded-xl border border-border bg-surface-elevated p-4"
+						>
+							<Building2 class="mt-0.5 shrink-0 text-accent" size={20} strokeWidth={2} />
+							<div>
+								<p class="font-semibold">
+									{i18n.locale === 'fr' ? 'Profil de ton entreprise' : 'Your company profile'}
+								</p>
+								<p class="text-xs text-text-muted mt-0.5">
+									{i18n.locale === 'fr'
+										? 'Description + logo visibles par les talents que tu contactes.'
+										: 'Description + logo visible to talents you reach out to.'}
+								</p>
+							</div>
+						</div>
+						<div
+							class="flex items-start gap-3 rounded-xl border border-border bg-surface-elevated p-4"
+						>
+							<Users class="mt-0.5 shrink-0 text-accent" size={20} strokeWidth={2} />
+							<div>
+								<p class="font-semibold">
+									{i18n.locale === 'fr' ? 'Invite ton équipe' : 'Invite your team'}
+								</p>
+								<p class="text-xs text-text-muted mt-0.5">
+									{i18n.locale === 'fr'
+										? 'Optionnel — tes recruteurs auront leur propre accès.'
+										: 'Optional — your recruiters will get their own access.'}
+								</p>
+							</div>
+						</div>
+					{/if}
 				</div>
-				{#if isOwner}
-					<div class="flex items-start gap-3 rounded-xl border border-border bg-surface-elevated p-4">
-						<Building2 class="mt-0.5 shrink-0 text-accent" size={20} strokeWidth={2} />
-						<div>
-							<p class="font-semibold">
-								{i18n.locale === 'fr' ? 'Profil de ton entreprise' : 'Your company profile'}
-							</p>
-							<p class="text-xs text-text-muted mt-0.5">
-								{i18n.locale === 'fr'
-									? 'Description + logo visibles par les talents que tu contactes.'
-									: 'Description + logo visible to talents you reach out to.'}
-							</p>
-						</div>
-					</div>
-					<div class="flex items-start gap-3 rounded-xl border border-border bg-surface-elevated p-4">
-						<Users class="mt-0.5 shrink-0 text-accent" size={20} strokeWidth={2} />
-						<div>
-							<p class="font-semibold">
-								{i18n.locale === 'fr' ? 'Invite ton équipe' : 'Invite your team'}
-							</p>
-							<p class="text-xs text-text-muted mt-0.5">
-								{i18n.locale === 'fr'
-									? 'Optionnel — tes recruteurs auront leur propre accès.'
-									: 'Optional — your recruiters will get their own access.'}
-							</p>
-						</div>
-					</div>
-				{/if}
-			</div>
 
-			<Button variant="accent" size="lg" onclick={nextStep}>
-				{i18n.locale === 'fr' ? 'Commencer' : 'Get started'}
-				<ArrowRight size={16} strokeWidth={2.5} />
-			</Button>
-		</div>
+				<Button variant="accent" size="lg" onclick={nextStep}>
+					{i18n.locale === 'fr' ? 'Commencer' : 'Get started'}
+					<ArrowRight size={16} strokeWidth={2.5} />
+				</Button>
+			</div>
 		</div>
 	{/if}
 
@@ -356,7 +357,7 @@
 			</h1>
 			<p class="mb-8 text-text-muted">
 				{i18n.locale === 'fr'
-					? 'Choisis un second facteur d\'authentification. Un seul suffit pour débloquer l\'espace entreprise — les deux sont interchangeables.'
+					? "Choisis un second facteur d'authentification. Un seul suffit pour débloquer l'espace entreprise — les deux sont interchangeables."
 					: 'Pick one second-factor method. Either satisfies the enterprise gate — you can add the other later.'}
 			</p>
 
@@ -368,15 +369,13 @@
 				>
 					<p>
 						{i18n.locale === 'fr'
-							? 'Ton compte est protégé. Tu pourras ajouter l\'autre méthode plus tard depuis les paramètres.'
+							? "Ton compte est protégé. Tu pourras ajouter l'autre méthode plus tard depuis les paramètres."
 							: 'Your account is protected. You can add the other method later from settings.'}
 					</p>
 					{#if backupCodes.length > 0 && !backupCodesConfirmed}
 						<div class="mt-4 border-t border-success/20 pt-4">
 							<p class="mb-2 font-semibold text-warning">
-								{i18n.locale === 'fr'
-									? 'Note tes codes de secours'
-									: 'Save your backup codes'}
+								{i18n.locale === 'fr' ? 'Note tes codes de secours' : 'Save your backup codes'}
 							</p>
 							<p class="mb-3 text-xs text-text-muted">
 								{i18n.locale === 'fr'
@@ -392,11 +391,7 @@
 									</div>
 								{/each}
 							</div>
-							<Button
-								variant="ghost"
-								size="sm"
-								onclick={() => (backupCodesConfirmed = true)}
-							>
+							<Button variant="ghost" size="sm" onclick={() => (backupCodesConfirmed = true)}>
 								{i18n.locale === 'fr' ? "J'ai copié mes codes" : 'I saved my codes'}
 							</Button>
 						</div>
@@ -414,12 +409,16 @@
 						disabled={!passkeySupported}
 						class="group rounded-2xl border-2 border-border p-5 text-left transition-all hover:border-accent hover:bg-accent/5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-border disabled:hover:bg-transparent"
 					>
-						<div class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-accent">
+						<div
+							class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-accent"
+						>
 							<KeyRound size={20} strokeWidth={2.25} />
 						</div>
 						<h2 class="mb-1 font-bold">
 							{i18n.locale === 'fr' ? 'Passkey' : 'Passkey'}
-							<span class="ml-1 rounded bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-accent">
+							<span
+								class="ml-1 rounded bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-accent"
+							>
 								{i18n.locale === 'fr' ? 'Recommandé' : 'Recommended'}
 							</span>
 						</h2>
@@ -442,7 +441,9 @@
 						onclick={() => (selectedMethod = 'totp')}
 						class="group rounded-2xl border-2 border-border p-5 text-left transition-all hover:border-accent hover:bg-accent/5"
 					>
-						<div class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-accent">
+						<div
+							class="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-accent"
+						>
 							<Smartphone size={20} strokeWidth={2.25} />
 						</div>
 						<h2 class="mb-1 font-bold">
@@ -450,7 +451,7 @@
 						</h2>
 						<p class="text-xs text-text-muted">
 							{i18n.locale === 'fr'
-								? "Un code à 6 chiffres généré par Google Authenticator, 1Password ou similaire. Compatible partout."
+								? 'Un code à 6 chiffres généré par Google Authenticator, 1Password ou similaire. Compatible partout.'
 								: 'A 6-digit code from Google Authenticator, 1Password or similar. Works everywhere.'}
 						</p>
 					</button>
@@ -510,7 +511,9 @@
 
 					{#if !totpSetupStarted}
 						<div class="mb-4 flex items-center gap-3">
-							<div class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+							<div
+								class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"
+							>
 								<Smartphone size={22} strokeWidth={2.25} />
 							</div>
 							<div>
@@ -547,9 +550,7 @@
 								alt=""
 								class="h-40 w-40"
 							/>
-							<code class="text-xs font-mono text-black break-all text-center"
-								>{totpSecret}</code
-							>
+							<code class="text-xs font-mono text-black break-all text-center">{totpSecret}</code>
 						</div>
 
 						<p class="mb-3 text-sm font-semibold">
@@ -650,8 +651,8 @@
 	{#if step === 4}
 		<div class="animate-[fade-in_300ms_ease-out]">
 			<h1 class="mb-3 text-3xl sm:text-4xl font-black tracking-tight">
-				{i18n.locale === 'fr' ? 'Invite ton équipe' : 'Invite your team'}<span
-					class="text-accent">.</span
+				{i18n.locale === 'fr' ? 'Invite ton équipe' : 'Invite your team'}<span class="text-accent"
+					>.</span
 				>
 			</h1>
 			<p class="mb-8 text-text-muted">
@@ -704,7 +705,9 @@
 	<!-- ═══════════ STEP 5 — Done ═══════════ -->
 	{#if step === 5}
 		<div class="animate-[fade-in_300ms_ease-out] text-center">
-			<div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-success/15 text-success">
+			<div
+				class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-success/15 text-success"
+			>
 				<Check size={30} strokeWidth={2.5} />
 			</div>
 			<h1 class="mb-3 text-3xl sm:text-4xl font-black tracking-tight">

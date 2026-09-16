@@ -25,5 +25,4 @@ test.describe('@parcours forum-new', () => {
 		await expect(page.locator('h1').first()).toBeVisible({ timeout: 15_000 });
 		await page.screenshot({ path: testInfo.outputPath('step-2-form.png'), fullPage: true });
 	});
-
 });

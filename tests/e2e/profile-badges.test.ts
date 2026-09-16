@@ -104,15 +104,15 @@ const badgesPayload = {
 const orientationsPayload = {
 	data: {
 		orientations: [
-		{
-			orientation_slug: 'dev-frontend',
-			orientation_name: 'Dev frontend',
-			mode: 'active',
-			is_primary: true,
-			started_at: '2025-06-01',
-			working_languages: ['fr', 'en'],
-			timezone: 'Africa/Porto-Novo'
-		}
+			{
+				orientation_slug: 'dev-frontend',
+				orientation_name: 'Dev frontend',
+				mode: 'active',
+				is_primary: true,
+				started_at: '2025-06-01',
+				working_languages: ['fr', 'en'],
+				timezone: 'Africa/Porto-Novo'
+			}
 		]
 	}
 };
@@ -121,11 +121,11 @@ const capabilitiesPayload = {
 	data: {
 		user_id: 'u-1',
 		capabilities: [
-		{
-			capability: 'mentor',
-			granted_at: '2026-01-01',
-			granted_reason: 'auto-promotion'
-		}
+			{
+				capability: 'mentor',
+				granted_at: '2026-01-01',
+				granted_reason: 'auto-promotion'
+			}
 		]
 	}
 };
@@ -217,14 +217,16 @@ test.describe('Profile page — badges wall', () => {
 		await expect(page.getByLabel(/Médaille Season 2 champion — legendary/i)).toBeVisible();
 		await expect(page.getByText('12').first()).toBeVisible();
 		await expect(page.getByText('sceaux de challenges')).toBeVisible();
-		await expect(page.getByText('timbres d\'événements')).toBeVisible();
+		await expect(page.getByText("timbres d'événements")).toBeVisible();
 	});
 
 	test('renders orientation list and contribution section', async ({ page }) => {
 		await gotoHydrated(page, '/profile/kofi');
 		await expect(page.getByRole('heading', { name: 'Orientations métier' })).toBeVisible();
 		await expect(page.getByText('Dev frontend')).toBeVisible();
-		await expect(page.getByRole('heading', { name: 'Comment cette personne contribue' })).toBeVisible();
+		await expect(
+			page.getByRole('heading', { name: 'Comment cette personne contribue' })
+		).toBeVisible();
 		await expect(page.getByLabel(/Mentor: .*/i)).toBeVisible();
 	});
 });

@@ -150,20 +150,20 @@
 			<Alert tone="warning">
 				{i18n.t('deviceFeed.withdrawConfirm')}
 				{#snippet action()}
-				<div class="flex flex-wrap gap-2">
-					<Button
-						size="sm"
-						variant="danger"
-						loading={withdrawing}
-						onclick={withdraw}
-						data-testid="confirm-withdraw"
-					>
-						{i18n.t('deviceFeed.withdrawConfirmCta')}
-					</Button>
-					<Button size="sm" variant="ghost" onclick={() => (confirmWithdraw = false)}>
-						{i18n.t('deviceFeed.cancelCta')}
-					</Button>
-				</div>
+					<div class="flex flex-wrap gap-2">
+						<Button
+							size="sm"
+							variant="danger"
+							loading={withdrawing}
+							onclick={withdraw}
+							data-testid="confirm-withdraw"
+						>
+							{i18n.t('deviceFeed.withdrawConfirmCta')}
+						</Button>
+						<Button size="sm" variant="ghost" onclick={() => (confirmWithdraw = false)}>
+							{i18n.t('deviceFeed.cancelCta')}
+						</Button>
+					</div>
 				{/snippet}
 			</Alert>
 		{:else}

@@ -103,7 +103,9 @@
 		loading = true;
 		try {
 			const res =
-				domain === 'audio' ? await craftApi.audioProfile(username) : await craftApi.profile(domain, username);
+				domain === 'audio'
+					? await craftApi.audioProfile(username)
+					: await craftApi.profile(domain, username);
 			profile = res.data;
 		} catch {
 			// A profile with no record in this domain answers 404, and so does
@@ -355,7 +357,9 @@
 										{i18n.t('craftProfile.noOutcomes')}
 									</span>
 								{/if}
-								<span class="ml-auto text-xs text-text-muted">{fmtCohortDate(cohort.starts_at)}</span>
+								<span class="ml-auto text-xs text-text-muted"
+									>{fmtCohortDate(cohort.starts_at)}</span
+								>
 							</li>
 						{/each}
 					</ul>

@@ -41,9 +41,7 @@ export const mentionsApi = {
 
 	/** POST /users/me/mentions/{id}/read — idempotent. */
 	markRead(id: string): Promise<ApiResponse<{ id: string; read_at: string }>> {
-		return api.post<ApiResponse<{ id: string; read_at: string }>>(
-			`/users/me/mentions/${id}/read`
-		);
+		return api.post<ApiResponse<{ id: string; read_at: string }>>(`/users/me/mentions/${id}/read`);
 	},
 
 	/** POST /users/me/mentions/read-all */

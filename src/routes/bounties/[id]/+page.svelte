@@ -60,8 +60,8 @@
 			await bountiesApi.submitPr(bountyId, prUrl.trim(), num);
 			toast.success(
 				i18n.locale === 'fr'
-					? 'PR attachée. On te crédite dès qu\'elle est mergée.'
-					: 'PR attached. You\'ll be credited as soon as it\'s merged.'
+					? "PR attachée. On te crédite dès qu'elle est mergée."
+					: "PR attached. You'll be credited as soon as it's merged."
 			);
 			showPrModal = false;
 			prUrl = '';
@@ -75,12 +75,17 @@
 	}
 
 	function statusVariant(status: string): 'success' | 'accent' | 'default' | 'warning' | 'error' {
-		return status === 'open' ? 'success'
-			: status === 'claimed' ? 'accent'
-			: status === 'in_review' ? 'warning'
-			: status === 'paid' ? 'primary' as any
-			: status === 'cancelled' || status === 'expired' ? 'error'
-			: 'default';
+		return status === 'open'
+			? 'success'
+			: status === 'claimed'
+				? 'accent'
+				: status === 'in_review'
+					? 'warning'
+					: status === 'paid'
+						? ('primary' as any)
+						: status === 'cancelled' || status === 'expired'
+							? 'error'
+							: 'default';
 	}
 
 	function statusLabel(status: string): string {
@@ -92,7 +97,7 @@
 			cancelled: { fr: 'Annulée', en: 'Cancelled' },
 			expired: { fr: 'Expirée', en: 'Expired' }
 		};
-		return (labels[status]?.[i18n.locale as 'fr' | 'en']) ?? status;
+		return labels[status]?.[i18n.locale as 'fr' | 'en'] ?? status;
 	}
 
 	onMount(() => void load());
@@ -135,16 +140,25 @@
 		</header>
 
 		<!-- Reward highlight -->
-		<div class="mb-8 rounded-2xl border border-accent/30 bg-gradient-to-br from-surface-elevated to-accent/5 p-8 relative overflow-hidden">
-			<div aria-hidden="true" class="pointer-events-none absolute -right-4 -top-4 h-32 w-32 rounded-full bg-accent/10 blur-2xl"></div>
+		<div
+			class="mb-8 rounded-2xl border border-accent/30 bg-gradient-to-br from-surface-elevated to-accent/5 p-8 relative overflow-hidden"
+		>
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute -right-4 -top-4 h-32 w-32 rounded-full bg-accent/10 blur-2xl"
+			></div>
 			<div class="flex flex-wrap items-end justify-between gap-6">
 				<div>
 					<p class="mb-1 text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Récompense' : 'Reward'}
 					</p>
 					<div class="flex items-baseline gap-3">
-						<span class="text-5xl sm:text-6xl font-black tracking-tight text-accent">{bounty.reward_credits}</span>
-						<span class="text-lg text-text-muted">{i18n.locale === 'fr' ? 'crédits' : 'credits'}</span>
+						<span class="text-5xl sm:text-6xl font-black tracking-tight text-accent"
+							>{bounty.reward_credits}</span
+						>
+						<span class="text-lg text-text-muted"
+							>{i18n.locale === 'fr' ? 'crédits' : 'credits'}</span
+						>
 					</div>
 					<p class="mt-2 text-sm text-text-muted">
 						+ <span class="font-bold text-primary">{bounty.fragments_bonus}</span>
@@ -163,8 +177,12 @@
 				{:else if bounty.status === 'claimed' || bounty.status === 'in_review'}
 					<Button variant="primary" size="lg" onclick={() => (showPrModal = true)}>
 						{bounty.status === 'in_review'
-							? (i18n.locale === 'fr' ? 'Mettre à jour la PR' : 'Update PR')
-							: (i18n.locale === 'fr' ? 'Attacher ma PR' : 'Attach my PR')}
+							? i18n.locale === 'fr'
+								? 'Mettre à jour la PR'
+								: 'Update PR'
+							: i18n.locale === 'fr'
+								? 'Attacher ma PR'
+								: 'Attach my PR'}
 					</Button>
 				{/if}
 			</div>
@@ -215,7 +233,9 @@
 		>
 			<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
 				<svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-					<path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+					<path
+						d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+					/>
 				</svg>
 			</div>
 			<div class="flex-1">
@@ -233,9 +253,18 @@
 	title={i18n.locale === 'fr' ? 'Attacher ma Pull Request' : 'Attach my Pull Request'}
 	onclose={() => (showPrModal = false)}
 >
-	<form onsubmit={(e) => { e.preventDefault(); void submitPr(); }} class="space-y-4">
+	<form
+		onsubmit={(e) => {
+			e.preventDefault();
+			void submitPr();
+		}}
+		class="space-y-4"
+	>
 		<div>
-			<label for="pr-url" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+			<label
+				for="pr-url"
+				class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted"
+			>
 				{i18n.locale === 'fr' ? 'URL de la PR' : 'PR URL'}
 			</label>
 			<input
@@ -248,7 +277,10 @@
 			/>
 		</div>
 		<div>
-			<label for="pr-num" class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+			<label
+				for="pr-num"
+				class="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted"
+			>
 				{i18n.locale === 'fr' ? 'Numéro' : 'Number'}
 			</label>
 			<input

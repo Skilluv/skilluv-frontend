@@ -15,7 +15,9 @@
 </script>
 
 {#if variant === 'boxed'}
-	<div class="rounded-2xl border border-border bg-surface-elevated/40 px-4 py-4 sm:px-5 sm:py-5 {className}">
+	<div
+		class="rounded-2xl border border-border bg-surface-elevated/40 px-4 py-4 sm:px-5 sm:py-5 {className}"
+	>
 		<div class="flex flex-wrap items-center gap-3">
 			{#if label}
 				<span class="text-xs font-bold uppercase tracking-wider text-text-muted">

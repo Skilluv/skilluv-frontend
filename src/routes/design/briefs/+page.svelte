@@ -47,9 +47,7 @@
 	let errorText = $state('');
 	let withdrawing = $state<string | null>(null);
 
-	let orientationOptions = $derived(
-		orientations.map((o) => ({ value: o.slug, label: o.name }))
-	);
+	let orientationOptions = $derived(orientations.map((o) => ({ value: o.slug, label: o.name })));
 
 	let subtypeOptions = $derived(
 		DESIGN_SUBTYPES.map((slug) => ({
@@ -181,15 +179,20 @@
 				bind:value={briefMd}
 				rows="8"
 				class="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text focus:border-accent focus:outline-none"
-				data-testid="design-brief-body"
-			></textarea>
+				data-testid="design-brief-body"></textarea>
 			<span class="text-xs text-text-muted">{i18n.t('designBriefs.fieldBriefHint')}</span>
 		</label>
 
 		<div class="grid gap-3 sm:grid-cols-2">
 			<label class="flex flex-col gap-1 text-xs text-text-muted">
 				{i18n.t('designBriefs.fieldOrientation')}
-				<Select items={orientationOptions} bind:value={orientationSlug} shape="rounded" size="sm" searchable />
+				<Select
+					items={orientationOptions}
+					bind:value={orientationSlug}
+					shape="rounded"
+					size="sm"
+					searchable
+				/>
 			</label>
 			<label class="flex flex-col gap-1 text-xs text-text-muted">
 				{i18n.t('designBriefs.fieldSubtype')}

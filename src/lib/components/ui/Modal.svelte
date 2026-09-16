@@ -82,11 +82,19 @@
 		onclick={handleBackdrop}
 		onkeydown={handleKeydown}
 	>
-		<div class="flex max-h-[calc(100vh-2rem)] w-full {maxWidths[size]} flex-col rounded-2xl border border-border bg-surface-elevated shadow-lg animate-[slide-up_200ms_ease-out]">
+		<div
+			class="flex max-h-[calc(100vh-2rem)] w-full {maxWidths[
+				size
+			]} flex-col rounded-2xl border border-border bg-surface-elevated shadow-lg animate-[slide-up_200ms_ease-out]"
+		>
 			{#if title}
 				<div class="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
 					<h2 class="text-lg font-semibold">{title}</h2>
-					<button class="text-text-muted hover:text-text-primary" onclick={onclose} aria-label="Fermer"><X size={18} strokeWidth={2} /></button>
+					<button
+						class="text-text-muted hover:text-text-primary"
+						onclick={onclose}
+						aria-label="Fermer"><X size={18} strokeWidth={2} /></button
+					>
 				</div>
 			{/if}
 

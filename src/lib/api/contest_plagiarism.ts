@@ -52,10 +52,7 @@ export const contestPlagiarismApi = {
 
 	/** Answer an accusation, before the deadline on the case. */
 	respond(caseId: string, payload: RespondToPlagiarismRequest) {
-		return api.post<ApiResponse<PlagiarismCase>>(
-			`/contests/plagiarism/${caseId}/respond`,
-			payload
-		);
+		return api.post<ApiResponse<PlagiarismCase>>(`/contests/plagiarism/${caseId}/respond`, payload);
 	}
 };
 

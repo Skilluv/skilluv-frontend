@@ -95,13 +95,33 @@
 		{
 			title: i18n.locale === 'fr' ? 'Sourcing' : 'Sourcing',
 			items: [
-				{ href: '/enterprise/dashboard', label: i18n.t('enterprise.nav.dashboard'), icon: LayoutDashboard },
+				{
+					href: '/enterprise/dashboard',
+					label: i18n.t('enterprise.nav.dashboard'),
+					icon: LayoutDashboard
+				},
 				{ href: '/enterprise/talents', label: i18n.t('enterprise.nav.talents'), icon: Users },
-				{ href: '/enterprise/bookmarks', label: i18n.t('enterprise.nav.bookmarks'), icon: Bookmark },
+				{
+					href: '/enterprise/bookmarks',
+					label: i18n.t('enterprise.nav.bookmarks'),
+					icon: Bookmark
+				},
 				{ href: '/enterprise/lists', label: i18n.t('enterprise.nav.lists'), icon: List },
-				{ href: '/enterprise/pipeline', label: i18n.locale === 'fr' ? 'Pipeline' : 'Pipeline', icon: Kanban },
-				{ href: '/enterprise/messages', label: i18n.t('enterprise.nav.messages'), icon: MessageSquare },
-				{ href: '/enterprise/interests', label: i18n.locale === 'fr' ? 'Demandes envoyées' : 'Sent requests', icon: Send }
+				{
+					href: '/enterprise/pipeline',
+					label: i18n.locale === 'fr' ? 'Pipeline' : 'Pipeline',
+					icon: Kanban
+				},
+				{
+					href: '/enterprise/messages',
+					label: i18n.t('enterprise.nav.messages'),
+					icon: MessageSquare
+				},
+				{
+					href: '/enterprise/interests',
+					label: i18n.locale === 'fr' ? 'Demandes envoyées' : 'Sent requests',
+					icon: Send
+				}
 			]
 		},
 		{
@@ -229,7 +249,8 @@
 	// Keeping the child render call in a single position across all states
 	// avoids that.
 	let showSidebar = $derived(
-		auth.isAuthenticated && !BARE_SHELL_ROUTES.some((p) => pathname === p || pathname.startsWith(p + '/'))
+		auth.isAuthenticated &&
+			!BARE_SHELL_ROUTES.some((p) => pathname === p || pathname.startsWith(p + '/'))
 	);
 </script>
 
@@ -239,67 +260,71 @@
 	     auth state flips (see comment on `showSidebar` above). -->
 	{@render children()}
 {:else}
-<!-- Header dédié au workspace entreprise (masque la Navbar candidat au
+	<!-- Header dédié au workspace entreprise (masque la Navbar candidat au
      niveau du root layout). Contient logo, notifications, thème, langue,
      avatar dropdown avec logout — pas de liens candidat (challenges,
      forum, etc.) que le recruteur n'a pas à voir. -->
-<EnterpriseHeader />
-<EmailVerificationBanner />
-<div class="flex min-h-[calc(100vh-3.5rem)]">
-	<!-- Sidebar desktop — sticky sous l'EnterpriseHeader (h-14 = 3.5rem).
+	<EnterpriseHeader />
+	<EmailVerificationBanner />
+	<div class="flex min-h-[calc(100vh-3.5rem)]">
+		<!-- Sidebar desktop — sticky sous l'EnterpriseHeader (h-14 = 3.5rem).
 	     Bordure droite 2px cat-understand : signal chromatique du workspace
 	     enterprise (bleu Prusse). La sidebar elle-même ne bouge pas ; seul
 	     son contenu scrolle si les items dépassent la hauteur du viewport. -->
-	<aside class="hidden w-56 shrink-0 border-r-2 border-cat-understand bg-surface-elevated lg:block">
-		<div
-			use:autoHideScrollbar
-			class="auto-hide-scrollbar sticky top-14 flex h-[calc(100vh-3.5rem)] flex-col overflow-y-auto overscroll-contain p-4"
+		<aside
+			class="hidden w-56 shrink-0 border-r-2 border-cat-understand bg-surface-elevated lg:block"
 		>
-			<nav class="flex flex-col gap-6">
-				{#each visibleGroups as group}
-					<div>
-						<p class="mb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-text-muted">
-							{group.title}
-						</p>
-						<div class="flex flex-col gap-0.5">
-							{#each group.items as item}
-								<a
-									href={item.href}
-									class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors
+			<div
+				use:autoHideScrollbar
+				class="auto-hide-scrollbar sticky top-14 flex h-[calc(100vh-3.5rem)] flex-col overflow-y-auto overscroll-contain p-4"
+			>
+				<nav class="flex flex-col gap-6">
+					{#each visibleGroups as group}
+						<div>
+							<p class="mb-2 px-3 text-[10px] font-bold uppercase tracking-widest text-text-muted">
+								{group.title}
+							</p>
+							<div class="flex flex-col gap-0.5">
+								{#each group.items as item}
+									<a
+										href={item.href}
+										class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors
 										{isActive(item.href)
-										? 'bg-primary/10 text-primary font-medium'
-										: 'text-text-muted hover:bg-surface-overlay hover:text-text-primary'}"
-								>
-									<item.icon size={18} strokeWidth={2} />
-									{item.label}
-								</a>
-							{/each}
+											? 'bg-primary/10 text-primary font-medium'
+											: 'text-text-muted hover:bg-surface-overlay hover:text-text-primary'}"
+									>
+										<item.icon size={18} strokeWidth={2} />
+										{item.label}
+									</a>
+								{/each}
+							</div>
 						</div>
-					</div>
-				{/each}
-			</nav>
-		</div>
-	</aside>
+					{/each}
+				</nav>
+			</div>
+		</aside>
 
-	<!-- Mobile nav — top 5 sourcing items only (place limitée). Le reste des
+		<!-- Mobile nav — top 5 sourcing items only (place limitée). Le reste des
 	     sections (Compte, Facturation, Owner) reste accessible via l'avatar
 	     dropdown et les liens contextuels des pages. -->
-	<div class="fixed bottom-0 left-0 right-0 z-50 flex justify-around border-t border-border bg-surface-elevated/95 py-2 backdrop-blur-sm lg:hidden">
-		{#each mobileNavItems as item}
-			<a
-				href={item.href}
-				class="flex flex-col items-center gap-0.5 px-2 text-xs
+		<div
+			class="fixed bottom-0 left-0 right-0 z-50 flex justify-around border-t border-border bg-surface-elevated/95 py-2 backdrop-blur-sm lg:hidden"
+		>
+			{#each mobileNavItems as item}
+				<a
+					href={item.href}
+					class="flex flex-col items-center gap-0.5 px-2 text-xs
 					{isActive(item.href) ? 'text-primary' : 'text-text-muted'}"
-			>
-				<item.icon size={20} strokeWidth={2} />
-				<span>{item.label}</span>
-			</a>
-		{/each}
-	</div>
+				>
+					<item.icon size={20} strokeWidth={2} />
+					<span>{item.label}</span>
+				</a>
+			{/each}
+		</div>
 
-	<!-- Content -->
-	<main class="flex-1 overflow-y-auto pb-20 lg:pb-0">
-		{@render children()}
-	</main>
-</div>
+		<!-- Content -->
+		<main class="flex-1 overflow-y-auto pb-20 lg:pb-0">
+			{@render children()}
+		</main>
+	</div>
 {/if}

@@ -63,18 +63,18 @@ cp .env.example .env
 
 Variables d'environnement :
 
-| Variable    | Description                              | Valeur par defaut            |
-|-------------|------------------------------------------|------------------------------|
-| `API_URL`   | URL interne du backend (server-side only) | `http://localhost:3001/api` |
+| Variable  | Description                               | Valeur par defaut           |
+| --------- | ----------------------------------------- | --------------------------- |
+| `API_URL` | URL interne du backend (server-side only) | `http://localhost:3001/api` |
 
 En production, les variables suivantes sont egalement utilisees (voir le Dockerfile) :
 
-| Variable    | Description               | Valeur par defaut       |
-|-------------|---------------------------|-------------------------|
-| `NODE_ENV`  | Environnement d'execution | `production`            |
-| `PORT`      | Port d'ecoute du serveur  | `3000`                  |
-| `HOST`      | Adresse d'ecoute          | `0.0.0.0`              |
-| `ORIGIN`    | Origine publique du site  | `https://skill-uv.com`  |
+| Variable   | Description               | Valeur par defaut      |
+| ---------- | ------------------------- | ---------------------- |
+| `NODE_ENV` | Environnement d'execution | `production`           |
+| `PORT`     | Port d'ecoute du serveur  | `3000`                 |
+| `HOST`     | Adresse d'ecoute          | `0.0.0.0`              |
+| `ORIGIN`   | Origine publique du site  | `https://skill-uv.com` |
 
 En developpement, Vite proxifie automatiquement les requetes `/api` et `/ws` vers `http://localhost:3001`.
 
@@ -82,16 +82,16 @@ En developpement, Vite proxifie automatiquement les requetes `/api` et `/ws` ver
 
 ## Scripts disponibles
 
-| Commande              | Description                                          |
-|-----------------------|------------------------------------------------------|
-| `npm run dev`         | Lance le serveur de developpement Vite               |
-| `npm run build`       | Compile l'application pour la production             |
-| `npm run preview`     | Previsualise le build de production localement       |
-| `npm run check`       | Verifie les types TypeScript et la syntaxe Svelte    |
-| `npm run check:watch` | Idem en mode watch                                   |
-| `npm test`            | Execute les tests end-to-end (Playwright)            |
-| `npm run test:unit`   | Execute les tests unitaires (Vitest)                 |
-| `npm run test:unit:watch` | Execute les tests unitaires en mode watch        |
+| Commande                  | Description                                       |
+| ------------------------- | ------------------------------------------------- |
+| `npm run dev`             | Lance le serveur de developpement Vite            |
+| `npm run build`           | Compile l'application pour la production          |
+| `npm run preview`         | Previsualise le build de production localement    |
+| `npm run check`           | Verifie les types TypeScript et la syntaxe Svelte |
+| `npm run check:watch`     | Idem en mode watch                                |
+| `npm test`                | Execute les tests end-to-end (Playwright)         |
+| `npm run test:unit`       | Execute les tests unitaires (Vitest)              |
+| `npm run test:unit:watch` | Execute les tests unitaires en mode watch         |
 
 ---
 
@@ -173,21 +173,21 @@ Le projet configure les alias suivants dans `svelte.config.js` :
 
 Le routing est base sur le systeme de fichiers de SvelteKit. Voici les sections principales :
 
-| Route                     | Description                                |
-|---------------------------|--------------------------------------------|
-| `/`                       | Page d'accueil / Dashboard                 |
-| `/auth/*`                 | Authentification (login, register, etc.)   |
-| `/challenges`             | Liste et detail des challenges             |
-| `/challenges/[id]/sandbox`| Editeur de code (sandbox Monaco)           |
-| `/challenges/onboarding`  | Challenges d'integration                   |
-| `/community/*`            | Challenges communautaires                  |
-| `/enterprise/*`           | Espace entreprise (dashboard, talents)     |
-| `/admin/*`                | Administration (challenges, users, audit)  |
-| `/developer/*`            | Outils developpeur (cles API, webhooks)    |
-| `/profile/[username]`     | Profil public                              |
-| `/leaderboards`           | Classements                                |
-| `/notifications`          | Centre de notifications                    |
-| `/settings`               | Parametres utilisateur                     |
+| Route                      | Description                               |
+| -------------------------- | ----------------------------------------- |
+| `/`                        | Page d'accueil / Dashboard                |
+| `/auth/*`                  | Authentification (login, register, etc.)  |
+| `/challenges`              | Liste et detail des challenges            |
+| `/challenges/[id]/sandbox` | Editeur de code (sandbox Monaco)          |
+| `/challenges/onboarding`   | Challenges d'integration                  |
+| `/community/*`             | Challenges communautaires                 |
+| `/enterprise/*`            | Espace entreprise (dashboard, talents)    |
+| `/admin/*`                 | Administration (challenges, users, audit) |
+| `/developer/*`             | Outils developpeur (cles API, webhooks)   |
+| `/profile/[username]`      | Profil public                             |
+| `/leaderboards`            | Classements                               |
+| `/notifications`           | Centre de notifications                   |
+| `/settings`                | Parametres utilisateur                    |
 
 ---
 
@@ -195,12 +195,12 @@ Le routing est base sur le systeme de fichiers de SvelteKit. Voici les sections 
 
 L'application propose quatre themes sombres, definis dans `app.css` via des variables CSS :
 
-| Theme      | Description                              |
-|------------|------------------------------------------|
-| `forge`    | Theme par defaut, tons chauds            |
-| `neon`     | Esthetique cyberpunk, accents neon       |
-| `arena`    | Ambiance competitive, tons vifs          |
-| `terminal` | Style terminal, vert sur fond sombre     |
+| Theme      | Description                          |
+| ---------- | ------------------------------------ |
+| `forge`    | Theme par defaut, tons chauds        |
+| `neon`     | Esthetique cyberpunk, accents neon   |
+| `arena`    | Ambiance competitive, tons vifs      |
+| `terminal` | Style terminal, vert sur fond sombre |
 
 Le theme actif est gere par le store `theme.svelte.ts` et applique via un attribut `data-theme` sur l'element racine.
 
@@ -247,6 +247,7 @@ npm test
 ```
 
 Configuration Playwright :
+
 - Retries : 0 en local, 2 en CI
 - Reporter : `list` en local, `github` en CI
 
@@ -281,18 +282,18 @@ L'adaptateur `adapter-node` genere un serveur Node.js autonome dans le dossier `
 
 ## Stack technique
 
-| Categorie          | Technologie                          |
-|--------------------|--------------------------------------|
-| Framework          | SvelteKit 2.55                       |
-| UI                 | Svelte 5.54 (runes)                  |
-| Langage            | TypeScript 5.9                       |
-| CSS                | Tailwind CSS 4.2                     |
-| Editeur de code    | Monaco Editor 0.55                   |
-| Build              | Vite 8                               |
-| Tests unitaires    | Vitest 4.1                           |
-| Tests E2E          | Playwright 1.58                      |
-| Runtime            | Node.js 22 (Alpine)                  |
-| Polices            | Space Grotesk, JetBrains Mono        |
+| Categorie       | Technologie                   |
+| --------------- | ----------------------------- |
+| Framework       | SvelteKit 2.55                |
+| UI              | Svelte 5.54 (runes)           |
+| Langage         | TypeScript 5.9                |
+| CSS             | Tailwind CSS 4.2              |
+| Editeur de code | Monaco Editor 0.55            |
+| Build           | Vite 8                        |
+| Tests unitaires | Vitest 4.1                    |
+| Tests E2E       | Playwright 1.58               |
+| Runtime         | Node.js 22 (Alpine)           |
+| Polices         | Space Grotesk, JetBrains Mono |
 
 ---
 

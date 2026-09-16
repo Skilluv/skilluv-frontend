@@ -67,9 +67,7 @@ export const teamMarketplaceApi = {
 
 	/** Attach a team to a guild, or read which one it belongs to. */
 	teamGuild(teamId: string) {
-		return api.get<ApiResponse<{ guild: unknown }>>(
-			`/teams/${encodeURIComponent(teamId)}/guild`
-		);
+		return api.get<ApiResponse<{ guild: unknown }>>(`/teams/${encodeURIComponent(teamId)}/guild`);
 	},
 
 	/** One slot, by team and slot. */

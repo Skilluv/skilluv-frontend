@@ -33,7 +33,9 @@
 
 	function fmtDate(iso: string): string {
 		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
-			day: '2-digit', month: 'short', year: 'numeric'
+			day: '2-digit',
+			month: 'short',
+			year: 'numeric'
 		}).format(new Date(iso));
 	}
 
@@ -69,7 +71,9 @@
 	></div>
 	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
 		<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Compétition</p>
-		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
+		<h1
+			class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight"
+		>
 			{#if i18n.locale === 'fr'}
 				Tournois<br />
 				<span class="text-primary">chronométrés.</span>
@@ -84,8 +88,14 @@
 				: 'Monthly competitions by domain. Short window, dedicated challenges, live ranking. Top 3 win fragments, badges, recognition.'}
 		</p>
 		{#if currentSeason}
-			<div class="mt-8 inline-flex items-center gap-3 rounded-2xl border border-border bg-surface-elevated px-5 py-3">
-				<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10 text-lg text-accent">◈</div>
+			<div
+				class="mt-8 inline-flex items-center gap-3 rounded-2xl border border-border bg-surface-elevated px-5 py-3"
+			>
+				<div
+					class="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10 text-lg text-accent"
+				>
+					◈
+				</div>
 				<div>
 					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
 						{i18n.locale === 'fr' ? 'Saison en cours' : 'Current season'}
@@ -135,18 +145,27 @@
 			{#each filtered as t}
 				<a
 					href={`/tournaments/${t.slug}`}
-					class="flex flex-col rounded-2xl border {isActive(t) ? 'border-accent bg-surface-elevated' : 'border-border bg-surface-elevated'} p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+					class="flex flex-col rounded-2xl border {isActive(t)
+						? 'border-accent bg-surface-elevated'
+						: 'border-border bg-surface-elevated'} p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
 				>
 					<div class="mb-3 flex items-start justify-between gap-2">
-						<div class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary">★</div>
+						<div
+							class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary"
+						>
+							★
+						</div>
 						{#if isActive(t)}
 							<Badge variant="accent" size="sm">
 								● {i18n.locale === 'fr' ? 'En cours' : 'Live'}
 							</Badge>
 						{:else if new Date(t.ends_at) < new Date()}
-							<Badge variant="default" size="sm">{i18n.locale === 'fr' ? 'Terminé' : 'Ended'}</Badge>
+							<Badge variant="default" size="sm">{i18n.locale === 'fr' ? 'Terminé' : 'Ended'}</Badge
+							>
 						{:else}
-							<Badge variant="primary" size="sm">{i18n.locale === 'fr' ? 'Bientôt' : 'Upcoming'}</Badge>
+							<Badge variant="primary" size="sm"
+								>{i18n.locale === 'fr' ? 'Bientôt' : 'Upcoming'}</Badge
+							>
 						{/if}
 					</div>
 					<h2 class="text-lg font-bold leading-snug">{t.name}</h2>
@@ -154,7 +173,9 @@
 						<p class="mt-1 line-clamp-2 text-sm text-text-muted">{t.description}</p>
 					{/if}
 
-					<div class="mt-4 grid grid-cols-2 gap-2 rounded-xl border border-border bg-surface-overlay p-3 text-center">
+					<div
+						class="mt-4 grid grid-cols-2 gap-2 rounded-xl border border-border bg-surface-overlay p-3 text-center"
+					>
 						<div>
 							<div class="text-xs font-bold uppercase tracking-wider text-text-muted">Start</div>
 							<div class="text-sm font-mono">{fmtDate(t.starts_at)}</div>

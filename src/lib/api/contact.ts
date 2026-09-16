@@ -1,4 +1,10 @@
-import type { InterestRequest, Conversation, Message, ApiResponse, ApiPaginatedResponse } from '$lib/types';
+import type {
+	InterestRequest,
+	Conversation,
+	Message,
+	ApiResponse,
+	ApiPaginatedResponse
+} from '$lib/types';
 import { createApiClient } from './client';
 
 const api = createApiClient();
@@ -7,22 +13,33 @@ export const contactApi = {
 	// --- Interest Requests ---
 
 	sendInterest(talentId: string, message: string) {
-		return api.post<ApiResponse<{ interest_request: InterestRequest; message: string }>>('/contact/interest', {
-			talent_id: talentId,
-			message
-		});
+		return api.post<ApiResponse<{ interest_request: InterestRequest; message: string }>>(
+			'/contact/interest',
+			{
+				talent_id: talentId,
+				message
+			}
+		);
 	},
 
 	sentInterests(page?: number, perPage?: number) {
-		return api.get<ApiPaginatedResponse<InterestRequest>>('/contact/interest/sent', { page, per_page: perPage });
+		return api.get<ApiPaginatedResponse<InterestRequest>>('/contact/interest/sent', {
+			page,
+			per_page: perPage
+		});
 	},
 
 	receivedInterests(page?: number, perPage?: number) {
-		return api.get<ApiPaginatedResponse<InterestRequest>>('/contact/interest/received', { page, per_page: perPage });
+		return api.get<ApiPaginatedResponse<InterestRequest>>('/contact/interest/received', {
+			page,
+			per_page: perPage
+		});
 	},
 
 	acceptInterest(id: string) {
-		return api.post<ApiResponse<{ conversation: Conversation; message: string }>>(`/contact/interest/${id}/accept`);
+		return api.post<ApiResponse<{ conversation: Conversation; message: string }>>(
+			`/contact/interest/${id}/accept`
+		);
 	},
 
 	declineInterest(id: string) {
@@ -36,14 +53,20 @@ export const contactApi = {
 	},
 
 	getConversation(id: string, page?: number, perPage?: number) {
-		return api.get<ApiResponse<{ conversation: Conversation; messages: Message[] }>>(`/contact/conversations/${id}`, {
-			page,
-			per_page: perPage
-		});
+		return api.get<ApiResponse<{ conversation: Conversation; messages: Message[] }>>(
+			`/contact/conversations/${id}`,
+			{
+				page,
+				per_page: perPage
+			}
+		);
 	},
 
 	sendMessage(conversationId: string, content: string) {
-		return api.post<ApiResponse<{ message: Message }>>(`/contact/conversations/${conversationId}/messages`, { content });
+		return api.post<ApiResponse<{ message: Message }>>(
+			`/contact/conversations/${conversationId}/messages`,
+			{ content }
+		);
 	},
 
 	// --- Block ---

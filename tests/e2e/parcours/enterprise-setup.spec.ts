@@ -21,7 +21,10 @@ test.describe('@setup enterprise-setup', () => {
 	test.skip(!HAS_BACK, 'requires PUBLIC_API_BASE_URL (back staging)');
 	test.setTimeout(120_000);
 
-	test('login enterprise + arm TOTP si besoin + save storageState', async ({ page, context }, testInfo) => {
+	test('login enterprise + arm TOTP si besoin + save storageState', async ({
+		page,
+		context
+	}, testInfo) => {
 		const creds = await setupEnterpriseSession(page, context);
 		expect(fs.existsSync(enterpriseStoragePath()), 'state file ecrit').toBe(true);
 		expect(fs.existsSync(enterpriseCredentialsPath()), 'creds file ecrit').toBe(true);

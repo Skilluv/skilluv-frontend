@@ -132,7 +132,11 @@
 			body={i18n.t('marketplace.emptyBody')}
 		/>
 	{:else}
-		<ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list" data-testid="marketplace-items">
+		<ul
+			class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+			role="list"
+			data-testid="marketplace-items"
+		>
 			{#each items as item (item.id)}
 				{@const rating = fmtRating(item.rating_avg)}
 				<li>

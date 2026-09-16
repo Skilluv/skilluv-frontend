@@ -246,7 +246,12 @@
 			<span class="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-text-muted">
 				{i18n.t('talentOffers.formType')}
 			</span>
-			<Select items={typeItems} value={offerType} onchange={(v) => (offerType = v)} shape="rounded" />
+			<Select
+				items={typeItems}
+				value={offerType}
+				onchange={(v) => (offerType = v)}
+				shape="rounded"
+			/>
 		</div>
 
 		<div>

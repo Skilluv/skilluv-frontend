@@ -35,19 +35,17 @@
 	}
 </script>
 
-<Modal
-	open={open}
-	title={i18n.locale === 'fr' ? 'Se déconnecter ?' : 'Sign out?'}
-	onclose={close}
->
+<Modal {open} title={i18n.locale === 'fr' ? 'Se déconnecter ?' : 'Sign out?'} onclose={close}>
 	<div class="flex gap-4">
-		<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-error/10 text-error">
+		<div
+			class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-error/10 text-error"
+		>
 			<LogOut size={20} strokeWidth={2} />
 		</div>
 		<p class="text-sm text-text-muted leading-relaxed">
 			{i18n.locale === 'fr'
-				? 'Vous serez ramené à l\'accueil et devrez vous reconnecter pour retrouver votre espace.'
-				: 'You\'ll be sent back to the homepage and will need to sign in again to reach your workspace.'}
+				? "Vous serez ramené à l'accueil et devrez vous reconnecter pour retrouver votre espace."
+				: "You'll be sent back to the homepage and will need to sign in again to reach your workspace."}
 		</p>
 	</div>
 

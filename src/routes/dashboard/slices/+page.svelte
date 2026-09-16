@@ -27,7 +27,10 @@
 		return i18n.t(`p26.slice.status.${s}`);
 	}
 
-	const STATUS_VARIANT: Record<SliceStatus, 'default' | 'primary' | 'accent' | 'success' | 'warning' | 'error'> = {
+	const STATUS_VARIANT: Record<
+		SliceStatus,
+		'default' | 'primary' | 'accent' | 'success' | 'warning' | 'error'
+	> = {
 		open: 'primary',
 		claimed: 'accent',
 		in_progress: 'warning',
@@ -41,7 +44,13 @@
 	};
 
 	type Tab = 'active' | 'done' | 'archived';
-	const ACTIVE: SliceStatus[] = ['claimed', 'in_progress', 'submitted', 'ci_green', 'pending_validation'];
+	const ACTIVE: SliceStatus[] = [
+		'claimed',
+		'in_progress',
+		'submitted',
+		'ci_green',
+		'pending_validation'
+	];
 	const DONE: SliceStatus[] = ['validated', 'merged'];
 	const ARCHIVED: SliceStatus[] = ['expired', 'closed'];
 
@@ -78,7 +87,9 @@
 			if (err instanceof SkilluError && err.status === 403) {
 				toast.warning(i18n.t('p26.dashboardSlices.toastGateBlocked'));
 			} else {
-				toast.error(err instanceof SkilluError ? err.message : i18n.t('p26.dashboardSlices.toastReserveError'));
+				toast.error(
+					err instanceof SkilluError ? err.message : i18n.t('p26.dashboardSlices.toastReserveError')
+				);
 			}
 		} finally {
 			claimingId = null;
@@ -130,7 +141,9 @@
 					body={i18n.t('p26.dashboardSlices.emptyActiveBody')}
 				>
 					{#snippet action()}
-						<Button variant="accent" onclick={scrollToReco}>{i18n.t('p26.dashboardSlices.emptyActiveCta')}</Button>
+						<Button variant="accent" onclick={scrollToReco}
+							>{i18n.t('p26.dashboardSlices.emptyActiveCta')}</Button
+						>
 					{/snippet}
 				</EmptyState>
 			{:else if tab === 'done'}
@@ -141,10 +154,14 @@
 		{:else}
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				{#each pageItems as s (s.id)}
-					<article class="rounded-2xl border border-border bg-surface-elevated p-5 flex flex-col gap-3 hover:border-accent/40 transition-colors">
+					<article
+						class="rounded-2xl border border-border bg-surface-elevated p-5 flex flex-col gap-3 hover:border-accent/40 transition-colors"
+					>
 						<div class="flex flex-wrap items-center gap-2">
 							<Badge variant={STATUS_VARIANT[s.status]}>{statusLabel(s.status)}</Badge>
-							<Badge variant="default">{i18n.t('p26.dashboardSlices.difficultyBadge', { n: s.difficulty })}</Badge>
+							<Badge variant="default"
+								>{i18n.t('p26.dashboardSlices.difficultyBadge', { n: s.difficulty })}</Badge
+							>
 							{#if s.claim_expires_at && (s.status === 'claimed' || s.status === 'in_progress')}
 								{@const dl = daysLeft(s.claim_expires_at)}
 								{#if dl}<Badge variant="warning">{dl}</Badge>{/if}
@@ -155,7 +172,9 @@
 						</h3>
 						<p class="text-sm text-text-muted line-clamp-2 flex-1">{s.description}</p>
 						<div class="pt-2">
-							<Button variant="ghost" size="sm" href={`/slices/${s.id}`}>{i18n.t('p26.dashboardSlices.viewBtn')}</Button>
+							<Button variant="ghost" size="sm" href={`/slices/${s.id}`}
+								>{i18n.t('p26.dashboardSlices.viewBtn')}</Button
+							>
 						</div>
 					</article>
 				{/each}
@@ -197,11 +216,17 @@
 		{:else}
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				{#each data.reco as s (s.id)}
-					<article class="rounded-2xl border border-border bg-surface-elevated p-5 flex flex-col gap-3 hover:border-accent/40 transition-colors">
+					<article
+						class="rounded-2xl border border-border bg-surface-elevated p-5 flex flex-col gap-3 hover:border-accent/40 transition-colors"
+					>
 						<div class="flex flex-wrap items-center gap-2">
 							<Badge variant={STATUS_VARIANT[s.status]}>{statusLabel(s.status)}</Badge>
-							<Badge variant="default">{i18n.t('p26.dashboardSlices.difficultyBadge', { n: s.difficulty })}</Badge>
-							{#if s.min_rank}<Badge variant="default">{i18n.t('p26.dashboardSlices.rankBadge', { rank: s.min_rank })}</Badge>{/if}
+							<Badge variant="default"
+								>{i18n.t('p26.dashboardSlices.difficultyBadge', { n: s.difficulty })}</Badge
+							>
+							{#if s.min_rank}<Badge variant="default"
+									>{i18n.t('p26.dashboardSlices.rankBadge', { rank: s.min_rank })}</Badge
+								>{/if}
 						</div>
 						<h3 class="font-heading text-lg font-semibold text-text-primary line-clamp-2">
 							{s.title}
@@ -217,7 +242,9 @@
 							>
 								{i18n.t('p26.dashboardSlices.claimBtn')}
 							</Button>
-							<Button variant="ghost" size="sm" href={`/slices/${s.id}`}>{i18n.t('p26.dashboardSlices.detailBtn')}</Button>
+							<Button variant="ghost" size="sm" href={`/slices/${s.id}`}
+								>{i18n.t('p26.dashboardSlices.detailBtn')}</Button
+							>
 						</div>
 					</article>
 				{/each}

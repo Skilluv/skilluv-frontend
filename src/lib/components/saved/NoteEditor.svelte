@@ -139,7 +139,9 @@
 				<span class="text-xs {tooLong ? 'text-error' : 'text-text-muted'}">
 					{i18n.t('notes.charCount', { n: body.length })}
 					{#if note}
-						<span class="ml-2">{i18n.t('notes.lastEdited', { date: fmtDate(note.updated_at) })}</span>
+						<span class="ml-2"
+							>{i18n.t('notes.lastEdited', { date: fmtDate(note.updated_at) })}</span
+						>
 					{/if}
 				</span>
 				<div class="flex items-center gap-2">

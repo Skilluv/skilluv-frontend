@@ -168,7 +168,11 @@
 			</h2>
 
 			{#if openings.length === 0}
-				<EmptyState title={i18n.t('ats.noOpenings')} body={i18n.t('ats.noOpeningsHint')} size="sm" />
+				<EmptyState
+					title={i18n.t('ats.noOpenings')}
+					body={i18n.t('ats.noOpeningsHint')}
+					size="sm"
+				/>
 			{:else}
 				{#each [{ rows: live, title: i18n.t('ats.liveTitle') }, { rows: closed, title: i18n.t('ats.closedTitle') }] as shelf (shelf.title)}
 					{#if shelf.rows.length > 0}

@@ -17,13 +17,17 @@
 		<a
 			href="/developer/keys"
 			class="rounded-xl px-4 py-2 text-sm font-medium transition-colors
-				{isActive('/developer/keys') ? 'bg-primary text-primary-fg' : 'bg-surface-elevated text-text-muted hover:text-text-primary'}"
-		>API Keys</a>
+				{isActive('/developer/keys')
+				? 'bg-primary text-primary-fg'
+				: 'bg-surface-elevated text-text-muted hover:text-text-primary'}">API Keys</a
+		>
 		<a
 			href="/developer/webhooks"
 			class="rounded-xl px-4 py-2 text-sm font-medium transition-colors
-				{isActive('/developer/webhooks') ? 'bg-primary text-primary-fg' : 'bg-surface-elevated text-text-muted hover:text-text-primary'}"
-		>Webhooks</a>
+				{isActive('/developer/webhooks')
+				? 'bg-primary text-primary-fg'
+				: 'bg-surface-elevated text-text-muted hover:text-text-primary'}">Webhooks</a
+		>
 	</div>
 
 	{@render children()}

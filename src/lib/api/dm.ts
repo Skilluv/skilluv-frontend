@@ -46,7 +46,10 @@ export const dmApi = {
 	},
 
 	sendMessage(conversationId: string, body: string) {
-		return api.post<ApiResponse<{ message: DmMessage }>>(`/dm/conversations/${conversationId}/messages`, { body });
+		return api.post<ApiResponse<{ message: DmMessage }>>(
+			`/dm/conversations/${conversationId}/messages`,
+			{ body }
+		);
 	},
 
 	markRead(conversationId: string) {
@@ -54,7 +57,9 @@ export const dmApi = {
 	},
 
 	blockUser(otherUserId: string) {
-		return api.post<ApiResponse<{ blocked: boolean }>>('/dm/blocks', { other_user_id: otherUserId });
+		return api.post<ApiResponse<{ blocked: boolean }>>('/dm/blocks', {
+			other_user_id: otherUserId
+		});
 	},
 
 	unblockUser(otherUserId: string) {
@@ -62,8 +67,8 @@ export const dmApi = {
 	},
 
 	listBlocks() {
-		return api.get<ApiResponse<{ blocks: Array<{ user_id: string; username: string; blocked_at: string }> }>>(
-			'/dm/blocks'
-		);
+		return api.get<
+			ApiResponse<{ blocks: Array<{ user_id: string; username: string; blocked_at: string }> }>
+		>('/dm/blocks');
 	}
 };

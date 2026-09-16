@@ -123,7 +123,14 @@ test.describe('S5.7 mentorship sessions', () => {
 				path: '/mentorship/sessions/sess-1/cancel',
 				handler: (route) => {
 					cancelCalls++;
-					return json({ data: { status: 'cancelled_by_mentee', refund_amount_cents: 0, refund_ratio: 0, stripe_refund_id: null } })(route);
+					return json({
+						data: {
+							status: 'cancelled_by_mentee',
+							refund_amount_cents: 0,
+							refund_ratio: 0,
+							stripe_refund_id: null
+						}
+					})(route);
 				}
 			},
 			{ path: '/mentorship/sessions', handler: json({ data: { sessions: [session()] } }) },

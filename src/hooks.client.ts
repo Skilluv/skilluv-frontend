@@ -33,7 +33,9 @@ export const handleError: HandleClientError = ({ error, event, status, message }
 	// Message safe pour l'user. En dev on garde le message brut pour debug.
 	const safeMessage = isProd
 		? 'Une erreur inattendue est survenue. Reessaie ou reviens plus tard.'
-		: (error instanceof Error ? error.message : String(error));
+		: error instanceof Error
+			? error.message
+			: String(error);
 
 	return {
 		message: safeMessage,

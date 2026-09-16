@@ -102,7 +102,10 @@ test.describe('Header at narrow desktop widths', () => {
 		for (const width of [400, 768, 1024, 1279, 1440]) {
 			await page.setViewportSize({ width, height: 896 });
 			await gotoHydrated(page, '/');
-			const pill = await page.getByTestId('nav-pill').isVisible().catch(() => false);
+			const pill = await page
+				.getByTestId('nav-pill')
+				.isVisible()
+				.catch(() => false);
 			const burger = await page
 				.locator('header nav button.xl\\:hidden')
 				.first()

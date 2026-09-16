@@ -47,9 +47,7 @@ export const communicationApi = {
 
 	/** Withdraw one. */
 	removeReviewLanguage(language: string) {
-		return api.delete<void>(
-			`/communication/review-languages/${encodeURIComponent(language)}`
-		);
+		return api.delete<void>(`/communication/review-languages/${encodeURIComponent(language)}`);
 	},
 
 	/** The translation reviews on one slice. */

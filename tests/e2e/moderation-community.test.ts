@@ -189,7 +189,9 @@ test.describe('Curator community queue', () => {
 			await route.fulfill({
 				status: 200,
 				contentType: 'application/json',
-				body: JSON.stringify({ data: { rejected: true, id: 'ch-1', title: 'Build a Rust HTTP server' } })
+				body: JSON.stringify({
+					data: { rejected: true, id: 'ch-1', title: 'Build a Rust HTTP server' }
+				})
 			});
 		});
 

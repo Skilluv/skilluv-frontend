@@ -110,7 +110,10 @@ test.describe('Code discovery', () => {
 	test('it still offers the upstream issue, read before anything is claimed', async ({ page }) => {
 		await gotoHydrated(page, '/code');
 
-		const out = page.getByTestId('code-first-issues-list').getByRole('link', { name: /source|upstream/i }).first();
+		const out = page
+			.getByTestId('code-first-issues-list')
+			.getByRole('link', { name: /source|upstream/i })
+			.first();
 		await expect(out).toHaveAttribute('href', 'https://github.com/skilluv/core/issues/412');
 		// External and user-supplied: it must not pass referrer or ranking.
 		await expect(out).toHaveAttribute('rel', /noopener/);

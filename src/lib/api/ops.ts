@@ -200,10 +200,7 @@ export const opsApi = {
 
 	/** A follow-up action, with an owner and a date it is due. */
 	addAction(id: string, body: { description: string; owner_user_id?: string; due_on?: string }) {
-		return api.post<ApiResponse<unknown>>(
-			`/ops/incidents/${encodeURIComponent(id)}/actions`,
-			body
-		);
+		return api.post<ApiResponse<unknown>>(`/ops/incidents/${encodeURIComponent(id)}/actions`, body);
 	},
 
 	publishPostmortem(id: string, postmortemMd: string, url?: string) {

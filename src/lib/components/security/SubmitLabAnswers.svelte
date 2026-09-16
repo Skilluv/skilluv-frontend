@@ -88,10 +88,11 @@
 		<p class="text-xs text-text-muted" data-testid="lab-terms">
 			{#if passPercent !== null}{i18n.t('securityPractice.labPassPercent', {
 					n: passPercent
-				})}{/if}{#if passPercent !== null && maxAttempts !== null} · {/if}{#if maxAttempts !== null}{i18n.t(
-					'securityPractice.labMaxAttempts',
-					{ n: maxAttempts }
-				)}{/if}
+				})}{/if}{#if passPercent !== null && maxAttempts !== null}
+				·
+			{/if}{#if maxAttempts !== null}{i18n.t('securityPractice.labMaxAttempts', {
+					n: maxAttempts
+				})}{/if}
 		</p>
 	{/if}
 

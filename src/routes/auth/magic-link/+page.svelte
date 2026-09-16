@@ -33,9 +33,15 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
-<div class="mx-auto flex min-h-[80vh] max-w-md flex-col items-center justify-center px-4 py-14 text-center">
+<div
+	class="mx-auto flex min-h-[80vh] max-w-md flex-col items-center justify-center px-4 py-14 text-center"
+>
 	{#if sent}
-		<div class="mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-success/15 text-success animate-[fragment-burst_600ms_ease-out]"><Check size={40} strokeWidth={2.5} /></div>
+		<div
+			class="mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-success/15 text-success animate-[fragment-burst_600ms_ease-out]"
+		>
+			<Check size={40} strokeWidth={2.5} />
+		</div>
 		<p class="mb-3 text-xs font-bold uppercase tracking-widest text-accent">
 			{i18n.locale === 'fr' ? 'Email envoyé' : 'Email sent'}
 		</p>
@@ -68,8 +74,8 @@
 		</h1>
 		<p class="mt-6 max-w-sm text-base text-text-muted">
 			{i18n.locale === 'fr'
-				? 'On t\'envoie un lien magique par email. Tu cliques, tu es connecté·e. Pas de mot de passe à retenir.'
-				: 'We send you a magic link by email. You click, you\'re in. No password to remember.'}
+				? "On t'envoie un lien magique par email. Tu cliques, tu es connecté·e. Pas de mot de passe à retenir."
+				: "We send you a magic link by email. You click, you're in. No password to remember."}
 		</p>
 
 		<form onsubmit={submit} class="mt-8 w-full space-y-4">
@@ -78,14 +84,20 @@
 				<button
 					type="button"
 					onclick={() => (intent = 'login')}
-					class="flex-1 rounded-full px-4 py-1.5 text-sm font-medium transition-colors {intent === 'login' ? 'bg-primary text-primary-fg' : 'text-text-muted hover:text-text-primary'}"
+					class="flex-1 rounded-full px-4 py-1.5 text-sm font-medium transition-colors {intent ===
+					'login'
+						? 'bg-primary text-primary-fg'
+						: 'text-text-muted hover:text-text-primary'}"
 				>
 					{i18n.locale === 'fr' ? 'Connexion' : 'Login'}
 				</button>
 				<button
 					type="button"
 					onclick={() => (intent = 'signup')}
-					class="flex-1 rounded-full px-4 py-1.5 text-sm font-medium transition-colors {intent === 'signup' ? 'bg-primary text-primary-fg' : 'text-text-muted hover:text-text-primary'}"
+					class="flex-1 rounded-full px-4 py-1.5 text-sm font-medium transition-colors {intent ===
+					'signup'
+						? 'bg-primary text-primary-fg'
+						: 'text-text-muted hover:text-text-primary'}"
 				>
 					{i18n.locale === 'fr' ? 'Inscription' : 'Sign up'}
 				</button>
@@ -101,8 +113,12 @@
 			/>
 			<Button variant="accent" size="lg" loading={sending} disabled={!email.trim()}>
 				{intent === 'signup'
-					? (i18n.locale === 'fr' ? 'M\'envoyer un lien pour créer un compte' : 'Send me a link to sign up')
-					: (i18n.locale === 'fr' ? 'M\'envoyer un lien de connexion' : 'Send me a login link')}
+					? i18n.locale === 'fr'
+						? "M'envoyer un lien pour créer un compte"
+						: 'Send me a link to sign up'
+					: i18n.locale === 'fr'
+						? "M'envoyer un lien de connexion"
+						: 'Send me a login link'}
 			</Button>
 		</form>
 

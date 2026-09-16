@@ -219,9 +219,9 @@ describe('large uploads', () => {
 		// A copy deck is capped at 100 MiB; this is a hair over.
 		const file = new File(['x'], 'deck.pdf');
 		Object.defineProperty(file, 'size', { value: 101 * 1024 * 1024 });
-		await expect(
-			uploadDesignFile(file, { design_subtype: 'copy_deck' })
-		).rejects.toBeInstanceOf(RangeError);
+		await expect(uploadDesignFile(file, { design_subtype: 'copy_deck' })).rejects.toBeInstanceOf(
+			RangeError
+		);
 		expect(fetchMock).not.toHaveBeenCalled();
 	});
 
@@ -556,9 +556,7 @@ describe('mentor matching', () => {
 		fetchMock.mockResolvedValue(fail(400, 'VALIDATION', 'no mentorship rules for domain `x`'));
 		const { domainProfileApi } = await import('../../src/lib/api/domain_profile');
 		const { SkilluError } = await import('../../src/lib/api/client');
-		await expect(
-			domainProfileApi.mentorMatches('design')
-		).rejects.toBeInstanceOf(SkilluError);
+		await expect(domainProfileApi.mentorMatches('design')).rejects.toBeInstanceOf(SkilluError);
 	});
 });
 
@@ -658,7 +656,13 @@ describe('the wizard, skipped rather than half-answered', () => {
 	it('the question vocabulary comes from the platform, not from a constant', async () => {
 		fetchMock.mockResolvedValue(
 			ok([
-				{ key: 'main_tool', answer: 'single', allowed: ['figma', 'penpot'], max_selections: null, max_len: null },
+				{
+					key: 'main_tool',
+					answer: 'single',
+					allowed: ['figma', 'penpot'],
+					max_selections: null,
+					max_len: null
+				},
 				{ key: 'portfolio_url', answer: 'text', allowed: [], max_selections: null, max_len: 500 }
 			])
 		);
@@ -676,7 +680,9 @@ describe('the wizard, skipped rather than half-answered', () => {
 
 describe('the toolkit and the terrains', () => {
 	it('both are keyed on the domain, not written once per domain', async () => {
-		fetchMock.mockResolvedValue(ok({ domain: 'design', resources: [], category: null, orientation: null }));
+		fetchMock.mockResolvedValue(
+			ok({ domain: 'design', resources: [], category: null, orientation: null })
+		);
 		const { practiceApi } = await import('../../src/lib/api/practice');
 		await practiceApi.toolkit('design', { category: 'tool' });
 		const url = String(fetchMock.mock.calls[0][0]);

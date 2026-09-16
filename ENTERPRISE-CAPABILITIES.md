@@ -20,11 +20,13 @@ Version au **2026-07-07**. Toutes les routes sont préfixées par `/api` côté 
 - **SCIM bearer** — token Bearer entreprise (SCIM 2.0).
 
 Toutes les réponses de succès sont enveloppées :
+
 ```json
 { "data": { ... }, "meta": { "request_id": "uuid", "timestamp": "iso8601" } }
 ```
 
 Erreurs :
+
 ```json
 { "error": { "code": "AUTH_...", "message": "...", "start_url": "..." (SSO) }, "meta": { ... } }
 ```
@@ -34,9 +36,11 @@ Erreurs :
 ## 1. Onboarding & inscription
 
 ### `POST /api/enterprise/register` — Public
+
 Crée un compte owner + une entreprise + une membership `owner active`. Envoie un email de vérification, pose les cookies `access_token`, `refresh_token`, `csrf_token`. Rate-limit **5/heure/IP**.
 
 Body :
+
 ```json
 {
   "email": "owner@acme.com",
@@ -54,6 +58,7 @@ Body :
 ```
 
 Response :
+
 ```json
 {
   "data": {
@@ -74,46 +79,60 @@ Politique password : ≥10 chars, majuscule + minuscule + chiffre + symbole. `co
 ## 2. Authentification & session
 
 ### `POST /api/auth/login` — Public
+
 Body : `{ identifier, password, totp_code?, backup_code?, email_2fa_code? }`.  
 Pour les entreprises, la réponse inclut `login_method` et `requires_totp_setup: true` si aucun facteur fort n'est armé.
 
 ### `POST /api/auth/webauthn/login/start` puis `/finish` — Public
+
 Login par passkey (Face ID / Touch ID / Windows Hello / YubiKey). Session marquée `login_method: "webauthn"` — bypass automatique du gate 2FA entreprise.
 
 ### `POST /api/auth/magic-link/request` puis `/consume` — Public
+
 Login par lien email. Session `login_method: "magic_link"` — ne bypasse **pas** le gate TOTP entreprise (facteur faible).
 
 ### `GET /api/enterprise/sso/{slug}/start` puis `/callback` — Public
+
 SSO OIDC B2B (Okta / Azure AD / Google Workspace / Auth0 / Keycloak). Session `login_method: "sso"` — bypass 2FA (l'IdP gère le MFA).
 
 ### `POST /api/auth/refresh` — cookie
+
 Rotation des tokens (session + JWT). Préserve `login_method`.
 
 ### `POST /api/auth/logout` — Auth
+
 Révoque la session courante.
 
 ### `GET /api/auth/me` — Auth
+
 Retourne le user + `login_method` + `has_passkey` + `rank`.
 
 ### `POST /api/auth/totp/setup` → `/enable` → `/backup-codes/regenerate` → `/disable` — Auth
+
 Cycle TOTP complet. `/enable` renvoie les backup codes une fois.
 
 ### `POST /api/auth/email-2fa/enable` / `/disable` / `/verify` — Auth
+
 Email 2FA (secondaire).
 
 ### `POST /api/auth/webauthn/register/start` puis `/finish` — Auth
+
 Enrôlement d'une passkey supplémentaire.
 
 ### `GET /api/auth/webauthn/credentials` / `PATCH /{id}` / `DELETE /{id}` — Auth
+
 Liste, renomme, supprime ses passkeys.
 
 ### `GET /api/auth/sessions` / `DELETE /{id}` / `POST /revoke-all` — Auth
+
 Liste toutes les sessions actives du user, révocation individuelle ou en masse.
 
 ### `POST /api/auth/change-password` / `POST /change-email` / `GET /change-email/confirm` — Auth
+
 Modification password / email avec confirmation.
 
 ### `POST /api/auth/account (DELETE)` + `POST /me/data-export` — Auth
+
 Suppression compte RGPD + export archive ZIP (rate limit 1/24h).
 
 ---
@@ -121,6 +140,7 @@ Suppression compte RGPD + export archive ZIP (rate limit 1/24h).
 ## 3. Profil entreprise & équipe
 
 ### `GET /api/enterprise/profile` — Enterprise
+
 ```json
 {
   "data": {
@@ -131,7 +151,9 @@ Suppression compte RGPD + export archive ZIP (rate limit 1/24h).
 ```
 
 ### `PUT /api/enterprise/profile` — Enterprise owner
+
 Body (tout optionnel) :
+
 ```json
 {
   "company_name": "Acme SA",
@@ -144,15 +166,19 @@ Body (tout optionnel) :
 ```
 
 ### `POST /api/enterprise/invite` — Enterprise owner
+
 Body : `{ "email": "recruiter@acme.com" }`. Génère un token 7j Redis, envoie un email. Le token est aussi renvoyé pour partage direct (`invite_token`).
 
 ### `POST /api/enterprise/invite/accept` — Auth
+
 Body : `{ "token": "abc..." }`. Refuse si l'email de l'user connecté ne matche pas l'email invité. Le user devient `recruiter` de l'enterprise.
 
 ### `GET /api/enterprise/members` — Enterprise
+
 Liste tous les membres actifs/pending/revoked avec username, display_name, email, role, status, invited_at, accepted_at.
 
 ### `DELETE /api/enterprise/members/{user_id}` — Enterprise owner
+
 Marque `status = revoked` et rétrograde `users.role = user`. Impossible sur soi-même.
 
 ---
@@ -160,23 +186,24 @@ Marque `status = revoked` et rétrograde `users.role = user`. Impossible sur soi
 ## 4. Recherche de talents
 
 ### `GET /api/talents/search/v2` — Enterprise
+
 13 filtres croisés (l'outil principal de sourcing). Query params :
 
-| Param | Type | Sens |
-|---|---|---|
-| `q` | string | Recherche textuelle username / display_name / bio |
-| `skill_domain` | `code\|design\|game\|security` | Filtre domaine |
-| `title` | `apprenti\|artisan\|maitre\|legende` | Niveau de progression |
-| `country_iso2` | `FR`, `BJ`, … | Pays ISO-2 |
-| `city` | string | Ville |
-| `min_fragments` | int | Fragments minimum |
-| `min_streak` | int | Streak jours minimum |
-| `tag` | string | Tag/compétence |
-| `badge` | string | Badge acquis |
-| `looking_for` | `job\|freelance\|internship\|any` | Statut recherche |
-| `available_only` | bool | Uniquement `profile_active=true` |
-| `sort_by` | `relevance\|fragments\|streak\|recent` | Tri |
-| `page`, `per_page` | int | Pagination |
+| Param              | Type                                   | Sens                                              |
+| ------------------ | -------------------------------------- | ------------------------------------------------- |
+| `q`                | string                                 | Recherche textuelle username / display_name / bio |
+| `skill_domain`     | `code\|design\|game\|security`         | Filtre domaine                                    |
+| `title`            | `apprenti\|artisan\|maitre\|legende`   | Niveau de progression                             |
+| `country_iso2`     | `FR`, `BJ`, …                          | Pays ISO-2                                        |
+| `city`             | string                                 | Ville                                             |
+| `min_fragments`    | int                                    | Fragments minimum                                 |
+| `min_streak`       | int                                    | Streak jours minimum                              |
+| `tag`              | string                                 | Tag/compétence                                    |
+| `badge`            | string                                 | Badge acquis                                      |
+| `looking_for`      | `job\|freelance\|internship\|any`      | Statut recherche                                  |
+| `available_only`   | bool                                   | Uniquement `profile_active=true`                  |
+| `sort_by`          | `relevance\|fragments\|streak\|recent` | Tri                                               |
+| `page`, `per_page` | int                                    | Pagination                                        |
 
 Response paginée `{ data: TalentV2[], pagination: { page, per_page, total, total_pages } }`.
 
@@ -187,33 +214,43 @@ Response paginée `{ data: TalentV2[], pagination: { page, per_page, total, tota
 ## 5. Bookmarks & listes de talents
 
 ### `POST /api/enterprise/bookmarks/{talent_id}` — Enterprise
+
 Enregistre un talent dans les favoris de l'entreprise.
 
 ### `DELETE /api/enterprise/bookmarks/{talent_id}` — Enterprise
+
 Retire du favori.
 
 ### `GET /api/enterprise/bookmarks?page=&per_page=` — Enterprise
+
 Liste paginée des talents bookmarkés.
 
 ### `POST /api/enterprise/lists` — Enterprise
+
 Body : `{ "name": "Backend Devs Q1", "description": "..." }`. Crée une liste privée à l'entreprise.
 
 ### `GET /api/enterprise/lists` — Enterprise
+
 Toutes les listes de l'entreprise.
 
 ### `GET /api/enterprise/lists/{list_id}` — Enterprise
+
 Détails + talents inclus.
 
 ### `PUT /api/enterprise/lists/{list_id}` — Enterprise
+
 Body : `{ "name"?, "description"? }`.
 
 ### `DELETE /api/enterprise/lists/{list_id}` — Enterprise
+
 Supprime la liste (cascade sur les entrées).
 
 ### `POST /api/enterprise/lists/{list_id}/talents/{talent_id}` — Enterprise
+
 Ajoute un talent à la liste.
 
 ### `DELETE /api/enterprise/lists/{list_id}/talents/{talent_id}` — Enterprise
+
 Retire un talent.
 
 ---
@@ -223,34 +260,44 @@ Retire un talent.
 Modèle "double opt-in" : l'entreprise envoie un **interest request** avec un message. Le talent accepte ou refuse. Une conversation s'ouvre **uniquement** après acceptation. Un talent peut aussi bloquer une entreprise.
 
 ### `POST /api/contact/interest` — Enterprise
+
 Body : `{ "talent_id": "uuid", "message": "..." }` (message 1-2000 chars).  
 Rate limit : **5 / heure / entreprise**. Consomme des crédits (1 par requête acceptée). Refuse si le talent a bloqué l'entreprise ou s'il y a un cooldown (30 jours après un decline).
 
 ### `GET /api/contact/interest/sent?page=&per_page=` — Enterprise
+
 Historique des requêtes envoyées avec leur `status: pending|accepted|declined`.
 
 ### `GET /api/contact/interest/received?page=&per_page=` — Auth (côté talent)
+
 Requêtes reçues.
 
 ### `POST /api/contact/interest/{id}/accept` — Auth (talent)
+
 Ouvre la conversation entre entreprise et talent.
 
 ### `POST /api/contact/interest/{id}/decline` — Auth (talent)
+
 Déclin + cooldown 30 jours.
 
 ### `GET /api/contact/conversations?page=` — Auth
+
 Liste des conversations. Entreprise ↔ talent.
 
 ### `GET /api/contact/conversations/{id}` — Auth
+
 Historique complet des messages.
 
 ### `POST /api/contact/conversations/{id}/messages` — Auth
+
 Body : `{ "content": "..." }`. Envoi d'un message.
 
 ### `POST /api/contact/block/{enterprise_id}` — Auth (talent uniquement)
+
 Bloque une entreprise. Toutes ses futures requêtes vers ce talent sont refusées.
 
 ### `DELETE /api/contact/block/{enterprise_id}` — Auth (talent)
+
 Débloque.
 
 ---
@@ -260,10 +307,13 @@ Débloque.
 Kanban interne à l'entreprise : `to_contact → contacted → interviewing → offer → hired → declined`.
 
 ### `GET /api/enterprise/pipeline?stage=` — Enterprise
+
 Retourne toutes les entrées (ou celles d'un `stage` donné). Chaque entrée : `id, talent_id, username, display_name, skill_domain, title, total_fragments, stage, position, notes, salary_proposed_eur, last_action_at, created_at, updated_at`.
 
 ### `POST /api/enterprise/pipeline` — Enterprise
+
 Body :
+
 ```json
 {
   "talent_id": "uuid",
@@ -272,15 +322,19 @@ Body :
   "salary_proposed_eur": 55000
 }
 ```
+
 Idempotent : `ON CONFLICT (enterprise_id, talent_id) DO UPDATE`. Historique tracé dans `enterprise_pipeline_history`.
 
 ### `PUT /api/enterprise/pipeline/{id}` — Enterprise
+
 Body : `{ "stage"?, "notes"?, "salary_proposed_eur"?, "position"? }`. Change d'étape, prend des notes, réordonne.
 
 ### `DELETE /api/enterprise/pipeline/{id}` — Enterprise
+
 Retire du pipeline.
 
 ### `GET /api/enterprise/pipeline/export.csv` — Enterprise
+
 Export CSV complet du pipeline courant.
 
 ---
@@ -288,6 +342,7 @@ Export CSV complet du pipeline courant.
 ## 8. Crédits & facturation
 
 ### `GET /api/enterprise/credits` — Enterprise
+
 ```json
 {
   "credits": {
@@ -302,31 +357,40 @@ Export CSV complet du pipeline courant.
 ```
 
 ### `GET /api/enterprise/credits/transactions?page=&per_page=` — Enterprise
+
 Liste paginée des mouvements : `delta`, `balance_after`, `reason` (`purchase|contact_charge|promo|refund|monthly_reset`), `related_interest_request_id`, `related_payment_id`, `notes`, `expires_at`.
 
 ### `POST /api/enterprise/credits/checkout` — Enterprise
+
 Body : `{ "pack_slug": "starter|pro|scale|custom" }`.  
 Response : `{ "checkout_url": "https://checkout.stripe.com/..." }`. Redirection Stripe Checkout.
 
 ### `POST /api/enterprise/credits/redeem` — Enterprise
+
 Body : `{ "code": "PROMO-XXXX" }`. Applique un code promo.
 
 ### `POST /api/enterprise/billing/portal` — Enterprise
+
 Response : `{ "portal_url": "https://billing.stripe.com/..." }`. Redirection Stripe Customer Portal.
 
 ### `GET /api/enterprise/invoices?page=&per_page=` — Enterprise
+
 Liste des factures. Chaque : `id, number, amount_eur, currency, status, pdf_url, issued_at`.
 
 ### `GET /api/enterprise/invoices/{id}` — Enterprise
+
 Détails d'une facture (lignes détaillées).
 
 ### `GET /api/enterprise/invoices/{id}/html` — Enterprise
+
 Version HTML rendue de la facture (imprimable).
 
 ### `GET /api/pricing` — Public
+
 Grille tarifaire publique (packs + prix par devise selon FX).
 
 ### `POST /api/stripe/webhook` — Signature Stripe
+
 Webhook interne. Crédite le compte à la réception d'un paiement confirmé.
 
 ---
@@ -334,12 +398,15 @@ Webhook interne. Crédite le compte à la réception d'un paiement confirmé.
 ## 9. Abonnements (packs mensuels)
 
 ### `POST /api/enterprise/subscriptions/subscribe` — Enterprise
+
 Body : `{ "pack_slug": "..." }`. Souscrit à un pack récurrent (crédits mensuels + accès premium).
 
 ### `GET /api/enterprise/subscriptions/current` — Enterprise
+
 Retourne l'abonnement actif (ou null) : `pack_slug, status, current_period_end, cancel_at_period_end`.
 
 ### `POST /api/enterprise/subscriptions/cancel` — Enterprise owner
+
 Annule à la fin de la période courante (pas de résiliation immédiate).
 
 ---
@@ -347,14 +414,17 @@ Annule à la fin de la période courante (pas de résiliation immédiate).
 ## 10. KYC entreprise
 
 ### `GET /api/enterprise/kyc` — Enterprise
+
 Statut KYC : `pending|approved|rejected` + liste des documents fournis.
 
 ### `POST /api/enterprise/kyc/documents` — Enterprise owner
+
 Upload multipart d'un document (SIRET / RC / preuve d'adresse / passeport signataire) avec type.
 
 Response : `{ "document_id": "...", "status": "pending" }`.
 
 Deux routes admin en support :
+
 - `GET /api/admin/enterprise-kyc` (liste)
 - `POST /api/admin/enterprise-kyc/{enterprise_id}/decide` (approve/reject)
 
@@ -363,7 +433,9 @@ Deux routes admin en support :
 ## 11. Dashboard entreprise
 
 ### `GET /api/enterprise/dashboard/platform-stats` — Enterprise
+
 Stats globales de la plateforme (non spécifiques à l'entreprise) :
+
 ```json
 {
   "total_talents": 4512,
@@ -375,7 +447,9 @@ Stats globales de la plateforme (non spécifiques à l'entreprise) :
 ```
 
 ### `GET /api/enterprise/dashboard/my-stats` — Enterprise
+
 Stats propres à l'entreprise :
+
 ```json
 {
   "bookmarks": 12,
@@ -391,7 +465,9 @@ Stats propres à l'entreprise :
 ## 12. SSO OIDC B2B
 
 ### `POST /api/enterprise/sso/config` — Enterprise owner
+
 Body :
+
 ```json
 {
   "issuer": "https://tenant.okta.com",
@@ -403,21 +479,27 @@ Body :
   "default_role": "recruiter"
 }
 ```
+
 Response : config sans le secret + `redirect_uri` à copier dans l'IdP.
 
 ### `GET /api/enterprise/sso/config` — Enterprise owner
+
 Config courante avec `client_secret: "***REDACTED***"`.
 
 ### `DELETE /api/enterprise/sso/config` — Enterprise owner
+
 Soft-disable (le `disabled_at` est posé).
 
 ### `GET /api/enterprise/sso/discover?email=…` — Public
+
 Utilisé sur la page de login. Retourne `{ sso_available: bool, start_url? }` selon le domaine de l'email.
 
 ### `GET /api/enterprise/sso/{slug}/start` — Public
+
 Redirect vers l'IdP. Génère state + nonce + PKCE stockés en Redis.
 
 ### `GET /api/enterprise/sso/{slug}/callback?code=&state=` — Public
+
 Callback IdP : exchange code, vérifie ID token (JWKS, iss, aud, exp, nonce, email_verified). JIT provisioning : crée l'user + membership si `auto_provision`. Émet session Skilluv avec `login_method=sso`.
 
 ---
@@ -425,11 +507,13 @@ Callback IdP : exchange code, vérifie ID token (JWKS, iss, aud, exp, nonce, ema
 ## 13. SCIM 2.0 provisioning
 
 ### Owner-authenticated
+
 - `POST /api/enterprise/sso/scim/token` — Génère un token bearer (retourné **une seule fois** en clair + hash SHA-256 stocké). Grace period 24h sur l'ancien.
 - `DELETE /api/enterprise/sso/scim/token` — Révoque immédiatement.
 - `PUT /api/enterprise/sso/scim/groups/{id}/mapped-role` — Body : `{ "mapped_role": "recruiter" | "enterprise" | null }`.
 
 ### SCIM bearer (utilisé par l'IdP)
+
 - `GET /api/scim/v2/ServiceProviderConfig` / `/ResourceTypes` / `/Schemas` — Discovery SCIM.
 - `GET /api/scim/v2/Users?filter=userName eq "x"&startIndex=&count=` — Liste.
 - `POST /api/scim/v2/Users` — Provisionne un user + membership.
@@ -443,7 +527,9 @@ PATCH accepte les formats Okta (`path=members[value eq "uuid"]`) et Azure AD (`p
 ## 14. Bounties open-source (côté entreprise)
 
 ### `POST /api/bounties` — Enterprise
+
 Sponsorise une issue GitHub. Body :
+
 ```json
 {
   "github_repo": "acme/api",
@@ -453,12 +539,15 @@ Sponsorise une issue GitHub. Body :
   "description_override": "..."
 }
 ```
+
 Payout automatique au merge de la PR (webhook GitHub).
 
 ### `GET /api/bounties?enterprise_id=…` — Public
+
 Liste des bounties actives.
 
 ### `GET /api/bounties/{id}` — Public
+
 Détails d'une bounty + PRs en cours.
 
 Reste manipulé par le talent (postuler / lier une PR).
@@ -468,6 +557,7 @@ Reste manipulé par le talent (postuler / lier une PR).
 ## 15. Certifications sponsorisées
 
 ### `POST /api/enterprise/certifications/sponsor` — Enterprise
+
 Sponsorise une certification (couvre les frais d'inscription pour un talent invité).
 
 Utilisé plus rarement — voir `/api/certifications` pour la mécanique publique.
@@ -477,12 +567,15 @@ Utilisé plus rarement — voir `/api/certifications` pour la mécanique publiqu
 ## 16. Notifications
 
 ### `GET /api/notifications?page=&unread_only=` — Auth
+
 Liste paginée. Types entreprise-facing : `interest_accepted`, `interest_declined`, `new_message`, `bounty_solved`, `subscription_renewed`, `credit_low`.
 
 ### `POST /api/notifications/{id}/read` — Auth
+
 Marque une notif comme lue.
 
 ### `POST /api/notifications/read-all` — Auth
+
 Marque tout comme lu.
 
 ---
@@ -508,6 +601,7 @@ Le hook `src/hooks.server.ts` redirige automatiquement les rôles `enterprise` e
 - `/messages` (candidat, l'entreprise a `/enterprise/messages`)
 
 Routes neutres partagées :
+
 - `/auth/*`
 - `/legal/*`
 - `/notifications`
@@ -517,29 +611,29 @@ Routes neutres partagées :
 
 ## 18. Pages frontend correspondantes (`/enterprise/*`)
 
-| Route | Rôle | Description |
-|---|---|---|
-| `/enterprise/register` | Public | Inscription 3 steps (owner + entreprise + terms + optionnel passkey step 3). |
-| `/enterprise/onboarding` | Owner nouveau | Wizard 5 étapes : bienvenue → 2FA (TOTP OU passkey) → profil → invite → dashboard. |
-| `/enterprise/dashboard` | Enterprise | Vue d'ensemble : stats personnelles + globales + accès rapide. |
-| `/enterprise/talents` | Enterprise | Recherche talents V2 (13 filtres). |
-| `/enterprise/bookmarks` | Enterprise | Liste des talents bookmarkés. |
-| `/enterprise/lists` | Enterprise | CRUD listes de talents. |
-| `/enterprise/lists/{id}` | Enterprise | Détail d'une liste. |
-| `/enterprise/messages` | Enterprise | Inbox des conversations acceptées. |
-| `/enterprise/messages/{id}` | Enterprise | Détail conversation. |
-| `/enterprise/members` | Enterprise | Membres + invitations. |
-| `/enterprise/invite/accept?token=…` | Auth | Landing après clic sur email d'invitation. |
-| `/enterprise/profile` | Enterprise | Édition du profil entreprise (description, logo, website…). |
-| `/enterprise/credits` | Enterprise | Solde + packs + Stripe Checkout. |
-| `/enterprise/credits/success`, `/credits/canceled` | Enterprise | Retour Stripe. |
-| `/enterprise/credits/invoices` | Enterprise | Historique factures. |
-| `/enterprise/subscriptions` | Enterprise | Souscription pack mensuel. |
-| `/enterprise/bounties` | Enterprise | Bounties sponsorisées. |
-| `/enterprise/bounties/new` | Enterprise | Créer une bounty. |
-| `/enterprise/kyc` | Owner | Upload documents KYC + statut. |
-| `/enterprise/settings/sso` | Owner | Config SSO OIDC + SCIM token + group→role mapping. |
-| `/enterprise/settings/security` | Enterprise | TOTP, backup codes, passkeys, sessions. |
+| Route                                              | Rôle          | Description                                                                        |
+| -------------------------------------------------- | ------------- | ---------------------------------------------------------------------------------- |
+| `/enterprise/register`                             | Public        | Inscription 3 steps (owner + entreprise + terms + optionnel passkey step 3).       |
+| `/enterprise/onboarding`                           | Owner nouveau | Wizard 5 étapes : bienvenue → 2FA (TOTP OU passkey) → profil → invite → dashboard. |
+| `/enterprise/dashboard`                            | Enterprise    | Vue d'ensemble : stats personnelles + globales + accès rapide.                     |
+| `/enterprise/talents`                              | Enterprise    | Recherche talents V2 (13 filtres).                                                 |
+| `/enterprise/bookmarks`                            | Enterprise    | Liste des talents bookmarkés.                                                      |
+| `/enterprise/lists`                                | Enterprise    | CRUD listes de talents.                                                            |
+| `/enterprise/lists/{id}`                           | Enterprise    | Détail d'une liste.                                                                |
+| `/enterprise/messages`                             | Enterprise    | Inbox des conversations acceptées.                                                 |
+| `/enterprise/messages/{id}`                        | Enterprise    | Détail conversation.                                                               |
+| `/enterprise/members`                              | Enterprise    | Membres + invitations.                                                             |
+| `/enterprise/invite/accept?token=…`                | Auth          | Landing après clic sur email d'invitation.                                         |
+| `/enterprise/profile`                              | Enterprise    | Édition du profil entreprise (description, logo, website…).                        |
+| `/enterprise/credits`                              | Enterprise    | Solde + packs + Stripe Checkout.                                                   |
+| `/enterprise/credits/success`, `/credits/canceled` | Enterprise    | Retour Stripe.                                                                     |
+| `/enterprise/credits/invoices`                     | Enterprise    | Historique factures.                                                               |
+| `/enterprise/subscriptions`                        | Enterprise    | Souscription pack mensuel.                                                         |
+| `/enterprise/bounties`                             | Enterprise    | Bounties sponsorisées.                                                             |
+| `/enterprise/bounties/new`                         | Enterprise    | Créer une bounty.                                                                  |
+| `/enterprise/kyc`                                  | Owner         | Upload documents KYC + statut.                                                     |
+| `/enterprise/settings/sso`                         | Owner         | Config SSO OIDC + SCIM token + group→role mapping.                                 |
+| `/enterprise/settings/security`                    | Enterprise    | TOTP, backup codes, passkeys, sessions.                                            |
 
 ### Chrome frontend
 
@@ -552,6 +646,7 @@ Routes neutres partagées :
 ## 19. Contraintes et gates récap
 
 **Pour accéder à n'importe quelle route `/api/enterprise/*` (hors register / invite/accept)** :
+
 1. `AuthUser` valide (JWT).
 2. Rôle `enterprise` ou `recruiter`.
 3. `email_verified = true` (sauf session SSO).
@@ -559,22 +654,23 @@ Routes neutres partagées :
 5. Membership `active` sur au moins une `enterprises`.
 
 **Pour les endpoints "owner-only"** (invite, revoke_member, update_profile, SSO config, KYC upload, cancel subscription) :
+
 - Même contraintes + `enterprise.owner_id == user.id`.
 
 ---
 
 ## 20. Codes d'erreur spécifiques
 
-| Code | HTTP | Signification | UX recommandée |
-|---|---|---|---|
-| `AUTH_EMAIL_VERIFY_REQUIRED` | 403 | Email non vérifié | Redirect `/auth/verify-email?next=…` |
-| `AUTH_TOTP_SETUP_REQUIRED` | 403 | Pas de 2FA armée sur compte enterprise | Redirect `/enterprise/onboarding` |
-| `AUTH_TOTP_REQUIRED` | 403 | Login manque le code TOTP | Afficher champ code |
-| `AUTH_SSO_REQUIRED` | 403 | Domaine email force SSO | Redirect `err.start_url` |
-| `SCIM_CONFLICT: …` | 400 | POST /Users avec externalId déjà utilisé | Retour à l'IdP |
-| `CONTACT_COOLDOWN_ACTIVE` | 429 | Talent a decline < 30 j | Message "réessayer plus tard" |
-| `CONTACT_BLOCKED` | 403 | Talent a bloqué l'entreprise | Message "ce talent n'accepte pas de nouvelles requêtes" |
-| `INSUFFICIENT_CREDITS` | 400 | Balance < coût de l'action | Redirect `/enterprise/credits` |
+| Code                         | HTTP | Signification                            | UX recommandée                                          |
+| ---------------------------- | ---- | ---------------------------------------- | ------------------------------------------------------- |
+| `AUTH_EMAIL_VERIFY_REQUIRED` | 403  | Email non vérifié                        | Redirect `/auth/verify-email?next=…`                    |
+| `AUTH_TOTP_SETUP_REQUIRED`   | 403  | Pas de 2FA armée sur compte enterprise   | Redirect `/enterprise/onboarding`                       |
+| `AUTH_TOTP_REQUIRED`         | 403  | Login manque le code TOTP                | Afficher champ code                                     |
+| `AUTH_SSO_REQUIRED`          | 403  | Domaine email force SSO                  | Redirect `err.start_url`                                |
+| `SCIM_CONFLICT: …`           | 400  | POST /Users avec externalId déjà utilisé | Retour à l'IdP                                          |
+| `CONTACT_COOLDOWN_ACTIVE`    | 429  | Talent a decline < 30 j                  | Message "réessayer plus tard"                           |
+| `CONTACT_BLOCKED`            | 403  | Talent a bloqué l'entreprise             | Message "ce talent n'accepte pas de nouvelles requêtes" |
+| `INSUFFICIENT_CREDITS`       | 400  | Balance < coût de l'action               | Redirect `/enterprise/credits`                          |
 
 ---
 

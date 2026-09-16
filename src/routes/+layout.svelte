@@ -47,8 +47,7 @@
 			$page.url.pathname.startsWith('/enterprise/register') ||
 			$page.url.pathname.startsWith('/enterprise/invite/accept') ||
 			ONBOARDING_PATHS.some(
-				(path) =>
-					$page.url.pathname === path || $page.url.pathname.startsWith(`${path}/`)
+				(path) => $page.url.pathname === path || $page.url.pathname.startsWith(`${path}/`)
 			)
 	);
 
@@ -57,9 +56,7 @@
 	// l'espace entreprise apporte son propre header + sidebar. On garde la
 	// Toast / PWA / auth store logic qui restent globaux. L'admin a son
 	// propre frontend sur admin.skill-uv.com, plus rien à gérer ici.
-	let isWorkspace = $derived(
-		$page.url.pathname.startsWith('/enterprise/') && !isBareLayout
-	);
+	let isWorkspace = $derived($page.url.pathname.startsWith('/enterprise/') && !isBareLayout);
 
 	let showCandidateChrome = $derived(!isBareLayout && !isWorkspace);
 

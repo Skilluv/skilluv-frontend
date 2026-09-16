@@ -203,8 +203,7 @@
 		rows="5"
 		data-testid="dispute-response"
 		class="w-full rounded-xl border border-border bg-surface p-3 text-sm"
-		placeholder={i18n.t('disputes.contestPlaceholder')}
-	></textarea>
+		placeholder={i18n.t('disputes.contestPlaceholder')}></textarea>
 
 	{#snippet actions()}
 		<Button variant="ghost" size="sm" onclick={() => (contesting = null)}>

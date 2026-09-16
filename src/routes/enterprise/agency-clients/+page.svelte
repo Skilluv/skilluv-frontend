@@ -257,7 +257,9 @@
 							<div class="flex items-center gap-2 flex-wrap">
 								<p class="font-medium text-text-primary">{c.client_name}</p>
 								{#if !c.active}
-									<span class="rounded bg-surface-overlay px-2 py-0.5 text-[10px] uppercase text-text-muted">
+									<span
+										class="rounded bg-surface-overlay px-2 py-0.5 text-[10px] uppercase text-text-muted"
+									>
 										{i18n.t('enterprise.agencyClients.archivedBadge')}
 									</span>
 								{/if}

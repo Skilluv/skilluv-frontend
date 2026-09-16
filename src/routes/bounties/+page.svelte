@@ -40,12 +40,21 @@
 		}).format(new Date(iso));
 	}
 
-	function difficultyBadge(d: number): { label: string; variant: 'default' | 'primary' | 'accent' | 'warning' | 'error' } {
-		const labels = i18n.locale === 'fr'
-			? ['', 'Débutant', 'Facile', 'Intermédiaire', 'Avancé', 'Expert']
-			: ['', 'Beginner', 'Easy', 'Intermediate', 'Advanced', 'Expert'];
+	function difficultyBadge(d: number): {
+		label: string;
+		variant: 'default' | 'primary' | 'accent' | 'warning' | 'error';
+	} {
+		const labels =
+			i18n.locale === 'fr'
+				? ['', 'Débutant', 'Facile', 'Intermédiaire', 'Avancé', 'Expert']
+				: ['', 'Beginner', 'Easy', 'Intermediate', 'Advanced', 'Expert'];
 		const variants: Array<'default' | 'primary' | 'accent' | 'warning' | 'error'> = [
-			'default', 'default', 'primary', 'accent', 'warning', 'error'
+			'default',
+			'default',
+			'primary',
+			'accent',
+			'warning',
+			'error'
 		];
 		return { label: labels[d] ?? '?', variant: variants[d] ?? 'default' };
 	}
@@ -54,10 +63,17 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Bounties Open Source | Skilluv' : 'Open Source Bounties | Skilluv'}</title>
-	<meta name="description" content={i18n.locale === 'fr'
-		? 'Gagnez des crédits Skilluv en résolvant des issues open source d\'entreprises.'
-		: 'Earn Skilluv credits by solving open source issues from companies.'} />
+	<title
+		>{i18n.locale === 'fr'
+			? 'Bounties Open Source | Skilluv'
+			: 'Open Source Bounties | Skilluv'}</title
+	>
+	<meta
+		name="description"
+		content={i18n.locale === 'fr'
+			? "Gagnez des crédits Skilluv en résolvant des issues open source d'entreprises."
+			: 'Earn Skilluv credits by solving open source issues from companies.'}
+	/>
 </svelte:head>
 
 <!-- Hero éditorial -->
@@ -69,7 +85,9 @@
 	></div>
 	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
 		<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Open Source</p>
-		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
+		<h1
+			class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight"
+		>
 			{#if i18n.locale === 'fr'}
 				Résous une issue.<br />
 				<span class="text-primary">Récolte des fragments.</span>
@@ -81,7 +99,7 @@
 		<p class="mt-8 max-w-2xl text-lg text-text-muted">
 			{i18n.locale === 'fr'
 				? 'Les entreprises postent des bounties sur leurs issues GitHub. Tu la revendiques, tu ouvres une PR, elle est mergée : les crédits séquestrés se transforment en fragments et bonus pour toi.'
-				: "Companies post bounties on their GitHub issues. You claim one, open a PR, it gets merged: escrowed credits transform into fragments and bonus for you."}
+				: 'Companies post bounties on their GitHub issues. You claim one, open a PR, it gets merged: escrowed credits transform into fragments and bonus for you.'}
 		</p>
 	</div>
 </section>
@@ -94,7 +112,9 @@
 				type="text"
 				bind:value={filterSkill}
 				onblur={load}
-				placeholder={i18n.locale === 'fr' ? 'Compétence (rust, python...)' : 'Skill (rust, python...)'}
+				placeholder={i18n.locale === 'fr'
+					? 'Compétence (rust, python...)'
+					: 'Skill (rust, python...)'}
 				class="h-8 rounded-full border border-border bg-surface-elevated px-4 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none"
 			/>
 			<input
@@ -122,13 +142,15 @@
 	{#if loading}
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{#each Array(6) as _}
-				<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-56 p-6"></div>
+				<div
+					class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-56 p-6"
+				></div>
 			{/each}
 		</div>
 	{:else if bounties.length === 0}
 		<EmptyState
 			variant="scroll"
-			title={i18n.locale === 'fr' ? 'Aucune bounty pour l\'instant.' : 'No bounty right now.'}
+			title={i18n.locale === 'fr' ? "Aucune bounty pour l'instant." : 'No bounty right now.'}
 			body={i18n.locale === 'fr'
 				? 'Retire des filtres, ou reviens dans quelques jours — les entreprises en publient chaque semaine.'
 				: 'Try removing filters or come back in a few days — companies post new ones weekly.'}
@@ -137,12 +159,20 @@
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{#each bounties as b}
 				{@const diff = difficultyBadge(b.difficulty)}
-				<article class="group rounded-2xl border border-border bg-surface-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
+				<article
+					class="group rounded-2xl border border-border bg-surface-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+				>
 					<div class="mb-3 flex items-start justify-between gap-2">
-						<div class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary">⬢</div>
+						<div
+							class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary"
+						>
+							⬢
+						</div>
 						<Badge variant={diff.variant} size="sm">{diff.label}</Badge>
 					</div>
-					<h2 class="mb-2 text-lg font-semibold leading-snug group-hover:text-primary transition-colors">
+					<h2
+						class="mb-2 text-lg font-semibold leading-snug group-hover:text-primary transition-colors"
+					>
 						<a href="/bounties/{b.id}" class="line-clamp-2">{b.title}</a>
 					</h2>
 					<p class="mb-4 line-clamp-2 text-sm text-text-muted">{b.description}</p>
@@ -164,7 +194,8 @@
 								</span>
 							</div>
 							<div class="text-xs text-text-muted">
-								+{b.fragments_bonus} {i18n.locale === 'fr' ? 'fragments' : 'fragments'}
+								+{b.fragments_bonus}
+								{i18n.locale === 'fr' ? 'fragments' : 'fragments'}
 							</div>
 						</div>
 						<div class="text-right">
@@ -190,12 +221,7 @@
 			<span class="text-accent">{i18n.locale === 'fr' ? 'ça marche.' : 'it works.'}</span>
 		</h2>
 		<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-			{#each [
-				{ n: '01', fr: { t: 'Trouve', d: 'Parcours les bounties ouvertes. Filtre par langage, tag, difficulté.' }, en: { t: 'Find', d: 'Browse open bounties. Filter by language, tag, difficulty.' } },
-				{ n: '02', fr: { t: 'Claim', d: 'Revendique-la pour la réserver. Tu as 7 jours pour ouvrir une PR.' }, en: { t: 'Claim', d: 'Claim it to reserve. You have 7 days to open a PR.' } },
-				{ n: '03', fr: { t: 'PR', d: 'Ouvre la PR sur le repo GitHub. Attache son URL sur Skilluv.' }, en: { t: 'PR', d: 'Open the PR on the GitHub repo. Attach its URL on Skilluv.' } },
-				{ n: '04', fr: { t: 'Merge = payout', d: 'Le webhook GitHub détecte le merge. Fragments crédités automatiquement.' }, en: { t: 'Merge = payout', d: 'GitHub webhook detects the merge. Fragments credited automatically.' } }
-			] as step}
+			{#each [{ n: '01', fr: { t: 'Trouve', d: 'Parcours les bounties ouvertes. Filtre par langage, tag, difficulté.' }, en: { t: 'Find', d: 'Browse open bounties. Filter by language, tag, difficulty.' } }, { n: '02', fr: { t: 'Claim', d: 'Revendique-la pour la réserver. Tu as 7 jours pour ouvrir une PR.' }, en: { t: 'Claim', d: 'Claim it to reserve. You have 7 days to open a PR.' } }, { n: '03', fr: { t: 'PR', d: 'Ouvre la PR sur le repo GitHub. Attache son URL sur Skilluv.' }, en: { t: 'PR', d: 'Open the PR on the GitHub repo. Attach its URL on Skilluv.' } }, { n: '04', fr: { t: 'Merge = payout', d: 'Le webhook GitHub détecte le merge. Fragments crédités automatiquement.' }, en: { t: 'Merge = payout', d: 'GitHub webhook detects the merge. Fragments credited automatically.' } }] as step}
 				{@const t = i18n.locale === 'fr' ? step.fr : step.en}
 				<div class="rounded-2xl border border-border bg-surface-elevated p-6">
 					<div class="mb-3 text-4xl font-black text-primary">{step.n}</div>

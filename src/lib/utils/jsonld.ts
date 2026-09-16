@@ -3,14 +3,20 @@ import type { UserPublic, Title } from '$lib/types';
 /**
  * Génère le JSON-LD Person pour un profil public Skilluv
  */
-export function profileJsonLd(user: UserPublic, stats: { total_fragments: number; challenges_completed: number }, profileUrl: string) {
+export function profileJsonLd(
+	user: UserPublic,
+	stats: { total_fragments: number; challenges_completed: number },
+	profileUrl: string
+) {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'Person',
 		name: user.display_name,
 		url: profileUrl,
 		image: user.avatar_url ?? undefined,
-		description: user.bio ?? `${titleLabel(user.title)} on Skilluv — ${stats.total_fragments} fragments, ${stats.challenges_completed} challenges completed`,
+		description:
+			user.bio ??
+			`${titleLabel(user.title)} on Skilluv — ${stats.total_fragments} fragments, ${stats.challenges_completed} challenges completed`,
 		jobTitle: titleLabel(user.title),
 		knowsAbout: domainLabel(user.skill_domain),
 		sameAs: [
@@ -36,7 +42,8 @@ export function websiteJsonLd() {
 		'@type': 'WebSite',
 		name: 'Skilluv',
 		url: 'https://skill-uv.com',
-		description: 'Plateforme gamifiée de démonstration de compétences tech — Code, Design, Game, Security',
+		description:
+			'Plateforme gamifiée de démonstration de compétences tech — Code, Design, Game, Security',
 		potentialAction: {
 			'@type': 'SearchAction',
 			target: 'https://skill-uv.com/talents/search?q={search_term_string}',
@@ -48,7 +55,10 @@ export function websiteJsonLd() {
 /**
  * Génère le JSON-LD pour un challenge
  */
-export function challengeJsonLd(challenge: { title: string; description: string; skill_domain: string }, challengeUrl: string) {
+export function challengeJsonLd(
+	challenge: { title: string; description: string; skill_domain: string },
+	challengeUrl: string
+) {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'LearningResource',

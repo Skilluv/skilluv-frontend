@@ -30,10 +30,12 @@ Alternatively, use GitHub's [Private Vulnerability Reporting](https://docs.githu
 ### Scope
 
 In scope:
+
 - The code hosted in this repository
 - Any deployed instance operated by the Skilluv team (staging, production)
 
 Out of scope:
+
 - Third-party services (Stripe, GitHub, Judge0 upstream, etc.) — please report to the respective vendors
 - Denial-of-service attacks against production infrastructure
 - Social engineering attacks against Skilluv team members

@@ -118,7 +118,9 @@ describe('SKI-301 — vouchings carry a linkable identity', () => {
 
 describe('SKI-297 — the vouching moderation queue', () => {
 	it('defaults to nothing and lets the backend pick `live`', async () => {
-		fetchMock.mockResolvedValue(ok({ vouchings: [], status: 'live', total: 0, limit: 50, offset: 0 }));
+		fetchMock.mockResolvedValue(
+			ok({ vouchings: [], status: 'live', total: 0, limit: 50, offset: 0 })
+		);
 		const { vouchingsApi } = await import('../../src/lib/api/vouchings');
 		await vouchingsApi.moderationQueue();
 		expect(fetchMock.mock.calls[0][0]).toBe('/api/moderation/vouchings');
@@ -192,9 +194,7 @@ describe('SKI-297 — the vouching moderation queue', () => {
 				penalty_until: '2026-11-25T00:00:00Z'
 			})
 		);
-		const { vouchingsApi, VOUCHING_BREAK_REASON_MIN } = await import(
-			'../../src/lib/api/vouchings'
-		);
+		const { vouchingsApi, VOUCHING_BREAK_REASON_MIN } = await import('../../src/lib/api/vouchings');
 		const reason = 'fabricated deliverables across three challenges';
 		expect(reason.length).toBeGreaterThanOrEqual(VOUCHING_BREAK_REASON_MIN);
 
@@ -218,9 +218,8 @@ describe('external signal moderation', () => {
 
 	it('a removal carries its motive in the query string', async () => {
 		fetchMock.mockResolvedValue(noContent());
-		const { externalSignalsApi, SIGNAL_REJECT_REASON_MIN } = await import(
-			'../../src/lib/api/external_signals'
-		);
+		const { externalSignalsApi, SIGNAL_REJECT_REASON_MIN } =
+			await import('../../src/lib/api/external_signals');
 		const reason = 'link points at somebody else account';
 		expect(reason.length).toBeGreaterThanOrEqual(SIGNAL_REJECT_REASON_MIN);
 

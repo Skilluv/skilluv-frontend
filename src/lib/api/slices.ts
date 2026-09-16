@@ -25,7 +25,10 @@ export function createSlicesApi(customFetch: typeof fetch) {
 		},
 		feedRecommended(limit = 20) {
 			return scoped.get<
-				ApiResponse<{ slices: Slice[]; meta?: { user_rank_ord?: number; median_difficulty?: number } }>
+				ApiResponse<{
+					slices: Slice[];
+					meta?: { user_rank_ord?: number; median_difficulty?: number };
+				}>
 			>('/me/feed/challenges', { limit });
 		}
 	};
@@ -197,10 +200,9 @@ export const slicesApi = {
 	 * would let somebody take individual credit for shared work by accident.
 	 */
 	claimAsTeam(sliceId: string, teamId: string) {
-		return api.post<ApiResponse<unknown>>(
-			`/slices/${encodeURIComponent(sliceId)}/claim-as-team`,
-			{ team_id: teamId }
-		);
+		return api.post<ApiResponse<unknown>>(`/slices/${encodeURIComponent(sliceId)}/claim-as-team`, {
+			team_id: teamId
+		});
 	},
 
 	/** Give it back, on the team's behalf. */
@@ -225,10 +227,7 @@ export const slicesApi = {
 
 	/** Publish a slice, as its steward. */
 	publish(sliceId: string) {
-		return api.post<ApiResponse<unknown>>(
-			`/slices/${encodeURIComponent(sliceId)}/publish`,
-			{}
-		);
+		return api.post<ApiResponse<unknown>>(`/slices/${encodeURIComponent(sliceId)}/publish`, {});
 	},
 
 	/**
@@ -289,7 +288,10 @@ export const slicesApi = {
 	// SKI-121 feed reco challenges
 	feedRecommended(limit = 20) {
 		return api.get<
-			ApiResponse<{ slices: Slice[]; meta?: { user_rank_ord?: number; median_difficulty?: number } }>
+			ApiResponse<{
+				slices: Slice[];
+				meta?: { user_rank_ord?: number; median_difficulty?: number };
+			}>
 		>('/me/feed/challenges', { limit });
 	},
 

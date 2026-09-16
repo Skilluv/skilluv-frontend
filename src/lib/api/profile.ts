@@ -1,10 +1,4 @@
-import type {
-	UserPublic,
-	SkillNode,
-	HeatmapEntry,
-	PrivacySettings,
-	ApiResponse
-} from '$lib/types';
+import type { UserPublic, SkillNode, HeatmapEntry, PrivacySettings, ApiResponse } from '$lib/types';
 import { createApiClient } from './client';
 
 const api = createApiClient();
@@ -36,7 +30,13 @@ export interface ProfileAvailability {
 
 interface SkillTreeResponse {
 	data: {
-		user: { id: string; display_name: string; title: string; golden_stars: number; total_fragments: number };
+		user: {
+			id: string;
+			display_name: string;
+			title: string;
+			golden_stars: number;
+			total_fragments: number;
+		};
 		tree: SkillNode[];
 	};
 }
@@ -44,7 +44,12 @@ interface SkillTreeResponse {
 interface HeatmapResponse {
 	data: {
 		heatmap: HeatmapEntry[];
-		summary: { days_active: number; total_challenges: number; period_start: string; period_end: string };
+		summary: {
+			days_active: number;
+			total_challenges: number;
+			period_start: string;
+			period_end: string;
+		};
 	};
 }
 
@@ -86,7 +91,15 @@ export const profileApi = {
 	},
 
 	/** Modifier son profil */
-	update(data: { bio?: string; github?: string; linkedin?: string; website?: string; twitter?: string; country?: string; city?: string }) {
+	update(data: {
+		bio?: string;
+		github?: string;
+		linkedin?: string;
+		website?: string;
+		twitter?: string;
+		country?: string;
+		city?: string;
+	}) {
 		return api.put<ApiResponse<{ user: UserPublic }>>('/profile/me', data);
 	},
 
@@ -104,7 +117,10 @@ export const profileApi = {
 	uploadAvatar(file: File) {
 		const formData = new FormData();
 		formData.append('avatar', file);
-		return api.upload<ApiResponse<{ avatar_url: string; message: string }>>('/profile/me/avatar', formData);
+		return api.upload<ApiResponse<{ avatar_url: string; message: string }>>(
+			'/profile/me/avatar',
+			formData
+		);
 	},
 
 	/** Supprimer avatar */

@@ -36,7 +36,10 @@
 			const r = await aiApi.pollJob<CodeReviewResult>(jobId, 45, 2000);
 			if (!r) {
 				phase = 'error';
-				errorMsg = i18n.locale === 'fr' ? 'Timeout : le review prend plus de temps que prévu.' : 'Timeout: the review is taking longer than expected.';
+				errorMsg =
+					i18n.locale === 'fr'
+						? 'Timeout : le review prend plus de temps que prévu.'
+						: 'Timeout: the review is taking longer than expected.';
 				return;
 			}
 			result = r;
@@ -49,21 +52,31 @@
 	}
 
 	function severityVariant(sev: string): 'default' | 'success' | 'warning' | 'error' | 'accent' {
-		return sev === 'critical' ? 'error'
-			: sev === 'high' ? 'error'
-			: sev === 'medium' ? 'warning'
-			: sev === 'low' ? 'accent'
-			: 'default';
+		return sev === 'critical'
+			? 'error'
+			: sev === 'high'
+				? 'error'
+				: sev === 'medium'
+					? 'warning'
+					: sev === 'low'
+						? 'accent'
+						: 'default';
 	}
 
 	function categoryIcon(cat: string): Component {
 		switch (cat) {
-			case 'bug': return Bug;
-			case 'style': return Sparkles;
-			case 'perf': return Zap;
-			case 'security': return Shield;
-			case 'pedagogy': return GraduationCap;
-			default: return Info;
+			case 'bug':
+				return Bug;
+			case 'style':
+				return Sparkles;
+			case 'perf':
+				return Zap;
+			case 'security':
+				return Shield;
+			case 'pedagogy':
+				return GraduationCap;
+			default:
+				return Info;
 		}
 	}
 
@@ -77,9 +90,13 @@
 
 <section class="rounded-2xl border border-border bg-surface-elevated overflow-hidden">
 	<!-- Header -->
-	<div class="flex items-center justify-between gap-4 border-b border-border bg-surface-elevated/60 p-5">
+	<div
+		class="flex items-center justify-between gap-4 border-b border-border bg-surface-elevated/60 p-5"
+	>
 		<div class="flex items-center gap-3">
-			<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary"><Sparkles size={18} strokeWidth={2} /></div>
+			<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+				<Sparkles size={18} strokeWidth={2} />
+			</div>
 			<div>
 				<p class="text-xs font-bold uppercase tracking-widest text-accent">Skilluv AI</p>
 				<h3 class="text-base font-semibold">
@@ -102,14 +119,18 @@
 		{#if phase === 'idle'}
 			<p class="text-sm text-text-muted">
 				{i18n.locale === 'fr'
-					? 'Claude Opus 4.7 analyse ta soumission et produit un review structuré : bugs, style, perfs, sécurité, ressources d\'apprentissage.'
+					? "Claude Opus 4.7 analyse ta soumission et produit un review structuré : bugs, style, perfs, sécurité, ressources d'apprentissage."
 					: 'Claude Opus 4.7 analyzes your submission and produces a structured review: bugs, style, perf, security, learning resources.'}
 			</p>
 		{:else if phase === 'running'}
 			<div class="flex flex-col items-center gap-3 py-6">
-				<div class="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary"></div>
+				<div
+					class="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary"
+				></div>
 				<p class="text-sm text-text-muted">
-					{i18n.locale === 'fr' ? "L'IA analyse ta soumission..." : 'AI is analyzing your submission...'}
+					{i18n.locale === 'fr'
+						? "L'IA analyse ta soumission..."
+						: 'AI is analyzing your submission...'}
 				</p>
 				<p class="text-xs text-text-muted">
 					{i18n.locale === 'fr' ? '~30-60 secondes' : '~30-60 seconds'}
@@ -126,9 +147,7 @@
 					<div class="text-6xl font-black tracking-tight {scoreColor(result.overall_score)}">
 						{result.overall_score}
 					</div>
-					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">
-						/ 100
-					</p>
+					<p class="text-xs font-bold uppercase tracking-wider text-text-muted">/ 100</p>
 				</div>
 				<div class="flex-1">
 					<p class="mb-1 text-xs font-bold uppercase tracking-wider text-accent">
@@ -138,7 +157,8 @@
 					{#if result.fragments_bonus > 0}
 						<p class="mt-2">
 							<Badge variant="accent" size="md">
-								+{result.fragments_bonus} {i18n.locale === 'fr' ? 'fragments bonus' : 'bonus fragments'}
+								+{result.fragments_bonus}
+								{i18n.locale === 'fr' ? 'fragments bonus' : 'bonus fragments'}
 							</Badge>
 						</p>
 					{/if}
@@ -149,7 +169,8 @@
 			{#if result.strengths.length}
 				<div class="mb-6">
 					<p class="mb-2 text-xs font-bold uppercase tracking-wider text-success">
-						<Check size={12} strokeWidth={2.5} class="inline align-middle" /> {i18n.locale === 'fr' ? 'Points forts' : 'Strengths'}
+						<Check size={12} strokeWidth={2.5} class="inline align-middle" />
+						{i18n.locale === 'fr' ? 'Points forts' : 'Strengths'}
 					</p>
 					<ul class="space-y-1 text-sm">
 						{#each result.strengths as s}
@@ -172,7 +193,9 @@
 						{#each result.findings as f (f.title)}
 							{@const CatIcon = categoryIcon(f.category)}
 							<details class="group rounded-xl border border-border bg-surface-overlay">
-								<summary class="flex cursor-pointer items-center gap-3 p-3 marker:hidden [&::-webkit-details-marker]:hidden">
+								<summary
+									class="flex cursor-pointer items-center gap-3 p-3 marker:hidden [&::-webkit-details-marker]:hidden"
+								>
 									<CatIcon size={16} strokeWidth={2} class="text-text-muted" />
 									<Badge variant={severityVariant(f.severity)} size="sm">{f.severity}</Badge>
 									<Badge variant="default" size="sm">{f.category}</Badge>
@@ -180,7 +203,9 @@
 									{#if f.line}
 										<span class="font-mono text-xs text-text-muted">L{f.line}</span>
 									{/if}
-									<span class="text-accent transition-transform group-open:rotate-45 text-lg">+</span>
+									<span class="text-accent transition-transform group-open:rotate-45 text-lg"
+										>+</span
+									>
 								</summary>
 								<div class="border-t border-border px-3 py-3">
 									<p class="text-sm leading-relaxed">{f.description}</p>
@@ -203,7 +228,8 @@
 			{#if result.learning_resources.length}
 				<div>
 					<p class="mb-2 text-xs font-bold uppercase tracking-wider text-primary">
-						<BookOpen size={12} strokeWidth={2.5} class="inline align-middle" /> {i18n.locale === 'fr' ? 'Pour aller plus loin' : 'Go further'}
+						<BookOpen size={12} strokeWidth={2.5} class="inline align-middle" />
+						{i18n.locale === 'fr' ? 'Pour aller plus loin' : 'Go further'}
 					</p>
 					<ul class="space-y-1 text-sm">
 						{#each result.learning_resources as r}

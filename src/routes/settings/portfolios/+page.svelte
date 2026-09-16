@@ -114,7 +114,10 @@
 	}
 
 	function label(platform: PortfolioPlatform | undefined, which: 'items' | 'reach'): string {
-		if (!platform) return which === 'items' ? i18n.t('portfolioSettings.itemsLabel') : i18n.t('portfolioSettings.reachLabel');
+		if (!platform)
+			return which === 'items'
+				? i18n.t('portfolioSettings.itemsLabel')
+				: i18n.t('portfolioSettings.reachLabel');
 		return (
 			countLabel(platform, which, (k, p) => i18n.t(k, p)) ??
 			(which === 'items'
@@ -293,7 +296,11 @@
 	{/if}
 </div>
 
-<Modal open={formOpen} onclose={() => (formOpen = false)} title={i18n.t('portfolioSettings.formTitle')}>
+<Modal
+	open={formOpen}
+	onclose={() => (formOpen = false)}
+	title={i18n.t('portfolioSettings.formTitle')}
+>
 	<div class="space-y-4">
 		{#if visiblePlatforms.length === 0}
 			<p class="text-sm text-text-muted">{i18n.t('portfolioSettings.noPlatforms')}</p>
@@ -340,7 +347,13 @@
 		<Button variant="ghost" size="sm" onclick={() => (formOpen = false)}>
 			{i18n.t('portfolioSettings.cancelCta')}
 		</Button>
-		<Button size="sm" loading={saving} disabled={!canSave} onclick={save} data-testid="portfolio-save">
+		<Button
+			size="sm"
+			loading={saving}
+			disabled={!canSave}
+			onclick={save}
+			data-testid="portfolio-save"
+		>
 			{i18n.t('portfolioSettings.saveCta')}
 		</Button>
 	{/snippet}

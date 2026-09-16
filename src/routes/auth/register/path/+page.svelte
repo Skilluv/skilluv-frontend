@@ -485,7 +485,6 @@
 		</aside>
 	{/if}
 
-
 	{#if loading}
 		<div class="paths__skeleton" aria-hidden="true">
 			<Skeleton class="h-96 w-64" rounded="xl" />
@@ -653,7 +652,10 @@
 	.paths__title {
 		margin: 0.75rem 0 0;
 		font-family: 'Fraunces Variable', Georgia, serif;
-		font-variation-settings: 'opsz' 96, 'SOFT' 40, 'WONK' 1;
+		font-variation-settings:
+			'opsz' 96,
+			'SOFT' 40,
+			'WONK' 1;
 		font-weight: 700;
 		font-size: clamp(2rem, 5vw, 3.25rem);
 		line-height: 1.02;

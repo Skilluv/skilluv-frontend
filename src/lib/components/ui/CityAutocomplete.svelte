@@ -127,18 +127,24 @@
 		placeholder={country
 			? (placeholder ?? (i18n.locale === 'fr' ? 'Ex. Cotonou' : 'e.g. Cotonou'))
 			: i18n.locale === 'fr'
-				? 'Choisir un pays d\'abord'
+				? "Choisir un pays d'abord"
 				: 'Pick a country first'}
 		class="h-11 w-full rounded-xl border bg-surface-elevated px-4 text-sm text-text-primary placeholder:text-text-muted transition-colors disabled:cursor-not-allowed disabled:opacity-50
-			{error ? 'border-error focus:border-error focus:ring-1 focus:ring-error' : 'border-border focus:border-primary focus:ring-1 focus:ring-primary'}"
+			{error
+			? 'border-error focus:border-error focus:ring-1 focus:ring-error'
+			: 'border-border focus:border-primary focus:ring-1 focus:ring-primary'}"
 		aria-autocomplete="list"
 	/>
 
 	{#if open && country}
-		<div class="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-border bg-surface-elevated shadow-lg">
+		<div
+			class="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-border bg-surface-elevated shadow-lg"
+		>
 			<ul class="max-h-64 overflow-y-auto py-1" role="listbox">
 				{#if loading && suggestions.length === 0}
-					<li class="px-3 py-2 text-sm text-text-muted">{i18n.locale === 'fr' ? 'Recherche…' : 'Searching…'}</li>
+					<li class="px-3 py-2 text-sm text-text-muted">
+						{i18n.locale === 'fr' ? 'Recherche…' : 'Searching…'}
+					</li>
 				{:else if suggestions.length === 0}
 					<li class="px-3 py-2 text-sm text-text-muted">
 						{i18n.locale === 'fr' ? 'Aucune ville trouvée' : 'No city found'}
@@ -151,7 +157,9 @@
 								onmouseenter={() => (highlight = i)}
 								onclick={() => pick(s)}
 								class="flex w-full items-center justify-between px-3 py-2 text-left text-sm transition-colors
-									{i === highlight ? 'bg-surface-overlay text-text-primary' : 'text-text-muted hover:text-text-primary'}"
+									{i === highlight
+									? 'bg-surface-overlay text-text-primary'
+									: 'text-text-muted hover:text-text-primary'}"
 								role="option"
 								aria-selected={value === s.name}
 							>

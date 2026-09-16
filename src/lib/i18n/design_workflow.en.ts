@@ -4,8 +4,7 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 	designWorkshop: {
 		trailTitle: 'Critique trail',
 		trailEmpty: 'No round yet. The first version starts the trail.',
-		trailPublicNote:
-			'Public on purpose: how a piece got there says more than the piece.',
+		trailPublicNote: 'Public on purpose: how a piece got there says more than the piece.',
 		roundLabel: 'Round {n}',
 		decisions: {
 			approve: 'Approved',
@@ -167,7 +166,8 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 		subtitle: 'Challenges and contests, ranked together — they answer the same question.',
 		empty: 'Nothing to suggest right now.',
 		emptyHint: 'Finish your onboarding and a few briefs, and this fills up.',
-		cachedNote: 'Held for an hour on purpose: a list that changed every reload would stop reading as advice.',
+		cachedNote:
+			'Held for an hour on purpose: a list that changed every reload would stop reading as advice.',
 		refresh: 'Refresh',
 		whyTitle: 'Why this one',
 		scoreLabel: 'Score',
@@ -185,8 +185,7 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 		title: 'Mission workspace',
 		subtitle: 'The agreement, the rounds, the ratings and the money, in one place.',
 		ndaTitle: 'Agreement',
-		ndaUnreviewed:
-			'This template has not been through a lawyer. Read it as what it is.',
+		ndaUnreviewed: 'This template has not been through a lawyer. Read it as what it is.',
 		ndaSignedOn: 'Signed {date}',
 		ndaTypedName: 'Type your full name',
 		ndaTypedNameHint: 'This is your signature.',
@@ -210,7 +209,8 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 		acceptedToast: 'Accepted. The mission is delivered.',
 		requestChangesCta: 'Ask for changes',
 		requestChangesReason: 'What is wrong',
-		requestChangesHint: 'At least twenty characters: "not quite" costs a round and teaches nothing.',
+		requestChangesHint:
+			'At least twenty characters: "not quite" costs a round and teaches nothing.',
 		requestedToast: 'Changes requested.',
 		awaitingDecision: 'Waiting on a decision',
 		decisions: {
@@ -244,8 +244,7 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 	designPlagiarism: {
 		flagCta: 'Report a copy',
 		flagTitle: 'Report this entry',
-		flagIntro:
-			'The author is told, in full, and gets a deadline to answer before anybody decides.',
+		flagIntro: 'The author is told, in full, and gets a deadline to answer before anybody decides.',
 		flagReason: 'What was copied',
 		flagReasonHint: 'Be specific enough that somebody who has seen neither can check.',
 		flagEvidence: 'Link to the original',
@@ -341,7 +340,8 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 		nominateTitle: 'Put work forward',
 		nominateCategory: 'Category',
 		nominateSubject: 'What you are nominating',
-		nominateSubjectHint: 'The identifier of the person, project or deliverable the category asks for.',
+		nominateSubjectHint:
+			'The identifier of the person, project or deliverable the category asks for.',
 		nominateCitation: 'Why it deserves it',
 		nominateCitationHint: 'Required, and it is the whole nomination: voters cannot weigh a name.',
 		nominateCta: 'Nominate',
@@ -357,7 +357,8 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 		runningTitle: 'Running',
 		pastTitle: 'Other editions',
 		empty: 'Nothing grouped yet.',
-		emptyHint: 'An edition opens once the year it covers is over; a sprint runs on its own weekend.',
+		emptyHint:
+			'An edition opens once the year it covers is over; a sprint runs on its own weekend.',
 		openCta: 'Read it',
 		backCta: 'All editions',
 		everyDomain: 'Open to every domain',
@@ -377,7 +378,8 @@ export const designWorkflowEn: DesignWorkflowTranslations = {
 		wouldHelp:
 			'You have handed in a few pieces without one landing yet. That is a normal place to be, and it is the point at which a mentor helps most.',
 		empty: 'Nobody to suggest yet.',
-		emptyHint: 'Mentors are matched on family, tools and timezone. Fill those in and this fills up.',
+		emptyHint:
+			'Mentors are matched on family, tools and timezone. Fill those in and this fills up.',
 		whyTitle: 'Why this person',
 		craftScore: 'Craft {n}',
 		activeMentees: '{n} mentees',

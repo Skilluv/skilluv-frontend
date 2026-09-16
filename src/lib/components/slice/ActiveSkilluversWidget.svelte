@@ -28,7 +28,8 @@
 			count = res.data.count;
 			users = res.data.users;
 		} catch (err) {
-			error = err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastError');
+			error =
+				err instanceof SkilluError ? err.message : i18n.t('p26.validatorApplication.toastError');
 		} finally {
 			loading = false;
 		}
@@ -44,7 +45,9 @@
 </script>
 
 <div class="rounded-2xl border border-border bg-surface-elevated p-4">
-	<h3 class="text-sm font-semibold text-text-primary mb-3">{i18n.t('p26.slice.widgets.activeTitle')}</h3>
+	<h3 class="text-sm font-semibold text-text-primary mb-3">
+		{i18n.t('p26.slice.widgets.activeTitle')}
+	</h3>
 	{#if loading}
 		<Skeleton class="h-10 w-full" rounded="lg" />
 	{:else if error}
@@ -67,14 +70,23 @@
 					title={u.display_name}
 				>
 					{#if u.avatar_url}
-						<img src={u.avatar_url} alt={u.display_name} width="36" height="36" loading="lazy" class="h-full w-full object-cover" />
+						<img
+							src={u.avatar_url}
+							alt={u.display_name}
+							width="36"
+							height="36"
+							loading="lazy"
+							class="h-full w-full object-cover"
+						/>
 					{:else}
 						{initials(u.display_name || u.username)}
 					{/if}
 				</a>
 			{/each}
 			{#if count > 5}
-				<span class="relative inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-surface-elevated bg-surface-overlay text-xs font-semibold text-text-muted">
+				<span
+					class="relative inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-surface-elevated bg-surface-overlay text-xs font-semibold text-text-muted"
+				>
 					+{count - 5}
 				</span>
 			{/if}

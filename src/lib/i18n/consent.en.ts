@@ -23,11 +23,13 @@ export const consentEn = {
 		},
 		modal: {
 			title: 'My tracker preferences',
-			intro: 'Choose category by category. Essential trackers are required to run the site and cannot be disabled. The others are off by default.',
+			intro:
+				'Choose category by category. Essential trackers are required to run the site and cannot be disabled. The others are off by default.',
 			storedOn: 'Choice stored on {date} (version {version}). You can update it below.',
 			alwaysOn: 'Always on',
 			saveChoices: 'Save my choices',
-			revokeHint: 'You can withdraw or update your consent at any time via the "Manage my preferences" link in the footer.',
+			revokeHint:
+				'You can withdraw or update your consent at any time via the "Manage my preferences" link in the footer.',
 			essential: {
 				label: 'Essential trackers',
 				hint: 'Session, authentication, anti-fraud. Required to use Skilluv.'

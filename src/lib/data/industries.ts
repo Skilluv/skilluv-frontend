@@ -20,9 +20,17 @@ export const INDUSTRIES: IndustryOption[] = [
 	{ value: 'banking', fr: 'Banque & assurance', en: 'Banking & insurance' },
 	{ value: 'blockchain', fr: 'Blockchain & crypto', en: 'Blockchain & crypto' },
 	{ value: 'cybersecurity', fr: 'Cybersécurité', en: 'Cybersecurity' },
-	{ value: 'ai_ml', fr: 'Intelligence artificielle & Machine learning', en: 'Artificial intelligence & Machine learning' },
+	{
+		value: 'ai_ml',
+		fr: 'Intelligence artificielle & Machine learning',
+		en: 'Artificial intelligence & Machine learning'
+	},
 	{ value: 'data', fr: 'Data & analytics', en: 'Data & analytics' },
-	{ value: 'devtools', fr: 'Outils développeur & infrastructure', en: 'Developer tools & infrastructure' },
+	{
+		value: 'devtools',
+		fr: 'Outils développeur & infrastructure',
+		en: 'Developer tools & infrastructure'
+	},
 	{ value: 'cloud', fr: 'Cloud & hébergement', en: 'Cloud & hosting' },
 	{ value: 'telecom', fr: 'Télécommunications', en: 'Telecommunications' },
 	{ value: 'hardware', fr: 'Hardware & électronique', en: 'Hardware & electronics' },
@@ -33,7 +41,11 @@ export const INDUSTRIES: IndustryOption[] = [
 	{ value: 'music', fr: 'Musique & audio', en: 'Music & audio' },
 	{ value: 'advertising', fr: 'Publicité & marketing', en: 'Advertising & marketing' },
 	{ value: 'design_agency', fr: 'Design & agence créative', en: 'Design & creative agency' },
-	{ value: 'consulting', fr: 'Conseil & services professionnels', en: 'Consulting & professional services' },
+	{
+		value: 'consulting',
+		fr: 'Conseil & services professionnels',
+		en: 'Consulting & professional services'
+	},
 	{ value: 'staffing', fr: 'Recrutement & RH', en: 'Recruitment & HR' },
 	{ value: 'legal', fr: 'Juridique & legaltech', en: 'Legal & legaltech' },
 	{ value: 'accounting', fr: 'Comptabilité & audit', en: 'Accounting & audit' },

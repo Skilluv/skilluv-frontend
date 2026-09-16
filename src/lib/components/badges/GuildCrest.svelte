@@ -60,7 +60,10 @@
 	.crest__name {
 		font-family: var(--font-display);
 		font-weight: 700;
-		font-variation-settings: 'opsz' 24, 'SOFT' 30, 'WONK' 0.4;
+		font-variation-settings:
+			'opsz' 24,
+			'SOFT' 30,
+			'WONK' 0.4;
 		font-size: 0.9375rem;
 		letter-spacing: 0.02em;
 		line-height: 1.1;

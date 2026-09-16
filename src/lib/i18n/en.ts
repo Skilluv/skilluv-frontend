@@ -22,23 +22,65 @@ export const en: Translations = {
 			period: 'Period'
 		},
 		actions: {
-			save: 'Save', cancel: 'Cancel', delete: 'Delete', edit: 'Edit',
-			search: 'Search', retry: 'Retry', back: 'Back', next: 'Next',
-			previous: 'Previous', submit: 'Submit', confirm: 'Confirm', close: 'Close',
-			create: 'Create', loading: 'Loading...', sending: 'Sending...',
+			save: 'Save',
+			cancel: 'Cancel',
+			delete: 'Delete',
+			edit: 'Edit',
+			search: 'Search',
+			retry: 'Retry',
+			back: 'Back',
+			next: 'Next',
+			previous: 'Previous',
+			submit: 'Submit',
+			confirm: 'Confirm',
+			close: 'Close',
+			create: 'Create',
+			loading: 'Loading...',
+			sending: 'Sending...',
 			loadMore: 'Load more'
 		},
 		nav: {
-			home: 'Home', challenges: 'Challenges', leaderboards: 'Leaderboards',
-			profile: 'Profile', settings: 'Settings', notifications: 'Notifications',
-			login: 'Log in', register: 'Get started', logout: 'Log out', community: 'Community'
+			home: 'Home',
+			challenges: 'Challenges',
+			leaderboards: 'Leaderboards',
+			profile: 'Profile',
+			settings: 'Settings',
+			notifications: 'Notifications',
+			login: 'Log in',
+			register: 'Get started',
+			logout: 'Log out',
+			community: 'Community'
 		},
-		domains: { code: 'Code', design: 'Design', game: 'Game Dev', security: 'Cybersecurity', ai: 'Artificial intelligence', ops: 'Ops & Cloud', quality: 'Quality & testing', leadership: 'Leadership', audio: 'Audio', communication: 'Communication', education: 'Teaching', soft_skills: 'Communication & leadership' },
-		titles: { apprenti: 'Apprentice', ranger: 'Ranger', artisan: 'Artisan', maitre: 'Master', doyen: 'Elder', legende: 'Legend' },
+		domains: {
+			code: 'Code',
+			design: 'Design',
+			game: 'Game Dev',
+			security: 'Cybersecurity',
+			ai: 'Artificial intelligence',
+			ops: 'Ops & Cloud',
+			quality: 'Quality & testing',
+			leadership: 'Leadership',
+			audio: 'Audio',
+			communication: 'Communication',
+			education: 'Teaching',
+			soft_skills: 'Communication & leadership'
+		},
+		titles: {
+			apprenti: 'Apprentice',
+			ranger: 'Ranger',
+			artisan: 'Artisan',
+			maitre: 'Master',
+			doyen: 'Elder',
+			legende: 'Legend'
+		},
 		difficulty: { 1: 'Beginner', 2: 'Easy', 3: 'Intermediate', 4: 'Advanced', 5: 'Expert' },
 		tone: { serious: 'Serious', fun: 'Fun', educational: 'Educational' },
 		time: { minutes: '{n} min', hours: '{n}h', noLimit: 'No limit', ago: 'ago' },
-		fragments: 'fragments', streak: 'Streak', team: 'Team', votes: 'votes', page: 'Page'
+		fragments: 'fragments',
+		streak: 'Streak',
+		team: 'Team',
+		votes: 'votes',
+		page: 'Page'
 	},
 	launch: {
 		eyebrow: 'Opening',
@@ -62,7 +104,7 @@ export const en: Translations = {
 		note: 'First full season in June 2027.'
 	},
 	commonExtra: {
-		exampleLabel: 'Example',
+		exampleLabel: 'Example'
 	},
 	board: {
 		title: 'Others certify',
@@ -93,7 +135,8 @@ export const en: Translations = {
 		titleAccent: 'Pick yours.',
 		subtitle: 'Each one sits on software that runs, with its users and its requirements.',
 		emptyTitle: 'The catalogue opens with the beta.',
-		emptyBody: 'The first assignments land on 11 January 2027. Claim your seat now and you will hear the day they open.',
+		emptyBody:
+			'The first assignments land on 11 January 2027. Claim your seat now and you will hear the day they open.',
 		emptyCta: 'Claim my seat',
 		allCta: 'All assignments',
 		reward: '+{n} fragments',
@@ -102,7 +145,8 @@ export const en: Translations = {
 	ranks: {
 		title: 'Your rank,',
 		titleAccent: 'you make it.',
-		subtitle: 'Five tiers, from Apprentice to Elder. They are not unlocked: they are computed from what you actually shipped, and each one traces back to the piece that earned it.',
+		subtitle:
+			'Five tiers, from Apprentice to Elder. They are not unlocked: they are computed from what you actually shipped, and each one traces back to the piece that earned it.',
 		apprentiMeaning: 'First gestures, closely guided.',
 		rangerMeaning: 'You ship on your own, on scoped assignments.',
 		artisanMeaning: 'You own a piece end to end.',
@@ -113,27 +157,33 @@ export const en: Translations = {
 	otherLines: {
 		title: 'Seven lines.',
 		titleAccent: 'Talent pays for none of them.',
-		subtitle: 'Reaching a talent is bought online, above. The rest is scoped with you: we talk, we quote, we contract.',
+		subtitle:
+			'Reaching a talent is bought online, above. The rest is scoped with you: we talk, we quote, we contract.',
 		talentTitle: 'Talent',
-		talentBody: 'Search on proof, per-contact reach, shortlists we build for you, recruiting tournaments.',
+		talentBody:
+			'Search on proof, per-contact reach, shortlists we build for you, recruiting tournaments.',
 		talentWho: 'Company',
 		workTitle: 'Work',
-		workBody: 'Bounties on your issues, scoped subcontracting, dedicated studios, per-discipline assignment marketplaces.',
+		workBody:
+			'Bounties on your issues, scoped subcontracting, dedicated studios, per-discipline assignment marketplaces.',
 		workWho: 'Company',
 		brandTitle: 'Brand and events',
 		brandBody: 'Branded challenges, hackathons, season sponsoring, campaigns across the community.',
 		brandWho: 'Company',
 		dataTitle: 'Data',
-		dataBody: 'Talent Score API, licensing, sector reports, white-label. Under explicit talent consent.',
+		dataBody:
+			'Talent Score API, licensing, sector reports, white-label. Under explicit talent consent.',
 		dataWho: 'Company',
 		ecosystemTitle: 'Ecosystem',
 		ecosystemBody: 'Creator marketplace, reviewer certification, in-house academy for your teams.',
 		ecosystemWho: 'Company and talent',
 		consultTitle: 'Advisory',
-		consultBody: 'An hour with a high-ranked expert, architecture review by a senior pool, a skills audit of a team.',
+		consultBody:
+			'An hour with a high-ranked expert, architecture review by a senior pool, a skills audit of a team.',
 		consultWho: 'Company',
 		financeTitle: 'Finance',
-		financeBody: 'Advance on an assignment in progress, loans backed by the track record, insurance, a support fund.',
+		financeBody:
+			'Advance on an assignment in progress, loans backed by the track record, insurance, a support fund.',
 		financeWho: 'Talent',
 		cta: 'Talk to us'
 	},
@@ -141,15 +191,20 @@ export const en: Translations = {
 		title: 'How it works',
 		subtitle: 'Four beats, from the first gesture to the proof.',
 		step1Title: 'You pick a track',
-		step1Body: 'Backend development, interface design, web pentesting, sound design. Defined routes, each with the skills it demands.',
+		step1Body:
+			'Backend development, interface design, web pentesting, sound design. Defined routes, each with the skills it demands.',
 		step2Title: 'You get assignments',
-		step2Body: 'Graduated, from a first small gesture to full ownership. Each one sits on software that genuinely exists, with its users and its quality bar.',
+		step2Body:
+			'Graduated, from a first small gesture to full ownership. Each one sits on software that genuinely exists, with its users and its quality bar.',
 		step3Title: 'You ship, it gets examined, you go again',
-		step3Body: 'Every contribution goes before someone further along. They ask for rework and argue about your choices. The review exchanges are archived: they are part of the proof, as much as the outcome.',
+		step3Body:
+			'Every contribution goes before someone further along. They ask for rework and argue about your choices. The review exchanges are archived: they are part of the proof, as much as the outcome.',
 		step4Title: 'Your proof accumulates',
-		step4Body: 'Every validated deliverable feeds your public profile. Ranks are computed from what you actually made, and each one traces back to the piece that earned it.',
+		step4Body:
+			'Every validated deliverable feeds your public profile. Ranks are computed from what you actually made, and each one traces back to the piece that earned it.',
 		freeTitle: 'And you never pay.',
-		freeBody: 'Not for registration, not for assignments, not for reviews, not for credentials, not for visibility to companies.',
+		freeBody:
+			'Not for registration, not for assignments, not for reviews, not for credentials, not for visibility to companies.',
 		gradationLabel: 'A sequence, not a standalone exercise',
 		gradation1Scope: 'First gesture',
 		gradation1Body: 'Fix a misleading error message.',
@@ -172,57 +227,68 @@ export const en: Translations = {
 		code: {
 			label: 'Code',
 			desc: 'Backend, frontend, mobile, systems, embedded.',
-			about: 'Challenges to code: APIs, interfaces, mobile apps, tooling, systems. You hand in code that runs, and it gets graded.'
+			about:
+				'Challenges to code: APIs, interfaces, mobile apps, tooling, systems. You hand in code that runs, and it gets graded.'
 		},
 		design: {
 			label: 'Design',
 			desc: 'UI/UX, design systems, motion, illustration.',
-			about: 'Interfaces that hold up in use. From a brief to a screen somebody can open, criticise and improve.'
+			about:
+				'Interfaces that hold up in use. From a brief to a screen somebody can open, criticise and improve.'
 		},
 		security: {
 			label: 'Cybersecurity',
 			desc: 'Pentesting, red team, forensics, cryptography.',
-			about: 'Finding what breaks before somebody else does. Grounds built to be attacked, and a write-up of what you found.'
+			about:
+				'Finding what breaks before somebody else does. Grounds built to be attacked, and a write-up of what you found.'
 		},
 		game: {
 			label: 'Games',
 			desc: 'Programming, game design, art and animation.',
-			about: 'Play that works. A slice somebody else can pick up, and a playtest that teaches you as much as your own.'
+			about:
+				'Play that works. A slice somebody else can pick up, and a playtest that teaches you as much as your own.'
 		},
 		ai: {
 			label: 'Artificial intelligence',
 			desc: 'Data, machine learning, MLOps, agents and RAG.',
-			about: 'Models and pipelines that answer for themselves. You measure what your system does rather than describe what it should do.'
+			about:
+				'Models and pipelines that answer for themselves. You measure what your system does rather than describe what it should do.'
 		},
 		ops: {
 			label: 'Ops & Cloud',
 			desc: 'Cloud, CI/CD, containers, reliability.',
-			about: 'Keeping it running. Deployment, observability, cost, and the incident at three in the morning.'
+			about:
+				'Keeping it running. Deployment, observability, cost, and the incident at three in the morning.'
 		},
 		quality: {
 			label: 'Quality',
 			desc: 'Testing and automation, across all four grounds.',
-			about: 'Being able to trust a release. You design the tests, automate them, and say plainly what is still not covered.'
+			about:
+				'Being able to trust a release. You design the tests, automate them, and say plainly what is still not covered.'
 		},
 		leadership: {
 			label: 'Leadership',
 			desc: 'Product, tech lead, production, people, mentoring.',
-			about: 'Getting a team to ship. Scope, trade-offs, reviews, and the conversations nobody enjoys and everybody needs.'
+			about:
+				'Getting a team to ship. Scope, trade-offs, reviews, and the conversations nobody enjoys and everybody needs.'
 		},
 		audio: {
 			label: 'Audio',
 			desc: 'Composition, sound design, voice, music implementation.',
-			about: 'Sound that carries a scene. Composition, sound design, and the craft of putting both into a build.'
+			about:
+				'Sound that carries a scene. Composition, sound design, and the craft of putting both into a build.'
 		},
 		communication: {
 			label: 'Communication',
 			desc: 'Documentation, evangelism, content, translation.',
-			about: 'Making the work readable. Documentation, talks, articles and translation, judged on whether somebody understood.'
+			about:
+				'Making the work readable. Documentation, talks, articles and translation, judged on whether somebody understood.'
 		},
 		education: {
 			label: 'Teaching',
 			desc: 'Training, curriculum design, teaching how to code.',
-			about: 'Teaching somebody to do it without you. You build the path, the exercises and the feedback that goes with them.'
+			about:
+				'Teaching somebody to do it without you. You build the path, the exercises and the feedback that goes with them.'
 		}
 	},
 	newsletter: {
@@ -231,28 +297,35 @@ export const en: Translations = {
 			title: 'Confirming your subscription',
 			working: 'Confirming your address…',
 			doneTitle: 'Confirmed',
-			doneBody: 'Your address is on the list. The next Skilluv letter will reach your inbox, and every issue carries a one-click way out.',
+			doneBody:
+				'Your address is on the list. The next Skilluv letter will reach your inbox, and every issue carries a one-click way out.',
 			home: 'Back to the homepage',
 			spentTitle: 'This link has already been used',
-			spentBody: 'A confirmation link works once, and it expires after seven days. If you have already clicked it, your address is on the list and there is nothing to do. Otherwise, leave your address again at the foot of the homepage: a new link will go out, good for a week.',
+			spentBody:
+				'A confirmation link works once, and it expires after seven days. If you have already clicked it, your address is on the list and there is nothing to do. Otherwise, leave your address again at the foot of the homepage: a new link will go out, good for a week.',
 			retry: 'Give my address again',
 			failedTitle: 'We could not confirm it',
-			failedBody: 'Something broke on our side, not yours. Try again in a moment by reopening the link from the mail.'
+			failedBody:
+				'Something broke on our side, not yours. Try again in a moment by reopening the link from the mail.'
 		},
 		unsubPage: {
 			title: 'Unsubscribing',
 			working: 'Taking you off the list…',
 			doneTitle: 'Done',
-			doneBody: 'This address will not receive the Skilluv letter again. We are not asking why, and there is nothing else to do.',
+			doneBody:
+				'This address will not receive the Skilluv letter again. We are not asking why, and there is nothing else to do.',
 			rejoin: 'Join the list again',
 			unknownTitle: 'This link matches nothing',
-			unknownBody: 'It may already have been used, or it was cut short on the way by a mail client. If you are still receiving the letter, open the link in the latest issue.',
+			unknownBody:
+				'It may already have been used, or it was cut short on the way by a mail client. If you are still receiving the letter, open the link in the latest issue.',
 			failedTitle: 'We could not unsubscribe you',
-			failedBody: 'Something broke on our side. Try again in a moment, and if it persists, write to us and we will remove you by hand.',
+			failedBody:
+				'Something broke on our side. Try again in a moment, and if it persists, write to us and we will remove you by hand.',
 			contact: 'Write to us'
 		},
 		confirmAction: 'Confirm',
-		consent: 'You will receive the Skilluv letter at this address. A confirmation link goes out by mail first, and every issue carries a one-click way out.',
+		consent:
+			'You will receive the Skilluv letter at this address. A confirmation link goes out by mail first, and every issue carries a one-click way out.',
 		sent: 'If that address can receive mail, a confirmation link is on its way. Check your inbox.',
 		invalid: 'That does not look like an email address.',
 		throttled: 'Too many attempts for now. Try again in an hour.',
@@ -261,7 +334,8 @@ export const en: Translations = {
 	landing: {
 		title: 'Prove what you can do.',
 		titleAccent: 'For real.',
-		subtitle: 'An open source platform where you learn by making. Everyone walks away with proof of what they shipped.',
+		subtitle:
+			'An open source platform where you learn by making. Everyone walks away with proof of what they shipped.',
 		cta: 'Get started for free',
 		ctaSecondary: 'Browse challenges',
 		statDomains: 'Domains',
@@ -336,11 +410,11 @@ export const en: Translations = {
 		},
 		forgot: {
 			title: 'Forgot password',
-			subtitle: 'Enter your email, we\'ll send you a reset link.',
+			subtitle: "Enter your email, we'll send you a reset link.",
 			sendLink: 'Send link',
 			sending: 'Sending...',
 			sentTitle: 'Email sent',
-			sentMessage: 'If an account exists with this email, you\'ll receive a reset link.',
+			sentMessage: "If an account exists with this email, you'll receive a reset link.",
 			backToLogin: 'Back to login'
 		},
 		reset: {
@@ -352,7 +426,7 @@ export const en: Translations = {
 			changeBtn: 'Change password',
 			successTitle: 'Password changed',
 			successMessage: 'Redirecting to login...',
-			passwordMismatch: 'Passwords don\'t match.',
+			passwordMismatch: "Passwords don't match.",
 			invalidLink: 'Invalid link. Request a new reset email.'
 		},
 		verify: {
@@ -375,7 +449,8 @@ export const en: Translations = {
 			title: 'First challenge',
 			onboardingLabel: 'Onboarding challenge',
 			startBtn: 'Start the challenge',
-			startRebuilding: 'Starting the rite is being wired to the backend. The instructions above are already the right ones.',
+			startRebuilding:
+				'Starting the rite is being wired to the backend. The instructions above are already the right ones.',
 			starting: 'Starting...',
 			hint: '~10 minutes · Your profile will be created at the end',
 			minutesLabel: '{n} minutes',
@@ -391,7 +466,8 @@ export const en: Translations = {
 			difficulty: 'Difficulty',
 			mode: 'Mode',
 			startBtn: 'Start',
-			handInRebuilding: 'Handing work in is being rebuilt: this challenge can be read, not yet submitted.',
+			handInRebuilding:
+				'Handing work in is being rebuilt: this challenge can be read, not yet submitted.',
 			starting: 'Starting...',
 			noAi: 'AI not allowed'
 		},
@@ -432,46 +508,79 @@ export const en: Translations = {
 			creating: 'Creating...',
 			talentLink: 'Are you a talent?'
 		},
-		nav: { dashboard: 'Dashboard', talents: 'Talents', bookmarks: 'Bookmarks', lists: 'Lists', messages: 'Messages' },
+		nav: {
+			dashboard: 'Dashboard',
+			talents: 'Talents',
+			bookmarks: 'Bookmarks',
+			lists: 'Lists',
+			messages: 'Messages'
+		},
 		dashboard: {
-			title: 'Dashboard', subtitle: 'Overview of your recruitment activity.',
-			myActivity: 'My activity', platform: 'Skilluv Platform',
-			bookmarks: 'Bookmarks', lists: 'Lists', interests: 'Interest requests',
-			conversations: 'Conversations', pending: 'pending', accepted: 'accepted',
-			totalTalents: 'Registered talents', active30d: 'Active (30d)',
-			avgFragments: 'Average fragments', byDomain: 'By domain',
-			searchTalents: 'Search talents', viewBookmarks: 'View bookmarks'
+			title: 'Dashboard',
+			subtitle: 'Overview of your recruitment activity.',
+			myActivity: 'My activity',
+			platform: 'Skilluv Platform',
+			bookmarks: 'Bookmarks',
+			lists: 'Lists',
+			interests: 'Interest requests',
+			conversations: 'Conversations',
+			pending: 'pending',
+			accepted: 'accepted',
+			totalTalents: 'Registered talents',
+			active30d: 'Active (30d)',
+			avgFragments: 'Average fragments',
+			byDomain: 'By domain',
+			searchTalents: 'Search talents',
+			viewBookmarks: 'View bookmarks'
 		},
 		talents: {
-			title: 'Search talents', subtitle: 'Find verified skills, not resumes.',
-			searchPlaceholder: 'Search by name, skill...', searchBtn: 'Search',
-			allLevels: 'All levels', byFragments: 'By fragments', byRecent: 'Recent', byRelevance: 'Relevance',
+			title: 'Search talents',
+			subtitle: 'Find verified skills, not resumes.',
+			searchPlaceholder: 'Search by name, skill...',
+			searchBtn: 'Search',
+			allLevels: 'All levels',
+			byFragments: 'By fragments',
+			byRecent: 'Recent',
+			byRelevance: 'Relevance',
 			noResults: 'No talent found with these criteria.',
-			addBookmark: 'Add to bookmarks', removeBookmark: 'Remove from bookmarks'
+			addBookmark: 'Add to bookmarks',
+			removeBookmark: 'Remove from bookmarks'
 		},
 		bookmarks: {
-			title: 'Bookmarks', subtitle: 'Talents you\'ve saved.',
+			title: 'Bookmarks',
+			subtitle: "Talents you've saved.",
 			empty: 'No bookmarks. Search for talents to add some.',
-			emptyAction: 'Search talents', remove: 'Remove'
+			emptyAction: 'Search talents',
+			remove: 'Remove'
 		},
 		lists: {
-			title: 'Talent lists', subtitle: 'Organize your candidates by list.',
-			newList: '+ New list', cancelBtn: 'Cancel',
-			listName: 'List name', description: 'Description', createBtn: 'Create',
-			empty: 'No lists created.', talents: '{n} talent(s)',
+			title: 'Talent lists',
+			subtitle: 'Organize your candidates by list.',
+			newList: '+ New list',
+			cancelBtn: 'Cancel',
+			listName: 'List name',
+			description: 'Description',
+			createBtn: 'Create',
+			empty: 'No lists created.',
+			talents: '{n} talent(s)',
 			emptyList: 'This list is empty. Add talents from search.',
-			emptyListAction: 'Search talents', backToLists: '← Back to lists'
+			emptyListAction: 'Search talents',
+			backToLists: '← Back to lists'
 		},
 		messages: {
-			title: 'Messages', subtitle: 'Your conversations with talents.',
+			title: 'Messages',
+			subtitle: 'Your conversations with talents.',
 			empty: 'No conversations. Contact a talent to get started.',
 			emptyAction: 'Search talents',
-			closed: 'Conversation closed', inputPlaceholder: 'Write a message...', sendBtn: 'Send'
+			closed: 'Conversation closed',
+			inputPlaceholder: 'Write a message...',
+			sendBtn: 'Send'
 		},
 		types: {
 			legend: 'Pick the enterprise type',
 			stepTitle: 'What type of enterprise are you?',
-			stepSubtitle: 'Skilluv tailors your workspace, pipeline and payment options to your type. Editable later.',
+			stepSubtitle:
+				'Skilluv tailors your workspace, pipeline and payment options to your type. Editable later.',
 			stepSubmit: 'Save type',
 			stepSkip: 'Skip for now',
 			direct_hire: {
@@ -519,7 +628,8 @@ export const en: Translations = {
 		},
 		eor: {
 			title: 'EOR configuration',
-			subtitle: 'Employer of Record — sets the provider handling contract, payroll and tax withholding.',
+			subtitle:
+				'Employer of Record — sets the provider handling contract, payroll and tax withholding.',
 			providerLabel: 'EOR provider',
 			currencyLabel: 'Payment currency',
 			timezoneLabel: 'Required timezone',
@@ -536,7 +646,10 @@ export const en: Translations = {
 		}
 	},
 	notifications: {
-		title: 'Notifications', markAllRead: 'Mark all as read', unread: 'Unread', all: 'All',
+		title: 'Notifications',
+		markAllRead: 'Mark all as read',
+		unread: 'Unread',
+		all: 'All',
 		bell: 'Notifications',
 		bellUnread: 'Notifications, {n} unread',
 		seeAll: 'See all',
@@ -575,8 +688,7 @@ export const en: Translations = {
 			title: 'Notifications',
 			subtitle: 'Choose how Skilluv keeps you informed.',
 			channels: { inApp: 'In-app', push: 'Push', email: 'Email' },
-			channelsHint:
-				'In-app: the bell. Push: your phone buzzes. Email: your inbox.',
+			channelsHint: 'In-app: the bell. Push: your phone buzzes. Email: your inbox.',
 			fixed: 'Always sent',
 			fixedHint:
 				'Some notifications are about your money or your account. They go out regardless, and showing you a switch that does nothing would be a lie.',
@@ -620,27 +732,38 @@ export const en: Translations = {
 			streakReminder: 'Streak reminder',
 			streakReminderDesc: 'A nudge when your streak is about to break.',
 			marketing: 'Nudges',
-			marketingDesc: 'The emails that come back to you when you drift off: your bench is empty, it has been two weeks, join a guild. Off by default.',
+			marketingDesc:
+				'The emails that come back to you when you drift off: your bench is empty, it has been two weeks, join a guild. Off by default.',
 			transactional:
 				'Essential emails (verification, password, security, payment receipts) are always sent.',
 			saved: 'Preferences saved',
 			loadError: 'Could not load your email preferences.'
 		},
 		theme: {
-			title: 'Theme', forge: 'Forge', forgeDesc: 'Ochre + terracotta — the artisan\'s workshop',
-			vesperal: 'Vespéral', vesperalDesc: 'Deep blue + ember orange — lantern-lit night',
-			arena: 'Arena', arenaDesc: 'Heraldic red + gold — medieval tournament',
-			scriptorium: 'Scriptorium', scriptoriumDesc: 'Parchment + ink — the copyist monk',
-			sakura: 'Sakura', sakuraDesc: 'Plum + cherry blossom — cherry season',
-			lagune: 'Lagune', laguneDesc: 'Lagoon green + neutrals — the one theme built for daylight'
+			title: 'Theme',
+			forge: 'Forge',
+			forgeDesc: "Ochre + terracotta — the artisan's workshop",
+			vesperal: 'Vespéral',
+			vesperalDesc: 'Deep blue + ember orange — lantern-lit night',
+			arena: 'Arena',
+			arenaDesc: 'Heraldic red + gold — medieval tournament',
+			scriptorium: 'Scriptorium',
+			scriptoriumDesc: 'Parchment + ink — the copyist monk',
+			sakura: 'Sakura',
+			sakuraDesc: 'Plum + cherry blossom — cherry season',
+			lagune: 'Lagune',
+			laguneDesc: 'Lagoon green + neutrals — the one theme built for daylight'
 		},
 		language: { title: 'Language', fr: 'Français', en: 'English' },
 		profileSection: {
-			title: 'Profile', displayName: 'Display name',
-			bio: 'Bio', bioHint: 'Short description visible on your profile',
+			title: 'Profile',
+			displayName: 'Display name',
+			bio: 'Bio',
+			bioHint: 'Short description visible on your profile',
 			subtitle: 'What others see of you on Skilluv.',
 			domain: 'Primary domain',
-			country: 'Country', city: 'City',
+			country: 'Country',
+			city: 'City',
 			saved: 'Profile updated.'
 		},
 		availability: {
@@ -659,83 +782,145 @@ export const en: Translations = {
 			saved: 'Availability updated.'
 		},
 		password: {
-			title: 'Password', current: 'Current password',
-			new: 'New password', changeBtn: 'Change password'
+			title: 'Password',
+			current: 'Current password',
+			new: 'New password',
+			changeBtn: 'Change password'
 		},
 		privacy: {
-			title: 'Privacy', showHeatmap: 'Show heatmap',
-			showSkillTree: 'Show skill tree', showBadges: 'Show badges',
-			showStreak: 'Show streak', showEmail: 'Show email',
+			title: 'Privacy',
+			showHeatmap: 'Show heatmap',
+			showSkillTree: 'Show skill tree',
+			showBadges: 'Show badges',
+			showStreak: 'Show streak',
+			showEmail: 'Show email',
 			allowInterests: 'Allow enterprise interest requests'
 		},
 		security: {
-			title: 'Security', twoFa: '2FA Authentication (TOTP)',
-			twoFaDesc: 'Google Authenticator / Authy', enabled: 'Enabled', disabled: 'Disabled'
+			title: 'Security',
+			twoFa: '2FA Authentication (TOTP)',
+			twoFaDesc: 'Google Authenticator / Authy',
+			enabled: 'Enabled',
+			disabled: 'Disabled'
 		},
 		danger: {
 			title: 'Danger zone',
 			deleteWarning: 'Deletion is irreversible. All your data will be erased per GDPR.',
-			deleteBtn: 'Delete my account', deleteModalTitle: 'Delete account',
+			deleteBtn: 'Delete my account',
+			deleteModalTitle: 'Delete account',
 			deleteModalMessage: 'This action is irreversible. Enter your password to confirm.',
 			deleteConfirmBtn: 'Delete permanently'
 		}
 	},
 	admin: {
 		dashboard: {
-			title: 'Admin Dashboard', platform: 'Platform', moderation: 'Moderation',
-			users: 'Users', activeUsers: 'active (30d)', challenges: 'Challenges', drafts: 'drafts',
-			submissions: 'Submissions', today: 'today', wsConnections: 'active connections',
-			pendingReports: 'Pending reports', bans30d: 'Bans (30d)',
-			actionsToday: 'Admin actions (today)', totalReports: 'Total reports', resolved: 'resolved',
-			viewReports: 'View reports', manageChallenges: 'Manage challenges', reviewCommunity: 'Review community'
+			title: 'Admin Dashboard',
+			platform: 'Platform',
+			moderation: 'Moderation',
+			users: 'Users',
+			activeUsers: 'active (30d)',
+			challenges: 'Challenges',
+			drafts: 'drafts',
+			submissions: 'Submissions',
+			today: 'today',
+			wsConnections: 'active connections',
+			pendingReports: 'Pending reports',
+			bans30d: 'Bans (30d)',
+			actionsToday: 'Admin actions (today)',
+			totalReports: 'Total reports',
+			resolved: 'resolved',
+			viewReports: 'View reports',
+			manageChallenges: 'Manage challenges',
+			reviewCommunity: 'Review community'
 		},
 		reports: {
-			title: 'Reports', pending: 'Pending', resolvedLabel: 'Resolved', dismissed: 'Dismissed', allLabel: 'All',
-			resolveBtn: 'Resolve', dismissBtn: 'Dismiss', reportedBy: 'Reported by', noReports: 'No reports.'
+			title: 'Reports',
+			pending: 'Pending',
+			resolvedLabel: 'Resolved',
+			dismissed: 'Dismissed',
+			allLabel: 'All',
+			resolveBtn: 'Resolve',
+			dismissBtn: 'Dismiss',
+			reportedBy: 'Reported by',
+			noReports: 'No reports.'
 		},
 		users: {
-			title: 'Users', searchPlaceholder: 'Search...', searchBtn: 'Search',
-			banBtn: 'Ban', unbanBtn: 'Unban', banned: 'Banned', banReason: 'Ban reason:'
+			title: 'Users',
+			searchPlaceholder: 'Search...',
+			searchBtn: 'Search',
+			banBtn: 'Ban',
+			unbanBtn: 'Unban',
+			banned: 'Banned',
+			banReason: 'Ban reason:'
 		},
-		challenges: { title: 'Challenges', total: 'total challenges', publishBtn: 'Publish', archiveBtn: 'Archive' },
+		challenges: {
+			title: 'Challenges',
+			total: 'total challenges',
+			publishBtn: 'Publish',
+			archiveBtn: 'Archive'
+		},
 		community: {
-			title: 'Community review', subtitle: 'Challenges submitted by the community awaiting validation.',
-			approveBtn: 'Approve', rejectBtn: 'Reject', rejectFeedback: 'Feedback for creator:',
-			viewInstructions: 'View instructions', by: 'by', empty: 'No challenges awaiting review.'
+			title: 'Community review',
+			subtitle: 'Challenges submitted by the community awaiting validation.',
+			approveBtn: 'Approve',
+			rejectBtn: 'Reject',
+			rejectFeedback: 'Feedback for creator:',
+			viewInstructions: 'View instructions',
+			by: 'by',
+			empty: 'No challenges awaiting review.'
 		},
 		audit: {
-			title: 'Audit log', date: 'Date', admin: 'Admin', action: 'Action', target: 'Target',
-			details: 'Details', empty: 'No actions recorded.'
+			title: 'Audit log',
+			date: 'Date',
+			admin: 'Admin',
+			action: 'Action',
+			target: 'Target',
+			details: 'Details',
+			empty: 'No actions recorded.'
 		}
 	},
 	community: {
-		title: 'Community challenges', subtitle: 'Created by the community, voted by talents.',
-		myChallenges: 'My challenges', createBtn: 'Create',
+		title: 'Community challenges',
+		subtitle: 'Created by the community, voted by talents.',
+		myChallenges: 'My challenges',
+		createBtn: 'Create',
 		empty: 'No community challenges yet. Be the first!',
-		emptyFirst: 'You haven\'t created a challenge yet.',
+		emptyFirst: "You haven't created a challenge yet.",
 		create: {
 			title: 'Create a challenge',
-			subtitle: 'Propose a challenge to the community. It will be reviewed by the team before publication.',
-			challengeTitle: 'Title', description: 'Description', instructions: 'Instructions',
+			subtitle:
+				'Propose a challenge to the community. It will be reviewed by the team before publication.',
+			challengeTitle: 'Title',
+			description: 'Description',
+			instructions: 'Instructions',
 			instructionsPlaceholder: 'Detailed challenge instructions...',
-			domain: 'Domain', difficulty: 'Difficulty', language: 'Language', duration: 'Duration (minutes)',
-			durationPlaceholder: 'No limit', expectedOutput: 'Expected output',
+			domain: 'Domain',
+			difficulty: 'Difficulty',
+			language: 'Language',
+			duration: 'Duration (minutes)',
+			durationPlaceholder: 'No limit',
+			expectedOutput: 'Expected output',
 			expectedOutputPlaceholder: 'Optional — the output the code should produce',
 			submitForReview: 'Submit directly for review',
 			submitForReviewHint: 'otherwise saved as draft',
-			submitBtn: 'Submit for review', saveDraft: 'Save draft',
-			creating: 'Creating...', submitted: 'Challenge submitted for review!', draftSaved: 'Draft saved.'
+			submitBtn: 'Submit for review',
+			saveDraft: 'Save draft',
+			creating: 'Creating...',
+			submitted: 'Challenge submitted for review!',
+			draftSaved: 'Draft saved.'
 		},
 		mine: {
-			title: 'My challenges', empty: 'You haven\'t created a challenge yet.', createFirst: 'Create my first',
+			title: 'My challenges',
+			empty: "You haven't created a challenge yet.",
+			createFirst: 'Create my first',
 			status: { draft: 'Draft', review: 'In review', approved: 'Approved', rejected: 'Rejected' }
 		}
 	},
 	errors: {
 		notFound: 'Page not found',
-		notFoundMessage: 'This page doesn\'t exist or has been moved.',
+		notFoundMessage: "This page doesn't exist or has been moved.",
 		forbidden: 'Access denied',
-		forbiddenMessage: 'You don\'t have permission to access this page.',
+		forbiddenMessage: "You don't have permission to access this page.",
 		genericTitle: 'Something went wrong',
 		genericMessage: 'An unexpected error occurred.',
 		backHome: 'Back to home',
@@ -821,9 +1006,11 @@ export const en: Translations = {
 		inlineHint: 'You confirm on your phone. You never leave this page.',
 		pay: 'Send the request',
 		waiting: 'Request sent to your phone',
-		waitingHint: 'Approve it on your phone. You can close this window: the payment goes through either way.',
+		waitingHint:
+			'Approve it on your phone. You can close this window: the payment goes through either way.',
 		done: 'Payment confirmed.',
-		background: 'Still waiting on your operator. We keep checking on our side and will let you know. Do not pay a second time.',
+		background:
+			'Still waiting on your operator. We keep checking on our side and will let you know. Do not pay a second time.',
 		failed: 'The payment did not go through. Nothing was charged.',
 		noInline: 'No operator in your country supports paying without leaving the page.',
 		otherMethod: 'Other payment method',
@@ -831,7 +1018,8 @@ export const en: Translations = {
 	},
 	wallet: {
 		title: 'My wallet',
-		subtitle: 'Cash out to euros (Stripe) or CFA francs (Mobile Money). Hash-chained history for audit.',
+		subtitle:
+			'Cash out to euros (Stripe) or CFA francs (Mobile Money). Hash-chained history for audit.',
 		balanceLabel: 'Balance',
 		balanceFragments: '{n} fragments',
 		balanceEur: '≈ €{n}',
@@ -864,7 +1052,8 @@ export const en: Translations = {
 			amountAboveBalance: 'Amount exceeds your available balance.',
 			methodLabel: 'Payment method',
 			methodStripeLabel: 'Stripe Connect (EUR)',
-			methodStripeDesc: 'International bank transfer via your Stripe account. Verified KYC required.',
+			methodStripeDesc:
+				'International bank transfer via your Stripe account. Verified KYC required.',
 			methodMomoLabel: 'Mobile Money (XOF)',
 			methodMomoDesc: 'Orange Money / MTN / Wave — verified Mobile Money number required.',
 			stripe: {
@@ -911,11 +1100,13 @@ export const en: Translations = {
 			actionMuteAuthor: 'Mute author',
 			menuLabel: 'Moderation actions',
 			menuOpen: 'Open moderation menu',
-			confirmHideBody: 'The post disappears from public view. Reversible via "Restore". Reason required (>= 8 chars).',
+			confirmHideBody:
+				'The post disappears from public view. Reversible via "Restore". Reason required (>= 8 chars).',
 			confirmUnhideBody: 'The post becomes visible again.',
 			confirmLockBody: 'No new comments can be added while the thread is locked.',
 			confirmUnlockBody: 'The thread accepts comments again.',
-			confirmMuteBody: 'The author cannot post during the chosen duration. Reason required (>= 8 chars).',
+			confirmMuteBody:
+				'The author cannot post during the chosen duration. Reason required (>= 8 chars).',
 			muteDuration24: '24 hours',
 			muteDuration72: '3 days',
 			muteDuration168: '7 days'
@@ -955,7 +1146,8 @@ export const en: Translations = {
 			brokeWithoutPenalty: 'Vouching broken. Nothing was staked, so no rank changed.',
 			total: '{n} in this state',
 			loadMore: 'Load more',
-			noAccess: 'This page is reserved to community_moderator and plagiarism_reviewer capability holders.'
+			noAccess:
+				'This page is reserved to community_moderator and plagiarism_reviewer capability holders.'
 		},
 		externalSignals: {
 			title: 'External signals queue',
@@ -971,11 +1163,13 @@ export const en: Translations = {
 				'The declaration is destroyed for good. The reason is written to the audit log, which is the only trace that will remain.',
 			verifiedToast: 'Signal confirmed.',
 			rejectedToast: 'Signal removed.',
-			noAccess: 'This page is reserved to community_moderator and community_curator capability holders.'
+			noAccess:
+				'This page is reserved to community_moderator and community_curator capability holders.'
 		},
 		plagiarism: {
 			title: 'Plagiarism queue',
-			subtitle: 'Deliverables flagged by the backend. Decide if the submission stays valid or is revoked.',
+			subtitle:
+				'Deliverables flagged by the backend. Decide if the submission stays valid or is revoked.',
 			queueEmpty: 'No deliverable to review.',
 			scoreLabel: 'Plagiarism score',
 			flaggedOn: 'Flagged {date}',
@@ -1089,7 +1283,8 @@ export const en: Translations = {
 				'A link a reader can follow. Your models there are not imported — a model counts here when it arrives as work that was reviewed.',
 			challenge_preference:
 				'Both exist. An invitation to compete lands badly on somebody who came here to practise, and a queue of briefs reads as empty to somebody who came to compete.',
-			main_tool: 'A bonus in the matching, never a filter. A good mentor in a neighbouring tool beats a mediocre one in the same.',
+			main_tool:
+				'A bonus in the matching, never a filter. A good mentor in a neighbouring tool beats a mediocre one in the same.',
 			portfolio_url:
 				'Recorded as an external signal: visible on your profile, never counted towards your Skilluv proofs.',
 			main_tools:
@@ -1102,8 +1297,10 @@ export const en: Translations = {
 				'Somebody on a locked-down work laptop cannot run a vulnerable virtual machine, and being pointed at one wastes their week.',
 			security_tools:
 				'Whatever you actually work in, from Burp to a spreadsheet of controls. Read as a bonus in the matching, never as a filter.',
-			subject_domain: 'What you write or teach about, which is not the same as the craft you practise.',
-			dev_to_username: 'A link a reader can follow. An article counts here when it arrives as work that was reviewed.',
+			subject_domain:
+				'What you write or teach about, which is not the same as the craft you practise.',
+			dev_to_username:
+				'A link a reader can follow. An article counts here when it arrives as work that was reviewed.',
 			main_daws:
 				'The single most useful thing to know when pairing you with a mentor: a session where one of you cannot open the other’s project is an hour spent on file formats.',
 			quality_background:
@@ -1114,9 +1311,12 @@ export const en: Translations = {
 				'Whatever you actually work in, from Playwright to a screen reader. Read as a bonus in the matching, never as a filter.',
 			leadership_level:
 				'A different axis from the craft ladder. A principal engineer of fifteen years who has never written a roadmap answers “aspiring” here, honestly.',
-			leadership_context: 'Not the same question as your trade. You can want one and only have the other available.',
-			leadership_tools: 'From Linear to a shared document to a whiteboard. Read as a bonus, never as a filter.',
-			learner_level: 'A different question from your own level. Twenty years in the trade and teaching absolute beginners is a normal answer.'
+			leadership_context:
+				'Not the same question as your trade. You can want one and only have the other available.',
+			leadership_tools:
+				'From Linear to a shared document to a whiteboard. Read as a bonus, never as a filter.',
+			learner_level:
+				'A different question from your own level. Twenty years in the trade and teaching absolute beginners is a normal answer.'
 		},
 		options: {
 			level: {
@@ -1495,8 +1695,7 @@ export const en: Translations = {
 		waiting: '{n} waiting on an answer from you.',
 		nothingWaiting: 'Nothing is waiting on an answer.',
 		empty: 'Nobody is asking anything yet',
-		emptyWithPosting:
-			'Your posting is live. Companies see it when they search for what you do.',
+		emptyWithPosting: 'Your posting is live. Companies see it when they search for what you do.',
 		emptyNoPosting:
 			'Publish what you are looking for and companies can pitch to you instead of the other way round.',
 		pitchesTitle: 'Companies pitching to you',
@@ -1518,7 +1717,8 @@ export const en: Translations = {
 		slotConfirmedToast: 'Time confirmed.',
 		declinedToast: 'Declined.',
 		trialsTitle: 'Trial periods',
-		trialsHint: 'Approved hours are owed to you. Pending ones are a claim nobody has looked at yet.',
+		trialsHint:
+			'Approved hours are owed to you. Pending ones are a claim nobody has looked at yet.',
 		until: 'until {date}',
 		approvedHours: '{n} h approved',
 		pendingHours: '{n} h pending',
@@ -1732,7 +1932,8 @@ export const en: Translations = {
 		empty: 'Nothing open at the moment.',
 		emptyHint: 'Campaigns and ambassador programmes arrive in waves rather than steadily.',
 		campaignsTitle: 'Launch campaigns',
-		campaignsHint: 'Paid per piece, out of a pot that runs out. Check what is left before you write.',
+		campaignsHint:
+			'Paid per piece, out of a pot that runs out. Check what is left before you write.',
 		perPiece: '{amount} per piece',
 		pot: 'pot of {amount}',
 		piecesLeftApprox: 'roughly {n} pieces left in it',
@@ -1759,7 +1960,8 @@ export const en: Translations = {
 
 	work: {
 		title: 'Other ways to work',
-		subtitle: 'Standing teams, living labs, and work somebody proposed before anyone commissioned it.',
+		subtitle:
+			'Standing teams, living labs, and work somebody proposed before anyone commissioned it.',
 		empty: 'Nothing open at the moment.',
 		emptyHint: 'Studios form, labs open and proposals get published in waves rather than steadily.',
 		studiosTitle: 'Studios',
@@ -1824,7 +2026,8 @@ export const en: Translations = {
 		title: 'Operations',
 		subtitle: 'Service objectives you committed to, incidents you ran, and what they cost.',
 		empty: 'Nothing recorded yet.',
-		emptyHint: 'An objective belongs to a slice or a project — a target on its own promises nothing.',
+		emptyHint:
+			'An objective belongs to a slice or a project — a target on its own promises nothing.',
 		objectivesTitle: 'Service objectives',
 		objectivesHint: 'A promise made in advance and judged after its window closes.',
 		targetOver: '{target}% over {days} days',
@@ -1836,7 +2039,8 @@ export const en: Translations = {
 		observedOutside: 'observed from outside',
 		evidence: 'Evidence',
 		incidentsTitle: 'Incidents',
-		incidentsHint: 'What is worth reading is the postmortem and what was done after, not the outage.',
+		incidentsHint:
+			'What is worth reading is the postmortem and what was done after, not the outage.',
 		ongoing: 'Ongoing',
 		minutes: '{n} min',
 		timeToDetect: 'detected in {d}',
@@ -1964,7 +2168,8 @@ export const en: Translations = {
 		tabLooking: 'Wants help',
 		tabRecommended: 'For you',
 		hint: {
-			curated: 'Skilluv put its name behind these. It is not something a project can apply to itself.',
+			curated:
+				'Skilluv put its name behind these. It is not something a project can apply to itself.',
 			looking: 'These say so themselves — a flag their own owner set.',
 			recommended: 'Matched against your verified work, and each one says what earned the match.'
 		},
@@ -2346,7 +2551,8 @@ export const en: Translations = {
 	},
 	events: {
 		title: 'Skilluv events',
-		subtitle: 'Join a hackathon, a fest or a themed season. Every event you join earns a stamp in your collection.',
+		subtitle:
+			'Join a hackathon, a fest or a themed season. Every event you join earns a stamp in your collection.',
 		active: 'Live',
 		upcoming: 'Upcoming',
 		ended: 'Ended',
@@ -2369,9 +2575,11 @@ export const en: Translations = {
 		subtitle: 'Control what we collect, what we send, and export your data whenever.',
 		consents: {
 			title: 'Consents',
-			subtitle: 'Changeable anytime. Essentials (auth, security, billing) do not depend on these choices.',
+			subtitle:
+				'Changeable anytime. Essentials (auth, security, billing) do not depend on these choices.',
 			marketingLabel: 'Marketing trackers',
-			marketingHint: 'Advertising measurement and retargeting. It does not decide which emails you get: that lives in Email preferences.',
+			marketingHint:
+				'Advertising measurement and retargeting. It does not decide which emails you get: that lives in Email preferences.',
 			analyticsLabel: 'Product analytics',
 			analyticsHint: 'Anonymous stats to understand how you use Skilluv and improve it.',
 			saved: 'Consents saved.'
@@ -2392,10 +2600,12 @@ export const en: Translations = {
 		},
 		delete: {
 			title: 'Delete my account',
-			subtitle: 'The account enters soft-delete for 30 days. After, everything is permanently erased.',
+			subtitle:
+				'The account enters soft-delete for 30 days. After, everything is permanently erased.',
 			requestCta: 'Delete',
 			modalTitle: 'Confirm deletion',
-			modalBody: 'Your account will be deactivated immediately and permanently erased in 30 days. You can undo it during that window by logging back in.',
+			modalBody:
+				'Your account will be deactivated immediately and permanently erased in 30 days. You can undo it during that window by logging back in.',
 			reasonLabel: 'Reason (optional)',
 			cancelCta: 'Cancel',
 			confirmCta: 'Confirm deletion',
@@ -2411,7 +2621,8 @@ export const en: Translations = {
 	push: {
 		title: 'Browser notifications',
 		category: 'Push',
-		description: 'Get notified when a talent replies, a mentor accepts a session, your bounty is paid…',
+		description:
+			'Get notified when a talent replies, a mentor accepts a session, your bounty is paid…',
 		statusOn: 'On',
 		statusOff: 'Off',
 		statusBlocked: 'Blocked',
@@ -2437,9 +2648,11 @@ export const en: Translations = {
 		slice_validated: 'Your PR was validated. Attestation generated. Fragments credited.',
 		slice_rejected: 'Your PR was rejected by @{user}. Reason: {reason}',
 		slice_merged_upstream: 'Your PR was merged into {repo}. Bonus of {n} fragments.',
-		slice_pr_rejected_upstream: 'Your PR was closed upstream without merging. You can pick the slice up again or move on.',
+		slice_pr_rejected_upstream:
+			'Your PR was closed upstream without merging. You can pick the slice up again or move on.',
 		validator_application_status_changed: 'Your validator application ({domain}) was {status}',
-		validator_invitation_received: 'Skilluv invites you to become a {domain} validator. Reason: {notes}',
+		validator_invitation_received:
+			'Skilluv invites you to become a {domain} validator. Reason: {notes}',
 		slice_upstream_closed: 'The upstream issue {url} was closed. Your claim was released.',
 		maintainer_digest_confirmation_sent: 'Confirmation email sent',
 		maintainer_digest_subscribed: 'Your digest subscription is confirmed',
@@ -2553,7 +2766,8 @@ export const en: Translations = {
 		},
 		marketplace: {
 			title: 'Team marketplace',
-			subtitle: 'Join an open slot on a team challenge. Skilluv matches you against your orientations and proven skills.',
+			subtitle:
+				'Join an open slot on a team challenge. Skilluv matches you against your orientations and proven skills.',
 			filters: {
 				role: 'Role',
 				skill: 'Skill',
@@ -2593,7 +2807,8 @@ export const en: Translations = {
 			confirmCta: 'I join',
 			cancelCta: 'Cancel',
 			skillCheckLabel: 'Skill check',
-			warnLowLevel: 'Your level on this skill is below the required minimum. You can still join — the team decides.'
+			warnLowLevel:
+				'Your level on this skill is below the required minimum. You can still join — the team decides.'
 		},
 		leaveDialog: {
 			title: 'Leave this slot?',
@@ -2663,13 +2878,15 @@ export const en: Translations = {
 		},
 		softBlock: {
 			title: 'This section needs your orientations',
-			defaultReason: 'Skilluv tailors this page to the career orientations you pick. Takes 30 seconds.',
+			defaultReason:
+				'Skilluv tailors this page to the career orientations you pick. Takes 30 seconds.',
 			ctaPrimary: 'Pick now',
 			ctaLater: 'Later'
 		},
 		catalog: {
 			title: 'Your Skilluv path',
-			subtitle: 'Pick 1 to 3 orientations. Skilluv will build your playlist, team slots and badges around them.',
+			subtitle:
+				'Pick 1 to 3 orientations. Skilluv will build your playlist, team slots and badges around them.',
 			loadError: 'Could not load the orientation catalog. Try again later.',
 			savedTitle: 'Orientations saved.',
 			savedSubtitle: 'Your personalized playlist is ready on your dashboard.',
@@ -2688,29 +2905,73 @@ export const en: Translations = {
 	},
 	capabilities: {
 		sectionOwnTitle: 'How I contribute',
-		sectionOwnSubtitle: 'Your active roles on Skilluv. You can mentor, curate, moderate depending on what you\'ve earned.',
+		sectionOwnSubtitle:
+			"Your active roles on Skilluv. You can mentor, curate, moderate depending on what you've earned.",
 		sectionPublicTitle: 'How this person contributes',
 		sectionPublicSubtitle: 'Active roles on Skilluv, earned through proofs.',
-		empty: 'No active roles yet. Keep contributing, they\'ll come.',
+		empty: "No active roles yet. Keep contributing, they'll come.",
 		expiresOn: 'Expires on {date}',
 		grantedOn: 'Granted on {date}',
 		items: {
-			challenger: { label: 'Challenger', description: 'Solves published challenges and earns fragments.' },
+			challenger: {
+				label: 'Challenger',
+				description: 'Solves published challenges and earns fragments.'
+			},
 			mentor: { label: 'Mentor', description: 'Runs 1-on-1 sessions with talents.' },
-			project_steward: { label: 'Project steward', description: 'Coordinates a community project, arbitrates slots.' },
-			pr_reviewer: { label: 'PR reviewer', description: 'Validates pull requests on open-source bounties.' },
-			bounty_funder: { label: 'Bounty funder', description: 'Sponsors GitHub issues for the community.' },
-			issue_proposer: { label: 'Issue proposer', description: 'Suggests issues to become bounties.' },
-			jury_tournament: { label: 'Tournament jury', description: 'Grades submissions during a tournament.' },
+			project_steward: {
+				label: 'Project steward',
+				description: 'Coordinates a community project, arbitrates slots.'
+			},
+			pr_reviewer: {
+				label: 'PR reviewer',
+				description: 'Validates pull requests on open-source bounties.'
+			},
+			bounty_funder: {
+				label: 'Bounty funder',
+				description: 'Sponsors GitHub issues for the community.'
+			},
+			issue_proposer: {
+				label: 'Issue proposer',
+				description: 'Suggests issues to become bounties.'
+			},
+			jury_tournament: {
+				label: 'Tournament jury',
+				description: 'Grades submissions during a tournament.'
+			},
 			admin: { label: 'Administrator', description: 'Full platform access.' },
-			enterprise_recruiter: { label: 'Enterprise recruiter', description: 'Talent sourcing for an enterprise account.' },
-			community_moderator: { label: 'Community moderator', description: 'Moderates cross-cutting community spaces.' },
-			forum_moderator: { label: 'Forum moderator', description: 'Removes spam and abuse on the forum.' },
-			plagiarism_reviewer: { label: 'Plagiarism reviewer', description: 'Decides validity of flagged deliverables.' },
-			kyc_reviewer: { label: 'KYC reviewer', description: 'Validates identity documents for payouts.' },
-			community_curator: { label: 'Community curator', description: 'Approves or rejects community challenges under review.' },
-			domain_curator: { label: 'Domain curator', description: 'Settles the entry rites of one discipline.' },
-			rite_reviewer: { label: '{domain} rite reviewer', description: 'Reads the published entry rites in {domain}. Earned by passing your own, never on your own submission.' }
+			enterprise_recruiter: {
+				label: 'Enterprise recruiter',
+				description: 'Talent sourcing for an enterprise account.'
+			},
+			community_moderator: {
+				label: 'Community moderator',
+				description: 'Moderates cross-cutting community spaces.'
+			},
+			forum_moderator: {
+				label: 'Forum moderator',
+				description: 'Removes spam and abuse on the forum.'
+			},
+			plagiarism_reviewer: {
+				label: 'Plagiarism reviewer',
+				description: 'Decides validity of flagged deliverables.'
+			},
+			kyc_reviewer: {
+				label: 'KYC reviewer',
+				description: 'Validates identity documents for payouts.'
+			},
+			community_curator: {
+				label: 'Community curator',
+				description: 'Approves or rejects community challenges under review.'
+			},
+			domain_curator: {
+				label: 'Domain curator',
+				description: 'Settles the entry rites of one discipline.'
+			},
+			rite_reviewer: {
+				label: '{domain} rite reviewer',
+				description:
+					'Reads the published entry rites in {domain}. Earned by passing your own, never on your own submission.'
+			}
 		},
 		nav: {
 			forumModeration: 'Forum moderation',
@@ -2753,22 +3014,27 @@ export const en: Translations = {
 		},
 		forMaintainers: {
 			seoTitle: 'Skilluv — Weekly digest for OSS maintainers',
-			seoDesc: 'Get a weekly recap of Skilluv contributions to your open-source repos. Zero spam, one-click unsubscribe.',
+			seoDesc:
+				'Get a weekly recap of Skilluv contributions to your open-source repos. Zero spam, one-click unsubscribe.',
 			ogDesc: 'One weekly email, Skilluv contributions across your repos. Zero spam.',
 			title: 'Your Skilluv contributors, recapped once a week',
 			subtitle: 'A weekly digest, zero spam, one-click unsubscribe.',
 			whatSkilluvTitle: 'What Skilluv does',
-			whatSkilluvBullet1: 'Our community (Afro-francophone, self-taught, career switchers) contributes to external OSS projects.',
+			whatSkilluvBullet1:
+				'Our community (Afro-francophone, self-taught, career switchers) contributes to external OSS projects.',
 			whatSkilluvBullet2Prefix: 'On the issues you label with',
 			whatSkilluvBullet2Suffix: '(or public ones like',
-			whatSkilluvBullet3: 'We validate their work before merge — Skilluv validation is a quality pre-filter.',
+			whatSkilluvBullet3:
+				'We validate their work before merge — Skilluv validation is a quality pre-filter.',
 			whatReceiveTitle: 'What you receive',
-			whatReceiveBullet1: 'Weekly digest of Skilluv PRs on your repos (claims, PRs submitted, PRs validated).',
+			whatReceiveBullet1:
+				'Weekly digest of Skilluv PRs on your repos (claims, PRs submitted, PRs validated).',
 			whatReceiveBullet2: 'Zero spam: one email per week, with one-click unsubscribe.',
 			whatReceiveBullet3: 'Privacy: your email is never shared.',
 			badgeTitle: 'Our Skilluv badge',
 			badgeNew: 'new',
-			badgeDesc: 'Add this badge to your README to show your project welcomes Skilluv contributions.',
+			badgeDesc:
+				'Add this badge to your README to show your project welcomes Skilluv contributions.',
 			badgeAlt: 'Skilluv validated badge',
 			copyBtn: 'Copy',
 			copyAria: 'Copy snippet',
@@ -2779,12 +3045,15 @@ export const en: Translations = {
 			faqQ1: 'How does Skilluv know which repos I work on?',
 			faqA1: 'You list them at signup. You can update your list any time.',
 			faqQ2: 'Can I subscribe without any Skilluv-labeled repo?',
-			faqA2: 'Yes — the digest will stay empty until you add the skilluv-challenge label to your issues.',
+			faqA2:
+				'Yes — the digest will stay empty until you add the skilluv-challenge label to your issues.',
 			faqQ3: 'How do I unsubscribe?',
-			faqA3: 'A link in every email, or the /maintainer-digest/unsubscribe/{token} URL received at signup.',
+			faqA3:
+				'A link in every email, or the /maintainer-digest/unsubscribe/{token} URL received at signup.',
 			formTitle: 'Subscribe',
 			successTitle: 'Confirmation requested',
-			successMessage: 'A confirmation email was sent to {email}. Click the link in the email to activate your subscription.',
+			successMessage:
+				'A confirmation email was sent to {email}. Click the link in the email to activate your subscription.',
 			githubLabel: 'GitHub login',
 			githubPh: 'e.g. torvalds',
 			emailLabel: 'Email',
@@ -2936,16 +3205,19 @@ export const en: Translations = {
 			reviewSeoTitle: 'Review a PR — Skilluv',
 			backToQueue: 'Back to the queue',
 			notFoundTitle: 'Not found',
-			notFoundBody: 'This challenge is not in your validation queue. It may have already been handled.',
+			notFoundBody:
+				'This challenge is not in your validation queue. It may have already been handled.',
 			reviewLoadError: 'Could not load the review.',
 			statusBadge: 'status {status}',
 			approvedTitle: 'Validation approved',
 			approvedFragments: '{n} fragments credited. The attestation is public.',
 			attestationIdLabel: 'Attestation ID: {hash}',
 			downloadPdf: 'Download PDF',
-			warningPublicApprove: 'By approving, you will generate an attestation publicly reachable at /verify/{hash} and downloadable as PDF. Fragments will be credited to the challenger and to you.',
+			warningPublicApprove:
+				'By approving, you will generate an attestation publicly reachable at /verify/{hash} and downloadable as PDF. Fragments will be credited to the challenger and to you.',
 			reviewPrTitle: 'Review the PR',
-			reviewIframeHint: 'The iframe is blocked by GitHub — use this button to open the PR in a new tab.',
+			reviewIframeHint:
+				'The iframe is blocked by GitHub — use this button to open the PR in a new tab.',
 			openPrOnGithub: 'Open the PR on GitHub',
 			verdictTitle: 'Your verdict',
 			feedbackLabel: 'Feedback (required to reject, 1-2000 characters)',
@@ -2962,10 +3234,12 @@ export const en: Translations = {
 			newSeoTitle: 'Become a validator — Skilluv',
 			backToApplications: 'My applications',
 			newTitle: 'Become a Skilluv validator',
-			newSubtitle: 'Validators verify Skilluv PRs before they are marked as validated. Each validation credits you in fragments and boosts your reputation.',
+			newSubtitle:
+				'Validators verify Skilluv PRs before they are marked as validated. Each validation credits you in fragments and boosts your reputation.',
 			domainLabel: 'Domain',
 			thresholdsTitle: 'Required thresholds',
-			thresholdsUnavailable: 'Stats loading unavailable for now. You can apply — the backend will verify the criteria.',
+			thresholdsUnavailable:
+				'Stats loading unavailable for now. You can apply — the backend will verify the criteria.',
 			thresholdsLoading: 'Loading...',
 			rankLine: 'Rank Artisan minimum',
 			rankMiss: 'You are {rank}, Artisan required.',
@@ -3031,7 +3305,8 @@ export const en: Translations = {
 			ariaLabel: 'Skilluv badges',
 			sectionLabel: 'Skilluv badges',
 			personalTitle: 'Skilluv badge',
-			personalDesc: 'Paste this badge on your GitHub profile, resume or LinkedIn to show your Skilluv community.',
+			personalDesc:
+				'Paste this badge on your GitHub profile, resume or LinkedIn to show your Skilluv community.',
 			personalAlt: 'Skilluv badge {username}',
 			notGenerated: 'Badge not yet generated',
 			markdownLabel: 'Markdown',

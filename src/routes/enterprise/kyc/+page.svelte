@@ -23,7 +23,12 @@
 	// temps de la confirmation → puis on lance l'upload réel.
 	let replaceCandidate = $state<{ kind: string; kindLabel: string; file: File } | null>(null);
 
-	const DOC_KINDS: Array<{ slug: string; fr: string; en: string; hint: { fr: string; en: string } }> = [
+	const DOC_KINDS: Array<{
+		slug: string;
+		fr: string;
+		en: string;
+		hint: { fr: string; en: string };
+	}> = [
 		{
 			slug: 'kbis',
 			fr: 'Kbis / extrait registre',
@@ -44,7 +49,7 @@
 		},
 		{
 			slug: 'director_id',
-			fr: 'Pièce d\'identité dirigeant',
+			fr: "Pièce d'identité dirigeant",
 			en: 'Director ID',
 			hint: { fr: 'Recto/verso', en: 'Front/back' }
 		},
@@ -125,25 +130,52 @@
 		replaceCandidate = null;
 	}
 
-	function statusMeta(s: string): { icon: Component; label: string; variant: 'default' | 'success' | 'warning' | 'error' | 'accent' } {
+	function statusMeta(s: string): {
+		icon: Component;
+		label: string;
+		variant: 'default' | 'success' | 'warning' | 'error' | 'accent';
+	} {
 		switch (s) {
-			case 'approved': return { icon: Check, label: i18n.locale === 'fr' ? 'Validé' : 'Approved', variant: 'success' };
-			case 'pending': return { icon: Timer, label: i18n.locale === 'fr' ? 'En cours de review' : 'Under review', variant: 'warning' };
-			case 'rejected': return { icon: X, label: i18n.locale === 'fr' ? 'Refusé' : 'Rejected', variant: 'error' };
-			default: return { icon: Circle, label: i18n.locale === 'fr' ? 'À compléter' : 'To do', variant: 'default' };
+			case 'approved':
+				return {
+					icon: Check,
+					label: i18n.locale === 'fr' ? 'Validé' : 'Approved',
+					variant: 'success'
+				};
+			case 'pending':
+				return {
+					icon: Timer,
+					label: i18n.locale === 'fr' ? 'En cours de review' : 'Under review',
+					variant: 'warning'
+				};
+			case 'rejected':
+				return { icon: X, label: i18n.locale === 'fr' ? 'Refusé' : 'Rejected', variant: 'error' };
+			default:
+				return {
+					icon: Circle,
+					label: i18n.locale === 'fr' ? 'À compléter' : 'To do',
+					variant: 'default'
+				};
 		}
 	}
 
 	function levelLabel(l: string): string {
-		return l === 'none' ? (i18n.locale === 'fr' ? 'Aucun' : 'None')
-			: l === 'basic' ? 'Basic'
-			: l === 'full' ? 'Full'
-			: l;
+		return l === 'none'
+			? i18n.locale === 'fr'
+				? 'Aucun'
+				: 'None'
+			: l === 'basic'
+				? 'Basic'
+				: l === 'full'
+					? 'Full'
+					: l;
 	}
 
 	function fmtEur(cents: number): string {
 		return new Intl.NumberFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
-			style: 'currency', currency: 'EUR', minimumFractionDigits: 0
+			style: 'currency',
+			currency: 'EUR',
+			minimumFractionDigits: 0
 		}).format(cents / 100);
 	}
 
@@ -177,7 +209,7 @@
 		</h1>
 		<p class="mt-3 max-w-xl text-sm text-text-muted">
 			{i18n.locale === 'fr'
-				? 'Trois niveaux : aucune vérification jusqu\'à 100 €/mois de dépense. Basic jusqu\'à 2000 €/mois. Full au-delà.'
+				? "Trois niveaux : aucune vérification jusqu'à 100 €/mois de dépense. Basic jusqu'à 2000 €/mois. Full au-delà."
 				: 'Three levels: no verification up to €100/month spend. Basic up to €2000/month. Full above.'}
 		</p>
 	</div>
@@ -229,7 +261,9 @@
 				</div>
 				<div>
 					<div class="text-xs font-bold uppercase tracking-wider text-text-muted">Full</div>
-					<div class="mt-1 font-mono">≥ {fmtEur(status.thresholds.full_required_above_eur_cents)}</div>
+					<div class="mt-1 font-mono">
+						≥ {fmtEur(status.thresholds.full_required_above_eur_cents)}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -248,7 +282,10 @@
 								<div class="flex items-center gap-2 flex-wrap">
 									<span class="font-semibold">{i18n.locale === 'fr' ? dk.fr : dk.en}</span>
 									{#if existing}
-										<Badge variant="success" size="sm"><Check size={12} strokeWidth={2.5} /> {i18n.locale === 'fr' ? 'Envoyé' : 'Sent'}</Badge>
+										<Badge variant="success" size="sm"
+											><Check size={12} strokeWidth={2.5} />
+											{i18n.locale === 'fr' ? 'Envoyé' : 'Sent'}</Badge
+										>
 									{/if}
 								</div>
 								<p class="mt-1 text-xs text-text-muted">
@@ -269,12 +306,26 @@
 									disabled={uploading !== null}
 								/>
 								<span
-									class="inline-flex h-10 items-center gap-2 rounded-full border border-primary bg-primary/10 px-5 text-sm font-semibold text-primary hover:bg-primary/20 cursor-pointer transition-colors {uploading !== null && uploading !== dk.slug ? 'opacity-50 pointer-events-none' : ''}"
+									class="inline-flex h-10 items-center gap-2 rounded-full border border-primary bg-primary/10 px-5 text-sm font-semibold text-primary hover:bg-primary/20 cursor-pointer transition-colors {uploading !==
+										null && uploading !== dk.slug
+										? 'opacity-50 pointer-events-none'
+										: ''}"
 								>
 									{#if uploading === dk.slug}
 										<svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-											<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-											<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+											<circle
+												class="opacity-25"
+												cx="12"
+												cy="12"
+												r="10"
+												stroke="currentColor"
+												stroke-width="4"
+											/>
+											<path
+												class="opacity-75"
+												fill="currentColor"
+												d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+											/>
 										</svg>
 										{i18n.locale === 'fr' ? 'Envoi...' : 'Uploading...'}
 									{:else if existing}
@@ -300,14 +351,16 @@
 >
 	{#if replaceCandidate}
 		<div class="flex gap-4">
-			<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-warning/10 text-warning">
+			<div
+				class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-warning/10 text-warning"
+			>
 				<RefreshCw size={20} strokeWidth={2} />
 			</div>
 			<div class="flex-1 text-sm">
 				<p class="mb-1 font-semibold">{replaceCandidate.kindLabel}</p>
 				<p class="text-text-muted leading-relaxed">
 					{i18n.locale === 'fr'
-						? 'Le document précédemment envoyé sera écrasé et devra être re-validé par l\'équipe compliance. Les documents validés perdent leur statut approuvé et repassent en review.'
+						? "Le document précédemment envoyé sera écrasé et devra être re-validé par l'équipe compliance. Les documents validés perdent leur statut approuvé et repassent en review."
 						: 'The previously sent document will be overwritten and re-reviewed by the compliance team. Approved documents lose their approved status and go back to review.'}
 				</p>
 				<p class="mt-3 font-mono text-xs text-text-muted">
@@ -319,7 +372,7 @@
 
 	{#snippet actions()}
 		<Button variant="ghost" onclick={cancelReplace} disabled={uploading !== null}>
-			{i18n.locale === 'fr' ? 'Garder l\'actuel' : 'Keep current'}
+			{i18n.locale === 'fr' ? "Garder l'actuel" : 'Keep current'}
 		</Button>
 		<Button variant="danger" onclick={confirmReplace} loading={uploading !== null}>
 			{i18n.locale === 'fr' ? 'Remplacer' : 'Replace'}

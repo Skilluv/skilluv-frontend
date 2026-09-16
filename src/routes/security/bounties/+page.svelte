@@ -176,7 +176,10 @@
 			{#if note}
 				<!-- Verbatim. We run none of these, and saying otherwise would put
 				     us behind terms nobody here has read. -->
-				<p class="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text-muted" data-testid="bounty-note">
+				<p
+					class="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text-muted"
+					data-testid="bounty-note"
+				>
 					{note}
 				</p>
 			{/if}
@@ -187,7 +190,9 @@
 				<ul class="space-y-2">
 					{#each programmes as programme, index (programmeName(programme) + index)}
 						{@const url = programmeUrl(programme)}
-						<li class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border bg-surface-elevated p-4">
+						<li
+							class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border bg-surface-elevated p-4"
+						>
 							<div class="min-w-0">
 								<p class="truncate text-sm font-bold text-text">{programmeName(programme)}</p>
 								{#if programme.platform}
@@ -195,7 +200,13 @@
 								{/if}
 							</div>
 							{#if url}
-								<Button href={url} size="sm" variant="ghost" target="_blank" rel="noopener noreferrer">
+								<Button
+									href={url}
+									size="sm"
+									variant="ghost"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
 									<ExternalLink size={14} />
 									{i18n.t('securityBounties.openProgramme')}
 								</Button>
@@ -232,7 +243,9 @@
 							</div>
 							<p class="mt-2 whitespace-pre-line text-sm text-text-muted">{entry.summary_md}</p>
 							{#if entry.refused_reason}
-								<p class="mt-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text-muted">
+								<p
+									class="mt-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text-muted"
+								>
 									{i18n.t('securityBounties.refusedReason', { reason: entry.refused_reason })}
 								</p>
 							{/if}
@@ -242,11 +255,18 @@
 			{/if}
 		</section>
 
-		<section class="rounded-xl border border-border bg-surface-elevated p-5 space-y-3" data-testid="bounty-claim-form">
+		<section
+			class="rounded-xl border border-border bg-surface-elevated p-5 space-y-3"
+			data-testid="bounty-claim-form"
+		>
 			<h2 class="text-sm font-bold text-text">{i18n.t('securityBounties.claimCta')}</h2>
 
 			<div class="grid gap-3 sm:grid-cols-2">
-				<Input label={i18n.t('securityBounties.claimPlatform')} bind:value={platform} data-testid="claim-platform" />
+				<Input
+					label={i18n.t('securityBounties.claimPlatform')}
+					bind:value={platform}
+					data-testid="claim-platform"
+				/>
 				<Input label={i18n.t('securityBounties.claimOrganisation')} bind:value={organisation} />
 			</div>
 
@@ -263,7 +283,11 @@
 					<Select items={severityOptions} bind:value={claimedSeverity} shape="rounded" size="sm" />
 				</label>
 				<Input label={i18n.t('securityBounties.claimCwe')} bind:value={cwe} />
-				<Input label={i18n.t('securityBounties.claimDisclosedOn')} type="date" bind:value={disclosedOn} />
+				<Input
+					label={i18n.t('securityBounties.claimDisclosedOn')}
+					type="date"
+					bind:value={disclosedOn}
+				/>
 			</div>
 
 			<label class="flex flex-col gap-1">

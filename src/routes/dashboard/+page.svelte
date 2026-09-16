@@ -228,10 +228,7 @@
 					{#each suggestions as suggestion (suggestion.id)}
 						<li class="rounded-2xl border border-border bg-surface-elevated p-5">
 							<div class="mb-2 flex flex-wrap items-center gap-2">
-								<Badge
-									variant={suggestion.format === 'contest' ? 'accent' : 'default'}
-									size="sm"
-								>
+								<Badge variant={suggestion.format === 'contest' ? 'accent' : 'default'} size="sm">
 									{i18n.t(`dashboardHome.formats.${suggestion.format}`)}
 								</Badge>
 								{#if suggestion.orientation_slug}
@@ -286,7 +283,9 @@
 				<div class="grid gap-3 sm:grid-cols-2">
 					{#if events.length > 0}
 						<div class="rounded-2xl border border-border bg-surface-elevated p-5">
-							<p class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted">
+							<p
+								class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted"
+							>
 								<CalendarRange size={13} strokeWidth={2} />
 								{i18n.t('dashboardHome.eventsTitle')}
 							</p>
@@ -319,7 +318,9 @@
 
 					{#if subscriptions.length > 0}
 						<div class="rounded-2xl border border-border bg-surface-elevated p-5">
-							<p class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted">
+							<p
+								class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted"
+							>
 								<Handshake size={13} strokeWidth={2} />
 								{i18n.t('dashboardHome.mentoringTitle')}
 							</p>
@@ -355,7 +356,9 @@
 
 					{#if stewardships.length > 0}
 						<div class="rounded-2xl border border-border bg-surface-elevated p-5">
-							<p class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted">
+							<p
+								class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted"
+							>
 								<Trophy size={13} strokeWidth={2} />
 								{i18n.t('dashboardHome.stewardshipsTitle')}
 							</p>

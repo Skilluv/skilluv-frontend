@@ -33,10 +33,12 @@
 	type="button"
 	class="group relative flex h-full flex-col rounded-2xl border-2 bg-surface-elevated p-6 text-left transition-all duration-200 {selected
 		? 'border-accent shadow-md'
-		: 'border-border hover:border-text-muted'} {disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}"
+		: 'border-border hover:border-text-muted'} {disabled
+		? 'cursor-not-allowed opacity-50'
+		: 'cursor-pointer'}"
 	aria-pressed={selected}
 	aria-disabled={disabled ? true : undefined}
-	disabled={disabled}
+	{disabled}
 	onclick={() => !disabled && onSelect?.(type)}
 >
 	<div class="mb-4 flex items-start justify-between gap-2">

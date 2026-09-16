@@ -18,28 +18,89 @@
 
 	const benefits = [
 		{
-			fr: { title: 'Sourcing par compétence prouvée', body: 'Filtrez par domaine (code, design, game, security), niveau (apprenti → légende), pays, langage, badges. Tous les profils sont alimentés par des soumissions évaluées, pas par des déclarations.' },
-			en: { title: 'Source by proven skill', body: 'Filter by domain (code, design, game, security), level (apprentice → legend), country, language, badges. Every profile is fed by graded submissions, not self-declared claims.' }
+			fr: {
+				title: 'Sourcing par compétence prouvée',
+				body: 'Filtrez par domaine (code, design, game, security), niveau (apprenti → légende), pays, langage, badges. Tous les profils sont alimentés par des soumissions évaluées, pas par des déclarations.'
+			},
+			en: {
+				title: 'Source by proven skill',
+				body: 'Filter by domain (code, design, game, security), level (apprentice → legend), country, language, badges. Every profile is fed by graded submissions, not self-declared claims.'
+			}
 		},
 		{
-			fr: { title: 'Bookmarks et listes', body: 'Organisez vos talents par projet ou par poste. Partagez les listes avec votre équipe RH ou technique.' },
-			en: { title: 'Bookmarks and lists', body: 'Organise talents by project or role. Share lists with your HR or tech team.' }
+			fr: {
+				title: 'Bookmarks et listes',
+				body: 'Organisez vos talents par projet ou par poste. Partagez les listes avec votre équipe RH ou technique.'
+			},
+			en: {
+				title: 'Bookmarks and lists',
+				body: 'Organise talents by project or role. Share lists with your HR or tech team.'
+			}
 		},
 		{
-			fr: { title: 'Messagerie respectueuse', body: 'Aucun spam : vous manifestez un intérêt, le talent accepte ou refuse. Une conversation directe ne s\'ouvre qu\'après accord mutuel.' },
-			en: { title: 'Respectful messaging', body: 'No spam: you express interest, the talent accepts or declines. A direct conversation opens only after mutual agreement.' }
+			fr: {
+				title: 'Messagerie respectueuse',
+				body: "Aucun spam : vous manifestez un intérêt, le talent accepte ou refuse. Une conversation directe ne s'ouvre qu'après accord mutuel."
+			},
+			en: {
+				title: 'Respectful messaging',
+				body: 'No spam: you express interest, the talent accepts or declines. A direct conversation opens only after mutual agreement.'
+			}
 		},
 		{
-			fr: { title: 'Données fiables', body: 'Fragments, séries, badges, profondeur dans l\'arbre de compétences. Vous voyez l\'engagement réel, pas un CV embelli.' },
-			en: { title: 'Reliable data', body: 'Fragments, streaks, badges, depth in the skill tree. You see real engagement, not a polished resume.' }
+			fr: {
+				title: 'Données fiables',
+				body: "Fragments, séries, badges, profondeur dans l'arbre de compétences. Vous voyez l'engagement réel, pas un CV embelli."
+			},
+			en: {
+				title: 'Reliable data',
+				body: 'Fragments, streaks, badges, depth in the skill tree. You see real engagement, not a polished resume.'
+			}
 		}
 	];
 
 	const steps = [
-		{ n: '01', fr: { t: 'Créez votre espace', d: 'Inscription en moins de 2 minutes. Confirmez votre identité entreprise.' }, en: { t: 'Create your space', d: 'Sign up in under 2 minutes. Confirm your company identity.' } },
-		{ n: '02', fr: { t: 'Définissez vos critères', d: 'Domaine, niveau, langues techniques, pays, disponibilité.' }, en: { t: 'Define your criteria', d: 'Domain, level, tech stack, country, availability.' } },
-		{ n: '03', fr: { t: 'Identifiez les talents', d: 'Parcourez les profils, ouvrez les preuves (solutions, séries), enregistrez-les.' }, en: { t: 'Identify talents', d: 'Browse profiles, open the proofs (solutions, streaks), bookmark them.' } },
-		{ n: '04', fr: { t: 'Engagez la conversation', d: 'Manifestez votre intérêt. Si accepté, échangez directement avec le talent.' }, en: { t: 'Start the conversation', d: 'Express interest. If accepted, message the talent directly.' } }
+		{
+			n: '01',
+			fr: {
+				t: 'Créez votre espace',
+				d: 'Inscription en moins de 2 minutes. Confirmez votre identité entreprise.'
+			},
+			en: {
+				t: 'Create your space',
+				d: 'Sign up in under 2 minutes. Confirm your company identity.'
+			}
+		},
+		{
+			n: '02',
+			fr: {
+				t: 'Définissez vos critères',
+				d: 'Domaine, niveau, langues techniques, pays, disponibilité.'
+			},
+			en: { t: 'Define your criteria', d: 'Domain, level, tech stack, country, availability.' }
+		},
+		{
+			n: '03',
+			fr: {
+				t: 'Identifiez les talents',
+				d: 'Parcourez les profils, ouvrez les preuves (solutions, séries), enregistrez-les.'
+			},
+			en: {
+				t: 'Identify talents',
+				d: 'Browse profiles, open the proofs (solutions, streaks), bookmark them.'
+			}
+		},
+		{
+			n: '04',
+			fr: {
+				t: 'Engagez la conversation',
+				d: 'Manifestez votre intérêt. Si accepté, échangez directement avec le talent.'
+			},
+			en: {
+				t: 'Start the conversation',
+				d: 'Express interest. If accepted, message the talent directly.'
+			}
+		}
 	];
 </script>
 
@@ -57,7 +118,9 @@
 <section class="relative overflow-hidden border-b border-border">
 	<div class="mx-auto max-w-6xl px-4 py-20 sm:py-28">
 		<div class="max-w-4xl">
-			<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
+			<h1
+				class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight"
+			>
 				{#if i18n.locale === 'fr'}
 					Le CV est mort.<br />
 					<span class="text-primary">Bienvenue dans la preuve.</span>
@@ -78,7 +141,9 @@
 				</Button>
 			</div>
 			<p class="mt-4 text-xs text-text-muted">
-				{i18n.locale === 'fr' ? 'Inscription gratuite · Sans engagement · Données conformes RGPD' : 'Free signup · No commitment · GDPR-compliant data'}
+				{i18n.locale === 'fr'
+					? 'Inscription gratuite · Sans engagement · Données conformes RGPD'
+					: 'Free signup · No commitment · GDPR-compliant data'}
 			</p>
 		</div>
 	</div>
@@ -86,14 +151,18 @@
 
 <!-- Benefits -->
 <section class="mx-auto max-w-6xl px-4 py-20 sm:py-28">
-	<h2 class="mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
+	<h2
+		class="mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight"
+	>
 		{i18n.locale === 'fr' ? 'Ce que vous' : 'What you'}<br />
 		<span class="text-accent">{i18n.locale === 'fr' ? 'obtenez.' : 'get.'}</span>
 	</h2>
 	<div class="grid gap-4 sm:grid-cols-2">
 		{#each benefits as b, i}
 			{@const t = i18n.locale === 'fr' ? b.fr : b.en}
-			<article class="rounded-2xl border border-border bg-surface-elevated overflow-hidden flex flex-col">
+			<article
+				class="rounded-2xl border border-border bg-surface-elevated overflow-hidden flex flex-col"
+			>
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
 					<span class="text-sm font-semibold text-primary">{t.title}</span>
@@ -110,7 +179,9 @@
 <!-- Comparison block -->
 <section class="border-y border-border bg-surface-elevated/40 py-20 sm:py-24">
 	<div class="mx-auto max-w-6xl px-4">
-		<h2 class="mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
+		<h2
+			class="mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight"
+		>
 			{i18n.locale === 'fr' ? 'Classique' : 'Classic'}<br />
 			<span class="text-accent">{i18n.locale === 'fr' ? 'vs Skilluv.' : 'vs Skilluv.'}</span>
 		</h2>
@@ -123,12 +194,7 @@
 					</span>
 				</div>
 				<ul class="p-5 space-y-3 text-sm">
-					{#each [
-						{ fr: 'CV déclaratif, non vérifiable', en: 'Self-declared resume, unverifiable' },
-						{ fr: 'Tests techniques génériques en entretien', en: 'Generic tech tests during interviews' },
-						{ fr: "Aucune visibilité sur l'engagement réel", en: 'No visibility into real engagement' },
-						{ fr: 'Spam et messages froids', en: 'Spam and cold outreach' }
-					] as item}
+					{#each [{ fr: 'CV déclaratif, non vérifiable', en: 'Self-declared resume, unverifiable' }, { fr: 'Tests techniques génériques en entretien', en: 'Generic tech tests during interviews' }, { fr: "Aucune visibilité sur l'engagement réel", en: 'No visibility into real engagement' }, { fr: 'Spam et messages froids', en: 'Spam and cold outreach' }] as item}
 						<li class="flex items-start gap-2 text-text-muted">
 							<span class="mt-0.5 shrink-0 text-error">×</span>
 							<span>{i18n.locale === 'fr' ? item.fr : item.en}</span>
@@ -142,12 +208,7 @@
 					<span class="text-sm font-semibold text-accent">Skilluv</span>
 				</div>
 				<ul class="p-5 space-y-3 text-sm">
-					{#each [
-						{ fr: 'Compétences prouvées par des challenges évalués', en: 'Skills proven through graded challenges' },
-						{ fr: 'Niveau, streak, badges et progression visibles', en: 'Level, streak, badges and progression visible' },
-						{ fr: 'Sourcing affiné par domaine, langage, pays', en: 'Sourcing refined by domain, stack, country' },
-						{ fr: 'Contact direct uniquement après accord du talent', en: 'Direct contact only after the talent accepts' }
-					] as item}
+					{#each [{ fr: 'Compétences prouvées par des challenges évalués', en: 'Skills proven through graded challenges' }, { fr: 'Niveau, streak, badges et progression visibles', en: 'Level, streak, badges and progression visible' }, { fr: 'Sourcing affiné par domaine, langage, pays', en: 'Sourcing refined by domain, stack, country' }, { fr: 'Contact direct uniquement après accord du talent', en: 'Direct contact only after the talent accepts' }] as item}
 						<li class="flex items-start gap-2 text-text-primary">
 							<span class="mt-0.5 shrink-0 text-success">+</span>
 							<span>{i18n.locale === 'fr' ? item.fr : item.en}</span>
@@ -161,13 +222,17 @@
 
 <!-- How it works -->
 <section class="mx-auto max-w-6xl px-4 py-20 sm:py-28">
-	<h2 class="mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight">
+	<h2
+		class="mb-5 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight"
+	>
 		{i18n.locale === 'fr' ? 'Comment ça marche' : 'How it works'}<span class="text-accent">.</span>
 	</h2>
 	<ol class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 		{#each steps as s}
 			{@const t = i18n.locale === 'fr' ? s.fr : s.en}
-			<li class="rounded-2xl border border-border bg-surface-elevated overflow-hidden flex flex-col">
+			<li
+				class="rounded-2xl border border-border bg-surface-elevated overflow-hidden flex flex-col"
+			>
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
 					<span class="text-sm font-semibold text-primary">{t.t}</span>
@@ -187,7 +252,9 @@
 <section class="border-t border-border bg-surface-elevated/40 py-20 sm:py-24">
 	<div class="mx-auto max-w-6xl px-4">
 		<div use:scrollReveal class="mb-10 sm:mb-16">
-			<h2 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight mb-5">
+			<h2
+				class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-tight mb-5"
+			>
 				{i18n.locale === 'fr' ? 'Tout ce dont' : 'Everything you'}<br />
 				<span class="text-accent">{i18n.locale === 'fr' ? 'vous avez besoin.' : 'need.'}</span>
 			</h2>
@@ -195,13 +262,18 @@
 
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			<!-- Recherche avancée -->
-			<a href="/enterprise/register" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
+			<a
+				href="/enterprise/register"
+				class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40"
+			>
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
 					<span class="text-sm font-semibold text-primary">
 						{i18n.locale === 'fr' ? 'Recherche avancée' : 'Advanced search'}
 					</span>
-					<span class="ml-auto text-xs text-text-muted">13 {i18n.locale === 'fr' ? 'filtres' : 'filters'}</span>
+					<span class="ml-auto text-xs text-text-muted"
+						>13 {i18n.locale === 'fr' ? 'filtres' : 'filters'}</span
+					>
 				</div>
 				<div class="p-5 flex-1 flex flex-col">
 					<p class="text-sm text-text-muted leading-relaxed mb-5">
@@ -211,14 +283,21 @@
 					</p>
 					<div class="mt-auto flex flex-wrap gap-1.5">
 						{#each ['skill', 'level', 'streak', 'badges', 'country', 'lang'] as tag}
-							<span class="rounded-md bg-surface-overlay px-2 py-0.5 text-[11px] font-medium text-text-muted">{tag}</span>
+							<span
+								class="rounded-md bg-surface-overlay px-2 py-0.5 text-[11px] font-medium text-text-muted"
+								>{tag}</span
+							>
 						{/each}
 					</div>
 				</div>
 			</a>
 
 			<!-- Bounties -->
-			<a href="/for-companies/bounties" id="bounties" class="group flex flex-col scroll-mt-24 rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40">
+			<a
+				href="/for-companies/bounties"
+				id="bounties"
+				class="group flex flex-col scroll-mt-24 rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40"
+			>
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-accent"></div>
 					<span class="text-sm font-semibold text-accent">
@@ -243,7 +322,10 @@
 			</a>
 
 			<!-- Tarifs multi-devise -->
-			<a href="/pricing" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
+			<a
+				href="/pricing"
+				class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40"
+			>
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
 					<span class="text-sm font-semibold text-primary">
@@ -259,25 +341,29 @@
 					</p>
 					<div class="mt-auto flex flex-wrap gap-1.5">
 						{#each ['EUR', 'USD', 'NGN', 'XOF', 'MAD'] as cur}
-							<span class="rounded-md bg-surface-overlay px-2 py-0.5 text-[11px] font-mono font-semibold text-text-muted">{cur}</span>
+							<span
+								class="rounded-md bg-surface-overlay px-2 py-0.5 text-[11px] font-mono font-semibold text-text-muted"
+								>{cur}</span
+							>
 						{/each}
 					</div>
 				</div>
 			</a>
 
 			<!-- Certifications -->
-			<a href="/certifications" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40">
+			<a
+				href="/certifications"
+				class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40"
+			>
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-accent"></div>
-					<span class="text-sm font-semibold text-accent">
-						Certifications
-					</span>
+					<span class="text-sm font-semibold text-accent"> Certifications </span>
 					<span class="ml-auto text-xs text-text-muted">{i18n.t('commonExtra.exampleLabel')}</span>
 				</div>
 				<div class="p-5 flex-1 flex flex-col">
 					<p class="text-sm text-text-muted leading-relaxed mb-5">
 						{i18n.locale === 'fr'
-							? "Vérifie un diplôme candidat en 1 clic sur son code court. Opposable au recruteur."
+							? 'Vérifie un diplôme candidat en 1 clic sur son code court. Opposable au recruteur.'
 							: "Verify a candidate's diploma in 1 click via short code. Recruiter-proof."}
 					</p>
 					<div class="mt-auto rounded-md bg-surface-overlay px-3 py-2">
@@ -290,7 +376,10 @@
 			</a>
 
 			<!-- Crédits & facturation -->
-			<a href="/enterprise/credits" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40">
+			<a
+				href="/enterprise/credits"
+				class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-primary/40"
+			>
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-primary"></div>
 					<span class="text-sm font-semibold text-primary">
@@ -314,7 +403,10 @@
 			</a>
 
 			<!-- Abonnements Pipeline -->
-			<a href="/enterprise/subscriptions" class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40">
+			<a
+				href="/enterprise/subscriptions"
+				class="group flex flex-col rounded-2xl border border-border bg-surface-elevated overflow-hidden transition-colors duration-200 hover:border-accent/40"
+			>
 				<div class="flex items-center gap-3 border-b border-border px-5 py-3">
 					<div class="h-2.5 w-2.5 rounded-sm bg-accent"></div>
 					<span class="text-sm font-semibold text-accent">
@@ -331,9 +423,18 @@
 							: 'Credits included monthly. Cancel anytime, no hidden fees.'}
 					</p>
 					<div class="mt-auto flex items-center gap-2 flex-wrap">
-						<span class="rounded-md bg-primary/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">Starter</span>
-						<span class="rounded-md bg-accent/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-accent">Growth</span>
-						<span class="rounded-md bg-primary/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">Scale</span>
+						<span
+							class="rounded-md bg-primary/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-primary"
+							>Starter</span
+						>
+						<span
+							class="rounded-md bg-accent/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-accent"
+							>Growth</span
+						>
+						<span
+							class="rounded-md bg-primary/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-primary"
+							>Scale</span
+						>
 					</div>
 				</div>
 			</a>
@@ -345,9 +446,11 @@
 <CtaSection
 	title={i18n.locale === 'fr' ? 'Prêt à recruter' : 'Ready to hire'}
 	accent={i18n.locale === 'fr' ? 'sur la preuve ?' : 'on proof?'}
-	description={i18n.locale === 'fr' ? 'Créez votre espace entreprise gratuitement. Aucune carte bancaire requise.' : 'Create your enterprise space for free. No credit card required.'}
-	ctaHref={ctaHref}
-	ctaLabel={ctaLabel}
+	description={i18n.locale === 'fr'
+		? 'Créez votre espace entreprise gratuitement. Aucune carte bancaire requise.'
+		: 'Create your enterprise space for free. No credit card required.'}
+	{ctaHref}
+	{ctaLabel}
 >
 	{#snippet secondary()}
 		<Button variant="ghost" size="lg" href="/legal/terms">

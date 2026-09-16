@@ -255,7 +255,9 @@
 
 		{#if programs.length > 0}
 			<section class="space-y-3" data-testid="creator-ambassadors">
-				<h2 class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted">
+				<h2
+					class="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-text-muted"
+				>
 					<Sparkles size={14} />
 					{i18n.t('creator.ambassadorsTitle')}
 				</h2>

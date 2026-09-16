@@ -6,9 +6,14 @@ const api = createApiClient();
 // --- Types ---
 
 export type SessionStatus =
-	| 'pending' | 'paid' | 'confirmed' | 'completed'
-	| 'cancelled_by_mentee' | 'cancelled_by_mentor'
-	| 'no_show' | 'refunded';
+	| 'pending'
+	| 'paid'
+	| 'confirmed'
+	| 'completed'
+	| 'cancelled_by_mentee'
+	| 'cancelled_by_mentor'
+	| 'no_show'
+	| 'refunded';
 
 export interface MentorSummary {
 	user_id: string;
@@ -134,9 +139,9 @@ export const mentorshipApi = {
 	},
 
 	startConnectOnboarding() {
-		return api.post<ApiResponse<{ onboarding_url: string; expires_at: number; account_id: string }>>(
-			'/mentors/me/connect/onboard'
-		);
+		return api.post<
+			ApiResponse<{ onboarding_url: string; expires_at: number; account_id: string }>
+		>('/mentors/me/connect/onboard');
 	},
 
 	connectStatus() {
@@ -159,7 +164,12 @@ export const mentorshipApi = {
 
 	cancelSession(id: string) {
 		return api.post<
-			ApiResponse<{ status: SessionStatus; refund_amount_cents: number; refund_ratio: number; stripe_refund_id: string | null }>
+			ApiResponse<{
+				status: SessionStatus;
+				refund_amount_cents: number;
+				refund_ratio: number;
+				stripe_refund_id: string | null;
+			}>
 		>(`/mentorship/sessions/${id}/cancel`);
 	},
 
@@ -170,9 +180,9 @@ export const mentorshipApi = {
 	},
 
 	submitReview(id: string, rating: number, comment?: string) {
-		return api.post<ApiResponse<{ review_saved: boolean }>>(
-			`/mentorship/sessions/${id}/review`,
-			{ rating, comment }
-		);
+		return api.post<ApiResponse<{ review_saved: boolean }>>(`/mentorship/sessions/${id}/review`, {
+			rating,
+			comment
+		});
 	}
 };

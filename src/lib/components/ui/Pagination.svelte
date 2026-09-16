@@ -24,7 +24,8 @@
 {#if total > 1}
 	<div class="mt-8 flex items-center justify-center gap-2 sm:gap-4">
 		<Button variant="ghost" size="sm" disabled={current <= 1} onclick={prev}>
-			←{#if !compact}<span class="hidden sm:inline ml-1">{i18n.t('common.actions.previous')}</span>{/if}
+			←{#if !compact}<span class="hidden sm:inline ml-1">{i18n.t('common.actions.previous')}</span
+				>{/if}
 		</Button>
 		<span class="text-sm text-text-muted font-mono tabular-nums">
 			{current} / {total}

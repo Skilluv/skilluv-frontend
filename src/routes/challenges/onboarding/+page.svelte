@@ -338,7 +338,6 @@
 			loading = false;
 		}
 	}
-
 </script>
 
 <svelte:head>
@@ -445,7 +444,8 @@
 			<div class="mb-8 rounded-2xl border border-border bg-surface-elevated p-6">
 				<h3 class="mb-3 text-lg font-semibold">{i18n.t('challenges.sandbox.instructions')}</h3>
 				<div class="prose prose-sm text-text-muted">
-					<pre class="whitespace-pre-wrap font-sans text-sm leading-relaxed">{challenge.instructions}</pre>
+					<pre
+						class="whitespace-pre-wrap font-sans text-sm leading-relaxed">{challenge.instructions}</pre>
 				</div>
 			</div>
 

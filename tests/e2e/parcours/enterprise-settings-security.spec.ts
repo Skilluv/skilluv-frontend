@@ -15,7 +15,9 @@ test.describe('@parcours enterprise-settings-security', () => {
 	if (HAS_STATE) test.use({ storageState: STATE });
 	test.setTimeout(60_000);
 
-	test('/enterprise/settings/security rend une page graceful (form ou login)', async ({ page }, testInfo) => {
+	test('/enterprise/settings/security rend une page graceful (form ou login)', async ({
+		page
+	}, testInfo) => {
 		await page.goto('/enterprise/settings/security');
 		await page.waitForLoadState('domcontentloaded');
 		// Peut render soit le form settings, soit rediriger vers login (capability gate back).

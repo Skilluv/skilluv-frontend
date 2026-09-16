@@ -88,10 +88,7 @@ test.describe('SKI-287 mentions', () => {
 	});
 
 	test('une liste vide explique comment on est cite', async ({ page }) => {
-		await mockApi(page, [
-			{ path: '/users/me/mentions', handler: json(paginated([])) },
-			...common
-		]);
+		await mockApi(page, [{ path: '/users/me/mentions', handler: json(paginated([])) }, ...common]);
 		await gotoHydrated(page, '/mentions');
 
 		await expect(page.getByText('Personne ne t’a encore cité.')).toBeVisible();

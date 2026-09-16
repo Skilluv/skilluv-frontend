@@ -51,9 +51,9 @@ const common: ApiRoute[] = [
 ];
 
 async function signIn(page: Page, token: 'owner' | 'recruiter') {
-	await page.context().addCookies([
-		{ name: 'access_token', value: token, domain: 'localhost', path: '/' }
-	]);
+	await page
+		.context()
+		.addCookies([{ name: 'access_token', value: token, domain: 'localhost', path: '/' }]);
 }
 
 test.beforeEach(async ({ page }) => {
@@ -138,7 +138,9 @@ test.describe('S6.11 enterprise lists and interests', () => {
 					if (route.request().method() === 'POST') {
 						created = route.request().postDataJSON();
 						return json({
-							data: { list: { id: 'l-1', name: 'Backend Rust', description: null, talent_count: 0 } }
+							data: {
+								list: { id: 'l-1', name: 'Backend Rust', description: null, talent_count: 0 }
+							}
 						})(route);
 					}
 					return json({ data: { lists: [] } })(route);

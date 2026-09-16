@@ -26,7 +26,10 @@ export interface WebhookInfo {
 
 export const developerApi = {
 	createKey(name: string, permissions?: string[]) {
-		return api.post<ApiResponse<{ key: ApiKeyInfo; secret: string; message: string }>>('/developer/keys', { name, permissions });
+		return api.post<ApiResponse<{ key: ApiKeyInfo; secret: string; message: string }>>(
+			'/developer/keys',
+			{ name, permissions }
+		);
 	},
 
 	listKeys() {
@@ -38,17 +41,30 @@ export const developerApi = {
 	},
 
 	regenerateKey(id: string) {
-		return api.post<ApiResponse<{ secret: string; message: string }>>(`/developer/keys/${id}/regenerate`);
+		return api.post<ApiResponse<{ secret: string; message: string }>>(
+			`/developer/keys/${id}/regenerate`
+		);
 	},
 
 	keyUsage(id: string) {
-		return api.get<ApiResponse<{ key_id: string; name: string; request_count: number; last_used_at: string | null; active: boolean }>>(`/developer/keys/${id}/usage`);
+		return api.get<
+			ApiResponse<{
+				key_id: string;
+				name: string;
+				request_count: number;
+				last_used_at: string | null;
+				active: boolean;
+			}>
+		>(`/developer/keys/${id}/usage`);
 	},
 
 	// --- Webhooks ---
 
 	createWebhook(url: string, events: string[]) {
-		return api.post<ApiResponse<{ webhook: WebhookInfo; secret: string; message: string }>>('/developer/webhooks', { url, events });
+		return api.post<ApiResponse<{ webhook: WebhookInfo; secret: string; message: string }>>(
+			'/developer/webhooks',
+			{ url, events }
+		);
 	},
 
 	listWebhooks() {

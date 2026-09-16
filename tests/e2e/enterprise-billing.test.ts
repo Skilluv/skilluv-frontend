@@ -96,9 +96,9 @@ const billingRoutes: ApiRoute[] = [
 ];
 
 async function signIn(page: Page, token: 'owner' | 'recruiter') {
-	await page.context().addCookies([
-		{ name: 'access_token', value: token, domain: 'localhost', path: '/' }
-	]);
+	await page
+		.context()
+		.addCookies([{ name: 'access_token', value: token, domain: 'localhost', path: '/' }]);
 }
 
 test.beforeEach(async ({ page }) => {
@@ -164,7 +164,10 @@ test.describe('S6.8 enterprise credits', () => {
 		]);
 		await gotoHydrated(page, '/enterprise/credits');
 
-		await page.getByRole('button', { name: /Acheter|Choisir/i }).first().click();
+		await page
+			.getByRole('button', { name: /Acheter|Choisir/i })
+			.first()
+			.click();
 
 		await expect.poll(() => sent).not.toBeNull();
 		expect(sent).toEqual({ pack_slug: 'pack-100' });
@@ -185,7 +188,12 @@ test.describe('S6.8 enterprise credits', () => {
 				handler: (route) => {
 					redeemed = route.request().postDataJSON();
 					return json({
-						data: { code: 'SKILLUV-2026', kind: 'bonus_credits', credits_added: '50', new_balance: '170' }
+						data: {
+							code: 'SKILLUV-2026',
+							kind: 'bonus_credits',
+							credits_added: '50',
+							new_balance: '170'
+						}
 					})(route);
 				}
 			},
@@ -194,7 +202,10 @@ test.describe('S6.8 enterprise credits', () => {
 		await gotoHydrated(page, '/enterprise/credits');
 
 		await page.getByPlaceholder('SKILLUV-2026').fill('SKILLUV-2026');
-		await page.getByRole('button', { name: /Valider|Utiliser|Appliquer/i }).first().click();
+		await page
+			.getByRole('button', { name: /Valider|Utiliser|Appliquer/i })
+			.first()
+			.click();
 
 		await expect.poll(() => redeemed).not.toBeNull();
 		expect(redeemed).toEqual({ code: 'SKILLUV-2026' });
@@ -216,7 +227,10 @@ test.describe('S6.8 enterprise subscriptions', () => {
 	test('sans abonnement, les offres sont proposees', async ({ page }) => {
 		await signIn(page, 'owner');
 		await mockApi(page, [
-			{ path: '/enterprise/subscriptions/current', handler: json({ data: { subscription: null } }) },
+			{
+				path: '/enterprise/subscriptions/current',
+				handler: json({ data: { subscription: null } })
+			},
 			{
 				path: '/pricing',
 				handler: json({

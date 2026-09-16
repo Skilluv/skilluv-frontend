@@ -31,10 +31,11 @@ describe('API Client', () => {
 		const mockFetch = vi.fn().mockResolvedValue({
 			ok: false,
 			status: 401,
-			json: () => Promise.resolve({
-				error: { code: 'AUTH_UNAUTHORIZED', message: 'Not authenticated' },
-				meta: { request_id: 'test', timestamp: '2026-01-01' }
-			})
+			json: () =>
+				Promise.resolve({
+					error: { code: 'AUTH_UNAUTHORIZED', message: 'Not authenticated' },
+					meta: { request_id: 'test', timestamp: '2026-01-01' }
+				})
 		});
 
 		const client = createApiClient(mockFetch as any, 'http://test/api');

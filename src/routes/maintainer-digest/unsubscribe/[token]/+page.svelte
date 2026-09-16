@@ -25,7 +25,10 @@
 		} catch (err) {
 			state = {
 				status: 'error',
-				message: err instanceof SkilluError ? err.message : i18n.t('p26.maintainerDigest.unsubInvalidFallback')
+				message:
+					err instanceof SkilluError
+						? err.message
+						: i18n.t('p26.maintainerDigest.unsubInvalidFallback')
 			};
 		}
 	});

@@ -60,8 +60,12 @@ describe('enterpriseTypesApi', () => {
 describe('agencyClientsApi CRUD lifecycle', () => {
 	it('create → patch (active toggle) → remove all hit the expected paths', async () => {
 		fetchMock
-			.mockResolvedValueOnce(ok({ id: 'c1', client_name: 'Acme', active: true, created_at: '2026-01-01' }))
-			.mockResolvedValueOnce(ok({ id: 'c1', client_name: 'Acme', active: false, created_at: '2026-01-01' }))
+			.mockResolvedValueOnce(
+				ok({ id: 'c1', client_name: 'Acme', active: true, created_at: '2026-01-01' })
+			)
+			.mockResolvedValueOnce(
+				ok({ id: 'c1', client_name: 'Acme', active: false, created_at: '2026-01-01' })
+			)
 			.mockResolvedValueOnce(ok({ removed: true }));
 
 		const { agencyClientsApi } = await import('../../src/lib/api/agency_clients');

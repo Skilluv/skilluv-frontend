@@ -31,7 +31,10 @@
 		if (diff < 60) return i18n.locale === 'fr' ? "à l'instant" : 'just now';
 		if (diff < 3600) return `${Math.floor(diff / 60)}m`;
 		if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
-		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', { day: '2-digit', month: 'short' }).format(d);
+		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
+			day: '2-digit',
+			month: 'short'
+		}).format(d);
 	}
 
 	onMount(() => {
@@ -65,23 +68,29 @@
 		<div class="rounded-2xl border border-border bg-surface-elevated p-10 text-center">
 			<div class="mb-3 text-4xl text-text-muted">◈</div>
 			<p class="mb-4 text-text-muted">
-				{i18n.locale === 'fr' ? 'Aucune conversation pour l\'instant.' : 'No conversation yet.'}
+				{i18n.locale === 'fr' ? "Aucune conversation pour l'instant." : 'No conversation yet.'}
 			</p>
 			<Button variant="ghost" href="/mentors">
 				{i18n.locale === 'fr' ? 'Trouver un mentor' : 'Find a mentor'}
 			</Button>
 		</div>
 	{:else}
-		<div class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden">
+		<div
+			class="divide-y divide-border rounded-2xl border border-border bg-surface-elevated overflow-hidden"
+		>
 			{#each convs as c}
 				<a
 					href={`/messages/${c.id}`}
 					class="flex items-center gap-4 p-4 hover:bg-surface-overlay transition-colors"
 				>
-					<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-lg font-black text-primary relative">
+					<div
+						class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-lg font-black text-primary relative"
+					>
 						{c.other_display_name.charAt(0)}
 						{#if c.unread_count > 0}
-							<span class="absolute -right-1 -top-1 min-w-[20px] h-5 px-1.5 rounded-full bg-accent text-accent-fg text-xs font-bold flex items-center justify-center">
+							<span
+								class="absolute -right-1 -top-1 min-w-[20px] h-5 px-1.5 rounded-full bg-accent text-accent-fg text-xs font-bold flex items-center justify-center"
+							>
 								{c.unread_count}
 							</span>
 						{/if}
@@ -91,8 +100,13 @@
 							<span class="font-semibold truncate">{c.other_display_name}</span>
 							<span class="text-xs text-text-muted shrink-0">{fmtRelative(c.last_message_at)}</span>
 						</div>
-						<p class="mt-0.5 truncate text-sm {c.unread_count > 0 ? 'font-semibold' : 'text-text-muted'}">
-							{c.last_message_preview ?? (i18n.locale === 'fr' ? 'Nouvelle conversation' : 'New conversation')}
+						<p
+							class="mt-0.5 truncate text-sm {c.unread_count > 0
+								? 'font-semibold'
+								: 'text-text-muted'}"
+						>
+							{c.last_message_preview ??
+								(i18n.locale === 'fr' ? 'Nouvelle conversation' : 'New conversation')}
 						</p>
 					</div>
 				</a>

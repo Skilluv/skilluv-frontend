@@ -15,7 +15,7 @@ export const consentFr = {
 		banner: {
 			aria: 'Bannière de consentement aux cookies et traceurs',
 			title: 'Cookies et traceurs',
-			body: 'Nous utilisons des cookies et traceurs essentiels au fonctionnement du site. Avec ton accord, nous pouvons aussi mesurer l\'audience (analytique) et te proposer des contenus marketing. Tu peux changer d\'avis à tout moment.',
+			body: "Nous utilisons des cookies et traceurs essentiels au fonctionnement du site. Avec ton accord, nous pouvons aussi mesurer l'audience (analytique) et te proposer des contenus marketing. Tu peux changer d'avis à tout moment.",
 			privacyLink: 'En savoir plus',
 			acceptAll: 'Tout accepter',
 			rejectAll: 'Tout refuser',
@@ -23,18 +23,20 @@ export const consentFr = {
 		},
 		modal: {
 			title: 'Mes préférences de traceurs',
-			intro: 'Choisis catégorie par catégorie. Les traceurs essentiels sont nécessaires au site et ne peuvent pas être désactivés. Les autres sont désactivés par défaut.',
+			intro:
+				'Choisis catégorie par catégorie. Les traceurs essentiels sont nécessaires au site et ne peuvent pas être désactivés. Les autres sont désactivés par défaut.',
 			storedOn: 'Choix enregistré le {date} (version {version}). Tu peux le modifier ci-dessous.',
 			alwaysOn: 'Toujours actif',
 			saveChoices: 'Enregistrer mes choix',
-			revokeHint: 'Tu peux retirer ou modifier ton consentement à tout moment via le lien « Gérer mes préférences » en bas de page.',
+			revokeHint:
+				'Tu peux retirer ou modifier ton consentement à tout moment via le lien « Gérer mes préférences » en bas de page.',
 			essential: {
 				label: 'Traceurs essentiels',
 				hint: 'Session, authentification, protection anti-fraude. Requis pour utiliser Skilluv.'
 			},
 			analytics: {
-				label: 'Mesure d\'audience',
-				hint: 'PostHog (hébergement UE) pour comprendre comment le site est utilisé et l\'améliorer. Pas de revente à des tiers.'
+				label: "Mesure d'audience",
+				hint: "PostHog (hébergement UE) pour comprendre comment le site est utilisé et l'améliorer. Pas de revente à des tiers."
 			},
 			marketing: {
 				label: 'Marketing',

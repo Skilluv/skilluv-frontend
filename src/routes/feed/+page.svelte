@@ -44,21 +44,34 @@
 		if (diff < 3600) return `${Math.floor(diff / 60)}m`;
 		if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
 		if (diff < 604800) return `${Math.floor(diff / 86400)}j`;
-		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', { day: '2-digit', month: 'short' }).format(d);
+		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
+			day: '2-digit',
+			month: 'short'
+		}).format(d);
 	}
 
 	function iconForKind(k: string): Component {
 		switch (k) {
-			case 'submission_evaluated': return Target;
-			case 'level_up': return TrendingUp;
-			case 'badge_earned': return Award;
-			case 'challenge_created': return Pencil;
-			case 'guild_joined': return Shield;
-			case 'guild_war_won': return Shield;
-			case 'forum_post_created': return MessageSquare;
-			case 'tournament_registered': return Trophy;
-			case 'follow_started': return UserPlus;
-			default: return Dot;
+			case 'submission_evaluated':
+				return Target;
+			case 'level_up':
+				return TrendingUp;
+			case 'badge_earned':
+				return Award;
+			case 'challenge_created':
+				return Pencil;
+			case 'guild_joined':
+				return Shield;
+			case 'guild_war_won':
+				return Shield;
+			case 'forum_post_created':
+				return MessageSquare;
+			case 'tournament_registered':
+				return Trophy;
+			case 'follow_started':
+				return UserPlus;
+			default:
+				return Dot;
 		}
 	}
 
@@ -80,13 +93,20 @@
 	function targetLink(e: FeedEvent): string | null {
 		if (!e.target_type || !e.target_id) return null;
 		switch (e.target_type) {
-			case 'challenge': return `/challenges/${e.target_id}`;
-			case 'submission': return `/challenges/${e.target_id}`;
-			case 'guild': return `/guilds/${e.target_id}`;
-			case 'forum_post': return `/forum/${e.target_id}`;
-			case 'tournament': return `/tournaments/${e.target_id}`;
-			case 'user': return `/profile/${e.actor_username}`;
-			default: return null;
+			case 'challenge':
+				return `/challenges/${e.target_id}`;
+			case 'submission':
+				return `/challenges/${e.target_id}`;
+			case 'guild':
+				return `/guilds/${e.target_id}`;
+			case 'forum_post':
+				return `/forum/${e.target_id}`;
+			case 'tournament':
+				return `/tournaments/${e.target_id}`;
+			case 'user':
+				return `/profile/${e.actor_username}`;
+			default:
+				return null;
 		}
 	}
 
@@ -100,7 +120,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.locale === 'fr' ? 'Fil d\'activité | Skilluv' : 'Activity feed | Skilluv'}</title>
+	<title>{i18n.locale === 'fr' ? "Fil d'activité | Skilluv" : 'Activity feed | Skilluv'}</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-10 sm:py-14">
@@ -149,10 +169,14 @@
 				<svelte:element
 					this={href ? 'a' : 'div'}
 					{...href ? { href } : {}}
-					class="block rounded-2xl border border-border bg-surface-elevated p-4 {href ? 'hover:border-primary/40 hover:bg-surface-overlay transition-colors' : ''}"
+					class="block rounded-2xl border border-border bg-surface-elevated p-4 {href
+						? 'hover:border-primary/40 hover:bg-surface-overlay transition-colors'
+						: ''}"
 				>
 					<div class="flex items-start gap-3">
-						<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+						<div
+							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"
+						>
 							<KindIcon size={18} strokeWidth={2} />
 						</div>
 						<div class="min-w-0 flex-1">

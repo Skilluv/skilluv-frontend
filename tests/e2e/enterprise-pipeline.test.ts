@@ -104,7 +104,12 @@ test.describe('S6.6 enterprise pipeline', () => {
 				handler: json({
 					data: {
 						user: { id: 'u-kofi', username: 'kofi', display_name: 'Kofi Adjovi' },
-						stats: { challenges_completed: 0, total_fragments: 0, streak_current: 0, trust_score: 0 }
+						stats: {
+							challenges_completed: 0,
+							total_fragments: 0,
+							streak_current: 0,
+							trust_score: 0
+						}
 					}
 				})
 			},
@@ -112,7 +117,10 @@ test.describe('S6.6 enterprise pipeline', () => {
 		]);
 		await gotoHydrated(page, '/enterprise/pipeline');
 
-		await page.getByRole('button', { name: /Ajouter/i }).first().click();
+		await page
+			.getByRole('button', { name: /Ajouter/i })
+			.first()
+			.click();
 		await page.getByPlaceholder('kofi_dev').fill('kofi');
 		await page.getByRole('button', { name: 'Ajouter', exact: true }).last().click();
 
@@ -124,7 +132,10 @@ test.describe('S6.6 enterprise pipeline', () => {
 		await mockApi(page, [pipelineRoute([]), ...common]);
 		await gotoHydrated(page, '/enterprise/pipeline');
 
-		await page.getByRole('button', { name: /Ajouter/i }).first().click();
+		await page
+			.getByRole('button', { name: /Ajouter/i })
+			.first()
+			.click();
 		await page.getByPlaceholder('kofi_dev').fill('inconnu');
 		await page.getByRole('button', { name: 'Ajouter', exact: true }).last().click();
 
@@ -145,7 +156,10 @@ test.describe('S6.6 enterprise pipeline', () => {
 		]);
 		await gotoHydrated(page, '/enterprise/pipeline');
 
-		await page.getByRole('button', { name: /Ajouter/i }).first().click();
+		await page
+			.getByRole('button', { name: /Ajouter/i })
+			.first()
+			.click();
 		await page.getByRole('button', { name: 'Ajouter', exact: true }).last().click();
 
 		await expect(page.getByText('Renseigne un pseudo')).toBeVisible();
@@ -196,10 +210,16 @@ test.describe('S6.6 enterprise pipeline', () => {
 		]);
 		await gotoHydrated(page, '/enterprise/pipeline');
 
-		await page.getByRole('button', { name: /Retirer|Supprimer/i }).first().click();
+		await page
+			.getByRole('button', { name: /Retirer|Supprimer/i })
+			.first()
+			.click();
 		expect(removed).toBe(0);
 
-		await page.getByRole('button', { name: /Retirer|Supprimer/i }).last().click();
+		await page
+			.getByRole('button', { name: /Retirer|Supprimer/i })
+			.last()
+			.click();
 		await expect.poll(() => removed).toBe(1);
 	});
 });

@@ -59,10 +59,7 @@ export const audioCastingsApi = {
 
 	/** A second take replaces the first: the actor chose which one to send. */
 	audition(castingId: string, payload: AuditionRequest) {
-		return api.post<ApiResponse<{ id: string }>>(
-			`/audio/castings/${castingId}/auditions`,
-			payload
-		);
+		return api.post<ApiResponse<{ id: string }>>(`/audio/castings/${castingId}/auditions`, payload);
 	},
 
 	/**

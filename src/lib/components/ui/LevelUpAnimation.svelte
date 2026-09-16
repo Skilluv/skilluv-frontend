@@ -33,7 +33,9 @@
 </script>
 
 {#if show}
-	<div class="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 animate-[fade-in_300ms_ease-out]">
+	<div
+		class="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 animate-[fade-in_300ms_ease-out]"
+	>
 		<div class="flex flex-col items-center text-center animate-[slide-up_500ms_ease-out]">
 			<!-- Emoji -->
 			<div class="mb-4 text-7xl animate-[fragment-burst_600ms_ease-out]">
@@ -42,12 +44,20 @@
 
 			<!-- Title ring -->
 			<div class="relative mb-6">
-				<div class="absolute inset-0 rounded-full bg-gradient-to-br {titleGlows[newTitle]} opacity-30 blur-xl animate-[pulse-glow_1.5s_ease-in-out_infinite]"></div>
+				<div
+					class="absolute inset-0 rounded-full bg-gradient-to-br {titleGlows[
+						newTitle
+					]} opacity-30 blur-xl animate-[pulse-glow_1.5s_ease-in-out_infinite]"
+				></div>
 				<div class="relative rounded-2xl border-2 border-white/20 bg-surface-elevated px-8 py-4">
 					<p class="mb-1 text-sm text-text-muted uppercase tracking-widest">
 						{i18n.locale === 'fr' ? 'Nouveau titre' : 'New title'}
 					</p>
-					<p class="bg-gradient-to-r {titleGlows[newTitle]} bg-clip-text text-4xl font-bold text-transparent">
+					<p
+						class="bg-gradient-to-r {titleGlows[
+							newTitle
+						]} bg-clip-text text-4xl font-bold text-transparent"
+					>
 						{i18n.t(`common.titles.${newTitle}`)}
 					</p>
 					{#if goldenStars > 0}

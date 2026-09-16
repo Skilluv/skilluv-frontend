@@ -66,7 +66,10 @@
 		}).format(cents / 100);
 	}
 
-	function levelBadge(level: string): { label: string; variant: 'primary' | 'accent' | 'warning' | 'error' } {
+	function levelBadge(level: string): {
+		label: string;
+		variant: 'primary' | 'accent' | 'warning' | 'error';
+	} {
 		const map = {
 			foundation: { fr: 'Foundation', en: 'Foundation', variant: 'primary' as const },
 			intermediate: { fr: 'Intermédiaire', en: 'Intermediate', variant: 'accent' as const },
@@ -93,9 +96,12 @@
 
 <svelte:head>
 	<title>{i18n.locale === 'fr' ? 'Certifications | Skilluv' : 'Certifications | Skilluv'}</title>
-	<meta name="description" content={i18n.locale === 'fr'
-		? 'Passe une certification Skilluv. Diplôme vérifiable en ligne. Reconnaissance de tes compétences.'
-		: 'Take a Skilluv certification. Online-verifiable diploma. Recognition of your skills.'} />
+	<meta
+		name="description"
+		content={i18n.locale === 'fr'
+			? 'Passe une certification Skilluv. Diplôme vérifiable en ligne. Reconnaissance de tes compétences.'
+			: 'Take a Skilluv certification. Online-verifiable diploma. Recognition of your skills.'}
+	/>
 </svelte:head>
 
 <!-- Hero -->
@@ -106,8 +112,12 @@
 		style="background-image: linear-gradient(var(--sk-text) 1px, transparent 1px), linear-gradient(90deg, var(--sk-text) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);"
 	></div>
 	<div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
-		<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">Skilluv Certifications</p>
-		<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight">
+		<p class="mb-4 text-xs font-bold uppercase tracking-widest text-accent">
+			Skilluv Certifications
+		</p>
+		<h1
+			class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.05] tracking-tight"
+		>
 			{#if i18n.locale === 'fr'}
 				Un diplôme.<br />
 				<span class="text-primary">Vérifiable en ligne.</span>
@@ -118,7 +128,7 @@
 		</h1>
 		<p class="mt-8 max-w-2xl text-lg text-text-muted">
 			{i18n.locale === 'fr'
-				? "Passe une suite de challenges dans un temps limité. Obtiens un diplôme signé Skilluv avec un code de vérification publique. Reconnaissance concrète pour ton CV, LinkedIn, portfolio."
+				? 'Passe une suite de challenges dans un temps limité. Obtiens un diplôme signé Skilluv avec un code de vérification publique. Reconnaissance concrète pour ton CV, LinkedIn, portfolio.'
 				: 'Take a series of challenges in a time-limited window. Get a Skilluv-signed diploma with a public verification code. Concrete recognition for your resume, LinkedIn, portfolio.'}
 		</p>
 		{#if auth.isAuthenticated}
@@ -154,7 +164,9 @@
 	{#if loading}
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 			{#each Array(6) as _}
-				<div class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-72 p-6"></div>
+				<div
+					class="animate-pulse rounded-2xl border border-border bg-surface-elevated h-72 p-6"
+				></div>
 			{/each}
 		</div>
 	{:else if filtered.length === 0}
@@ -168,19 +180,29 @@
 		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 			{#each filtered as cert}
 				{@const lvl = levelBadge(cert.level)}
-				<article class="group flex flex-col rounded-2xl border border-border bg-surface-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
+				<article
+					class="group flex flex-col rounded-2xl border border-border bg-surface-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+				>
 					<div class="mb-3 flex items-start justify-between gap-2">
-						<div class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary">◈</div>
+						<div
+							class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-lg text-primary"
+						>
+							◈
+						</div>
 						<Badge variant={lvl.variant} size="sm">{lvl.label}</Badge>
 					</div>
 
-					<h2 class="mb-2 text-lg font-semibold leading-snug group-hover:text-primary transition-colors">
+					<h2
+						class="mb-2 text-lg font-semibold leading-snug group-hover:text-primary transition-colors"
+					>
 						{cert.title}
 					</h2>
 
 					<p class="mb-4 flex-1 line-clamp-3 text-sm text-text-muted">{cert.description}</p>
 
-					<div class="mb-4 grid grid-cols-3 gap-2 rounded-xl border border-border bg-surface-overlay p-3 text-center">
+					<div
+						class="mb-4 grid grid-cols-3 gap-2 rounded-xl border border-border bg-surface-overlay p-3 text-center"
+					>
 						<div>
 							<div class="text-lg font-black">{cert.challenges_count}</div>
 							<div class="text-[10px] uppercase tracking-wider text-text-muted">
@@ -188,7 +210,9 @@
 							</div>
 						</div>
 						<div>
-							<div class="text-lg font-black">{cert.duration_minutes}<span class="text-xs">min</span></div>
+							<div class="text-lg font-black">
+								{cert.duration_minutes}<span class="text-xs">min</span>
+							</div>
 							<div class="text-[10px] uppercase tracking-wider text-text-muted">
 								{i18n.locale === 'fr' ? 'durée' : 'duration'}
 							</div>
@@ -204,7 +228,9 @@
 					<div class="mb-4 flex items-baseline justify-between">
 						<div class="text-2xl font-black text-accent">{fmtPrice(cert.price_eur_cents)}</div>
 						<div class="text-xs text-text-muted">
-							{i18n.locale === 'fr' ? 'Valide' : 'Valid'} {cert.validity_months} {i18n.locale === 'fr' ? 'mois' : 'months'}
+							{i18n.locale === 'fr' ? 'Valide' : 'Valid'}
+							{cert.validity_months}
+							{i18n.locale === 'fr' ? 'mois' : 'months'}
 						</div>
 					</div>
 
@@ -230,15 +256,14 @@
 			<span class="text-accent">{i18n.locale === 'fr' ? 'qui compte.' : 'that counts.'}</span>
 		</h2>
 		<div class="grid gap-5 sm:grid-cols-2">
-			{#each [
-				{ icon: '◎', fr: { t: 'Vérifiable publiquement', d: 'Chaque diplôme a un code court partageable. Recruteurs et clients vérifient en 1 clic.' }, en: { t: 'Publicly verifiable', d: 'Every diploma has a shareable short code. Recruiters and clients verify in 1 click.' } },
-				{ icon: '⧗', fr: { t: 'Temps limité', d: 'Suite de challenges à passer dans un timing serré. Le score reflète ta vraie maîtrise.' }, en: { t: 'Time-limited', d: 'Series of challenges under tight timing. Score reflects real mastery.' } },
-				{ icon: '★', fr: { t: 'Score serveur', d: 'Le score est recalculé côté serveur depuis tes soumissions réelles. Aucun bidouillage possible.' }, en: { t: 'Server-side score', d: 'Score recalculated server-side from your actual submissions. No tampering.' } },
-				{ icon: '◆', fr: { t: 'PDF signé', d: 'Ton diplôme génère un PDF téléchargeable avec code de vérification et validité claire.' }, en: { t: 'Signed PDF', d: 'Your diploma generates a downloadable PDF with verification code and clear validity.' } }
-			] as p}
+			{#each [{ icon: '◎', fr: { t: 'Vérifiable publiquement', d: 'Chaque diplôme a un code court partageable. Recruteurs et clients vérifient en 1 clic.' }, en: { t: 'Publicly verifiable', d: 'Every diploma has a shareable short code. Recruiters and clients verify in 1 click.' } }, { icon: '⧗', fr: { t: 'Temps limité', d: 'Suite de challenges à passer dans un timing serré. Le score reflète ta vraie maîtrise.' }, en: { t: 'Time-limited', d: 'Series of challenges under tight timing. Score reflects real mastery.' } }, { icon: '★', fr: { t: 'Score serveur', d: 'Le score est recalculé côté serveur depuis tes soumissions réelles. Aucun bidouillage possible.' }, en: { t: 'Server-side score', d: 'Score recalculated server-side from your actual submissions. No tampering.' } }, { icon: '◆', fr: { t: 'PDF signé', d: 'Ton diplôme génère un PDF téléchargeable avec code de vérification et validité claire.' }, en: { t: 'Signed PDF', d: 'Your diploma generates a downloadable PDF with verification code and clear validity.' } }] as p}
 				{@const t = i18n.locale === 'fr' ? p.fr : p.en}
 				<article class="rounded-2xl border border-border bg-surface-elevated p-6">
-					<div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-xl text-primary">{p.icon}</div>
+					<div
+						class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-xl text-primary"
+					>
+						{p.icon}
+					</div>
 					<h3 class="text-base font-semibold">{t.t}</h3>
 					<p class="mt-2 text-sm leading-relaxed text-text-muted">{t.d}</p>
 				</article>

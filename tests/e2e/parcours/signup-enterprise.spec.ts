@@ -61,9 +61,17 @@ test.describe('@signup signup-enterprise', () => {
 				localStorage.setItem('skilluv-consent-version', '1');
 				localStorage.setItem(
 					'skilluv-consent-v1',
-					JSON.stringify({ version: 1, functional: false, analytics: false, marketing: false, decidedAt: new Date().toISOString() })
+					JSON.stringify({
+						version: 1,
+						functional: false,
+						analytics: false,
+						marketing: false,
+						decidedAt: new Date().toISOString()
+					})
 				);
-			} catch { /* ignore */ }
+			} catch {
+				/* ignore */
+			}
 		});
 
 		// ---- STEP 1 : personal ----
@@ -88,7 +96,12 @@ test.describe('@signup signup-enterprise', () => {
 		await page.locator('form').first().locator('button[type="submit"]').click();
 
 		// ---- STEP 2 : company ----
-		await expect(page.locator('h1').filter({ hasText: /entreprise|company/i }).first()).toBeVisible({ timeout: 10_000 });
+		await expect(
+			page
+				.locator('h1')
+				.filter({ hasText: /entreprise|company/i })
+				.first()
+		).toBeVisible({ timeout: 10_000 });
 		await page.screenshot({ path: testInfo.outputPath('ent-step-2-empty.png'), fullPage: true });
 
 		await page.getByPlaceholder(/Skilluv Inc/i).fill(OWNER.companyName);
@@ -145,7 +158,8 @@ test.describe('@signup signup-enterprise', () => {
 		} else {
 			testInfo.annotations.push({
 				type: 'audit',
-				description: 'Champ requires_totp_setup absent de la réponse dev-verify — à confirmer côté back.'
+				description:
+					'Champ requires_totp_setup absent de la réponse dev-verify — à confirmer côté back.'
 			});
 		}
 

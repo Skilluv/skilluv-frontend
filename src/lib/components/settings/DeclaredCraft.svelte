@@ -86,8 +86,7 @@
 		if (!platform.trim() || !handle.trim()) return;
 		await run(
 			'portfolio',
-			() =>
-				codePortfoliosApi.declare({ platform: platform.trim(), handle: handle.trim() }),
+			() => codePortfoliosApi.declare({ platform: platform.trim(), handle: handle.trim() }),
 			i18n.t('declaredCraft.portfolioAdded')
 		);
 		platform = '';
@@ -152,7 +151,11 @@
 						loading={busy[p.id ?? '']}
 						onclick={() =>
 							p.id &&
-							run(p.id, () => codePortfoliosApi.remove(p.id as string), i18n.t('declaredCraft.removed'))}
+							run(
+								p.id,
+								() => codePortfoliosApi.remove(p.id as string),
+								i18n.t('declaredCraft.removed')
+							)}
 						aria-label={i18n.t('declaredCraft.removeCta')}
 					>
 						<Trash2 size={15} />

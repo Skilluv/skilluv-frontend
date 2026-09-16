@@ -21,15 +21,21 @@ export const load: PageLoad = async ({ fetch }) => {
 	// (endpoint not deployed yet, proxy returning something else) used to leave
 	// `mine` undefined and crash the page on `filtered.length`.
 	const mine: Slice[] = mineRes.status === 'fulfilled' ? toSlices(mineRes.value) : [];
-	const mineError = mineRes.status === 'rejected'
-		? mineRes.reason instanceof SkilluError ? mineRes.reason.message : 'Erreur de chargement'
-		: null;
+	const mineError =
+		mineRes.status === 'rejected'
+			? mineRes.reason instanceof SkilluError
+				? mineRes.reason.message
+				: 'Erreur de chargement'
+			: null;
 
 	const reco: Slice[] = recoRes.status === 'fulfilled' ? toSlices(recoRes.value) : [];
-	const recoMeta = recoRes.status === 'fulfilled' ? recoRes.value.data?.meta ?? null : null;
-	const recoError = recoRes.status === 'rejected'
-		? recoRes.reason instanceof SkilluError ? recoRes.reason.message : 'Erreur de chargement'
-		: null;
+	const recoMeta = recoRes.status === 'fulfilled' ? (recoRes.value.data?.meta ?? null) : null;
+	const recoError =
+		recoRes.status === 'rejected'
+			? recoRes.reason instanceof SkilluError
+				? recoRes.reason.message
+				: 'Erreur de chargement'
+			: null;
 
 	return { mine, mineError, reco, recoMeta, recoError };
 };

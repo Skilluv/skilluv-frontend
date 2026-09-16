@@ -125,7 +125,7 @@
 
 {#if loading}
 	<Skeleton class="h-32 w-full" rounded="xl" />
-<!-- Rendered whenever the endpoint answered, not only when there is something
+	<!-- Rendered whenever the endpoint answered, not only when there is something
      in it. The page already gates the mount on `slice_type`, and "nobody
      filled this in" is the fact a reader most needs: the attestation rests on
      the statement, so its absence is the substance, not an empty state. -->
@@ -135,7 +135,9 @@
 		data-testid="audio-sources"
 	>
 		<div class="flex items-center justify-between gap-2 border-b border-border px-5 py-3">
-			<span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted">
+			<span
+				class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-text-muted"
+			>
 				<Scale size={13} strokeWidth={2} />
 				{i18n.t('audioSources.title')}
 			</span>
@@ -184,14 +186,18 @@
 							</div>
 
 							{#if source.attribution_text}
-								<p class="mt-2 rounded-lg bg-surface-overlay px-3 py-2 font-mono text-xs text-text-primary">
+								<p
+									class="mt-2 rounded-lg bg-surface-overlay px-3 py-2 font-mono text-xs text-text-primary"
+								>
 									{source.attribution_text}
 								</p>
 							{/if}
 
 							<div class="mt-2 flex flex-wrap items-center gap-x-3 text-xs text-text-muted">
 								{#if source.purchased_from}
-									<span>{i18n.t('audioSources.purchasedFrom', { name: source.purchased_from })}</span>
+									<span
+										>{i18n.t('audioSources.purchasedFrom', { name: source.purchased_from })}</span
+									>
 								{/if}
 								{#if source.permits_commercial_use === false}
 									<!-- The distinction that actually decides whether a paid
@@ -248,7 +254,12 @@
 			required
 		/>
 
-		<Input name="source_url" label={i18n.t('audioSources.formUrl')} placeholder="https://" bind:value={sourceUrl} />
+		<Input
+			name="source_url"
+			label={i18n.t('audioSources.formUrl')}
+			placeholder="https://"
+			bind:value={sourceUrl}
+		/>
 
 		<Input
 			name="licence_identifier"

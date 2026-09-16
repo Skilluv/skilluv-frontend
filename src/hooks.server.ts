@@ -151,8 +151,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		// legacy TOTP-required redirect target), route them into the
 		// mirrored enterprise settings under `/enterprise/settings/*` — so
 		// they never see the candidate shell.
-		const isCandidateSettings =
-			pathname === '/settings' || pathname.startsWith('/settings/');
+		const isCandidateSettings = pathname === '/settings' || pathname.startsWith('/settings/');
 		const isEnterpriseSettings = pathname.startsWith('/enterprise/settings');
 		// Bootstrap-adjacent enterprise routes that MUST render even when the
 		// account hasn't armed 2FA yet — the onboarding wizard is literally
@@ -235,10 +234,7 @@ export const handleError: HandleServerError = ({ error, event, status, message }
 				pathname: event.url.pathname,
 				status,
 				message,
-				error:
-					error instanceof Error
-						? { name: error.name, message: error.message }
-						: String(error)
+				error: error instanceof Error ? { name: error.name, message: error.message } : String(error)
 			})
 		);
 	} else {

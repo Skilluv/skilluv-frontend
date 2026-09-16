@@ -67,9 +67,7 @@ describe('the open pool is one endpoint for twelve trades', () => {
 		const { openSlicesApi } = await import('../../src/lib/api/open_slices');
 		// The two filters the deprecated route hardcoded, now in the query.
 		await openSlicesApi.list({ domain: 'code', slice_type: 'github_issue' });
-		expect(fetchMock.mock.calls[0][0]).toBe(
-			'/api/open-slices?domain=code&slice_type=github_issue'
-		);
+		expect(fetchMock.mock.calls[0][0]).toBe('/api/open-slices?domain=code&slice_type=github_issue');
 	});
 });
 
@@ -97,7 +95,9 @@ describe('a provider link that did not take', () => {
 
 	it('keeps the other parameters when it removes its own', async () => {
 		const { readOAuthLinkError } = await import('../../src/lib/utils/oauth_link_error');
-		const { failure, cleanedSearch } = readOAuthLinkError('?step=2&discord_error=expired&from=rite');
+		const { failure, cleanedSearch } = readOAuthLinkError(
+			'?step=2&discord_error=expired&from=rite'
+		);
 		expect(failure).toEqual({ provider: 'discord', code: 'expired' });
 		expect(cleanedSearch).toBe('?step=2&from=rite');
 	});
@@ -123,9 +123,8 @@ describe('a provider link that did not take', () => {
 	});
 
 	it('treats a code it has never heard of as a failure, not as a success', async () => {
-		const { readOAuthLinkError, oauthLinkErrorKey } = await import(
-			'../../src/lib/utils/oauth_link_error'
-		);
+		const { readOAuthLinkError, oauthLinkErrorKey } =
+			await import('../../src/lib/utils/oauth_link_error');
 		// A code added server-side must not arrive as silence: the link did
 		// not happen either way, and `failed` is the backend's own catch-all.
 		const { failure } = readOAuthLinkError('?github_error=rate_limited');
@@ -157,9 +156,8 @@ describe('a provider link that did not take', () => {
 	});
 
 	it('names the brand rather than interpolating its slug', async () => {
-		const { OAUTH_PROVIDER_NAMES, LINK_ERROR_PROVIDERS } = await import(
-			'../../src/lib/utils/oauth_link_error'
-		);
+		const { OAUTH_PROVIDER_NAMES, LINK_ERROR_PROVIDERS } =
+			await import('../../src/lib/utils/oauth_link_error');
 		// "Ce compte linkedin est déjà lié" is what the slug would produce.
 		expect(OAUTH_PROVIDER_NAMES.linkedin).toBe('LinkedIn');
 		expect(OAUTH_PROVIDER_NAMES.github).toBe('GitHub');
@@ -169,9 +167,8 @@ describe('a provider link that did not take', () => {
 	});
 
 	it('every consent link carries a return path', async () => {
-		const { githubLinkUrl, linkUrl, LINKABLE_PROVIDERS } = await import(
-			'../../src/lib/api/oauth_links'
-		);
+		const { githubLinkUrl, linkUrl, LINKABLE_PROVIDERS } =
+			await import('../../src/lib/api/oauth_links');
 
 		// Without one the callback ends on the API origin: success shows raw
 		// JSON, and a failure has nowhere to put its error code. That is the

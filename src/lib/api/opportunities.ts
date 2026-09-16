@@ -74,10 +74,9 @@ export const opportunitiesApi = {
 
 	/** Pick a time. The slot has to be one of the proposed ones. */
 	confirmInterview(interviewId: string, slot: InterviewSlot) {
-		return api.post<ApiResponse<{ interview: Interview }>>(
-			`/interviews/${interviewId}/confirm`,
-			{ slot }
-		);
+		return api.post<ApiResponse<{ interview: Interview }>>(`/interviews/${interviewId}/confirm`, {
+			slot
+		});
 	},
 
 	declineInterview(interviewId: string) {

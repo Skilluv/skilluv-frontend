@@ -164,11 +164,14 @@ test.describe('S6.4 enterprise KYC', () => {
 		]);
 		await gotoHydrated(page, '/enterprise/kyc');
 
-		await page.locator('input[type="file"]').first().setInputFiles({
-			name: 'huge.pdf',
-			mimeType: 'application/pdf',
-			buffer: Buffer.alloc(11 * 1024 * 1024)
-		});
+		await page
+			.locator('input[type="file"]')
+			.first()
+			.setInputFiles({
+				name: 'huge.pdf',
+				mimeType: 'application/pdf',
+				buffer: Buffer.alloc(11 * 1024 * 1024)
+			});
 
 		await expect(page.getByText('Fichier > 10 Mo')).toBeVisible();
 		expect(uploads).toBe(0);

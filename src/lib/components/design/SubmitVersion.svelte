@@ -213,8 +213,7 @@
 			bind:value={notes}
 			rows="4"
 			class="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text placeholder:text-text-muted focus:border-accent focus:outline-none"
-			data-testid="design-version-notes"
-		></textarea>
+			data-testid="design-version-notes"></textarea>
 		<span class="text-xs text-text-muted">{i18n.t('designWorkshop.submitNotesHint')}</span>
 	</label>
 

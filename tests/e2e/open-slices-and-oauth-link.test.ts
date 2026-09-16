@@ -105,7 +105,9 @@ test.describe('the open pool', () => {
 	});
 
 	test('a default is left out of the query rather than spelled out', async ({ page }) => {
-		const asked = await capturePool(page, { data: { slices: [], domain: null, max_difficulty: 3 } });
+		const asked = await capturePool(page, {
+			data: { slices: [], domain: null, max_difficulty: 3 }
+		});
 
 		await gotoHydrated(page, '/open-slices');
 		await page.getByRole('button', { name: 'Tous les métiers' }).click();

@@ -32,7 +32,10 @@
 	import { onMount } from 'svelte';
 	import { Gavel } from '@lucide/svelte';
 	import { reviewQueueApi, claimIsLive, isPastSla, type ReviewTask } from '$api/review_queue';
-	import { apprenticeVerificationsApi, type VerificationRequest } from '$api/apprentice_verifications';
+	import {
+		apprenticeVerificationsApi,
+		type VerificationRequest
+	} from '$api/apprentice_verifications';
 	import { SkilluError } from '$api/client';
 	import { i18n } from '$lib/i18n';
 	import { toast } from '$stores/toast.svelte';

@@ -51,14 +51,22 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
-<div class="mx-auto flex min-h-[80vh] max-w-md flex-col items-center justify-center px-4 py-14 text-center">
+<div
+	class="mx-auto flex min-h-[80vh] max-w-md flex-col items-center justify-center px-4 py-14 text-center"
+>
 	{#if phase === 'loading'}
-		<div class="mb-6 h-16 w-16 animate-spin rounded-full border-4 border-primary/20 border-t-primary"></div>
+		<div
+			class="mb-6 h-16 w-16 animate-spin rounded-full border-4 border-primary/20 border-t-primary"
+		></div>
 		<h1 class="text-3xl font-black tracking-tight">
 			{i18n.locale === 'fr' ? 'Connexion en cours...' : 'Signing you in...'}
 		</h1>
 	{:else if phase === 'success'}
-		<div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success/15 text-success animate-[fragment-burst_600ms_ease-out]"><Check size={40} strokeWidth={2.5} /></div>
+		<div
+			class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success/15 text-success animate-[fragment-burst_600ms_ease-out]"
+		>
+			<Check size={40} strokeWidth={2.5} />
+		</div>
 		<h1 class="text-4xl font-black leading-[1.05] tracking-tight">
 			{i18n.locale === 'fr' ? 'Bienvenue.' : 'Welcome.'}
 		</h1>
@@ -66,7 +74,11 @@
 			{i18n.locale === 'fr' ? 'On te redirige...' : 'Redirecting...'}
 		</p>
 	{:else}
-		<div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-error/15 text-error"><X size={40} strokeWidth={2.5} /></div>
+		<div
+			class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-error/15 text-error"
+		>
+			<X size={40} strokeWidth={2.5} />
+		</div>
 		<h1 class="text-4xl font-black leading-[1.05] tracking-tight">
 			{i18n.locale === 'fr' ? 'Lien invalide.' : 'Invalid link.'}
 		</h1>

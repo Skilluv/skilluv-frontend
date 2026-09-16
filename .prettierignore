@@ -1,0 +1,12 @@
+# Generated or vendored — nothing here is written by hand.
+node_modules
+build
+.svelte-kit
+package-lock.json
+static
+test-results
+playwright-report
+coverage
+
+# The skill packs are vendored documents, not this project's source.
+.claude/skills

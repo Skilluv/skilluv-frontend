@@ -23,7 +23,9 @@
 		{#each toast.items as item (item.id)}
 			{@const Icon = typeIcons[item.type]}
 			<div
-				class="flex items-center gap-3 rounded-xl border px-4 py-3 shadow-lg animate-[slide-up_200ms_ease-out] {typeStyles[item.type]}"
+				class="flex items-center gap-3 rounded-xl border px-4 py-3 shadow-lg animate-[slide-up_200ms_ease-out] {typeStyles[
+					item.type
+				]}"
 				role="alert"
 			>
 				<Icon size={18} strokeWidth={2} class="shrink-0" />

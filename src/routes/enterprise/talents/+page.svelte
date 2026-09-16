@@ -8,11 +8,24 @@
 	import CountrySelect from '$components/ui/CountrySelect.svelte';
 	import Pagination from '$components/ui/Pagination.svelte';
 	import { geo } from '$stores/geo.svelte';
-	import { talentSearchV2Api, type TalentV2, type SortByV2, type LookingFor } from '$api/talent_search_v2';
+	import {
+		talentSearchV2Api,
+		type TalentV2,
+		type SortByV2,
+		type LookingFor
+	} from '$api/talent_search_v2';
 	import { toast } from '$stores/toast.svelte';
 	import { SkilluError } from '$api/client';
 	import type { SkillDomain, Title } from '$lib/types';
-	import { RotateCcw, Inbox, Search, SlidersHorizontal, Flame, Trophy, Award } from '@lucide/svelte';
+	import {
+		RotateCcw,
+		Inbox,
+		Search,
+		SlidersHorizontal,
+		Flame,
+		Trophy,
+		Award
+	} from '@lucide/svelte';
 
 	let talents = $state<TalentV2[]>([]);
 	let total = $state(0);
@@ -169,7 +182,8 @@
 				params.language_spoken = languagesSpoken.join(',');
 			}
 			if (hasProjects) params.has_projects = true;
-			if (typeof minGithubRepos === 'number' && minGithubRepos > 0) params.min_github_repos = minGithubRepos;
+			if (typeof minGithubRepos === 'number' && minGithubRepos > 0)
+				params.min_github_repos = minGithubRepos;
 
 			const res = await talentSearchV2Api.search(params);
 			talents = res.data;
@@ -282,7 +296,7 @@
 		</div>
 
 		<div class="flex items-center gap-2">
-			<Button variant="accent" type="submit" loading={loading}>
+			<Button variant="accent" type="submit" {loading}>
 				{i18n.locale === 'fr' ? 'Rechercher' : 'Search'}
 			</Button>
 			<button
@@ -555,16 +569,31 @@
 			<div class="mb-4 flex flex-wrap items-center justify-between gap-3">
 				<p class="text-sm text-text-muted">
 					<span class="font-bold text-text-primary tabular-nums">{total.toLocaleString()}</span>
-					{i18n.locale === 'fr' ? (total === 1 ? 'talent' : 'talents') : total === 1 ? 'talent' : 'talents'}
+					{i18n.locale === 'fr'
+						? total === 1
+							? 'talent'
+							: 'talents'
+						: total === 1
+							? 'talent'
+							: 'talents'}
 				</p>
 				<Select
 					size="sm"
 					shape="rounded"
 					items={[
-						{ value: 'fragments', label: i18n.locale === 'fr' ? 'Tri : Fragments' : 'Sort: Fragments' },
+						{
+							value: 'fragments',
+							label: i18n.locale === 'fr' ? 'Tri : Fragments' : 'Sort: Fragments'
+						},
 						{ value: 'recent', label: i18n.locale === 'fr' ? 'Tri : Récent' : 'Sort: Recent' },
-						{ value: 'most_active_recently', label: i18n.locale === 'fr' ? 'Tri : Plus actifs' : 'Sort: Most active' },
-						{ value: 'top_in_domain', label: i18n.locale === 'fr' ? 'Tri : Top domaine' : 'Sort: Top in domain' }
+						{
+							value: 'most_active_recently',
+							label: i18n.locale === 'fr' ? 'Tri : Plus actifs' : 'Sort: Most active'
+						},
+						{
+							value: 'top_in_domain',
+							label: i18n.locale === 'fr' ? 'Tri : Top domaine' : 'Sort: Top in domain'
+						}
 					]}
 					bind:value={sortBy}
 					onchange={() => void search()}
@@ -575,7 +604,9 @@
 			{#if loading}
 				<div class="grid gap-3 xl:grid-cols-2">
 					{#each Array(6) as _}
-						<div class="h-36 animate-pulse rounded-xl border border-border bg-surface-elevated"></div>
+						<div
+							class="h-36 animate-pulse rounded-xl border border-border bg-surface-elevated"
+						></div>
 					{/each}
 				</div>
 			{:else if talents.length === 0}
@@ -587,7 +618,9 @@
 						{i18n.locale === 'fr' ? 'Aucun talent ne correspond' : 'No talent matches'}
 					</p>
 					<p class="text-xs text-text-muted">
-						{i18n.locale === 'fr' ? 'Essayez d\'assouplir vos filtres.' : 'Try loosening your filters.'}
+						{i18n.locale === 'fr'
+							? "Essayez d'assouplir vos filtres."
+							: 'Try loosening your filters.'}
 					</p>
 					{#if activeFilterCount > 0}
 						<div class="mt-4">
@@ -607,7 +640,9 @@
 						>
 							<!-- Header — avatar + name + status -->
 							<div class="flex items-start gap-3">
-								<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-sm font-bold text-primary">
+								<div
+									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-sm font-bold text-primary"
+								>
 									{t.display_name.charAt(0).toUpperCase()}
 								</div>
 								<div class="min-w-0 flex-1">
@@ -626,7 +661,9 @@
 								</div>
 								<div class="shrink-0 text-right text-[10px] text-text-muted">
 									{i18n.locale === 'fr' ? 'Actif' : 'Active'}
-									<div class="font-mono tabular-nums text-text-primary">{fmtActivity(t.last_activity_at)}</div>
+									<div class="font-mono tabular-nums text-text-primary">
+										{fmtActivity(t.last_activity_at)}
+									</div>
 								</div>
 							</div>
 
@@ -662,7 +699,8 @@
 									<span class="text-text-muted">badges</span>
 								</div>
 								<span class="ml-auto text-text-muted">
-									{t.project_count} {i18n.locale === 'fr' ? 'projets' : 'projects'}
+									{t.project_count}
+									{i18n.locale === 'fr' ? 'projets' : 'projects'}
 								</span>
 							</div>
 						</a>

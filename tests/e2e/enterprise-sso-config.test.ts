@@ -170,12 +170,18 @@ test.describe('S6.9 enterprise SSO configuration', () => {
 		await gotoHydrated(page, '/enterprise/settings/sso');
 
 		page.once('dialog', (d) => d.dismiss());
-		await page.getByRole('button', { name: /Désactiver/i }).first().click();
+		await page
+			.getByRole('button', { name: /Désactiver/i })
+			.first()
+			.click();
 		await page.waitForTimeout(400);
 		expect(deletes).toBe(0);
 
 		page.once('dialog', (d) => d.accept());
-		await page.getByRole('button', { name: /Désactiver/i }).first().click();
+		await page
+			.getByRole('button', { name: /Désactiver/i })
+			.first()
+			.click();
 		await expect.poll(() => deletes).toBe(1);
 	});
 });

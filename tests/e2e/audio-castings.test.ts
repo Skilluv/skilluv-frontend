@@ -123,7 +123,9 @@ const detail = {
 };
 
 test.describe('Un casting', () => {
-	test('le brief est rendu, les prises sont numérotées tant que c’est aveugle', async ({ page }) => {
+	test('le brief est rendu, les prises sont numérotées tant que c’est aveugle', async ({
+		page
+	}) => {
 		await mockApi(page, [{ path: '/audio/castings/c1', handler: json(detail) }]);
 
 		await gotoHydrated(page, '/audio/castings/c1');

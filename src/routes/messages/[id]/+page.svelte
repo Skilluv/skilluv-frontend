@@ -55,7 +55,8 @@
 
 	function fmtTime(iso: string): string {
 		return new Intl.DateTimeFormat(i18n.locale === 'fr' ? 'fr-FR' : 'en-US', {
-			hour: '2-digit', minute: '2-digit'
+			hour: '2-digit',
+			minute: '2-digit'
 		}).format(new Date(iso));
 	}
 
@@ -72,12 +73,15 @@
 		const iv = setInterval(() => {
 			// Petit poll léger (5s) — le backend expose des WebSocket qu'on
 			// pourra brancher plus tard pour du realtime propre.
-			dmApi.getMessages(convId, { limit: 50 }).then((res) => {
-				if (res.data.messages.length !== messages.length) {
-					messages = res.data.messages;
-					void tick().then(scrollToBottom);
-				}
-			}).catch(() => null);
+			dmApi
+				.getMessages(convId, { limit: 50 })
+				.then((res) => {
+					if (res.data.messages.length !== messages.length) {
+						messages = res.data.messages;
+						void tick().then(scrollToBottom);
+					}
+				})
+				.catch(() => null);
 		}, 5000);
 		return () => clearInterval(iv);
 	});
@@ -95,7 +99,10 @@
 	</nav>
 
 	<!-- Messages -->
-	<div bind:this={scrollEl} class="flex-1 overflow-y-auto rounded-2xl border border-border bg-surface-elevated p-4 mb-3">
+	<div
+		bind:this={scrollEl}
+		class="flex-1 overflow-y-auto rounded-2xl border border-border bg-surface-elevated p-4 mb-3"
+	>
 		{#if loading}
 			<div class="animate-pulse space-y-3">
 				{#each Array(4) as _}
@@ -105,7 +112,9 @@
 		{:else if messages.length === 0}
 			<div class="flex h-full items-center justify-center text-center">
 				<p class="text-text-muted">
-					{i18n.locale === 'fr' ? 'Aucun message pour l\'instant. Écris le premier.' : 'No message yet. Write the first one.'}
+					{i18n.locale === 'fr'
+						? "Aucun message pour l'instant. Écris le premier."
+						: 'No message yet. Write the first one.'}
 				</p>
 			</div>
 		{:else}
@@ -143,8 +152,7 @@
 					e.preventDefault();
 					send(new SubmitEvent('submit'));
 				}
-			}}
-		></textarea>
+			}}></textarea>
 		<Button variant="accent" loading={sending} disabled={!composing.trim()}>
 			{i18n.locale === 'fr' ? 'Envoyer' : 'Send'}
 		</Button>

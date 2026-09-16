@@ -131,7 +131,9 @@
 				edition = null;
 				nominees = [];
 				if (ed.reason instanceof SkilluError && ed.reason.status === 404) missing = true;
-				else loadError = ed.reason instanceof SkilluError ? ed.reason.message : i18n.t('errors.generic');
+				else
+					loadError =
+						ed.reason instanceof SkilluError ? ed.reason.message : i18n.t('errors.generic');
 			}
 
 			categories = cats.status === 'fulfilled' ? (cats.value.data?.categories ?? []) : [];
@@ -299,8 +301,7 @@
 						bind:value={nominateCitation}
 						rows="4"
 						class="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text focus:border-accent focus:outline-none"
-						data-testid="design-awards-citation"
-					></textarea>
+						data-testid="design-awards-citation"></textarea>
 					<span class="text-xs text-text-muted">
 						{i18n.t('designAwards.nominateCitationHint')}
 					</span>
@@ -316,7 +317,6 @@
 				<h2 class="text-sm font-bold uppercase tracking-wider text-text-muted">
 					{i18n.t('designAwards.categoriesTitle')}
 				</h2>
-
 			</div>
 
 			{#each categories as category (category.slug)}
@@ -352,7 +352,9 @@
 									</p>
 
 									<div class="mt-2 flex flex-wrap items-center gap-3 text-xs text-text-muted">
-										<span>{i18n.t('designAwards.communityVotes', { n: nominee.community_votes })}</span>
+										<span
+											>{i18n.t('designAwards.communityVotes', { n: nominee.community_votes })}</span
+										>
 										<span>{i18n.t('designAwards.juryVotes', { n: nominee.jury_votes })}</span>
 										<span class="font-medium text-text">
 											{i18n.t('designAwards.weightedScore', {

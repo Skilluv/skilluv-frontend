@@ -59,12 +59,12 @@
 	/** A pitch you have not answered yet. `read` still counts as unanswered. */
 	let openPitches = $derived(pitches.filter((p) => p.status === 'sent' || p.status === 'read'));
 	let openInvitations = $derived(invitations.filter((i) => i.my_status === 'shortlisted'));
-	let openInterviews = $derived(interviews.filter((i) => !i.confirmed_slot && i.status !== 'declined'));
+	let openInterviews = $derived(
+		interviews.filter((i) => !i.confirmed_slot && i.status !== 'declined')
+	);
 	let runningTrials = $derived(trials.filter((t) => !t.ended_at));
 
-	let waiting = $derived(
-		openPitches.length + openInvitations.length + openInterviews.length
-	);
+	let waiting = $derived(openPitches.length + openInvitations.length + openInterviews.length);
 
 	let isEmpty = $derived(
 		pitches.length === 0 &&
@@ -314,10 +314,7 @@
 					{#each interviews as interview (interview.id)}
 						<li class="rounded-2xl border border-border bg-surface-elevated p-5">
 							<div class="mb-2 flex flex-wrap items-center gap-2">
-								<Badge
-									variant={interview.confirmed_slot ? 'success' : 'default'}
-									size="sm"
-								>
+								<Badge variant={interview.confirmed_slot ? 'success' : 'default'} size="sm">
 									{interview.status}
 								</Badge>
 								<span class="text-xs text-text-muted">{interview.source_type}</span>

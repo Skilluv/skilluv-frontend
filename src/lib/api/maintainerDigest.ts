@@ -33,10 +33,7 @@ export interface UnsubscribeResponse {
 
 export const maintainerDigestApi = {
 	subscribe(payload: SubscribePayload) {
-		return publicApi.post<ApiResponse<SubscribeResponse>>(
-			'/maintainer-digest/subscribe',
-			payload
-		);
+		return publicApi.post<ApiResponse<SubscribeResponse>>('/maintainer-digest/subscribe', payload);
 	},
 
 	confirm(token: string) {

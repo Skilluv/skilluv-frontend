@@ -22,7 +22,9 @@ test.describe('@parcours push settings', () => {
 		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 		// PushToggle renders either its title ("Browser notifications" / "Notifications navigateur")
 		// when the API is available, or the "unsupported" fallback in headless mode.
-		const toggleTitle = page.getByRole('heading', { name: /browser notifications|notifications navigateur/i });
+		const toggleTitle = page.getByRole('heading', {
+			name: /browser notifications|notifications navigateur/i
+		});
 		const unsupported = page.getByText(/pas.*supporté|not supported|unsupported|ne supporte pas/i);
 		await expect(toggleTitle.or(unsupported)).toBeVisible({ timeout: 10_000 });
 	});

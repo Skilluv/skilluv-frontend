@@ -51,9 +51,7 @@
 		}))
 	);
 
-	let canSubmit = $derived(
-		title.trim().length > 0 && /^https?:\/\/.+/i.test(url.trim()) && !atCap
-	);
+	let canSubmit = $derived(title.trim().length > 0 && /^https?:\/\/.+/i.test(url.trim()) && !atCap);
 
 	async function load() {
 		loading = true;

@@ -21,7 +21,7 @@ export const portfoliosFr: PortfolioTranslations = {
 	portableRecord: {
 		title: 'Emporte ce parcours',
 		subtitle:
-			"Tout le parcours public en un fichier, et un badge pour un README. Les deux sont publics, donc celui qui évalue ce profil peut les emporter aussi.",
+			'Tout le parcours public en un fichier, et un badge pour un README. Les deux sont publics, donc celui qui évalue ce profil peut les emporter aussi.',
 		jsonCta: 'Ouvrir le JSON',
 		badgeAlt: 'Badge de rang Skilluv',
 		copyMarkdown: 'Copier le Markdown',
@@ -36,7 +36,8 @@ export const portfoliosFr: PortfolioTranslations = {
 		domainLabel: 'Domaine',
 		allDomains: 'Tous',
 		empty: 'Aucun portfolio lié pour le moment.',
-		emptyHint: 'Ajoute les comptes que tu mettrais sur un CV. Ils apparaissent sur ton profil public.',
+		emptyHint:
+			'Ajoute les comptes que tu mettrais sur un CV. Ils apparaissent sur ton profil public.',
 		noPlatforms: "Aucune plateforme n'est répertoriée pour ce domaine.",
 		addCta: 'Lier un compte',
 		formTitle: 'Lier un compte',
@@ -46,10 +47,11 @@ export const portfoliosFr: PortfolioTranslations = {
 		handlePlaceholder: 'ton-pseudo',
 		urlLabel: 'URL du profil',
 		urlHint:
-			"Pré-remplie depuis ton identifiant quand la plateforme annonce la forme de ses URL. Corrige-la si elle est fausse.",
+			'Pré-remplie depuis ton identifiant quand la plateforme annonce la forme de ses URL. Corrige-la si elle est fausse.',
 		itemsLabel: 'Nombre',
 		reachLabel: 'Portée',
-		figuresOptional: 'Les deux chiffres sont facultatifs. Laisse-les vides plutôt que de les deviner.',
+		figuresOptional:
+			'Les deux chiffres sont facultatifs. Laisse-les vides plutôt que de les deviner.',
 		saveCta: 'Lier',
 		cancelCta: 'Annuler',
 		removeCta: 'Retirer',

@@ -51,8 +51,7 @@
 		// disappearing: a kind added backend-side must show up here without
 		// a frontend release.
 		return [...buckets.entries()].sort(
-			([a], [b]) =>
-				(CATEGORY_ORDER.indexOf(a) + 1 || 99) - (CATEGORY_ORDER.indexOf(b) + 1 || 99)
+			([a], [b]) => (CATEGORY_ORDER.indexOf(a) + 1 || 99) - (CATEGORY_ORDER.indexOf(b) + 1 || 99)
 		);
 	});
 
@@ -65,9 +64,7 @@
 	}
 
 	function channelLabel(channel: Channel): string {
-		return i18n.t(
-			`settings.notifications.channels.${channel === 'in_app' ? 'inApp' : channel}`
-		);
+		return i18n.t(`settings.notifications.channels.${channel === 'in_app' ? 'inApp' : channel}`);
 	}
 
 	onMount(async () => {
@@ -98,9 +95,7 @@
 		saving = true;
 
 		try {
-			const res = await notificationPreferencesApi.update([
-				{ kind: pref.kind, [channel]: next }
-			]);
+			const res = await notificationPreferencesApi.update([{ kind: pref.kind, [channel]: next }]);
 			if (res.data.rejected.length > 0) {
 				// The server refused. Put the toggle back where it was:
 				// letting it move when nothing changed is worse than an
@@ -121,9 +116,7 @@
 		try {
 			const res = await notificationPreferencesApi.reset();
 			toast.success(
-				i18n
-					.t('settings.notifications.resetDone')
-					.replace('{count}', String(res.data.cleared))
+				i18n.t('settings.notifications.resetDone').replace('{count}', String(res.data.cleared))
 			);
 			const refreshed = await notificationPreferencesApi.list();
 			prefs = refreshed.data.preferences;

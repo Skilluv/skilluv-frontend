@@ -121,9 +121,7 @@ export const projectsApi = {
 	},
 
 	bySlug(slug: string) {
-		return api.get<ApiResponse<{ project: Project }>>(
-			`/projects/${encodeURIComponent(slug)}`
-		);
+		return api.get<ApiResponse<{ project: Project }>>(`/projects/${encodeURIComponent(slug)}`);
 	},
 
 	contributors(slug: string) {
@@ -134,10 +132,10 @@ export const projectsApi = {
 
 	/** The owner's act. Being interested in a project does not put you on it. */
 	addContributor(slug: string, userId: string, role?: string) {
-		return api.post<ApiResponse<unknown>>(
-			`/projects/${encodeURIComponent(slug)}/contributors`,
-			{ user_id: userId, ...(role ? { role } : {}) }
-		);
+		return api.post<ApiResponse<unknown>>(`/projects/${encodeURIComponent(slug)}/contributors`, {
+			user_id: userId,
+			...(role ? { role } : {})
+		});
 	},
 
 	removeContributor(slug: string, userId: string) {
@@ -187,9 +185,7 @@ export const projectsApi = {
 	},
 
 	unmarkInterested(projectId: string) {
-		return api.delete<void>(
-			`/users/me/interests/projects/${encodeURIComponent(projectId)}`
-		);
+		return api.delete<void>(`/users/me/interests/projects/${encodeURIComponent(projectId)}`);
 	}
 };
 

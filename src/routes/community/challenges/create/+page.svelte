@@ -40,7 +40,11 @@
 				duration_minutes: durationMinutes,
 				submit_for_review: submitForReview
 			});
-			toast.success(submitForReview ? i18n.t('community.create.submitted') : i18n.t('community.create.draftSaved'));
+			toast.success(
+				submitForReview
+					? i18n.t('community.create.submitted')
+					: i18n.t('community.create.draftSaved')
+			);
 			goto('/community/challenges/mine');
 		} catch (err) {
 			toast.error(err instanceof SkilluError ? err.message : 'Erreur lors de la création.');
@@ -55,18 +59,34 @@
 </svelte:head>
 
 <div class="mx-auto max-w-2xl px-4 py-12 sm:py-16">
-	<a href="/community/challenges" class="mb-6 inline-block text-sm text-text-muted hover:text-text-primary">← {i18n.t('common.actions.back')}</a>
+	<a
+		href="/community/challenges"
+		class="mb-6 inline-block text-sm text-text-muted hover:text-text-primary"
+		>← {i18n.t('common.actions.back')}</a
+	>
 	<h1 class="mb-3 text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight">
 		{i18n.t('community.create.title')}<span class="text-accent">.</span>
 	</h1>
 	<p class="mb-10 text-lg text-text-muted">{i18n.t('community.create.subtitle')}</p>
 
 	<form onsubmit={handleSubmit} class="flex flex-col gap-5">
-		<Input label={i18n.t('community.create.challengeTitle')} placeholder="Un titre accrocheur" bind:value={title} required />
-		<Input label={i18n.t('community.create.description')} placeholder="De quoi parle ce challenge ?" bind:value={description} required />
+		<Input
+			label={i18n.t('community.create.challengeTitle')}
+			placeholder="Un titre accrocheur"
+			bind:value={title}
+			required
+		/>
+		<Input
+			label={i18n.t('community.create.description')}
+			placeholder="De quoi parle ce challenge ?"
+			bind:value={description}
+			required
+		/>
 
 		<div>
-			<label for="instructions" class="mb-1.5 block text-sm font-medium">{i18n.t('community.create.instructions')}</label>
+			<label for="instructions" class="mb-1.5 block text-sm font-medium"
+				>{i18n.t('community.create.instructions')}</label
+			>
 			<textarea
 				id="instructions"
 				bind:value={instructions}
@@ -79,7 +99,9 @@
 
 		<div class="grid grid-cols-2 gap-4">
 			<div>
-				<label for="domain" class="mb-1.5 block text-sm font-medium">{i18n.t('community.create.domain')}</label>
+				<label for="domain" class="mb-1.5 block text-sm font-medium"
+					>{i18n.t('community.create.domain')}</label
+				>
 				<Select
 					items={[
 						{ value: 'code', label: i18n.t('common.domains.code') },
@@ -93,15 +115,30 @@
 			</div>
 
 			<div>
-				<label for="difficulty" class="mb-1.5 block text-sm font-medium">{i18n.t('community.create.difficulty')} ({difficulty}/5)</label>
-				<input id="difficulty" type="range" min="1" max="5" bind:value={difficulty} class="mt-3 w-full accent-accent" />
+				<label for="difficulty" class="mb-1.5 block text-sm font-medium"
+					>{i18n.t('community.create.difficulty')} ({difficulty}/5)</label
+				>
+				<input
+					id="difficulty"
+					type="range"
+					min="1"
+					max="5"
+					bind:value={difficulty}
+					class="mt-3 w-full accent-accent"
+				/>
 			</div>
 		</div>
 
 		<div class="grid grid-cols-2 gap-4">
-			<Input label={i18n.t('community.create.language')} placeholder="javascript, python..." bind:value={language} />
+			<Input
+				label={i18n.t('community.create.language')}
+				placeholder="javascript, python..."
+				bind:value={language}
+			/>
 			<div>
-				<label for="duration" class="mb-1.5 block text-sm font-medium">{i18n.t('community.create.duration')}</label>
+				<label for="duration" class="mb-1.5 block text-sm font-medium"
+					>{i18n.t('community.create.duration')}</label
+				>
 				<input
 					id="duration"
 					type="number"
@@ -115,7 +152,9 @@
 		</div>
 
 		<div>
-			<label for="expected" class="mb-1.5 block text-sm font-medium">{i18n.t('community.create.expectedOutput')}</label>
+			<label for="expected" class="mb-1.5 block text-sm font-medium"
+				>{i18n.t('community.create.expectedOutput')}</label
+			>
 			<textarea
 				id="expected"
 				bind:value={expectedOutput}
@@ -127,11 +166,19 @@
 
 		<label class="flex items-center gap-3">
 			<input type="checkbox" bind:checked={submitForReview} class="h-5 w-5 rounded accent-accent" />
-			<span class="text-sm">{i18n.t('community.create.submitForReview')} ({i18n.t('community.create.submitForReviewHint')})</span>
+			<span class="text-sm"
+				>{i18n.t('community.create.submitForReview')} ({i18n.t(
+					'community.create.submitForReviewHint'
+				)})</span
+			>
 		</label>
 
 		<Button variant="accent" size="lg" type="submit" loading={saving} class="w-full">
-			{saving ? i18n.t('community.create.creating') : submitForReview ? i18n.t('community.create.submitBtn') : i18n.t('community.create.saveDraft')}
+			{saving
+				? i18n.t('community.create.creating')
+				: submitForReview
+					? i18n.t('community.create.submitBtn')
+					: i18n.t('community.create.saveDraft')}
 		</Button>
 	</form>
 </div>

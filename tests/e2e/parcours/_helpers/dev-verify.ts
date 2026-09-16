@@ -44,7 +44,9 @@ export async function getVerifyToken(page: Page, email: string): Promise<DevVeri
 				if (raw && typeof raw.token === 'string' && raw.token.length > 0) return raw;
 			}
 			lastBody = await res.text().catch(() => '');
-			throw new Error(`Réponse dev-verify inattendue (pas de champ "token") : ${lastBody.slice(0, 200)}`);
+			throw new Error(
+				`Réponse dev-verify inattendue (pas de champ "token") : ${lastBody.slice(0, 200)}`
+			);
 		}
 		lastBody = await res.text().catch(() => '');
 		if (lastStatus === 404) {

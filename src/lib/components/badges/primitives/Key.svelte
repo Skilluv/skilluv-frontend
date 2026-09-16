@@ -11,14 +11,7 @@
 		ariaLabel?: string;
 	}
 
-	let {
-		type,
-		size = 48,
-		color,
-		animated = false,
-		title,
-		ariaLabel
-	}: Props = $props();
+	let { type, size = 48, color, animated = false, title, ariaLabel }: Props = $props();
 
 	const meaning = $derived(KEY_MEANINGS[type]);
 	const label = $derived(ariaLabel ?? `Clé ${meaning.label_fr}`);
