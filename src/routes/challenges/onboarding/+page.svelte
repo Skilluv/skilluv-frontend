@@ -7,7 +7,7 @@
 	import { onboardingRiteApi, type RiteProgress } from '$api/onboarding_rite';
 	import { oauthLinksApi, githubLinkUrl, type LinkedProvider } from '$api/oauth_links';
 	import OAuthLinkError from '$components/settings/OAuthLinkError.svelte';
-	import { activeOrientations } from '$lib/utils/orientations';
+	import { activeOrientations, startableOrientations } from '$lib/utils/orientations';
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
@@ -15,6 +15,7 @@
 	import type { Challenge, SkillDomain } from '$types';
 	import OAuthStartLink from '$components/settings/OAuthStartLink.svelte';
 	import { portfoliosApi } from '$api/portfolios';
+	import { orientationsApi } from '$api/orientations';
 	import { oauthTrace, oauthTraceDump, oauthTraceEnabled } from '$lib/utils/oauth_trace';
 
 	/**
@@ -76,11 +77,53 @@
 	 * each, and a 400 after a click is the same class of mistake as sending a
 	 * fork rite to a code editor: something we could have known and did not say.
 	 */
+	/** Nothing declared at all. */
 	const missingTrade = $derived(
 		auth.orientationsLoaded && activeOrientations(auth.user?.orientations).length === 0
 	);
+
+	/**
+	 * A trade is declared, and none of them is active.
+	 *
+	 * The API wants `mode = 'active'` and the signup path creates picks in
+	 * `learning`, so this is where most new accounts land. It used to be
+	 * invisible: the button was offered and the click came back with "Choose
+	 * a trade first" to somebody who had just chosen one.
+	 */
+	const tradeNotActive = $derived(
+		auth.orientationsLoaded &&
+			!missingTrade &&
+			startableOrientations(auth.user?.orientations).length === 0
+	);
+
+	/** The first declared trade, which is the one the switch below acts on. */
+	const firstTrade = $derived(activeOrientations(auth.user?.orientations)[0] ?? null);
+
+	let switching = $state(false);
+
+	/**
+	 * Move the declared trade to `active`, which is the whole of what the API
+	 * is asking for. One call, on the page where the refusal happens — the
+	 * alternative was sending somebody to a settings screen to change a word
+	 * whose meaning the error message never explained.
+	 */
+	async function activateTrade() {
+		if (!firstTrade) return;
+		switching = true;
+		try {
+			await orientationsApi.patch(firstTrade.orientation_slug, { mode: 'active' });
+			await auth.init();
+			oauthTrace('rite: trade activated', { slug: firstTrade.orientation_slug });
+		} catch (err) {
+			startError = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
+		} finally {
+			switching = false;
+		}
+	}
 	const missingGithub = $derived(needsGithub && hasGithub === false);
-	const canStart = $derived(!missingTrade && !missingGithub && hasGithub !== null);
+	const canStart = $derived(
+		!missingTrade && !tradeNotActive && !missingGithub && hasGithub !== null
+	);
 
 	const domain = $derived(auth.user?.skill_domain ?? null);
 
@@ -149,6 +192,7 @@
 			notOpen,
 			error: error || null,
 			missingTrade,
+			tradeNotActive,
 			hasGithub,
 			missingGithub,
 			riteStatus: progress?.status ?? null
@@ -469,6 +513,20 @@
 					<div class="mt-4">
 						<Button variant="accent" href="/onboarding/orientations">
 							{i18n.t('enlist.rite.needsTradeCta')}
+						</Button>
+					</div>
+				</div>
+			{:else if tradeNotActive}
+				<!-- Declared, but in learning mode, which the API will refuse.
+				     Said before the click rather than after it, with the one
+				     call that resolves it. -->
+				<div class="rounded-2xl border border-border bg-surface-elevated p-6 text-center">
+					<p class="text-sm text-text-muted">
+						{i18n.t('enlist.rite.tradeNotActive', { name: firstTrade?.orientation_name ?? '' })}
+					</p>
+					<div class="mt-4">
+						<Button variant="accent" loading={switching} onclick={activateTrade}>
+							{i18n.t('enlist.rite.tradeNotActiveCta')}
 						</Button>
 					</div>
 				</div>

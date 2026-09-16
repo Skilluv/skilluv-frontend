@@ -140,6 +140,15 @@ export interface EnlistTranslations {
 			needsTradeCta: string;
 			needsGithub: string;
 			needsGithubCta: string;
+			/**
+			 * A trade is declared and none is `mode = 'active'`.
+			 *
+			 * `POST /onboarding/bonjour-skilluv/start` requires one, and signup
+			 * used to register picks as `learning`. New accounts no longer land
+			 * here; the ones created before that do, and this is their way out.
+			 */
+			tradeNotActive: string;
+			tradeNotActiveCta: string;
 			notReadyTitle: string;
 			notReadyBody: string;
 			notReadyCta: string;
