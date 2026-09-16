@@ -12,7 +12,7 @@
 	import { i18n } from '$lib/i18n';
 	import type { Locale } from '$lib/i18n';
 	import { checkPassword } from '$lib/utils/password';
-	import type { ThemeBase, SkillDomain, PrivacySettings } from '$types';
+	import type { ThemeBase, PrivacySettings } from '$types';
 	import Alert from '$components/ui/Alert.svelte';
 
 	// Password

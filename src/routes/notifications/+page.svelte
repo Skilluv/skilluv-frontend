@@ -14,7 +14,6 @@
 		notifData as ctx,
 		notifBody as renderBody,
 		notifAge as formatDate,
-		type NotifData
 	} from '$lib/utils/notifications';
 	import type { Notification } from '$types';
 	import { foldNotifications, actorsLine } from '$lib/utils/notificationGrouping';

@@ -18,8 +18,7 @@ function ok(data: unknown, status = 200) {
 	};
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let fetchMock: any;
+let fetchMock: ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
 	fetchMock = vi.fn();

@@ -3,7 +3,7 @@
  * Vérifie que le composant CommentThread apparaît sur les pages qui l'intègrent.
  * Skip si backend absent.
  */
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { userStoragePath } from './_helpers/user-session';
 import fs from 'node:fs';
 
