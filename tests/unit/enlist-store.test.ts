@@ -149,22 +149,22 @@ describe('the enlistment held between screens', () => {
 		expect(enlist.primary).toBe(0);
 	});
 
-	it('a new pick is one you are practising, which is what the rite needs', () => {
+	it('a new pick is aspirational until something proves it', () => {
 		enlist.restore();
 		enlist.chooseDomain('code');
 		enlist.togglePath('a', 'A');
-		// The step is titled "the trade you want to prove" and the step after
-		// it is the first act, which the API refuses unless the trade is
-		// `mode = 'active'`. Defaulting to `learning` registered a trade that
-		// could not carry the gesture it was chosen for.
-		expect(enlist.picks[0].mode).toBe('active');
+		// Migration 0089: `learning` is "I want to learn X" and stays out of
+		// recruiter search; `active` is "I have proved X — at least one
+		// artifact". Defaulting to `active` would make a new account claim
+		// proof it does not have, and put it in the recruiter index on the
+		// strength of that claim.
+		expect(enlist.picks[0].mode).toBe('learning');
 	});
 
-	it('switches a trade between practising and learning', () => {
+	it('switches a trade between learning and practising', () => {
 		enlist.restore();
 		enlist.chooseDomain('code');
 		enlist.togglePath('a', 'A');
-		enlist.setMode('a', 'learning');
 		expect(enlist.picks[0].mode).toBe('learning');
 		enlist.setMode('a', 'active');
 		expect(enlist.picks[0].mode).toBe('active');
