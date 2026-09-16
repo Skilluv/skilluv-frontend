@@ -66,17 +66,16 @@
 			submitError = i18n.t('orientations.selector.tooMany', { max: MAX_SELECTIONS });
 			return;
 		}
-		// `active`, not `learning`.
+		// `learning`, not `active`.
 		//
-		// The step this runs under is titled "the trade you want to prove",
-		// and the step straight after it is the first act — which the API
-		// refuses unless a trade is `mode = 'active'`. Defaulting to
-		// `learning` meant the ordinary signup registered a trade that could
-		// not carry the gesture it was chosen for, and the refusal arrived as
-		// "Choose a trade first" to somebody who had just chosen one.
+		// Migration 0089 makes the two words mean something: `learning` is
+		// "I want to learn X" and stays out of recruiter search, `active` is
+		// "I have proved X — at least one artifact". Defaulting to `active`
+		// puts a new account into the recruiter index claiming proof it does
+		// not have, which is the one thing the split exists to prevent.
 		//
-		// The toggle is still there for anyone who means the other thing.
-		selections = [...selections, { orientation: o, mode: 'active' }];
+		// The toggle is there for somebody who has the proof and means it.
+		selections = [...selections, { orientation: o, mode: 'learning' }];
 	}
 
 	function removeAt(idx: number) {

@@ -104,9 +104,6 @@ export const enlistEn: EnlistTranslations = {
 			needsGithub:
 				'This rite happens on GitHub. Link your account so we can fork the starter there.',
 			needsGithubCta: 'Link my GitHub account',
-			tradeNotActive:
-				'{name} is recorded as a trade you are learning. The first act needs one you are practising — it is the same trade, and this switches it.',
-			tradeNotActiveCta: 'Switch it to practising',
 			pending: 'Under review',
 			notReadyTitle: 'This first act is not open yet',
 			notReadyBody:
