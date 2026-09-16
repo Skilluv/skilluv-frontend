@@ -169,7 +169,17 @@ class EnlistState {
 			return true;
 		}
 		if (this.isFull) return false;
-		this.picks = [...this.picks, { slug, name, mode: 'learning' }];
+		// `active`, not `learning`.
+		//
+		// The step this runs under is titled "the trade you want to prove",
+		// and the step straight after it is the first act — which the API
+		// refuses unless a trade is `mode = 'active'`. Defaulting to
+		// `learning` meant the ordinary signup registered a trade that could
+		// not carry the gesture it was chosen for, and the refusal arrived as
+		// "Choose a trade first" to somebody who had just chosen one.
+		//
+		// The toggle is still there for anyone who means the other thing.
+		this.picks = [...this.picks, { slug, name, mode: 'active' }];
 		this.persist();
 		return true;
 	}
