@@ -29,6 +29,7 @@
 	import { i18n } from '$lib/i18n';
 	import Alert from '$components/ui/Alert.svelte';
 	import Button from '$components/ui/Button.svelte';
+	import OAuthStartLink from './OAuthStartLink.svelte';
 	import {
 		OAUTH_PROVIDER_NAMES,
 		oauthLinkErrorKey,
@@ -116,9 +117,9 @@
 </script>
 
 {#snippet retry()}
-	<Button href={retryUrl} size="sm" variant="secondary" data-sveltekit-reload>
+	<OAuthStartLink href={retryUrl ?? ''} size="sm" variant="secondary">
 		{i18n.t('oauthLink.retryCta')}
-	</Button>
+	</OAuthStartLink>
 {/snippet}
 
 {#if failure}

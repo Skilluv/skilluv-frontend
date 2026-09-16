@@ -36,6 +36,7 @@
 	import { i18n } from '$lib/i18n';
 	import Button from '$components/ui/Button.svelte';
 	import OAuthLinkError from '$components/settings/OAuthLinkError.svelte';
+	import OAuthStartLink from '$components/settings/OAuthStartLink.svelte';
 
 	interface Props {
 		/** Rendered under the actions — the step that follows, if any. */
@@ -75,15 +76,9 @@
 
 	<div class="flex flex-wrap items-center gap-2">
 		<!-- A link, not a button: this navigates into a consent screen. -->
-		<Button
-			href={linkUrl('discord', returnTo)}
-			data-sveltekit-reload
-			size="sm"
-			variant="primary"
-			data-testid="discord-link-cta"
-		>
+		<OAuthStartLink href={linkUrl('discord', returnTo)} size="sm" variant="primary">
 			{i18n.t('discordLink.cta')}
-		</Button>
+		</OAuthStartLink>
 		{@render children?.()}
 	</div>
 
