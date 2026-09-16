@@ -14,6 +14,7 @@
 	import type { Component } from 'svelte';
 	import { Code2, Palette, Gamepad2, Shield, Brain, Cloud, Users } from '@lucide/svelte';
 	import Alert from '$components/ui/Alert.svelte';
+	import { activeOrientations } from '$lib/utils/orientations';
 
 	let step = $state<1 | 2>(1);
 	let loading = $state(false);
@@ -142,17 +143,31 @@
 			// The trades picked before the account existed, registered at last.
 			// `null` for anybody who did not arrive through the enlistment.
 			const resumed = await enlist.resumeAfterSso();
-			if (resumed && resumed.registered.length > 0) {
-				goto(
-					resumed.failed.length > 0
-						? '/challenges/onboarding?trades=partial'
-						: '/challenges/onboarding'
-				);
+
+			// What the account holds, not what the replay returned.
+			//
+			// The replay reports a failure for a trade the account already
+			// carries — `POST /users/me/orientations` refuses at the ceiling
+			// without excluding the row it is about to update, so re-posting
+			// one of your own three is refused as a fourth. Reading its count
+			// then sent somebody who had three trades to a page asking for
+			// one, where the same refusal met them again. Five times over, in
+			// the report that found this.
+			//
+			// So the question is asked of the account. A trade already there
+			// is a question already answered.
+			const after = await authApi.me();
+			auth.setUser(after.data.user);
+			const held = activeOrientations(after.data.user.orientations).length;
+
+			if (held > 0) {
+				const partial = Boolean(resumed && resumed.failed.length > 0 && held < 3);
+				goto(partial ? '/challenges/onboarding?trades=partial' : '/challenges/onboarding');
 				return;
 			}
 
-			// New onboarding step: pick 1-3 orientations (P16). Users can skip
-			// via the soft-block CTA if they want to explore first — see MVP §0.7.
+			// Nothing declared, so the step has something to ask. Skippable
+			// through the soft-block CTA — see MVP §0.7.
 			goto('/onboarding/orientations');
 		} catch (err) {
 			error = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
