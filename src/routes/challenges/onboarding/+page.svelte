@@ -14,6 +14,8 @@
 	import Badge from '$components/ui/Badge.svelte';
 	import type { Challenge, SkillDomain } from '$types';
 	import OAuthStartLink from '$components/settings/OAuthStartLink.svelte';
+	import { portfoliosApi } from '$api/portfolios';
+	import { oauthTrace, oauthTraceDump, oauthTraceEnabled } from '$lib/utils/oauth_trace';
 
 	/**
 	 * The first act — the last screen of the enlistment and the first of the
@@ -128,6 +130,31 @@
 		}
 	});
 
+	/**
+	 * What the step decided, and on what.
+	 *
+	 * The interesting moment is the one just after the browser comes back
+	 * from the provider, and by then the console has been wiped twice. The
+	 * buffer is dumped here and the decision appended to it.
+	 */
+	$effect(() => {
+		if (!oauthTraceEnabled(page.url.search)) return;
+		oauthTraceDump();
+		oauthTrace('rite: state', {
+			authProbe: page.data.authProbe,
+			signedIn: auth.isAuthenticated,
+			domain,
+			sessionSettled,
+			loading,
+			notOpen,
+			error: error || null,
+			missingTrade,
+			hasGithub,
+			missingGithub,
+			riteStatus: progress?.status ?? null
+		});
+	});
+
 	$effect(() => {
 		if (!auth.isAuthenticated) return;
 		void loadRite();
@@ -146,17 +173,67 @@
 			// GitHub check answers.
 		}
 		if (riteDescriptor?.form === 'fork') {
-			try {
-				const res = await oauthLinksApi.mine();
-				hasGithub = (res.data.providers ?? []).some((p: LinkedProvider) => p.provider === 'github');
-			} catch {
-				// Unknown rather than absent: refusing to offer the button because
-				// one call failed would be worse than letting the API answer.
-				hasGithub = null;
-			}
+			hasGithub = await readGithubLink();
 		} else {
 			hasGithub = true;
 		}
+	}
+
+	/**
+	 * Is a GitHub account actually attached?
+	 *
+	 * Two sources, because either can hold the answer and neither holds both.
+	 * `/auth/me/oauth-providers` reads `user_oauth_providers`, which the
+	 * generic OAuth link writes. This step's own button starts
+	 * `/auth/github/start`, whose callback writes `github_connections` and a
+	 * verified row in `user_external_portfolios` — and never touches
+	 * `user_oauth_providers`.
+	 *
+	 * Reading only the first is why a link that had worked still left this
+	 * step asking for one. `verified_at` is what makes the portfolio row
+	 * proof: a handle somebody typed is a declaration, and only the callback
+	 * stamps it as proved.
+	 *
+	 * Null rather than false when both calls fail — unknown is not absent,
+	 * and refusing to offer the button because a read broke would be worse
+	 * than letting the API answer for itself.
+	 */
+	async function readGithubLink(): Promise<boolean | null> {
+		const [providers, portfolios] = await Promise.allSettled([
+			oauthLinksApi.mine(),
+			portfoliosApi.mine()
+		]);
+
+		let linked = false;
+		let answered = false;
+
+		// `Array.isArray` rather than `?? []`: the nullish guard only catches
+		// null and undefined, and a payload of the wrong shape would reach
+		// `.some` and throw — out of `loadRite`, which never sets `hasGithub`
+		// again, leaving the step unable to say anything at all. An answer it
+		// cannot read is an answer it does not have.
+		if (providers.status === 'fulfilled' && Array.isArray(providers.value.data?.providers)) {
+			answered = true;
+			linked = providers.value.data.providers.some(
+				(p: LinkedProvider) => p.provider === 'github'
+			);
+		}
+
+		if (!linked && portfolios.status === 'fulfilled' && Array.isArray(portfolios.value.data)) {
+			answered = true;
+			linked = portfolios.value.data.some(
+				(row) => row.platform === 'github' && row.verified_at !== null
+			);
+		}
+
+		oauthTrace('rite: github link read', {
+			providers: providers.status,
+			portfolios: portfolios.status,
+			linked,
+			answered
+		});
+
+		return answered ? linked : null;
 	}
 
 	/**

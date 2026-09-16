@@ -24,6 +24,8 @@
 	 */
 	import type { Snippet } from 'svelte';
 	import { authApi } from '$api/auth';
+	import { SkilluError } from '$api/client';
+	import { oauthTrace, oauthTraceReset } from '$lib/utils/oauth_trace';
 	import Button from '$components/ui/Button.svelte';
 
 	interface Props {
@@ -44,13 +46,25 @@
 		if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
 
 		event.preventDefault();
+		// A fresh trace per attempt: what matters is this round trip, not the
+		// one before it.
+		oauthTraceReset();
+		oauthTrace('start: pressed', { href, from: window.location.pathname });
+
+		let refreshed = false;
 		try {
 			await authApi.refresh();
-		} catch {
+			refreshed = true;
+		} catch (err) {
 			// No session to renew. Go anyway: the endpoint answers for itself,
 			// and refusing to navigate would replace one silent failure with
 			// another.
+			oauthTrace('start: refresh refused', {
+				status: err instanceof SkilluError ? err.status : null,
+				code: err instanceof SkilluError ? err.code : null
+			});
 		}
+		oauthTrace('start: leaving', { refreshed, href });
 		window.location.href = href;
 	}
 </script>

@@ -26,6 +26,7 @@
 	import { tick } from 'svelte';
 	import { replaceState } from '$app/navigation';
 	import { page } from '$app/state';
+	import { oauthTrace } from '$lib/utils/oauth_trace';
 	import { i18n } from '$lib/i18n';
 	import Alert from '$components/ui/Alert.svelte';
 	import Button from '$components/ui/Button.svelte';
@@ -86,6 +87,11 @@
 
 	$effect(() => {
 		const { failure: found, cleanedSearch } = readOAuthLinkError(page.url.search);
+		oauthTrace('return: url read', {
+			search: page.url.search || '(none)',
+			found: found ? `${found.provider}/${found.code}` : null,
+			owns: providers.join(',')
+		});
 		// Not ours: another instance on this page owns that button, and it
 		// clears the parameter. Reading it here too would draw the banner
 		// twice for one refusal.
