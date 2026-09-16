@@ -31,6 +31,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import OAuthLinkError from './OAuthLinkError.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
+	import OAuthStartLink from './OAuthStartLink.svelte';
 
 	/**
 	 * Where the consent screen sends the browser back to.
@@ -131,14 +132,13 @@
 
 		<div class="flex flex-wrap gap-2">
 			<!-- A link, not a button: this navigates into a consent screen. -->
-			<Button
+			<OAuthStartLink
 				href={connectHref}
 				size="sm"
 				variant={connected ? 'ghost' : 'accent'}
-				data-sveltekit-reload
 			>
 				{connected ? i18n.t('githubLink.reconnectCta') : i18n.t('githubLink.connectCta')}
-			</Button>
+			</OAuthStartLink>
 
 			<Button size="sm" variant="ghost" loading={syncing} onclick={sync} data-testid="github-sync">
 				<RefreshCw size={15} />

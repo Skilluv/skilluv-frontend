@@ -13,6 +13,7 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import type { Challenge, SkillDomain } from '$types';
+	import OAuthStartLink from '$components/settings/OAuthStartLink.svelte';
 
 	/**
 	 * The first act — the last screen of the enlistment and the first of the
@@ -408,9 +409,9 @@
 						     to do one thing would reopen the door we closed, and
 						     they would have to find their own way back to a step
 						     they were in the middle of. -->
-						<Button variant="accent" href={githubLinkUrl(returnTo)} data-sveltekit-reload>
+						<OAuthStartLink href={githubLinkUrl(returnTo)}>
 							{i18n.t('enlist.rite.needsGithubCta')}
-						</Button>
+						</OAuthStartLink>
 					</div>
 				</div>
 			{:else}

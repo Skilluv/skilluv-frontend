@@ -44,6 +44,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import OAuthLinkError from './OAuthLinkError.svelte';
+	import OAuthStartLink from './OAuthStartLink.svelte';
 
 	let providers = $state<LinkedProvider[]>([]);
 	let loading = $state(true);
@@ -186,14 +187,9 @@
 				{#if !linked.has(provider)}
 					<!-- A link, not a button: this navigates into a consent screen and
 					     comes back through a callback the server handles. -->
-					<Button
-						href={linkUrl(provider, returnTo)}
-						size="sm"
-						variant="ghost"
-						data-sveltekit-reload
-					>
+					<OAuthStartLink href={linkUrl(provider, returnTo)} size="sm" variant="ghost">
 						{i18n.t('linkedAccounts.linkCta', { provider })}
-					</Button>
+					</OAuthStartLink>
 				{/if}
 			{/each}
 		</div>
