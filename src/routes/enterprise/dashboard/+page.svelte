@@ -7,7 +7,6 @@
 	import { enterpriseTypesApi } from '$lib/api/enterprise_types';
 	import type { EnterpriseType, EnterpriseTypeConfig } from '$lib/types';
 	import { auth } from '$stores/auth.svelte';
-	import { SkilluError } from '$api/client';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Button from '$components/ui/Button.svelte';
 	import Badge from '$components/ui/Badge.svelte';

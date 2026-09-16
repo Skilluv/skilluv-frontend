@@ -23,7 +23,6 @@
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import type {
 		AudioCraftProfile,
-		CohortSummary,
 		CommunicationCraftProfile,
 		CommunicationHighlight,
 		CraftDomain,

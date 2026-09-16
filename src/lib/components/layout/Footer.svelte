@@ -3,7 +3,6 @@
 	import { i18n } from '$lib/i18n';
 	import { theme } from '$lib/stores/theme.svelte';
 	import { consent } from '$lib/stores/consent.svelte';
-	import type { ThemeBase } from '$lib/types';
 	import { PRIMARY_SOCIAL_ACCOUNTS, CONTACT_EMAIL, DPO_EMAIL } from '$lib/config/social';
 	import { newsletterApi, EMAIL_SHAPE } from '$api/newsletter';
 	import Modal from '$components/ui/Modal.svelte';

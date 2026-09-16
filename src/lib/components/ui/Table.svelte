@@ -30,7 +30,6 @@
 		columns,
 		rows,
 		cell,
-		rowWrapper,
 		emptyLabel = 'Aucun résultat',
 		hover = true,
 		class: className = ''
