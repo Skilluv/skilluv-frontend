@@ -66,7 +66,17 @@
 			submitError = i18n.t('orientations.selector.tooMany', { max: MAX_SELECTIONS });
 			return;
 		}
-		selections = [...selections, { orientation: o, mode: 'learning' }];
+		// `active`, not `learning`.
+		//
+		// The step this runs under is titled "the trade you want to prove",
+		// and the step straight after it is the first act — which the API
+		// refuses unless a trade is `mode = 'active'`. Defaulting to
+		// `learning` meant the ordinary signup registered a trade that could
+		// not carry the gesture it was chosen for, and the refusal arrived as
+		// "Choose a trade first" to somebody who had just chosen one.
+		//
+		// The toggle is still there for anyone who means the other thing.
+		selections = [...selections, { orientation: o, mode: 'active' }];
 	}
 
 	function removeAt(idx: number) {

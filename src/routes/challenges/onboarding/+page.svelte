@@ -7,13 +7,16 @@
 	import { onboardingRiteApi, type RiteProgress } from '$api/onboarding_rite';
 	import { oauthLinksApi, githubLinkUrl, type LinkedProvider } from '$api/oauth_links';
 	import OAuthLinkError from '$components/settings/OAuthLinkError.svelte';
-	import { activeOrientations } from '$lib/utils/orientations';
+	import { activeOrientations, startableOrientations } from '$lib/utils/orientations';
 	import { SkilluError } from '$api/client';
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Badge from '$components/ui/Badge.svelte';
 	import type { Challenge, SkillDomain } from '$types';
 	import OAuthStartLink from '$components/settings/OAuthStartLink.svelte';
+	import { portfoliosApi } from '$api/portfolios';
+	import { orientationsApi } from '$api/orientations';
+	import { oauthTrace, oauthTraceDump, oauthTraceEnabled } from '$lib/utils/oauth_trace';
 
 	/**
 	 * The first act — the last screen of the enlistment and the first of the
@@ -74,11 +77,53 @@
 	 * each, and a 400 after a click is the same class of mistake as sending a
 	 * fork rite to a code editor: something we could have known and did not say.
 	 */
+	/** Nothing declared at all. */
 	const missingTrade = $derived(
 		auth.orientationsLoaded && activeOrientations(auth.user?.orientations).length === 0
 	);
+
+	/**
+	 * A trade is declared, and none of them is active.
+	 *
+	 * The API wants `mode = 'active'` and the signup path creates picks in
+	 * `learning`, so this is where most new accounts land. It used to be
+	 * invisible: the button was offered and the click came back with "Choose
+	 * a trade first" to somebody who had just chosen one.
+	 */
+	const tradeNotActive = $derived(
+		auth.orientationsLoaded &&
+			!missingTrade &&
+			startableOrientations(auth.user?.orientations).length === 0
+	);
+
+	/** The first declared trade, which is the one the switch below acts on. */
+	const firstTrade = $derived(activeOrientations(auth.user?.orientations)[0] ?? null);
+
+	let switching = $state(false);
+
+	/**
+	 * Move the declared trade to `active`, which is the whole of what the API
+	 * is asking for. One call, on the page where the refusal happens — the
+	 * alternative was sending somebody to a settings screen to change a word
+	 * whose meaning the error message never explained.
+	 */
+	async function activateTrade() {
+		if (!firstTrade) return;
+		switching = true;
+		try {
+			await orientationsApi.patch(firstTrade.orientation_slug, { mode: 'active' });
+			await auth.init();
+			oauthTrace('rite: trade activated', { slug: firstTrade.orientation_slug });
+		} catch (err) {
+			startError = err instanceof SkilluError ? err.message : i18n.t('errors.generic');
+		} finally {
+			switching = false;
+		}
+	}
 	const missingGithub = $derived(needsGithub && hasGithub === false);
-	const canStart = $derived(!missingTrade && !missingGithub && hasGithub !== null);
+	const canStart = $derived(
+		!missingTrade && !tradeNotActive && !missingGithub && hasGithub !== null
+	);
 
 	const domain = $derived(auth.user?.skill_domain ?? null);
 
@@ -128,6 +173,32 @@
 		}
 	});
 
+	/**
+	 * What the step decided, and on what.
+	 *
+	 * The interesting moment is the one just after the browser comes back
+	 * from the provider, and by then the console has been wiped twice. The
+	 * buffer is dumped here and the decision appended to it.
+	 */
+	$effect(() => {
+		if (!oauthTraceEnabled(page.url.search)) return;
+		oauthTraceDump();
+		oauthTrace('rite: state', {
+			authProbe: page.data.authProbe,
+			signedIn: auth.isAuthenticated,
+			domain,
+			sessionSettled,
+			loading,
+			notOpen,
+			error: error || null,
+			missingTrade,
+			tradeNotActive,
+			hasGithub,
+			missingGithub,
+			riteStatus: progress?.status ?? null
+		});
+	});
+
 	$effect(() => {
 		if (!auth.isAuthenticated) return;
 		void loadRite();
@@ -146,17 +217,67 @@
 			// GitHub check answers.
 		}
 		if (riteDescriptor?.form === 'fork') {
-			try {
-				const res = await oauthLinksApi.mine();
-				hasGithub = (res.data.providers ?? []).some((p: LinkedProvider) => p.provider === 'github');
-			} catch {
-				// Unknown rather than absent: refusing to offer the button because
-				// one call failed would be worse than letting the API answer.
-				hasGithub = null;
-			}
+			hasGithub = await readGithubLink();
 		} else {
 			hasGithub = true;
 		}
+	}
+
+	/**
+	 * Is a GitHub account actually attached?
+	 *
+	 * Two sources, because either can hold the answer and neither holds both.
+	 * `/auth/me/oauth-providers` reads `user_oauth_providers`, which the
+	 * generic OAuth link writes. This step's own button starts
+	 * `/auth/github/start`, whose callback writes `github_connections` and a
+	 * verified row in `user_external_portfolios` — and never touches
+	 * `user_oauth_providers`.
+	 *
+	 * Reading only the first is why a link that had worked still left this
+	 * step asking for one. `verified_at` is what makes the portfolio row
+	 * proof: a handle somebody typed is a declaration, and only the callback
+	 * stamps it as proved.
+	 *
+	 * Null rather than false when both calls fail — unknown is not absent,
+	 * and refusing to offer the button because a read broke would be worse
+	 * than letting the API answer for itself.
+	 */
+	async function readGithubLink(): Promise<boolean | null> {
+		const [providers, portfolios] = await Promise.allSettled([
+			oauthLinksApi.mine(),
+			portfoliosApi.mine()
+		]);
+
+		let linked = false;
+		let answered = false;
+
+		// `Array.isArray` rather than `?? []`: the nullish guard only catches
+		// null and undefined, and a payload of the wrong shape would reach
+		// `.some` and throw — out of `loadRite`, which never sets `hasGithub`
+		// again, leaving the step unable to say anything at all. An answer it
+		// cannot read is an answer it does not have.
+		if (providers.status === 'fulfilled' && Array.isArray(providers.value.data?.providers)) {
+			answered = true;
+			linked = providers.value.data.providers.some(
+				(p: LinkedProvider) => p.provider === 'github'
+			);
+		}
+
+		if (!linked && portfolios.status === 'fulfilled' && Array.isArray(portfolios.value.data)) {
+			answered = true;
+			linked = portfolios.value.data.some(
+				(row) => row.platform === 'github' && row.verified_at !== null
+			);
+		}
+
+		oauthTrace('rite: github link read', {
+			providers: providers.status,
+			portfolios: portfolios.status,
+			linked,
+			answered
+		});
+
+		return answered ? linked : null;
 	}
 
 	/**
@@ -392,6 +513,20 @@
 					<div class="mt-4">
 						<Button variant="accent" href="/onboarding/orientations">
 							{i18n.t('enlist.rite.needsTradeCta')}
+						</Button>
+					</div>
+				</div>
+			{:else if tradeNotActive}
+				<!-- Declared, but in learning mode, which the API will refuse.
+				     Said before the click rather than after it, with the one
+				     call that resolves it. -->
+				<div class="rounded-2xl border border-border bg-surface-elevated p-6 text-center">
+					<p class="text-sm text-text-muted">
+						{i18n.t('enlist.rite.tradeNotActive', { name: firstTrade?.orientation_name ?? '' })}
+					</p>
+					<div class="mt-4">
+						<Button variant="accent" loading={switching} onclick={activateTrade}>
+							{i18n.t('enlist.rite.tradeNotActiveCta')}
 						</Button>
 					</div>
 				</div>

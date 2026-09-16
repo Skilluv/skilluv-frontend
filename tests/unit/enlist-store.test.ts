@@ -144,10 +144,22 @@ describe('the enlistment held between screens', () => {
 		expect(enlist.primary).toBe(0);
 	});
 
-	it('switches a trade between learning and practising', () => {
+	it('a new pick is one you are practising, which is what the rite needs', () => {
 		enlist.restore();
 		enlist.chooseDomain('code');
 		enlist.togglePath('a', 'A');
+		// The step is titled "the trade you want to prove" and the step after
+		// it is the first act, which the API refuses unless the trade is
+		// `mode = 'active'`. Defaulting to `learning` registered a trade that
+		// could not carry the gesture it was chosen for.
+		expect(enlist.picks[0].mode).toBe('active');
+	});
+
+	it('switches a trade between practising and learning', () => {
+		enlist.restore();
+		enlist.chooseDomain('code');
+		enlist.togglePath('a', 'A');
+		enlist.setMode('a', 'learning');
 		expect(enlist.picks[0].mode).toBe('learning');
 		enlist.setMode('a', 'active');
 		expect(enlist.picks[0].mode).toBe('active');

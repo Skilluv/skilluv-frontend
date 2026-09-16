@@ -101,6 +101,9 @@ export const enlistFr: EnlistTranslations = {
 			needsTradeCta: 'Choisir mon métier',
 			needsGithub: 'Ce rite se joue sur GitHub. Lie ton compte pour qu’on puisse y forker le starter.',
 			needsGithubCta: 'Lier mon compte GitHub',
+			tradeNotActive:
+				'{name} est enregistré comme un métier que tu apprends. Le premier geste en demande un que tu pratiques — c’est le même métier, ce bouton bascule la mention.',
+			tradeNotActiveCta: 'Passer en pratique',
 			pending: 'En cours de relecture',
 			notReadyTitle: 'Ce premier geste n’est pas encore ouvert',
 			notReadyBody:
