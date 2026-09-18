@@ -75,6 +75,12 @@
 	 * fork rite can end up in front of a reviewer after all — see
 	 * `riteNoteKey`. When it does, the plain label is the true one. Only this
 	 * status differs between the two; the other four read the same either way.
+	 *
+	 * It is the pair that carries the meaning, never `check_ran_at` alone: a
+	 * refusal also sets it, and a refused rite is at `forked` rather than
+	 * `pr_opened`. Reading the field on its own would put "the checks have
+	 * run, nobody is waiting on a person" over a rite that was turned down.
+	 * Both conditions here are load-bearing.
 	 */
 	const statusKey = $derived(
 		progress?.status === 'pr_opened' && riteForm === 'fork' && progress.check_ran_at !== null
