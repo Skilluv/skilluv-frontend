@@ -216,7 +216,8 @@ test.describe('The onboarding steps', () => {
 		expect(href, 'settings is not part of onboarding').not.toContain('/settings');
 	});
 
-	test('once started, it shows the fork and says the review is a second step', async ({ page }) => {
+	/** A started fork rite, with whatever the automatic check has written on it. */
+	async function mockForkRite(page: Page, over: Record<string, unknown> = {}): Promise<void> {
 		await page.route('**/api/onboarding/bonjour-skilluv/status', (route) =>
 			json({
 				data: {
@@ -229,12 +230,22 @@ test.describe('The onboarding steps', () => {
 						fork_html_url: 'https://github.com/kofi/starter-backend',
 						status: 'pr_opened',
 						pr_number: 7,
-						pr_url: 'https://github.com/kofi/starter-backend/pull/7'
+						pr_url: 'https://github.com/kofi/starter-backend/pull/7',
+						check_refused_reason: null,
+						check_ran_at: null,
+						...over
 					},
 					rite: { domain: 'code', form: 'fork', requires_github: true }
 				}
 			})(route)
 		);
+	}
+
+	test('a fork rite promises a verdict on the spot, not a reviewer', async ({ page }) => {
+		// The five checks run on the webhook and write `completed` themselves.
+		// There is no `rite_reviewer:code` capability any more, so the screen
+		// must not tell anybody to wait for one.
+		await mockForkRite(page, { check_ran_at: '2026-09-18T20:00:00Z' });
 
 		await mockRiteChallenge(page);
 		await gotoHydrated(page, '/challenges/onboarding');
@@ -243,9 +254,37 @@ test.describe('The onboarding steps', () => {
 			'https://github.com/kofi/starter-backend'
 		);
 		await expect(page.getByText(/Pull request ouverte/i)).toBeVisible();
-		// The wait has two steps and only the first is automatic. Saying "we
-		// will tell you when the pull request lands" would be a half-truth.
-		await expect(page.getByText(/Un relecteur tranche ensuite/i)).toBeVisible();
+		await expect(page.getByText(/validé sur-le-champ/i)).toBeVisible();
+		await expect(page.getByText(/relecteur/i)).toHaveCount(0);
+	});
+
+	test('between the webhook and the checks, it says the checks are running', async ({ page }) => {
+		// `check_ran_at` null with a pull request already open is the gap the
+		// field exists to make visible: the promise of an immediate verdict has
+		// been made and not yet kept.
+		await mockForkRite(page);
+
+		await mockRiteChallenge(page);
+		await gotoHydrated(page, '/challenges/onboarding');
+		await expect(page.getByText(/La vérification tourne/i)).toBeVisible();
+	});
+
+	test('a refused check names what is missing and invites another commit', async ({ page }) => {
+		// A refusal is not terminal: the row stays at `forked` and the next
+		// commit on the same pull request replays the checks. The screen has to
+		// read as an invitation, which means the way forward is on it.
+		await mockForkRite(page, {
+			status: 'forked',
+			check_refused_reason: 'the introduction is 2 characters; 30 is the least this asks for.',
+			check_ran_at: '2026-09-18T20:00:00Z'
+		});
+
+		await mockRiteChallenge(page);
+		await gotoHydrated(page, '/challenges/onboarding');
+		await expect(page.getByText(/30 is the least this asks for/i)).toBeVisible();
+		await expect(page.getByText(/pousse un nouveau commit/i)).toBeVisible();
+		// Nothing that reads as an ending.
+		await expect(page.getByText(/Rite abandonné/i)).toHaveCount(0);
 	});
 
 	test('the catalogue keeps its chrome: /challenges is not an onboarding step', async ({

@@ -128,14 +128,39 @@ export interface EnlistTranslations {
 			status: {
 				forked: string;
 				hello_committed: string;
+				/** A submission rite: open and waiting on a person. */
 				pr_opened: string;
+				/** The same status on a fork rite, which waits on nobody. */
+				pr_opened_checked: string;
 				completed: string;
 				abandoned: string;
 			};
 			openFork: string;
 			/** `{n}` — the pull request number. */
 			openPr: string;
+			/**
+			 * What the screen promises while it waits, and the two forms do not
+			 * wait for the same thing.
+			 *
+			 * A fork rite is settled by five mechanical checks on the pull
+			 * request webhook — no reviewer, no capability, no queue — so it
+			 * says the verdict lands on the spot, and `checkPending` covers the
+			 * seconds between the webhook and the checks. The eleven submission
+			 * rites are settled by a person, and `reviewNote` says so.
+			 */
+			autoCheckNote: string;
+			checkPending: string;
 			reviewNote: string;
+			/**
+			 * A refused check, which is not a failed rite.
+			 *
+			 * The reason itself comes from the API written to be read as it
+			 * stands, so there is no key for it here. These two frame it: what
+			 * it is, and that another commit on the same pull request replays
+			 * the checks.
+			 */
+			refusedTitle: string;
+			refusedFix: string;
 			needsTrade: string;
 			needsTradeCta: string;
 			needsGithub: string;

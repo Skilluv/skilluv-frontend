@@ -11,6 +11,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Badge from '$components/ui/Badge.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 	import type { Challenge, SkillDomain } from '$types';
 	import OAuthStartLink from '$components/settings/OAuthStartLink.svelte';
 	import { portfoliosApi } from '$api/portfolios';
@@ -65,6 +66,44 @@
 	let poller: ReturnType<typeof setInterval> | undefined;
 
 	const riteForm = $derived(progress?.rite_form ?? riteDescriptor?.form ?? null);
+
+	/**
+	 * A fork rite's open pull request is not waiting on a person, so it cannot
+	 * carry the label that says it is. Only that one status differs between
+	 * the two forms; the other four read the same either way.
+	 */
+	const statusKey = $derived(
+		progress?.status === 'pr_opened' && riteForm === 'fork' ? 'pr_opened_checked' : progress?.status
+	);
+
+	/**
+	 * The automatic check's refusal, when there is one to show.
+	 *
+	 * Held back once the rite is through: a reason from an earlier round is
+	 * history at that point, and history that reads as a problem is a problem
+	 * of its own.
+	 */
+	const checkRefusal = $derived(
+		progress && progress.status !== 'completed' && progress.status !== 'abandoned'
+			? progress.check_refused_reason
+			: null
+	);
+
+	/**
+	 * Which promise the screen is making while it waits.
+	 *
+	 * A fork rite is checked by machine on the spot, so it says so — except in
+	 * the gap between the webhook landing and the checks running, which
+	 * `check_ran_at` is what makes visible. The eleven submission rites wait on
+	 * a reviewer and say that instead.
+	 */
+	const riteNoteKey = $derived(
+		riteForm !== 'fork'
+			? 'reviewNote'
+			: progress?.status === 'pr_opened' && progress.check_ran_at === null
+				? 'checkPending'
+				: 'autoCheckNote'
+	);
 	const needsGithub = $derived(riteForm === 'fork');
 
 	/**
@@ -238,9 +277,15 @@
 	/**
 	 * Polled, because there is nothing to subscribe to.
 	 *
-	 * The webhook moves it to `pr_opened`; a reviewer moves it to `completed`.
-	 * Two asynchronous steps, neither of them ours, and no socket for either.
-	 * Stops once it is settled so a finished rite is not polled forever.
+	 * The webhook moves it to `pr_opened`. What settles it after that depends
+	 * on the form: five mechanical checks on a fork rite, a person on the
+	 * eleven others. Asynchronous either way, none of it ours, and no socket
+	 * for any of it.
+	 *
+	 * A refused check is not settled and must keep polling: the row stays at
+	 * `forked`, and the next commit on the same pull request replays the
+	 * checks. Only `completed` and `abandoned` stop the loop, which is why the
+	 * condition names those two rather than asking whether a reason is set.
 	 */
 	function schedulePoll() {
 		clearInterval(poller);
@@ -429,7 +474,7 @@
 				     the two links are the only places the work actually happens. -->
 				<div class="rounded-2xl border border-accent/30 bg-surface-elevated p-6">
 					<p class="font-mono text-[11px] uppercase tracking-[0.2em] text-text-muted">
-						{i18n.t(`enlist.rite.status.${progress.status}`)}
+						{i18n.t(`enlist.rite.status.${statusKey}`)}
 					</p>
 
 					{#if progress.fork_html_url}
@@ -455,12 +500,27 @@
 						</a>
 					{/if}
 
-					<!-- Said plainly, because the wait has two steps and only the
-					     first is automatic: the webhook sees the pull request, a
-					     person settles it afterwards. -->
-					<p class="mt-4 text-xs leading-relaxed text-text-muted">
-						{i18n.t('enlist.rite.reviewNote')}
-					</p>
+					<!-- What happens next is not the same on both forms, and
+					     saying the wrong one is worse than saying nothing: a fork
+					     rite settles itself on five mechanical checks, the eleven
+					     submission rites wait on a person. -->
+					{#if checkRefusal}
+						<!-- Not a failure state. The row stays at `forked`, the
+						     pull request stays open, and another commit on it
+						     replays the checks — so this names what is missing
+						     and says how to answer it, and offers no way out
+						     because none is needed. -->
+						<div class="mt-4">
+							<Alert tone="warning" size="sm" title={i18n.t('enlist.rite.refusedTitle')}>
+								{checkRefusal}
+								{i18n.t('enlist.rite.refusedFix')}
+							</Alert>
+						</div>
+					{:else}
+						<p class="mt-4 text-xs leading-relaxed text-text-muted">
+							{i18n.t(`enlist.rite.${riteNoteKey}`)}
+						</p>
+					{/if}
 				</div>
 			{:else if missingTrade}
 				<div class="rounded-2xl border border-border bg-surface-elevated p-6 text-center">

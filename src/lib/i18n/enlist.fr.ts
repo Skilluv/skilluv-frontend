@@ -92,13 +92,21 @@ export const enlistFr: EnlistTranslations = {
 				forked: 'Starter forké sur ton compte',
 				hello_committed: 'HELLO.md commité',
 				pr_opened: 'Pull request ouverte, en attente de relecture',
+				pr_opened_checked: 'Pull request ouverte, vérification en cours',
 				completed: 'Rite validé',
 				abandoned: 'Rite abandonné'
 			},
 			openFork: 'Ouvrir mon fork',
 			openPr: 'Voir la pull request #{n}',
+			autoCheckNote:
+				'On voit ta pull request dès qu’elle est ouverte, et on la vérifie dans la foulée. Si tout est en ordre, ton rite est validé sur-le-champ.',
+			checkPending:
+				'Ta pull request est arrivée. La vérification tourne, ça prend quelques secondes.',
+			refusedTitle: 'Il manque quelque chose',
+			refusedFix:
+				'Corrige, puis pousse un nouveau commit sur la même pull request : la vérification rejoue toute seule. Rien n’est perdu.',
 			reviewNote:
-				'On voit ta pull request dès qu’elle est ouverte. Un relecteur tranche ensuite : le rite passe en validé à ce moment-là, pas avant.',
+				'On voit ton rendu dès qu’il est déposé. Un relecteur tranche ensuite : le rite passe en validé à ce moment-là, pas avant.',
 			needsTrade:
 				'Choisis d’abord un métier : le starter qu’on te forke est choisi à partir de lui.',
 			needsTradeCta: 'Choisir mon métier',

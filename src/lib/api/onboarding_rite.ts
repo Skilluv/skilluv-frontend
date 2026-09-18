@@ -46,6 +46,24 @@ export interface RiteProgress {
 	status: RiteStatus;
 	pr_number: number | null;
 	pr_url: string | null;
+	/**
+	 * Why the automatic check refused the pull request, written by the backend
+	 * to be shown to the person as it stands.
+	 *
+	 * Fork rites only, and it is not a failure. The row stays at `forked`: the
+	 * person fixes what is named, pushes another commit onto the same pull
+	 * request, the `synchronize` webhook fires and the five checks run again.
+	 * So this reads as an invitation, never as a verdict.
+	 */
+	check_refused_reason: string | null;
+	/**
+	 * When the automatic check last ran, ISO 8601.
+	 *
+	 * Null with a pull request already open means the webhook has landed and
+	 * the checks have not run yet — which is worth saying out loud, because
+	 * the screen has just promised a verdict on the spot.
+	 */
+	check_ran_at: string | null;
 }
 
 /** Present only on the call that actually opened the row, never on a repeat. */
@@ -80,9 +98,12 @@ export const onboardingRiteApi = {
 	/**
 	 * `GET /onboarding/bonjour-skilluv/status`
 	 *
-	 * Polled rather than subscribed to: `completed` is set when a reviewer
-	 * settles the deliverable, and the pull request only moves it to
-	 * `pr_opened`. There is nothing to listen on for either step.
+	 * Polled rather than subscribed to, and what it is waiting for depends on
+	 * the form. A fork rite settles itself: the GitHub webhook runs five
+	 * mechanical checks on the pull request and writes `completed` or a
+	 * `check_refused_reason` without a person in the loop. The eleven
+	 * submission rites still wait on a human reviewer. Neither has anything
+	 * the browser can listen on, so both are polled.
 	 */
 	status() {
 		return api.get<ApiResponse<RiteStatusResponse>>('/onboarding/bonjour-skilluv/status');

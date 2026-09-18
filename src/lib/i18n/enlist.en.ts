@@ -92,13 +92,20 @@ export const enlistEn: EnlistTranslations = {
 				forked: 'Starter forked onto your account',
 				hello_committed: 'HELLO.md committed',
 				pr_opened: 'Pull request open, awaiting review',
+				pr_opened_checked: 'Pull request open, checks running',
 				completed: 'Rite passed',
 				abandoned: 'Rite abandoned'
 			},
 			openFork: 'Open my fork',
 			openPr: 'See pull request #{n}',
+			autoCheckNote:
+				'We see your pull request the moment it opens, and we check it right away. If everything is in order, your rite passes on the spot.',
+			checkPending: 'Your pull request has landed. The checks are running; it takes a few seconds.',
+			refusedTitle: 'Something is missing',
+			refusedFix:
+				'Fix it, then push another commit onto the same pull request: the checks run again on their own. Nothing is lost.',
 			reviewNote:
-				'We see your pull request the moment it opens. A reviewer settles it after that: the rite passes then, not before.',
+				'We see your hand-in the moment it lands. A reviewer settles it after that: the rite passes then, not before.',
 			needsTrade: 'Pick a trade first: the starter we fork for you is chosen from it.',
 			needsTradeCta: 'Pick my trade',
 			needsGithub:
