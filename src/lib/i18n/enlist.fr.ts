@@ -100,8 +100,8 @@ export const enlistFr: EnlistTranslations = {
 			openPr: 'Voir la pull request #{n}',
 			autoCheckNote:
 				'On voit ta pull request dès qu’elle est ouverte, et on la vérifie dans la foulée. Si tout est en ordre, ton rite est validé sur-le-champ.',
-			checkPending:
-				'Ta pull request est arrivée. La vérification tourne, ça prend quelques secondes.',
+			forkHandedToReviewer:
+				'Ta pull request est passée à un relecteur : la vérification automatique n’a pas pu trancher. Il tranche, tu n’as rien de plus à faire.',
 			refusedTitle: 'Il manque quelque chose',
 			refusedFix:
 				'Corrige, puis pousse un nouveau commit sur la même pull request : la vérification rejoue toute seule. Rien n’est perdu.',

@@ -68,12 +68,18 @@
 	const riteForm = $derived(progress?.rite_form ?? riteDescriptor?.form ?? null);
 
 	/**
-	 * A fork rite's open pull request is not waiting on a person, so it cannot
-	 * carry the label that says it is. Only that one status differs between
-	 * the two forms; the other four read the same either way.
+	 * A fork rite whose checks have run is not waiting on a person, so it
+	 * cannot carry the label that says it is.
+	 *
+	 * The condition is the checks having run rather than the form, because a
+	 * fork rite can end up in front of a reviewer after all — see
+	 * `riteNoteKey`. When it does, the plain label is the true one. Only this
+	 * status differs between the two; the other four read the same either way.
 	 */
 	const statusKey = $derived(
-		progress?.status === 'pr_opened' && riteForm === 'fork' ? 'pr_opened_checked' : progress?.status
+		progress?.status === 'pr_opened' && riteForm === 'fork' && progress.check_ran_at !== null
+			? 'pr_opened_checked'
+			: progress?.status
 	);
 
 	/**
@@ -92,16 +98,29 @@
 	/**
 	 * Which promise the screen is making while it waits.
 	 *
-	 * A fork rite is checked by machine on the spot, so it says so — except in
-	 * the gap between the webhook landing and the checks running, which
-	 * `check_ran_at` is what makes visible. The eleven submission rites wait on
-	 * a reviewer and say that instead.
+	 * A fork rite is settled by machine on the spot, so it says so. The eleven
+	 * submission rites are settled by a person, and say that instead.
+	 *
+	 * The third case is the one worth spelling out. An open pull request with
+	 * `check_ran_at` still null is not a fork rite mid-check: the checks run
+	 * inside the webhook handler, and the accepted path writes `pr_opened` and
+	 * `check_ran_at` in one transaction before going straight to `completed`.
+	 * So there is no observable gap to report, and this screen polls every
+	 * fifteen seconds besides — it could not catch one.
+	 *
+	 * What that combination actually means is that the automatic decision did
+	 * not happen: the row predates the checks, or the safety net fired because
+	 * the starter's reference HELLO.md could not be read on GitHub, and either
+	 * way it has gone to a human reviewer. The person is waiting on somebody,
+	 * so they are told they are waiting on somebody — with the fork's own
+	 * wording, because they opened a pull request rather than handing anything
+	 * in.
 	 */
 	const riteNoteKey = $derived(
 		riteForm !== 'fork'
 			? 'reviewNote'
 			: progress?.status === 'pr_opened' && progress.check_ran_at === null
-				? 'checkPending'
+				? 'forkHandedToReviewer'
 				: 'autoCheckNote'
 	);
 	const needsGithub = $derived(riteForm === 'fork');

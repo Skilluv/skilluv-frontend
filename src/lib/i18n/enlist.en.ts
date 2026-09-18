@@ -100,7 +100,8 @@ export const enlistEn: EnlistTranslations = {
 			openPr: 'See pull request #{n}',
 			autoCheckNote:
 				'We see your pull request the moment it opens, and we check it right away. If everything is in order, your rite passes on the spot.',
-			checkPending: 'Your pull request has landed. The checks are running; it takes a few seconds.',
+			forkHandedToReviewer:
+				'Your pull request has gone to a reviewer: the automatic check could not settle it. They will, and there is nothing more for you to do.',
 			refusedTitle: 'Something is missing',
 			refusedFix:
 				'Fix it, then push another commit onto the same pull request: the checks run again on their own. Nothing is lost.',

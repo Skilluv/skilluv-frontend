@@ -258,15 +258,23 @@ test.describe('The onboarding steps', () => {
 		await expect(page.getByText(/relecteur/i)).toHaveCount(0);
 	});
 
-	test('between the webhook and the checks, it says the checks are running', async ({ page }) => {
-		// `check_ran_at` null with a pull request already open is the gap the
-		// field exists to make visible: the promise of an immediate verdict has
-		// been made and not yet kept.
+	test('an unchecked pull request reads as handed to a reviewer, not as pending', async ({
+		page
+	}) => {
+		// The checks run inside the webhook handler and write `pr_opened` and
+		// `check_ran_at` in one transaction, so this combination is never a
+		// fork rite mid-check. It is the safety net: the row predates the
+		// checks, or the starter's reference HELLO.md could not be read, and a
+		// person has it either way.
 		await mockForkRite(page);
 
 		await mockRiteChallenge(page);
 		await gotoHydrated(page, '/challenges/onboarding');
-		await expect(page.getByText(/La vérification tourne/i)).toBeVisible();
+		await expect(page.getByText(/passée à un relecteur/i)).toBeVisible();
+		// And the label follows: this one really is awaiting review.
+		await expect(page.getByText(/en attente de relecture/i)).toBeVisible();
+		// The promise of an immediate verdict is not made where it cannot be kept.
+		await expect(page.getByText(/sur-le-champ/i)).toHaveCount(0);
 	});
 
 	test('a refused check names what is missing and invites another commit', async ({ page }) => {

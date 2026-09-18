@@ -144,12 +144,18 @@ export interface EnlistTranslations {
 			 *
 			 * A fork rite is settled by five mechanical checks on the pull
 			 * request webhook — no reviewer, no capability, no queue — so it
-			 * says the verdict lands on the spot, and `checkPending` covers the
-			 * seconds between the webhook and the checks. The eleven submission
-			 * rites are settled by a person, and `reviewNote` says so.
+			 * says the verdict lands on the spot. The eleven submission rites
+			 * are settled by a person, and `reviewNote` says so.
+			 *
+			 * `forkHandedToReviewer` is the third case, and it is not a
+			 * transient one: the checks run inside the webhook handler, so an
+			 * open pull request they have not touched means the automatic
+			 * decision did not happen and a person has it. It says that, in the
+			 * fork's own terms, because there is a pull request rather than a
+			 * hand-in.
 			 */
 			autoCheckNote: string;
-			checkPending: string;
+			forkHandedToReviewer: string;
 			reviewNote: string;
 			/**
 			 * A refused check, which is not a failed rite.
