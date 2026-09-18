@@ -11,6 +11,7 @@
 	import Button from '$components/ui/Button.svelte';
 	import Skeleton from '$components/ui/Skeleton.svelte';
 	import Badge from '$components/ui/Badge.svelte';
+	import Alert from '$components/ui/Alert.svelte';
 	import type { Challenge, SkillDomain } from '$types';
 	import OAuthStartLink from '$components/settings/OAuthStartLink.svelte';
 	import { portfoliosApi } from '$api/portfolios';
@@ -65,6 +66,69 @@
 	let poller: ReturnType<typeof setInterval> | undefined;
 
 	const riteForm = $derived(progress?.rite_form ?? riteDescriptor?.form ?? null);
+
+	/**
+	 * A fork rite whose checks have run is not waiting on a person, so it
+	 * cannot carry the label that says it is.
+	 *
+	 * The condition is the checks having run rather than the form, because a
+	 * fork rite can end up in front of a reviewer after all — see
+	 * `riteNoteKey`. When it does, the plain label is the true one. Only this
+	 * status differs between the two; the other four read the same either way.
+	 *
+	 * It is the pair that carries the meaning, never `check_ran_at` alone: a
+	 * refusal also sets it, and a refused rite is at `forked` rather than
+	 * `pr_opened`. Reading the field on its own would put "the checks have
+	 * run, nobody is waiting on a person" over a rite that was turned down.
+	 * Both conditions here are load-bearing.
+	 */
+	const statusKey = $derived(
+		progress?.status === 'pr_opened' && riteForm === 'fork' && progress.check_ran_at !== null
+			? 'pr_opened_checked'
+			: progress?.status
+	);
+
+	/**
+	 * The automatic check's refusal, when there is one to show.
+	 *
+	 * Held back once the rite is through: a reason from an earlier round is
+	 * history at that point, and history that reads as a problem is a problem
+	 * of its own.
+	 */
+	const checkRefusal = $derived(
+		progress && progress.status !== 'completed' && progress.status !== 'abandoned'
+			? progress.check_refused_reason
+			: null
+	);
+
+	/**
+	 * Which promise the screen is making while it waits.
+	 *
+	 * A fork rite is settled by machine on the spot, so it says so. The eleven
+	 * submission rites are settled by a person, and say that instead.
+	 *
+	 * The third case is the one worth spelling out. An open pull request with
+	 * `check_ran_at` still null is not a fork rite mid-check: the checks run
+	 * inside the webhook handler, and the accepted path writes `pr_opened` and
+	 * `check_ran_at` in one transaction before going straight to `completed`.
+	 * So there is no observable gap to report, and this screen polls every
+	 * fifteen seconds besides — it could not catch one.
+	 *
+	 * What that combination actually means is that the automatic decision did
+	 * not happen: the row predates the checks, or the safety net fired because
+	 * the starter's reference HELLO.md could not be read on GitHub, and either
+	 * way it has gone to a human reviewer. The person is waiting on somebody,
+	 * so they are told they are waiting on somebody — with the fork's own
+	 * wording, because they opened a pull request rather than handing anything
+	 * in.
+	 */
+	const riteNoteKey = $derived(
+		riteForm !== 'fork'
+			? 'reviewNote'
+			: progress?.status === 'pr_opened' && progress.check_ran_at === null
+				? 'forkHandedToReviewer'
+				: 'autoCheckNote'
+	);
 	const needsGithub = $derived(riteForm === 'fork');
 
 	/**
@@ -238,9 +302,15 @@
 	/**
 	 * Polled, because there is nothing to subscribe to.
 	 *
-	 * The webhook moves it to `pr_opened`; a reviewer moves it to `completed`.
-	 * Two asynchronous steps, neither of them ours, and no socket for either.
-	 * Stops once it is settled so a finished rite is not polled forever.
+	 * The webhook moves it to `pr_opened`. What settles it after that depends
+	 * on the form: five mechanical checks on a fork rite, a person on the
+	 * eleven others. Asynchronous either way, none of it ours, and no socket
+	 * for any of it.
+	 *
+	 * A refused check is not settled and must keep polling: the row stays at
+	 * `forked`, and the next commit on the same pull request replays the
+	 * checks. Only `completed` and `abandoned` stop the loop, which is why the
+	 * condition names those two rather than asking whether a reason is set.
 	 */
 	function schedulePoll() {
 		clearInterval(poller);
@@ -429,7 +499,7 @@
 				     the two links are the only places the work actually happens. -->
 				<div class="rounded-2xl border border-accent/30 bg-surface-elevated p-6">
 					<p class="font-mono text-[11px] uppercase tracking-[0.2em] text-text-muted">
-						{i18n.t(`enlist.rite.status.${progress.status}`)}
+						{i18n.t(`enlist.rite.status.${statusKey}`)}
 					</p>
 
 					{#if progress.fork_html_url}
@@ -455,12 +525,27 @@
 						</a>
 					{/if}
 
-					<!-- Said plainly, because the wait has two steps and only the
-					     first is automatic: the webhook sees the pull request, a
-					     person settles it afterwards. -->
-					<p class="mt-4 text-xs leading-relaxed text-text-muted">
-						{i18n.t('enlist.rite.reviewNote')}
-					</p>
+					<!-- What happens next is not the same on both forms, and
+					     saying the wrong one is worse than saying nothing: a fork
+					     rite settles itself on five mechanical checks, the eleven
+					     submission rites wait on a person. -->
+					{#if checkRefusal}
+						<!-- Not a failure state. The row stays at `forked`, the
+						     pull request stays open, and another commit on it
+						     replays the checks — so this names what is missing
+						     and says how to answer it, and offers no way out
+						     because none is needed. -->
+						<div class="mt-4">
+							<Alert tone="warning" size="sm" title={i18n.t('enlist.rite.refusedTitle')}>
+								{checkRefusal}
+								{i18n.t('enlist.rite.refusedFix')}
+							</Alert>
+						</div>
+					{:else}
+						<p class="mt-4 text-xs leading-relaxed text-text-muted">
+							{i18n.t(`enlist.rite.${riteNoteKey}`)}
+						</p>
+					{/if}
 				</div>
 			{:else if missingTrade}
 				<div class="rounded-2xl border border-border bg-surface-elevated p-6 text-center">
